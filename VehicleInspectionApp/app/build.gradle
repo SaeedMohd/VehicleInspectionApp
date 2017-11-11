@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        applicationId "com.matics.inspection"
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 67
+        versionName "1.4"
+        // Enabling multidex support.
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        signConfig {
+            storeFile file("VehicleHealthMonitor.keystore")
+            storePassword "surfing123"
+            keyAlias "release"
+            keyPassword "VhMAC@246"
+        }
+
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            signingConfig signingConfigs.signConfig
+        }
+
+        debug {
+            debuggable true
+            signingConfig signingConfigs.signConfig
+        }
+
+    }
+}
+
+def qbSdkVersion = '3.0'
+
+
+dependencies {
+    compile 'com.google.android.gms:play-services:10.2.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+    google()
+}
