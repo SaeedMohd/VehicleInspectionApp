@@ -1,0 +1,45 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/devsherif/Work/AnthonnyCherry/VehicleInspection/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hdpi-v4/values-hdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/Users/devsherif/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/0c7cacf824ba3a40401ed1f1cdf40668/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "6",
+                        "endColumns": "13",
+                        "endOffsets": "327"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "98",
+                        "endLines": "7",
+                        "endColumns": "13",
+                        "endOffsets": "370"
+                    }
+                },
+                {
+                    "source": "/Users/devsherif/Work/AnthonnyCherry/VehicleInspection/app/src/main/res/values-hdpi/dimens.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "5",
+                        "startOffsets": "95",
+                        "endColumns": "43",
+                        "endOffsets": "133"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "42",
+                        "endOffsets": "93"
+                    }
+                }
+            ]
+        }
+    ]
+}

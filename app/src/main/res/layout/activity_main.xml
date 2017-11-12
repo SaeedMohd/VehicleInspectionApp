@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_bg"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/ivAbout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:padding="5dp"
+                android:src="@drawable/info_icon" />
+
+            <!-- <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                 android:padding="5dp"
+                android:src="@drawable/search_icon" /> -->
+
+
+            <ImageView
+                android:id="@+id/signoutButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/sign_out_icon"
+                android:padding="5dp"
+                />
+
+            <!--<com.facebook.login.widget.LoginButton-->
+                <!--android:id="@+id/signoutButton"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:background="@drawable/blue_circle"-->
+                <!--android:padding="5dp"-->
+                <!--android:text="Sign Out"-->
+                <!--/>-->
+
+            <ImageView
+                android:id="@+id/ivSetting"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@id/signoutButton"
+                android:padding="5dp"
+                android:src="@drawable/settings_icon" />
+
+            <ImageView
+                android:id="@+id/ivUser"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/ivSetting"
+                android:padding="5dp"
+                android:src="@drawable/profile_icon" />
+
+            <ImageView
+                android:id="@+id/ivVehicles"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/ivUser"
+                android:padding="5dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/car_action_bar" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imagebg"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            android:visibility="visible"
+            android:src="@drawable/banner" />
+
+
+        <LinearLayout
+            android:id="@+id/linear_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imagebg"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            android:weightSum="0.90">
+
+            <Button
+                android:id="@+id/btnRepairFacility"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="0.30"
+                android:background="@drawable/button_bg"
+                android:text="@string/btnMaintenanceFacility"
+                android:textSize="12sp" />
+
+
+            <Button
+                android:id="@+id/btnVehicleHealth"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="0.30"
+                android:background="@drawable/button_bg"
+                android:text="@string/btnVehicleDashboard"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btnRepairHistory"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.30"
+                android:background="@drawable/button_bg"
+                android:text="@string/btnMaintenanceHistory"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivShadow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear_button"
+            android:layout_marginTop="-5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/shadow" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linear_button"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-15dp"
+            android:layout_marginRight="20dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/tree" />
+
+    </RelativeLayout>
+
+
+    <!--     <com.viewpagerindicator.TabPageIndicator -->
+    <!--         android:id="@+id/indicator" -->
+    <!--         android:layout_width="fill_parent" -->
+    <!--         android:layout_height="wrap_content"  -->
+    <!--         android:background="@drawable/button_bg"/> -->
+
+    <!--     <android.supportview2view.ViewPager -->
+    <!--         android:id="@+id/pager" -->
+    <!--         android:layout_width="fill_parent" -->
+    <!--         android:layout_height="0dp" -->
+    <!--         android:layout_weight="1" -->
+    <!--          /> -->
+    <!--     <LinearLayout -->
+    <!--         android:layout_width="match_parent" -->
+    <!--         android:layout_height="wrap_content" -->
+    <!--         android:orientation="vertical" -->
+
+    <!--         android:background="@drawable/bottom_bg" > -->
+    <!--     </LinearLayout> -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-10dp">
+
+
+        <FrameLayout
+            android:id="@+id/tab_frames"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_alignParentTop="true" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:src="@drawable/bottom_bg" />-->
+
+
+    </RelativeLayout>
+
+</LinearLayout>

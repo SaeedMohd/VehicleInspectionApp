@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    >
+
+    <ImageView
+        android:id="@+id/topImage"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/banner"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/selectVehicleHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topImage"
+        android:background="@android:color/darker_gray"
+        android:text="Select Vehicle"
+        android:visibility="gone"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:padding="10dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/safetyCheckListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/selectVehicleHeaderTextView">
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            />
+
+        <ListView
+            android:id="@+id/searchCustomerSafetyCheckListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/searchView"
+            />
+
+    </RelativeLayout>
+</RelativeLayout>

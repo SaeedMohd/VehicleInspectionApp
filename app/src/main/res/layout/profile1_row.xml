@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/login_txtbg22"
+    android:orientation="vertical" >
+
+    <!-- <EditText -->
+    <!-- android:id="@+id/editTextDeviceID" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:ems="10" -->
+    <!-- android:enabled="true" -->
+    <!-- android:hint="DeviceID" > -->
+
+
+    <!-- </EditText> -->
+
+
+    <!-- <EditText -->
+    <!-- android:id="@+id/editTextVehicleId" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:ems="10" -->
+    <!-- android:enabled="true" -->
+    <!-- android:hint="Vehicle Id" /> -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.inspection.Utils.TextViewPlus
+                android:id="@+id/textView_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vehicle id:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                app:customFont="fonts/gill_sans.ttf" />
+
+            <com.inspection.Utils.TextViewPlus
+                android:id="@+id/textViewVehicleid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                app:customFont="fonts/gill_sans.ttf" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.inspection.Utils.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="Year :"
+                android:textSize="17sp"
+                app:customFont="fonts/gill_sans.ttf" />
+
+            <EditText
+                android:id="@+id/editTextYear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:ems="10"
+                android:hint="Vehicle Year"
+                android:textSize="17sp" >
+            </EditText>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.inspection.Utils.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="Model :"
+                android:textSize="17sp"
+                app:customFont="fonts/gill_sans.ttf" />
+
+            <EditText
+                android:id="@+id/editTextmodel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:ems="10"
+                android:hint="Vehicle Model"
+                android:textSize="17sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.inspection.Utils.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="Make :"
+                android:textSize="17sp"
+                app:customFont="fonts/gill_sans.ttf" />
+
+            <EditText
+                android:id="@+id/editTextmake"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:ems="10"
+                android:hint="Vehicle Make"
+                android:textSize="17sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.inspection.Utils.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="Mileage :"
+                android:textSize="17sp"
+                app:customFont="fonts/gill_sans.ttf" />
+
+            <EditText
+                android:id="@+id/editTextmileage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:ems="10"
+                android:hint="Vehicle Mileage"
+                android:textSize="17sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow_num"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible" >
+
+            <com.inspection.Utils.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="License Num:"
+                android:textSize="17sp"
+                app:customFont="fonts/gill_sans.ttf" />
+
+            <EditText
+                android:id="@+id/editTextLicence_num"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:ems="10"
+                android:hint="License Num"
+                android:textSize="17sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow_state"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible" >
+
+            <com.inspection.Utils.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="License state:"
+                android:textSize="17sp"
+                app:customFont="fonts/gill_sans.ttf" />
+
+            <EditText
+                android:id="@+id/editTextLicence_State"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:ems="10"
+                android:hint="License state"
+                android:textSize="17sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow_state"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible" >
+
+            <com.inspection.Utils.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="Service List:"
+                android:textSize="17sp"
+                app:customFont="fonts/gill_sans.ttf" />
+
+            <com.inspection.Utils.TextViewPlus
+                android:id="@+id/textView_service_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text=""
+                android:textSize="17sp"
+                app:customFont="fonts/gill_sans.ttf" />
+        </TableRow>
+    </TableLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/buttonUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Update"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+</LinearLayout>
