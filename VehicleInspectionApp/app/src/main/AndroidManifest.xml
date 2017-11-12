@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.matics.inspection"
+    package="com.inspection"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -85,33 +85,7 @@
         </activity>
         <activity android:name=".SignupActivity" />
 
-        <!-- Start Bluetooth Connection Service -->
-        <service
-            android:name=".Services.autoMaticService"
-            android:enabled="true" />
-        <service
-            android:name=".Utils.AccelerometerTracker"
-            android:enabled="true" />
-        <service
-            android:name=".Services.VideoCallingService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name=".Services.BLE_Service"
-            android:enabled="true" />
 
-        <!-- <service android:name="com.matics.MyService" android:enabled="true"/> -->
-
-
-        <!-- Reboot broadcast receiver use for start Bluetooth Connection service -->
-        <receiver
-            android:name=".Services.Startup"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
         <receiver
             android:name=".GCM.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
@@ -147,45 +121,11 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <receiver android:name=".BroadcastReceiver.GpsLocationReceiver">
-            <intent-filter>
-                <action android:name="android.location.PROVIDERS_CHANGED" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".BroadcastReceiver.BluetoothReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
-                <action android:name="android.bluetooth.adapter.action.CONNECTION_STATE_CHANGED" />
-                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
-                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name="edu.sfsu.cs.orange.ocr.CaptureActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <receiver
-            android:name=".Services.OutgoingCallBroadCastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter android:priority="0">
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL"/>
-                <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-        </receiver>
 
         <provider
             android:name=".Utils.GenericFileProvider"
-            android:authorities="com.matics.android.fileprovider"
+            android:authorities="com.inspection.android.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

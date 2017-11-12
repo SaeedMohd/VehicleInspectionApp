@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:id="@+id/textView_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 app:customFont="fonts/gill_sans.ttf" />
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:id="@+id/textViewVehicleid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="40"
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="40"
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="40"
@@ -140,7 +140,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="40"
@@ -165,7 +165,7 @@
             android:orientation="horizontal"
             android:visibility="visible" >
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="40"
@@ -190,7 +190,7 @@
             android:orientation="horizontal"
             android:visibility="visible" >
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="40"
@@ -215,7 +215,7 @@
             android:orientation="horizontal"
             android:visibility="visible" >
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="40"
@@ -223,7 +223,7 @@
                 android:textSize="17sp"
                 app:customFont="fonts/gill_sans.ttf" />
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:id="@+id/textView_service_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

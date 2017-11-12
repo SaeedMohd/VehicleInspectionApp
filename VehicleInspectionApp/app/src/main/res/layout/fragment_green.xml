@@ -22,7 +22,7 @@
                 android:text="Not Connected"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:layout_below="@+id/button_bluetooth"
                 android:text="Connect to Wifi" />
 
-            <com.matics.Utils.TextViewPlus
+            <com.inspection.Utils.TextViewPlus
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

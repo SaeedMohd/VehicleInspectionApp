@@ -62,7 +62,7 @@
                  />
 
 
-            <com.matics.MapView.CabbingMapView
+            <com.inspection.MapView.CabbingMapView
                 android:id="@+id/mapViewOtherDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

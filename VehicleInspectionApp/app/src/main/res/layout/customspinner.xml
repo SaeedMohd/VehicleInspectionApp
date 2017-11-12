@@ -1,4 +1,4 @@
-<com.matics.Utils.TextViewPlus xmlns:android="http://schemas.android.com/apk/res/android"
+<com.inspection.Utils.TextViewPlus xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
     style="?android:attr/spinnerItemStyle"
