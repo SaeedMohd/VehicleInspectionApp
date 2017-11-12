@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="com.google.android.gms:play-services-fitness-10.2.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-fitness-10.2.0.aar/141665d40cf163a9186507dbf7b98472/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-fitness-10.2.0.aar/141665d40cf163a9186507dbf7b98472/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
