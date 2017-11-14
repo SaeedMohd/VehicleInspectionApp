@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Vehicle Inspection</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="btnMaintenanceHistory">MAINTENANCE HISTORY</string>
+    <string name="btnMaintenanceFacility">MAINTENANCE FACILITY</string>
+    <string name="btnVehicleDashboard">VEHICLE DASHBOARD</string>
+    <string name="vehicle_setting">SETTINGS</string>
+    <string name="get_obd2_device">Get iOBD2 Device</string>
+    <string name="user">USER PROFILE</string>
+    <string name="vehicle_about">APP INFO</string>
+    <string name="vehicle_search">SEARCH</string>
+    <string name="General">General</string>
+    <string name="Appointments">Appointments</string>
+    <string name="Calender">Calender</string>
+    <string name="SafetyCheckNotifications">Safety Check Notifications</string>
+    <string name="Reminders">Reminders</string>
+    <string name="WebSite">WebSite</string>
+    <string name="RepairShopInfo">Repair Shop Info</string>
+    <string name="VehicleInfo">Vehicle Info</string>
+    <string name="sign_up_button_text"><u>Sign up</u></string>
+
+
+    <string name="play_services_error">Google Play services is not available.  This application will close.</string>
+    <string name="close">Close</string>
+
+    <!-- <string name="GoogleMap_Key">AIzaSyDPOvp_02RKkgYwi5YfDeCxTk9naJrOfrw</string> -->
+    <string name="push_notifications_project_name">992535878989</string>
+    <string name="GoogleMap_Key">AIzaSyAOxcChMEYZsy8M25ZGDkKhuYennC8MDVU</string>
+    <string name="Facebook_Key">AIzaSyDPOvp_02RKkgYwi5YfDeCxTk9naJrOfrw</string>
+    <string name="facebook_app_id">1655242944689980</string>
+
+
+    <string name="addVehicleURL">http://www.jet-matics.com/JetComService/JetCom.svc/AddVehicleInformation?</string>
+    <string name="updateVehicleURL">http://www.jet-matics.com/JetComService/JetCom.svc/updateVehicleInformation?</string>
+    <string name="deleteVehicleURL">http://www.jet-matics.com/JetComService/JetCom.svc/DeleteVehicleInformation?</string>
+
+    <string name="getShopCustomersURL">http://www.jet-matics.com/JetComService/JetCom.svc/ShopUsersByAccountID?</string>
+    <string name="getCompetitorsDetailsURL">http://www.jet-matics.com/JetComService/JetCom.svc/GetCustLossPreventionCompListByMobileUserProfileID?</string>
+    <string name="updateCompetitorGeoFence">http://www.jet-matics.com/JetComService/JetCom.svc/UpdateCompetitorGeoFence?</string>
+    <string name="updateCompetitorPhone">http://www.jet-matics.com/JetComService/JetCom.svc/UpdateCompetitorPhone?</string>
+
+    <string name="data_synch_url">http://www.jet-matics.com/JetComService/JetCom.svc/BluetoothDetailGet?</string>
+    <string name="is_user_logged_in_with_google_plus">is_user_logged_in_with_google_plus</string>
+    <string name="is_user_logged_in_with_facebook">is_user_logged_in_with_facebook</string>
+    <string name="is_user_logged_in_with_email">is_user_logged_in_with_email</string>
+
+    <string name="appointmentsUrl">http://www.jet-matics.com/JetComService/JetCom.svc/getAppointmentsList?</string>
+    <string name="preparePhoneLoginUrl">http://www.jet-matics.com/JetComService/JetCom.svc/preparePhoneLoginWithEmailAndPhone?</string>
+
+
+    <string-array name="Interval">
+        <item>30 Seconds</item>
+        <item>1 Minute</item>
+        <item>1 Minute 30 Seconds</item>
+        <item>2 Minutes</item>
+        <item>2 Minute 30 Seconds</item>
+        <item>3 Minutes</item>
+        <item>3 Minute 30 Seconds</item>
+        <item>4 Minutes</item>
+        <item>4 Minute 30 Seconds</item>
+        <item>5 Minutes</item>
+        <item>5 Minute 30 Seconds</item>
+        <item>6 Minutes</item>
+        <item>6 Minute 30 Seconds</item>
+        <item>7 Minutes</item>
+        <item>7 Minute 30 Seconds</item>
+        <item>8 Minutes</item>
+        <item>8 Minute 30 Seconds</item>
+        <item>9 Minutes</item>
+        <item>9 Minute 30 Seconds</item>
+        <item>10 Minutes</item>
+    </string-array>
+
+    <string-array name="BT_Snooze">
+        <item>For an hour</item>
+        <item>For 2 hours</item>
+        <item>For 6 hours</item>
+        <item>For 12 hours</item>
+        <item>For 1 day</item>
+        <item>For 1 Week</item>
+        <item>For 1 Month</item>
+        <item>Forever</item>
+    </string-array>
+
+    <string-array name="OBD_Commands">
+        <item>PHONE1|Android_Phone_ID|</item>
+        <item>0111|Throttle_Position|%</item>
+        <item>010C|Engine_RPM|RPM</item>
+        <item>0104|Engine_Load|%</item>
+        <item>0133|Barometric_Press|kPa</item>
+        <item>0105|Coolant_Temp|C</item>
+        <item>PHONE2|Latitude|</item>
+        <item>PHONE3|Longitude|</item>
+        <item>010B|Intake_Manifold_Press|kPa</item>
+        <item>010D|Vehicle_Speed|km/h</item>
+        <item>PHONE4|DeviceTime|</item>
+        <item>0902|VIN|code</item>
+        <item>0121|Totalmiles|</item>
+        <item>03|FaultCodes|</item>
+        <item>PHONE5|AccountId|</item>
+        <item>PHONE6|Year|</item>
+        <item>PHONE7|Make|</item>
+        <item>PHONE8|Model|</item>
+        <item>PHONE9|Mileage|</item>
+        <item>010A|Fuel_Press|kPa</item>
+        <item>PHONE10|GPS_Speed|</item>
+        <item>PHONE11|GPS_Time|</item>
+        <item>PHONE12|Obs_Time|</item>
+        <item>0146|Ambient_Air_Temp|C</item>
+        <item>010F|Air_Intake_Temp|C</item>
+        <item>PHONE13|MobileUserProfileId|</item>
+        <item>PHONE14|BtId|</item>
+        <item>012F|FuelLevel_Input|%</item>
+        <item>0103|Fuel_status|</item>
+        <item>0103|TimingAdvance|</item>
+        <item>0110|Air_Flow_Rate|g/s</item>
+        <item>011C|OBD_Standard|</item>
+        <item>011D|Oxygen_sensors_present|</item>
+        <item>011F|Run_time|seconds</item>
+        <item>0123|Fuel_Rail_Pressure|kPa</item>
+        <item>012E|Commanded_evaporative_purge|%</item>
+        <item>0132|System_Vapor_Pressure|Pa</item>
+        <item>0142|Control_module_voltage|V</item>
+        <item>0143|Absolute_load_value|%</item>
+        <item>0144|equivalence_ratio|</item>
+        <item>0151|Fuel_Type|V</item>
+        <item>0152|Ethanol_fuel|%</item>
+        <item>PHONE15|License_Num|</item>
+        <item>PHONE16|License_State|</item>
+        <item>0101|Monitor_status|</item>
+        <item>0106|Short_term_fuel_B1|</item>
+        <item>0107|Long_term_fuel_B1|</item>
+        <item>0108|Short_term_fuel_B2|</item>
+        <item>0109|Long_term_fuel_B2|</item>
+        <item>0113|Oxy_sensor_present|</item>
+        <item>0114|Oxy_sensor_voltage_B1S1|</item>
+        <item>0115|Oxy_sensor_voltage_B1S2|</item>
+        <item>0116|Oxy_sensor_voltage_B1S3|</item>
+        <item>0117|Oxy_sensor_voltage_B1S4|</item>
+        <item>0118|Oxy_sensor_voltage_B2S1|</item>
+        <item>0119|Oxy_sensor_voltage_B2S2|</item>
+        <item>011A|Oxy_sensor_voltage_B2S3|</item>
+        <item>011B|Oxy_sensor_voltage_B2S4|</item>
+        <item>011E|Auxiliary_input_status|</item>
+        <item>0120|PID_supported|</item>
+        <item>0124|Equivalence_Ratio_O2S1_V|</item>
+        <item>0125|Equivalence_Ratio_O2S2_V|</item>
+        <item>0126|Equivalence_Ratio_O2S3_V|</item>
+        <item>0127|Equivalence_Ratio_O2S4_V|</item>
+        <item>0128|Equivalence_Ratio_O2S5_V|</item>
+        <item>0129|Equivalence_Ratio_O2S6_V|</item>
+        <item>012A|Equivalence_Ratio_O2S7_V|</item>
+        <item>012B|Equivalence_Ratio_O2S8_V|</item>
+        <item>012C|Commanded_EGR|</item>
+        <item>012D|EGR_Error|</item>
+        <item>0130|No_WarmUps|</item>
+        <item>0131|Dist_Travelled|</item>
+        <item>0134|Equivalence_Ratio_O2S1_C|</item>
+        <item>0135|Equivalence_Ratio_O2S2_C|</item>
+        <item>0136|Equivalence_Ratio_O2S3_C|</item>
+        <item>0137|Equivalence_Ratio_O2S4_C|</item>
+        <item>0138|Equivalence_Ratio_O2S5_C|</item>
+        <item>0139|Equivalence_Ratio_O2S6_C|</item>
+        <item>013A|Equivalence_Ratio_O2S7_C|</item>
+        <item>013B|Equivalence_Ratio_O2S8_C|</item>
+        <item>013C|Catalyst_Temp_B1S1|</item>
+        <item>013D|Catalyst_Temp_B2S1|</item>
+        <item>013E|Catalyst_Temp_B1S2|</item>
+        <item>013F|Catalyst_Temp_B2S2|</item>
+        <item>0140|PID_supported_41|</item>
+        <item>0141|Monitor_status_Cycle|</item>
+        <item>0145|Real_Throttle_position|</item>
+        <item>0147|Absolute_Throttle_position_B|</item>
+        <item>0148|Absolute_Throttle_position_C|</item>
+        <item>0149|Accelerator_pedal_position_D|</item>
+        <item>014A|Accelerator_pedal_position_E|</item>
+        <item>014B|Accelerator_pedal_position_F|</item>
+        <item>014C|Commanded_throttle_actuator|</item>
+        <item>014D|Time_MIL|</item>
+        <item>014E|Time_trouble_code|</item>
+        <item>0153|Evap_system_Vapour_Pressure|</item>
+        <item>0202|Freeze_frame_trouble_code|</item>
+        <item>04|Clear_trouble_code|</item>
+        <item>050100|OBD_Monitor_ID_Supported|</item>
+        <item>050101|O2_sensor_Monitor_B1S1_Learn|</item>
+        <item>050102|O2_sensor_Monitor_B1S2_Learn|</item>
+        <item>050103|O2_sensor_Monitor_B1S3_Learn|</item>
+        <item>050104|O2_sensor_Monitor_B1S4_Learn|</item>
+        <item>050105|O2_sensor_Monitor_B2S1_Learn|</item>
+        <item>050106|O2_sensor_Monitor_B2S2_Learn|</item>
+        <item>050107|O2_sensor_Monitor_B2S3_Learn|</item>
+        <item>050108|O2_sensor_Monitor_B2S4_Learn|</item>
+        <item>050109|O2_sensor_Monitor_B3S1_Learn|</item>
+        <item>05010A|O2_sensor_Monitor_B3S2_Learn|</item>
+        <item>05010B|O2_sensor_Monitor_B3S3_Learn|</item>
+        <item>05010C|O2_sensor_Monitor_B3S4_Learn|</item>
+        <item>05010D|O2_sensor_Monitor_B4S1_Learn|</item>
+        <item>05010E|O2_sensor_Monitor_B4S2_Learn|</item>
+        <item>05010F|O2_sensor_Monitor_B4S3_Learn|</item>
+        <item>050110|O2_sensor_Monitor_B4S4_Learn|</item>
+        <item>050201|O2_sensor_Monitor_B1S1_Rich|</item>
+        <item>050202|O2_sensor_Monitor_B1S2_Rich|</item>
+        <item>050203|O2_sensor_Monitor_B1S3_Rich|</item>
+        <item>050204|O2_sensor_Monitor_B1S4_Rich|</item>
+        <item>050205|O2_sensor_Monitor_B2S1_Rich|</item>
+        <item>050206|O2_sensor_Monitor_B2S2_Rich|</item>
+        <item>050207|O2_sensor_Monitor_B2S3_Rich|</item>
+        <item>050208|O2_sensor_Monitor_B2S4_Rich|</item>
+        <item>050209|O2_sensor_Monitor_B3S1_Rich|</item>
+        <item>05020A|O2_sensor_Monitor_B3S2_Rich|</item>
+        <item>05020B|O2_sensor_Monitor_B3S3_Rich|</item>
+        <item>05020C|O2_sensor_Monitor_B3S4_Rich|</item>
+        <item>05020D|O2_sensor_Monitor_B4S1_Rich|</item>
+        <item>05020E|O2_sensor_Monitor_B4S2_Rich|</item>
+        <item>05020F|O2_sensor_Monitor_B4S3_Rich|</item>
+        <item>050210|O2_sensor_Monitor_B4S4_Rich|</item>
+        <item>0900|Mode_9_supported|</item>
+        <item>0122|Fuel_Rail_Pressure_D|</item>
+        <item>PHONE17|Protocol|</item>
+        <item>07|Pending_Trouble_Codes|</item>
+        <item>0A|Historic_Trouble_Codes|</item>
+        <item>PHONE18|VinRetrievable|</item>
+
+    </string-array>
+    <string name="login_register_dialog_message">Your Email does not exist in our database.\nIf you had and account on the Vehicle Health App previously, you can log in with an email or User ID.</string>
+
+    <string name="terms_and_conditions_message">The JetCom Vehicle Health App is designed to connect your vehicle to a repair shop of your choice and share the data obtained from your vehicles OBD port along with your vehicles repair
+
+history. We describe the information we collect and how it’s used and shared. By “we” or “us”, we mean our company, JetCom, and by “you” we refer to the users of our services. We take 
+
+seriously our responsibility to protect the privacy of your information in accordance with this policy.
+
+This Privacy Policy was last updated on May 4, 2014.
+
+What information does the Vehicle Health App collect? Using our services, provides information on the mechanical operation of vehicles to ensure reliability and improve vehicle performance. 
+
+Our services (“Services”) are enabled by a hardware device which plugs into your vehicle (the “Bluetooth OBD Device”, BT Device), a smartphone app (“App”), a repair facility(ies) and our 
+
+website. Using the Hardware, the App, and our website, you provide us with and we collect the following types of data (“Personal Data”): Information from your vehicle’s onboard computer; 
+
+Information about your vehicle’s operation, vehicle location information, personally identifiable information, and Information collected when you visit our website. If you provide us with Personal 
+
+Data from a location outside the United States, please be aware that the data is transferred from your location to the United States, where we and our web servers and data storage servers are 
+
+located. To enable our Services, we collect and store information about the vehicle into which you plug the BT Device. When available we request your vehicle identification number so that we 
+
+can search our data base for the vehicles maintenance and repair history.
+
+Vehicle location information - The smart phone App collects information on the location of your vehicle while you are driving. The App uses your smartphone’s location services (GPS, WiFi, cell 
+
+tower triangulation) to record its location as you drive. This information is helpful to repair facilities to help diagnose issues with your vehicle.
+
+Personally Identifiable Information - Examples of personally identifiable information we collect include your name, phone number(s), email address and physical address. If your vehicles reports 
+
+a trouble code that is an indication of serious issue or the repair facility you selected notices a concern in the data from or about your vehicle, they or us may contact you. Therefore by agreeing 
+
+to these terms and conditions you are providing explicit permission for us and the repair facility you select to contact you on the via any and all phone numbers and email addresses you have 
+
+provided. As well we may send you marketing information which may help save you money during a repair or provide you beneficial information. On our website, we may use a technology 
+
+called “cookies” provided by us or a third-party. A cookie is a piece of information that the computer that hosts our site gives to your browser when you access our site. 
+
+Who has access to the information the Vehicle Health App collects? - Personnel that support the Vehicle Health App, and the automotive repair professional you have selected so that they can 
+
+diagnose and evaluate the performance of your vehicle. Except as provided below, we do not share your Personal Data with third parties without your explicit permission:
+
+Third parties performing business-related functions. We may share your data in an aggregated form with other companies to perform certain business-related functions, vehicle reliability issues. 
+
+In these cases, we only provide the companies with the information they need to perform their specific function.
+
+Legal process. It is possible that we may need to disclose Personal Data when required by law, subpoena, or other legal process.
+
+By using our Service, you provide us with permission to share your information with the parties described above.
+
+Vehicle sharing. The App allows you to share information regarding your vehicle with people you choose. For example, if you choose, you can share your car’s parked location with the people 
+
+with whom you share the car.
+
+Partners. We want you to provide you with the most value possible therefore we may present offers from trusted partners to ensure maximum reliability from your vehicle. For example, we might 
+
+partner with a battery company that will help us monitor the health of your battery and provide specials to you when and if your battery needs to be replaced. These opportunities will always be 
+
+user “opt-in” only.
+
+We are committed to handling your personal information with respect and care. However, regardless of the security precautions taken, no physical, Internet or other electronic transmission or 
+
+storage of data can be fully secure or error free. You should understand this when choosing to use any product or service that includes the physical or electronic storage or transmission of your 
+
+data.</string>
+
+    <string name="vehicle_health_default_reason">No Trouble Codes reported. There is no record of this vehicle having service. It is simple for any repair facility to join. All they have to do is goto VehicleHealth.org</string>
+    <string name="configuration_error">WEB_CLIENT_ID or SERVER_BASE_URL configured incorrectly.</string>
+    <string name="vehicle_upcoming_services_url">http://www.jet-matics.com/JetComService/JetCom.svc/VehicleUpcomingServiceList?</string>
+    <string name="vehicle_recommended_services_url">http://www.jet-matics.com/JetComService/JetCom.svc/VehicleRecommendedServiceList?</string>
+
+    <string name="get_beacon_service">http://www.jet-matics.com/JetComService/JetCom.svc/GetBeaconService?</string>
+
+    <string name="safety_check_list">http://jet-matics.com/JetComService/JetCom.svc/GetSafetyCheckList?</string>
+
+    <string name="get_safety_check_results_scale_options">http://jet-matics.com/JetComService/JetCom.svc/GetSafetyCheckResultsScaleOptions?</string>
+
+    <string name="submitSafetyCheckItemResult">http://jet-matics.com/JetComService/JetCom.svc/SubmitSafetyCheckItemResult?</string>
+
+    <string name="submitSafetyCheckItemComment">http://jet-matics.com/JetComService/JetCom.svc/SubmitSafetyCheckItemComment?</string>
+
+    <string name="submitSafetyCheckReportSummaryDescription">http://jet-matics.com/JetComService/JetCom.svc/SubmitSafetyCheckReportSummaryDescription?</string>
+
+    <string name="getOpenSafetyCheckReports">http://jet-matics.com/JetComService/JetCom.svc/GetOpenSafetyCheckReports?</string>
+
+    <string name="getSafetyCheckReportStatus">http://jet-matics.com/JetComService/JetCom.svc/GetSafetyCheckReportStatus?</string>
+
+    <string name="initiate_safety_check_process">http://jet-matics.com/JetComService/JetCom.svc/InitiateSafetyCheckProcess?</string>
+
+    <string name="endSafetyCheckReport">http://jet-matics.com/JetComService/JetCom.svc/EndSafetyCheckProcess?</string>
+
+    <string name="getSafetyCheckItemComment">http://jet-matics.com/JetComService/JetCom.svc/GetSafetyCheckItemComment?</string>
+
+    <string name="getSafetyCheckReportsListForCustomer">http://jet-matics.com/JetComService/JetCom.svc/GetSafetyCheckReportsListForCustomer?</string>
+
+    <string name="getSafetyCheckReportsListForShop">http://jet-matics.com/JetComService/JetCom.svc/GetSafetyCheckReportsListForShop?</string>
+
+    <string name="submitSafetyCheckPhoto">http://jet-matics.com/JetComService/JetCom.svc/UploadSafetyCheckItemPhoto?</string>
+
+    <string name="safetyCheckPhotosURL">http://jet-matics.com/JetComService/Images/SafetyCheckPhotos/</string>
+
+    <string name="safetyCheckThumbsURL">http://jet-matics.com/JetComService/Images/SafetyCheckThumbs/</string>
+
+    <string name="deleteSafetyCheckItemPhoto">http://jet-matics.com/JetComService/JetCom.svc/DeleteSafetyCheckItemPhoto?</string>
+
+    <string name="GetSafetyCheckQuestionSetsForAccount">http://jet-matics.com/JetComService/JetCom.svc/GetSafetyCheckQuestionSetsForAccount?</string>
+
+    <string name="updateSafetyCheckReportStatus">http://jet-matics.com/JetComService/JetCom.svc/UpdateSafetyCheckReportStatus?</string>
+
+    <string name="GetSafetyCheckProgramName">http://jet-matics.com/JetComService/JetCom.svc/GetSafetyCheckProgramName?</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="dlg_signal_error">Disconnected... Please check your Internet connection!</string>
+    <string name="btn_audio_call">AUDIO CALL</string>
+    <string name="btn_video_call">VIDEO CALL</string>
+    <string name="opponentsListActionBarTitle"><![CDATA[Video & Audio Group Chat Sample]]></string>
+    <string name="current_version">0.9.1</string>
+    <string name="rejected">Rejected</string>
+    <string name="noAnswer">No answer</string>
+    <string name="hungUp">Hung up</string>
+    <string name="closed">Closed</string>
+    <string name="time_out">Time Out</string>
+    <string name="failed">Failed</string>
+    <string name="WIFI_DISABLED">Call was stoped because connection was lost</string>
+    <string name="NETWORK_ABSENT">Connection lost</string>
+
+
+    <string name="pref_default_value">Default</string>
+
+    <string name="pref_resolution_key">resolution_preference</string>
+    <string name="pref_resolution_title">Video resolution.</string>
+    <string name="pref_resolution_dlg">Enter RTC local video resolution.</string>
+    <string name="pref_resolution_default">-1</string>
+
+    <string name="pref_fps_key">fps_preference</string>
+    <string name="pref_fps_title">Camera fps.</string>
+    <string name="pref_fps_dlg">Enter local camera fps.</string>
+    <string name="pref_fps_default">0</string>
+
+    <string name="pref_startbitrate_key">startbitrate_preference</string>
+    <string name="pref_startbitrate_title">Start bitrate setting.</string>
+    <string name="pref_startbitrate_dlg">Start bitrate setting.</string>
+    <string name="pref_startbitrate_default">Default</string>
+
+    <string name="pref_startbitratevalue_key">startbitratevalue_preference</string>
+    <string name="pref_startbitratevalue_title">Video encoder start bitrate.</string>
+    <string name="pref_startbitratevalue_dlg">Enter video encoder start bitrate in kbps.(Max is 2000)</string>
+    <string name="pref_startbitratevalue_default">1000</string>
+
+    <string name="pref_videocodec_key">videocodec_preference</string>
+    <string name="pref_videocodec_title">Default video codec.</string>
+    <string name="pref_videocodec_dlg">Select default video codec.</string>
+    <string name="pref_videocodec_default">0</string>
+
+    <string name="pref_hwcodec_key">hwcodec_preference</string>
+    <string name="pref_hwcodec_title">Video codec hardware acceleration.</string>
+    <string name="pref_hwcodec_dlg">Use hardware accelerated video codec (if available).</string>
+    <string name="pref_hwcodec_default">true</string>
+
+    <string name="pref_value_enabled">Enabled</string>
+    <string name="pref_value_disabled">Disabled</string>
+
+    <string name="pref_room_server_url_key">room_server_url_preference</string>
+    <string name="pref_room_server_url_title">Room server URL.</string>
+    <string name="pref_room_server_url_dlg">Enter a room server URL.</string>
+    <string name="pref_room_server_url_default" translatable="false">https://apprtc.appspot.com</string>
+
+    <string name="pref_displayhud_key">displayhud_preference</string>
+    <string name="pref_displayhud_title">Display call statistics.</string>
+    <string name="pref_displayhud_dlg">Display call statistics.</string>
+    <string name="pref_displayhud_default" translatable="false">false</string>
+
+    <string name="pref_audiocodec_key">pref_audio_codec</string>
+    <string name="pref_audiocodec_title">Default audio codec</string>
+    <string name="pref_audiocodec_def">ISAC</string>
+    <string name="pref_audiocodec_dlg">Select default audio codec</string>
+    <string name="btn_screen_capture">screenShot</string>
+    <string name="accepted">Accepted</string>
+
+    <string name="outputing_audio_call">Outputing Audio Call - </string>
+    <string name="incoming_call">Incoming Call</string>
+    <string name="also_on_call">Also on call:</string>
+    <string name="edit_opponents_list">Edit opponents list</string>
+    <string name="incoming_audio_call">Incoming Audio Call</string>
+    <string name="incoming_video_call">Incoming Video Call</string>
+    <string name="connect">Connect...</string>
+    <string name="checking">Checking...</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+
+    <string name="users_tag">webrtcusers</string>
+    <string name="login_as">Login as</string>
+    <string name="logged_in_as">Logged In as</string>
+
+    <string name="welcoming_message">Login as any user on this deviсe and another(s) users on another device</string>
+    <string name="select_user_to_call">Select Users You Want to Call</string>
+
+
+
+    <string name="forgotPassword"><u>Forgot your password?</u></string>
+
+
+</resources>

@@ -1,0 +1,45 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/devsherif/Work/AnthonnyCherry/VehicleInspection/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-xhdpi-v4/values-xhdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/Users/devsherif/Work/AnthonnyCherry/VehicleInspection/app/src/main/res/values-xhdpi/dimens.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "5",
+                        "startOffsets": "95",
+                        "endColumns": "43",
+                        "endOffsets": "133"
+                    },
+                    "to": {
+                        "startLines": "56",
+                        "startColumns": "4",
+                        "startOffsets": "1577",
+                        "endColumns": "42",
+                        "endOffsets": "1615"
+                    }
+                },
+                {
+                    "source": "/Users/devsherif/Work/AnthonnyCherry/VehicleInspection/app/src/main/res/values-xhdpi/arrays.xml",
+                    "from": {
+                        "startLines": "47,23,16,52,59,30,35,41,2,9",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "1137,581,423,1248,1414,751,868,1003,55,260",
+                        "endLines": "50,28,21,57,64,33,39,45,7,14",
+                        "endColumns": "19,19,19,20,20,19,19,19,19,19",
+                        "endOffsets": "1242,745,575,1408,1581,862,997,1131,254,417"
+                    },
+                    "to": {
+                        "startLines": "2,6,12,18,24,30,34,39,44,50",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,165,334,491,656,828,944,1078,1211,1415",
+                        "endLines": "5,11,17,23,29,33,38,43,49,55",
+                        "endColumns": "19,19,19,20,20,19,19,19,19,19",
+                        "endOffsets": "160,329,486,651,823,939,1073,1206,1410,1572"
+                    }
+                }
+            ]
+        }
+    ]
+}
