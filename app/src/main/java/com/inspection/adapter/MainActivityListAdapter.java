@@ -2,7 +2,7 @@ package com.inspection.adapter;
 
 import java.util.List;
 
-import com.inspection.inspection.R;
+import com.inspection.R;
 import com.inspection.Utils.Utility;
 
 import android.app.AlertDialog;

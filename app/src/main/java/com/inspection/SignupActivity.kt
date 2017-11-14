@@ -10,7 +10,7 @@ import android.widget.Toast
 
 import com.facebook.FacebookSdk
 import com.inspection.Utils.Utility
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.model.UserProfileModel
 import kotlinx.android.synthetic.main.dialog_user_register.*
 

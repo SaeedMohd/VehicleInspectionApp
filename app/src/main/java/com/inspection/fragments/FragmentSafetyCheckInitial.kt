@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.inspection.MainActivity
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.adapter.SafetyCheckShopInitialRecyclerViewAdapter
 import com.inspection.model.SafetyCheckReportModel

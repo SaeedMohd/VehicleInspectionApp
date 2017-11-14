@@ -3,7 +3,7 @@ package com.inspection.serverTasks
 import android.content.ContentValues
 import android.content.Context
 
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.Utils.Utility
 
 abstract class GetSafetyCheckReportStatusTask(private val context: Context, private val safetyCheckReportsID: Int) : AsyncTaskParent() {

@@ -13,7 +13,7 @@ import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.model.SafetyCheckReportModel
 
 import java.util.ArrayList

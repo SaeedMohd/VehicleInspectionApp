@@ -17,9 +17,8 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import com.inspection.MainActivity;
-import com.inspection.inspection.R;
+import com.inspection.R;
 import com.inspection.Utils.Utility;
-import com.inspection.Services.VideoCallingService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,7 +97,7 @@ public class GcmIntentService extends IntentService {
                         secondReminderDate = extras.getString("secondReminderDate");
                     }
 
-                    Utility.addCalendarEvent(appointmentTitle, appointmentDescription, appointmentDate, firstReminderType, firstReminderDate, secondReminderType, secondReminderDate, location);
+
                     appointmentDate = null;
                     appointmentDescription = null;
                     appointmentTitle = null;
@@ -136,16 +135,16 @@ public class GcmIntentService extends IntentService {
 
                     if (!contactName.isEmpty() && !contactPhoneNumber.isEmpty()) {
                         //Log.dMainActivity.TAG, "let's add your contact");
-                        Utility.addContact(contactName, contactPhoneNumber, contactAddress, contactEmail, imageURL);
+//                        Utility.addContact(contactName, contactPhoneNumber, contactAddress, contactEmail, imageURL);
                     }
                 } else if (type.equals("CallRequested")) {
                     Handler mHandler = new Handler(getMainLooper());
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            if (!VideoCallingService.getInstance(MainActivity.mContext).isConnected()) {
-                                VideoCallingService.getInstance(MainActivity.mContext).loginToVideoCallService();
-                            }
+//                            if (!VideoCallingService.getInstance(MainActivity.mContext).isConnected()) {
+//                                VideoCallingService.getInstance(MainActivity.mContext).loginToVideoCallService();
+//                            }
                         }
                     });
 
@@ -159,9 +158,9 @@ public class GcmIntentService extends IntentService {
                     // Post notification of received message.
 
                 }else if (type.equals("EnableVideoRequest")){
-                    VideoCallingService.getInstance(MainActivity.mContext).opponentVideoEnabled();
+//                    VideoCallingService.getInstance(MainActivity.mContext).opponentVideoEnabled();
                 }else if (type.equals("DisableVideoRequest")){
-                    VideoCallingService.getInstance(MainActivity.mContext).opponentVideoDisabled();
+//                    VideoCallingService.getInstance(MainActivity.mContext).opponentVideoDisabled();
                 }
 
                 //Log.dTAG, "Received: " + extras.toString());

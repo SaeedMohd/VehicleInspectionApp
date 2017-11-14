@@ -23,7 +23,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 import com.inspection.MainActivity
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.adapter.SafetyCheckItemsRecyclerViewAdapter
 import com.inspection.model.SafetyCheckItemModel
@@ -769,7 +769,7 @@ class FragmentSafetyCheckItems : Fragment() {
             }
 
             if (photoFile != null) {
-                var photoURI = FileProvider.getUriForFile(context, "com.matics.android.fileprovider", File(photoFile.absolutePath));
+                var photoURI = FileProvider.getUriForFile(context, "com.inspection.android.fileprovider", File(photoFile.absolutePath));
 //                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(File(photoFile.absolutePath)))
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, PHOTO_CAPTURE_ACTIVITY_REQUEST_ID)

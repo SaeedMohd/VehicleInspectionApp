@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.inspection.inspection.R;
+import com.inspection.R;
 
 public class AutocompleteAdapter extends BaseAdapter {
     

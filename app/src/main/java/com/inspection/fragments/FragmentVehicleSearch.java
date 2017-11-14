@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.inspection.CrashReport.CustomUncaughtExceptionHandler;
-import com.inspection.inspection.R;
+import com.inspection.R;
 
 public class FragmentVehicleSearch extends Fragment implements OnClickListener {
 
@@ -24,7 +23,7 @@ public class FragmentVehicleSearch extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 	//------------initializing variables
-		Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
+		
 		View view = inflater.inflate(R.layout.fragment_vehicle_search, container, false);
 		
 	

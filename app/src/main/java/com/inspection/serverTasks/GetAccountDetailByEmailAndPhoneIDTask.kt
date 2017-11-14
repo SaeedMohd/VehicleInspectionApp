@@ -149,7 +149,7 @@ abstract class GetAccountDetailByEmailAndPhoneIDTask(internal var context: Conte
 
                         ApplicationPrefs.getInstance(context).userProfilePref = accountDetailModel!!.userProfileModel
                         if (accountDetailModel!!.userAccountModel != null) {
-                            ApplicationPrefs.getInstance(context).setUserAccountPrefs(accountDetailModel!!.userAccountModel)
+//                            ApplicationPrefs.getInstance(context).setUserAccountPrefs(accountDetailModel!!.userAccountModel)
                         }
                     }
                 }

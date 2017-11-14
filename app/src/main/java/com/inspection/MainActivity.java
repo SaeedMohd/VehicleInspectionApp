@@ -68,28 +68,23 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.plus.Plus;
 import com.inspection.GCM.GcmBroadcastReceiver;
 import com.inspection.GCM.GcmRegistration;
-import com.inspection.Services.ServiceCallbacks;
-import com.inspection.Services.VideoCallingService;
 
 import com.inspection.fragments.FragmentSafetyCheckInitial;
 import com.inspection.fragments.FragmentSafetyCheckItems;
 import com.inspection.fragments.FragmentSafetyCheckReports;
 
 import com.inspection.imageloader.ImageLoader;
-import com.inspection.inspection.R;
+import com.inspection.R;
 import com.inspection.model.UserAccountModel;
 import com.inspection.serverTasks.GetAccountDetailByEmailAndPhoneIDTask;
 import com.inspection.serverTasks.GetShopUserProfileDetails;
-import com.inspection.Utils.AccelerometerTracker;
 import com.inspection.Utils.ApplicationPrefs;
-import com.inspection.Utils.GPSTracker;
-import com.inspection.Utils.ReadingsManager;
 import com.inspection.Utils.Utility;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
-public class MainActivity extends AppCompatActivity implements LocationListener, ServiceCallbacks {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
     public static final int MY_BLUETOOTH_ENABLE_REQUEST_ID = 6;
     public static final int PHOTO_CAPTURE_ACTIVITY_REQUEST_ID = 345;
@@ -124,8 +119,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     long time3 = 10000;
     public static Location currentLocation = null;
     public static LocationManager locationManager = null;
-    public static GPSTracker gps;
-    public static AccelerometerTracker accelerometerTracker;
     private static ImageView Bgimage;
     static double latitude, longitude, Gpsspeed, Gpstime;
     private TabHost mTabHost;
@@ -142,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     public static Intent serviceIntent = null;
     static Handler handler;
     static Context con;
-    public static GPSTracker gpsTracker;
 
     private AlertDialog changePasswordDialog;
 
@@ -165,8 +157,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     boolean bound = false;
 
     ProgressDialog loadingCustomerProgressDialog;
-
-    private VideoCallingService videoCallingService;
 
     public static String customerNameBeingCalled = "";
     public static int customerMobileUserProfileIDbeingCalled = 0;
@@ -230,32 +220,30 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
         repairShopImage = (ImageView) findViewById(R.id.imagebg);
 
-        gpsTracker = new GPSTracker(mContext);
-        Intent intent = new Intent(this, AccelerometerTracker.class);
-        startService(intent);
-
         handler = new Handler();
 
         initalize();
 
-        if (new Date().getTime() - ApplicationPrefs.getInstance(mContext).getLastSynchDate() > (1000 * 60 * 60 * 24)) {
-            new GetAccountDetailByEmailAndPhoneIDTask(mContext, false, ApplicationPrefs.getInstance(mContext).getUserProfilePref().getEmail(), "") {
+        openSafetyCheckFragment();
 
-                @Override
-                public void onTaskCompleted(String result) {
-                    //Log.dMainActivity.TAG, "synching user data completed");
-                    new GetShopUserProfileDetails(mContext, false, ApplicationPrefs.getInstance(mContext).getUserAccountPref().getEmail(), "") {
-                        @Override
-                        public void onTaskCompleted(String result) {
-                            //Log.dMainActivity.TAG, "Synching shop profile completed");
-                            ApplicationPrefs.getInstance(con).setLastSynchDate(new Date().getTime());
-                            this.checkAccountDetailsRetrievedFromCloud(result);
-                        }
-                    }.execute();
-                }
-            }.execute();
-
-        }
+//        if (new Date().getTime() - ApplicationPrefs.getInstance(mContext).getLastSynchDate() > (1000 * 60 * 60 * 24)) {
+//            new GetAccountDetailByEmailAndPhoneIDTask(mContext, false, ApplicationPrefs.getInstance(mContext).getUserProfilePref().getEmail(), "") {
+//
+//                @Override
+//                public void onTaskCompleted(String result) {
+//                    //Log.dMainActivity.TAG, "synching user data completed");
+//                    new GetShopUserProfileDetails(mContext, false, ApplicationPrefs.getInstance(mContext).getUserAccountPref().getEmail(), "") {
+//                        @Override
+//                        public void onTaskCompleted(String result) {
+//                            //Log.dMainActivity.TAG, "Synching shop profile completed");
+//                            ApplicationPrefs.getInstance(con).setLastSynchDate(new Date().getTime());
+//                            this.checkAccountDetailsRetrievedFromCloud(result);
+//                        }
+//                    }.execute();
+//                }
+//            }.execute();
+//
+//        }
 
         File myFolder = new File(Environment.getExternalStorageDirectory().getPath() + "/Matics");
         if (!myFolder.exists()) {
@@ -264,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
         icon = BitmapFactory.decodeResource(getResources(), R.drawable.banner);
 
-        ApplicationPrefs.getInstance(this).updateProfiles();
+//        ApplicationPrefs.getInstance(this).updateProfiles();
 
         PHONE_ID = Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
 
@@ -279,18 +267,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             }
 
 
-        ReadingsManager.initializeReadings(mContext);
-
-//		SynchDataWithServerThread.getInstance(mContext).startSynchingThread(mContext);
-
         Bgimage = (ImageView) findViewById(R.id.imagebg);
-//        updateBigImage();
-
-//		serviceIntent = new Intent(MainActivity.this, autoMaticService.class);
-//		startService(serviceIntent);
-
-        //BluetoothApp.startConnectionManager();
-
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -689,8 +666,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ApplicationPrefs.getInstance(mContext).setAccountDetailPref(null);
-                        ApplicationPrefs.getInstance(mContext).setVehicleHealthMessagePref("No TroubleCodes");
-                        ApplicationPrefs.getInstance(mContext).setVehicleHealthValuePref(100);
+//                        ApplicationPrefs.getInstance(mContext).setVehicleHealthMessagePref("No TroubleCodes");
+//                        ApplicationPrefs.getInstance(mContext).setVehicleHealthValuePref(100);
                         ApplicationPrefs.getInstance(mContext).setLastCompetitorUpdate(new Date().getTime() + 50*60*60*1000);
 
                         ApplicationPrefs.getInstance(mContext).setBooleanPref(getString(R.string.is_user_logged_in_with_email), false);

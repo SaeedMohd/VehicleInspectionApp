@@ -3,7 +3,7 @@ package com.inspection.serverTasks
 import android.content.ContentValues
 import android.content.Context
 
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.Utils.Utility
 
 abstract class GetSafetyCheckResultsScaleOptionsTask(private val context: Context, private val safetyCheckResultsScaleID: Int) : AsyncTaskParent() {
