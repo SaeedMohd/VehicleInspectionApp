@@ -1,3 +1,0 @@
-# Referenced at /Users/devsherif/Work/AnthonnyCherry/VehicleInspection/app/build/intermediates/manifests/full/debug/AndroidManifest.xml:62
--keep class android.support.multidex.MultiDexApplication { <init>(...); }
-
