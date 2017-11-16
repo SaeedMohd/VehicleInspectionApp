@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.widget.ImageView;
 
-import com.inspection.inspection.R;
+import com.inspection.R;
 import com.inspection.model.UserAccountModel;
 import com.inspection.Utils.ApplicationPrefs;
 

@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.Utils.ApplicationPrefs
 import kotlinx.android.synthetic.main.fragment_safety_check_search_customer.view.*
 import org.json.JSONException

@@ -3,7 +3,7 @@ package com.inspection.serverTasks
 import android.content.ContentValues
 
 import com.inspection.MainActivity
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.Utils.Utility
 
 /**

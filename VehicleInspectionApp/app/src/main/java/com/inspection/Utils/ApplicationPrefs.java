@@ -7,8 +7,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.inspection.Bluetooth.BluetoothApp;
-import com.inspection.LivePhoneReadings;
+
 import com.inspection.MainActivity;
 import com.inspection.model.AccountDetailModel;
 import com.inspection.model.UserAccountModel;
@@ -160,8 +159,7 @@ public class ApplicationPrefs {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(USER_PROFILE, new Gson().toJson(userProfileModel));
         editor.commit();
-        LivePhoneReadings.setMobileUserProfileId(""
-                + userProfileModel.getMobileUserProfileId());
+
     }
 
     public UserProfileModel getUserProfilePref() {
@@ -199,7 +197,7 @@ public class ApplicationPrefs {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(USER_ACCOUNT, new Gson().toJson(userAccountModel).toString());
         editor.commit();
-        LivePhoneReadings.setAccountId("" + userAccountModel.getAccountId());
+
     }
 
     public UserAccountModel getUserAccountPref() {
@@ -213,35 +211,7 @@ public class ApplicationPrefs {
         return userAccountModel;
     }
 
-    public void setVehicleProfilePrefs(VehicleProfileModel vehicleProfileModel) {
-        SharedPreferences settings = context
-                .getSharedPreferences(PREFS_NAME, 0);
-        //Log.dMainActivity.TAG, "5");
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(VEHICLE_PROFILE, new Gson().toJson(vehicleProfileModel).toString());
-        //Log.dMainActivity.TAG, "6");
-        editor.commit();
-        LivePhoneReadings.setYear("" + vehicleProfileModel.getYear());
-        LivePhoneReadings.setMake(vehicleProfileModel.getMake());
-        LivePhoneReadings.setModel(vehicleProfileModel.getModel());
-        LivePhoneReadings.setMileage(vehicleProfileModel.getMileage());
-        LivePhoneReadings.setVinRetrievable(vehicleProfileModel.getVinRetrievable());
-        //Log.dMainActivity.TAG, "7");
-        if (vehicleProfileModel.getVIN().equals("")) {
-            vehicleProfileModel.setVIN(vehicleProfileModel.getMake() + " " + vehicleProfileModel.getModel() + " " + vehicleProfileModel.getYear() + " " + vehicleProfileModel.getBtID());
-            //Log.dMainActivity.TAG, "8");
-        } else {
-            LivePhoneReadings.setVin(vehicleProfileModel.getVIN());
-            //Log.dMainActivity.TAG, "9");
-            //Log.dMainActivity.TAG, "VIN = "+LivePhoneReadings.getVin());
-        }
 
-        if (!vehicleProfileModel.getVINID().isEmpty()) {
-            LivePhoneReadings.setVinId(Integer.parseInt(vehicleProfileModel.getVINID()));
-        }
-
-        ApplicationPrefs.getInstance(BluetoothApp.context).setLastConnectedVinId(LivePhoneReadings.vinId);
-    }
 
     public void clearVehicleProfilePrefs() {
         SharedPreferences settings = context
@@ -252,7 +222,7 @@ public class ApplicationPrefs {
 
 
 
-        ApplicationPrefs.getInstance(BluetoothApp.context).setLastConnectedVinId(0);
+
     }
 
     public VehicleProfileModel getVehicleProfilePref() {
@@ -331,54 +301,8 @@ public class ApplicationPrefs {
         editor.commit();
     }
 
-    public void updateProfiles() {
-        UserAccountModel userAccountModel = getUserAccountPref();
-        UserProfileModel userProfileModel = getUserProfilePref();
-        VehicleProfileModel vehicleProfileModel = getVehicleProfilePref();
-
-        if (vehicleProfileModel != null) {
-            LivePhoneReadings.setYear("" + vehicleProfileModel.getYear());
-            LivePhoneReadings.setMake(vehicleProfileModel.getMake());
-            LivePhoneReadings.setModel(vehicleProfileModel.getModel());
-            LivePhoneReadings.setMileage(vehicleProfileModel.getMileage());
-            LivePhoneReadings.setVin(vehicleProfileModel.getVIN());
-            if (!vehicleProfileModel.getVINID().isEmpty()) {
-                LivePhoneReadings.setVinId(Integer.parseInt(vehicleProfileModel.getVINID()));
-            }
-        }
-
-        if (userProfileModel != null) {
-            LivePhoneReadings.setMobileUserProfileId(""
-                    + userProfileModel.getMobileUserProfileId());
-        }
-
-        if (userAccountModel != null) {
-            LivePhoneReadings.setAccountId("" + userAccountModel.getAccountId());
-        }
 
 
-        userAccountModel = null;
-        userProfileModel = null;
-        vehicleProfileModel = null;
-    }
-
-    public void setVehicleHealthValuePref(int vehicleHealthValue) {
-        SharedPreferences settings = context
-                .getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt(VEHICLE_HEALTH_VALUE, vehicleHealthValue);
-        editor.commit();
-        LivePhoneReadings.setVehicleHealthValue(vehicleHealthValue);
-    }
-
-    public void setVehicleHealthMessagePref(String vehicleHealthMessage) {
-        SharedPreferences settings = context
-                .getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(VEHICLE_HEALTH_MESSAGE, vehicleHealthMessage);
-        editor.commit();
-        LivePhoneReadings.setVehicleHealthMessage(vehicleHealthMessage);
-    }
 
     public int getVehicleHealthValuePref() {
         SharedPreferences settings = context

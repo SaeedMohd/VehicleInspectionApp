@@ -17,7 +17,7 @@ import android.widget.*
 
 import com.inspection.MainActivity
 import com.inspection.RecyclerViewClickListener
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.model.SafetyCheckItemModel
 import com.inspection.serverTasks.DeleteSafetyCheckPhotoTask

@@ -27,7 +27,6 @@ import android.util.Log;
 import android.widget.Toast;
 import android.provider.ContactsContract.*;
 
-import com.inspection.Bluetooth.BluetoothApp;
 import com.inspection.model.VehicleProfileModel;
 
 import java.io.BufferedWriter;
@@ -346,25 +345,6 @@ public class Utility {
 //	    	}
     }
 
-    public static boolean isMyServiceRunning(Context mContext) {
-        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (MyService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isMyServiceSecondRunning(Context mContext) {
-        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (com.inspection.MyService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public static Typeface fonttypeface(Context mContext) {
         Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "fonts/gill_sans.ttf");
@@ -393,72 +373,72 @@ public class Utility {
 
     }
 
-    public static void addCalendarEvent(String title, String description, String dateString, int firstReminderType, String firstReminderDate, int secondReminderType, String secondReminderDate, String location) {
-
-
-        SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-        Date requiredDate = null;
-        try {
-            requiredDate = yyyyMMdd.parse(dateString);
-
-            ContentResolver cr = BluetoothApp.context.getContentResolver();
-            ContentValues values = new ContentValues();
-            //Log.dMainActivity.TAG, "dateString=" + requiredDate.getTime());
-            values.put(CalendarContract.Events.DTSTART, requiredDate.getTime());
-            values.put(CalendarContract.Events.TITLE, title);
-            values.put(CalendarContract.Events.DESCRIPTION, description);
-
-            TimeZone timeZone = TimeZone.getDefault();
-            values.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone.getID());
-
-            // default calendar
-            values.put(CalendarContract.Events.CALENDAR_ID, 1);
-
-            //values.put(CalendarContract.Events.RRULE, "FREQ=DAILY;COUNT=1");
-            //for one hour
-            values.put(CalendarContract.Events.DURATION, "+P2H");
-            values.put(CalendarContract.Events.EVENT_LOCATION, location);
-
-            values.put(CalendarContract.Events.HAS_ALARM, true);
-
-
-            // insert event to calendar
-            Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
-
-            long eventID = Long.parseLong(uri.getLastPathSegment());
-
-            if (firstReminderDate != null && !firstReminderDate.isEmpty()) {
-                Date reminderDate1 = yyyyMMdd.parse(firstReminderDate);
-                long timeDifference = requiredDate.getTime() - reminderDate1.getTime();
-
-
-                // add 10 minute reminder for the event
-                ContentValues reminders = new ContentValues();
-                reminders.put(CalendarContract.Reminders.EVENT_ID, eventID);
-                reminders.put(CalendarContract.Reminders.METHOD, firstReminderType);
-                reminders.put(CalendarContract.Reminders.MINUTES, timeDifference / 60000);
-                uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
-            }
-
-            if (secondReminderDate != null && !secondReminderDate.isEmpty()) {
-                Date reminderDate2 = yyyyMMdd.parse(secondReminderDate);
-                long timeDifference = requiredDate.getTime() - reminderDate2.getTime();
-
-
-                // add 10 minute reminder for the event
-                ContentValues reminders = new ContentValues();
-                reminders.put(CalendarContract.Reminders.EVENT_ID, eventID);
-                reminders.put(CalendarContract.Reminders.METHOD, secondReminderType);
-                reminders.put(CalendarContract.Reminders.MINUTES, timeDifference / 60000);
-                uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
-            }
-
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return;
-        }
-    }
+//    public static void addCalendarEvent(String title, String description, String dateString, int firstReminderType, String firstReminderDate, int secondReminderType, String secondReminderDate, String location) {
+//
+//
+//        SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+//        Date requiredDate = null;
+//        try {
+//            requiredDate = yyyyMMdd.parse(dateString);
+//
+//            ContentResolver cr = BluetoothApp.context.getContentResolver();
+//            ContentValues values = new ContentValues();
+//            //Log.dMainActivity.TAG, "dateString=" + requiredDate.getTime());
+//            values.put(CalendarContract.Events.DTSTART, requiredDate.getTime());
+//            values.put(CalendarContract.Events.TITLE, title);
+//            values.put(CalendarContract.Events.DESCRIPTION, description);
+//
+//            TimeZone timeZone = TimeZone.getDefault();
+//            values.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone.getID());
+//
+//            // default calendar
+//            values.put(CalendarContract.Events.CALENDAR_ID, 1);
+//
+//            //values.put(CalendarContract.Events.RRULE, "FREQ=DAILY;COUNT=1");
+//            //for one hour
+//            values.put(CalendarContract.Events.DURATION, "+P2H");
+//            values.put(CalendarContract.Events.EVENT_LOCATION, location);
+//
+//            values.put(CalendarContract.Events.HAS_ALARM, true);
+//
+//
+//            // insert event to calendar
+//            Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+//
+//            long eventID = Long.parseLong(uri.getLastPathSegment());
+//
+//            if (firstReminderDate != null && !firstReminderDate.isEmpty()) {
+//                Date reminderDate1 = yyyyMMdd.parse(firstReminderDate);
+//                long timeDifference = requiredDate.getTime() - reminderDate1.getTime();
+//
+//
+//                // add 10 minute reminder for the event
+//                ContentValues reminders = new ContentValues();
+//                reminders.put(CalendarContract.Reminders.EVENT_ID, eventID);
+//                reminders.put(CalendarContract.Reminders.METHOD, firstReminderType);
+//                reminders.put(CalendarContract.Reminders.MINUTES, timeDifference / 60000);
+//                uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
+//            }
+//
+//            if (secondReminderDate != null && !secondReminderDate.isEmpty()) {
+//                Date reminderDate2 = yyyyMMdd.parse(secondReminderDate);
+//                long timeDifference = requiredDate.getTime() - reminderDate2.getTime();
+//
+//
+//                // add 10 minute reminder for the event
+//                ContentValues reminders = new ContentValues();
+//                reminders.put(CalendarContract.Reminders.EVENT_ID, eventID);
+//                reminders.put(CalendarContract.Reminders.METHOD, secondReminderType);
+//                reminders.put(CalendarContract.Reminders.MINUTES, timeDifference / 60000);
+//                uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
+//            }
+//
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//    }
 
     public static void addContact(String contactName, String contactPhone, String contactAddress, String contactEmail, String imageURL) {
         //Log.dMainActivity.TAG, " Add contact started with values, contactName = " + contactName + " contactPhone = " + contactPhone + " imageURL = " + imageURL);
@@ -523,40 +503,40 @@ public class Utility {
                 }
             }
 
-            try {
-                ContentProviderResult[] results = BluetoothApp.context.getContentResolver().
-                        applyBatch(ContactsContract.AUTHORITY, op_list);
-                //Log.dMainActivity.TAG, "patch applied");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                ContentProviderResult[] results = BluetoothApp.context.getContentResolver().
+//                        applyBatch(ContactsContract.AUTHORITY, op_list);
+//                //Log.dMainActivity.TAG, "patch applied");
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
     public static boolean isPhoneNumberExisting(String phoneNumber) {
         boolean isExist = false;
         //Log.dMainActivity.TAG, "checking phone number: " + phoneNumber);
-        try {
-            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-            String[] projection = new String[]{ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.DISPLAY_NAME};
-            String selection = null;
-            String[] selectionArgs = null;
-            String sortOrder = ContactsContract.PhoneLookup.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-            ContentResolver cr = BluetoothApp.context.getContentResolver();
-            if (cr != null) {
-                //Log.dMainActivity.TAG, "preparing the cursor");
-                Cursor resultCur = cr.query(uri, projection, selection, selectionArgs, sortOrder);
-                //Log.dMainActivity.TAG, "" + resultCur.getCount());
-                if (resultCur != null) {
-                    if (resultCur.getCount() > 0) {
-                        isExist = true;
-                    }
-                    resultCur.close();
-                }
-            }
-        } catch (Exception sfg) {
-            //Log.e("Error", "Error in loadContactRecord : " + sfg.toString());
-        }
+//        try {
+//            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+//            String[] projection = new String[]{ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.DISPLAY_NAME};
+//            String selection = null;
+//            String[] selectionArgs = null;
+//            String sortOrder = ContactsContract.PhoneLookup.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
+//            ContentResolver cr = BluetoothApp.context.getContentResolver();
+//            if (cr != null) {
+//                //Log.dMainActivity.TAG, "preparing the cursor");
+//                Cursor resultCur = cr.query(uri, projection, selection, selectionArgs, sortOrder);
+//                //Log.dMainActivity.TAG, "" + resultCur.getCount());
+//                if (resultCur != null) {
+//                    if (resultCur.getCount() > 0) {
+//                        isExist = true;
+//                    }
+//                    resultCur.close();
+//                }
+//            }
+//        } catch (Exception sfg) {
+//            //Log.e("Error", "Error in loadContactRecord : " + sfg.toString());
+//        }
         return isExist;
     }
 

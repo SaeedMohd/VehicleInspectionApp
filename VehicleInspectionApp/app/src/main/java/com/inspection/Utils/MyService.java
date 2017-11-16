@@ -34,7 +34,6 @@ public class MyService extends Service {
 	static SharedPreferences prefs;
 	static Timer time1,timer4;
 	static Timer time2;
-	static GPSTracker gps;
 	static double latitude,longitude,Gpsspeed,Gpstime;
 	static String Upload_period;
 	protected static final UUID MY_UUID = UUID
@@ -82,7 +81,7 @@ public class MyService extends Service {
 		return null;
 	}
 	public void onCreate() {
-//		Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
+//
 //		MyService.mediaPrefs = this.getSharedPreferences("matics", 1);
 //		
 //		isFirsttime = true;

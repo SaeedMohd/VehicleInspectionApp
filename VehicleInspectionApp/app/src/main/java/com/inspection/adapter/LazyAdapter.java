@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import com.inspection.inspection.R;
+import com.inspection.R;
 import com.inspection.model.UserAccountModel;
 
 public class LazyAdapter extends BaseAdapter {

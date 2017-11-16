@@ -7,7 +7,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.inspection.inspection.R;
+import com.inspection.R;
 
 public class TextViewPlus extends TextView {
 	private static final String TAG = "TextView";

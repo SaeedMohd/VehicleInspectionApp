@@ -10,7 +10,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import com.inspection.inspection.R;
+import com.inspection.R;
 import com.inspection.Utils.ApplicationPrefs;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.inspection.adapter;
  
-import com.inspection.inspection.R;
+import com.inspection.R;
 
 import android.app.Activity;
 import android.content.Context;

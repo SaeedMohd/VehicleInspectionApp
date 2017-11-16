@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/light_gray"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/generalInformationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="General Information"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_below="@id/generalInformationTextView"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="5dp"
+        >
+
+        <TextView
+            android:id="@+id/facilityIdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Facility #:"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityIdEditText"
+            android:layout_below="@id/facilityIdTextView"
+            android:layout_width="match_parent"
+            android:hint="Enter Facility ID"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:id="@+id/facilityNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityIdEditText"
+            android:text="Facility Name:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityNameEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="8"
+            android:hint="Enter Facility Name"
+            android:layout_height="wrap_content" />
+
+        <ListView
+            android:id="@+id/facilityNameListView"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp"/>
+
+        <TextView
+            android:id="@+id/facilityAddressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityIdEditText"
+            android:text="Facility Address:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityAddressEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="8"
+            android:hint="Enter Facility Address"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/facilityCityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityIdEditText"
+            android:text="Facility City:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityCityEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="8"
+            android:hint="Enter Facility City"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/facilityStateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityIdEditText"
+            android:text="Facility State:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityStateEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="8"
+            android:hint="Enter Facility State"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/facilityZipTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityIdEditText"
+            android:text="Facility Zip:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityZipEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="8"
+            android:hint="Enter Facility Zip"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/facilityPhoneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityIdEditText"
+            android:text="Facility Phone:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityPhoneEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="8"
+            android:hint="Enter Facility Phone"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/facilityEmailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityIdEditText"
+            android:text="Facility Phone:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityEmailEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="8"
+            android:hint="Enter Facility Phone"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/automotiveSpecialistTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Automotive Specialist:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/automotiveSpecialistEditText"
+            android:layout_width="match_parent"
+            android:ems="15"
+            android:hint="Enter Automotive Specialist Name"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/automotiveSpecialistEmailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Automotive Specialist Email:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/automotiveSpecialistEmailEditText"
+            android:layout_width="match_parent"
+            android:ems="15"
+            android:hint="Enter Automotive Specialist Email"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/facilityRepresentativeNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facility Representative's Name"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/facilityRepresentativeNameEditText"
+            android:layout_width="match_parent"
+            android:ems="15"
+            android:hint="Enter Facility Representative's Name"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/facilityRepresentativeSignatureTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facility Representative's Signature:"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <Button
+            android:id="@+id/facilityRepresentativeSignatureButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CAPTURE SIGNATURE"
+            android:background="@color/transparent"
+            android:textColor="@color/blue"
+            />
+
+        <TextView
+            android:id="@+id/typeOfInspectionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityNameEditText"
+            android:text="Type Of Inspection: "
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/inspectionTypeEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="12"
+            android:hint="Enter Inspection Type"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/monthDueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Month Due: "
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/monthDueEditText"
+            android:layout_below="@id/facilityNameTextView"
+            android:layout_width="match_parent"
+            android:ems="8"
+            android:hint="Enter Month Due"
+            android:layout_height="wrap_content" />
+
+
+        <Switch
+            android:id="@+id/changesMadeSwitch"
+            android:text="Changes Made: "
+            android:textOff="NO"
+            android:textOn="YES"
+            android:layout_marginTop="25dp"
+            android:checked="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/dateOfVisitationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Of Visitation"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+
+        <Button
+            android:id="@+id/dateOfVisitationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SELECT DATE"
+            android:background="@color/transparent"
+            android:textColor="@color/blue"
+            />
+
+    </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

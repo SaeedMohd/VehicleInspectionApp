@@ -43,7 +43,7 @@ import com.inspection.model.UserProfileModel
 import com.inspection.model.VehicleProfileModel
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Utility
-import com.inspection.inspection.R
+import com.inspection.R
 import com.inspection.serverTasks.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
@@ -114,8 +114,9 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
                 // new GetAccountDetailByEmailAndPhoneID(context,
                 //                            true, dialogEditText.getText().toString().trim(), "")
                 //                            .execute("");
-                GetUserLoginCredentialsResultTask().execute(loginEmailEditText!!.text.toString(), loginPasswordEditText!!.text.toString())
-
+//                GetUserLoginCredentialsResultTask().execute(loginEmailEditText!!.text.toString(), loginPasswordEditText!!.text.toString())
+                //TODO: easy login just for demo, should be updated later
+                GetUserLoginCredentialsResultTask().execute("FL111111", "4CE678CE")
             } else {
                 val alertDialog = AlertDialog.Builder(activity)
                 alertDialog.setMessage("Please enter your email and password")
@@ -125,111 +126,111 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
         }
 
 
-        callbackManager = CallbackManager.Factory.create()
-
-        facebookLogInButton!!.setReadPermissions("user_friends, email")
-        facebookLogInButton!!.setOnClickListener {
-            //                progressDialog = new ProgressDialog(activity);
-            //                progressDialog.setIndeterminate(true);
-            //                progressDialog.setCancelable(true);
-            //                progressDialog.setMessage("Logging in ...");
-            //                progressDialog.show();
-            isFacebookLogin = true
-        }
-
-        // If using in a fragment
-
-        // Other app specific specialization
-
-        // Callback registration
-        facebookLogInButton!!.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
-                // App code
-                //Log.dTAG, "login result is: " + loginResult.recentlyGrantedPermissions)
-                progressDialog = ProgressDialog(activity)
-                progressDialog!!.setMessage("Loading...")
-                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), true)
-                accessToken = AccessToken.getCurrentAccessToken()
-                val request = GraphRequest.newMeRequest(
-                        accessToken
-                ) { `object`, response ->
-                    try {
-                        facebookUser = FacebookUser()
-                        facebookUser!!.firstName = `object`.getString("first_name")
-                        facebookUser!!.lastName = `object`.getString("last_name")
-                        facebookUser!!.displayName = `object`.getString("name")
-                        facebookUser!!.facebookId = `object`.getString("id")
-                        facebookUser!!.email = `object`.getString("email")
-                    } catch (jsonException: JSONException) {
-                        //Log.dMainActivity.TAG, jsonException.message)
-                    }
-
-                    isFacebookLogin = true
-                    isGooglePlusLogin = false
-
-                    //Log.dMainActivity.TAG, "Facebook Email is: " + facebookUser!!.email!!)
-                    progressDialog!!.show()
-                    object : GetAccountDetailByEmailAndPhoneIDTask(activity!!, false, facebookUser!!.email!!, "") {
-                        override fun onTaskCompleted(result: String) {
-                            progressDialog!!.dismiss()
-                            checkAccountDetailsRetrievedFromCloudHere(result)
-                        }
-                    }.execute()
-                }
-                val parameters = Bundle()
-                parameters.putString("fields", "id,name,link, birthday, first_name, last_name, gender, email")
-                request.parameters = parameters
-                request.executeAsync()
-
-                // If the access token is available already assign it.
-                //                progressDialog.dismiss();
-
-                //userIsLoggedInGotoMainActivity();
-            }
-
-            override fun onCancel() {
-                // App code
-                //Log.dTAG, "login cancelled")
-                //progressDialog.dismiss();
-                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
-            }
-
-            override fun onError(exception: FacebookException) {
-                // App code
-                //Log.dTAG, "login error is: " + exception.message)
-                //progressDialog.dismiss();
-                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
-            }
-        })
-
-
-        googlePlusSignInButton!!.setOnClickListener(this)
-
-
-        mCirclesList = ArrayList<String>()
-        //        mCirclesAdapter = new ArrayAdapter<String>(
-        //                this, R.layout.circle_member, mCirclesList);
-        //        mCirclesListView.setAdapter(mCirclesAdapter);
-
-        //Log.d"G+ Connection ----- : ", ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus)).toString())
-
-        if (ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus))) {
-//            mGoogleApiClient = buildGoogleApiClient()
-            //Log.dMainActivity.TAG, "user is logged in with google plus")
-            userIsLoggedInGotoMainActivity()
-            //   mGoogleApiClient.connect();
-        }
-
-        if (ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_facebook))) {
-            //Log.dMainActivity.TAG, "user is logged in with FACEBOOK")
-            if (facebookLogInButton!!.text.toString().startsWith("Log out")) {
-                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), true)
-                userIsLoggedInGotoMainActivity()
-            } else {
-                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
-            }
-
-        }
+//        callbackManager = CallbackManager.Factory.create()
+//
+//        facebookLogInButton!!.setReadPermissions("user_friends, email")
+//        facebookLogInButton!!.setOnClickListener {
+//            //                progressDialog = new ProgressDialog(activity);
+//            //                progressDialog.setIndeterminate(true);
+//            //                progressDialog.setCancelable(true);
+//            //                progressDialog.setMessage("Logging in ...");
+//            //                progressDialog.show();
+//            isFacebookLogin = true
+//        }
+//
+//        // If using in a fragment
+//
+//        // Other app specific specialization
+//
+//        // Callback registration
+//        facebookLogInButton!!.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+//            override fun onSuccess(loginResult: LoginResult) {
+//                // App code
+//                //Log.dTAG, "login result is: " + loginResult.recentlyGrantedPermissions)
+//                progressDialog = ProgressDialog(activity)
+//                progressDialog!!.setMessage("Loading...")
+//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), true)
+//                accessToken = AccessToken.getCurrentAccessToken()
+//                val request = GraphRequest.newMeRequest(
+//                        accessToken
+//                ) { `object`, response ->
+//                    try {
+//                        facebookUser = FacebookUser()
+//                        facebookUser!!.firstName = `object`.getString("first_name")
+//                        facebookUser!!.lastName = `object`.getString("last_name")
+//                        facebookUser!!.displayName = `object`.getString("name")
+//                        facebookUser!!.facebookId = `object`.getString("id")
+//                        facebookUser!!.email = `object`.getString("email")
+//                    } catch (jsonException: JSONException) {
+//                        //Log.dMainActivity.TAG, jsonException.message)
+//                    }
+//
+//                    isFacebookLogin = true
+//                    isGooglePlusLogin = false
+//
+//                    //Log.dMainActivity.TAG, "Facebook Email is: " + facebookUser!!.email!!)
+//                    progressDialog!!.show()
+//                    object : GetAccountDetailByEmailAndPhoneIDTask(activity!!, false, facebookUser!!.email!!, "") {
+//                        override fun onTaskCompleted(result: String) {
+//                            progressDialog!!.dismiss()
+//                            checkAccountDetailsRetrievedFromCloudHere(result)
+//                        }
+//                    }.execute()
+//                }
+//                val parameters = Bundle()
+//                parameters.putString("fields", "id,name,link, birthday, first_name, last_name, gender, email")
+//                request.parameters = parameters
+//                request.executeAsync()
+//
+//                // If the access token is available already assign it.
+//                //                progressDialog.dismiss();
+//
+//                //userIsLoggedInGotoMainActivity();
+//            }
+//
+//            override fun onCancel() {
+//                // App code
+//                //Log.dTAG, "login cancelled")
+//                //progressDialog.dismiss();
+//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
+//            }
+//
+//            override fun onError(exception: FacebookException) {
+//                // App code
+//                //Log.dTAG, "login error is: " + exception.message)
+//                //progressDialog.dismiss();
+//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
+//            }
+//        })
+//
+//
+//        googlePlusSignInButton!!.setOnClickListener(this)
+//
+//
+//        mCirclesList = ArrayList<String>()
+//        //        mCirclesAdapter = new ArrayAdapter<String>(
+//        //                this, R.layout.circle_member, mCirclesList);
+//        //        mCirclesListView.setAdapter(mCirclesAdapter);
+//
+//        //Log.d"G+ Connection ----- : ", ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus)).toString())
+//
+//        if (ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus))) {
+////            mGoogleApiClient = buildGoogleApiClient()
+//            //Log.dMainActivity.TAG, "user is logged in with google plus")
+//            userIsLoggedInGotoMainActivity()
+//            //   mGoogleApiClient.connect();
+//        }
+//
+//        if (ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_facebook))) {
+//            //Log.dMainActivity.TAG, "user is logged in with FACEBOOK")
+//            if (facebookLogInButton!!.text.toString().startsWith("Log out")) {
+//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), true)
+//                userIsLoggedInGotoMainActivity()
+//            } else {
+//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
+//            }
+//
+//        }
         if (ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_email))) {
             //Log.dMainActivity.TAG, "user is logged in with EMAIL")
             userIsLoggedInGotoMainActivity()
@@ -553,7 +554,7 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
 //            if (currentUser!!.placesLived != null) {
 //                placeLived = currentUser!!.placesLived[0].value
 //            } else {
-                placeLived = ""
+            placeLived = ""
 //            }
 
             CreateProfile().execute(Utils.getStringOrEmptyForNull(currentUser!!.givenName),
@@ -1036,7 +1037,7 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
 
                         ApplicationPrefs.getInstance(activity).userProfilePref = accountDetailModel.userProfileModel
                         if (accountDetailModel.userAccountModel != null) {
-                            ApplicationPrefs.getInstance(activity).setUserAccountPrefs(accountDetailModel.userAccountModel)
+                            //ApplicationPrefs.getInstance(activity).setUserAccountPrefs(accountDetailModel.userAccountModel)
                         }
                         if (progressDialog != null) {
                             progressDialog!!.dismiss()
@@ -1122,4 +1123,3 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
         var mGoogleApiClient: GoogleApiClient? = null
     }
 }
-
