@@ -1,7 +1,0 @@
-<resources>
-
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    
-     <dimen name="map_height">240dp</dimen>
-
-</resources>

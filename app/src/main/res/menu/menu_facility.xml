@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:menu="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_change_facility"
-        android:orderInCategory="100"
-        menu:showAsAction="always"
-        android:title="Change Facility"/>
-</menu>

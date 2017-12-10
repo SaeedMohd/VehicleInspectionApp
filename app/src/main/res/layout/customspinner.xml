@@ -1,9 +1,0 @@
-<com.inspection.Utils.TextViewPlus xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@android:id/text1"
-    style="?android:attr/spinnerItemStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="marquee"
-    android:maxLines="1"
-    app:customFont="fonts/gill_sans.ttf" />
