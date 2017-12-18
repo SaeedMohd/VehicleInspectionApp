@@ -1,9 +1,11 @@
 package com.inspection.fragments
 
-import android.app.Fragment
+
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -60,10 +62,11 @@ class FragmentSafetyCheckSearchForCustomerVehicle : Fragment() {
                 searchCustomerSafetyCheckListView.adapter = myAdapter
                 searchCustomerSafetyCheckListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, position: Int, l: Long ->
                     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                    imm.hideSoftInputFromWindow(view?.windowToken, 0)
                     for (item in userProfileModels){
                         if (customerNames.get(position).equals(item.firstName + " " + item.lastName)){
-                            val fragment = FragmentSafetyCheckSelectVehicle()
+                            var fragment = Fragment()
+                            fragment = FragmentSafetyCheckSelectVehicle()
                             fragment.selectedUserName = item.userName
                             fragment.selectecMobileUserProfileID = item.mobileUserProfileId
                             val fragmentManagerSC = fragmentManager
@@ -117,7 +120,8 @@ class FragmentSafetyCheckSearchForCustomerVehicle : Fragment() {
                             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                             for (item in userProfileModels){
                                 if (customerNames.get(position).equals(item.firstName + " " + item.lastName)){
-                                    val fragment = FragmentSafetyCheckSelectVehicle()
+                                    var fragment = Fragment()
+                                    fragment = FragmentSafetyCheckSelectVehicle()
                                     fragment.selectedUserName = item.userName
                                     fragment.selectecMobileUserProfileID = item.mobileUserProfileId
                                     val fragmentManagerSC = fragmentManager

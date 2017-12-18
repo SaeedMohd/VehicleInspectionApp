@@ -26,7 +26,7 @@ import java.util.Timer
 import android.widget.*
 
 
-class FragmentSafetyCheckReports : Fragment() {
+class FragmentSafetyCheckReports : android.support.v4.app.Fragment() {
 
     private var view2: View? = null
     private var safetyCheckRecyclerView: RecyclerView? = null

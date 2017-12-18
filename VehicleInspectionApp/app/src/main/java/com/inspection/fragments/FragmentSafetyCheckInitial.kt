@@ -1,8 +1,9 @@
 package com.inspection.fragments
 
-import android.app.Fragment
+
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -73,10 +74,14 @@ class FragmentSafetyCheckInitial : Fragment() {
                 val adapter = SafetyCheckShopInitialRecyclerViewAdapter(context, initialsafetyCheckRecyclerView, safetyCheckReprtsTodo, safetyCheckReportsInProgress, safetyCheckReportsCompleted)
                 adapter.setClickListener(View.OnClickListener { view ->
                     val position = initialsafetyCheckRecyclerView.getChildAdapterPosition(view)
+                    val fragmentManagerSC = fragmentManager
+                    val ftSC = fragmentManagerSC.beginTransaction()
                     if (position == 1) {
-                        val fragment = FragmentSafetyCheckSearchForCustomerVehicle()
-                        val fragmentManagerSC = fragmentManager
-                        val ftSC = fragmentManagerSC.beginTransaction()
+                        val fragment: Fragment
+//                        val fragmentManagerSC = getSupportFragmentManager()
+//                        val ftSC = fragmentManagerSC.beginTransaction()
+
+                        fragment = FragmentSafetyCheckSearchForCustomerVehicle()
                         ftSC.replace(R.id.fragment, fragment)
                         ftSC.addToBackStack("")
                         ftSC.commit()
@@ -93,8 +98,6 @@ class FragmentSafetyCheckInitial : Fragment() {
                         fragment.customerPhoneNumber = selectedItem.customerPhoneNumber
                         fragment.customerName = selectedItem.customerName
                         fragment.safetyCheckReportSummaryDescription = selectedItem.safetyCheckReportSummaryDescription
-                        val fragmentManagerSC = fragmentManager
-                        val ftSC = fragmentManagerSC.beginTransaction()
                         ftSC.replace(R.id.fragment, fragment)
                         ftSC.addToBackStack("")
                         ftSC.commit()

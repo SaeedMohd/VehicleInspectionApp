@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 import android.app.Fragment
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,7 @@ import com.inspection.R
 import com.inspection.Utils.ApplicationPrefs
 import kotlinx.android.synthetic.main.fragment_forms.*
 
-class FragmentForms : Fragment(), OnClickListener {
+class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 
     var formsStringsArray = arrayOf("*Get Started With Mobile Forms", "AAR Manual Visitation")
 
@@ -40,13 +41,14 @@ class FragmentForms : Fragment(), OnClickListener {
 
         formsListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
             if (i == 1){
-                val fragment: Fragment
-                fragment = FragmentARRAnualVisitation()
+                val fragment: android.support.v4.app.Fragment
+                fragment = FragmentAnnualVisitationPager()
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC.beginTransaction()
-                ftSC.replace(R.id.fragment, fragment)
+                ftSC.replace(R.id.fragment,fragment)
                 ftSC.addToBackStack("")
                 ftSC.commit()
+                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
             }
         })
 
@@ -65,4 +67,6 @@ class FragmentForms : Fragment(), OnClickListener {
         super.onResume()
 
     }
+
+
 }

@@ -1,0 +1,656 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/light_gray"
+    tools:context="com.inspection.fragments.FragmentARRAVFacility">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Facility"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/titleTextView"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:paddingTop="5dp"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="5dp">
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:id="@+id/connumberll">
+        <TextView
+            android:id="@+id/contract_number_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:text="Contract Number: "
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/contract_number_textviewVal"
+            android:layout_toRightOf="@id/contract_number_textview"
+            android:layout_width="0dp"
+            android:text="test"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/connumberll"
+            android:orientation="horizontal"
+            android:id="@+id/contypell">
+        <TextView
+            android:id="@+id/contract_type_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/connumberll"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:text="Contract Type: "
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/contract_type_textviewVal"
+            android:layout_toRightOf="@id/contract_type_textview"
+            android:layout_below="@id/connumberll"
+            android:layout_width="0dp"
+            android:text="test"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/contypell"
+            android:orientation="horizontal"
+            android:id="@+id/officell">
+            <TextView
+                android:id="@+id/office_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/contypell"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Office: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/office_textviewVal"
+                android:layout_toRightOf="@id/office_textview"
+                android:layout_below="@id/contypell"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/officell"
+            android:orientation="horizontal"
+            android:id="@+id/AssignedToll">
+            <TextView
+                android:id="@+id/assignedto_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/officell"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Assigned To: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/assignedto_textviewVal"
+                android:layout_toRightOf="@id/assignedto_textview"
+                android:layout_below="@id/officell"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/AssignedToll"
+            android:orientation="horizontal"
+            android:id="@+id/dball">
+            <TextView
+                android:id="@+id/dba_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AssignedToll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="DBA: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/dba_textviewVal"
+                android:layout_toRightOf="@id/dba_textview"
+                android:layout_below="@id/AssignedToll"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/dball"
+            android:orientation="horizontal"
+            android:id="@+id/entityll">
+            <TextView
+                android:id="@+id/entity_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dball"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Entity Name: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/entity_textviewVal"
+                android:layout_toRightOf="@id/entity_textview"
+                android:layout_below="@id/dball"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/entityll"
+            android:orientation="horizontal"
+            android:id="@+id/bustypell">
+            <TextView
+                android:id="@+id/bustype_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/entityll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Business Type: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/bustype_textviewVal"
+                android:layout_toRightOf="@id/bustype_textview"
+                android:layout_below="@id/entityll"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/bustypell"
+            android:orientation="horizontal"
+            android:id="@+id/timezonell">
+            <TextView
+                android:id="@+id/timezone_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bustypell"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Time Zone: "
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/timezone_textviewVal"
+                android:layout_toRightOf="@id/timezone_textview"
+                android:layout_below="@id/bustypell"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/timezonell"
+            android:orientation="horizontal"
+            android:id="@+id/websitell">
+            <TextView
+                android:id="@+id/website_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/timezonell"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Website URL: "
+                android:textStyle="bold"
+                />
+            <EditText
+                android:id="@+id/website_textviewVal"
+                android:layout_toRightOf="@id/website_textview"
+                android:layout_below="@id/timezonell"
+                android:layout_width="0dp"
+                android:text=""
+                android:hint="Enter website URL"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:textSize="12dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/wifi_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/websitell"
+            android:layout_marginTop="10dp"
+            android:text="Wi-Fi Available"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/wifi_textview"
+            android:orientation="horizontal"
+            android:id="@+id/tax_textview">
+            <TextView
+                android:id="@+id/website_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/wifi_textview"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Tax-ID: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/website_textviewVal"
+                android:layout_toRightOf="@id/website_textview"
+                android:layout_below="@id/wifi_textview"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/tax_textview"
+            android:orientation="horizontal"
+            android:id="@+id/repairorderll">
+            <TextView
+                android:id="@+id/repairorder_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tax_textview"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Repair Order Count: "
+                android:textStyle="bold"
+                />
+            <EditText
+                android:id="@+id/repairorder_textviewVal"
+                android:layout_toRightOf="@id/repairorder_textview"
+                android:layout_below="@id/tax_textview"
+                android:layout_width="0dp"
+                android:text=""
+                android:inputType="number"
+                android:maxLength="6"
+                android:hint="Enter repair order count"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:textSize="12dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/repairorderll"
+            android:orientation="horizontal"
+            android:id="@+id/availabilityll">
+            <TextView
+                android:id="@+id/availability_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/repairorderll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Service Availability:"
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/availability_textviewVal"
+                android:layout_toRightOf="@id/availability_textview"
+                android:layout_below="@id/repairorderll"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/availabilityll"
+            android:orientation="horizontal"
+            android:id="@+id/facilitytypell">
+            <TextView
+                android:id="@+id/facilitytype_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/availabilityll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Facility Type: "
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/facilitytype_textviewVal"
+                android:layout_toRightOf="@id/facilitytype_textview"
+                android:layout_below="@id/availabilityll"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/facilitytypell"
+            android:orientation="horizontal"
+            android:id="@+id/ARDnoll">
+            <TextView
+                android:id="@+id/ARDno_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/facilitytypell"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="ARD Number: "
+                android:textStyle="bold"
+                />
+            <EditText
+                android:id="@+id/ARDno_textviewVal"
+                android:layout_toRightOf="@id/ARDno_textview"
+                android:layout_below="@id/facilitytypell"
+                android:layout_width="0dp"
+                android:text=""
+                android:maxLength="12"
+                android:hint="Enter ARD Number"
+                android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:textSize="12dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/ARDnoll"
+            android:orientation="horizontal"
+            android:id="@+id/ARDexpll">
+            <TextView
+                android:id="@+id/ARDexp_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ARDnoll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="ARD Expiration Date: "
+                android:textStyle="bold"
+                />
+            <Button
+                android:id="@+id/ARDexp_textviewVal"
+                android:layout_toRightOf="@id/ARDexp_textview"
+                android:layout_below="@id/ARDnoll"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:textSize="12dp"
+                android:layout_height="wrap_content"
+                android:text="SELECT DATE"
+                android:background="@color/transparent"
+                android:textColor="@color/blue"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/ARDexpll"
+            android:orientation="horizontal"
+            android:id="@+id/providertypell">
+            <TextView
+                android:id="@+id/providertype_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ARDexpll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Provider Type: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/providertype_textviewVal"
+                android:layout_toRightOf="@id/providertype_textview"
+                android:layout_below="@id/ARDexpll"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/providertypell"
+            android:orientation="horizontal"
+            android:id="@+id/shopmanagementll">
+            <TextView
+                android:id="@+id/shopmanagement_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/providertypell"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Shop Management System: "
+                android:textStyle="bold"
+                />
+            <EditText
+                android:id="@+id/shopmanagement_textviewVal"
+                android:layout_toRightOf="@id/shopmanagement_textview"
+                android:layout_below="@id/providertypell"
+                android:layout_width="0dp"
+                android:text=""
+                android:hint="Enter shop management system"
+                android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:textSize="12dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/shopmanagementll"
+            android:orientation="horizontal"
+            android:id="@+id/currcodatell">
+            <TextView
+                android:id="@+id/currcodate_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shopmanagementll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Current Contract Date: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/currcodate_textviewVal"
+                android:layout_toRightOf="@id/currcodate_textview"
+                android:layout_below="@id/shopmanagementll"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/currcodatell"
+            android:orientation="horizontal"
+            android:id="@+id/initcodatell">
+            <TextView
+                android:id="@+id/initcodate_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/currcodatell"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Initial Contract Date: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/initcodate_textviewVal"
+                android:layout_toRightOf="@id/initcodate_textview"
+                android:layout_below="@id/currcodatell"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/initcodatell"
+            android:orientation="horizontal"
+            android:id="@+id/billingmonthll">
+            <TextView
+                android:id="@+id/billingmonth_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/initcodatell"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Billing Month: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/billingmonth_textviewVal"
+                android:layout_toRightOf="@id/billingmonth_textview"
+                android:layout_below="@id/initcodatell"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/billingmonthll"
+            android:orientation="horizontal"
+            android:id="@+id/billingamountll">
+            <TextView
+                android:id="@+id/billingamount_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/billingmonthll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Billing Amount: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/billingamount_textviewVal"
+                android:layout_toRightOf="@id/billingamount_textview"
+                android:layout_below="@id/billingmonthll"
+                android:layout_width="0dp"
+                android:text="test"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/billingamountll"
+            android:orientation="horizontal"
+            android:id="@+id/InsuranceExpDatell">
+            <TextView
+                android:id="@+id/InsuranceExpDate_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/billingamountll"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Insurance Expiration Date: "
+                android:textStyle="bold"
+                />
+            <Button
+                android:id="@+id/InsuranceExpDate_textviewVal"
+                android:layout_toRightOf="@id/InsuranceExpDate_textview"
+                android:layout_below="@id/billingamountll"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:textSize="12dp"
+                android:layout_height="wrap_content"
+                android:text="SELECT DATE"
+                android:background="@color/transparent"
+                android:textColor="@color/blue"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>
+</RelativeLayout>

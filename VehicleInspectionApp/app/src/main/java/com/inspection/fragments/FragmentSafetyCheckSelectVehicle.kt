@@ -1,7 +1,8 @@
 package com.inspection.fragments
 
-import android.app.Fragment
+
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -69,7 +70,8 @@ class FragmentSafetyCheckSelectVehicle : Fragment() {
                     var myAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, vinsArray)
                     searchCustomerSafetyCheckListView.adapter = myAdapter
                     searchCustomerSafetyCheckListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
-                        val fragment = FragmentSafetyCheckSelectQuestionSet()
+                        var fragment = Fragment()
+                        fragment =  FragmentSafetyCheckSelectQuestionSet()
                         fragment.selectedMobileUserProfileID = selectecMobileUserProfileID
                         fragment.selectedVehicleID = vehicleProfileModels.get(i).vinid.toInt()
                         val fragmentManagerSC = fragmentManager

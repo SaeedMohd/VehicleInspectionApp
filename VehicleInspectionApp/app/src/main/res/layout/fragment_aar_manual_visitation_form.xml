@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:background="@color/light_gray"
-    android:orientation="vertical" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:background="@color/light_gray">
     <TextView
         android:id="@+id/generalInformationTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
         android:text="General Information"
         android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
         />
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/generalInformationTextView"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:paddingTop="5dp"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
-        android:layout_below="@id/generalInformationTextView"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,13 +45,12 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/facilityIdEditText"
             android:layout_below="@id/facilityIdTextView"
             android:layout_width="match_parent"
-            android:hint="Enter Facility ID"
             android:layout_height="wrap_content" />
-
+        <!--android:hint="Enter Facility ID"-->
 
 
         <TextView
@@ -78,14 +86,13 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/facilityAddressEditText"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="8"
-            android:hint="Enter Facility Address"
             android:layout_height="wrap_content" />
-
+        <!--android:hint="Enter Facility Address"-->
         <TextView
             android:id="@+id/facilityCityTextView"
             android:layout_width="wrap_content"
@@ -96,13 +103,13 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/facilityCityEditText"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="8"
-            android:hint="Enter Facility City"
             android:layout_height="wrap_content" />
+        <!--android:hint="Enter Facility City"-->
 
         <TextView
             android:id="@+id/facilityStateTextView"
@@ -114,14 +121,13 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/facilityStateEditText"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="8"
-            android:hint="Enter Facility State"
             android:layout_height="wrap_content" />
-
+        <!--android:hint="Enter Facility State"-->
 
         <TextView
             android:id="@+id/facilityZipTextView"
@@ -133,14 +139,13 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/facilityZipEditText"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="8"
-            android:hint="Enter Facility Zip"
             android:layout_height="wrap_content" />
-
+        <!--android:hint="Enter Facility Zip"-->
 
         <TextView
             android:id="@+id/facilityPhoneTextView"
@@ -152,13 +157,13 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/facilityPhoneEditText"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="8"
-            android:hint="Enter Facility Phone"
             android:layout_height="wrap_content" />
+        <!--android:hint="Enter Facility Phone"-->
 
         <TextView
             android:id="@+id/facilityEmailTextView"
@@ -170,13 +175,13 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/facilityEmailEditText"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="8"
-            android:hint="Enter Facility Phone"
             android:layout_height="wrap_content" />
+        <!--android:hint="Enter Facility Phone"-->
 
         <TextView
             android:id="@+id/automotiveSpecialistTextView"
@@ -196,20 +201,22 @@
 
 
         <TextView
-            android:id="@+id/automotiveSpecialistEmailTextView"
+            android:id="@+id/automotiveSpecialistSignature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Automotive Specialist Email:"
+            android:text="Automotive Specialist's Signature:"
             android:layout_marginTop="25dp"
             android:textStyle="bold"
             />
 
-        <EditText
-            android:id="@+id/automotiveSpecialistEmailEditText"
-            android:layout_width="match_parent"
-            android:ems="15"
-            android:hint="Enter Automotive Specialist Email"
-            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/automotiveSpecialistSignatureButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CAPTURE SIGNATURE"
+            android:background="@color/transparent"
+            android:textColor="@color/blue"
+            />
 
         <TextView
             android:id="@+id/facilityRepresentativeNameTextView"
@@ -256,12 +263,11 @@
             android:textStyle="bold"
             />
 
-        <EditText
+        <Spinner
             android:id="@+id/inspectionTypeEditText"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="12"
-            android:hint="Enter Inspection Type"
             android:layout_height="wrap_content" />
 
 
@@ -274,23 +280,28 @@
             android:textStyle="bold"
             />
 
-        <EditText
-            android:id="@+id/monthDueEditText"
+        <Spinner
+            android:id="@+id/monthDueSpinner"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="8"
-            android:hint="Enter Month Due"
             android:layout_height="wrap_content" />
 
-
-        <Switch
+        <TextView
+            android:id="@+id/changesmadeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facilityNameEditText"
+            android:text="Changes made: "
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            />
+        <Spinner
             android:id="@+id/changesMadeSwitch"
             android:text="Changes Made: "
-            android:textOff="NO"
-            android:textOn="YES"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="0dp"
             android:checked="true"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -314,3 +325,4 @@
     </LinearLayout>
     </RelativeLayout>
 </ScrollView>
+</RelativeLayout>

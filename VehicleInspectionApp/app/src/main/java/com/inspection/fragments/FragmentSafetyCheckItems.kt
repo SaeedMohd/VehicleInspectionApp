@@ -58,7 +58,7 @@ import kotlinx.android.synthetic.main.fragment_safety_check_view.*
 import java.util.*
 
 
-class FragmentSafetyCheckItems : Fragment() {
+class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
     private var view2: View? = null
     var customerName = ""
     var customerEmail = ""

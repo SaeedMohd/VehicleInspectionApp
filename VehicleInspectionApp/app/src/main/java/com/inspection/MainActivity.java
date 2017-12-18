@@ -8,6 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.pm.PackageManager;
@@ -20,9 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -98,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public static String devString;
     public static String fragmentRequestingPermission="";
     //    public FragmentVehicleFacility FragmentRequestingPermission;
+    public String FacilityName="";
+    public String FacilityNumber="";
+
     static String Upload_period;
     public static Boolean Enable = false, uploadtask = false;
     public static String Upload_Url = "http://www.jet-matics.com/JetComService/JetCom.svc/BluetoothDetailGet?";
@@ -147,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public static DrawerLayout mDrawerLayout;
     public DrawerNavigationListAdapter drawerNavigationListAdapter;
     private ActionBarDrawerToggle drawerToggle;
-    private Toolbar toolbar;
+    public Toolbar toolbar;
     private ListView mDrawerList;
 
     Button btnRepairFacility, btnVehicleHealth, btnRepairHistory;
@@ -227,10 +232,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 //        openSafetyCheckFragment();
 
-        Fragment fragment;
+        android.support.v4.app.Fragment fragment;
         fragment =  new FragmentForms();
-        FragmentManager fragmentManagerSC = getFragmentManager();
-        FragmentTransaction ftSC= fragmentManagerSC.beginTransaction();
+        FragmentManager fragmentManagerSC = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction ftSC= fragmentManagerSC.beginTransaction();
         ftSC.replace(R.id.fragment, fragment);
         ftSC.addToBackStack("");
         ftSC.commit();
@@ -652,8 +657,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private void selectItem(int position) {
         // Create a new fragment and specify the planet to show based on position
         mDrawerLayout.closeDrawer(mDrawerList);
-        final FragmentManager fragmentManager = getFragmentManager();
-        Fragment f = fragmentManager.findFragmentById(R.id.fragment);
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+//        android.support.v4.app.Fragment f = fragmentManager.findFragmentById(R.id.fragment);
         switch (position) {
 
             case 0:
@@ -665,10 +670,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                } else {
 //                    openSafetyCheckFragment();
 //                }
-                Fragment fragment;
+                android.support.v4.app.Fragment fragment;
                 fragment =  new FragmentForms();
-                FragmentManager fragmentManagerSC = getFragmentManager();
-                FragmentTransaction ftSC= fragmentManagerSC.beginTransaction();
+                android.support.v4.app.FragmentManager fragmentManagerSC = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction ftSC= fragmentManagerSC.beginTransaction();
                 ftSC.replace(R.id.fragment, fragment);
                 ftSC.addToBackStack("");
                 ftSC.commit();
@@ -819,7 +824,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                    fragment.handlebanner();
                 if (fragmentRequestingPermission.equals("FragmentSafetyCheckItems") && grantResults[0] == PackageManager.PERMISSION_GRANTED ) { //Storage & Camera Permission
                     Log.v("RequetPermissionResult:","  FragmentSafetyCheckItems");
-                    FragmentSafetyCheckItems fragment= (FragmentSafetyCheckItems) getFragmentManager().findFragmentById(R.id.fragment);
+                    FragmentSafetyCheckItems fragment= (FragmentSafetyCheckItems) getSupportFragmentManager().findFragmentById(R.id.fragment);
                     fragment.dispatchTakePictureIntent();
                 } else if (fragmentRequestingPermission.equals("MainActivitySafetyCheckMenuItem") && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Storage Permission
                     Log.v("RequetPermissionResult:","  MainActivitySafetyCheckMenuItem");
@@ -845,7 +850,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }else{
             fragment =  new FragmentSafetyCheckReports();
         }
-        FragmentManager fragmentManagerSC = getFragmentManager();
+        FragmentManager fragmentManagerSC = getSupportFragmentManager();
         FragmentTransaction ftSC= fragmentManagerSC.beginTransaction();
         ftSC.replace(R.id.fragment, fragment);
         ftSC.addToBackStack("");
