@@ -1,0 +1,512 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/light_gray"
+    tools:context="com.inspection.fragments.FragmentARRAVFacilityContinued">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Facility Continued"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/light_gray"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="5dp">
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/paymethodsll">
+                <TextView
+                    android:id="@+id/payment_methods_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Payment Methods: "
+                    android:textStyle="bold"
+                    />
+                <CheckBox
+                    android:id="@+id/americanexpress_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="American Express"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/cash_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="Cash"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/check_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="Check"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/debit_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="Debit"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/discover_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="Discover"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/goodyear_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="Goodyear Credit Card"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/mastercard_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="Master Card"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/paypal_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="PayPal"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/visa_checkbox"
+                    android:layout_width="match_parent"
+                    android:text="Visa"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/paymethodsll"
+                android:orientation="vertical"
+                android:id="@+id/ophoursll">
+                <TextView
+                    android:id="@+id/ophours_title_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/paymethodsll"
+                    android:layout_marginTop="10dp"
+                    android:text="Hours of Operation"
+                    android:textStyle="bold"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Day"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="Open Hours"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:layout_weight="2"
+                        android:text="Closed Hours"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/monday_title_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Monday"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/monday_open_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:text="Hours of Operation"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/monday_closed_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:text="Hours of Operation"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tuesday_title_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Tuesday"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/tuesday_open_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/tuesday_closed_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/wednesday_title_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Wednesday"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/wednesday_open_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/wednesday_closed_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/thursday_title_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Thursday"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/thursday_open_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/thursday_closed_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/friday_title_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Friday"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/friday_open_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/friday_closed_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/saturday_title_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Saturday"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/saturday_open_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/saturday_closed_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="5"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/sunday_title_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="Sunday"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/sunday_open_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/sunday_closed_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="2"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/nightdrop_checkbox"
+                android:layout_width="match_parent"
+                android:text="Night Drop"
+                android:layout_below="@id/ophoursll"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_below="@id/nightdrop_checkbox"
+                android:orientation="horizontal"
+                android:id="@+id/nightinstructionsll">
+                <TextView
+                    android:id="@+id/nightinstructions_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/facilitytypell"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Night Instructions: "
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/nightinstructions_textviewVal"
+                    android:layout_toRightOf="@id/nightinstructions_textview"
+                    android:layout_below="@id/facilitytypell"
+                    android:layout_width="0dp"
+                    android:text=""
+                    android:maxLength="250"
+                    android:inputType="textMultiLine"
+                    android:lines="8"
+                    android:minLines="6"
+                    android:gravity="top|left"
+                    android:hint="Enter Night instructions"
+                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/nightinstructionsll"
+                android:orientation="horizontal"
+                android:id="@+id/emailtypell">
+                <TextView
+                    android:id="@+id/emailtype_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Email Type: "
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/emailtype_textviewVal"
+                    android:layout_toRightOf="@id/emailtype_textview"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_below="@id/emailtypell"
+                android:orientation="horizontal"
+                android:id="@+id/emailll">
+                <TextView
+                    android:id="@+id/email_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/emailtypell"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Email Address: "
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/email_textviewVal"
+                    android:layout_toRightOf="@id/email_textview"
+                    android:layout_below="@id/emailtypell"
+                    android:layout_width="0dp"
+                    android:hint="Enter Email Address"
+                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 .@"
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/emailll"
+                android:orientation="horizontal"
+                android:id="@+id/phonetypell">
+                <TextView
+                    android:id="@+id/phonetype_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Phone Type: "
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/phonetype_textviewVal"
+                    android:layout_toRightOf="@id/phonetype_textview"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_below="@id/phonetypell"
+                android:orientation="horizontal"
+                android:id="@+id/phonell">
+                <TextView
+                    android:id="@+id/phone_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Phone Number: "
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/phone_textviewVal"
+                    android:layout_toRightOf="@id/phone_textview"
+                    android:layout_width="0dp"
+                    android:hint="Enter Phone Number"
+                    android:inputType="number"
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -152,6 +152,8 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
             when (position) {
                 0 -> ft = FragmentARRAnualVisitation.newInstance("Test","Test")
                 1 -> ft = FragmentARRAVFacility.newInstance("Test","Test")
+                2 -> ft = FragmentARRAVFacilityContinued.newInstance("Test","Test")
+                3 -> ft = FragmentARRAVLocation.newInstance("Test","Test")
 //                3 -> {
 //                    //ft=FeaturedFragment.newInstance("Test");
 //                    //ft=SubmittedFragment.newInstance("Test","");
@@ -167,7 +169,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
         override fun getCount(): Int {
             // Show 3 total pages.
-            return 2
+            return 4
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
