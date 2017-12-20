@@ -37,7 +37,7 @@ class FragmentSafetyCheckSearchForCustomerVehicle : Fragment() {
     var customerNames = ArrayList<String>()
     var searchResultNames = ArrayList<String>()
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val myView = inflater?.inflate(R.layout.fragment_safety_check_search_customer, container, false)
 
         startloadingUsers()
@@ -61,7 +61,7 @@ class FragmentSafetyCheckSearchForCustomerVehicle : Fragment() {
                 val myAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultNames)
                 searchCustomerSafetyCheckListView.adapter = myAdapter
                 searchCustomerSafetyCheckListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, position: Int, l: Long ->
-                    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view?.windowToken, 0)
                     for (item in userProfileModels){
                         if (customerNames.get(position).equals(item.firstName + " " + item.lastName)){
@@ -70,7 +70,7 @@ class FragmentSafetyCheckSearchForCustomerVehicle : Fragment() {
                             fragment.selectedUserName = item.userName
                             fragment.selectecMobileUserProfileID = item.mobileUserProfileId
                             val fragmentManagerSC = fragmentManager
-                            val ftSC = fragmentManagerSC.beginTransaction()
+                            val ftSC = fragmentManagerSC!!.beginTransaction()
                             ftSC.replace(R.id.fragment, fragment)
                             ftSC.commit()
                             break
@@ -93,7 +93,7 @@ class FragmentSafetyCheckSearchForCustomerVehicle : Fragment() {
         progress.setCancelable(false)
         progress.setMessage("Loading...")
         progress.show()
-        object : GetShopUsersTask(context, ApplicationPrefs.getInstance(context).userProfilePref.accountID) {
+        object : GetShopUsersTask(context!!, ApplicationPrefs.getInstance(context).userProfilePref.accountID) {
             override fun onTaskCompleted(result: String) {
                 progress.dismiss()
                 if (result.contains("IsSuccess\":true")) {
@@ -125,7 +125,7 @@ class FragmentSafetyCheckSearchForCustomerVehicle : Fragment() {
                                     fragment.selectedUserName = item.userName
                                     fragment.selectecMobileUserProfileID = item.mobileUserProfileId
                                     val fragmentManagerSC = fragmentManager
-                                    val ftSC = fragmentManagerSC.beginTransaction()
+                                    val ftSC = fragmentManagerSC!!.beginTransaction()
                                     ftSC.replace(R.id.fragment, fragment)
                                     ftSC.commit()
                                     break

@@ -27,26 +27,16 @@ import kotlinx.android.synthetic.main.fragment_main_visitation.*
  */
 class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
-    // TODO: Rename and change types of parameters
-    private var mParam1: String? = null
-    private var mParam2: String? = null
+
     var mViewPager: ViewPager? = null
     var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 //    private var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-//        setC(R.layout.activity_main);
-        if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
-        }
-
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_main_visitation, container, false)
     }
 
@@ -60,7 +50,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mSectionsPagerAdapter = SectionsPagerAdapter(fragmentManager);
+        mSectionsPagerAdapter = SectionsPagerAdapter(fragmentManager!!)
         (activity as MainActivity).supportActionBar!!.title = "Forms"
         // Set up the ViewPager with the sections adapter.
 //        mViewPager=container
@@ -75,7 +65,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
 //        tabs.set(container)
 
-        mSectionsPagerAdapter = SectionsPagerAdapter (fragmentManager);
+        mSectionsPagerAdapter = SectionsPagerAdapter (fragmentManager!!)
         container.adapter = mSectionsPagerAdapter
 //        tabs.setupWithViewPager(container)
 
@@ -152,6 +142,8 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
             when (position) {
                 0 -> ft = FragmentARRAnualVisitation.newInstance("Test","Test")
                 1 -> ft = FragmentARRAVFacility.newInstance("Test","Test")
+                2 -> ft = FragmentARRAVPrograms.newInstance("Test","Test")
+                3 -> ft = FragmentARRAVComplaints.newInstance("Test","Test")
 //                3 -> {
 //                    //ft=FeaturedFragment.newInstance("Test");
 //                    //ft=SubmittedFragment.newInstance("Test","");
@@ -167,7 +159,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
         override fun getCount(): Int {
             // Show 3 total pages.
-            return 2
+            return 4
         }
 
         override fun getPageTitle(position: Int): CharSequence? {

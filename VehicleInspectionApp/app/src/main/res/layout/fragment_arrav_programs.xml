@@ -1,0 +1,153 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/light_gray"
+    tools:context="com.inspection.fragments.FragmentARRAVFacility">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="PROGRAMS"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/light_gray"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="5dp">
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/connumberll">
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Program Name: "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/complaint_id_textviewVal"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:text="Select Program"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/contypell">
+                <TextView
+                    android:id="@+id/effective_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Effective Date:: "
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/effective_date_textviewVal"
+                    android:layout_toRightOf="@id/contract_type_textview"
+                    android:layout_below="@id/connumberll"
+                    android:layout_width="0dp"
+                    android:text="select date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/contypell"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/officell">
+                <TextView
+                    android:id="@+id/expiration_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contypell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Expiration Date: "
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/expiration_date_textviewVal"
+                    android:layout_toRightOf="@id/office_textview"
+                    android:layout_below="@id/contypell"
+                    android:layout_width="0dp"
+                    android:text="Select Date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/officell"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/AssignedToll">
+                <TextView
+                    android:id="@+id/comments_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/officell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Comments: "
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/comments_editTextVal"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/AssignedToll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxEms="250"
+                android:lines="5"
+                />
+
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

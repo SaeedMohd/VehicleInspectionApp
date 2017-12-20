@@ -29,20 +29,20 @@ class FragmentSafetyCheckSelectVehicle : Fragment() {
     var selectecMobileUserProfileID = -1
     var vehicleProfileModels = ArrayList<VehicleProfileModel>()
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val myView = inflater?.inflate(R.layout.fragment_safety_check_select_vehicle, container, false)
 
         return myView
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         searchView.visibility = View.GONE
         selectVehicleHeaderTextView.visibility = View.VISIBLE
         startLoadingVehiclesForUser(selectedUserName)
     }
 
     private fun startLoadingVehiclesForUser(userName: String) {
-        object : GetVINsByUserTask(context, userName) {
+        object : GetVINsByUserTask(context!!, userName) {
             override fun onTaskCompleted(result: String) {
                 try {
                     val aObject = JSONObject(result.toString())
@@ -75,7 +75,7 @@ class FragmentSafetyCheckSelectVehicle : Fragment() {
                         fragment.selectedMobileUserProfileID = selectecMobileUserProfileID
                         fragment.selectedVehicleID = vehicleProfileModels.get(i).vinid.toInt()
                         val fragmentManagerSC = fragmentManager
-                        val ftSC = fragmentManagerSC.beginTransaction()
+                        val ftSC = fragmentManagerSC!!.beginTransaction()
                         ftSC.replace(R.id.fragment, fragment)
                         ftSC.commit()
                     })

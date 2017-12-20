@@ -1,0 +1,313 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/light_gray"
+    tools:context="com.inspection.fragments.FragmentARRAVFacility">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Complaints"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/light_gray"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="5dp">
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/connumberll">
+                <TextView
+                    android:id="@+id/complaint_id_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Complaint ID: "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/complaint_id_textviewVal"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/contypell">
+                <TextView
+                    android:id="@+id/first_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="First Name: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/first_name_textviewVal"
+                    android:layout_toRightOf="@id/contract_type_textview"
+                    android:layout_below="@id/connumberll"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/contypell"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/officell">
+                <TextView
+                    android:id="@+id/last_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contypell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Last Name: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/last_name_textviewVal"
+                    android:layout_toRightOf="@id/office_textview"
+                    android:layout_below="@id/contypell"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/officell"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/AssignedToll">
+                <TextView
+                    android:id="@+id/received_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/officell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Received Date: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/received_date_textviewVal"
+                    android:layout_toRightOf="@id/assignedto_textview"
+                    android:layout_below="@id/officell"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/AssignedToll"
+                android:orientation="horizontal"
+                android:id="@+id/dball">
+                <TextView
+                    android:id="@+id/complaint_reason_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/AssignedToll"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:text="Complaint Reason: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/complaint_reason_textviewVal"
+                    android:layout_toRightOf="@id/dba_textview"
+                    android:layout_below="@id/AssignedToll"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/dball"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:id="@+id/entityll">
+                <TextView
+                    android:id="@+id/complaint_resolution_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dball"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Complaint Resolution: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/complaint_resolution_textviewVal"
+                    android:layout_toRightOf="@id/entity_textview"
+                    android:layout_below="@id/dball"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/entityll"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/bustypell">
+                <TextView
+                    android:id="@+id/comments_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/entityll"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:text="Comments: "
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/comments_textviewVal"
+                    android:layout_toRightOf="@id/bustype_textview"
+                    android:layout_below="@id/entityll"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/bustypell"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:id="@+id/timezonell">
+                <TextView
+                    android:id="@+id/no_of_complaints_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bustypell"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:text="No of complaints during previous 12 months: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/no_of_complaints_textviewVal"
+                    android:layout_toRightOf="@id/timezone_textview"
+                    android:layout_below="@id/bustypell"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/timezonell"
+                android:orientation="horizontal"
+                android:id="@+id/websitell">
+                <TextView
+                    android:id="@+id/no_of_justified_complaints_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/timezonell"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:text="No of justified complaints during previous 12 months: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/no_of_justified_complaints_textviewVal"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/websitell"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/tax_textview">
+                <TextView
+                    android:id="@+id/justified_complaint_ratio_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/wifi_textview"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:text="Justified complaint ratio: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/justified_complaint_ratio_textviewVal"
+                    android:layout_toRightOf="@id/website_textview"
+                    android:layout_below="@id/wifi_textview"
+                    android:layout_width="0dp"
+                    android:text="test"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

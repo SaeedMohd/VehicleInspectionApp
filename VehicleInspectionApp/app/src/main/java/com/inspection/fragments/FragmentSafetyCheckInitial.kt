@@ -27,7 +27,7 @@ import org.json.JSONObject
  */
 class FragmentSafetyCheckInitial : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val myView = inflater?.inflate(R.layout.fragment_safety_check_shop_initial, container, false)
 
 
@@ -37,7 +37,7 @@ class FragmentSafetyCheckInitial : Fragment() {
     }
 
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initialsafetyCheckRecyclerView.layoutManager = LinearLayoutManager(context)
         initialsafetyCheckRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         startLoadingSafetyCheckDetails()
@@ -50,7 +50,7 @@ class FragmentSafetyCheckInitial : Fragment() {
         progress.setMessage("Loading...")
         progress.show()
 
-        object : GenericServerTask(context, getString(R.string.getSafetyCheckReportsListForShop), arrayOf("accountID"), arrayOf("" + ApplicationPrefs.getInstance(context).userProfilePref.accountID)) {
+        object : GenericServerTask(context!!, getString(R.string.getSafetyCheckReportsListForShop), arrayOf("accountID"), arrayOf("" + ApplicationPrefs.getInstance(context).userProfilePref.accountID)) {
             override fun onTaskCompleted(result: String) {
 
                 var safetyCheckReportsModelArrayList = ArrayList<SafetyCheckReportModel>()
@@ -71,11 +71,11 @@ class FragmentSafetyCheckInitial : Fragment() {
                 val safetyCheckReportsInProgress = safetyCheckReportsModelArrayList.filter { it.status == 2 } as ArrayList<SafetyCheckReportModel>
                 val safetyCheckReportsCompleted = safetyCheckReportsModelArrayList.filter { it.status == 3 } as ArrayList<SafetyCheckReportModel>
 
-                val adapter = SafetyCheckShopInitialRecyclerViewAdapter(context, initialsafetyCheckRecyclerView, safetyCheckReprtsTodo, safetyCheckReportsInProgress, safetyCheckReportsCompleted)
+                val adapter = SafetyCheckShopInitialRecyclerViewAdapter(context!!, initialsafetyCheckRecyclerView, safetyCheckReprtsTodo, safetyCheckReportsInProgress, safetyCheckReportsCompleted)
                 adapter.setClickListener(View.OnClickListener { view ->
                     val position = initialsafetyCheckRecyclerView.getChildAdapterPosition(view)
                     val fragmentManagerSC = fragmentManager
-                    val ftSC = fragmentManagerSC.beginTransaction()
+                    val ftSC = fragmentManagerSC!!.beginTransaction()
                     if (position == 1) {
                         val fragment: Fragment
 //                        val fragmentManagerSC = getSupportFragmentManager()
