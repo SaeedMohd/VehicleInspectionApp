@@ -1,0 +1,147 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/light_gray"
+    tools:context="com.inspection.fragments.FragmentARRAVAmOrderTracking">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Amendment Order Tracking"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/light_gray"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="5dp"
+            >
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="AO ID: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/aoIDVal"
+                    android:layout_width="0dp"
+                    android:text="TEST"
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Employee:"
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/employeeDropDown"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Reason:"
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/reasonDropDown"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Event ID: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/eventIDVal"
+                    android:layout_width="0dp"
+                    android:text="TEST"
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Event: "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/eventVal"
+                    android:layout_width="0dp"
+                    android:text="TEST"
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
