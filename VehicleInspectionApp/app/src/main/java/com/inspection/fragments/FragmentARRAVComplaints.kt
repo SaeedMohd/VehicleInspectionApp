@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [FragmentARRAVFacility.OnFragmentInteractionListener] interface
+ * [FragmentARRAVComplaints.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [FragmentARRAVFacility.newInstance] factory method to
+ * Use the [FragmentARRAVComplaints.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentARRAVFacility : Fragment() {
+class FragmentARRAVComplaints : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
 
@@ -32,44 +32,17 @@ class FragmentARRAVFacility : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_arrav_facility, container, false)
+        return inflater!!.inflate(R.layout.fragment_arrav_complaints, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Fill Dop Down
-        var timeZonesArray = arrayOf("Atlantic Time", "Eastern  Time", "Central  Time", "Mountain  Time", "Pacific  Time", "Hawaii  Time")
-        var tzdataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, timeZonesArray)
-        tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timezone_textviewVal.adapter = tzdataAdapter
 
-
-        var svcAvailabilityArray = arrayOf("Fixed-Site Service Only", "Fixed and Mobile Service", "Mobile Service Only")
-        var svcAvldataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, svcAvailabilityArray)
-        svcAvldataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        availability_textviewVal.adapter = svcAvldataAdapter
-
-        var facilityTypeArray = arrayOf("Independent", "Service Station", "Specialty", "Dealership", "Club Owned Repair - Attached", "Club Owned Repair - Standalone")
-        var facilityTypedataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, facilityTypeArray)
-        facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        facilitytype_textviewVal.adapter = facilityTypedataAdapter
-
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            mListener = context
-//        } else {
-//            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
-//        }
+
     }
 
     override fun onDetach() {
@@ -106,8 +79,8 @@ class FragmentARRAVFacility : Fragment() {
          * @return A new instance of fragment FragmentARRAVFacility.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): FragmentARRAVFacility {
-            val fragment = FragmentARRAVFacility()
+        fun newInstance(param1: String, param2: String): FragmentARRAVComplaints {
+            val fragment = FragmentARRAVComplaints()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)

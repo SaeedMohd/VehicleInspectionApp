@@ -33,7 +33,7 @@ class FragmentSafetyCheckSelectQuestionSet : Fragment() {
     var selectedVehicleID = -1
     var questionSetNames = ArrayList<String>()
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val myView = inflater?.inflate(R.layout.fragment_safety_check_select_question_set, container, false)
         startloadingQuestionSets()
 
@@ -42,7 +42,7 @@ class FragmentSafetyCheckSelectQuestionSet : Fragment() {
         return myView!!
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         searchView.visibility = View.GONE
         selectVehicleHeaderTextView.text = "Select Questions Set"
         selectVehicleHeaderTextView.visibility = View.VISIBLE
@@ -54,7 +54,7 @@ class FragmentSafetyCheckSelectQuestionSet : Fragment() {
         progress.setCancelable(false)
         progress.setMessage("Loading...")
         progress.show()
-        object : GenericServerTask(context, context.getString(R.string.GetSafetyCheckQuestionSetsForAccount), arrayOf("accountID"), arrayOf(""+ApplicationPrefs.getInstance(context).userProfilePref.accountID)) {
+        object : GenericServerTask(context!!, context!!.getString(R.string.GetSafetyCheckQuestionSetsForAccount), arrayOf("accountID"), arrayOf(""+ApplicationPrefs.getInstance(context).userProfilePref.accountID)) {
             override fun onTaskCompleted(result: String) {
                 progress.dismiss()
                 if (result.contains("questionSetName")) {
@@ -86,7 +86,7 @@ class FragmentSafetyCheckSelectQuestionSet : Fragment() {
                                     fragment.safetyCheckReportID = -1
                                     fragment.selectedQuestionSetID = safetyCheckQuestionSetModels.get(position).id
                                     val fragmentManagerSC = fragmentManager
-                                    val ftSC = fragmentManagerSC.beginTransaction()
+                                    val ftSC = fragmentManagerSC!!.beginTransaction()
                                     ftSC.replace(R.id.fragment, fragment)
                                     ftSC.commit()
                                     break

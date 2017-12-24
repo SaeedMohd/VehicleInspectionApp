@@ -49,8 +49,7 @@ class FragmentSafetyCheckReports : android.support.v4.app.Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         view2 = inflater?.inflate(R.layout.fragment_safety_check_reports, container, false)
 
@@ -82,7 +81,7 @@ class FragmentSafetyCheckReports : android.support.v4.app.Fragment() {
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-        object : GenericServerTask(context, context.getString(R.string.getSafetyCheckReportsListForCustomer), arrayOf("mobileUserProfileID", "vehicleID"), arrayOf("" + selectedMobileUserProfileID, "" + selectVehicleID)) {
+        object : GenericServerTask(context!!, context!!.getString(R.string.getSafetyCheckReportsListForCustomer), arrayOf("mobileUserProfileID", "vehicleID"), arrayOf("" + selectedMobileUserProfileID, "" + selectVehicleID)) {
             override fun onTaskCompleted(result: String) {
                 try {
                     progressDialog.dismiss()
@@ -132,7 +131,7 @@ class FragmentSafetyCheckReports : android.support.v4.app.Fragment() {
                     //safetyCheckRecyclerView.setAdapter(new SafetyCheckItemsRecyclerViewAdapter(getContext(), safetyCheckListView, modifiedSafetyCheckItemsModels, safetyCheckReportID));
 
 //                    val adapter = SafetyCheckReportsRecyclerViewAdapter(context, safetyCheckListView, modifiedSafetyCheckReportsModels!!, safetyCheckReportID)
-                    val adapter = SafetyCheckReportsRecyclerViewAdapter(context, modifiedSafetyCheckReportsModels!!, safetyCheckReportID)
+                    val adapter = SafetyCheckReportsRecyclerViewAdapter(context!!, modifiedSafetyCheckReportsModels!!, safetyCheckReportID)
 
                     adapter.setClickListener (View.OnClickListener { view ->
                             val position = safetyCheckRecyclerView!!.indexOfChild(view)
@@ -149,7 +148,7 @@ class FragmentSafetyCheckReports : android.support.v4.app.Fragment() {
                             safetyCheckItemsFragment.customerPhoneNumber = modifiedSafetyCheckReportsModels!![position].customerPhoneNumber
                             safetyCheckItemsFragment.safetyCheckReportSummaryDescription = modifiedSafetyCheckReportsModels!![position].safetyCheckReportSummaryDescription
                             val fragmentManagerSC = fragmentManager
-                            val ftSC = fragmentManagerSC.beginTransaction()
+                            val ftSC = fragmentManagerSC!!.beginTransaction()
                             ftSC.replace(R.id.fragment, safetyCheckItemsFragment)
                             ftSC.addToBackStack("")
                             ftSC.commit()

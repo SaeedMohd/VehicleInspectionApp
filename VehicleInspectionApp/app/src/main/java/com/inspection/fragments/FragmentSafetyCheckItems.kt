@@ -87,8 +87,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
 
 //        Toast.makeText(context, "vehicle name= " + vehicleName, Toast.LENGTH_SHORT).show()
@@ -100,7 +99,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         return view2 as View
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vehicleNameTextView.text = vehicleName
         safetyCheckReportDateValueTextView.text = reportDate
@@ -157,7 +156,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
             progressDialog.setCancelable(false)
             progressDialog.show()
 
-            object : InitiateSafetyCheckProcessTask(context, selectedMobileUserProfileID, selectVehicleID, selectedQuestionSetID) {
+            object : InitiateSafetyCheckProcessTask(context!!, selectedMobileUserProfileID, selectVehicleID, selectedQuestionSetID) {
                 override fun onTaskCompleted(result: String) {
                     progressDialog.dismiss()
                     if (!result.contains("-1")) {
@@ -202,7 +201,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         progressDialog.setCancelable(false)
         progressDialog.show()
 
-        object : GetSafetyCheckListTask(context, safetyCheckReportID) {
+        object : GetSafetyCheckListTask(context!!, safetyCheckReportID) {
             override fun onTaskCompleted(result: String) {
 
                 if (result != null) {
@@ -238,7 +237,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
 //                        safetyCheckItemsExpandableAdapter = SafetyCheckItemsExpandableAdapter()
 //                        safetyCheckExpandableListView!!.setAdapter(safetyCheckItemsExpandableAdapter)
                         safetyCheckItemsListLayout!!.visibility = View.VISIBLE
-                        val adapter = SafetyCheckItemsRecyclerViewAdapter(context, this@FragmentSafetyCheckItems, safetyCheckItemsRecyclerView!!, modifiedSafetyCheckItemsModels, safetyCheckReportID)
+                        val adapter = SafetyCheckItemsRecyclerViewAdapter(context!!, this@FragmentSafetyCheckItems, safetyCheckItemsRecyclerView!!, modifiedSafetyCheckItemsModels, safetyCheckReportID)
                         safetyCheckItemsRecyclerView!!.adapter = adapter
                         safetyCheckItemsListLayout!!.visibility = View.VISIBLE
                         if (ApplicationPrefs.getInstance(context).userProfilePref.isShop) {
@@ -464,7 +463,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         alert.setItems(arrayOf("Start", "Done")) { dialog, which ->
             if (which == 0) {
                 modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemResultDescription = "In Progress"
-                object : SubmitSafetyCheckItemResultTask(context, safetyCheckReportID, modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemID, -1, "") {
+                object : SubmitSafetyCheckItemResultTask(context!!, safetyCheckReportID, modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemID, -1, "") {
                     override fun onTaskCompleted(result: String) {
 //                        object : SendPushNotificationTask("" + selectedMobileUserProfileID, "Started...", "", "Notification", "Safety Check", "") {
 //                            override fun onTaskCompleted(result: String?) {
@@ -487,7 +486,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
     }
 
     fun showResultsDialog(selectedItem: Int) {
-        object : GetSafetyCheckResultsScaleOptionsTask(context, modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckResultScaleId) {
+        object : GetSafetyCheckResultsScaleOptionsTask(context!!, modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckResultScaleId) {
             override fun onTaskCompleted(result: String) {
                 if (result != null) {
                     try {
@@ -514,9 +513,9 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
                             input.layoutParams = lp
                             alert.setView(input) // uncomment this line
                             alert.setPositiveButton("Submit") { dialogInterface, i ->
-                                (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0)
+                                (context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0)
                                 if (input.text != null) {
-                                    object : SubmitSafetyCheckItemResultTask(context, safetyCheckReportID, modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemID, safetyCheckItemResultsModels[which].safetyCheckItemResultID, input.text.toString()) {
+                                    object : SubmitSafetyCheckItemResultTask(context!!, safetyCheckReportID, modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemID, safetyCheckItemResultsModels[which].safetyCheckItemResultID, input.text.toString()) {
                                         override fun onTaskCompleted(result: String) {
                                             modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemResultDescription = results[which]!!
                                             modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemComment = input.text.toString()
@@ -525,7 +524,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
                                     }.execute()
                                 }
                             }
-                            alert.setNegativeButton("Cancel") { dialogInterface, i -> (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0) }
+                            alert.setNegativeButton("Cancel") { dialogInterface, i -> (context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0) }
                             alert.create().show()
                         }
                         alert.create().show()
@@ -549,9 +548,9 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         input.layoutParams = lp
         alert.setView(input) // uncomment this line
         alert.setPositiveButton("Submit") { dialogInterface, i ->
-            (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0)
+            (context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0)
             if (input.text != null) {
-                object : GenericServerTask(context, context.getString(R.string.submitSafetyCheckItemComment), arrayOf("safetyCheckReportsID", "safetyCheckItemsID", "safetyCheckItemComment"), arrayOf("" + safetyCheckReportID, "" + modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemID, input.text.toString())) {
+                object : GenericServerTask(context!!, context!!.getString(R.string.submitSafetyCheckItemComment), arrayOf("safetyCheckReportsID", "safetyCheckItemsID", "safetyCheckItemComment"), arrayOf("" + safetyCheckReportID, "" + modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemID, input.text.toString())) {
                     override fun onTaskCompleted(result: String) {
                         modifiedSafetyCheckItemsModels!![selectedItem].safetyCheckItemComment = input.text.toString()
 //                        safetyCheckItemsExpandableAdapter!!.notifyDataSetChanged()
@@ -559,15 +558,15 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
                 }.execute()
             }
         }
-        alert.setNegativeButton("Cancel") { dialogInterface, i -> (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0) }
+        alert.setNegativeButton("Cancel") { dialogInterface, i -> (context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0) }
         alert.create().show()
     }
 
 
     private fun endSafetyCheckReport() {
-        object : EndSafetyCheckReportTask(context, safetyCheckReportID) {
+        object : EndSafetyCheckReportTask(context!!, safetyCheckReportID) {
             override fun onTaskCompleted(result: String) {
-                fragmentManager.popBackStack()
+                fragmentManager!!.popBackStack()
             }
         }.execute()
     }
@@ -579,7 +578,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
                 override fun run() {
                     try {
                         if (modifiedSafetyCheckItemsModels != null && modifiedSafetyCheckItemsModels!!.size > 0) {
-                            object : GetSafetyCheckReportStatusTask(context, safetyCheckReportID) {
+                            object : GetSafetyCheckReportStatusTask(context!!, safetyCheckReportID) {
                                 override fun onTaskCompleted(result: String) {
 
                                     if (result != null) {
@@ -631,7 +630,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
 
 
     private fun showSafetyCheckItemComment(selectedPosition: Int) {
-        object : GenericServerTask(context, context.getString(R.string.getSafetyCheckItemComment), arrayOf("safetyCheckReportsID", "safetyCheckItemsID"), arrayOf("" + safetyCheckReportID, "" + modifiedSafetyCheckItemsModels!![selectedPosition].safetyCheckItemID)) {
+        object : GenericServerTask(context!!, context!!.getString(R.string.getSafetyCheckItemComment), arrayOf("safetyCheckReportsID", "safetyCheckItemsID"), arrayOf("" + safetyCheckReportID, "" + modifiedSafetyCheckItemsModels!![selectedPosition].safetyCheckItemID)) {
             override fun onTaskCompleted(result: String) {
                 var result = result
                 if (result != null) {
@@ -673,7 +672,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         override fun doInBackground(vararg voids: Void): Void? {
             try {
 
-                val url = URL("" + context.getString(R.string.safetyCheckPhotosURL) + fileName)
+                val url = URL("" + context!!.getString(R.string.safetyCheckPhotosURL) + fileName)
                 val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                 saveBitmapToFile(bmp, fileName)
             } catch (exp: MalformedURLException) {
@@ -691,10 +690,10 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
             val intent = Intent()
             intent.action = Intent.ACTION_VIEW
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            val imagePath = File(context.cacheDir, "images")
+            val imagePath = File(context!!.cacheDir, "images")
             val newFile = File(imagePath, fileName)
-            val contentUri = FileProvider.getUriForFile(context, "com.matics.android.fileprovider", newFile)
-            intent.setDataAndType(contentUri, context.contentResolver.getType(contentUri))
+            val contentUri = FileProvider.getUriForFile(context!!, "com.matics.android.fileprovider", newFile)
+            intent.setDataAndType(contentUri, context!!.contentResolver.getType(contentUri))
             startActivity(intent)
         }
     }
@@ -707,7 +706,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         override fun doInBackground(vararg voids: Void): Void? {
             try {
 
-                val url = URL("" + context.getString(R.string.safetyCheckThumbsURL) + photoName.replace("jpg", "thumb.jpg"))
+                val url = URL("" + context!!.getString(R.string.safetyCheckThumbsURL) + photoName.replace("jpg", "thumb.jpg"))
                 if (!imagesMap.containsKey(url.toString())) {
                     bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                     imagesMap.put(url.toString(), bmp as Bitmap)
@@ -736,7 +735,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         var out: FileOutputStream? = null
         try {
 
-            val cachePath = File(context.cacheDir, "images")
+            val cachePath = File(context!!.cacheDir, "images")
             cachePath.mkdirs() // don't forget to make the directory
             out = FileOutputStream("" + cachePath + "/" + fileName)
             bmp.compress(Bitmap.CompressFormat.PNG, 100, out) // bmp is your Bitmap instance
@@ -757,7 +756,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
 
     fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(context.packageManager) != null) {
+        if (takePictureIntent.resolveActivity(context!!.packageManager) != null) {
             var photoFile: File? = null
             try {
                 photoFile = createImageFile()
@@ -769,7 +768,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
             }
 
             if (photoFile != null) {
-                var photoURI = FileProvider.getUriForFile(context, "com.matics.android.fileprovider", File(photoFile.absolutePath));
+                var photoURI = FileProvider.getUriForFile(context!!, "com.matics.android.fileprovider", File(photoFile.absolutePath));
 //                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(File(photoFile.absolutePath)))
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, PHOTO_CAPTURE_ACTIVITY_REQUEST_ID)
@@ -789,7 +788,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         mCurrentFileName = "" + safetyCheckReportID + "-" + selectedItemForPhoto + "-" + Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + Calendar.getInstance().get(Calendar.HOUR) + "-" + Calendar.getInstance().get(Calendar.MINUTE) + "-" + Calendar.getInstance().get(Calendar.SECOND)
 
 
-        val cachePath = File(context.cacheDir, "images")
+        val cachePath = File(context!!.cacheDir, "images")
         cachePath.mkdirs() // don't forget to make the directory
         val storageDir = File("" + cachePath + "/" + mCurrentFileName)
 
@@ -975,7 +974,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         alert.setTitle("Note")
         alert.setMessage("Applying any action on any item will set report as InProgress.")
         alert.setPositiveButton("Proceed", { dialog, which ->
-            object : GenericServerTask(context, context.getString(R.string.updateSafetyCheckReportStatus), arrayOf("reportId", "statusId"), arrayOf("" + safetyCheckReportID, "2")) {
+            object : GenericServerTask(context!!, context!!.getString(R.string.updateSafetyCheckReportStatus), arrayOf("reportId", "statusId"), arrayOf("" + safetyCheckReportID, "2")) {
                 override fun onTaskCompleted(result: String) {
                     val confirmationAlert = AlertDialog.Builder(context)
                     confirmationAlert.setMessage("Safety Check Report Status Updated")
@@ -1002,16 +1001,16 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
         input.layoutParams = lp
         alert.setView(input) // uncomment this line
         alert.setPositiveButton("Submit") { dialogInterface, i ->
-            (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0)
+            (context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0)
             if (input.text != null) {
-                object : GenericServerTask(context, context.getString(R.string.submitSafetyCheckReportSummaryDescription), arrayOf("safetyCheckReportsID", "safetyCheckReportSummaryDescription"), arrayOf("" + safetyCheckReportID, input.text.toString())) {
+                object : GenericServerTask(context!!, context!!.getString(R.string.submitSafetyCheckReportSummaryDescription), arrayOf("safetyCheckReportsID", "safetyCheckReportSummaryDescription"), arrayOf("" + safetyCheckReportID, input.text.toString())) {
                     override fun onTaskCompleted(result: String) {
                         safetyCheckSummaryValueTextView.text = input.text.toString()
                     }
                 }.execute()
             }
         }
-        alert.setNegativeButton("Cancel") { dialogInterface, i -> (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0) }
+        alert.setNegativeButton("Cancel") { dialogInterface, i -> (context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(input.windowToken, 0) }
         alert.create().show()
     }
 
@@ -1029,20 +1028,19 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
 
     }
 
-    fun checkFileAndCameraPermissions() {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            Log.v("PERMISSION REQUEST: ", "START")
-            fragmentRequestingPermission = "FragmentSafetyCheckItems"
-            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            } else if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CAMERA), 1)
+    fun checkFileAndCameraPermissions() =
+            if (ActivityCompat.checkSelfPermission(activity!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                Log.v("PERMISSION REQUEST: ", "START")
+                fragmentRequestingPermission = "FragmentSafetyCheckItems"
+                if (ActivityCompat.checkSelfPermission(activity!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                } else if (ActivityCompat.checkSelfPermission(activity!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.CAMERA), 1)
+                } else {
+                    ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                }
             } else {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                dispatchTakePictureIntent()
             }
-        } else {
-            dispatchTakePictureIntent()
-        }
-    }
 }

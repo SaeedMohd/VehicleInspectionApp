@@ -44,7 +44,7 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
                 val fragment: android.support.v4.app.Fragment
                 fragment = FragmentAnnualVisitationPager()
                 val fragmentManagerSC = fragmentManager
-                val ftSC = fragmentManagerSC.beginTransaction()
+                val ftSC = fragmentManagerSC!!.beginTransaction()
                 ftSC.replace(R.id.fragment,fragment)
                 ftSC.addToBackStack("")
                 ftSC.commit()
