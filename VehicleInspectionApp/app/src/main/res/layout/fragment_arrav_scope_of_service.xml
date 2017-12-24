@@ -1,0 +1,232 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/light_gray"
+    tools:context="com.inspection.fragments.FragmentARRAVFacility">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Scope of Service"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/light_gray"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:padding="5dp">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/connumberll">
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Fixed Labor Rate: "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/fixedLaborRateEditText"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/affliationdetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_below="@id/connumberll"
+                >
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Diagnostic Rate: "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/diagnosticRateEditText"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:id="@+id/contypell">
+                <TextView
+                    android:id="@+id/effective_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Labor Rate Matrix Min: "
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/laborRateMatrixMinEditText"
+                    android:layout_toRightOf="@id/contract_type_textview"
+                    android:layout_below="@id/connumberll"
+                    android:layout_width="0dp"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/contypell"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:id="@+id/officell">
+                <TextView
+                    android:id="@+id/expiration_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contypell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Labor Rate Matrix Max: "
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/laborRateMatrixMaxEditText"
+                    android:layout_toRightOf="@id/office_textview"
+                    android:layout_below="@id/contypell"
+                    android:layout_width="0dp"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/officell"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:id="@+id/AssignedToll">
+                <TextView
+                    android:id="@+id/comments_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/officell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Number Of Bays: "
+                    android:textStyle="bold"
+                    />
+
+                <EditText
+                    android:id="@+id/numberOfBaysEditText"
+                    android:layout_below="@id/contypell"
+                    android:layout_width="0dp"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:id="@+id/AssignedToll">
+                <TextView
+                    android:id="@+id/comments_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Number Of Lifts: "
+                    android:textStyle="bold"
+                    />
+
+                <EditText
+                    android:id="@+id/numberOfLiftsEditText"
+                    android:layout_below="@id/contypell"
+                    android:layout_width="0dp"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:id="@+id/AssignedToll">
+                <TextView
+                    android:id="@+id/comments_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Warranty Period: "
+                    android:textStyle="bold"
+                    />
+
+                <Button
+                    android:id="@+id/warrantyPeriodButton"
+                    android:layout_below="@id/contypell"
+                    android:layout_width="0dp"
+                    android:background="@null"
+                    android:text="Click To Select"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,326 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    tools:context="com.inspection.fragments.FragmentARRAVFacility">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:textAllCaps="true"
+        android:text="repair shop portal addendum"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:background="@color/light_gray"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Start Date: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/startDateButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="Select Date"
+                    android:textColor="@color/blue_krayola" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/affliationdetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="End Date: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/endDateButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="Select Date"
+                    android:textColor="@color/blue_krayola" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/affliationdetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Addendum Signed Date: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addendumSignedDateButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="Select Date"
+                    android:textColor="@color/blue_krayola" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/effective_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.5"
+                    android:text="Number Of Cards Reader: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/numberOfCardsReaderEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@null"
+                    android:ems="2"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:text="00"
+                    android:inputType="number"
+                    android:textSize="?android:textAppearanceLarge"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/affliationdetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Inspection Date: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/inspectionDateButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="Select Date"
+                    android:textColor="@color/blue_krayola" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/affliationdetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Logged Into RSP: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/loggedIntoRspButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="Select Date"
+                    android:textColor="@color/blue_krayola" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/effective_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.5"
+                    android:text="Number Of Unacknowledged Records: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/numberOfUnacknowledgedRecordsEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@null"
+                    android:ems="2"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:text="00"
+                    android:inputType="number"
+                    android:textSize="?android:textAppearanceLarge"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/effective_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.5"
+                    android:text="Number Of In-Progress Two-Ins: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/numberOfInProgressTwoIns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:ems="2"
+                    android:background="@null"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:inputType="number"
+                    android:textSize="?android:textAppearanceLarge"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/effective_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.5"
+                    android:text="Number Of In-Progress Walk-Ins: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/numberOfInProgressWalkIns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@null"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:ems="2"
+                    android:text=""
+                    android:inputType="number"
+                    android:textSize="?android:textAppearanceLarge"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
