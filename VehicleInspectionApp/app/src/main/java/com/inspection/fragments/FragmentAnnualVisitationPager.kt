@@ -159,11 +159,12 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                 7 -> ft = FragmentARRAVVisitationTracking.newInstance("Test", "Test")
                 8 -> ft = FragmentARRAVScopeOfService.newInstance("Test", "Test")
                 9 -> ft = FragmentARRAVVehicleServices.newInstance("Test", "Test")
-                10 -> ft = FragmentARRAVPrograms.newInstance("Test", "Test")
-                11 -> ft = FragmentARRAVFacilityServices.newInstance("Test", "Test")
-                12 -> ft = FragmentARRAVAffliations.newInstance("Test", "Test")
-                13 -> ft = FragmentARRAVDeficiency.newInstance("Test", "Test")
-                14 -> ft = FragmentARRAVComplaints.newInstance("Test", "Test")
+                10 -> ft = FragmentARRAVVehicles.newInstance("Test", "Test")
+                11 -> ft = FragmentARRAVPrograms.newInstance("Test", "Test")
+                12 -> ft = FragmentARRAVFacilityServices.newInstance("Test", "Test")
+                13 -> ft = FragmentARRAVAffliations.newInstance("Test", "Test")
+                14 -> ft = FragmentARRAVDeficiency.newInstance("Test", "Test")
+                15 -> ft = FragmentARRAVComplaints.newInstance("Test", "Test")
 //                3 -> {
 //                    //ft=FeaturedFragment.newInstance("Test");
 //                    //ft=SubmittedFragment.newInstance("Test","");
@@ -179,7 +180,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
         override fun getCount(): Int {
             // Show 3 total pages.
-            return 15
+            return 16
         }
 
         override fun getPageTitle(position: Int): CharSequence? {

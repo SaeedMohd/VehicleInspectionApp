@@ -14,10 +14,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.TextView
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -33,6 +30,7 @@ import com.android.volley.VolleyError
 import com.google.gson.Gson
 import com.inspection.model.AAAFacility
 import kotlinx.android.synthetic.main.dialog_user_register.*
+import kotlinx.android.synthetic.main.spinner_item.view.*
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.Month
@@ -142,6 +140,10 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             dpd.show()
         }
 
+        saveBtn.setOnClickListener{
+            Toast.makeText(context,"Inputs is Valid: " + validateInputs(),Toast.LENGTH_LONG).show()
+        }
+
         facilityNameListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(facilityNameEditText.getWindowToken(), 0)
@@ -176,6 +178,41 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     override fun onResume() {
         super.onResume()
 
+    }
+
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
+
+        facilityNameEditText.setError(null)
+        facilityRepresentativeNameEditText.setError(null)
+        automotiveSpecialistEditText.setError(null)
+        dateOfVisitationButton.setError(null)
+
+        if (facilityNameEditText.text.toString().equals("")) {
+            isInputsValid=false
+            facilityNameEditText.setError("Required Field")
+        }
+
+        if (inspectionTypeEditText.selectedItem.toString().equals("")) {
+            isInputsValid=false
+
+        }
+        if (facilityRepresentativeNameEditText.text.toString().equals("")) {
+            isInputsValid=false
+            facilityRepresentativeNameEditText.setError("Required Field")
+        }
+
+        if (automotiveSpecialistEditText.text.toString().equals("")) {
+            isInputsValid=false
+            automotiveSpecialistEditText.setError("Required Field")
+        }
+
+        if (dateOfVisitationButton.text.toString().equals("SELECT DATE")) {
+            isInputsValid=false
+            dateOfVisitationButton.setError("Required Field")
+        }
+
+        return isInputsValid
     }
 
     companion object {

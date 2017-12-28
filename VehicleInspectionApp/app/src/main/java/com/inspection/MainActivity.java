@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
             });
             toolbar.setTitleTextColor(Color.WHITE);
+
             //ActionBar bar = getActionBar();
             //bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f7fa")));
             drawerToggle = new ActionBarDrawerToggle(mContext, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {

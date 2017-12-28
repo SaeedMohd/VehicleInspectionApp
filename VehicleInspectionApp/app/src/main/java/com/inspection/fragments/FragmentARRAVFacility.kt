@@ -56,6 +56,34 @@ class FragmentARRAVFacility : Fragment() {
 
     }
 
+
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
+
+        ARDno_textviewVal.setError(null)
+        ARDexp_textviewVal.setError(null)
+        InsuranceExpDate_textviewVal.setError(null)
+
+        if (ARDno_textviewVal.text.toString().equals("")) {
+            isInputsValid=false
+            ARDno_textviewVal.setError("Required Field")
+        }
+
+        if (ARDexp_textviewVal.text.toString().equals("SELECT DATE")) {
+            isInputsValid=false
+            ARDexp_textviewVal.setError("Required Field")
+        }
+
+        if (InsuranceExpDate_textviewVal.text.toString().equals("SELECT DATE")) {
+            isInputsValid=false
+            InsuranceExpDate_textviewVal.setError("Required Field")
+        }
+        
+        return isInputsValid
+    }
+
+
+
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {

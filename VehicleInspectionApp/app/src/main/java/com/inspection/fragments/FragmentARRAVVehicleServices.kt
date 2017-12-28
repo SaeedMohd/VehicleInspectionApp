@@ -4,16 +4,23 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import android.widget.AdapterView
 import android.widget.ListView
 
 import com.inspection.R
+import com.inspection.R.id.vehicleServicesListView
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.model.VehicleServiceHeader
 import com.inspection.model.VehicleServiceItem
+import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+import kotlinx.android.synthetic.main.temp.view.*
+import kotlinx.android.synthetic.main.vehicle_services_item.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -72,18 +79,67 @@ class FragmentARRAVVehicleServices : Fragment() {
         vehicleServicesListItems.add(VehicleServiceItem("Tire Repair"))
         vehicleServicesListItems.add(VehicleServiceItem("Tire Sales"))
 
+        vehicleServicesListItems.add(VehicleServiceHeader("Auto Body"))
+        vehicleServicesListItems.add(VehicleServiceItem("Damage Analysis/Estimating"))
+        vehicleServicesListItems.add(VehicleServiceItem("Frame/Unibody (Aluminum)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Motorcycle Collision Repair"))
+        vehicleServicesListItems.add(VehicleServiceItem("Paintless Dent Repair"))
+        vehicleServicesListItems.add(VehicleServiceItem("Body Panel Repair"))
+        vehicleServicesListItems.add(VehicleServiceItem("Detailing"))
+        vehicleServicesListItems.add(VehicleServiceItem("Auto Glass"))
+        vehicleServicesListItems.add(VehicleServiceItem("Painting/Refinishing"))
+        vehicleServicesListItems.add(VehicleServiceItem("Rustproofing/Undercoating"))
+        vehicleServicesListItems.add(VehicleServiceItem("Upholstery"))
+        vehicleServicesListItems.add(VehicleServiceItem("Frame/Unibody (Steel)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Marine (Boat) Collision Repair"))
+        vehicleServicesListItems.add(VehicleServiceItem("Plastic/Fiberglass Repair"))
+        vehicleServicesListItems.add(VehicleServiceItem("RV/Trailer Collision Repair"))
+        vehicleServicesListItems.add(VehicleServiceItem("Welding / Brazing"))
 
+        vehicleServicesListItems.add(VehicleServiceHeader("Marine"))
+        vehicleServicesListItems.add(VehicleServiceItem("Air Conditioning (electric)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Refrigeration (gas/electric)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Septic Systems"))
+        vehicleServicesListItems.add(VehicleServiceItem("Inboard Engines"))
+        vehicleServicesListItems.add(VehicleServiceItem("Outboard Engines (4-stroke)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Electrical (120-volt ac)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Furnaces (gas/electric)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Water Systems"))
+        vehicleServicesListItems.add(VehicleServiceItem("I/O Drive Units"))
+        vehicleServicesListItems.add(VehicleServiceItem("V-Drive Units"))
+        vehicleServicesListItems.add(VehicleServiceItem("Electrical (12-volt dc)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Septic Dump Station"))
+        vehicleServicesListItems.add(VehicleServiceItem("Bilge Systems"))
+        vehicleServicesListItems.add(VehicleServiceItem("Outboard Engines (2-stroke)"))
 
+        vehicleServicesListItems.add(VehicleServiceHeader("Recreational Vehicle"))
+        vehicleServicesListItems.add(VehicleServiceItem("Air Conditioning (electric)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Electrical (120-volt ac)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Furnaces (gas/electric)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Water Systems"))
+        vehicleServicesListItems.add(VehicleServiceItem("Brakes (hydraulic-surge)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Electrical (12-volt dc)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Hitch Systems"))
+        vehicleServicesListItems.add(VehicleServiceItem("Brakes (electric)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Refrigeration (gas/electric)"))
+        vehicleServicesListItems.add(VehicleServiceItem("Septic Systems"))
 
         var vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
 
         vehicleServicesListView.adapter = vehiclesArrayAdapter
+
+
+//        vehicleServicesListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
+//
+//        })
+
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
     }
 

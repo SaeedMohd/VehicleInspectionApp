@@ -4,6 +4,7 @@ import android.widget.ArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
 import android.view.LayoutInflater
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.inspection.R
@@ -56,6 +57,7 @@ class VehicleServicesArrayAdapter(context: Context?, itemsList: List<VehicleServ
             convertView!!.tag = holder
         } else {
             holder = convertView.tag as ViewHolder
+            holder.View = getItem(position)!!.getView(mInflater, convertView!!)
         }
         return convertView
     }
@@ -63,4 +65,6 @@ class VehicleServicesArrayAdapter(context: Context?, itemsList: List<VehicleServ
     class ViewHolder {
         var View: View? = null
     }
+
+
 }
