@@ -133,7 +133,7 @@
                 android:weightSum="2">
 
                 <TextView
-                    android:id="@+id/effective_date_textview"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/connumberll"
@@ -153,7 +153,7 @@
                     android:gravity="center_horizontal"
                     android:text="00"
                     android:inputType="number"
-                    android:textSize="?android:textAppearanceLarge"
+
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -247,7 +247,7 @@
                     android:gravity="center_horizontal"
                     android:text="00"
                     android:inputType="number"
-                    android:textSize="?android:textAppearanceLarge"
+
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -282,7 +282,6 @@
                     android:gravity="center_horizontal"
                     android:text=""
                     android:inputType="number"
-                    android:textSize="?android:textAppearanceLarge"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -317,7 +316,6 @@
                     android:ems="2"
                     android:text=""
                     android:inputType="number"
-                    android:textSize="?android:textAppearanceLarge"
                     android:textStyle="bold" />
             </LinearLayout>
 

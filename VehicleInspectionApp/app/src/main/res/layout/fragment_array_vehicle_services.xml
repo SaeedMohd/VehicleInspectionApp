@@ -4,11 +4,30 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FragmentARRAVFacility">
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:textAllCaps="true"
+        android:text="Vehicle Services"
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
     <ListView
-
+        android:id="@+id/vehicleServicesListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/white"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/titleTextView"
+        />
 
 
 
