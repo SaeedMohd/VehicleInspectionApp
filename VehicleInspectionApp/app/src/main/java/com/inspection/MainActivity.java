@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public DrawerNavigationListAdapter drawerNavigationListAdapter;
     private ActionBarDrawerToggle drawerToggle;
     public Toolbar toolbar;
+    public Button saveBtn;
     private ListView mDrawerList;
 
     Button btnRepairFacility, btnVehicleHealth, btnRepairHistory;
@@ -308,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         //mDrawerList.setOnItemClickListener(activity);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        saveBtn = (Button) findViewById(R.id.saveBtn);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerNavigationListAdapter = new DrawerNavigationListAdapter();
         mDrawerList.setAdapter(drawerNavigationListAdapter);

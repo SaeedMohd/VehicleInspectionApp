@@ -8,7 +8,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/generalInformationll"
-        android:weightSum="5"
         android:background="@color/light_gray">
         <TextView
             android:id="@+id/generalInformationTextView"
@@ -20,16 +19,7 @@
             android:textSize="18dp"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:layout_weight="3"
             android:background="@color/light_gray"
-            />
-        <Button
-            android:id="@+id/saveBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="2"
-            android:background="@drawable/cast_ic_stop_circle_filled_white"
             />
     </LinearLayout>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"

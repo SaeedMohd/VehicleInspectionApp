@@ -5,6 +5,7 @@ import android.app.Fragment
 import android.content.Context
 import android.hardware.input.InputManager
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -43,6 +44,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     var facilityNames = ArrayList<String>()
     var facilitiesList = ArrayList<AAAFacility>()
     var itemSelected = false
+    var facilityNameInputField: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,22 +55,24 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 
         (activity as MainActivity).supportActionBar!!.title = "Forms"
 
+//        Log.v("TAG IS" , tag)
         return inflater.inflate(R.layout.fragment_aar_manual_visitation_form, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        facilityNameInputField = facilityNameEditText
         facilityIdEditText.visibility = View.GONE
         facilityIdTextView.visibility = View.GONE
-
         facilityNameListView.visibility = View.GONE
 
         facilityNameEditText.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
             Log.v("********** focus is", "Focus is: "+b)
             itemSelected = !b
         })
-
+        generalInformationTextView.setOnClickListener({
+            validateInputs()
+        })
 
         facilityNameEditText.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
@@ -140,9 +144,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             dpd.show()
         }
 
-        saveBtn.setOnClickListener{
-            Toast.makeText(context,"Inputs is Valid: " + validateInputs(),Toast.LENGTH_LONG).show()
-        }
+
 
         facilityNameListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -167,6 +169,9 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 //            automotiveSpecialistEmailEditText.setText(facilitySelected.specialistEmail)
             facilityNameListView.visibility = View.GONE
             facilityNameListView.adapter = null
+            facilityNameEditText?.setError(null)
+            facilityRepresentativeNameEditText?.setError(null)
+            automotiveSpecialistEditText?.setError(null)
         })
     }
 
@@ -180,36 +185,37 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 
     }
 
-    fun validateInputs() : Boolean {
+    public fun validateInputs() : Boolean {
         var isInputsValid = true
 
-        facilityNameEditText.setError(null)
-        facilityRepresentativeNameEditText.setError(null)
-        automotiveSpecialistEditText.setError(null)
-        dateOfVisitationButton.setError(null)
 
-        if (facilityNameEditText.text.toString().equals("")) {
+        facilityNameEditText?.setError(null)
+        facilityRepresentativeNameEditText?.setError(null)
+        automotiveSpecialistEditText?.setError(null)
+        dateOfVisitationButton?.setError(null)
+
+        if (facilityNameInputField?.text.toString().isNullOrEmpty()) {
             isInputsValid=false
-            facilityNameEditText.setError("Required Field")
+            facilityNameInputField?.setError("Required Field")
         }
 
-        if (inspectionTypeEditText.selectedItem.toString().equals("")) {
+        if (inspectionTypeEditText?.selectedItem.toString().isNullOrEmpty()) {
             isInputsValid=false
 
         }
-        if (facilityRepresentativeNameEditText.text.toString().equals("")) {
+        if (facilityRepresentativeNameEditText?.text.toString().isNullOrEmpty()) {
             isInputsValid=false
-            facilityRepresentativeNameEditText.setError("Required Field")
+            facilityRepresentativeNameEditText?.setError("Required Field")
         }
 
-        if (automotiveSpecialistEditText.text.toString().equals("")) {
+        if (automotiveSpecialistEditText?.text.toString().isNullOrEmpty()) {
             isInputsValid=false
-            automotiveSpecialistEditText.setError("Required Field")
+            automotiveSpecialistEditText?.setError("Required Field")
         }
 
-        if (dateOfVisitationButton.text.toString().equals("SELECT DATE")) {
+        if (dateOfVisitationButton?.text.toString().equals("SELECT DATE")) {
             isInputsValid=false
-            dateOfVisitationButton.setError("Required Field")
+            dateOfVisitationButton?.setError("Required Field")
         }
 
         return isInputsValid

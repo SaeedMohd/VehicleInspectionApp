@@ -12,6 +12,12 @@ import android.widget.ArrayAdapter
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
+import android.telephony.PhoneNumberFormattingTextWatcher
+import android.telephony.PhoneNumberUtils
+import android.util.Log
+import android.widget.EditText
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+
 
 /**
  * A simple [Fragment] subclass.
@@ -68,15 +74,17 @@ class FragmentARRAVFacilityContinued : Fragment() {
         friday_closed_spinner.adapter = opHoursAdapter
         friday_open_spinner.adapter = opHoursAdapter
 
-        var emailTypeArray = arrayOf("Business", "Personnel")
+        var emailTypeArray = arrayOf("No Email","Business", "Personnel")
         var emailTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, emailTypeArray)
         emailTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         emailtype_textviewVal.adapter = emailTypeAdapter
 
-        var phoneTypeArray = arrayOf("Business", "Cell", "Fax", "Home")
+        var phoneTypeArray = arrayOf("No Phone","Business", "Cell", "Fax", "Home")
         var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray)
         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         phonetype_textviewVal.adapter = phoneTypeAdapter
+
+
 
     }
     // TODO: Rename method, update argument and hook method into UI event
@@ -84,6 +92,26 @@ class FragmentARRAVFacilityContinued : Fragment() {
 //        if (mListener != null) {
 //            mListener!!.onFragmentInteraction(uri)
 //        }
+    }
+
+
+
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
+
+        email_textviewVal.setError(null)
+        phone_textviewVal.setError(null)
+        if(emailtype_textviewVal.selectedItemId>0 && email_textviewVal.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            email_textviewVal.setError("Required Field")
+        }
+
+        if(phonetype_textviewVal.selectedItemId>0 && phone_textviewVal.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            phone_textviewVal.setError("Required Field")
+        }
+
+        return isInputsValid
     }
 
     override fun onAttach(context: Context?) {

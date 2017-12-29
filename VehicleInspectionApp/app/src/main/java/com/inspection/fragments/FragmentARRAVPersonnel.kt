@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -9,8 +10,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 
 import com.inspection.R
+import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
+import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -52,8 +57,410 @@ class FragmentARRAVPersonnel : Fragment() {
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         coSignerStateVal.adapter = statesAdapter
 
+        a1CertDateVal.setOnClickListener {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year,monthOfYear,dayOfMonth)
+                    a1CertDateVal!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+        }
+        a2CertDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a2CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a3CertDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a3CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a4CertDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a4CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a5CertDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a5CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a6CertDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a6CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a7CertDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a7CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a8CertDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a8CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        c1CertDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                c1CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
 
+        a1ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a1ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a2ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a2ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a3ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a3ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a4ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a4ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a5ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a5ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a6ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a6ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a7ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a7ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        a8ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                a8ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        c1ExpDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                c1ExpDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
     }
+
+
+
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
+
+        firstName_textviewVal.setError(null)
+        lastName_textviewVal.setError(null)
+        coSignerAddr1Val.setError(null)
+        coSignerAddr2Val.setError(null)
+        coSignerCityVal.setError(null)
+        coSignerZip4Val.setError(null)
+        coSignerZipVal.setError(null)
+        coSignerEmailVal.setError(null)
+        coSignerPhoneVal.setError(null)
+        coSignerCoEndDateVal.setError(null)
+        coSignerCoStartDateVal.setError(null)
+        a1CertDateVal.setError(null)
+        a1ExpDateVal.setError(null)
+        a2CertDateVal.setError(null)
+        a2ExpDateVal.setError(null)
+        a3CertDateVal.setError(null)
+        a3ExpDateVal.setError(null)
+        a4CertDateVal.setError(null)
+        a4ExpDateVal.setError(null)
+        a5CertDateVal.setError(null)
+        a5ExpDateVal.setError(null)
+        a6CertDateVal.setError(null)
+        a6ExpDateVal.setError(null)
+        a7CertDateVal.setError(null)
+        a7ExpDateVal.setError(null)
+        a8CertDateVal.setError(null)
+        a8ExpDateVal.setError(null)
+        c1CertDateVal.setError(null)
+        c1ExpDateVal.setError(null)
+
+        if(firstName_textviewVal.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            firstName_textviewVal.setError("Required Field")
+        }
+
+        if(lastName_textviewVal.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            lastName_textviewVal.setError("Required Field")
+        }
+
+        if (contractSignerCheckBox.isChecked) {
+            if(coSignerAddr1Val.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerAddr1Val.setError("Required Field")
+            }
+            if(coSignerAddr2Val.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerAddr2Val.setError("Required Field")
+            }
+            if(coSignerCityVal.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerCityVal.setError("Required Field")
+            }
+            if(coSignerZipVal.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerZipVal.setError("Required Field")
+            }
+            if(coSignerZip4Val.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerZip4Val.setError("Required Field")
+            }
+            if(coSignerPhoneVal.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerPhoneVal.setError("Required Field")
+            }
+            if(coSignerEmailVal.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerEmailVal.setError("Required Field")
+            }
+            if(coSignerCoStartDateVal.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerCoStartDateVal.setError("Required Field")
+            }
+            if(coSignerCoEndDateVal.text.toString().isNullOrEmpty()) {
+                isInputsValid=false
+                coSignerCoEndDateVal.setError("Required Field")
+            }
+        }
+        if (!a1CertDateVal.text.equals("SELECT DATE")) {
+            if(a1ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                a1ExpDateVal.setError("Required Field")
+            }
+        }
+
+        if (!a2CertDateVal.text.equals("SELECT DATE")) {
+            if(a2ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                a2ExpDateVal.setError("Required Field")
+            }
+        }
+
+        if (!a3CertDateVal.text.equals("SELECT DATE")) {
+            if(a3ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                a3ExpDateVal.setError("Required Field")
+            }
+        }
+
+        if (!a4CertDateVal.text.equals("SELECT DATE")) {
+            if(a4ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                a4ExpDateVal.setError("Required Field")
+            }
+        }
+
+        if (!a5CertDateVal.text.equals("SELECT DATE")) {
+            if(a5ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                a5ExpDateVal.setError("Required Field")
+            }
+        }
+
+        if (!a6CertDateVal.text.equals("SELECT DATE")) {
+            if(a6ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                a6ExpDateVal.setError("Required Field")
+            }
+        }
+
+        if (!a7CertDateVal.text.equals("SELECT DATE")) {
+            if(a7ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                a7ExpDateVal.setError("Required Field")
+            }
+        }
+
+        if (!a8CertDateVal.text.equals("SELECT DATE")) {
+            if(a8ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                a8ExpDateVal.setError("Required Field")
+            }
+        }
+
+        if (!c1CertDateVal.text.equals("SELECT DATE")) {
+            if(c1ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid=false
+                c1ExpDateVal.setError("Required Field")
+            }
+        }
+
+
+        return isInputsValid
+    }
+
+
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

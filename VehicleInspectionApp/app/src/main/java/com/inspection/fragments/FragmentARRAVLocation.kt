@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.inspection.R
+import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
+import kotlinx.android.synthetic.main.fragment_arravlocation.*
 
 
 /**
@@ -32,6 +34,39 @@ class FragmentARRAVLocation : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater!!.inflate(R.layout.fragment_arravlocation, container, false)
+    }
+
+
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
+
+        loc1addr1latitude.setError(null)
+        loc1addr2latitude.setError(null)
+        loc1addr1longitude.setError(null)
+        loc1addr2longitude.setError(null)
+
+        if(loc1addr1latitude.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            loc1addr1latitude.setError("Required Field")
+        }
+
+        if(loc1addr2latitude.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            loc1addr2latitude.setError("Required Field")
+        }
+
+        if(loc1addr1longitude.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            loc1addr1longitude.setError("Required Field")
+        }
+
+        if(loc1addr2longitude.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            loc1addr2longitude.setError("Required Field")
+        }
+
+
+        return isInputsValid
     }
 
     companion object {

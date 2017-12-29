@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +13,8 @@ import android.widget.ArrayAdapter
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -54,7 +57,52 @@ class FragmentARRAVFacility : Fragment() {
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         facilitytype_textviewVal.adapter = facilityTypedataAdapter
 
-    }
+        ARDexp_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                ARDexp_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        ARDexp_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                ARDexp_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        InsuranceExpDate_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                InsuranceExpDate_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        }
 
 
     fun validateInputs() : Boolean {
@@ -64,7 +112,7 @@ class FragmentARRAVFacility : Fragment() {
         ARDexp_textviewVal.setError(null)
         InsuranceExpDate_textviewVal.setError(null)
 
-        if (ARDno_textviewVal.text.toString().equals("")) {
+        if (ARDno_textviewVal.text.toString().isNullOrEmpty()) {
             isInputsValid=false
             ARDno_textviewVal.setError("Required Field")
         }
@@ -78,7 +126,7 @@ class FragmentARRAVFacility : Fragment() {
             isInputsValid=false
             InsuranceExpDate_textviewVal.setError("Required Field")
         }
-        
+
         return isInputsValid
     }
 

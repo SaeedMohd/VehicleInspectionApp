@@ -419,7 +419,7 @@
                 android:text=""
                 android:maxLength="12"
                 android:hint="Enter ARD Number"
-                android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                 android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:textSize="12dp"

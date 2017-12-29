@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
-import android.app.Fragment
+import android.R.attr.fragment
+
 import android.content.Context
 
 import android.os.Bundle
@@ -13,9 +14,14 @@ import android.view.ViewGroup
 import com.inspection.R
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
+import android.widget.Toast
 import com.inspection.MainActivity
 
 import kotlinx.android.synthetic.main.fragment_main_visitation.*
+import android.R.attr.tag
+import android.app.AlertDialog
+import android.util.Log
+
 
 /**
  * A simple [Fragment] subclass.
@@ -75,8 +81,15 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 //        tabs.set(container)
 
         mSectionsPagerAdapter = SectionsPagerAdapter (fragmentManager!!)
+        container.offscreenPageLimit = 16
         container.adapter = mSectionsPagerAdapter
 //        tabs.setupWithViewPager(container)
+
+        (activity as MainActivity).saveBtn.setOnClickListener{
+
+//            Toast.makeText(context,"Validation Result : " + validateFormsInputs(),Toast.LENGTH_LONG).show()
+            validateFormsInputs()
+        }
 
     }
     override fun onAttach(context: Context?) {
@@ -116,6 +129,54 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 //        // TODO: Update argument type and name
 //        fun onFragmentInteraction(uri: Uri)
 //    }
+
+    fun validateFormsInputs(): Boolean {
+        var isValidInput : Boolean = true
+        var errorText : String = ""
+
+        val fragmentVisitation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":0" ) as FragmentARRAnualVisitation
+        val fragmentFacility = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1" ) as FragmentARRAVFacility
+        val fragmentFacilityContinued = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2" ) as FragmentARRAVFacilityContinued
+        val fragmentFacilityLocation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3" ) as FragmentARRAVLocation
+        val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4" ) as FragmentARRAVPersonnel
+
+
+//        if (!fragmentVisitation.validateInputs()) {
+//                isValidInput = !isValidInput
+//                errorText = " Please complete General Information Form"
+//        }
+//        else if (!fragmentFacility.validateInputs()){
+//            isValidInput = !isValidInput
+//            errorText += "Please complete Facility Form"
+//        }
+//        else if (!fragmentFacilityContinued.validateInputs()){
+//            isValidInput = !isValidInput
+//            errorText += "Please complete Facility Continued Form"
+//        }
+//        else if (!fragmentFacilityLocation.validateInputs()){
+//            isValidInput = !isValidInput
+//            errorText += "Please complete Location Information Form"
+//        }
+        if (!fragmentPersonnel.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Personnel Information Form"
+        }
+
+        val simpleAlert = AlertDialog.Builder(context).create()
+        simpleAlert.setTitle("Validation Result")
+        if (!errorText.isNullOrEmpty())
+            simpleAlert.setMessage(errorText)
+        else
+            simpleAlert.setMessage("Validation Completed Succesfully  ... Proceed to submission? ")
+        simpleAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", {
+            dialogInterface, i ->
+            Toast.makeText(context, "You clicked on OK", Toast.LENGTH_SHORT).show()
+        })
+        simpleAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",{dialogInterface, i -> })
+
+        simpleAlert.show()
+        return isValidInput
+    }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match
@@ -175,6 +236,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 //                1 -> ft = TopFragment.newInstance("Test")
 //                else -> ft = MainFragment.newInstance("Test")
             }
+
             return ft
         }
 
