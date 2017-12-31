@@ -139,29 +139,53 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         val fragmentFacilityContinued = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2" ) as FragmentARRAVFacilityContinued
         val fragmentFacilityLocation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3" ) as FragmentARRAVLocation
         val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4" ) as FragmentARRAVPersonnel
+        val fragmentRepairShopPortal= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":6" ) as FragmentARRAVRepairShopPortalAddendum
+        val fragmentScopeOfServices= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8" ) as FragmentARRAVScopeOfService
+        val fragmentPrograms= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11" ) as FragmentARRAVPrograms
+        val fragmentFcServices= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":12" ) as FragmentARRAVFacilityServices
+        val fragmentAffiliations= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":13" ) as FragmentARRAVAffliations
 
 
-//        if (!fragmentVisitation.validateInputs()) {
-//                isValidInput = !isValidInput
-//                errorText = " Please complete General Information Form"
-//        }
-//        else if (!fragmentFacility.validateInputs()){
-//            isValidInput = !isValidInput
-//            errorText += "Please complete Facility Form"
-//        }
-//        else if (!fragmentFacilityContinued.validateInputs()){
-//            isValidInput = !isValidInput
-//            errorText += "Please complete Facility Continued Form"
-//        }
-//        else if (!fragmentFacilityLocation.validateInputs()){
-//            isValidInput = !isValidInput
-//            errorText += "Please complete Location Information Form"
-//        }
-        if (!fragmentPersonnel.validateInputs()){
+        if (!fragmentVisitation.validateInputs()) {
+                isValidInput = !isValidInput
+                errorText = " Please complete General Information Form"
+        }
+        else if (!fragmentFacility.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Facility Form"
+        }
+        else if (!fragmentFacilityContinued.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Facility Continued Form"
+        }
+        else if (!fragmentFacilityLocation.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Location Information Form"
+        }
+        else if (!fragmentPersonnel.validateInputs()){
             isValidInput = !isValidInput
             errorText += "Please complete Personnel Information Form"
         }
-
+        else if (!fragmentRepairShopPortal.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Repair Shop Portal Addendum Form"
+        }
+        else if (!fragmentScopeOfServices.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Scope of Services Form"
+        }
+        else if (!fragmentPrograms.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Programs Form"
+        }
+         else if (!fragmentFcServices.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Facility Services Form"
+        }
+        else if (!fragmentAffiliations.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Affiliations Form"
+        }
         val simpleAlert = AlertDialog.Builder(context).create()
         simpleAlert.setTitle("Validation Result")
         if (!errorText.isNullOrEmpty())

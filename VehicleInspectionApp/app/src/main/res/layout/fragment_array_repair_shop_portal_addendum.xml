@@ -59,7 +59,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:text="Select Date"
+                    android:text="SELECT DATE"
                     android:textColor="@color/blue_krayola" />
             </LinearLayout>
 
@@ -89,7 +89,7 @@
                     android:layout_toRightOf="@id/contract_number_textview"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:text="Select Date"
+                    android:text="SELECT DATE"
                     android:textColor="@color/blue_krayola" />
             </LinearLayout>
 

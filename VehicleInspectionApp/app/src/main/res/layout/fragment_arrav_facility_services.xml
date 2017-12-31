@@ -33,8 +33,8 @@
             android:padding="5dp">
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_marginTop="10dp"
+                android:weightSum="3"
+                android:layout_margin="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/connumberll">
                 <TextView
@@ -46,23 +46,22 @@
                     android:layout_gravity="center_vertical"
                     android:textStyle="bold"
                     />
-                <Button
-                    android:id="@+id/complaint_id_textviewVal"
+                <Spinner
+                    android:id="@+id/fc_services_textviewVal"
                     android:layout_toRightOf="@id/contract_number_textview"
                     android:layout_width="0dp"
                     android:text="Select Service"
                     android:textColor="@color/blue_krayola"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_gravity="center_vertical"
-                    android:background="@null"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
+                android:weightSum="3"
                 android:layout_below="@id/connumberll"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/contypell">
                 <TextView
@@ -76,23 +75,23 @@
                     android:textStyle="bold"
                     />
                 <Button
-                    android:id="@+id/effective_date_textviewVal"
+                    android:id="@+id/fceffective_date_textviewVal"
                     android:layout_toRightOf="@id/contract_type_textview"
                     android:layout_below="@id/connumberll"
                     android:layout_width="0dp"
                     android:text="select date"
                     android:textColor="@color/blue_krayola"
                     android:background="@null"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
+                android:weightSum="3"
                 android:layout_below="@id/contypell"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/officell">
                 <TextView
@@ -106,7 +105,7 @@
                     android:textStyle="bold"
                     />
                 <Button
-                    android:id="@+id/expiration_date_textviewVal"
+                    android:id="@+id/fcexpiration_date_textviewVal"
                     android:layout_toRightOf="@id/office_textview"
                     android:layout_below="@id/contypell"
                     android:layout_width="0dp"
@@ -114,24 +113,22 @@
                     android:textColor="@color/blue_krayola"
                     android:background="@null"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
                 android:layout_below="@id/officell"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/AssignedToll">
                 <TextView
                     android:id="@+id/comments_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/officell"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
                     android:text="Comments: "
                     android:textStyle="bold"
                     />
@@ -139,7 +136,7 @@
 
             <EditText
                 android:id="@+id/comments_editTextVal"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:layout_below="@id/AssignedToll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

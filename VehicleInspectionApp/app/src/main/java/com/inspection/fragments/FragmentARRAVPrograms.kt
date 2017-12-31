@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +13,10 @@ import android.widget.ArrayAdapter
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import kotlinx.android.synthetic.main.fragment_arrav_programs.*
+import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -38,6 +43,61 @@ class FragmentARRAVPrograms : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        effective_date_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                effective_date_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        expiration_date_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                expiration_date_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        var programsArray= arrayOf("AAA Batteries", "AAA Car Care Center", "AAA OnBoard", "AAR Advantage", "Appointments", "Approved Auto Body", "Approved Auto Glass", "Battery Consignment", "Car Buying Service", "Discounts & Rewards", "IP Waiver Facility", "IP Waiver Individual", "Member Preferred Repair", "Preferred Service Provider", "Priority Service", "Repair Shop Portal", "Vehicle Inspection Program")
+        var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, programsArray)
+        programsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        program_name_textviewVal.adapter = programsAdapter
+
+    }
+
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
+
+        effective_date_textviewVal.setError(null)
+        comments_editTextVal.setError(null)
+
+
+        if(effective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            isInputsValid=false
+            effective_date_textviewVal.setError("Required Field")
+        }
+
+        if(comments_editTextVal.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            comments_editTextVal.setError("Required Field")
+        }
+
+        return isInputsValid
     }
 
     override fun onAttach(context: Context?) {

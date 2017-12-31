@@ -7,8 +7,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 
 import com.inspection.R
+import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
+import kotlinx.android.synthetic.main.fragment_arravlocation.*
 
 /**
  * A simple [Fragment] subclass.
@@ -35,6 +39,43 @@ class FragmentARRAVScopeOfService : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var warrantyArray= arrayOf("12/12/", "24/24", "36/36", "48/48", "60/60", "Lifetime")
+        var warrantyAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, warrantyArray)
+        warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        warrantyPeriodVal.adapter = warrantyAdapter
+    }
+
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
+
+        fixedLaborRateEditText.setError(null)
+        diagnosticRateEditText.setError(null)
+        laborRateMatrixMaxEditText.setError(null)
+        laborRateMatrixMinEditText.setError(null)
+
+
+        if(fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            fixedLaborRateEditText.setError("Required Field")
+        }
+
+        if(diagnosticRateEditText.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            diagnosticRateEditText.setError("Required Field")
+        }
+
+        if(laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            laborRateMatrixMaxEditText.setError("Required Field")
+        }
+
+        if(laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            laborRateMatrixMinEditText.setError("Required Field")
+        }
+
+
+        return isInputsValid
     }
 
     override fun onAttach(context: Context?) {

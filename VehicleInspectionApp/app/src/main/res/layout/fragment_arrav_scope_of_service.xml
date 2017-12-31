@@ -53,6 +53,10 @@
                     android:layout_toRightOf="@id/contract_number_textview"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:textSize="12dp"
+                    android:hint="Please enter fixed labor rate"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
                     android:layout_gravity="center_vertical"
                     android:background="@null"
                     android:layout_height="wrap_content" />
@@ -81,6 +85,10 @@
                     android:layout_toRightOf="@id/contract_number_textview"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:textSize="12dp"
+                    android:hint="Please enter diagnostic rate"
                     android:layout_gravity="center_vertical"
                     android:background="@null"
                     android:layout_height="wrap_content" />
@@ -111,6 +119,10 @@
                     android:layout_width="0dp"
                     android:background="@null"
                     android:layout_weight="1"
+                    android:textSize="12dp"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:hint="Please enter labor rate min"
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -140,6 +152,10 @@
                     android:background="@null"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:textSize="12dp"
+                    android:hint="Please enter labor rate max"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -166,8 +182,13 @@
                     android:layout_below="@id/contypell"
                     android:layout_width="0dp"
                     android:background="@null"
+                    android:hint="Please enter number of Bays"
+                    android:textSize="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:maxLength="2"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -192,8 +213,13 @@
                     android:layout_below="@id/contypell"
                     android:layout_width="0dp"
                     android:background="@null"
+                    android:hint="Please enter number of Lifts"
                     android:layout_gravity="center_vertical"
+                    android:textSize="12dp"
                     android:layout_weight="1"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:maxLength="2"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -214,16 +240,15 @@
                     android:textStyle="bold"
                     />
 
-                <Button
-                    android:id="@+id/warrantyPeriodButton"
+                <Spinner
+                    android:id="@+id/warrantyPeriodVal"
                     android:layout_below="@id/contypell"
                     android:layout_width="0dp"
-                    android:background="@null"
-                    android:text="Click To Select"
-                    android:textColor="@color/blue_krayola"
-                    android:layout_gravity="center_vertical"
+                    android:text="test"
                     android:layout_weight="1"
+                    android:layout_marginTop="10dp"
                     android:layout_height="wrap_content" />
+
             </LinearLayout>
 
 

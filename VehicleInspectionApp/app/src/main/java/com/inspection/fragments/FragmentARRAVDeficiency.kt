@@ -40,6 +40,8 @@ class FragmentARRAVDeficiency : Fragment() {
 
     }
 
+
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 

@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.inspection.R
+import kotlinx.android.synthetic.main.fragment_arravlocation.*
+import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
+import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -35,7 +41,123 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        startDateButton.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                startDateButton!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        endDateButton.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                endDateButton!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        addendumSignedDateButton.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                addendumSignedDateButton!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        inspectionDateButton.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                inspectionDateButton!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
     }
+
+
+
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
+
+        startDateButton.setError(null)
+        endDateButton.setError(null)
+        addendumSignedDateButton.setError(null)
+        numberOfCardsReaderEditText.setError(null)
+        inspectionDateButton.setError(null)
+        loggedIntoRspButton.setError(null)
+        numberOfUnacknowledgedRecordsEditText.setError(null)
+        numberOfInProgressTwoIns.setError(null)
+        numberOfInProgressWalkIns.setError(null)
+
+        if (!startDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+
+            if (endDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+                isInputsValid = false
+                endDateButton.setError("Required Field")
+            }
+
+            if (addendumSignedDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+                isInputsValid = false
+                addendumSignedDateButton.setError("Required Field")
+            }
+
+            if (inspectionDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+                isInputsValid = false
+                inspectionDateButton.setError("Required Field")
+            }
+
+            if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
+                numberOfCardsReaderEditText.setError("Required Field")
+            }
+
+            if (numberOfUnacknowledgedRecordsEditText.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
+                numberOfUnacknowledgedRecordsEditText.setError("Required Field")
+            }
+
+            if (numberOfInProgressTwoIns.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
+                numberOfInProgressTwoIns.setError("Required Field")
+            }
+
+            if (numberOfInProgressWalkIns.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
+                numberOfInProgressWalkIns.setError("Required Field")
+            }
+
+
+        }
+
+
+        return isInputsValid
+    }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
