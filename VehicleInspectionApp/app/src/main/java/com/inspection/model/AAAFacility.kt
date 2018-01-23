@@ -16,5 +16,4 @@ class AAAFacility {
     var phone = ""
     var email = ""
     var ownerName = ""
-
 }

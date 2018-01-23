@@ -38,6 +38,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
     private var mParam2: String? = null
     var mViewPager: ViewPager? = null
     var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+
 //    private var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +84,24 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         mSectionsPagerAdapter = SectionsPagerAdapter (fragmentManager!!)
         container.offscreenPageLimit = 16
         container.adapter = mSectionsPagerAdapter
+        container?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+            override fun onPageSelected(position: Int) {
+//                Toast.makeText(activity,"On RESUME CALLED",Toast.LENGTH_LONG).show()
+                if (position==4) {
+                    val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel
+                    fragmentPersonnel.fillDropDownData()
+                }
+
+            }
+
+        })
 //        tabs.setupWithViewPager(container)
 
         (activity as MainActivity).saveBtn.setOnClickListener{
@@ -144,6 +163,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         val fragmentPrograms= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11" ) as FragmentARRAVPrograms
         val fragmentFcServices= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":12" ) as FragmentARRAVFacilityServices
         val fragmentAffiliations= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":13" ) as FragmentARRAVAffliations
+        val fragmentDefficiencies= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":14" ) as FragmentARRAVDeficiency
 
 
         if (!fragmentVisitation.validateInputs()) {
@@ -185,6 +205,11 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         else if (!fragmentAffiliations.validateInputs()){
             isValidInput = !isValidInput
             errorText += "Please complete Affiliations Form"
+        }
+        else if (!fragmentDefficiencies.validateInputs()){
+            isValidInput = !isValidInput
+            errorText += "Please complete Deficiencies Form"
+
         }
         val simpleAlert = AlertDialog.Builder(context).create()
         simpleAlert.setTitle("Validation Result")

@@ -1,6 +1,8 @@
 package com.inspection.fragments
 
+import android.app.DatePickerDialog
 import android.content.Context
+import android.database.DatabaseErrorHandler
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,7 +13,11 @@ import android.widget.ArrayAdapter
 
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import kotlinx.android.synthetic.main.fragment_arrav_programs.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -38,9 +44,84 @@ class FragmentARRAVDeficiency : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var deffArray= arrayOf("AAR Portal", "Advertising", "Appearance", "ASE Certification", "Battery Service Program", "Billing", "Customer Facilities", "Customer Satisfaction", "Excessive Complaints", "Fraudulent ASE Certificate", "Gross incompetence" ,"Insurance Certificate Licenses", "Priority Service", "Quality Control", "Scope of Service", "Show Your Card and Save", "Signs and Certificates", "Staff Training", "Termination", "Tools and Equipment", "Vehicle Health Alerts", "Warranty")
+        var deffAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, deffArray)
+        deffAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        deff_dropdown.adapter = deffAdapter
+
+        visitationDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                visitationDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        clearedDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                clearedDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        DateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                DateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+
     }
 
+    fun validateInputs() : Boolean {
+        var isInputsValid = true
 
+        clearedDateBtn.setError(null)
+        visitationDateBtn.setError(null)
+        DateBtn.setError(null)
+
+
+        if(clearedDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            isInputsValid=false
+            clearedDateBtn.setError("Required Field")
+        }
+
+        if(visitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            isInputsValid=false
+            visitationDateBtn.setError("Required Field")
+        }
+
+        if(DateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            isInputsValid=false
+            DateBtn.setError("Required Field")
+        }
+
+        return isInputsValid
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

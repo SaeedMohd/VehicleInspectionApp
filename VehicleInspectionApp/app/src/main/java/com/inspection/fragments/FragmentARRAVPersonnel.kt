@@ -1,19 +1,38 @@
 package com.inspection.fragments
 
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.inspection.MainActivity
 
 import com.inspection.R
+import com.inspection.R.id.progressBar
+import com.inspection.Utils.Consts
+import com.inspection.model.AAAFacility
+import com.inspection.model.AAAPersonnelType
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
+import org.json.JSONArray
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +47,8 @@ class FragmentARRAVPersonnel : Fragment() {
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
+    private var personnelTypeList  = ArrayList<AAAPersonnelType>()
+    private var personTypeArray = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +56,12 @@ class FragmentARRAVPersonnel : Fragment() {
             mParam1 = arguments!!.getString(ARG_PARAM1)
             mParam2 = arguments!!.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+
         return inflater!!.inflate(R.layout.fragment_arravpersonnel, container, false)
     }
 
@@ -46,12 +69,29 @@ class FragmentARRAVPersonnel : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //inputField.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 //
-
-        var personTypeArray = arrayOf("Assistant Manager",  "Body Shop Manager", "Cashier",  "Chief Executive Officer",  "Chief Financial Officer", "Controller",  "Delivery Driver", "Director", "Fixed Ops Director", "Floating Manager",  "Foreman", "General Manager", "General Partner", "General Service", "Limited Partner", "Manager", "Managing Member", "Marketing Manager", "Member", "Office Manager", "Owner", "Partner", "Parts and Service Director", "Parts Manager", "Porter", "President", "Registered Agent", "Retail Manager", "Secretary Service", "Director", "Service Manager", "Service Writer", "Shop Foreman", "Store Manager", "Supervisor", "Technician", "Treasurer", "Vice President")
-        var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
-        personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        personType_textviewVal.adapter = personTypeAdapter
-
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL+(activity as MainActivity).FacilityNumber,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            //                        val facResult = JSONArray(response.toString())
+//                        val jObject = JSONObject(response.toString())
+//                        val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
+//                        val facResult = jObject.getJSONArray("")
+//                        peronnelTypeList = Gson().fromJson(facResult.toString() , Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+                            personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+                            personTypeArray.clear()
+                            for (fac in personnelTypeList) {
+                                personTypeArray.add(fac.personneltypename)
+                            }
+                            var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
+                            personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            personType_textviewVal.adapter = personTypeAdapter
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading personnel Types")
+                Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
+            }))
+        }
         var statesArray = arrayOf("Alabama ","Alaska ","Arizona ","Arkansas ","California ","Colorado ","Connecticut ","Delaware ","Florida ","Georgia ","Hawaii ","Idaho ","Illinois","Indiana ","Iowa ","Kansas ","Kentucky ","Louisiana ","Maine ","Maryland ","Massachusetts ","Michigan ","Minnesota ","Mississippi ","Missouri ","Montana","Nebraska ","Nevada ","New Hampshire ","New Jersey ","New Mexico ","New York ","North Carolina ","North Dakota ","Ohio ","Oklahoma ","Oregon ","Pennsylvania","Rhode Island ","South Carolina ","South Dakota ","Tennessee ","Texas ","Utah ","Vermont ","Virginia ","Washington ","West Virginia ","Wisconsin ","Wyoming")
         var statesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, statesArray)
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -310,6 +350,63 @@ class FragmentARRAVPersonnel : Fragment() {
         }
     }
 
+    fun fillDropDownData (){
+        var progressBar: ProgressBar = this.progressBar1
+        progressBar.visibility = View.VISIBLE
+        (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+//        Thread(Runnable {
+//            // dummy thread mimicking some operation whose progress cannot be tracked
+//
+//            // display the indefinite progressbar
+//            activity!!.runOnUiThread(java.lang.Runnable {
+//                progressBar.visibility = View.VISIBLE
+//            })
+//
+//            // performing some dummy time taking operation
+//            try {
+//                var i=0;
+//                while(i<Int.MAX_VALUE){
+//                    i++
+//                }
+//            } catch (e: InterruptedException) {
+//                e.printStackTrace()
+//            }
+//
+//            // when the task is completed, make progressBar gone
+//            activity!!.runOnUiThread(java.lang.Runnable {
+//                progressBar.visibility = View.GONE
+//            })
+//        }).start()
+
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL,//+(activity as MainActivity).FacilityNumber,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            //                        val facResult = JSONArray(response.toString())
+//                        val jObject = JSONObject(response.toString())
+//                        val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
+//                        val facResult = jObject.getJSONArray("")
+//                        peronnelTypeList = Gson().fromJson(facResult.toString() , Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+                            personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+                            personTypeArray.clear()
+                            for (fac in personnelTypeList) {
+                                personTypeArray.add(fac.personneltypename)
+                            }
+                            var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
+                            personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            personType_textviewVal.adapter = personTypeAdapter
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading personnel Types")
+                Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
+            }))
+
+        }
+        progressBar.visibility = View.GONE
+        (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
 
 
     fun validateInputs() : Boolean {

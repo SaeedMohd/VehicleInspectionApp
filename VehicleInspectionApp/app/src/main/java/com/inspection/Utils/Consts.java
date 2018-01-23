@@ -19,4 +19,9 @@ public class Consts {
 
     public final static String OPPONENTS = "opponents";
     public static final String CONFERENCE_TYPE = "conference_type";
+
+    // WebServices
+    public static final String personnelTypeURL = "http://www.jet-matics.com:5000/getPersonnelTypes?facilityId=540554";
+
+
 }
