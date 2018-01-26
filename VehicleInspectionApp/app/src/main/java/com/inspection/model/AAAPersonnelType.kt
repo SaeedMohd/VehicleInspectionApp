@@ -5,4 +5,5 @@ package com.inspection.model
  */
 class AAAPersonnelType {
     var personneltypename = ""
+    var personneltypeid = 0
 }

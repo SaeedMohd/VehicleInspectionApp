@@ -22,6 +22,7 @@ public class Consts {
 
     // WebServices
     public static final String personnelTypeURL = "http://www.jet-matics.com:5000/getPersonnelTypes?facilityId=540554";
+    public static final String personnelDetailsURL = "http://jet-matics.com:5000/getPersonnelsDetails?";
 
 
 }

@@ -4,6 +4,8 @@ package com.inspection.fragments
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.content.Context
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -11,10 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ArrayAdapter
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -26,6 +26,7 @@ import com.inspection.R
 import com.inspection.R.id.progressBar
 import com.inspection.Utils.Consts
 import com.inspection.model.AAAFacility
+import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.AAAPersonnelType
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
@@ -33,7 +34,11 @@ import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.DateFormat
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -44,14 +49,22 @@ import java.util.*
  */
 class FragmentARRAVPersonnel : Fragment() {
 
+
+
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
     private var personnelTypeList  = ArrayList<AAAPersonnelType>()
+    private var personnelDetailsList  = ArrayList<AAAPersonnelDetails>()
     private var personTypeArray = ArrayList<String>()
+    private var personListArray = ArrayList<String>()
+    private var firstSelection = false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
+    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    private val sdf = SimpleDateFormat("dd MMM yyyy", Locale.US)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (arguments != null) {
             mParam1 = arguments!!.getString(ARG_PARAM1)
             mParam2 = arguments!!.getString(ARG_PARAM2)
@@ -96,6 +109,21 @@ class FragmentARRAVPersonnel : Fragment() {
         var statesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, statesArray)
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         coSignerStateVal.adapter = statesAdapter
+
+        endDateVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                endDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
 
         a1CertDateVal.setOnClickListener {
                 val c = Calendar.getInstance()
@@ -381,6 +409,7 @@ class FragmentARRAVPersonnel : Fragment() {
 //        }).start()
 
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            firstSelection=false
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL,//+(activity as MainActivity).FacilityNumber,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
@@ -391,6 +420,7 @@ class FragmentARRAVPersonnel : Fragment() {
 //                        peronnelTypeList = Gson().fromJson(facResult.toString() , Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
                             personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
                             personTypeArray.clear()
+                            personTypeArray.add("Not Selected")
                             for (fac in personnelTypeList) {
                                 personTypeArray.add(fac.personneltypename)
                             }
@@ -406,8 +436,107 @@ class FragmentARRAVPersonnel : Fragment() {
         }
         progressBar.visibility = View.GONE
         (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        personType_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                    personnelNamesList.visibility = View.GONE
+                    if (position > 0) {
+//                        Toast.makeText(context, "You have Selected " + personType_textviewVal.selectedItem.toString() + " ID : " + getTypeID(personType_textviewVal.selectedItem.toString()), Toast.LENGTH_SHORT).show()
+                        (activity as MainActivity).FacilityNumber = "540554"
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsURL+"facilityId=" + (activity as MainActivity).FacilityNumber+"&personnelTypeId="+getTypeID(personType_textviewVal.selectedItem.toString()),
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread(Runnable {
+                                        personnelDetailsList = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
+                                        if (personnelDetailsList.size >=1) {
+                                            personListArray.clear()
+                                            if (personnelDetailsList.size==1) personListArray.add("Add New")
+                                            for (perDetails in personnelDetailsList) {
+                                                personListArray.add("First Name: "+perDetails.firstname+"- Last Name: "+perDetails.lastname)
+                                            }
+                                            var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
+                                            personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                            personnelNamesList.visibility = View.VISIBLE
+                                            personnelNamesList.adapter = personDtlsAdapter
+                                        }
+                                    })
+                                }, Response.ErrorListener {
+                            Log.v("error while loading", "error while loading personnel Types")
+                            Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
+                        }))
+
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                    /*Do something if nothing selected*/
+
+
+                }
+            }
+
+        personnelNamesList.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
+//            itemSelected = true
+                var pos = -1
+                if (personnelDetailsList.size==1) {
+                    if (i==0) {
+                        personnelNamesList.visibility = View.GONE
+                    } else pos=i-1
+                } else pos = i
+
+                if (pos >-1) {
+                    personnelNamesList.visibility = View.GONE
+                    firstName_textviewVal.setText((personnelDetailsList.get(pos)).firstname)
+                    lastName_textviewVal.setText((personnelDetailsList.get(pos)).lastname)
+                    certNo_textviewVal.setText((personnelDetailsList.get(pos)).certificationnum)
+                    rspUserID_textviewVal.setText(if (((personnelDetailsList.get(pos)).rsp_username).equals("NULL")) "" else ((personnelDetailsList.get(pos)).rsp_username))
+                    rspEmail_textviewVal.setText(if (((personnelDetailsList.get(pos)).rsp_email).equals("NULL")) "" else ((personnelDetailsList.get(pos)).rsp_email))
+                    certNo_textviewVal.setText((personnelDetailsList.get(pos)).certificationnum)
+                    seniorityDateVal.setText(if (((personnelDetailsList.get(pos)).senioritydate).equals("NULL")) "" else ((personnelDetailsList.get(pos)).senioritydate))
+
+
+//                    val date = LocalDate.parse(string, formatter)
+
+                    startDateVal.setText(if (((personnelDetailsList.get(pos)).startdate).isNullOrEmpty()) "" else LocalDate.parse(personnelDetailsList.get(pos).startdate.substring(0,10), strFormatter).toString())
+//                    sdf.format(LocalDate.parse(personnelDetailsList.get(pos).startdate.substring(0,10),strFormatter))
+//                    Log.v("FORMAT 1 ----- : " , sdf.format(LocalDate.parse(personnelDetailsList.get(pos).startdate.substring(0,10),strFormatter)))
+
+//                    Log.v("START DATE  " , DateHelper.DF_SIMPLE_FORMAT.get().parse((personnelDetailsList.get(pos)).startdate, ParsePosition(0)).toString())
+                    endDateVal.setText(if (!((personnelDetailsList.get(pos)).startdate).equals("NULL") && ((personnelDetailsList.get(pos)).enddate).equals("NULL")) "SELECT DATE" else ((personnelDetailsList.get(pos)).enddate.substring(0,10)))
+                    primaryEmailCheckBox.isChecked = ((personnelDetailsList.get(pos)).primarymailrecipient==1)
+//                facilityAddressEditText.requestFocus()
+                    // Facility Name will be needed in other forms
+//                val personnelSelected = personListArray.filter { s -> s.facilityName == facilityNames.get(i) }.get(0)
+                    // Facility Number will be needed in other forms
+//                (activity as MainActivity).FacilityNumber = facilitySelected.facilityNumber.toString()
+//                automotiveSpecialistEditText.setText(facilitySelected.specialistName)
+//                facilityRepresentativeNameEditText.setText(if (facilitySelected.ownerName == " ") "" else facilitySelected.ownerName)
+//                facilityAddressEditText.setText(facilitySelected.address)
+//                facilityCityEditText.setText(facilitySelected.city)
+//                facilityStateEditText.setText(facilitySelected.state)
+//                facilityPhoneEditText.setText(facilitySelected.phone)
+//                facilityEmailEditText.setText(facilitySelected.email)
+//                facilityZipEditText.setText(facilitySelected.zip)
+////            automotiveSpecialistEmailEditText.setText(facilitySelected.specialistEmail)
+//                facilityNameListView.visibility = View.GONE
+//                facilityNameListView.adapter = null
+//                facilityNameEditText?.setError(null)
+//                facilityRepresentativeNameEditText?.setError(null)
+//                automotiveSpecialistEditText?.setError(null)
+                }
+
+        })
     }
 
+    fun getTypeID (typeName : String) : Int {
+        var typeID = -1
+        for (fac in personnelTypeList) {
+            if (fac.personneltypename.equals(typeName)){
+                typeID = fac.personneltypeid
+            }
+        }
+        return typeID
+    }
 
     fun validateInputs() : Boolean {
         var isInputsValid = true
