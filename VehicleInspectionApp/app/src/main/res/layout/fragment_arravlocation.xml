@@ -73,7 +73,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/locAddr1address"
+                    android:id="@+id/phylocAddr1address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -99,7 +99,7 @@
                     android:textStyle="bold"
                     />
                 <EditText
-                    android:id="@+id/loc1addr1latitude"
+                    android:id="@+id/phyloc1addr1latitude"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -125,7 +125,7 @@
                     android:text="Longitude:"
                     />
                 <EditText
-                    android:id="@+id/loc1addr1longitude"
+                    android:id="@+id/phyloc1addr1longitude"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -151,7 +151,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc1addr1branchno"
+                    android:id="@+id/phyloc1addr1branchno"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -176,7 +176,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc1addr1branchname"
+                    android:id="@+id/phyloc1addr1branchname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -201,7 +201,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/locAddr2address"
+                    android:id="@+id/phylocAddr2address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -217,6 +217,7 @@
                 android:orientation="horizontal"
                 android:weightSum="3"
                 android:paddingLeft="20dp"
+                android:visibility="gone"
                 android:id="@+id/loc1addr2latitudell">
                 <TextView
                     android:layout_width="0dp"
@@ -227,7 +228,7 @@
                     android:textStyle="bold"
                     />
                 <EditText
-                    android:id="@+id/loc1addr2latitude"
+                    android:id="@+id/phyloc1addr2latitude"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -242,6 +243,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="3"
+                android:visibility="gone"
                 android:paddingLeft="20dp"
                 android:id="@+id/loc1addr2longitudell">
                 <TextView
@@ -253,7 +255,7 @@
                     android:text="Longitude:"
                     />
                 <EditText
-                    android:id="@+id/loc1addr2longitude"
+                    android:id="@+id/phyloc1addr2longitude"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -269,6 +271,7 @@
                 android:orientation="horizontal"
                 android:weightSum="3"
                 android:paddingLeft="20dp"
+                android:visibility="gone"
                 android:id="@+id/loc1addr2branchnoll">
                 <TextView
                     android:layout_width="0dp"
@@ -279,7 +282,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc1addr2branchno"
+                    android:id="@+id/phyloc1addr2branchno"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -294,6 +297,7 @@
                 android:orientation="horizontal"
                 android:weightSum="3"
                 android:paddingLeft="20dp"
+                android:visibility="gone"
                 android:id="@+id/loc1addr2branchnamell">
                 <TextView
                     android:layout_width="0dp"
@@ -304,7 +308,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc1addr2branchname"
+                    android:id="@+id/phyloc1addr2branchname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -354,7 +358,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc2Addr1address"
+                    android:id="@+id/mailAddr1address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -382,7 +386,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc2addr2branchno"
+                    android:id="@+id/mailaddr1branchno"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -407,7 +411,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc1addr2branchname"
+                    android:id="@+id/mailaddr1branchname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -432,7 +436,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc2Addr2address"
+                    android:id="@+id/mailAddr2address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -449,6 +453,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="3"
+                android:visibility="gone"
                 android:paddingLeft="20dp"
                 android:id="@+id/loc2addr2branchnoll">
                 <TextView
@@ -475,6 +480,7 @@
                 android:orientation="horizontal"
                 android:weightSum="3"
                 android:paddingLeft="20dp"
+                android:visibility="gone"
                 android:id="@+id/loc2addr2branchnamell">
                 <TextView
                     android:layout_width="0dp"
@@ -535,7 +541,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc3Addr1address"
+                    android:id="@+id/billAddr1address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -562,7 +568,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc3addr1branchno"
+                    android:id="@+id/billaddr1branchno"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -587,7 +593,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc3addr1branchname"
+                    android:id="@+id/billaddr1branchname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -612,7 +618,7 @@
                     android:textStyle="bold"
                     />
                 <TextView
-                    android:id="@+id/loc3Addr2address"
+                    android:id="@+id/billAddr2address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -630,6 +636,7 @@
                 android:orientation="horizontal"
                 android:weightSum="3"
                 android:paddingLeft="20dp"
+                android:visibility="gone"
                 android:id="@+id/loc3addr2branchnoll">
                 <TextView
                     android:layout_width="0dp"
@@ -654,6 +661,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="3"
+                android:visibility="gone"
                 android:paddingLeft="20dp"
                 android:id="@+id/loc3addr2branchnamell">
                 <TextView

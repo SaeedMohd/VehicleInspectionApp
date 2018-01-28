@@ -93,10 +93,16 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
             }
             override fun onPageSelected(position: Int) {
-//                Toast.makeText(activity,"On RESUME CALLED",Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,"On RESUME CALLED",Toast.LENGTH_LONG).show()
                 if (position==4) {
                     val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel
-                    fragmentPersonnel.fillDropDownData()
+                    fragmentPersonnel.preparePersonnelPage()
+                } else if (position==3) {
+                    val fragmentLocations= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3") as FragmentARRAVLocation
+                    fragmentLocations.prepareLocationPage()
+                } else if (position==2) {
+                    val fragmentFacilityCont= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued
+                    fragmentFacilityCont.preparFacilityContinuedPage()
                 }
 
             }

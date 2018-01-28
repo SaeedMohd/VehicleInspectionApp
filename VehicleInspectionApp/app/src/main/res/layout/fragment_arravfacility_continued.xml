@@ -47,18 +47,21 @@
                     android:id="@+id/americanexpress_checkbox"
                     android:layout_width="match_parent"
                     android:text="American Express"
+                    android:clickable="false"
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content" />
                 <CheckBox
                     android:id="@+id/cash_checkbox"
                     android:layout_width="match_parent"
                     android:text="Cash"
+                    android:clickable="false"
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content" />
                 <CheckBox
                     android:id="@+id/check_checkbox"
                     android:layout_width="match_parent"
                     android:text="Check"
+                    android:clickable="false"
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content" />
                 <CheckBox
@@ -66,11 +69,13 @@
                     android:layout_width="match_parent"
                     android:text="Debit"
                     android:layout_marginTop="5dp"
+                    android:clickable="false"
                     android:layout_height="wrap_content" />
                 <CheckBox
                     android:id="@+id/discover_checkbox"
                     android:layout_width="match_parent"
                     android:text="Discover"
+                    android:clickable="false"
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content" />
                 <CheckBox
@@ -78,16 +83,19 @@
                     android:layout_width="match_parent"
                     android:text="Goodyear Credit Card"
                     android:layout_marginTop="5dp"
+                    android:clickable="false"
                     android:layout_height="wrap_content" />
                 <CheckBox
                     android:id="@+id/mastercard_checkbox"
                     android:layout_width="match_parent"
                     android:text="Master Card"
+                    android:clickable="false"
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content" />
                 <CheckBox
                     android:id="@+id/paypal_checkbox"
                     android:layout_width="match_parent"
+                    android:clickable="false"
                     android:text="PayPal"
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content" />
@@ -95,6 +103,7 @@
                     android:id="@+id/visa_checkbox"
                     android:layout_width="match_parent"
                     android:text="Visa"
+                    android:clickable="false"
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content" />
             </LinearLayout>

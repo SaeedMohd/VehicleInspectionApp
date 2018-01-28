@@ -16,7 +16,22 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.telephony.PhoneNumberUtils
 import android.util.Log
 import android.widget.EditText
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.inspection.MainActivity
+import com.inspection.Utils.Consts
+import com.inspection.model.AAAFacilityHours
+import com.inspection.model.AAALocations
+import com.inspection.model.AAAPaymentMethods
+import kotlinx.android.synthetic.main.fragment_arravlocation.*
+import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
+import java.text.SimpleDateFormat
+import java.util.ArrayList
 
 
 /**
@@ -32,7 +47,15 @@ class FragmentARRAVFacilityContinued : Fragment() {
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-
+    private var paymentMethodsList = ArrayList<AAAPaymentMethods>()
+    private var facilityHoursList = ArrayList<AAAFacilityHours>()
+    private var opHoursArray = arrayOf("Closed","00:00","00:30","01:00","01:30","02:00","02:30","03:00","03:30","04:00","04:30","05:00","05:30","06:00","06:30"
+            ,"07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00"
+            ,"13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"
+            ,"20:30","21:00","21:30","22:00","22:30","23:00","23:30")
+    private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    private val appFprmat = SimpleDateFormat("HH:mm")
+    private var dateTobeFormated = ""
 //    private var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,10 +76,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
 
         // Fill Dop Down
 
-        var opHoursArray = arrayOf("Closed","00:00","00:30","01:00","01:30","02:00","02:30","03:00","03:30","04:00","04:30","05:00","05:30","06:00","06:30"
-                                           ,"07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00"
-                                           ,"13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"
-                                           ,"20:30","21:00","21:30","22:00","22:30","23:00","23:30")
+
         var opHoursAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, opHoursArray)
         opHoursAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         saturday_closed_spinner.adapter = opHoursAdapter
@@ -112,6 +132,66 @@ class FragmentARRAVFacilityContinued : Fragment() {
         }
 
         return isInputsValid
+    }
+
+
+    fun preparFacilityContinuedPage (){
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.paymentMethodsURL,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            paymentMethodsList = Gson().fromJson(response.toString(), Array<AAAPaymentMethods>::class.java).toCollection(ArrayList())
+                            for (fac in paymentMethodsList) {
+                                if (fac.pmtmethodname.equals("Visa")) {
+                                    visa_checkbox.isChecked = (fac.active ==1)
+                                } else if (fac.pmtmethodname.equals("Mastercard")) {
+                                    mastercard_checkbox.isChecked = (fac.active == 1)
+                                } else if (fac.pmtmethodname.equals("American Express")) {
+                                    americanexpress_checkbox.isChecked = (fac.active == 1)
+                                } else if (fac.pmtmethodname.equals("Discover Card")) {
+                                    discover_checkbox.isChecked = (fac.active == 1)
+                                } else if (fac.pmtmethodname.equals("Pay Pal")) {
+                                    paypal_checkbox.isChecked = (fac.active == 1)
+                                } else if (fac.pmtmethodname.equals("Debit")) {
+                                    debit_checkbox.isChecked = (fac.active == 1)
+                                } else if (fac.pmtmethodname.equals("Cash")) {
+                                    cash_checkbox.isChecked = (fac.active == 1)
+                                } else if (fac.pmtmethodname.equals("Check")) {
+                                    check_checkbox.isChecked = (fac.active == 1)
+                                } else if (fac.pmtmethodname.equals("Goodyear Credit Card")) {
+                                    goodyear_checkbox.isChecked = (fac.active == 1)
+                                }
+                            }
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading Payment Methods")
+                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            }))
+//
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL+(activity as MainActivity).FacilityNumber,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            facilityHoursList = Gson().fromJson(response.toString(), Array<AAAFacilityHours>::class.java).toCollection(ArrayList())
+                            for (fac in facilityHoursList) {
+                                dateTobeFormated = appFprmat.format(dbFormat.parse(fac.tueopen))
+                                tuesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                Log.v("Formatted Date: ----- ", dateTobeFormated)
+                            }
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading Payment Methods")
+                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            }))
+
+
+        }
+    }
+
+    fun getHourPosition (strHour : String) : Int {
+        var pos=0
+
+        return pos
     }
 
     override fun onAttach(context: Context?) {

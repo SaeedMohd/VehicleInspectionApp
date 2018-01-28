@@ -59,8 +59,9 @@ class FragmentARRAVPersonnel : Fragment() {
     private var personTypeArray = ArrayList<String>()
     private var personListArray = ArrayList<String>()
     private var firstSelection = false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
-    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    private val sdf = SimpleDateFormat("dd MMM yyyy", Locale.US)
+//    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
+    private val appFprmat = SimpleDateFormat("dd MMM yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,18 +112,20 @@ class FragmentARRAVPersonnel : Fragment() {
         coSignerStateVal.adapter = statesAdapter
 
         endDateVal.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                endDateVal!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
+            if (endDateVal.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    endDateVal!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+            }
         }
 
         a1CertDateVal.setOnClickListener {
@@ -378,7 +381,7 @@ class FragmentARRAVPersonnel : Fragment() {
         }
     }
 
-    fun fillDropDownData (){
+    fun preparePersonnelPage (){
         var progressBar: ProgressBar = this.progressBar1
         progressBar.visibility = View.VISIBLE
         (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -486,6 +489,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 if (pos >-1) {
                     personnelNamesList.visibility = View.GONE
+                    personnelNamesList.adapter = null
                     firstName_textviewVal.setText((personnelDetailsList.get(pos)).firstname)
                     lastName_textviewVal.setText((personnelDetailsList.get(pos)).lastname)
                     certNo_textviewVal.setText((personnelDetailsList.get(pos)).certificationnum)
@@ -493,36 +497,21 @@ class FragmentARRAVPersonnel : Fragment() {
                     rspEmail_textviewVal.setText(if (((personnelDetailsList.get(pos)).rsp_email).equals("NULL")) "" else ((personnelDetailsList.get(pos)).rsp_email))
                     certNo_textviewVal.setText((personnelDetailsList.get(pos)).certificationnum)
                     seniorityDateVal.setText(if (((personnelDetailsList.get(pos)).senioritydate).equals("NULL")) "" else ((personnelDetailsList.get(pos)).senioritydate))
-
-
-//                    val date = LocalDate.parse(string, formatter)
-
-                    startDateVal.setText(if (((personnelDetailsList.get(pos)).startdate).isNullOrEmpty()) "" else LocalDate.parse(personnelDetailsList.get(pos).startdate.substring(0,10), strFormatter).toString())
-//                    sdf.format(LocalDate.parse(personnelDetailsList.get(pos).startdate.substring(0,10),strFormatter))
-//                    Log.v("FORMAT 1 ----- : " , sdf.format(LocalDate.parse(personnelDetailsList.get(pos).startdate.substring(0,10),strFormatter)))
-
-//                    Log.v("START DATE  " , DateHelper.DF_SIMPLE_FORMAT.get().parse((personnelDetailsList.get(pos)).startdate, ParsePosition(0)).toString())
-                    endDateVal.setText(if (!((personnelDetailsList.get(pos)).startdate).equals("NULL") && ((personnelDetailsList.get(pos)).enddate).equals("NULL")) "SELECT DATE" else ((personnelDetailsList.get(pos)).enddate.substring(0,10)))
+                    var dateTobeFormated =""
+                    if (!(((personnelDetailsList.get(pos)).startdate).isNullOrEmpty())) {
+                        dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetailsList.get(pos).startdate.substring(0,10)))
+                    }
+                    startDateVal.setText(dateTobeFormated)
+                    Log.v("FORMAT 1 ----- : " , dateTobeFormated)
+                    dateTobeFormated = ""
+                    if (!((personnelDetailsList.get(pos)).startdate).equals("NULL") && ((personnelDetailsList.get(pos)).enddate).equals("NULL")){
+                        dateTobeFormated = "SELECT DATE"
+                    } else {
+                        dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetailsList.get(pos).enddate.substring(0,10)))
+                    }
+                    endDateVal.setText(dateTobeFormated)
                     primaryEmailCheckBox.isChecked = ((personnelDetailsList.get(pos)).primarymailrecipient==1)
-//                facilityAddressEditText.requestFocus()
-                    // Facility Name will be needed in other forms
-//                val personnelSelected = personListArray.filter { s -> s.facilityName == facilityNames.get(i) }.get(0)
-                    // Facility Number will be needed in other forms
-//                (activity as MainActivity).FacilityNumber = facilitySelected.facilityNumber.toString()
-//                automotiveSpecialistEditText.setText(facilitySelected.specialistName)
-//                facilityRepresentativeNameEditText.setText(if (facilitySelected.ownerName == " ") "" else facilitySelected.ownerName)
-//                facilityAddressEditText.setText(facilitySelected.address)
-//                facilityCityEditText.setText(facilitySelected.city)
-//                facilityStateEditText.setText(facilitySelected.state)
-//                facilityPhoneEditText.setText(facilitySelected.phone)
-//                facilityEmailEditText.setText(facilitySelected.email)
-//                facilityZipEditText.setText(facilitySelected.zip)
-////            automotiveSpecialistEmailEditText.setText(facilitySelected.specialistEmail)
-//                facilityNameListView.visibility = View.GONE
-//                facilityNameListView.adapter = null
-//                facilityNameEditText?.setError(null)
-//                facilityRepresentativeNameEditText?.setError(null)
-//                automotiveSpecialistEditText?.setError(null)
+                    contractSignerCheckBox.isChecked = ((personnelDetailsList.get(pos)).contractsigner==1)
                 }
 
         })
