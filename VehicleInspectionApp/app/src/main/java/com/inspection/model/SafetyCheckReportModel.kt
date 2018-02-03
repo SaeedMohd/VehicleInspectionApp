@@ -1,7 +1,6 @@
 package com.inspection.model
 
 class SafetyCheckReportModel {
-
     var safetyCheckReportsID: Int = 0
     var mobileUserProfileID: Int = 0
     var customerName : String = ""

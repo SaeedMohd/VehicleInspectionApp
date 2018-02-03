@@ -33,6 +33,7 @@ public class Consts {
     public static final String facilityEmailPhoneURL = "http://www.jet-matics.com:5000/getFacilityEmailAndPhone?facilityId=";
     public static final String contractSignerDtlsURL = "http://www.jet-matics.com:5000/getContractSignerDetails?personnelId=";
     public static final String getfacilitiesURL = "http://www.jet-matics.com:5000/getFacilities?facilityName=";
+    public static final String getLastInspectionForFacility= "http://www.jet-matics.com:5000/getLastAnnualVisitationInspectionForFacility?facilityId=";
 
 
 }

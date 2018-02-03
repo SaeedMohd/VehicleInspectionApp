@@ -163,7 +163,7 @@ class FragmentARRAVFacility : Fragment() {
             billingamount_textviewVal.setText((activity as MainActivity).facilitySelected.billingamount)
             ARDno_textviewVal.setText((activity as MainActivity).facilitySelected.automotiverepairnumber)
             ARDexp_textviewVal.setText((activity as MainActivity).facilitySelected.automotiverepairexpdate)
-            providertype_textviewVal.setText((activity as MainActivity).facilitySelected.)
+//            providertype_textviewVal.setText((activity as MainActivity).facilitySelected.)
 
         }
     }

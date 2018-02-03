@@ -57,7 +57,6 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 
         (activity as MainActivity).supportActionBar!!.title = "Forms"
 
-//        Log.v("TAG IS" , tag)
         return inflater.inflate(R.layout.fragment_aar_manual_visitation_form, container, false)
     }
 
@@ -175,6 +174,9 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             facilityNameEditText?.setError(null)
             facilityRepresentativeNameEditText?.setError(null)
             automotiveSpecialistEditText?.setError(null)
+
+            (activity as MainActivity).loadLastInspection()
+
         })
     }
 

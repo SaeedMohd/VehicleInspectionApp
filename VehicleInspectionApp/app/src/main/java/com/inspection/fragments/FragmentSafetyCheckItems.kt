@@ -51,8 +51,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.view.View.GONE
 import android.widget.*
-import com.inspection.MainActivity.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID
-import com.inspection.MainActivity.fragmentRequestingPermission
+import com.inspection.MainActivity.Companion.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID
+import com.inspection.MainActivity.Companion.fragmentRequestingPermission
+
 
 import kotlinx.android.synthetic.main.fragment_safety_check_view.*
 import java.util.*

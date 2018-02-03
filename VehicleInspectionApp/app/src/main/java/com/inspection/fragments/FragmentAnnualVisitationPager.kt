@@ -93,7 +93,6 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
             }
             override fun onPageSelected(position: Int) {
-                Toast.makeText(activity,"On RESUME CALLED",Toast.LENGTH_LONG).show()
                 if (position==4) {
                     val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel
                     fragmentPersonnel.preparePersonnelPage()

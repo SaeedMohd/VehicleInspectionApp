@@ -172,7 +172,7 @@ public class ApplicationPrefs {
 
 
     public void setShopUserProfile(UserProfileModel userProfileModel) {
-        Log.v(MainActivity.TAG, "Saving user profile for shop");
+        Log.v(MainActivity.Companion.getTAG(), "Saving user profile for shop");
         SharedPreferences settings = context
                 .getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
