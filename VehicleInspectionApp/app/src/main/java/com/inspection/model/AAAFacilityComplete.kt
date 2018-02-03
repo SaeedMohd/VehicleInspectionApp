@@ -40,4 +40,5 @@ class AAAFacilityComplete {
     var insuranceexpdate =  ""
     var contracttypeid =  0
     var origcontractno =  ""
+
 }

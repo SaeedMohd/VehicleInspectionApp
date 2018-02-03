@@ -28,6 +28,8 @@ import java.util.*
 class FragmentARRAVFacility : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
+    private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
+    private val appFprmat = SimpleDateFormat("dd MMM yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,28 +144,35 @@ class FragmentARRAVFacility : Fragment() {
 
     fun prepareFacilityPage (){
 
-        if ((activity as MainActivity).facilitySelected.facid != 0){
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
             contract_number_textviewVal.setText((activity as MainActivity).facilitySelected.origcontractno)
-            contract_type_textviewVal.setText((activity as MainActivity).facilitySelected.contracttypeid)
-            office_textviewVal.setText((activity as MainActivity).facilitySelected.officeid)
-            assignedto_textviewVal.setText((activity as MainActivity).facilitySelected.assignedtoid)
-//            dba_textviewVal.setText((activity as MainActivity).facilitySelected.d)
+            contract_type_textviewVal.setText((activity as MainActivity).facilitySelected.contracttypeid.toString())
+            office_textviewVal.setText((activity as MainActivity).facilitySelected.officeid.toString())
+            assignedto_textviewVal.setText((activity as MainActivity).facilitySelected.assignedtoid.toString())
+            dba_textviewVal.setText((activity as MainActivity).facilitySelected.businessname)
             entity_textviewVal.setText((activity as MainActivity).facilitySelected.entityname)
-            bustype_textviewVal.setText((activity as MainActivity).facilitySelected.bustypeid)
+            bustype_textviewVal.setText((activity as MainActivity).facilitySelected.bustypeid.toString())
 //            timezone_textviewVal.setText((activity as MainActivity).facilitySelected.timezoneid)
             website_textviewVal.setText((activity as MainActivity).facilitySelected.website)
             wifi_textview.isChecked = ((activity as MainActivity).facilitySelected.internetaccess ==1)
-            texno_textviewVal.setText((activity as MainActivity).facilitySelected.taxidnumber)
-            repairorder_textviewVal.setText((activity as MainActivity).facilitySelected.facilityrepairordercount)
+            texno_textviewVal.setText((activity as MainActivity).facilitySelected.taxidnumber.toString())
+            repairorder_textviewVal.setText((activity as MainActivity).facilitySelected.facilityrepairordercount.toString())
             availability_textviewVal.setSelection((activity as MainActivity).facilitySelected.svcavailability)
             facilitytype_textviewVal.setSelection((activity as MainActivity).facilitySelected.facilitytypeid)
-            currcodate_textviewVal.setText((activity as MainActivity).facilitySelected.contractcurrentdate)
-            initcodate_textviewVal.setText((activity as MainActivity).facilitySelected.contractinitialdate)
-            billingmonth_textviewVal.setText((activity as MainActivity).facilitySelected.billingmonth)
-            billingamount_textviewVal.setText((activity as MainActivity).facilitySelected.billingamount)
-            ARDno_textviewVal.setText((activity as MainActivity).facilitySelected.automotiverepairnumber)
-            ARDexp_textviewVal.setText((activity as MainActivity).facilitySelected.automotiverepairexpdate)
+            var dateTobeFormated =""
+            dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.contractcurrentdate))
+            currcodate_textviewVal.setText(dateTobeFormated )
+            dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.contractinitialdate))
+            initcodate_textviewVal.setText(dateTobeFormated)
+            dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.automotiverepairexpdate))
+            ARDexp_textviewVal.setText(dateTobeFormated)
+            billingmonth_textviewVal.setText((activity as MainActivity).facilitySelected.billingmonth.toString())
+            billingamount_textviewVal.setText((activity as MainActivity).facilitySelected.billingamount.toString())
+            ARDno_textviewVal.setText((activity as MainActivity).facilitySelected.automotiverepairnumber.toString())
+
 //            providertype_textviewVal.setText((activity as MainActivity).facilitySelected.)
+            dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.insuranceexpdate))
+            InsuranceExpDate_textviewVal.setText(dateTobeFormated)
 
         }
     }

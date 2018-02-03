@@ -108,6 +108,9 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                 } else if (position==11) {
                     val fragmentProgramType= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11") as FragmentARRAVPrograms
                     fragmentProgramType.prepareProgramTypes()
+                }  else if (position==1) {
+                    val fragmentFac= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as FragmentARRAVFacility
+                    fragmentFac.prepareFacilityPage()
                 }
 
             }

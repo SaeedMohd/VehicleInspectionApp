@@ -98,7 +98,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
                                 facilitiesList = Gson().fromJson(response.toString() , Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
                                 facilityNames.clear()
                                 for (fac in facilitiesList){
-                                    facilityNames.add(fac.entityname)
+                                    facilityNames.add(fac.businessname)
                                 }
 
                                     facilityNameListView.visibility = View.VISIBLE
@@ -154,7 +154,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             itemSelected = true
 
             facilityNameEditText.setText(facilityNames.get(i).toString())
-            facilityAddressEditText.requestFocus()
+//            facilityAddressEditText.requestFocus()
             // Facility Name will be needed in other forms
             (activity as MainActivity).FacilityName = facilityNames.get(i).toString()
             (activity as MainActivity).facilitySelected = facilitiesList.filter { s -> s.businessname == facilityNames.get(i) }.get(0)
@@ -162,12 +162,12 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             (activity as MainActivity).FacilityNumber = (activity as MainActivity).facilitySelected.facid.toString()
 //            automotiveSpecialistEditText.setText(facilitySelected.)
 //            facilityRepresentativeNameEditText.setText(if (facilitySelected.ow == " ")  "" else facilitySelected.ownerName)
-//            facilityAddressEditText.setText(facilitySelected.address)
-//            facilityCityEditText.setText(facilitySelected.city)
-//            facilityStateEditText.setText(facilitySelected.state)
-//            facilityPhoneEditText.setText(facilitySelected.)
-//            facilityEmailEditText.setText(facilitySelected.email)
-//            facilityZipEditText.setText(facilitySelected.zip)
+//            facilityAddressEditText.setText((activity as MainActivity).facilitySelected.fac_addr1)
+//            facilityCityEditText.setText((activity as MainActivity).facilitySelected.city)
+//            facilityStateEditText.setText((activity as MainActivity).facilitySelected.state)
+////            facilityPhoneEditText.setText((activity as MainActivity).facilitySelected.p)
+////            facilityEmailEditText.setText(facilitySelected.email)
+//            facilityZipEditText.setText((activity as MainActivity).facilitySelected.zip)
 //            automotiveSpecialistEmailEditText.setText(facilitySelected.specialistEmail)
             facilityNameListView.visibility = View.GONE
             facilityNameListView.adapter = null
