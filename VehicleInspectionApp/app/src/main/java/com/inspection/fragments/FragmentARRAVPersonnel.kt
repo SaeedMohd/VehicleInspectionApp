@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -58,6 +59,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var personnelDetailsList  = ArrayList<AAAPersonnelDetails>()
     private var personTypeArray = ArrayList<String>()
     private var personListArray = ArrayList<String>()
+    private var statesArray = ArrayList<String>()
     private var firstSelection = false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
 //    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -83,30 +85,31 @@ class FragmentARRAVPersonnel : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //inputField.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 //
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL+(activity as MainActivity).FacilityNumber,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            //                        val facResult = JSONArray(response.toString())
-//                        val jObject = JSONObject(response.toString())
-//                        val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
-//                        val facResult = jObject.getJSONArray("")
-//                        peronnelTypeList = Gson().fromJson(facResult.toString() , Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
-                            personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
-                            personTypeArray.clear()
-                            for (fac in personnelTypeList) {
-                                personTypeArray.add(fac.personneltypename)
-                            }
-                            var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
-                            personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            personType_textviewVal.adapter = personTypeAdapter
-                        })
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading personnel Types")
-                Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
-            }))
-        }
-        var statesArray = arrayOf("Alabama ","Alaska ","Arizona ","Arkansas ","California ","Colorado ","Connecticut ","Delaware ","Florida ","Georgia ","Hawaii ","Idaho ","Illinois","Indiana ","Iowa ","Kansas ","Kentucky ","Louisiana ","Maine ","Maryland ","Massachusetts ","Michigan ","Minnesota ","Mississippi ","Missouri ","Montana","Nebraska ","Nevada ","New Hampshire ","New Jersey ","New Mexico ","New York ","North Carolina ","North Dakota ","Ohio ","Oklahoma ","Oregon ","Pennsylvania","Rhode Island ","South Carolina ","South Dakota ","Tennessee ","Texas ","Utah ","Vermont ","Virginia ","Washington ","West Virginia ","Wisconsin ","Wyoming")
+//        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL+(activity as MainActivity).FacilityNumber,
+//                    Response.Listener { response ->
+//                        activity!!.runOnUiThread(Runnable {
+//                            //                        val facResult = JSONArray(response.toString())
+////                        val jObject = JSONObject(response.toString())
+////                        val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
+////                        val facResult = jObject.getJSONArray("")
+////                        peronnelTypeList = Gson().fromJson(facResult.toString() , Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+//                            personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+//                            personTypeArray.clear()
+//                            for (fac in personnelTypeList) {
+//                                personTypeArray.add(fac.personneltypename)
+//                            }
+//                            var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
+//                            personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            personType_textviewVal.adapter = personTypeAdapter
+//                        })
+//                    }, Response.ErrorListener {
+//                Log.v("error while loading", "error while loading personnel Types")
+//                Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
+//            }))
+//        }
+        statesArray = arrayOf("Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming").toCollection(ArrayList<String>())
+
         var statesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, statesArray)
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         coSignerStateVal.adapter = statesAdapter
@@ -382,10 +385,8 @@ class FragmentARRAVPersonnel : Fragment() {
     }
 
     fun preparePersonnelPage (){
-        var progressBar: ProgressBar = this.progressBar1
-        progressBar.visibility = View.VISIBLE
-        (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+
 
 //        Thread(Runnable {
 //            // dummy thread mimicking some operation whose progress cannot be tracked
@@ -412,6 +413,9 @@ class FragmentARRAVPersonnel : Fragment() {
 //        }).start()
 
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            progressbarPersonnel.visibility= View.VISIBLE
+            (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             firstSelection=false
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL,//+(activity as MainActivity).FacilityNumber,
                     Response.Listener { response ->
@@ -431,13 +435,14 @@ class FragmentARRAVPersonnel : Fragment() {
                             personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             personType_textviewVal.adapter = personTypeAdapter
                         })
+                        progressbarPersonnel.visibility= View.INVISIBLE
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading personnel Types")
                 Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
             }))
 
         }
-        progressBar.visibility = View.GONE
+
         (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         personType_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -445,7 +450,8 @@ class FragmentARRAVPersonnel : Fragment() {
                     personnelNamesList.visibility = View.GONE
                     if (position > 0) {
 //                        Toast.makeText(context, "You have Selected " + personType_textviewVal.selectedItem.toString() + " ID : " + getTypeID(personType_textviewVal.selectedItem.toString()), Toast.LENGTH_SHORT).show()
-                        (activity as MainActivity).FacilityNumber = "540554"
+                        (activity as MainActivity).FacilityNumber = "540555"
+                        progressbarPersonnel.visibility= View.VISIBLE
                         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsURL+"facilityId=" + (activity as MainActivity).FacilityNumber+"&personnelTypeId="+getTypeID(personType_textviewVal.selectedItem.toString()),
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
@@ -462,6 +468,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                             personnelNamesList.adapter = personDtlsAdapter
                                         }
                                     })
+                                    progressbarPersonnel.visibility= View.INVISIBLE
                                 }, Response.ErrorListener {
                             Log.v("error while loading", "error while loading personnel Types")
                             Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
@@ -496,7 +503,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     rspUserID_textviewVal.setText(if (((personnelDetailsList.get(pos)).rsp_username).equals("NULL")) "" else ((personnelDetailsList.get(pos)).rsp_username))
                     rspEmail_textviewVal.setText(if (((personnelDetailsList.get(pos)).rsp_email).equals("NULL")) "" else ((personnelDetailsList.get(pos)).rsp_email))
                     certNo_textviewVal.setText((personnelDetailsList.get(pos)).certificationnum)
-                    seniorityDateVal.setText(if (((personnelDetailsList.get(pos)).senioritydate).equals("NULL")) "" else ((personnelDetailsList.get(pos)).senioritydate))
+                    seniorityDateVal.setText(if (((personnelDetailsList.get(pos)).senioritydate).equals("NULL") || ((personnelDetailsList.get(pos)).senioritydate).length<10) "" else ((personnelDetailsList.get(pos)).senioritydate))
                     var dateTobeFormated =""
                     if (!(((personnelDetailsList.get(pos)).startdate).isNullOrEmpty())) {
                         dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetailsList.get(pos).startdate.substring(0,10)))
@@ -511,7 +518,20 @@ class FragmentARRAVPersonnel : Fragment() {
                     }
                     endDateVal.setText(dateTobeFormated)
                     primaryEmailCheckBox.isChecked = ((personnelDetailsList.get(pos)).primarymailrecipient==1)
-                    contractSignerCheckBox.isChecked = ((personnelDetailsList.get(pos)).contractsigner==1)
+                    if ((personnelDetailsList.get(pos)).contractsigner==1) {
+                        contractSignerCheckBox.isChecked = true
+                        coSignerAddr1Val.setText((personnelDetailsList.get(pos)).addr1)
+                        coSignerAddr2Val.setText((personnelDetailsList.get(pos)).addr2)
+                        coSignerCityVal.setText((personnelDetailsList.get(pos)).city)
+                        coSignerCoEndDateVal.setText((personnelDetailsList.get(pos)).contractenddate)
+                        coSignerCoStartDateVal.setText((personnelDetailsList.get(pos)).contractstartdate)
+                        coSignerEmailVal.setText((personnelDetailsList.get(pos)).email)
+                        coSignerPhoneVal.setText((personnelDetailsList.get(pos)).phone.toString())
+                        coSignerStateVal.setSelection(statesArray.indexOf((personnelDetailsList.get(pos)).state.toString()))
+                        coSignerZip4Val.setText((personnelDetailsList.get(pos)).zip4.toString())
+                        coSignerZipVal.setText((personnelDetailsList.get(pos)).zip.toString())
+                    }
+
                 }
 
         })

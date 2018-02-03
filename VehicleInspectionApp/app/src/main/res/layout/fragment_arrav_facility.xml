@@ -300,7 +300,7 @@
                 android:textStyle="bold"
                 />
             <TextView
-                android:id="@+id/website_textviewVal"
+                android:id="@+id/texno_textviewVal"
                 android:layout_toRightOf="@id/website_textview"
                 android:layout_below="@id/wifi_textview"
                 android:layout_width="0dp"

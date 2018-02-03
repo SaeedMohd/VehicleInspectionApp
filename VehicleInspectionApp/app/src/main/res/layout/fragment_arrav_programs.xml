@@ -31,9 +31,23 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:padding="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ProgressBar
+                    android:id="@+id/progressbarPrograms"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:max="100"
+                    android:backgroundTint="@color/white"
+                    android:indeterminateTint="#1a09d6"
+                    android:layout_marginTop="-7dp"/>
+            </LinearLayout>
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
+                android:weightSum="3"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/connumberll">
@@ -52,14 +66,14 @@
                     android:layout_width="0dp"
                     android:text="Select Program"
                     android:textColor="@color/blue_krayola"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:layout_gravity="left"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
+                android:weightSum="3"
                 android:layout_below="@id/connumberll"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
@@ -82,14 +96,14 @@
                     android:text="select date"
                     android:textColor="@color/blue_krayola"
                     android:background="@null"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
+                android:weightSum="3"
                 android:layout_below="@id/contypell"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
@@ -113,7 +127,7 @@
                     android:textColor="@color/blue_krayola"
                     android:background="@null"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 

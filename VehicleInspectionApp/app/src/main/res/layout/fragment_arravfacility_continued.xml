@@ -35,6 +35,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/paymethodsll">
+                <ProgressBar
+                    android:id="@+id/progressbarFacContinued"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:max="100"
+                    android:backgroundTint="@color/white"
+                    android:indeterminateTint="#1a09d6"
+                    android:layout_marginTop="-7dp"/>
                 <TextView
                     android:id="@+id/payment_methods_textview"
                     android:layout_width="match_parent"
@@ -401,7 +411,7 @@
                     android:inputType="textMultiLine"
                     android:lines="8"
                     android:minLines="6"
-                    android:gravity="top|left"
+                    android:gravity="center_vertical|left"
                     android:hint="Enter Night instructions"
                     android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
                     android:layout_weight="2"

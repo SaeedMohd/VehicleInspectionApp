@@ -29,7 +29,9 @@ import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_forms.*
 import com.android.volley.VolleyError
 import com.google.gson.Gson
+import com.inspection.Utils.Consts
 import com.inspection.model.AAAFacility
+import com.inspection.model.AAAFacilityComplete
 import kotlinx.android.synthetic.main.dialog_user_register.*
 import kotlinx.android.synthetic.main.spinner_item.view.*
 import org.json.JSONObject
@@ -42,7 +44,7 @@ import javax.xml.datatype.DatatypeConstants.MONTHS
 class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 
     var facilityNames = ArrayList<String>()
-    var facilitiesList = ArrayList<AAAFacility>()
+    var facilitiesList = ArrayList<AAAFacilityComplete>()
     var itemSelected = false
     var facilityNameInputField: EditText? = null
 
@@ -86,17 +88,18 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 if (!itemSelected && facilityNameEditText.text.length >= 3){
-                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "http://jet-matics.com/JetComService/JetCom.svc/getAAAFacilityFormDetails?facilityName="+facilityNameEditText.text,
+//                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "http://jet-matics.com/JetComService/JetCom.svc/getAAAFacilityFormDetails?facilityName="+facilityNameEditText.text,
+                    Log.v("Facility URL:  --> " , Consts.getfacilitiesURL+facilityNameEditText.text)
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL+facilityNameEditText.text,
                             Response.Listener { response ->
                                 activity!!.runOnUiThread(Runnable {
-                                val jObject = JSONObject(response.toString())
-
-
-                                val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
-                                facilitiesList = Gson().fromJson(facResult.toString() , Array<AAAFacility>::class.java).toCollection(ArrayList())
+//                                val jObject = JSONObject(response.toString())
+//                                val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
+//                                facilitiesList = Gson().fromJson(facResult.toString() , Array<AAAFacility>::class.java).toCollection(ArrayList())
+                                facilitiesList = Gson().fromJson(response.toString() , Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
                                 facilityNames.clear()
                                 for (fac in facilitiesList){
-                                    facilityNames.add(fac.facilityName)
+                                    facilityNames.add(fac.entityname)
                                 }
 
                                     facilityNameListView.visibility = View.VISIBLE
@@ -155,17 +158,17 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             facilityAddressEditText.requestFocus()
             // Facility Name will be needed in other forms
             (activity as MainActivity).FacilityName = facilityNames.get(i).toString()
-            val facilitySelected = facilitiesList.filter { s -> s.facilityName == facilityNames.get(i) }.get(0)
+            (activity as MainActivity).facilitySelected = facilitiesList.filter { s -> s.businessname == facilityNames.get(i) }.get(0)
             // Facility Number will be needed in other forms
-            (activity as MainActivity).FacilityNumber = facilitySelected.facilityNumber.toString()
-            automotiveSpecialistEditText.setText(facilitySelected.specialistName)
-            facilityRepresentativeNameEditText.setText(if (facilitySelected.ownerName == " ")  "" else facilitySelected.ownerName)
-            facilityAddressEditText.setText(facilitySelected.address)
-            facilityCityEditText.setText(facilitySelected.city)
-            facilityStateEditText.setText(facilitySelected.state)
-            facilityPhoneEditText.setText(facilitySelected.phone)
-            facilityEmailEditText.setText(facilitySelected.email)
-            facilityZipEditText.setText(facilitySelected.zip)
+            (activity as MainActivity).FacilityNumber = (activity as MainActivity).facilitySelected.facid.toString()
+//            automotiveSpecialistEditText.setText(facilitySelected.)
+//            facilityRepresentativeNameEditText.setText(if (facilitySelected.ow == " ")  "" else facilitySelected.ownerName)
+//            facilityAddressEditText.setText(facilitySelected.address)
+//            facilityCityEditText.setText(facilitySelected.city)
+//            facilityStateEditText.setText(facilitySelected.state)
+//            facilityPhoneEditText.setText(facilitySelected.)
+//            facilityEmailEditText.setText(facilitySelected.email)
+//            facilityZipEditText.setText(facilitySelected.zip)
 //            automotiveSpecialistEmailEditText.setText(facilitySelected.specialistEmail)
             facilityNameListView.visibility = View.GONE
             facilityNameListView.adapter = null

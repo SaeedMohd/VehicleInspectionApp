@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.inspection.MainActivity
 
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
@@ -139,6 +140,33 @@ class FragmentARRAVFacility : Fragment() {
         }
     }
 
+    fun prepareFacilityPage (){
+
+        if ((activity as MainActivity).facilitySelected.facid != 0){
+            contract_number_textviewVal.setText((activity as MainActivity).facilitySelected.origcontractno)
+            contract_type_textviewVal.setText((activity as MainActivity).facilitySelected.contracttypeid)
+            office_textviewVal.setText((activity as MainActivity).facilitySelected.officeid)
+            assignedto_textviewVal.setText((activity as MainActivity).facilitySelected.assignedtoid)
+//            dba_textviewVal.setText((activity as MainActivity).facilitySelected.d)
+            entity_textviewVal.setText((activity as MainActivity).facilitySelected.entityname)
+            bustype_textviewVal.setText((activity as MainActivity).facilitySelected.bustypeid)
+//            timezone_textviewVal.setText((activity as MainActivity).facilitySelected.timezoneid)
+            website_textviewVal.setText((activity as MainActivity).facilitySelected.website)
+            wifi_textview.isChecked = ((activity as MainActivity).facilitySelected.internetaccess ==1)
+            texno_textviewVal.setText((activity as MainActivity).facilitySelected.taxidnumber)
+            repairorder_textviewVal.setText((activity as MainActivity).facilitySelected.facilityrepairordercount)
+            availability_textviewVal.setSelection((activity as MainActivity).facilitySelected.svcavailability)
+            facilitytype_textviewVal.setSelection((activity as MainActivity).facilitySelected.facilitytypeid)
+            currcodate_textviewVal.setText((activity as MainActivity).facilitySelected.contractcurrentdate)
+            initcodate_textviewVal.setText((activity as MainActivity).facilitySelected.contractinitialdate)
+            billingmonth_textviewVal.setText((activity as MainActivity).facilitySelected.billingmonth)
+            billingamount_textviewVal.setText((activity as MainActivity).facilitySelected.billingamount)
+            ARDno_textviewVal.setText((activity as MainActivity).facilitySelected.automotiverepairnumber)
+            ARDexp_textviewVal.setText((activity as MainActivity).facilitySelected.automotiverepairexpdate)
+            providertype_textviewVal.setText((activity as MainActivity).facilitySelected.)
+
+        }
+    }
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 //        if (context is OnFragmentInteractionListener) {

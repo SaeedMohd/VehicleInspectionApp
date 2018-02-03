@@ -5,16 +5,28 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.inspection.MainActivity
 
 import com.inspection.R
+import com.inspection.Utils.Consts
+import com.inspection.model.AAAPersonnelType
+import com.inspection.model.AAAProgramTypes
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
+import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +41,8 @@ import java.util.*
 class FragmentARRAVPrograms : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
+    private var programTypesArray = ArrayList<String>()
+    private var programTypesList = ArrayList<AAAProgramTypes>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,11 +87,30 @@ class FragmentARRAVPrograms : Fragment() {
             dpd.show()
         }
 
-        var programsArray= arrayOf("AAA Batteries", "AAA Car Care Center", "AAA OnBoard", "AAR Advantage", "Appointments", "Approved Auto Body", "Approved Auto Glass", "Battery Consignment", "Car Buying Service", "Discounts & Rewards", "IP Waiver Facility", "IP Waiver Individual", "Member Preferred Repair", "Preferred Service Provider", "Priority Service", "Repair Shop Portal", "Vehicle Inspection Program")
-        var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, programsArray)
-        programsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        program_name_textviewVal.adapter = programsAdapter
+    }
 
+
+    fun prepareProgramTypes () {
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            progressbarPrograms.visibility = View.VISIBLE
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.programTypesURL,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            programTypesList= Gson().fromJson(response.toString(), Array<AAAProgramTypes>::class.java).toCollection(ArrayList())
+                            programTypesArray.clear()
+                            for (fac in programTypesList) {
+                                programTypesArray.add(fac.programtypename)
+                            }
+                            var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, programTypesArray)
+                            programsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            program_name_textviewVal.adapter = programsAdapter
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading program Types")
+                Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            }))
+            progressbarPrograms.visibility = View.INVISIBLE
+        }
     }
 
     fun validateInputs() : Boolean {

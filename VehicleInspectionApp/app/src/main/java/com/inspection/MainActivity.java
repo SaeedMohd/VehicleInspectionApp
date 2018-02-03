@@ -78,6 +78,7 @@ import com.inspection.fragments.FragmentSafetyCheckReports;
 
 import com.inspection.imageloader.ImageLoader;
 import com.inspection.R;
+import com.inspection.model.AAAFacilityComplete;
 import com.inspection.model.UserAccountModel;
 import com.inspection.serverTasks.GetAccountDetailByEmailAndPhoneIDTask;
 import com.inspection.serverTasks.GetShopUserProfileDetails;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     //    public FragmentVehicleFacility FragmentRequestingPermission;
     public String FacilityName="";
     public String FacilityNumber="";
+    public AAAFacilityComplete facilitySelected;
 
     static String Upload_period;
     public static Boolean Enable = false, uploadtask = false;

@@ -58,8 +58,10 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun prepareLocationPage (){
+
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
-            Toast.makeText(activity,"Location Prepare Called",Toast.LENGTH_LONG).show()
+            progressbarLocation.visibility = View.VISIBLE
+
 //            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL+(activity as MainActivity).FacilityNumber,
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL,
                     Response.Listener { response ->
@@ -85,15 +87,14 @@ class FragmentARRAVLocation : Fragment() {
                                     billAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
                                 }
                             }
+                            progressbarLocation.visibility = View.INVISIBLE
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading Locations")
                 Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
             }))
-
-
-
         }
+
     }
 
 

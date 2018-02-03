@@ -137,6 +137,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
 
     fun preparFacilityContinuedPage (){
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            progressbarFacContinued.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.paymentMethodsURL,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
@@ -174,13 +175,104 @@ class FragmentARRAVFacilityContinued : Fragment() {
                         activity!!.runOnUiThread(Runnable {
                             facilityHoursList = Gson().fromJson(response.toString(), Array<AAAFacilityHours>::class.java).toCollection(ArrayList())
                             for (fac in facilityHoursList) {
-                                dateTobeFormated = appFprmat.format(dbFormat.parse(fac.tueopen))
-                                tuesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                Log.v("Formatted Date: ----- ", dateTobeFormated)
+                                // Monday
+                                if (fac.monopen.isNullOrEmpty())
+                                    monday_open_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.monopen))
+                                    monday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                if (fac.monclose.isNullOrEmpty())
+                                    monday_closed_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.monclose))
+                                    monday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                // Tuesday
+                                if (fac.tueopen.isNullOrEmpty())
+                                    tuesday_open_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.tueopen))
+                                    tuesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                if (fac.tueclose.isNullOrEmpty())
+                                    tuesday_closed_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.tueclose))
+                                    tuesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                // Wednesday
+                                if (fac.wedopen.isNullOrEmpty())
+                                    wednesday_open_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.wedopen))
+                                    wednesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                if (fac.wedclose.isNullOrEmpty())
+                                    wednesday_closed_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.wedclose))
+                                    wednesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                // Thursday
+                                if (fac.thuopen.isNullOrEmpty())
+                                    thursday_open_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.thuopen))
+                                    thursday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                if (fac.thuclose.isNullOrEmpty())
+                                    thursday_closed_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.thuclose))
+                                    thursday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                // Friday
+                                if (fac.friopen.isNullOrEmpty())
+                                    friday_open_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.friopen))
+                                    friday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                if (fac.friclose.isNullOrEmpty())
+                                    friday_closed_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.friclose))
+                                    friday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                // Saturday
+                                if (fac.satopen.isNullOrEmpty())
+                                    saturday_open_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.satopen))
+                                    saturday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                if (fac.satclose.isNullOrEmpty())
+                                    saturday_closed_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.satclose))
+                                    saturday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                // Sunday
+                                if (fac.sunopen.isNullOrEmpty())
+                                    sunday_open_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.sunopen))
+                                    sunday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                if (fac.sunclose.isNullOrEmpty())
+                                    sunday_closed_spinner.setSelection(0)
+                                else {
+                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.sunclose))
+                                    sunday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                                }
+                                nightdrop_checkbox.isChecked = (fac.nightdrop ==1)
+                                nightinstructions_textviewVal.setText(if (fac.nightdropinstr.isNullOrEmpty()) "" else fac.nightdropinstr)
                             }
                         })
+                        progressbarFacContinued.visibility = View.INVISIBLE
                     }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading Payment Methods")
+                Log.v("error while loading", "error while loading Facility Timing")
                 Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
             }))
 

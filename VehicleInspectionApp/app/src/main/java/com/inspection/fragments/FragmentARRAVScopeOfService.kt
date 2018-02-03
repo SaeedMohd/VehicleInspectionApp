@@ -4,15 +4,27 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.inspection.MainActivity
 
 import com.inspection.R
+import com.inspection.Utils.Consts
+import com.inspection.model.AAALocations
+import com.inspection.model.AAAScopeOfServices
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
+import java.util.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -43,6 +55,35 @@ class FragmentARRAVScopeOfService : Fragment() {
         var warrantyAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, warrantyArray)
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
+    }
+
+    fun prepareScopePage () {
+
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            progressbarScope.visibility = View.VISIBLE
+
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL+(activity as MainActivity).FacilityNumber,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            var facScopeOfSvcList = Gson().fromJson(response.toString(), Array<AAAScopeOfServices>::class.java).toCollection(ArrayList())
+                            for (fac in facScopeOfSvcList ) {
+                                fixedLaborRateEditText.setText(fac.fixedlaborrate.toString())
+                                laborRateMatrixMinEditText.setText(fac.labormin.toString())
+                                laborRateMatrixMaxEditText.setText(fac.labormax.toString())
+                                diagnosticRateEditText.setText(fac.diagnosticsrate.toString())
+                                numberOfBaysEditText.setText(fac.numofbays.toString())
+                                numberOfLiftsEditText.setText(fac.numoflifts.toString())
+                                warrantyPeriodVal.setSelection(fac.warrantytypeid)
+
+                            }
+                            progressbarScope.visibility = View.INVISIBLE
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading Scope Of Services")
+                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            }))
+        }
     }
 
     fun validateInputs() : Boolean {
