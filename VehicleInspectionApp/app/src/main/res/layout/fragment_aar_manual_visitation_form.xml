@@ -84,111 +84,111 @@
             android:layout_width="wrap_content"
             android:layout_height="400dp"/>
 
-        <TextView
-            android:id="@+id/facilityAddressTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/facilityIdEditText"
-            android:text="Facility Address:"
-            android:layout_marginTop="25dp"
-            android:textStyle="bold"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/facilityAddressTextView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/facilityIdEditText"-->
+            <!--android:text="Facility Address:"-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
-        <TextView
-            android:id="@+id/facilityAddressEditText"
-            android:layout_below="@id/facilityNameTextView"
-            android:layout_width="match_parent"
-            android:ems="8"
-            android:layout_height="wrap_content" />
-        <!--android:hint="Enter Facility Address"-->
-        <TextView
-            android:id="@+id/facilityCityTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/facilityIdEditText"
-            android:text="Facility City:"
-            android:layout_marginTop="25dp"
-            android:textStyle="bold"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/facilityAddressEditText"-->
+            <!--android:layout_below="@id/facilityNameTextView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:ems="8"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--&lt;!&ndash;android:hint="Enter Facility Address"&ndash;&gt;-->
+        <!--<TextView-->
+            <!--android:id="@+id/facilityCityTextView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/facilityIdEditText"-->
+            <!--android:text="Facility City:"-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
-        <TextView
-            android:id="@+id/facilityCityEditText"
-            android:layout_below="@id/facilityNameTextView"
-            android:layout_width="match_parent"
-            android:ems="8"
-            android:layout_height="wrap_content" />
-        <!--android:hint="Enter Facility City"-->
+        <!--<TextView-->
+            <!--android:id="@+id/facilityCityEditText"-->
+            <!--android:layout_below="@id/facilityNameTextView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:ems="8"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--&lt;!&ndash;android:hint="Enter Facility City"&ndash;&gt;-->
 
-        <TextView
-            android:id="@+id/facilityStateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/facilityIdEditText"
-            android:text="Facility State:"
-            android:layout_marginTop="25dp"
-            android:textStyle="bold"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/facilityStateTextView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/facilityIdEditText"-->
+            <!--android:text="Facility State:"-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
-        <TextView
-            android:id="@+id/facilityStateEditText"
-            android:layout_below="@id/facilityNameTextView"
-            android:layout_width="match_parent"
-            android:ems="8"
-            android:layout_height="wrap_content" />
-        <!--android:hint="Enter Facility State"-->
+        <!--<TextView-->
+            <!--android:id="@+id/facilityStateEditText"-->
+            <!--android:layout_below="@id/facilityNameTextView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:ems="8"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--&lt;!&ndash;android:hint="Enter Facility State"&ndash;&gt;-->
 
-        <TextView
-            android:id="@+id/facilityZipTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/facilityIdEditText"
-            android:text="Facility Zip:"
-            android:layout_marginTop="25dp"
-            android:textStyle="bold"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/facilityZipTextView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/facilityIdEditText"-->
+            <!--android:text="Facility Zip:"-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
-        <TextView
-            android:id="@+id/facilityZipEditText"
-            android:layout_below="@id/facilityNameTextView"
-            android:layout_width="match_parent"
-            android:ems="8"
-            android:layout_height="wrap_content" />
-        <!--android:hint="Enter Facility Zip"-->
+        <!--<TextView-->
+            <!--android:id="@+id/facilityZipEditText"-->
+            <!--android:layout_below="@id/facilityNameTextView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:ems="8"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--&lt;!&ndash;android:hint="Enter Facility Zip"&ndash;&gt;-->
 
-        <TextView
-            android:id="@+id/facilityPhoneTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/facilityIdEditText"
-            android:text="Facility Phone:"
-            android:layout_marginTop="25dp"
-            android:textStyle="bold"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/facilityPhoneTextView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/facilityIdEditText"-->
+            <!--android:text="Facility Phone:"-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
-        <TextView
-            android:id="@+id/facilityPhoneEditText"
-            android:layout_below="@id/facilityNameTextView"
-            android:layout_width="match_parent"
-            android:ems="8"
-            android:layout_height="wrap_content" />
-        <!--android:hint="Enter Facility Phone"-->
+        <!--<TextView-->
+            <!--android:id="@+id/facilityPhoneEditText"-->
+            <!--android:layout_below="@id/facilityNameTextView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:ems="8"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--&lt;!&ndash;android:hint="Enter Facility Phone"&ndash;&gt;-->
 
-        <TextView
-            android:id="@+id/facilityEmailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/facilityIdEditText"
-            android:text="Facility Phone:"
-            android:layout_marginTop="25dp"
-            android:textStyle="bold"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/facilityEmailTextView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/facilityIdEditText"-->
+            <!--android:text="Facility Phone:"-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
-        <TextView
-            android:id="@+id/facilityEmailEditText"
-            android:layout_below="@id/facilityNameTextView"
-            android:layout_width="match_parent"
-            android:ems="8"
-            android:layout_height="wrap_content" />
+        <!--<TextView-->
+            <!--android:id="@+id/facilityEmailEditText"-->
+            <!--android:layout_below="@id/facilityNameTextView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:ems="8"-->
+            <!--android:layout_height="wrap_content" />-->
         <!--android:hint="Enter Facility Phone"-->
 
         <TextView
