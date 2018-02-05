@@ -8,7 +8,7 @@ package com.inspection.model
 class AAAPaymentMethods {
     var pmtmethodid = 0
     var pmtmethodname= ""
-    var active = 0
+    var active = true
     var insertby = ""
     var insertdate= ""
     var updateby= ""

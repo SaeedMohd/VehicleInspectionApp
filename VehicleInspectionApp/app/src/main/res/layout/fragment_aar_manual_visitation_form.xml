@@ -44,6 +44,18 @@
         android:padding="5dp"
         >
 
+        <ProgressBar
+            android:id="@+id/progressbarGeneralInformation"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:max="100"
+            android:visibility="invisible"
+            android:backgroundTint="@color/white"
+            android:indeterminateTint="#1a09d6"
+            android:layout_marginTop="-7dp"/>
+
         <TextView
             android:id="@+id/facilityIdTextView"
             android:layout_width="wrap_content"
@@ -272,7 +284,7 @@
             />
 
         <Spinner
-            android:id="@+id/inspectionTypeEditText"
+            android:id="@+id/inspectionTypeSpinner"
             android:layout_below="@id/facilityNameTextView"
             android:layout_width="match_parent"
             android:ems="12"

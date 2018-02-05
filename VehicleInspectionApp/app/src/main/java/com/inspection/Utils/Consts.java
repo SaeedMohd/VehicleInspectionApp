@@ -23,6 +23,7 @@ public class Consts {
     // WebServices
     public static final String personnelTypeURL = "http://www.jet-matics.com:5000/getPersonnelTypes?facilityId=540554";
     public static final String personnelDetailsURL = "http://jet-matics.com:5000/getPersonnelsDetails?";
+    public static final String personnelDetailsWithIdUrl = "http://jet-matics.com:5000/getPersonnelDetailsWithId?personnelId=";
     public static final String facilityLocationsURL = "http://www.jet-matics.com:5000/getFacilityAddresses?facilityId=541410";
     public static final String paymentMethodsURL = "http://www.jet-matics.com:5000/getPaymentMethods";
     public static final String facilityHoursURL = "http://www.jet-matics.com:5000/getFacilityHours?facilityId=540554";
@@ -34,6 +35,11 @@ public class Consts {
     public static final String contractSignerDtlsURL = "http://www.jet-matics.com:5000/getContractSignerDetails?personnelId=";
     public static final String getfacilitiesURL = "http://www.jet-matics.com:5000/getFacilities?facilityName=";
     public static final String getLastInspectionForFacility= "http://www.jet-matics.com:5000/getLastAnnualVisitationInspectionForFacility?facilityId=";
+    public static final String getEmailFromFacilityAndId = "http://www.jet-matics.com:5000/getEmailFromFacilityAndId?facilityId=%s&emailId=%d";
+    public static final String getPhoneNumberWithFacilityAndId = "http://www.jet-matics.com:5000/getPhoneNumberWithFacilityAndId?facilityId=%s&phoneId=%d";
+
+
+
 
 
 }

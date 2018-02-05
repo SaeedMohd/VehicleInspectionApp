@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private var welcomeMessage = ""
 
-    lateinit var lastInspection : AnnualVisitationInspectionFormData
+    var lastInspection : AnnualVisitationInspectionFormData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -693,21 +693,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         ftSC.commit()
     }
 
-
-    fun loadLastInspection() {
-        Volley.newRequestQueue(this).add(StringRequest(Request.Method.GET, Consts.getLastInspectionForFacility+facilitySelected,
-                Response.Listener { response ->
-                    this!!.runOnUiThread(Runnable {
-                        try {
-                            lastInspection = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList()).get(0)
-                        }catch (exp: Exception){
-
-                        }
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading")
-        }))
-    }
 
     companion object {
 

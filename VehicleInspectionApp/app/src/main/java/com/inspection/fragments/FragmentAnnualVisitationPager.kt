@@ -1,7 +1,5 @@
 package com.inspection.fragments
 
-import android.R.attr.fragment
-
 import android.content.Context
 
 import android.os.Bundle
@@ -18,9 +16,7 @@ import android.widget.Toast
 import com.inspection.MainActivity
 
 import kotlinx.android.synthetic.main.fragment_main_visitation.*
-import android.R.attr.tag
 import android.app.AlertDialog
-import android.util.Log
 
 
 /**
@@ -101,7 +97,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                     fragmentLocations.prepareLocationPage()
                 } else if (position==2) {
                     val fragmentFacilityCont= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued
-                    fragmentFacilityCont.preparFacilityContinuedPage()
+                    fragmentFacilityCont.prepareFacilityContinuedPage()
                 } else if (position==8) {
                     val fragmentScope= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService
                     fragmentScope.prepareScopePage()

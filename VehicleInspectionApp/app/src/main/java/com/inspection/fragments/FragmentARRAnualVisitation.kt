@@ -1,19 +1,12 @@
 package com.inspection.fragments
 
 import android.app.DatePickerDialog
-import android.app.Fragment
 import android.content.Context
-import android.hardware.input.InputManager
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.View.OnClickListener
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.android.volley.Request
@@ -24,21 +17,14 @@ import com.android.volley.toolbox.Volley
 
 import com.inspection.MainActivity
 import com.inspection.R
-import com.inspection.Utils.ApplicationPrefs
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
-import kotlinx.android.synthetic.main.fragment_forms.*
-import com.android.volley.VolleyError
 import com.google.gson.Gson
 import com.inspection.Utils.Consts
-import com.inspection.model.AAAFacility
 import com.inspection.model.AAAFacilityComplete
-import kotlinx.android.synthetic.main.dialog_user_register.*
-import kotlinx.android.synthetic.main.spinner_item.view.*
-import org.json.JSONObject
+import com.inspection.model.AnnualVisitationInspectionFormData
+import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import java.text.SimpleDateFormat
-import java.time.Month
 import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
 
 
 class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
@@ -47,6 +33,9 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     var facilitiesList = ArrayList<AAAFacilityComplete>()
     var itemSelected = false
     var facilityNameInputField: EditText? = null
+
+    private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    private val appFormat = SimpleDateFormat("dd MMM yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,7 +107,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         var inspectionTypes = arrayOf("Quarterly","Ad Hoc")
         var dataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionTypes)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        inspectionTypeEditText.adapter = dataAdapter
+        inspectionTypeSpinner.adapter = dataAdapter
 
         // Changes Made
         var changesMadeArray= arrayOf("Yes","No")
@@ -175,9 +164,45 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             facilityRepresentativeNameEditText?.setError(null)
             automotiveSpecialistEditText?.setError(null)
 
-            (activity as MainActivity).loadLastInspection()
+            loadLastInspection()
 
         })
+    }
+
+    fun loadLastInspection() {
+        progressbarGeneralInformation.visibility = View.VISIBLE
+        (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getLastInspectionForFacility+(activity as MainActivity).facilitySelected.facid,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        try {
+                            (activity as MainActivity).lastInspection = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList()).get(0)
+                            automotiveSpecialistEditText.setText((activity as MainActivity).lastInspection!!.automotivespecialistname)
+                            facilityRepresentativeNameEditText.setText((activity as MainActivity).lastInspection!!.facilityrepresentativename)
+                            inspectionTypeSpinner.setSelection((activity as MainActivity).lastInspection!!.inspectiontypeid-1)
+                            monthDueSpinner.setSelection((activity as MainActivity).lastInspection!!.monthdue-1)
+
+                            if ((activity as MainActivity).lastInspection!!.changesmade){
+                                changesMadeSwitch.setSelection(0)
+                            }else{
+                                changesMadeSwitch.setSelection(1)
+                            }
+                            changesMadeSwitch.selectedItem
+                            dateOfVisitationButton.text = appFormat.format(dbFormat.parse( (activity as MainActivity).lastInspection!!.dateofinspection))
+
+                        }catch (exp: Exception){
+
+                        }
+                        progressbarGeneralInformation.visibility = View.INVISIBLE
+                        (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading")
+            progressbarGeneralInformation.visibility = View.INVISIBLE
+            (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }))
     }
 
 
@@ -204,7 +229,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             facilityNameInputField?.setError("Required Field")
         }
 
-        if (inspectionTypeEditText?.selectedItem.toString().isNullOrEmpty()) {
+        if (inspectionTypeSpinner?.selectedItem.toString().isNullOrEmpty()) {
             isInputsValid=false
 
         }

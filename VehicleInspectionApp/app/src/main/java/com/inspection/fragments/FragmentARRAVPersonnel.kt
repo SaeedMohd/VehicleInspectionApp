@@ -384,47 +384,20 @@ class FragmentARRAVPersonnel : Fragment() {
         }
     }
 
+    private var isFirstRun: Boolean = true
+
     fun preparePersonnelPage (){
 
-
-
-//        Thread(Runnable {
-//            // dummy thread mimicking some operation whose progress cannot be tracked
-//
-//            // display the indefinite progressbar
-//            activity!!.runOnUiThread(java.lang.Runnable {
-//                progressBar.visibility = View.VISIBLE
-//            })
-//
-//            // performing some dummy time taking operation
-//            try {
-//                var i=0;
-//                while(i<Int.MAX_VALUE){
-//                    i++
-//                }
-//            } catch (e: InterruptedException) {
-//                e.printStackTrace()
-//            }
-//
-//            // when the task is completed, make progressBar gone
-//            activity!!.runOnUiThread(java.lang.Runnable {
-//                progressBar.visibility = View.GONE
-//            })
-//        }).start()
-
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
+            isFirstRun = false
             progressbarPersonnel.visibility= View.VISIBLE
             (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            firstSelection=false
+
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL,//+(activity as MainActivity).FacilityNumber,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
-                            //                        val facResult = JSONArray(response.toString())
-//                        val jObject = JSONObject(response.toString())
-//                        val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
-//                        val facResult = jObject.getJSONArray("")
-//                        peronnelTypeList = Gson().fromJson(facResult.toString() , Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+
                             personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
                             personTypeArray.clear()
                             personTypeArray.add("Not Selected")
@@ -436,6 +409,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             personType_textviewVal.adapter = personTypeAdapter
                         })
                         progressbarPersonnel.visibility= View.INVISIBLE
+                        getLastYearPersonnel()
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading personnel Types")
                 Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
@@ -535,6 +509,28 @@ class FragmentARRAVPersonnel : Fragment() {
                 }
 
         })
+    }
+
+    private fun getLastYearPersonnel() {
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsWithIdUrl,//+(activity as MainActivity).FacilityNumber,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+                        personTypeArray.clear()
+                        personTypeArray.add("Not Selected")
+                        for (fac in personnelTypeList) {
+                            personTypeArray.add(fac.personneltypename)
+                        }
+                        var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
+                        personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        personType_textviewVal.adapter = personTypeAdapter
+                    })
+                    progressbarPersonnel.visibility= View.INVISIBLE
+                    getLastYearPersonnel()
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading personnel Types")
+            Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
+        }))
     }
 
     fun getTypeID (typeName : String) : Int {

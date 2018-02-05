@@ -10,26 +10,18 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 
 import com.inspection.R
-import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
-import android.telephony.PhoneNumberFormattingTextWatcher
-import android.telephony.PhoneNumberUtils
 import android.util.Log
-import android.widget.EditText
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.inspection.MainActivity
 import com.inspection.Utils.Consts
-import com.inspection.model.AAAFacilityHours
-import com.inspection.model.AAALocations
-import com.inspection.model.AAAPaymentMethods
-import kotlinx.android.synthetic.main.fragment_arravlocation.*
-import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
+import com.inspection.model.*
+import kotlinx.android.synthetic.main.dialog_user_info.*
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 
@@ -54,7 +46,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
             ,"13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"
             ,"20:30","21:00","21:30","22:00","22:30","23:00","23:30")
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    private val appFprmat = SimpleDateFormat("HH:mm")
+    private val appFormat = SimpleDateFormat("HH:mm")
     private var dateTobeFormated = ""
 //    private var mListener: OnFragmentInteractionListener? = null
 
@@ -73,9 +65,6 @@ class FragmentARRAVFacilityContinued : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Fill Dop Down
-
 
         var opHoursAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, opHoursArray)
         opHoursAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -107,14 +96,6 @@ class FragmentARRAVFacilityContinued : Fragment() {
 
 
     }
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-//        if (mListener != null) {
-//            mListener!!.onFragmentInteraction(uri)
-//        }
-    }
-
-
 
     fun validateInputs() : Boolean {
         var isInputsValid = true
@@ -135,37 +116,45 @@ class FragmentARRAVFacilityContinued : Fragment() {
     }
 
 
-    fun preparFacilityContinuedPage (){
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+    private var isFirstRun: Boolean = true
+
+    fun prepareFacilityContinuedPage(){
+
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
+            isFirstRun = false
             progressbarFacContinued.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.paymentMethodsURL,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
+
                             paymentMethodsList = Gson().fromJson(response.toString(), Array<AAAPaymentMethods>::class.java).toCollection(ArrayList())
+                            var lastInspectionPaymentMethods = ArrayList<String>()
+                            if ((activity as MainActivity).lastInspection != null){
+                                lastInspectionPaymentMethods = (activity as MainActivity).lastInspection!!.paymentmethods.split(",") as ArrayList<String>
+                            }
                             for (fac in paymentMethodsList) {
-                                if (fac.pmtmethodname.equals("Visa")) {
-                                    visa_checkbox.isChecked = (fac.active ==1)
-                                } else if (fac.pmtmethodname.equals("Mastercard")) {
-                                    mastercard_checkbox.isChecked = (fac.active == 1)
-                                } else if (fac.pmtmethodname.equals("American Express")) {
-                                    americanexpress_checkbox.isChecked = (fac.active == 1)
-                                } else if (fac.pmtmethodname.equals("Discover Card")) {
-                                    discover_checkbox.isChecked = (fac.active == 1)
-                                } else if (fac.pmtmethodname.equals("Pay Pal")) {
-                                    paypal_checkbox.isChecked = (fac.active == 1)
-                                } else if (fac.pmtmethodname.equals("Debit")) {
-                                    debit_checkbox.isChecked = (fac.active == 1)
-                                } else if (fac.pmtmethodname.equals("Cash")) {
-                                    cash_checkbox.isChecked = (fac.active == 1)
-                                } else if (fac.pmtmethodname.equals("Check")) {
-                                    check_checkbox.isChecked = (fac.active == 1)
-                                } else if (fac.pmtmethodname.equals("Goodyear Credit Card")) {
-                                    goodyear_checkbox.isChecked = (fac.active == 1)
+                                if (fac.pmtmethodid == 1) {
+                                    visa_checkbox.isChecked = lastInspectionPaymentMethods.contains("1")
+                                } else if (fac.pmtmethodid == 2) {
+                                    mastercard_checkbox.isChecked = lastInspectionPaymentMethods.contains("2")
+                                } else if (fac.pmtmethodid == 3) {
+                                    americanexpress_checkbox.isChecked = lastInspectionPaymentMethods.contains("3")
+                                } else if (fac.pmtmethodid == 4) {
+                                    discover_checkbox.isChecked = lastInspectionPaymentMethods.contains("4")
+                                } else if (fac.pmtmethodid == 5) {
+                                    paypal_checkbox.isChecked = lastInspectionPaymentMethods.contains("5")
+                                } else if (fac.pmtmethodid == 6) {
+                                    debit_checkbox.isChecked = lastInspectionPaymentMethods.contains("6")
+                                } else if (fac.pmtmethodid == 7) {
+                                    cash_checkbox.isChecked = lastInspectionPaymentMethods.contains("7")
+                                } else if (fac.pmtmethodid == 8) {
+                                    check_checkbox.isChecked = lastInspectionPaymentMethods.contains("8")
+                                } else if (fac.pmtmethodid == 9) {
+                                    goodyear_checkbox.isChecked = lastInspectionPaymentMethods.contains("9")
                                 }
                             }
                         })
                     }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading Payment Methods")
                 Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
             }))
 //
@@ -179,91 +168,91 @@ class FragmentARRAVFacilityContinued : Fragment() {
                                 if (fac.monopen.isNullOrEmpty())
                                     monday_open_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.monopen))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.monopen))
                                     monday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 if (fac.monclose.isNullOrEmpty())
                                     monday_closed_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.monclose))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.monclose))
                                     monday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 // Tuesday
                                 if (fac.tueopen.isNullOrEmpty())
                                     tuesday_open_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.tueopen))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.tueopen))
                                     tuesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 if (fac.tueclose.isNullOrEmpty())
                                     tuesday_closed_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.tueclose))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.tueclose))
                                     tuesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 // Wednesday
                                 if (fac.wedopen.isNullOrEmpty())
                                     wednesday_open_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.wedopen))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.wedopen))
                                     wednesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 if (fac.wedclose.isNullOrEmpty())
                                     wednesday_closed_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.wedclose))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.wedclose))
                                     wednesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 // Thursday
                                 if (fac.thuopen.isNullOrEmpty())
                                     thursday_open_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.thuopen))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.thuopen))
                                     thursday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 if (fac.thuclose.isNullOrEmpty())
                                     thursday_closed_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.thuclose))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.thuclose))
                                     thursday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 // Friday
                                 if (fac.friopen.isNullOrEmpty())
                                     friday_open_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.friopen))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.friopen))
                                     friday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 if (fac.friclose.isNullOrEmpty())
                                     friday_closed_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.friclose))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.friclose))
                                     friday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 // Saturday
                                 if (fac.satopen.isNullOrEmpty())
                                     saturday_open_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.satopen))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.satopen))
                                     saturday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 if (fac.satclose.isNullOrEmpty())
                                     saturday_closed_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.satclose))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.satclose))
                                     saturday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 // Sunday
                                 if (fac.sunopen.isNullOrEmpty())
                                     sunday_open_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.sunopen))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.sunopen))
                                     sunday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 if (fac.sunclose.isNullOrEmpty())
                                     sunday_closed_spinner.setSelection(0)
                                 else {
-                                    dateTobeFormated = appFprmat.format(dbFormat.parse(fac.sunclose))
+                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.sunclose))
                                     sunday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
                                 }
                                 nightdrop_checkbox.isChecked = (fac.nightdrop ==1)
@@ -275,8 +264,35 @@ class FragmentARRAVFacilityContinued : Fragment() {
                 Log.v("error while loading", "error while loading Facility Timing")
                 Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
             }))
+            if ((activity as MainActivity).lastInspection != null && (activity as MainActivity).lastInspection!!.emailaddressid>0) {
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getEmailFromFacilityAndId, (activity as MainActivity).facilitySelected.facid, (activity as MainActivity).lastInspection!!.emailaddressid),
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
 
+                                var lastInspectionEmail = Gson().fromJson(response.toString(), Array<AAAEmailModel>::class.java).toCollection(ArrayList()).get(0)
 
+                                emailtype_textviewVal.setSelection(lastInspectionEmail.emailtypeid)
+                                email_textviewVal.setText(lastInspectionEmail.email)
+                            })
+                        }, Response.ErrorListener {
+                    Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                }))
+            }
+
+            if ((activity as MainActivity).lastInspection != null && (activity as MainActivity).lastInspection!!.phonenumberid>0) {
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getPhoneNumberWithFacilityAndId, (activity as MainActivity).facilitySelected.facid, (activity as MainActivity).lastInspection!!.phonenumberid),
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+
+                                var lastInspectionPhone = Gson().fromJson(response.toString(), Array<AAAPhoneModel>::class.java).toCollection(ArrayList()).get(0)
+
+                                phonetype_textviewVal.setSelection(lastInspectionPhone.phonetypeid)
+                                phone_textviewVal.setText(lastInspectionPhone.phonenumber)
+                            })
+                        }, Response.ErrorListener {
+                    Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                }))
+            }
         }
     }
 
