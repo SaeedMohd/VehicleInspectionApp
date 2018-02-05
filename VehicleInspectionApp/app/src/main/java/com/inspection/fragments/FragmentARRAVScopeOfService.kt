@@ -62,8 +62,7 @@ class FragmentARRAVScopeOfService : Fragment() {
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
             progressbarScope.visibility = View.VISIBLE
 
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL+(activity as MainActivity).FacilityNumber,
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL+(activity as MainActivity).FacilityNumber,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             var facScopeOfSvcList = Gson().fromJson(response.toString(), Array<AAAScopeOfServices>::class.java).toCollection(ArrayList())

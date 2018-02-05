@@ -157,9 +157,8 @@ class FragmentARRAVFacilityContinued : Fragment() {
                     }, Response.ErrorListener {
                 Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
             }))
-//
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL+(activity as MainActivity).FacilityNumber,
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL,
+
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL+(activity as MainActivity).FacilityNumber,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facilityHoursList = Gson().fromJson(response.toString(), Array<AAAFacilityHours>::class.java).toCollection(ArrayList())

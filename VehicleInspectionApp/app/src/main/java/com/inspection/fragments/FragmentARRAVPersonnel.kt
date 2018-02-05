@@ -51,17 +51,16 @@ import kotlin.collections.ArrayList
 class FragmentARRAVPersonnel : Fragment() {
 
 
-
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-    private var personnelTypeList  = ArrayList<AAAPersonnelType>()
-    private var personnelDetailsList  = ArrayList<AAAPersonnelDetails>()
+    private var personnelTypeList = ArrayList<AAAPersonnelType>()
+    private var personnelDetailsList = ArrayList<AAAPersonnelDetails>()
     private var personTypeArray = ArrayList<String>()
     private var personListArray = ArrayList<String>()
     private var statesArray = ArrayList<String>()
     private var firstSelection = false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
-//    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    //    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
     private val appFprmat = SimpleDateFormat("dd MMM yyyy")
 
@@ -108,7 +107,7 @@ class FragmentARRAVPersonnel : Fragment() {
 //                Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
 //            }))
 //        }
-        statesArray = arrayOf("Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming").toCollection(ArrayList<String>())
+        statesArray = arrayOf("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming").toCollection(ArrayList<String>())
 
         var statesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, statesArray)
         statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,18 +131,18 @@ class FragmentARRAVPersonnel : Fragment() {
         }
 
         a1CertDateVal.setOnClickListener {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year,monthOfYear,dayOfMonth)
-                    a1CertDateVal!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                a1CertDateVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
         }
         a2CertDateVal.setOnClickListener {
             val c = Calendar.getInstance()
@@ -154,7 +153,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a2CertDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -167,7 +166,7 @@ class FragmentARRAVPersonnel : Fragment() {
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a3CertDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -181,7 +180,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a4CertDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -195,7 +194,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a5CertDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -209,7 +208,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a6CertDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -223,7 +222,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a7CertDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -237,7 +236,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a8CertDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -251,7 +250,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 c1CertDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -266,7 +265,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a1ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -280,7 +279,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a2ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -293,7 +292,7 @@ class FragmentARRAVPersonnel : Fragment() {
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a3ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -307,7 +306,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a4ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -321,7 +320,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a5ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -335,7 +334,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a6ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -349,7 +348,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a7ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -363,7 +362,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 a8ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -377,7 +376,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 c1ExpDateVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -386,15 +385,15 @@ class FragmentARRAVPersonnel : Fragment() {
 
     private var isFirstRun: Boolean = true
 
-    fun preparePersonnelPage (){
+    fun preparePersonnelPage() {
 
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
             isFirstRun = false
-            progressbarPersonnel.visibility= View.VISIBLE
+            progressbarPersonnel.visibility = View.VISIBLE
             (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL,//+(activity as MainActivity).FacilityNumber,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL + (activity as MainActivity).FacilityNumber,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
 
@@ -408,11 +407,11 @@ class FragmentARRAVPersonnel : Fragment() {
                             personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             personType_textviewVal.adapter = personTypeAdapter
                         })
-                        progressbarPersonnel.visibility= View.INVISIBLE
+                        progressbarPersonnel.visibility = View.INVISIBLE
                         getLastYearPersonnel()
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading personnel Types")
-                Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
             }))
 
         }
@@ -420,130 +419,139 @@ class FragmentARRAVPersonnel : Fragment() {
         (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         personType_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    personnelNamesList.visibility = View.GONE
-                    if (position > 0) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                personnelNamesList.visibility = View.GONE
+                if (position > 0) {
 //                        Toast.makeText(context, "You have Selected " + personType_textviewVal.selectedItem.toString() + " ID : " + getTypeID(personType_textviewVal.selectedItem.toString()), Toast.LENGTH_SHORT).show()
-                        (activity as MainActivity).FacilityNumber = "540555"
-                        progressbarPersonnel.visibility= View.VISIBLE
-                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsURL+"facilityId=" + (activity as MainActivity).FacilityNumber+"&personnelTypeId="+getTypeID(personType_textviewVal.selectedItem.toString()),
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread(Runnable {
-                                        personnelDetailsList = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
-                                        if (personnelDetailsList.size >=1) {
-                                            personListArray.clear()
-                                            if (personnelDetailsList.size==1) personListArray.add("Add New")
-                                            for (perDetails in personnelDetailsList) {
-                                                personListArray.add("First Name: "+perDetails.firstname+"- Last Name: "+perDetails.lastname)
-                                            }
-                                            var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
-                                            personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                            personnelNamesList.visibility = View.VISIBLE
-                                            personnelNamesList.adapter = personDtlsAdapter
+                    progressbarPersonnel.visibility = View.VISIBLE
+                    Log.v("99999999",String.format(Consts.personnelDetailsURL, (activity as MainActivity).FacilityNumber, getTypeID(personType_textviewVal.selectedItem.toString())))
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.personnelDetailsURL, (activity as MainActivity).FacilityNumber, getTypeID(personType_textviewVal.selectedItem.toString())),
+                            Response.Listener { response ->
+                                activity!!.runOnUiThread(Runnable {
+                                    personnelDetailsList = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
+                                    if (personnelDetailsList.size >= 1) {
+                                        personListArray.clear()
+//                                        if (personnelDetailsList.size == 1) personListArray.add("Add New")
+                                        for (perDetails in personnelDetailsList) {
+                                            personListArray.add(perDetails.firstname +" "+ perDetails.lastname)
                                         }
-                                    })
-                                    progressbarPersonnel.visibility= View.INVISIBLE
-                                }, Response.ErrorListener {
-                            Log.v("error while loading", "error while loading personnel Types")
-                            Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
-                        }))
-
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-
-                    /*Do something if nothing selected*/
-
+                                        var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
+                                        personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        personnelNamesList.visibility = View.VISIBLE
+                                        personnelNamesList.adapter = personDtlsAdapter
+                                        (0..personnelDetailsList.size - 1)
+                                                .filter { personnelDetailsList.get(it).personnelid == personnelDetails.personnelid }
+                                                .forEach { personnelNamesList.setSelection(it) }
+                                    }
+                                })
+                                progressbarPersonnel.visibility = View.INVISIBLE
+                            }, Response.ErrorListener {
+                        Log.v("error while loading", "error while loading personnel Types")
+                        Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                    }))
 
                 }
             }
 
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+                /*Do something if nothing selected*/
+
+
+            }
+        }
+
         personnelNamesList.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
-//            itemSelected = true
-                var pos = -1
-                if (personnelDetailsList.size==1) {
-                    if (i==0) {
-                        personnelNamesList.visibility = View.GONE
-                    } else pos=i-1
-                } else pos = i
-
-                if (pos >-1) {
+            //            itemSelected = true
+            if (isUsingLastInspectionPersonnel) return@OnItemClickListener
+            var pos = -1
+            if (personnelDetailsList.size == 1) {
+                if (i == 0) {
                     personnelNamesList.visibility = View.GONE
-                    personnelNamesList.adapter = null
-                    firstName_textviewVal.setText((personnelDetailsList.get(pos)).firstname)
-                    lastName_textviewVal.setText((personnelDetailsList.get(pos)).lastname)
-                    certNo_textviewVal.setText((personnelDetailsList.get(pos)).certificationnum)
-                    rspUserID_textviewVal.setText(if (((personnelDetailsList.get(pos)).rsp_username).equals("NULL")) "" else ((personnelDetailsList.get(pos)).rsp_username))
-                    rspEmail_textviewVal.setText(if (((personnelDetailsList.get(pos)).rsp_email).equals("NULL")) "" else ((personnelDetailsList.get(pos)).rsp_email))
-                    certNo_textviewVal.setText((personnelDetailsList.get(pos)).certificationnum)
-                    seniorityDateVal.setText(if (((personnelDetailsList.get(pos)).senioritydate).equals("NULL") || ((personnelDetailsList.get(pos)).senioritydate).length<10) "" else ((personnelDetailsList.get(pos)).senioritydate))
-                    var dateTobeFormated =""
-                    if (!(((personnelDetailsList.get(pos)).startdate).isNullOrEmpty())) {
-                        dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetailsList.get(pos).startdate.substring(0,10)))
-                    }
-                    startDateVal.setText(dateTobeFormated)
-                    Log.v("FORMAT 1 ----- : " , dateTobeFormated)
-                    dateTobeFormated = ""
-                    if (!((personnelDetailsList.get(pos)).startdate).equals("NULL") && ((personnelDetailsList.get(pos)).enddate).equals("NULL")){
-                        dateTobeFormated = "SELECT DATE"
-                    } else {
-                        dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetailsList.get(pos).enddate.substring(0,10)))
-                    }
-                    endDateVal.setText(dateTobeFormated)
-                    primaryEmailCheckBox.isChecked = ((personnelDetailsList.get(pos)).primarymailrecipient==1)
-                    if ((personnelDetailsList.get(pos)).contractsigner==1) {
-                        contractSignerCheckBox.isChecked = true
-                        coSignerAddr1Val.setText((personnelDetailsList.get(pos)).addr1)
-                        coSignerAddr2Val.setText((personnelDetailsList.get(pos)).addr2)
-                        coSignerCityVal.setText((personnelDetailsList.get(pos)).city)
-                        coSignerCoEndDateVal.setText((personnelDetailsList.get(pos)).contractenddate)
-                        coSignerCoStartDateVal.setText((personnelDetailsList.get(pos)).contractstartdate)
-                        coSignerEmailVal.setText((personnelDetailsList.get(pos)).email)
-                        coSignerPhoneVal.setText((personnelDetailsList.get(pos)).phone.toString())
-                        coSignerStateVal.setSelection(statesArray.indexOf((personnelDetailsList.get(pos)).state.toString()))
-                        coSignerZip4Val.setText((personnelDetailsList.get(pos)).zip4.toString())
-                        coSignerZipVal.setText((personnelDetailsList.get(pos)).zip.toString())
-                    }
+                } else pos = i - 1
+            } else pos = i
 
-                }
+            if (pos > -1) {
+               setPersonnelDetails(personnelDetailsList.get(pos))
+            }
 
         })
     }
 
+    private lateinit var personnelDetails: AAAPersonnelDetails
+
+    private var isUsingLastInspectionPersonnel: Boolean = false
+
     private fun getLastYearPersonnel() {
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsWithIdUrl,//+(activity as MainActivity).FacilityNumber,
+        Log.v("ooooooooooooooo", Consts.personnelDetailsWithIdUrl + (activity as MainActivity).lastInspection!!.personnelid)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsWithIdUrl + (activity as MainActivity).lastInspection!!.personnelid,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
-                        personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
-                        personTypeArray.clear()
-                        personTypeArray.add("Not Selected")
-                        for (fac in personnelTypeList) {
-                            personTypeArray.add(fac.personneltypename)
-                        }
-                        var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
-                        personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        personType_textviewVal.adapter = personTypeAdapter
+                        personnelDetails = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList()).get(0)
+                        isUsingLastInspectionPersonnel = true
+                        (0..personnelTypeList.size - 1)
+                                .filter { personnelTypeList.get(it).personneltypeid == personnelDetails.personneltypeid }
+                                .forEach { personType_textviewVal.setSelection(it+1) }
+
                     })
-                    progressbarPersonnel.visibility= View.INVISIBLE
-                    getLastYearPersonnel()
+
+                    progressbarPersonnel.visibility = View.INVISIBLE
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnel Types")
-            Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
         }))
     }
 
-    fun getTypeID (typeName : String) : Int {
+    private fun setPersonnelDetails(personnelDetails : AAAPersonnelDetails){
+        personnelNamesList.visibility = View.GONE
+        personnelNamesList.adapter = null
+        firstName_textviewVal.setText(personnelDetails.firstname)
+        lastName_textviewVal.setText(personnelDetails.lastname)
+        certNo_textviewVal.setText(personnelDetails.certificationnum)
+        rspUserID_textviewVal.text = if ((personnelDetails.rsp_username).equals("NULL")) "" else (personnelDetails.rsp_username)
+        rspEmail_textviewVal.text = if ((personnelDetails.rsp_email).equals("NULL")) "" else (personnelDetails.rsp_email)
+        certNo_textviewVal.setText(personnelDetails.certificationnum)
+        seniorityDateVal.text = if ((personnelDetails.senioritydate).equals("NULL") || (personnelDetails.senioritydate).length < 10) "" else (personnelDetails.senioritydate)
+        var dateTobeFormated = ""
+        if (!((personnelDetails.startdate).isNullOrEmpty())) {
+            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.startdate.substring(0, 10)))
+        }
+        startDateVal.setText(dateTobeFormated)
+        Log.v("FORMAT 1 ----- : ", dateTobeFormated)
+        dateTobeFormated = ""
+        if (!(personnelDetails.startdate).equals("NULL") && (personnelDetails.enddate).equals("NULL")) {
+            dateTobeFormated = "SELECT DATE"
+        } else {
+            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.enddate.substring(0, 10)))
+        }
+        endDateVal.setText(dateTobeFormated)
+        primaryEmailCheckBox.isChecked = (personnelDetails.primarymailrecipient == 1)
+        if (personnelDetails.contractsigner == 1) {
+            contractSignerCheckBox.isChecked = true
+            coSignerAddr1Val.setText(personnelDetails.addr1)
+            coSignerAddr2Val.setText(personnelDetails.addr2)
+            coSignerCityVal.setText(personnelDetails.city)
+            coSignerCoEndDateVal.text = personnelDetails.contractenddate
+            coSignerCoStartDateVal.text = personnelDetails.contractstartdate
+            coSignerEmailVal.setText(personnelDetails.email)
+            coSignerPhoneVal.setText(personnelDetails.phone.toString())
+            coSignerStateVal.setSelection(statesArray.indexOf(personnelDetails.state.toString()))
+            coSignerZip4Val.setText(personnelDetails.zip4.toString())
+            coSignerZipVal.setText(personnelDetails.zip.toString())
+        }
+    }
+    
+    fun getTypeID(typeName: String): Int {
         var typeID = -1
         for (fac in personnelTypeList) {
-            if (fac.personneltypename.equals(typeName)){
+            if (fac.personneltypename.equals(typeName)) {
                 typeID = fac.personneltypeid
             }
         }
         return typeID
     }
 
-    fun validateInputs() : Boolean {
+    fun validateInputs(): Boolean {
         var isInputsValid = true
 
         firstName_textviewVal.setError(null)
@@ -576,113 +584,113 @@ class FragmentARRAVPersonnel : Fragment() {
         c1CertDateVal.setError(null)
         c1ExpDateVal.setError(null)
 
-        if(firstName_textviewVal.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+        if (firstName_textviewVal.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
             firstName_textviewVal.setError("Required Field")
         }
 
-        if(lastName_textviewVal.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+        if (lastName_textviewVal.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
             lastName_textviewVal.setError("Required Field")
         }
 
         if (contractSignerCheckBox.isChecked) {
-            if(coSignerAddr1Val.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerAddr1Val.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerAddr1Val.setError("Required Field")
             }
-            if(coSignerAddr2Val.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerAddr2Val.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerAddr2Val.setError("Required Field")
             }
-            if(coSignerCityVal.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerCityVal.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerCityVal.setError("Required Field")
             }
-            if(coSignerZipVal.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerZipVal.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerZipVal.setError("Required Field")
             }
-            if(coSignerZip4Val.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerZip4Val.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerZip4Val.setError("Required Field")
             }
-            if(coSignerPhoneVal.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerPhoneVal.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerPhoneVal.setError("Required Field")
             }
-            if(coSignerEmailVal.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerEmailVal.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerEmailVal.setError("Required Field")
             }
-            if(coSignerCoStartDateVal.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerCoStartDateVal.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerCoStartDateVal.setError("Required Field")
             }
-            if(coSignerCoEndDateVal.text.toString().isNullOrEmpty()) {
-                isInputsValid=false
+            if (coSignerCoEndDateVal.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
                 coSignerCoEndDateVal.setError("Required Field")
             }
         }
         if (!a1CertDateVal.text.equals("SELECT DATE")) {
-            if(a1ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (a1ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 a1ExpDateVal.setError("Required Field")
             }
         }
 
         if (!a2CertDateVal.text.equals("SELECT DATE")) {
-            if(a2ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (a2ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 a2ExpDateVal.setError("Required Field")
             }
         }
 
         if (!a3CertDateVal.text.equals("SELECT DATE")) {
-            if(a3ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (a3ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 a3ExpDateVal.setError("Required Field")
             }
         }
 
         if (!a4CertDateVal.text.equals("SELECT DATE")) {
-            if(a4ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (a4ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 a4ExpDateVal.setError("Required Field")
             }
         }
 
         if (!a5CertDateVal.text.equals("SELECT DATE")) {
-            if(a5ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (a5ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 a5ExpDateVal.setError("Required Field")
             }
         }
 
         if (!a6CertDateVal.text.equals("SELECT DATE")) {
-            if(a6ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (a6ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 a6ExpDateVal.setError("Required Field")
             }
         }
 
         if (!a7CertDateVal.text.equals("SELECT DATE")) {
-            if(a7ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (a7ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 a7ExpDateVal.setError("Required Field")
             }
         }
 
         if (!a8CertDateVal.text.equals("SELECT DATE")) {
-            if(a8ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (a8ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 a8ExpDateVal.setError("Required Field")
             }
         }
 
         if (!c1CertDateVal.text.equals("SELECT DATE")) {
-            if(c1ExpDateVal.text.equals("SELECT DATE")) {
-                isInputsValid=false
+            if (c1ExpDateVal.text.equals("SELECT DATE")) {
+                isInputsValid = false
                 c1ExpDateVal.setError("Required Field")
             }
         }
@@ -690,7 +698,6 @@ class FragmentARRAVPersonnel : Fragment() {
 
         return isInputsValid
     }
-
 
 
     companion object {

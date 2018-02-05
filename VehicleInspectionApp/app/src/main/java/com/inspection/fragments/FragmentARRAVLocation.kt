@@ -62,8 +62,7 @@ class FragmentARRAVLocation : Fragment() {
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
             progressbarLocation.visibility = View.VISIBLE
 
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL+(activity as MainActivity).FacilityNumber,
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL+(activity as MainActivity).FacilityNumber,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facLocationsList = Gson().fromJson(response.toString(), Array<AAALocations>::class.java).toCollection(ArrayList())
