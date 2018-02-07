@@ -416,6 +416,24 @@ class FragmentARRAVPersonnel : Fragment() {
 
         }
 
+
+
+        var personnelNamesListViewAdapter = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
+            //            itemSelected = true
+            Log.v("77777", "I am here")
+            var pos = -1
+            if (personnelDetailsList.size == 1) {
+                if (i == 0) {
+                    personnelNamesList.visibility = View.GONE
+                } else pos = i - 1
+            } else pos = i
+
+            if (pos > -1) {
+                setPersonnelDetails(personnelDetailsList.get(pos))
+            }
+
+        })
+
         (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         personType_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -439,9 +457,14 @@ class FragmentARRAVPersonnel : Fragment() {
                                         personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         personnelNamesList.visibility = View.VISIBLE
                                         personnelNamesList.adapter = personDtlsAdapter
+                                        personnelNamesList.itemsCanFocus = true
+                                        personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
                                         (0..personnelDetailsList.size - 1)
                                                 .filter { personnelDetailsList.get(it).personnelid == personnelDetails.personnelid }
-                                                .forEach { personnelNamesList.setSelection(it) }
+                                                .forEach {
+                                                    setPersonnelDetails(personnelDetailsList.get(it))
+                                                    Log.v("And I am *****", "And I am setting selction now "+it +" "+personnelDetailsList.get(it).personnelid)
+                                                }
                                     }
                                 })
                                 progressbarPersonnel.visibility = View.INVISIBLE
@@ -461,21 +484,7 @@ class FragmentARRAVPersonnel : Fragment() {
             }
         }
 
-        personnelNamesList.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
-            //            itemSelected = true
-            if (isUsingLastInspectionPersonnel) return@OnItemClickListener
-            var pos = -1
-            if (personnelDetailsList.size == 1) {
-                if (i == 0) {
-                    personnelNamesList.visibility = View.GONE
-                } else pos = i - 1
-            } else pos = i
 
-            if (pos > -1) {
-               setPersonnelDetails(personnelDetailsList.get(pos))
-            }
-
-        })
     }
 
     private lateinit var personnelDetails: AAAPersonnelDetails
@@ -527,17 +536,21 @@ class FragmentARRAVPersonnel : Fragment() {
         endDateVal.setText(dateTobeFormated)
         primaryEmailCheckBox.isChecked = (personnelDetails.primarymailrecipient == 1)
         if (personnelDetails.contractsigner == 1) {
-            contractSignerCheckBox.isChecked = true
-            coSignerAddr1Val.setText(personnelDetails.addr1)
-            coSignerAddr2Val.setText(personnelDetails.addr2)
-            coSignerCityVal.setText(personnelDetails.city)
-            coSignerCoEndDateVal.text = personnelDetails.contractenddate
-            coSignerCoStartDateVal.text = personnelDetails.contractstartdate
-            coSignerEmailVal.setText(personnelDetails.email)
-            coSignerPhoneVal.setText(personnelDetails.phone.toString())
-            coSignerStateVal.setSelection(statesArray.indexOf(personnelDetails.state.toString()))
-            coSignerZip4Val.setText(personnelDetails.zip4.toString())
-            coSignerZipVal.setText(personnelDetails.zip.toString())
+            try {
+                contractSignerCheckBox.isChecked = true
+                coSignerAddr1Val.setText(personnelDetails.addr1)
+                coSignerAddr2Val.setText(personnelDetails.addr2)
+                coSignerCityVal.setText(personnelDetails.city)
+                coSignerCoEndDateVal.text = personnelDetails.contractenddate
+                coSignerCoStartDateVal.text = personnelDetails.contractstartdate
+                coSignerEmailVal.setText(personnelDetails.email)
+                coSignerPhoneVal.setText(personnelDetails.phone.toString())
+                coSignerStateVal.setSelection(statesArray.indexOf(personnelDetails.state.toString()))
+                coSignerZip4Val.setText(personnelDetails.zip4.toString())
+                coSignerZipVal.setText(personnelDetails.zip.toString())
+            }catch (exp: Exception){
+                exp.printStackTrace()
+            }
         }
     }
     

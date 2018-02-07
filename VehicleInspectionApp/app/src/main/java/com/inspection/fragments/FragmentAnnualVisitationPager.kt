@@ -52,32 +52,12 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         return inflater?.inflate(R.layout.fragment_main_visitation, container, false)
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
-//    fun onButtonPressed(uri: Uri) {
-//        if (mListener != null) {
-//            mListener!!.onFragmentInteraction(uri)
-//        }
-//    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mSectionsPagerAdapter = SectionsPagerAdapter(fragmentManager!!)
         (activity as MainActivity).supportActionBar!!.title = "Forms"
-        // Set up the ViewPager with the sections adapter.
-//        mViewPager=container
-//        mViewPager.adapter = mSectionsPagerAdapter
 
-//        container.let {
-//            it as ViewPager
-//            (it.adapter as SectionsPagerAdapter)
-//        }
-
-//        val tabLayout = sliding_tabs as TableLayout
-
-//        tabs.set(container)
-
-        mSectionsPagerAdapter = SectionsPagerAdapter (fragmentManager!!)
+        mSectionsPagerAdapter = SectionsPagerAdapter(fragmentManager!!)
         container.offscreenPageLimit = 16
         container.adapter = mSectionsPagerAdapter
         container?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -88,51 +68,46 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
+
             override fun onPageSelected(position: Int) {
-                if (position==4) {
+                if (position == 4) {
                     val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel
                     fragmentPersonnel.preparePersonnelPage()
-                } else if (position==3) {
-                    val fragmentLocations= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3") as FragmentARRAVLocation
+                } else if (position == 3) {
+                    val fragmentLocations = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3") as FragmentARRAVLocation
                     fragmentLocations.prepareLocationPage()
-                } else if (position==2) {
-                    val fragmentFacilityCont= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued
+                } else if (position == 2) {
+                    val fragmentFacilityCont = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued
                     fragmentFacilityCont.prepareFacilityContinuedPage()
-                } else if (position==8) {
-                    val fragmentScope= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService
+                } else if (position == 8) {
+                    val fragmentScope = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService
                     fragmentScope.prepareScopePage()
-                } else if (position==11) {
-                    val fragmentProgramType= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11") as FragmentARRAVPrograms
+                } else if (position == 11) {
+                    val fragmentProgramType = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11") as FragmentARRAVPrograms
                     fragmentProgramType.prepareProgramTypes()
-                }  else if (position==1) {
-                    val fragmentFac= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as FragmentARRAVFacility
+                } else if (position == 1) {
+                    val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as FragmentARRAVFacility
                     fragmentFac.prepareFacilityPage()
+                } else if (position == 9) {
+                    val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":9") as FragmentARRAVVehicleServices
+                    fragmentFac.prepareView()
                 }
-
             }
 
         })
-//        tabs.setupWithViewPager(container)
 
-        (activity as MainActivity).saveBtn.setOnClickListener{
-
-//            Toast.makeText(context,"Validation Result : " + validateFormsInputs(),Toast.LENGTH_LONG).show()
+        (activity as MainActivity).saveBtn.setOnClickListener {
             validateFormsInputs()
         }
 
     }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            mListener = context
-//        } else {
-//            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
-//        }
     }
 
     override fun onDetach() {
         super.onDetach()
-//        mListener = null
     }
 
 
@@ -145,113 +120,76 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        fun onFragmentInteraction(uri: Uri)
-//    }
-
     fun validateFormsInputs(): Boolean {
-        var isValidInput : Boolean = true
-        var errorText : String = ""
+        var isValidInput: Boolean = true
+        var errorText: String = ""
 
-        val fragmentVisitation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":0" ) as FragmentARRAnualVisitation
-        val fragmentFacility = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1" ) as FragmentARRAVFacility
-        val fragmentFacilityContinued = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2" ) as FragmentARRAVFacilityContinued
-        val fragmentFacilityLocation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3" ) as FragmentARRAVLocation
-        val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4" ) as FragmentARRAVPersonnel
-        val fragmentRepairShopPortal= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":6" ) as FragmentARRAVRepairShopPortalAddendum
-        val fragmentScopeOfServices= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8" ) as FragmentARRAVScopeOfService
-        val fragmentPrograms= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11" ) as FragmentARRAVPrograms
-        val fragmentFcServices= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":12" ) as FragmentARRAVFacilityServices
-        val fragmentAffiliations= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":13" ) as FragmentARRAVAffliations
-        val fragmentDefficiencies= fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":14" ) as FragmentARRAVDeficiency
-
+        val fragmentVisitation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":0") as FragmentARRAnualVisitation
+        val fragmentFacility = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as FragmentARRAVFacility
+        val fragmentFacilityContinued = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued
+        val fragmentFacilityLocation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3") as FragmentARRAVLocation
+        val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel
+        val fragmentRepairShopPortal = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":6") as FragmentARRAVRepairShopPortalAddendum
+        val fragmentScopeOfServices = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService
+        val fragmentPrograms = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11") as FragmentARRAVPrograms
+        val fragmentFcServices = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":12") as FragmentARRAVFacilityServices
+        val fragmentAffiliations = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":13") as FragmentARRAVAffliations
+        val fragmentDefficiencies = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":14") as FragmentARRAVDeficiency
 
         if (!fragmentVisitation.validateInputs()) {
-                isValidInput = !isValidInput
-                errorText = " Please complete General Information Form"
-        }
-        else if (!fragmentFacility.validateInputs()){
+            isValidInput = !isValidInput
+            errorText = " Please complete General Information Form"
+        } else if (!fragmentFacility.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Facility Form"
-        }
-        else if (!fragmentFacilityContinued.validateInputs()){
+        } else if (!fragmentFacilityContinued.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Facility Continued Form"
-        }
-        else if (!fragmentFacilityLocation.validateInputs()){
+        } else if (!fragmentFacilityLocation.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Location Information Form"
-        }
-        else if (!fragmentPersonnel.validateInputs()){
+        } else if (!fragmentPersonnel.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Personnel Information Form"
-        }
-        else if (!fragmentRepairShopPortal.validateInputs()){
+        } else if (!fragmentRepairShopPortal.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Repair Shop Portal Addendum Form"
-        }
-        else if (!fragmentScopeOfServices.validateInputs()){
+        } else if (!fragmentScopeOfServices.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Scope of Services Form"
-        }
-        else if (!fragmentPrograms.validateInputs()){
+        } else if (!fragmentPrograms.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Programs Form"
-        }
-         else if (!fragmentFcServices.validateInputs()){
+        } else if (!fragmentFcServices.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Facility Services Form"
-        }
-        else if (!fragmentAffiliations.validateInputs()){
+        } else if (!fragmentAffiliations.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Affiliations Form"
-        }
-        else if (!fragmentDefficiencies.validateInputs()){
+        } else if (!fragmentDefficiencies.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Deficiencies Form"
-
         }
+
         val simpleAlert = AlertDialog.Builder(context).create()
         simpleAlert.setTitle("Validation Result")
         if (!errorText.isNullOrEmpty())
             simpleAlert.setMessage(errorText)
         else
             simpleAlert.setMessage("Validation Completed Succesfully  ... Proceed to submission? ")
-        simpleAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", {
-            dialogInterface, i ->
+        simpleAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", { dialogInterface, i ->
             Toast.makeText(context, "You clicked on OK", Toast.LENGTH_SHORT).show()
         })
-        simpleAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",{dialogInterface, i -> })
+        simpleAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", { dialogInterface, i -> })
 
         simpleAlert.show()
         return isValidInput
     }
 
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
-        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
         private val ARG_PARAM2 = "param2"
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentAnnualVisitationPager.
-         */
-        // TODO: Rename and change types and number of parameters
         fun newInstance(param1: String, param2: String): FragmentAnnualVisitationPager {
             val fragment = FragmentAnnualVisitationPager()
             val args = Bundle()
@@ -265,42 +203,29 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
     inner class SectionsPagerAdapter(fm: android.support.v4.app.FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): android.support.v4.app.Fragment? {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             var ft: android.support.v4.app.Fragment? = null
             when (position) {
-                0 -> ft = FragmentARRAnualVisitation.newInstance("Test","Test")
-                1 -> ft = FragmentARRAVFacility.newInstance("Test","Test")
-                2 -> ft = FragmentARRAVFacilityContinued.newInstance("Test","Test")
-                3 -> ft = FragmentARRAVLocation.newInstance("Test","Test")
-                4 -> ft = FragmentARRAVPersonnel.newInstance("Test", "Test")
-                5 -> ft = FragmentARRAVAmOrderTracking.newInstance("Test", "Test")
-                6 -> ft = FragmentARRAVRepairShopPortalAddendum.newInstance("Test", "Test")
-                7 -> ft = FragmentARRAVVisitationTracking.newInstance("Test", "Test")
-                8 -> ft = FragmentARRAVScopeOfService.newInstance("Test", "Test")
-                9 -> ft = FragmentARRAVVehicleServices.newInstance("Test", "Test")
+                 0 -> ft = FragmentARRAnualVisitation.newInstance("Test", "Test")
+                 1 -> ft = FragmentARRAVFacility.newInstance("Test", "Test")
+                 2 -> ft = FragmentARRAVFacilityContinued.newInstance("Test", "Test")
+                 3 -> ft = FragmentARRAVLocation.newInstance("Test", "Test")
+                 4 -> ft = FragmentARRAVPersonnel.newInstance("Test", "Test")
+                 5 -> ft = FragmentARRAVAmOrderTracking.newInstance("Test", "Test")
+                 6 -> ft = FragmentARRAVRepairShopPortalAddendum.newInstance("Test", "Test")
+                 7 -> ft = FragmentARRAVVisitationTracking.newInstance("Test", "Test")
+                 8 -> ft = FragmentARRAVScopeOfService.newInstance("Test", "Test")
+                 9 -> ft = FragmentARRAVVehicleServices.newInstance("Test", "Test")
                 10 -> ft = FragmentARRAVVehicles.newInstance("Test", "Test")
                 11 -> ft = FragmentARRAVPrograms.newInstance("Test", "Test")
                 12 -> ft = FragmentARRAVFacilityServices.newInstance("Test", "Test")
                 13 -> ft = FragmentARRAVAffliations.newInstance("Test", "Test")
                 14 -> ft = FragmentARRAVDeficiency.newInstance("Test", "Test")
                 15 -> ft = FragmentARRAVComplaints.newInstance("Test", "Test")
-//                3 -> {
-//                    //ft=FeaturedFragment.newInstance("Test");
-//                    //ft=SubmittedFragment.newInstance("Test","");
-//                    Utils.strFragmentType.equals("SubmittedPoem")
-//                    ft = MainFragment.newInstance("SubmittedPoem")
-//                }
-//                2 -> ft = PopularFragment.newInstance("Test", "")
-//                1 -> ft = TopFragment.newInstance("Test")
-//                else -> ft = MainFragment.newInstance("Test")
             }
-
             return ft
         }
 
         override fun getCount(): Int {
-            // Show 3 total pages.
             return 16
         }
 

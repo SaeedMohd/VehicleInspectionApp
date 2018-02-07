@@ -43,7 +43,7 @@
           </option>
           <option name="pluginClasspaths">
             <array>
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.2.21/b35afe5863f02e395afd1bf61fcbd647034196a0/kotlin-android-extensions-1.2.21.jar" />
+              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.2.20/bff9d57505651e748c855ec9cad8ad629cb730bf/kotlin-android-extensions-1.2.20.jar" />
             </array>
           </option>
         </compilerArguments>
@@ -126,7 +126,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaPrecompile" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/multi-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/prebuild" />
@@ -152,6 +151,7 @@
     <orderEntry type="library" name="com.google.android.gms:play-services-awareness-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-v4-impl-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-11.8.0" level="project" />
+    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.20@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-wearable-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-drive-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-base-license-11.8.0" level="project" />
@@ -169,7 +169,6 @@
     <orderEntry type="library" name="com.google.firebase:firebase-dynamic-links-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.android.support:support-compat-27.0.2" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-identity-11.8.0" level="project" />
-    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib:1.2.21@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-places-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-common-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-cast-framework-11.8.0" level="project" />
@@ -246,13 +245,13 @@
     <orderEntry type="library" name="com.facebook.android:facebook-login-4.29.0" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-database-connection-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-safetynet-license-11.8.0" level="project" />
+    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib:1.2.20@jar" level="project" />
     <orderEntry type="library" name="com.android.support:support-fragment-27.0.2" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-analytics-impl-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-base-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-panorama-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.facebook.android:facebook-applinks-4.29.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-identity-license-11.8.0" level="project" />
-    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.21@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-v4-impl-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-analytics-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-license-11.8.0" level="project" />

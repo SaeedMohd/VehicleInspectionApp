@@ -8,17 +8,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.AdapterView
-import android.widget.ListView
+import android.view.WindowManager
+import android.widget.*
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.R.id.vehicleServicesListView
+import com.inspection.Utils.Consts
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
-import com.inspection.model.VehicleServiceHeader
-import com.inspection.model.VehicleServiceItem
+import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import kotlinx.android.synthetic.main.temp.view.*
 import kotlinx.android.synthetic.main.vehicle_services_item.view.*
 
@@ -30,122 +36,93 @@ import kotlinx.android.synthetic.main.vehicle_services_item.view.*
  * Use the [FragmentARRAVVehicleServices.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class FragmentARRAVVehicleServices : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
+
+    private var isServicesLoaded = false
+
+    var vehicleServicesListView: ListView? = null
+    var vehicleServicesListItems = ArrayList<VehicleServicesListItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
 
+    private lateinit var vehicleServicesList: ArrayList<AAAVehicleServicesModel>
+    lateinit var vehiclesArrayAdapter: VehicleServicesArrayAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         var view = inflater!!.inflate(R.layout.fragment_array_vehicle_services, container, false)
-
-        var vehicleServicesListView = view.findViewById<ListView>(R.id.vehicleServicesListView)
-
-        var vehicleServicesListItems = ArrayList<VehicleServicesListItem>()
-        vehicleServicesListItems.add(VehicleServiceHeader("Automobile"))
-        vehicleServicesListItems.add(VehicleServiceItem("Air Check New Mexico"))
-        vehicleServicesListItems.add(VehicleServiceItem("Air Check Texas"))
-        vehicleServicesListItems.add(VehicleServiceItem("Air Conditioning Service and Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Automatic Transmission"))
-        vehicleServicesListItems.add(VehicleServiceItem("Brake Certification"))
-        vehicleServicesListItems.add(VehicleServiceItem("Brake Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Clutch / Driveline"))
-        vehicleServicesListItems.add(VehicleServiceItem("Cooling/Radiator"))
-        vehicleServicesListItems.add(VehicleServiceItem("Diagnostic Services"))
-        vehicleServicesListItems.add(VehicleServiceItem("Diesel Engine Service and Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Diesel Vehicle Service"))
-        vehicleServicesListItems.add(VehicleServiceItem("Electrical Systems"))
-        vehicleServicesListItems.add(VehicleServiceItem("Engine Performance"))
-        vehicleServicesListItems.add(VehicleServiceItem("Hybrid Service & Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Lamp Certification"))
-        vehicleServicesListItems.add(VehicleServiceItem("Lube/Oil/Filter Service"))
-        vehicleServicesListItems.add(VehicleServiceItem("Major Engine Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Manual Transmission/Rear Axle"))
-        vehicleServicesListItems.add(VehicleServiceItem("Minor Engine Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Muffler/Exhaust"))
-        vehicleServicesListItems.add(VehicleServiceItem("RV Service & Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Smog Repair Only"))
-        vehicleServicesListItems.add(VehicleServiceItem("Smog Test 2000 & Newer"))
-        vehicleServicesListItems.add(VehicleServiceItem("Smog Test and Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Smog-Diesel"))
-        vehicleServicesListItems.add(VehicleServiceItem("STAR Test and Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("State Emissions Inspection"))
-        vehicleServicesListItems.add(VehicleServiceItem("State Safety Inspection"))
-        vehicleServicesListItems.add(VehicleServiceItem("Steering/Suspension"))
-        vehicleServicesListItems.add(VehicleServiceItem("Tire Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Tire Sales"))
-
-        vehicleServicesListItems.add(VehicleServiceHeader("Auto Body"))
-        vehicleServicesListItems.add(VehicleServiceItem("Damage Analysis/Estimating"))
-        vehicleServicesListItems.add(VehicleServiceItem("Frame/Unibody (Aluminum)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Motorcycle Collision Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Paintless Dent Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Body Panel Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Detailing"))
-        vehicleServicesListItems.add(VehicleServiceItem("Auto Glass"))
-        vehicleServicesListItems.add(VehicleServiceItem("Painting/Refinishing"))
-        vehicleServicesListItems.add(VehicleServiceItem("Rustproofing/Undercoating"))
-        vehicleServicesListItems.add(VehicleServiceItem("Upholstery"))
-        vehicleServicesListItems.add(VehicleServiceItem("Frame/Unibody (Steel)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Marine (Boat) Collision Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Plastic/Fiberglass Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("RV/Trailer Collision Repair"))
-        vehicleServicesListItems.add(VehicleServiceItem("Welding / Brazing"))
-
-        vehicleServicesListItems.add(VehicleServiceHeader("Marine"))
-        vehicleServicesListItems.add(VehicleServiceItem("Air Conditioning (electric)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Refrigeration (gas/electric)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Septic Systems"))
-        vehicleServicesListItems.add(VehicleServiceItem("Inboard Engines"))
-        vehicleServicesListItems.add(VehicleServiceItem("Outboard Engines (4-stroke)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Electrical (120-volt ac)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Furnaces (gas/electric)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Water Systems"))
-        vehicleServicesListItems.add(VehicleServiceItem("I/O Drive Units"))
-        vehicleServicesListItems.add(VehicleServiceItem("V-Drive Units"))
-        vehicleServicesListItems.add(VehicleServiceItem("Electrical (12-volt dc)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Septic Dump Station"))
-        vehicleServicesListItems.add(VehicleServiceItem("Bilge Systems"))
-        vehicleServicesListItems.add(VehicleServiceItem("Outboard Engines (2-stroke)"))
-
-        vehicleServicesListItems.add(VehicleServiceHeader("Recreational Vehicle"))
-        vehicleServicesListItems.add(VehicleServiceItem("Air Conditioning (electric)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Electrical (120-volt ac)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Furnaces (gas/electric)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Water Systems"))
-        vehicleServicesListItems.add(VehicleServiceItem("Brakes (hydraulic-surge)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Electrical (12-volt dc)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Hitch Systems"))
-        vehicleServicesListItems.add(VehicleServiceItem("Brakes (electric)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Refrigeration (gas/electric)"))
-        vehicleServicesListItems.add(VehicleServiceItem("Septic Systems"))
-
-        var vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
-
-        vehicleServicesListView.adapter = vehiclesArrayAdapter
-
-
-//        vehicleServicesListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
-//
-//        })
-
+        vehicleServicesListView = view.findViewById<ListView>(R.id.vehicleServicesListView)
+        loadServices()
 
         return view
     }
 
+    private fun loadServices() {
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getVehicleServicesURL,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        isServicesLoaded = true
+                        vehicleServicesList = Gson().fromJson(response.toString(), Array<AAAVehicleServicesModel>::class.java).toCollection(ArrayList())
+                        vehicleServicesListItems.add(VehicleServiceHeader("Automobile"))
+                        (0..vehicleServicesList.size - 1).forEach {
+                            vehicleServicesListItems.add(VehicleServiceItem(vehicleServicesList[it]))
+                            vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
+                            vehicleServicesListView!!.adapter = vehiclesArrayAdapter
+                        }
+                        if (isPreparingView) {
+                            loadServices()
+                        }
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading personnel Types")
+            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+        }))
+    }
+
+    private var isFirstRun = true
+
+    private var isPreparingView = false
+
+    fun prepareView() {
+        if (!isServicesLoaded) {
+            isPreparingView = true
+            loadServices()
+        }
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
+            isFirstRun = false
+
+            if ((activity as MainActivity).lastInspection != null) {
+                (0..(activity as MainActivity).lastInspection!!.vehicleservices.split(",").size - 1)
+                        .forEach {
+                            (1 until vehicleServicesListItems.size)
+                                    .forEach { it2 ->
+                                        if (it2 != 0) {
+                                            Log.v("8888888", "" + (activity as MainActivity).lastInspection!!.vehicleservices.split(",")[it].toInt() + "  " + "" + (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid + "->")
+                                            if ((activity as MainActivity).lastInspection!!.vehicleservices.split(",")[it].toInt() == (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid) {
+                                                Log.v("yesss", "yes i am selecteddddddd")
+                                                (vehicleServicesListItems[it2] as VehicleServiceItem).setServiceSelected(true)
+                                                vehiclesArrayAdapter.notifyDataSetChanged()
+                                            }
+                                        }
+                                    }
+                        }
+            }
+
+
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-
     }
 
     override fun onDetach() {
@@ -153,15 +130,6 @@ class FragmentARRAVVehicleServices : Fragment() {
         mListener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
