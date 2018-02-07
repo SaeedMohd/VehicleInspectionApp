@@ -14,16 +14,16 @@ import kotlinx.android.synthetic.main.vehicle_services_item.view.*
  * Created by sheri on 12/25/2017.
  */
 
-class VehicleServiceItem(private val name: String) : VehicleServicesListItem {
+class VehicleServiceItem(val vehicleServiceModel: AAAVehicleServicesModel) : VehicleServicesListItem {
 
     var isSelected=false
-
+    var view: View? = null
     override fun getViewType(): Int {
         return RowType.LIST_ITEM.ordinal
     }
 
     override fun getView(inflater: LayoutInflater, convertView: View): View {
-        val view: View
+
         if (convertView == null) {
             view = inflater.inflate(R.layout.vehicle_services_item, null) as View
 
@@ -33,11 +33,16 @@ class VehicleServiceItem(private val name: String) : VehicleServicesListItem {
         }
 
 
-        val text1 = view.findViewById(R.id.itemTextView) as TextView
-        text1.text = name
-        isSelected = view.itemCheckBox.isSelected
+        val text1 = view!!.findViewById(R.id.itemTextView) as TextView
+        text1.text = vehicleServiceModel.scopeservicename
+        view!!.itemCheckBox.isChecked = isSelected
 
-        return view
+        return view!!
+    }
+
+    fun setServiceSelected(isSelected : Boolean){
+
+        this.isSelected = isSelected
     }
 
 }
