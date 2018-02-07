@@ -56,9 +56,9 @@ class FragmentARRAVVehicles : Fragment() {
         var vehiclesListItems = ArrayList<VehicleServicesListItem>()
 
         vehiclesListItems.add(VehicleServiceHeader("Domestic"))
-        vehiclesListItems.add(VehicleServiceItem("AMC"))
-        vehiclesListItems.add(VehicleServiceItem("Buick"))
-        vehiclesListItems.add(VehicleServiceItem("Geo"))
+//        vehiclesListItems.add(VehicleServiceItem("AMC"))
+//        vehiclesListItems.add(VehicleServiceItem("Buick"))
+//        vehiclesListItems.add(VehicleServiceItem("Geo"))
 
 
         var vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehiclesListItems)
