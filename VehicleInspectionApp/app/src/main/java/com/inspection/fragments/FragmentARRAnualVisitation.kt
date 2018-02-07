@@ -137,6 +137,8 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 
 
 
+
+
         facilityNameListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(facilityNameEditText.getWindowToken(), 0)

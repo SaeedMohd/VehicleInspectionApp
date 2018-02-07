@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -20,6 +21,7 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.Consts
+import com.inspection.model.AAAFacilityPrograms
 import com.inspection.model.AAAPersonnelType
 import com.inspection.model.AAAProgramTypes
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
@@ -27,8 +29,16 @@ import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
+import kotlinx.android.synthetic.main.tablerow5cols.*
+import kotlinx.android.synthetic.main.tablerow5cols.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.view.ViewGroup.LayoutParams.FILL_PARENT
+import android.widget.TableRow
+import com.inspection.Utils.Consts.appFormat
+import com.inspection.Utils.Consts.dbFormat
+import kotlinx.android.synthetic.main.spinner_item.view.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -43,6 +53,8 @@ class FragmentARRAVPrograms : Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
     private var programTypesArray = ArrayList<String>()
     private var programTypesList = ArrayList<AAAProgramTypes>()
+    private var facilityProgramsList = ArrayList<AAAFacilityPrograms>()
+    private var screenMode = "View Mode"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +99,51 @@ class FragmentARRAVPrograms : Fragment() {
             dpd.show()
         }
 
+        addBtn.setOnClickListener({
+            var validProgram = true
+            for (fac in facilityProgramsList) {
+                if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
+                    Toast.makeText(context,"Program Name cannot be duplicated",Toast.LENGTH_SHORT).show()
+                    validProgram=false
+                }
+            }
+            if (validProgram) {
+                var item = AAAFacilityPrograms()
+                item.programid = -1
+                item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+                item.effdate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString()
+                item.expdate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
+                item.comments=comments_editTextVal.text.toString()
+                facilityProgramsList.add(facilityProgramsList.size, item)
+                drawProgramsTable()
+            }
+        })
+
+        deleteBtn.setOnClickListener({
+            var itemFound =false
+            var item = AAAFacilityPrograms()
+            for (fac in facilityProgramsList) {
+                if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
+                    item = fac
+                    itemFound=true
+                }
+            }
+            if (itemFound) {
+                facilityProgramsList.remove(item)
+                drawProgramsTable()
+            }
+        })
+
+        editBtn.setOnClickListener({
+            for (fac in facilityProgramsList) {
+                if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
+                    fac.effdate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString()
+                    fac.expdate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
+                    fac.comments = comments_editTextVal.text.toString()
+                }
+                drawProgramsTable()
+            }
+        })
     }
 
 
@@ -109,9 +166,60 @@ class FragmentARRAVPrograms : Fragment() {
                 Log.v("error while loading", "error while loading program Types")
                 Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
             }))
+
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityPrograms+(activity as MainActivity).FacilityNumber,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            facilityProgramsList= Gson().fromJson(response.toString(), Array<AAAFacilityPrograms>::class.java).toCollection(ArrayList())
+                            drawProgramsTable()
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading facility programs")
+                Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            }))
+
             progressbarPrograms.visibility = View.INVISIBLE
         }
     }
+
+
+    fun drawProgramsTable () {
+        programsTableLayout.removeAllViews()
+        var separatorView = View (context)
+        separatorView.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, 1)
+        separatorView.setBackgroundColor(Color.rgb(51, 51, 51))
+        var tableRow = LayoutInflater.from(context).inflate(R.layout.tablerow5cols, null, false)
+        tableRow.programid.setText("ID")
+        tableRow.programname.setText("Current Programs")
+        tableRow.effdate.setText("Effective Date")
+        programsTableLayout.addView(tableRow)
+        programsTableLayout.addView(separatorView)
+        for (fac in facilityProgramsList) {
+            tableRow = LayoutInflater.from(context).inflate(R.layout.tablerow5cols, null, false)
+            tableRow.effdate.setText(fac.effdate)
+            tableRow.programid.setText(fac.programid.toString())
+            tableRow.effdate.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL")) "No Date Provided" else {
+                if (fac.effdate.length>11 ) appFormat.format(dbFormat.parse(fac.effdate)) else fac.effdate
+            }
+            tableRow.programname.setText(fac.programtypename)
+            tableRow.setOnClickListener({
+                program_name_textviewVal.setSelection(programTypesArray.indexOf(fac.programtypename))
+                effective_date_textviewVal.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL") || fac.effdate.equals("") || fac.effdate.equals("No Date Provided")) "No Date Provided" else  {
+                    if (fac.effdate.length>11 ) appFormat.format(dbFormat.parse(fac.effdate)) else fac.effdate
+                }
+                expiration_date_textviewVal.text = if (fac.expdate.isNullOrEmpty() || fac.expdate.equals("NULL") || fac.expdate.equals("") || fac.expdate.equals("No Date Provided")) "No Date Provided" else   {
+                    if (fac.expdate.length>11 ) appFormat.format(dbFormat.parse(fac.expdate)) else fac.expdate
+                }
+                comments_editTextVal.setText(fac.comments)
+            })
+            programsTableLayout.addView(tableRow)
+            var rowseparatorView = View (context)
+            rowseparatorView .layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, 1)
+            rowseparatorView .setBackgroundColor(Color.rgb(51, 51, 51))
+            programsTableLayout.addView(rowseparatorView )
+        }
+    }
+
 
     fun validateInputs() : Boolean {
         var isInputsValid = true
