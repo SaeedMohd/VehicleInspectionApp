@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     //    public FragmentVehicleFacility FragmentRequestingPermission;
     var FacilityName = ""
     var FacilityNumber = ""
+    var VisitationID = ""
     lateinit var facilitySelected: AAAFacilityComplete
     internal var wind: Window? = null
     internal var timer: Timer? = null

@@ -44,7 +44,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        (activity as MainActivity).supportActionBar!!.title = "Forms"
+//        (activity as MainActivity).supportActionBar!!.title = "Forms"
 
         return inflater.inflate(R.layout.fragment_aar_manual_visitation_form, container, false)
     }
@@ -207,25 +207,20 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         }))
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
     }
 
     override fun onResume() {
         super.onResume()
-
     }
 
     public fun validateInputs() : Boolean {
         var isInputsValid = true
-
-
         facilityNameEditText?.setError(null)
         facilityRepresentativeNameEditText?.setError(null)
         automotiveSpecialistEditText?.setError(null)
         dateOfVisitationButton?.setError(null)
-
         if (facilityNameInputField?.text.toString().isNullOrEmpty()) {
             isInputsValid=false
             facilityNameInputField?.setError("Required Field")
@@ -233,8 +228,8 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 
         if (inspectionTypeSpinner?.selectedItem.toString().isNullOrEmpty()) {
             isInputsValid=false
-
         }
+
         if (facilityRepresentativeNameEditText?.text.toString().isNullOrEmpty()) {
             isInputsValid=false
             facilityRepresentativeNameEditText?.setError("Required Field")
@@ -268,6 +263,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
          * @return A new instance of fragment FragmentAnnualVisitationPager.
          */
         // TODO: Rename and change types and number of parameters
+
         fun newInstance(param1: String, param2: String): FragmentARRAnualVisitation {
             val fragment = FragmentARRAnualVisitation ()
             val args = Bundle()

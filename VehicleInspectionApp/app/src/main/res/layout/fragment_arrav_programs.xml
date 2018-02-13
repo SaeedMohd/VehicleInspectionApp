@@ -195,6 +195,7 @@
                 android:showDividers="middle"
                 android:padding="5dp"
                 android:scrollbars="horizontal"
+                android:stretchColumns="*"
                 android:orientation="vertical">
             </TableLayout>
 

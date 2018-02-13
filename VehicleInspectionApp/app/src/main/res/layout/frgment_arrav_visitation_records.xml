@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:tools="http://schemas.android.com/tools"
+android:background="@color/light_gray"
+tools:context="com.inspection.fragments.FragmentARRAnnualVisitationRecords">
+<TextView
+    android:id="@+id/titleTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:gravity="center"
+    android:text="Visitation Records"
+    android:textStyle="bold"
+    android:textSize="18dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/titleTextView"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:paddingTop="5dp"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="5dp">
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Inspection Type: "
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/visitationinpectionTypeSpinner"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Inspection Kind: "
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/visitationinpectionKindSpinner"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/visitationfacilityIdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Facility #:"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/visitationfacilityIdVal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facility Name:"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:orientation="horizontal">
+        <EditText
+            android:id="@+id/visitationfacilityNameVal"
+            android:layout_width="0dp"
+            android:ems="8"
+            android:layout_weight="4"
+            android:hint="Enter Facility Name"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="CLear"/>
+        </LinearLayout>
+        <ListView
+            android:id="@+id/visitationfacilityListView"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"/>
+        <Button
+            android:id="@+id/showVisitationBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Visitations"/>
+        <ListView
+            android:id="@+id/visitationrecordsListView"
+            android:layout_width="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
+            android:layout_margin="10dp"
+            android:layout_height="400dp"/>
+    </LinearLayout>
+
+</ScrollView>
+</RelativeLayout>

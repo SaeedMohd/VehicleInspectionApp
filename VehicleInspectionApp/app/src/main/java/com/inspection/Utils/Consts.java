@@ -22,6 +22,9 @@ public class Consts {
     public final static String OPPONENTS = "opponents";
     public static final String CONFERENCE_TYPE = "conference_type";
 
+    public static final SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat appFormat = new SimpleDateFormat("dd MMM yyyy");
+
     // WebServices
     public static final String personnelTypeURL = "http://www.jet-matics.com:5000/getPersonnelTypes?facilityId=";
     public static final String personnelDetailsURL = "http://jet-matics.com:5000/getPersonnelsDetails?facilityId=%s&personnelTypeId=%d";
@@ -41,8 +44,10 @@ public class Consts {
     public static final String getPhoneNumberWithFacilityAndId = "http://www.jet-matics.com:5000/getPhoneNumberWithFacilityAndId?facilityId=%s&phoneId=%d";
     public static final String getVehicleServicesURL = "http://www.jet-matics.com:5000/getVehicleServices";
     public static final String getFacilityPrograms= "http://www.jet-matics.com:5000/getFacilityPrograms?facilityId=";
-    public static final SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static final SimpleDateFormat appFormat = new SimpleDateFormat("dd MMM yyyy");
+    public static final String getFacilityVisitationRecords= "http://www.jet-matics.com:5000/getVisitationRecords?facilityId=";
+
+
+
 
 
 

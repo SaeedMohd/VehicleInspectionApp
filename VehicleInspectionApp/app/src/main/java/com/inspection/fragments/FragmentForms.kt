@@ -29,7 +29,6 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
                               savedInstanceState: Bundle?): View? {
 
         (activity as MainActivity).supportActionBar!!.title = "Forms"
-
         return inflater.inflate(R.layout.fragment_forms, container, false)
     }
 
@@ -41,8 +40,16 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 
         formsListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
             if (i == 1){
+//                val fragment: android.support.v4.app.Fragment
+//                fragment = FragmentAnnualVisitationPager()
+//                val fragmentManagerSC = fragmentManager
+//                val ftSC = fragmentManagerSC!!.beginTransaction()
+//                ftSC.replace(R.id.fragment,fragment)
+//                ftSC.addToBackStack("")
+//                ftSC.commit()
+//                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
                 val fragment: android.support.v4.app.Fragment
-                fragment = FragmentAnnualVisitationPager()
+                fragment = FragmentARRAnnualVisitationRecords()
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()
                 ftSC.replace(R.id.fragment,fragment)

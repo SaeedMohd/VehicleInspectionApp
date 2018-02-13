@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="6"
+    android:defaultFocusHighlightEnabled="true"
     android:layout_marginTop = "10dp"
     android:orientation="vertical">
     <!--android:background="@drawable/table_row_bg"-->
@@ -11,14 +12,23 @@
         android:layout_height="match_parent"
         android:id="@+id/programid"
         android:layout_weight="1"
+        android:background="@drawable/table_cell_bg"
         android:textSize="14dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:padding="5dp"
+        android:minLines="2"
         android:gravity="left"/>
     <!--android:background="@drawable/table_cell_bg"-->
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/programname"
+        android:background="@drawable/table_cell_bg"
+        android:textSize="14dp"
         android:layout_weight="3"
+        android:padding="5dp"
+        android:minLines="2"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:gravity="left"/>
         <!--android:background="@drawable/table_cell_bg"-->
 
@@ -26,7 +36,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/effdate"
+        android:text="TEST"
+        android:textSize="14dp"
+        android:minLines="2"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:background="@drawable/table_cell_bg"
         android:layout_weight="2"
+        android:padding="5dp"
         android:gravity="left"/>
 </TableRow>
 

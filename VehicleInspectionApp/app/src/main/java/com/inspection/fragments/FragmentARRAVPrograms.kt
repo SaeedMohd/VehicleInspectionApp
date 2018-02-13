@@ -54,7 +54,7 @@ class FragmentARRAVPrograms : Fragment() {
     private var programTypesArray = ArrayList<String>()
     private var programTypesList = ArrayList<AAAProgramTypes>()
     private var facilityProgramsList = ArrayList<AAAFacilityPrograms>()
-    private var screenMode = "View Mode"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
