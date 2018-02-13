@@ -151,9 +151,25 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
             visitationrecordsListView.adapter=null
         })
 
+        newVisitationBtn.setOnClickListener({
+            if (visitationfacilityIdVal.text.isNullOrEmpty()) {
+                Toast.makeText(context,"Please select the Facility ...",Toast.LENGTH_LONG).show()
+            } else {
+                (activity as MainActivity).VisitationID = "0"
+                Toast.makeText(context, "Selected Visitation ID:  " + (activity as MainActivity).VisitationID, Toast.LENGTH_LONG).show()
+                val fragment: android.support.v4.app.Fragment
+                fragment = FragmentAnnualVisitationPager()
+                val fragmentManagerSC = fragmentManager
+                val ftSC = fragmentManagerSC!!.beginTransaction()
+                ftSC.replace(R.id.fragment, fragment)
+                ftSC.addToBackStack("")
+                ftSC.commit()
+            }
+        })
+
         showVisitationBtn.setOnClickListener({
             Log.v("Button Pressed"," ------- ")
-            if (visitationfacilityIdTextView.text.isNullOrEmpty()) {
+            if (visitationfacilityIdVal.text.isNullOrEmpty()) {
                 Toast.makeText(context,"Please select the Facility ...",Toast.LENGTH_LONG).show()
             } else {
                 Log.v("URL .... " , Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemPosition+1))

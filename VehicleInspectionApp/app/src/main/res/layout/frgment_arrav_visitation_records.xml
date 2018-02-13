@@ -114,11 +114,24 @@ tools:context="com.inspection.fragments.FragmentARRAnnualVisitationRecords">
             android:id="@+id/visitationfacilityListView"
             android:layout_width="match_parent"
             android:layout_height="400dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
         <Button
             android:id="@+id/showVisitationBtn"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Show Visitations"/>
+        <Button
+            android:id="@+id/newVisitationBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="New Visitation Form"/>
+    </LinearLayout>
         <ListView
             android:id="@+id/visitationrecordsListView"
             android:layout_width="match_parent"
