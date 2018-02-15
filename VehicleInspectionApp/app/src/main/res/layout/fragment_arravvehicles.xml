@@ -31,5 +31,17 @@
         android:layout_below="@+id/titleTextView"
         />
 
+    <ProgressBar
+        android:id="@+id/progressbarVehicles"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:max="100"
+        android:layout_alignTop="@id/vehiclesListView"
+        android:backgroundTint="@color/white"
+        android:indeterminateTint="#1a09d6"
+        android:layout_marginTop="-10dp"/>
+
 
 </RelativeLayout>

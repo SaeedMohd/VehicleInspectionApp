@@ -1,14 +1,23 @@
 package com.inspection.fragments
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.inspection.MainActivity
 
 import com.inspection.R
+import kotlinx.android.synthetic.main.fragment_arrav_visitation_tracking.*
 
 /**
  * A simple [Fragment] subclass.
@@ -34,6 +43,31 @@ class FragmentARRAVVisitationTracking : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        takePhotoButton.setOnClickListener {
+                if (ContextCompat.checkSelfPermission((activity as MainActivity),
+                                Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as MainActivity),
+                                Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    val simpleAlert = AlertDialog.Builder(context)
+                    simpleAlert.setTitle("Options")
+                    simpleAlert.setItems(arrayOf("Blank Canvas", "Take Photo", "Pick Photo")) { dialog, which ->
+                        if (which == 1) {
+                            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                            startActivityForResult(takePictureIntent, 66)
+                        } else if (which == 2) {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
+                        }
+                    }
+                    simpleAlert.show()
+                }else{
+                Toast.makeText(context, "Please make sure camera and storage permissions are granted", Toast.LENGTH_LONG).show()
+            }
+        }
 
     }
 

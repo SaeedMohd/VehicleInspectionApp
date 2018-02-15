@@ -25,6 +25,7 @@ import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
+import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
 import kotlinx.android.synthetic.main.temp.view.*
 import kotlinx.android.synthetic.main.vehicle_services_item.view.*
 
@@ -63,6 +64,9 @@ class FragmentARRAVVehicleServices : Fragment() {
     }
 
     private fun loadServices() {
+        if (progressbarVehicleServices!=null) {
+            progressbarVehicleServices.visibility = View.VISIBLE
+        }
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getVehicleServicesURL,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
@@ -74,8 +78,11 @@ class FragmentARRAVVehicleServices : Fragment() {
                             vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
                             vehicleServicesListView!!.adapter = vehiclesArrayAdapter
                         }
+                        if (progressbarVehicleServices!=null) {
+                            progressbarVehicleServices.visibility = View.INVISIBLE
+                        }
                         if (isPreparingView) {
-                            loadServices()
+                            prepareView()
                         }
                     })
                 }, Response.ErrorListener {
@@ -84,7 +91,7 @@ class FragmentARRAVVehicleServices : Fragment() {
         }))
     }
 
-    private var isFirstRun = true
+    var isFirstRun = true
 
     private var isPreparingView = false
 

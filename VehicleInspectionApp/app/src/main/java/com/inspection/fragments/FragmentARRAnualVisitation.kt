@@ -64,6 +64,12 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             validateInputs()
         })
 
+        if ((activity as MainActivity).FacilityName != null && (activity as MainActivity).FacilityName.isNotEmpty()){
+            facilityNameEditText.setText((activity as MainActivity).FacilityName)
+            itemSelected = true
+            (activity as MainActivity).isLoadNewDetailsRequired = true
+        }
+
         facilityNameEditText.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
 
@@ -75,7 +81,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                if (!itemSelected && facilityNameEditText.text.length >= 3){
+                if (!itemSelected && facilityNameEditText.text.length >= 1){
 //                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "http://jet-matics.com/JetComService/JetCom.svc/getAAAFacilityFormDetails?facilityName="+facilityNameEditText.text,
                     Log.v("Facility URL:  --> " , Consts.getfacilitiesURL+facilityNameEditText.text)
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL+facilityNameEditText.text,
@@ -143,6 +149,9 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(facilityNameEditText.getWindowToken(), 0)
             itemSelected = true
+//            (parentFragment as? FragmentAnnualVisitationPager)!!.flagLoadNewDetailsRequired()
+//            (activity as MainActivity).fragment!!.fragment!!.flagLoadNewDetailsRequired()
+            (activity as MainActivity).isLoadNewDetailsRequired = true
 
             facilityNameEditText.setText(facilityNames.get(i).toString())
 //            facilityAddressEditText.requestFocus()
@@ -169,6 +178,8 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             loadLastInspection()
 
         })
+
+        loadLastInspection()
     }
 
     fun loadLastInspection() {

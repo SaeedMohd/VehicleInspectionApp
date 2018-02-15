@@ -18,7 +18,8 @@ import kotlinx.android.synthetic.main.fragment_forms.*
 
 class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 
-    var formsStringsArray = arrayOf("*Get Started With Mobile Forms", "AAR Manual Visitation")
+    var formsStringsArray = arrayOf("*Get Started With Mobile Forms", "AAR Annual Visitation")
+    var fragment: FragmentAnnualVisitationPager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // TODO Auto-generated method stub

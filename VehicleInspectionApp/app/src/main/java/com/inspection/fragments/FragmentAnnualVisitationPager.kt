@@ -17,7 +17,8 @@ import com.inspection.MainActivity
 
 import kotlinx.android.synthetic.main.fragment_main_visitation.*
 import android.app.AlertDialog
-import android.support.v4.app.FragmentStatePagerAdapter
+//import android.support.v4.app.FragmentStatePagerAdapter
+import android.util.Log
 
 
 /**
@@ -71,6 +72,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
             }
 
             override fun onPageSelected(position: Int) {
+                Log.v("on page selected", "on page selected: "+position)
                 if (position == 4) {
                     val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as? FragmentARRAVPersonnel
                     fragmentPersonnel?.preparePersonnelPage()
@@ -87,11 +89,17 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                     val fragmentProgramType = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11") as? FragmentARRAVPrograms
                     fragmentProgramType?.prepareProgramTypes()
                 } else if (position == 1) {
+                    Log.v("888yalla", "888yalla")
                     val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as? FragmentARRAVFacility
-                    fragmentFac?.prepareFacilityPage()
+                    Log.v("yalla", "ya tara is it : "+ fragmentFac.toString() + "")
+                    fragmentFac!!.prepareFacilityPage()
                 } else if (position == 9) {
                     val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":9") as? FragmentARRAVVehicleServices
                     fragmentFac?.prepareView()
+                } else if (position == 10) {
+                    val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":10") as FragmentARRAVVehicles
+                    fragmentFac.prepareView()
+
                 }
             }
 
@@ -119,6 +127,14 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
     override fun onResume() {
         super.onResume()
 
+    }
+
+    fun flagLoadNewDetailsRequired(){
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued).isFirstRun = true
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel).isFirstRun = true
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService).isFirstRun = true
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":9") as FragmentARRAVVehicleServices).isFirstRun = true
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":10") as FragmentARRAVVehicles).isFirstRun = true
     }
 
     fun validateFormsInputs(): Boolean {
@@ -177,7 +193,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         if (!errorText.isNullOrEmpty())
             simpleAlert.setMessage(errorText)
         else
-            simpleAlert.setMessage("Validation Completed Succesfully  ... Proceed to submission? ")
+            simpleAlert.setMessage("Validation Completed Succesfully  ... Proceed to s ubmission? ")
         simpleAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", { dialogInterface, i ->
             Toast.makeText(context, "You clicked on OK", Toast.LENGTH_SHORT).show()
         })
@@ -201,7 +217,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         }
     }
 
-    inner class SectionsPagerAdapter(fm: android.support.v4.app.FragmentManager) : FragmentStatePagerAdapter(fm) {
+    inner class SectionsPagerAdapter(fm: android.support.v4.app.FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): android.support.v4.app.Fragment? {
             var ft: android.support.v4.app.Fragment? = null
