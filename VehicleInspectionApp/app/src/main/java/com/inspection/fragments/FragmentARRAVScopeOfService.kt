@@ -1,9 +1,15 @@
 package com.inspection.fragments
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -55,11 +61,40 @@ class FragmentARRAVScopeOfService : Fragment() {
         var warrantyAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, warrantyArray)
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
+
+
+        takePhotoButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission((activity as MainActivity),
+                            Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as MainActivity),
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                val simpleAlert = AlertDialog.Builder(context)
+                simpleAlert.setTitle("Options")
+                simpleAlert.setItems(arrayOf("Blank Canvas", "Take Photo", "Pick Photo")) { dialog, which ->
+                    if (which == 1) {
+                        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        startActivityForResult(takePictureIntent, 66)
+                    } else if (which == 2) {
+                        val intent = Intent()
+                        intent.type = "image/*"
+                        intent.action = Intent.ACTION_GET_CONTENT
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
+                    }
+                }
+                simpleAlert.show()
+            }else{
+                Toast.makeText(context, "Please make sure camera and storage permissions are granted", Toast.LENGTH_LONG).show()
+            }
+        }
     }
+
+    var isFirstRun = true
 
     fun prepareScopePage () {
 
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
+            isFirstRun = false
             progressbarScope.visibility = View.VISIBLE
 
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL+(activity as MainActivity).FacilityNumber,

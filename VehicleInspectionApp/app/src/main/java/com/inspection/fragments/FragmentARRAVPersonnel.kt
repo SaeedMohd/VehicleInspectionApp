@@ -383,9 +383,10 @@ class FragmentARRAVPersonnel : Fragment() {
         }
     }
 
-    private var isFirstRun: Boolean = true
+    var isFirstRun: Boolean = true
 
     fun preparePersonnelPage() {
+
 
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
             isFirstRun = false
@@ -408,7 +409,9 @@ class FragmentARRAVPersonnel : Fragment() {
                             personType_textviewVal.adapter = personTypeAdapter
                         })
                         progressbarPersonnel.visibility = View.INVISIBLE
-                        getLastYearPersonnel()
+                        if ((activity as MainActivity).lastInspection != null) {
+                            getLastYearPersonnel()
+                        }
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading personnel Types")
                 Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
@@ -492,7 +495,6 @@ class FragmentARRAVPersonnel : Fragment() {
     private var isUsingLastInspectionPersonnel: Boolean = false
 
     private fun getLastYearPersonnel() {
-        Log.v("ooooooooooooooo", Consts.personnelDetailsWithIdUrl + (activity as MainActivity).lastInspection!!.personnelid)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsWithIdUrl + (activity as MainActivity).lastInspection!!.personnelid,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {

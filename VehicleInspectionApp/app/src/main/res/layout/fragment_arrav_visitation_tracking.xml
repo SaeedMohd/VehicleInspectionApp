@@ -269,6 +269,21 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+
+
+
+
+                <Button
+                    android:id="@+id/takePhotoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:text="Take Photo"
+                    android:textColor="@color/blue_krayola" />
+
         <EditText
             android:id="@+id/staffTrainingProcessEditText"
             android:layout_width="match_parent"

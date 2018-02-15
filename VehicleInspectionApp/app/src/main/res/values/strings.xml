@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Vehicle Inspection</string>
+    <string name="app_name">ACE AAR Inspection</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="btnMaintenanceHistory">MAINTENANCE HISTORY</string>
@@ -225,9 +225,9 @@
         <item>PHONE18|VinRetrievable|</item>
 
     </string-array>
-    <string name="login_register_dialog_message">Your Email does not exist in our database.\nIf you had and account on the Vehicle Health App previously, you can log in with an email or User ID.</string>
+    <string name="login_register_dialog_message">Your Email does not exist in our database.\nIf you had and account on the AAR Inspection App previously, you can log in with an email or User ID.</string>
 
-    <string name="terms_and_conditions_message">The JetCom Vehicle Health App is designed to connect your vehicle to a repair shop of your choice and share the data obtained from your vehicles OBD port along with your vehicles repair
+    <string name="terms_and_conditions_message">The AAR Inspection App is designed to connect your vehicle to a repair shop of your choice and share the data obtained from your vehicles OBD port along with your vehicles repair
 
 history. We describe the information we collect and how it’s used and shared. By “we” or “us”, we mean our company, JetCom, and by “you” we refer to the users of our services. We take 
 

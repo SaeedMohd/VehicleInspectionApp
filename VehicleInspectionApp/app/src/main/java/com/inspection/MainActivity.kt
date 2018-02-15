@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     //    public FragmentVehicleFacility FragmentRequestingPermission;
     var FacilityName = ""
     var FacilityNumber = ""
+    var isLoadNewDetailsRequired = false
     var VisitationID = ""
     lateinit var facilitySelected: AAAFacilityComplete
     internal var wind: Window? = null
@@ -103,6 +104,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
     internal var time3: Long = 10000
     private val mTabHost: TabHost? = null
     internal var serverResponseCode = 0
+
+    var fragment: FragmentForms? = null
 
     private var changePasswordDialog: AlertDialog? = null
 
@@ -153,6 +156,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
         } catch (exp: Exception) {
             exp.printStackTrace()
         }
+
+        ActivityCompat.requestPermissions(mContext,
+                arrayOf("android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE"),
+                123)
 
         initView()
 

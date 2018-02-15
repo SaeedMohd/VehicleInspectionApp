@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -143,7 +144,8 @@ class FragmentARRAVFacility : Fragment() {
     }
 
     fun prepareFacilityPage (){
-
+        Log.v("i am here", "i am here")
+        Log.v("I am 777777", "77777"+(activity as MainActivity).FacilityName)
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
             contract_number_textviewVal.setText((activity as MainActivity).facilitySelected.origcontractno)
             contract_type_textviewVal.setText((activity as MainActivity).facilitySelected.contracttypeid.toString())

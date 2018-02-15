@@ -116,7 +116,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
     }
 
 
-    private var isFirstRun: Boolean = true
+    var isFirstRun: Boolean = true
 
     fun prepareFacilityContinuedPage(){
 

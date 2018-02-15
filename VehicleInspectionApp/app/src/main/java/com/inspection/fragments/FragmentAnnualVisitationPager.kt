@@ -93,6 +93,10 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                 } else if (position == 9) {
                     val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":9") as? FragmentARRAVVehicleServices
                     fragmentFac?.prepareView()
+                } else if (position == 10) {
+                    val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":10") as FragmentARRAVVehicles
+                    fragmentFac.prepareView()
+
                 } else if (position == 13) {
                     Log.v("PREPARE AFF --- ","Called form Pager")
                     val fragmentAff = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":13") as? FragmentARRAVAffliations
@@ -124,6 +128,14 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
     override fun onResume() {
         super.onResume()
 
+    }
+
+    fun flagLoadNewDetailsRequired(){
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued).isFirstRun = true
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel).isFirstRun = true
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService).isFirstRun = true
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":9") as FragmentARRAVVehicleServices).isFirstRun = true
+        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":10") as FragmentARRAVVehicles).isFirstRun = true
     }
 
     fun validateFormsInputs(): Boolean {
