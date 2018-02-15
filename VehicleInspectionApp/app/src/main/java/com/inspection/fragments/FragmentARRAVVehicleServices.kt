@@ -26,7 +26,7 @@ import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
-import kotlinx.android.synthetic.main.temp.view.*
+//import kotlinx.android.synthetic.main.temp.view.*
 import kotlinx.android.synthetic.main.vehicle_services_item.view.*
 
 /**
