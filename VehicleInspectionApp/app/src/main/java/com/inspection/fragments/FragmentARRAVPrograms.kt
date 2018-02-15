@@ -10,8 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -34,10 +32,10 @@ import kotlinx.android.synthetic.main.tablerow5cols.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.view.ViewGroup.LayoutParams.FILL_PARENT
-import android.widget.TableRow
+import android.widget.*
 import com.inspection.Utils.Consts.appFormat
 import com.inspection.Utils.Consts.dbFormat
-import kotlinx.android.synthetic.main.spinner_item.view.*
+import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 
 
 /**
@@ -115,7 +113,7 @@ class FragmentARRAVPrograms : Fragment() {
                 item.expdate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
                 item.comments=comments_editTextVal.text.toString()
                 facilityProgramsList.add(facilityProgramsList.size, item)
-                drawProgramsTable()
+                BuildProgramsList()
             }
         })
 
@@ -130,7 +128,7 @@ class FragmentARRAVPrograms : Fragment() {
             }
             if (itemFound) {
                 facilityProgramsList.remove(item)
-                drawProgramsTable()
+                BuildProgramsList()
             }
         })
 
@@ -141,7 +139,7 @@ class FragmentARRAVPrograms : Fragment() {
                     fac.expdate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
                     fac.comments = comments_editTextVal.text.toString()
                 }
-                drawProgramsTable()
+                BuildProgramsList()
             }
         })
     }
@@ -171,7 +169,8 @@ class FragmentARRAVPrograms : Fragment() {
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facilityProgramsList= Gson().fromJson(response.toString(), Array<AAAFacilityPrograms>::class.java).toCollection(ArrayList())
-                            drawProgramsTable()
+//                            drawProgramsTable()
+                            BuildProgramsList()
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading facility programs")
@@ -220,6 +219,34 @@ class FragmentARRAVPrograms : Fragment() {
         }
     }
 
+    fun BuildProgramsList() {
+        val inflater = (activity as MainActivity)
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val parentLayout = programsListLL
+        parentLayout.removeAllViews()
+        for (fac in facilityProgramsList) {
+            val vProgramRow = inflater.inflate(R.layout.custom_program_list_item, parentLayout, false)
+            val prId= vProgramRow.findViewById(R.id.programItemId) as TextView
+            val prName= vProgramRow.findViewById(R.id.programItemName) as TextView
+            val prEffDate= vProgramRow.findViewById(R.id.programItemEffDate) as TextView
+            val prExpDate= vProgramRow.findViewById(R.id.programItemExpDate) as TextView
+            prId.text = fac.programid.toString()
+            prName.text = fac.programtypename
+            prEffDate.text = if (fac.effdate.length>11 ) appFormat.format(dbFormat.parse(fac.effdate)) else fac.effdate
+            prExpDate.text = if (fac.expdate.length>11 ) appFormat.format(dbFormat.parse(fac.expdate)) else fac.expdate
+            vProgramRow.setOnClickListener({
+                program_name_textviewVal.setSelection(programTypesArray.indexOf(fac.programtypename))
+                effective_date_textviewVal.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL") || fac.effdate.equals("") || fac.effdate.equals("No Date Provided")) "No Date Provided" else  {
+                    if (fac.effdate.length>11 ) appFormat.format(dbFormat.parse(fac.effdate)) else fac.effdate
+                }
+                expiration_date_textviewVal.text = if (fac.expdate.isNullOrEmpty() || fac.expdate.equals("NULL") || fac.expdate.equals("") || fac.expdate.equals("No Date Provided")) "No Date Provided" else   {
+                    if (fac.expdate.length>11 ) appFormat.format(dbFormat.parse(fac.expdate)) else fac.expdate
+                }
+                comments_editTextVal.setText(fac.comments)
+            })
+            parentLayout.addView(vProgramRow)
+        }
+    }
 
     fun validateInputs() : Boolean {
         var isInputsValid = true
@@ -240,6 +267,7 @@ class FragmentARRAVPrograms : Fragment() {
 
         return isInputsValid
     }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

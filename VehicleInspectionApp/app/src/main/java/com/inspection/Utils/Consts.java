@@ -45,6 +45,8 @@ public class Consts {
     public static final String getVehicleServicesURL = "http://www.jet-matics.com:5000/getVehicleServices";
     public static final String getFacilityPrograms= "http://www.jet-matics.com:5000/getFacilityPrograms?facilityId=";
     public static final String getFacilityVisitationRecords= "http://www.jet-matics.com:5000/getVisitationRecords?facilityId=";
+    public static final String getFacilityAffiliations= "http://www.jet-matics.com:5000/getFacilityAffiliations?facilityId=";
+    public static final String getAffTypesURL = "http://www.jet-matics.com:5000/getAffiliationTypes";
 
 
 

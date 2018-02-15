@@ -18,6 +18,7 @@ import com.inspection.MainActivity
 import kotlinx.android.synthetic.main.fragment_main_visitation.*
 import android.app.AlertDialog
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.util.Log
 
 
 /**
@@ -92,6 +93,10 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                 } else if (position == 9) {
                     val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":9") as? FragmentARRAVVehicleServices
                     fragmentFac?.prepareView()
+                } else if (position == 13) {
+                    Log.v("PREPARE AFF --- ","Called form Pager")
+                    val fragmentAff = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":13") as? FragmentARRAVAffliations
+                    fragmentAff?.prepareAffiliations()
                 }
             }
 
@@ -201,8 +206,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         }
     }
 
-    inner class SectionsPagerAdapter(fm: android.support.v4.app.FragmentManager) : FragmentStatePagerAdapter(fm) {
-
+    inner class SectionsPagerAdapter(fm: android.support.v4.app.FragmentManager) : FragmentPagerAdapter(fm) {
         override fun getItem(position: Int): android.support.v4.app.Fragment? {
             var ft: android.support.v4.app.Fragment? = null
             when (position) {

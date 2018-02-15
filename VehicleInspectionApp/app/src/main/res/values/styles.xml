@@ -1,47 +1,7 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo">
-        <!-- Customize your theme here. -->
-        <!--<item name="android:colorActivatedHighlight">#691A40</item>-->
-        <!--<item name="android:listSelector">@drawable/list_item_selector</item>-->
-        <!--<item name="android:colorPressedHighlight">#691A40</item>-->
-        <!--<item name="android:colorLongPressedHighlight">#691A40</item>-->
-        <!--<item name="android:activatedBackgroundIndicator">@drawable/list_item_selector</item>-->
-        <item name="android:actionBarStyle">@style/myActionBar</item>
-        <!--<item name="android:listChoiceIndicatorMultiple">@drawable/multi_select_item_selector</item>-->
-        <item name="android:radioButtonStyle">@style/MyRadioButton</item>
-
-    </style>
-
-    <style name="MyRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
-        <!--<item name="android:textColor">@android:color/black</item>-->
-        <!--<item name="android:state_active">@color/maincolor</item>-->
-    </style>
-
-    <style name="myActionBar" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@color/mainColor</item>
-        <item name="android:logo">@android:color/transparent</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-    </style>
 
     <!-- ActionBar styles -->
-    <style name="MyActionBar"
-        parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
-        <item name="android:showAsAction">always</item>
-        <item name="android:actionMenuTextColor">@android:color/white</item>
-    </style>
-
-    <style name="MyActionBarTitleText" parent="@android:style/TextAppearance.Holo">
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="ToolBarStyle" parent="AppTheme">
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    </style>
 
 
     <style name="myAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -56,34 +16,9 @@
 
     </style>
 
-    <style name="myAppTheme.NoActionBar">
-            <!-- Both of these are needed -->
-            <item name="windowActionBar">false</item>
-            <item name="windowNoTitle">true</item>
-        <item name ="actionMenuTextColor">@android:color/white</item>
-        <!--<item name="android:colorActivatedHighlight">#691A40</item>-->
-        <!--<item name="android:colorPressedHighlight">#691A40</item>-->
-        <!--<item name="android:colorLongPressedHighlight">#691A40</item>-->
-        <!--<item name="android:activatedBackgroundIndicator">@drawable/list_item_selector</item>-->
-    </style>
-
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
             <item name="spinBars">true</item>
             <item name="color">@android:color/white</item>
-    </style>
-
-    <style name="FullscreenTheme" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
-        <!--<item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>-->
-        <!--<item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>-->
-        <!--<item name="android:activatedBackgroundIndicator">@drawable/list_item_selector</item>-->
-    </style>
-
-    <style name="FullscreenActionBarStyle" parent="android:Widget.Holo.ActionBar">
-        <!--<item name="android:background">@color/black_overlay</item>-->
-        <!--<item name="android:activatedBackgroundIndicator">@drawable/list_item_selector</item>-->
     </style>
 
 

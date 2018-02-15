@@ -16,21 +16,26 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         />
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="5dp"
-        android:background="@color/light_gray"
-        android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/titleTextView"
             android:background="@color/white"
             android:padding="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ProgressBar
+                    android:id="@+id/progressbarAff"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:max="100"
+                    android:backgroundTint="@color/white"
+                    android:indeterminateTint="#1a09d6"
+                    android:layout_marginTop="-7dp"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -92,11 +97,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="2"
                 android:layout_below="@id/affliationdetails"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:id="@+id/contypell">
                 <TextView
-                    android:id="@+id/effective_date_textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/connumberll"
@@ -122,11 +126,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="2"
                 android:layout_below="@id/contypell"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:id="@+id/officell">
                 <TextView
-                    android:id="@+id/expiration_date_textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contypell"
@@ -152,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:weightSum="2"
                 android:layout_below="@id/officell"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:id="@+id/AssignedToll">
                 <TextView
@@ -168,16 +171,57 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/comments_editTextVal"
-                android:layout_marginTop="10dp"
+                android:id="@+id/affcomments_editTextVal"
+                android:layout_marginTop="5dp"
                 android:layout_below="@id/AssignedToll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/item_solid_border"
                 android:maxEms="250"
-                android:lines="5"
+                android:lines="3"
                 />
-
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affcomments_editTextVal"
+                android:id="@+id/affbtnslayout"
+                android:weightSum="3"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/affaddBtn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Add"/>
+                <Button
+                    android:id="@+id/affeditBtn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Modify"/>
+                <Button
+                    android:id="@+id/affdeleteBtn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Delete"/>
+            </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/affbtnslayout"
+                android:background="@drawable/frame_solid_border"
+                android:scrollbars="none"
+                >
+                <LinearLayout
+                    android:id="@+id/affListLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:orientation="vertical"
+                    >
+                </LinearLayout>
+            </ScrollView>
         </RelativeLayout>
-    </ScrollView>
 </RelativeLayout>

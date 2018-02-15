@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="6"
+        android:weightSum="2"
+        android:visibility="gone"
         android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
@@ -20,21 +21,28 @@
             android:text="ID:"
             />
         <TextView
-            android:id="@+id/visitationItemId"
+            android:id="@+id/affItemId"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="ID:"
             />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:weightSum="3"
+        android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:text="Type:"
+            android:text="Type Name:"
             />
         <TextView
-            android:id="@+id/visitationItemType"
+            android:id="@+id/affItemtypeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -45,34 +53,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:weightSum="6"
+        android:weightSum="3"
         android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:textColor="@color/black"
-            android:text="Performed By:"
+            android:text="Detail Name:"
             />
         <TextView
-            android:id="@+id/visitationItemPerformedBy"
+            android:id="@+id/affItemtypeDetailName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="ID:"
-            />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:textColor="@color/black"
-            android:text="On:"
-            />
-        <TextView
-            android:id="@+id/visitationItemPerformedDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
             android:text="ID:"
             />
     </LinearLayout>
@@ -80,46 +74,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:weightSum="6"
+        android:weightSum="3"
         android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:text="Status:"
+            android:text="Effective Date:"
             />
         <TextView
-            android:id="@+id/visitationItemStatus"
+            android:id="@+id/affItemEffDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="ID:"
-            />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:textColor="@color/black"
-            android:text="On:"
-            />
-        <TextView
-            android:id="@+id/visitationItemPlanned"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_weight="2"
             android:text="ID:"
             />
     </LinearLayout>
-    <TextView
-        android:id="@+id/loadBtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:clickable="true"
-        android:layout_gravity="right"
-        android:background="@color/transparent"
-        android:textColor="#0000ff"
-        android:text="Load Visitation -->"/>
+        android:layout_marginTop="5dp"
+        android:weightSum="3"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:text="Expiration Date:"
+            />
+        <TextView
+            android:id="@+id/affItemExpDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
 </LinearLayout>

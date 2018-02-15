@@ -21,7 +21,7 @@ import com.google.gson.Gson
 import com.inspection.MainActivity
 import com.inspection.Utils.Consts
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.dialog_user_info.*
+import kotlinx.android.synthetic.main.dialog_user_register.*
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 

@@ -3,6 +3,8 @@ package com.inspection.fragments
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -148,7 +150,8 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
             itemSelected=false
             showVisitationBtn.setText("SHOW VISITATIONS")
             visitationfacilityNameVal.isEnabled = true
-            visitationrecordsListView.adapter=null
+// Old List View
+//            visitationrecordsListView.adapter=null
         })
 
         newVisitationBtn.setOnClickListener({
@@ -156,6 +159,7 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
                 Toast.makeText(context,"Please select the Facility ...",Toast.LENGTH_LONG).show()
             } else {
                 (activity as MainActivity).VisitationID = "0"
+
                 Toast.makeText(context, "Selected Visitation ID:  " + (activity as MainActivity).VisitationID, Toast.LENGTH_LONG).show()
                 val fragment: android.support.v4.app.Fragment
                 fragment = FragmentAnnualVisitationPager()
@@ -190,11 +194,16 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
                                     }
                                 }
 
-                                visitationrecordsListView.visibility = View.VISIBLE
-                                var visitationRecordsAdapter = VisitationListAdapter (context,visitationList)
-//                                visitationrecordsListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, visitationRecords)
-                                visitationrecordsListView.adapter = visitationRecordsAdapter
-                                showVisitationBtn.setText("SHOW VISITATIONS" + " - ("+visitationRecords.size+")")
+                                val inflater = (activity as MainActivity)
+                                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                                val vVisitationRecordsLL = visitationrecordsLL
+                                BuildVisitationRecords(vVisitationRecordsLL, inflater)
+//Old List View
+//                                visitationrecordsListView.visibility = View.VISIBLE
+//                                var visitationRecordsAdapter = VisitationListAdapter (context,visitationList)
+////                                visitationrecordsListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, visitationRecords)
+//                                visitationrecordsListView.adapter = visitationRecordsAdapter
+//                                showVisitationBtn.setText("SHOW VISITATIONS" + " - ("+visitationRecords.size+")")
                             })
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading visitation records")
@@ -203,6 +212,38 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
         })
     }
 
+    fun BuildVisitationRecords(parentLayout : LinearLayout, inflater : LayoutInflater ) {
+        for (fac in visitationList) {
+            val vVisitationRow = inflater.inflate(R.layout.custom_visitation_list_item, parentLayout, false)
+            val vrId= vVisitationRow.findViewById(R.id.visitationItemId) as TextView
+            val vrType= vVisitationRow.findViewById(R.id.visitationItemType) as TextView
+            val vrDate= vVisitationRow.findViewById(R.id.visitationItemPerformedDate) as TextView
+            val vrPlanned= vVisitationRow.findViewById(R.id.visitationItemPlanned) as TextView
+            val vrBy= vVisitationRow.findViewById(R.id.visitationItemPerformedBy) as TextView
+            val vrLoadBtn= vVisitationRow.findViewById(R.id.loadBtn) as TextView
+            val vrStatus= vVisitationRow.findViewById(R.id.visitationItemStatus) as TextView
+            vrId.text = fac.visitationid.toString()
+            vrBy.text = fac.performedby
+            vrDate.text = fac.dateperformed
+            vrPlanned.text = fac.dateplanned
+            vrPlanned.visibility = if (fac.dateplanned.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
+            vrStatus.text = fac.inspectionstatus
+            vrType.text = fac.name
+            vrLoadBtn.setOnClickListener({
+                (activity as MainActivity).VisitationID = fac.visitationid.toString()
+                Toast.makeText(context,"Selected Visitation ID:  "+ (activity as MainActivity).VisitationID,Toast.LENGTH_LONG).show()
+                val fragment: android.support.v4.app.Fragment
+                fragment = FragmentAnnualVisitationPager()
+                val fragmentManagerSC = fragmentManager
+                val ftSC = fragmentManagerSC!!.beginTransaction()
+                ftSC.replace(R.id.fragment,fragment)
+                ftSC.addToBackStack("")
+                ftSC.commit()
+//                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
+            })
+            parentLayout.addView(vVisitationRow)
+        }
+    }
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
@@ -254,8 +295,8 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
             vh.vrPlanned.visibility = if (visitationList[position].dateplanned.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             vh.vrStatus.text = visitationList[position].inspectionstatus
             vh.vrType.text = visitationList[position].name
-            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
-            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
+//            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
+//            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
             vh.vrLoadBtn.setOnClickListener({
                 (activity as MainActivity).VisitationID = visitationList[position].visitationid.toString()
                 Toast.makeText(context,"Selected Visitation ID:  "+ (activity as MainActivity).VisitationID,Toast.LENGTH_LONG).show()
