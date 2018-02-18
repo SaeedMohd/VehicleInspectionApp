@@ -4,14 +4,31 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.inspection.MainActivity
 
 import com.inspection.R
+import com.inspection.Utils.Consts
+import com.inspection.model.AAAAffiliationTypes
+import com.inspection.model.AAAFacilityAffiliations
+import com.inspection.model.AAAFacilityComplaints
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
+import kotlinx.android.synthetic.main.fragment_arrav_complaints.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import java.util.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -24,6 +41,7 @@ import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 class FragmentARRAVComplaints : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
+    private var facilityComplaintsList = ArrayList<AAAFacilityComplaints>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +55,82 @@ class FragmentARRAVComplaints : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // The no os complaints , justified and ratio need to be clarified when all are showed
+        compeditBtn.setOnClickListener({
+            for (fac in facilityComplaintsList) {
+                if (fac.complaintid.equals(complaint_id_textviewVal.text.toString())){
+                    fac.comments = comments_textviewVal.text.toString()
+                }
+                BuildComplaintsList()
+            }
+        })
+        compShowAllBtn.setOnClickListener({
+            prepareComplaints(true)
+        })
+
+    }
+
+
+
+
+    fun prepareComplaints (boolAll : Boolean) {
+        Log.v("COMPLAINTS PREP ","XXX")
+        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+            progressbarComp.visibility = View.VISIBLE
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityComplaintsURL+(activity as MainActivity).FacilityNumber+"&all="+boolAll.toString(),
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            facilityComplaintsList= Gson().fromJson(response.toString(), Array<AAAFacilityComplaints>::class.java).toCollection(ArrayList())
+//                            drawProgramsTable()
+                            BuildComplaintsList()
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading facility complaints")
+                Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            }))
+            progressbarComp.visibility = View.INVISIBLE
+
+        }
+    }
+
+    fun BuildComplaintsList() {
+        val inflater = (activity as MainActivity)
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val parentLayout = compListLL
+        parentLayout.removeAllViews()
+        for (fac in facilityComplaintsList) {
+            val vCompRow = inflater.inflate(R.layout.custom_complain_list_item, parentLayout, false)
+            val compId= vCompRow.findViewById(R.id.compItemId) as TextView
+            val compFirstName= vCompRow.findViewById(R.id.compItem1stName) as TextView
+            val complastName= vCompRow.findViewById(R.id.compItem2ndName) as TextView
+            val compReceievedDate= vCompRow.findViewById(R.id.compItemDate) as TextView
+            val compReason= vCompRow.findViewById(R.id.compItemReason) as TextView
+            val compResolution= vCompRow.findViewById(R.id.compItemResolution) as TextView
+            val compComments= vCompRow.findViewById(R.id.compItemComments) as TextView
+            compId.text = fac.complaintid.toString()
+            compFirstName.text = fac.firstname
+            complastName.text = fac.lastname
+            compReceievedDate.text = if (fac.receiveddate.length>11 ) Consts.appFormat.format(Consts.dbFormat.parse(fac.receiveddate)) else fac.receiveddate
+            compReason.text = fac.complaintreasonname
+            compResolution.text = fac.complaintresolutionname
+            compComments.text = fac.comments
+            vCompRow.setOnClickListener({
+                complaint_id_textviewVal.setText(fac.complaintid)
+                received_date_textviewVal.text = if (fac.receiveddate.isNullOrEmpty() || fac.receiveddate.equals("NULL") || fac.receiveddate.equals("") || fac.receiveddate.toLowerCase().equals("no date provided")) "No Date Provided" else  {
+                    if (fac.receiveddate.length>11 ) Consts.appFormat.format(Consts.dbFormat.parse(fac.receiveddate)) else fac.receiveddate
+                }
+                first_name_textviewVal.setText(fac.firstname)
+                last_name_textviewVal.setText(fac.lastname)
+                complaint_reason_textviewVal.setText(fac.complaintreasonname)
+                complaint_resolution_textviewVal.setText(fac.complaintresolutionname)
+                comments_textviewVal.setText(fac.comments)
+
+                no_of_complaints_textviewVal.setText(fac.noofcomplaintslastyear.toString())
+                no_of_justified_complaints_textviewVal.setText(fac.noofjustifiedlastyear.toString())
+                justified_complaint_ratio_textviewVal.setText(Math.round(fac.noofjustifiedlastyear.toFloat() / fac.totalorders.toFloat()).toString())
+            })
+            parentLayout.addView(vCompRow)
+        }
     }
 
     override fun onAttach(context: Context?) {

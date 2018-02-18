@@ -11,5 +11,9 @@ class AAAFacilityComplaints {
     var lastname = ""
     var receiveddate = ""
     var complaintreasonname = ""
+    var complaintresolutionname = ""
     var noofcomplaintslastyear = 0
+    var noofjustifiedlastyear = 0
+    var totalorders = 0
+    var comments = ""
 }

@@ -101,6 +101,10 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                     Log.v("PREPARE AFF --- ","Called form Pager")
                     val fragmentAff = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":13") as? FragmentARRAVAffliations
                     fragmentAff?.prepareAffiliations()
+                } else if (position == 15) {
+//                    Log.v("PREPARE AFF --- ","Called form Pager")
+                    val fragmentComplaints = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":15") as? FragmentARRAVComplaints
+                    fragmentComplaints?.prepareComplaints(false)
                 }
             }
 

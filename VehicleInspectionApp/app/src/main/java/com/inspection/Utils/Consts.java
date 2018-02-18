@@ -35,7 +35,7 @@ public class Consts {
     public static final String facilityScopeOfSvcURL = "http://www.jet-matics.com:5000/getScopeOfServicDetails?facilityId=";
     public static final String programTypesURL = "http://www.jet-matics.com:5000/getProgramTypes";
     public static final String facilityCompleteURL = "http://www.jet-matics.com:5000/getFacilities?facilityLike=";
-    public static final String facilityComplaintsURL= "http://www.jet-matics.com:5000/getFacilityComplaints?facilityId=";
+    public static final String getFacilityComplaintsURL= "http://www.jet-matics.com:5000/getFacilityComplaints?facilityId=";
     public static final String facilityEmailPhoneURL = "http://www.jet-matics.com:5000/getFacilityEmailAndPhone?facilityId=";
     public static final String contractSignerDtlsURL = "http://www.jet-matics.com:5000/getContractSignerDetails?personnelId=";
     public static final String getfacilitiesURL = "http://www.jet-matics.com:5000/getFacilities?facilityName=";
@@ -48,6 +48,7 @@ public class Consts {
     public static final String getFacilityVisitationRecords= "http://www.jet-matics.com:5000/getVisitationRecords?facilityId=";
     public static final String getFacilityAffiliations= "http://www.jet-matics.com:5000/getFacilityAffiliations?facilityId=";
     public static final String getAffTypesURL = "http://www.jet-matics.com:5000/getAffiliationTypes";
+
 
 
 
