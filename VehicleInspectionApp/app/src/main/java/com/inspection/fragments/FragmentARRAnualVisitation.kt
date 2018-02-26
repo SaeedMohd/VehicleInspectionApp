@@ -69,6 +69,10 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             itemSelected = true
             (activity as MainActivity).isLoadNewDetailsRequired = true
         }
+        p1top0btn.setText("<")
+        p1top2btn.setOnClickListener({
+            (activity as MainActivity).viewPager?.setCurrentItem(1)
+        })
 
         facilityNameEditText.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {

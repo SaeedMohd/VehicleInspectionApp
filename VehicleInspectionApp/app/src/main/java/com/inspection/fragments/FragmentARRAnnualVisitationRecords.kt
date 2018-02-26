@@ -1,14 +1,9 @@
 package com.inspection.fragments
 
-import android.app.Activity
 import android.content.Context
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -28,8 +23,6 @@ import com.inspection.R
 import com.inspection.Utils.Consts
 import com.inspection.model.AAAFacilityComplete
 import com.inspection.model.AAAVisitationRecords
-import kotlinx.android.synthetic.main.custom_visitation_list_item.*
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 import java.util.ArrayList
 
@@ -81,7 +74,7 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
         })
 
         // Inspection Type
-        var inspectionTypes = arrayOf("Deficient","Quarterly","Annual","Annual / Deficient","Quarter / Deficient")
+        var inspectionTypes = arrayOf("Any","Deficient","Quarterly","Annual","Annual / Deficient","Quarter / Deficient")
         var dataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionTypes)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         visitationinpectionTypeSpinner.adapter = dataAdapter
@@ -173,11 +166,15 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
 
         showVisitationBtn.setOnClickListener({
             Log.v("Button Pressed"," ------- ")
+            visitationrecordsLL.removeAllViews()
             if (visitationfacilityIdVal.text.isNullOrEmpty()) {
                 Toast.makeText(context,"Please select the Facility ...",Toast.LENGTH_LONG).show()
             } else {
-                Log.v("URL .... " , Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemPosition+1))
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemId+1),
+//                Log.v("URL .... " , Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemPosition+1))
+                Log.v("URL .... " , Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemPosition))
+//                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemId+1),
+                var urlStr = Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemId)
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, urlStr,
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 visitationList = Gson().fromJson(response.toString() , Array<AAAVisitationRecords>::class.java).toCollection(ArrayList())

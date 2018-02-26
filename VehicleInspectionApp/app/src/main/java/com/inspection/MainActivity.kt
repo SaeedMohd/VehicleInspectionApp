@@ -80,6 +80,7 @@ import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Utility
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.support.v4.view.ViewPager
 import android.widget.*
 import com.android.volley.toolbox.StringRequest
 import com.google.gson.Gson
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     var FacilityNumber = ""
     var isLoadNewDetailsRequired = false
     var VisitationID = ""
+    var viewPager: ViewPager? = null
     lateinit var facilitySelected: AAAFacilityComplete
     internal var wind: Window? = null
     internal var timer: Timer? = null

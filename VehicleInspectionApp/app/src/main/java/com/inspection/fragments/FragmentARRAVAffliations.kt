@@ -24,13 +24,7 @@ import com.inspection.R
 import com.inspection.Utils.Consts
 import com.inspection.model.AAAAffiliationTypes
 import com.inspection.model.AAAFacilityAffiliations
-import com.inspection.model.AAAFacilityPrograms
-import com.inspection.model.AAAProgramTypes
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
-import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.text.SimpleDateFormat
 import java.util.*
 

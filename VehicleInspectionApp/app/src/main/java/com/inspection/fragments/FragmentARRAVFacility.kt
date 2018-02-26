@@ -61,6 +61,16 @@ class FragmentARRAVFacility : Fragment() {
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         facilitytype_textviewVal.adapter = facilityTypedataAdapter
 
+        p2top1btn.setText("<")
+
+        p2top1btn.setOnClickListener({
+            (activity as MainActivity).viewPager?.setCurrentItem(0)
+        })
+
+        p2top3btn.setOnClickListener({
+            (activity as MainActivity).viewPager?.setCurrentItem(2)
+        })
+
         ARDexp_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)

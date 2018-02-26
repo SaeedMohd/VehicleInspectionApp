@@ -60,6 +60,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 //        (activity as MainActivity).supportActionBar!!.title = "Forms"
 
         mSectionsPagerAdapter = SectionsPagerAdapter(fragmentManager!!)
+        (activity as MainActivity).viewPager = container
         container.offscreenPageLimit = 16
         container.adapter = mSectionsPagerAdapter
         container?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

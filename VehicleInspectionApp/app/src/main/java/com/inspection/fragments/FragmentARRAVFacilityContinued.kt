@@ -93,6 +93,15 @@ class FragmentARRAVFacilityContinued : Fragment() {
         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         phonetype_textviewVal.adapter = phoneTypeAdapter
 
+        p3top2btn.setText("<")
+
+        p3top2btn.setOnClickListener({
+            (activity as MainActivity).viewPager?.setCurrentItem(1)
+        })
+
+        p3top4btn.setOnClickListener({
+            (activity as MainActivity).viewPager?.setCurrentItem(3)
+        })
 
 
     }
