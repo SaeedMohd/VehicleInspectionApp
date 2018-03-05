@@ -193,8 +193,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         //        openSafetyCheckFragment();
 
-        val fragment: android.support.v4.app.Fragment
-        fragment = FragmentForms()
+        val fragment= FragmentForms()
         val fragmentManagerSC = supportFragmentManager
         val ftSC = fragmentManagerSC.beginTransaction()
         ftSC.replace(R.id.fragment, fragment)
@@ -480,7 +479,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     override fun onBackPressed() {
         //Log.dMainActivity.TAG, "" + getFragmentManager().getBackStackEntryCount());
-        if (fragmentManager.backStackEntryCount != 0) {
+        if (fragmentManager.backStackEntryCount == 2){
+            viewPager?.adapter = null
+        }else if (fragmentManager.backStackEntryCount != 0) {
             fragmentManager.popBackStack()
         } else {
             if (isExitFlagReady) {
@@ -530,11 +531,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 //                } else {
                 //                    openSafetyCheckFragment();
                 //                }
-                val fragment: android.support.v4.app.Fragment
-                fragment = FragmentForms()
-                val fragmentManagerSC = supportFragmentManager
+                val fragment = FragmentForms()
+                val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC.beginTransaction()
-                ftSC.replace(R.id.fragment, fragment)
+                ftSC.replace(R.id.fragment, fragment as Fragment)
                 ftSC.addToBackStack("")
                 ftSC.commit()
             }

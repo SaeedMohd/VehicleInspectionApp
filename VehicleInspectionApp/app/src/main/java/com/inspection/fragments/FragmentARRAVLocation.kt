@@ -90,6 +90,7 @@ class FragmentARRAVLocation : Fragment() {
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading Locations")
+                Log.v("error", ""+it.message)
                 Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
             }))
         }

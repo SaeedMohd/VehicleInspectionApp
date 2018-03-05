@@ -39,23 +39,14 @@ public class Consts {
     public static final String facilityEmailPhoneURL = "http://www.jet-matics.com:5000/getFacilityEmailAndPhone?facilityId=";
     public static final String contractSignerDtlsURL = "http://www.jet-matics.com:5000/getContractSignerDetails?personnelId=";
     public static final String getfacilitiesURL = "http://www.jet-matics.com:5000/getFacilities?facilityName=";
+    public static final String getFacilityWithIdUrl = "http://www.jet-matics.com:5000/getFacilityWithId?facilityId=";
     public static final String getLastInspectionForFacility= "http://www.jet-matics.com:5000/getLastAnnualVisitationInspectionForFacility?facilityId=";
     public static final String getEmailFromFacilityAndId = "http://www.jet-matics.com:5000/getEmailFromFacilityAndId?facilityId=%s&emailId=%d";
     public static final String getPhoneNumberWithFacilityAndId = "http://www.jet-matics.com:5000/getPhoneNumberWithFacilityAndId?facilityId=%s&phoneId=%d";
     public static final String getVehicleServicesURL = "http://www.jet-matics.com:5000/getVehicleServices";
     public static final String getVehiclesURL = "http://www.jet-matics.com:5000/getVehicles";
     public static final String getFacilityPrograms= "http://www.jet-matics.com:5000/getFacilityPrograms?facilityId=";
-    public static final String getFacilityVisitationRecords= "http://www.jet-matics.com:5000/getVisitationRecords?facilityId=";
+    public static final String getFacilityVisitationRecords= "http://www.jet-matics.com:5000/getVisitationRecords?facilityName=";
     public static final String getFacilityAffiliations= "http://www.jet-matics.com:5000/getFacilityAffiliations?facilityId=";
     public static final String getAffTypesURL = "http://www.jet-matics.com:5000/getAffiliationTypes";
-
-
-
-
-
-
-
-
-
-
 }

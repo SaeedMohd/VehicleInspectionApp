@@ -34,7 +34,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.CALL_PHONE" android:required="false"/>
+    <uses-permission
+        android:name="android.permission.CALL_PHONE"
+        android:required="false" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -50,7 +52,6 @@
         android:required="true" />
     <uses-feature
         android:glEsVersion="0x00020000"
-
         android:required="true" />
 
     <application
@@ -76,16 +77,15 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <!--<activity android:name=".LoginActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            android:windowSoftInputMode="adjustResize|stateHidden"
-        </activity>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+            <!--android:windowSoftInputMode="adjustResize|stateHidden"-->
+        <!--</activity>-->
         <activity android:name=".SignupActivity" />
-
 
         <receiver
             android:name=".GCM.GcmBroadcastReceiver"
@@ -116,14 +116,12 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            tools:replace="android:theme"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
-
 
         <provider
             android:name=".Utils.GenericFileProvider"
@@ -132,8 +130,28 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity
+            android:name=".fragments.ItemListActivity"
+            android:label="@string/title_item_list"
+            android:theme="@style/myAppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".fragments.ItemDetailActivity"
+            android:label="@string/title_item_detail"
+            android:parentActivityName=".fragments.ItemListActivity"
+            android:theme="@style/myAppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.inspection.fragments.ItemListActivity" />
+        </activity>
     </application>
 
 </manifest>

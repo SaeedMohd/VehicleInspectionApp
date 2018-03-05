@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_main_visitation.*
 import android.app.AlertDialog
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.Log
+import kotlinx.android.synthetic.*
 
 
 /**
@@ -59,6 +60,31 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 //        mSectionsPagerAdapter = SectionsPagerAdapter(fragmentManager!!)
 //        (activity as MainActivity).supportActionBar!!.title = "Forms"
 
+
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        container.clearFindViewByIdCache()
+        mSectionsPagerAdapter = null
+        fragmentManager!!.fragments.clear()
+        fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":0")
+        container.removeAllViews()
+        container.adapter = null
         mSectionsPagerAdapter = SectionsPagerAdapter(fragmentManager!!)
         (activity as MainActivity).viewPager = container
         container.offscreenPageLimit = 16
@@ -114,25 +140,6 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         (activity as MainActivity).saveBtn.setOnClickListener {
             validateFormsInputs()
         }
-
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 
 //    fun flagLoadNewDetailsRequired(){
@@ -223,7 +230,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         }
     }
 
-    inner class SectionsPagerAdapter(fm: android.support.v4.app.FragmentManager) : FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter(fm: android.support.v4.app.FragmentManager) : FragmentStatePagerAdapter(fm) {
         override fun getItem(position: Int): android.support.v4.app.Fragment? {
             var ft: android.support.v4.app.Fragment? = null
             when (position) {
@@ -261,4 +268,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
             return null
         }
     }
+
+
+
 }// Required empty public constructor

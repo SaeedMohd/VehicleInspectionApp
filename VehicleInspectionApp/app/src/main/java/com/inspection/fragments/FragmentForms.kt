@@ -9,6 +9,7 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 
 
 import com.inspection.MainActivity
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_forms.*
 class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 
     var formsStringsArray = arrayOf("*Get Started With Mobile Forms", "AAR Annual Visitation")
-    var fragment: FragmentAnnualVisitationPager? = null
+    var fragment: FragmentARRAnnualVisitationRecords? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // TODO Auto-generated method stub
@@ -49,12 +50,12 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 //                ftSC.addToBackStack("")
 //                ftSC.commit()
 //                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
-                val fragment: android.support.v4.app.Fragment
+
                 fragment = FragmentARRAnnualVisitationRecords()
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()
                 ftSC.replace(R.id.fragment,fragment)
-                ftSC.addToBackStack("")
+                ftSC.addToBackStack("frag")
                 ftSC.commit()
                 (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
             }
@@ -71,10 +72,6 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
         super.onDestroy()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
 
 
 }

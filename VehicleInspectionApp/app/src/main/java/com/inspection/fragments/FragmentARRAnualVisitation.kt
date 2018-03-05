@@ -56,6 +56,10 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         facilityIdTextView.visibility = View.GONE
         facilityNameListView.visibility = View.GONE
 
+        if (!(activity as MainActivity).VisitationID.equals("0")){
+            facilityNameEditText.isEnabled = false
+        }
+
         facilityNameEditText.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
             Log.v("********** focus is", "Focus is: "+b)
             itemSelected = !b
@@ -153,26 +157,11 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(facilityNameEditText.getWindowToken(), 0)
             itemSelected = true
-//            (parentFragment as? FragmentAnnualVisitationPager)!!.flagLoadNewDetailsRequired()
-//            (activity as MainActivity).fragment!!.fragment!!.flagLoadNewDetailsRequired()
             (activity as MainActivity).isLoadNewDetailsRequired = true
-
             facilityNameEditText.setText(facilityNames.get(i).toString())
-//            facilityAddressEditText.requestFocus()
-            // Facility Name will be needed in other forms
             (activity as MainActivity).FacilityName = facilityNames.get(i).toString()
             (activity as MainActivity).facilitySelected = facilitiesList.filter { s -> s.businessname == facilityNames.get(i) }.get(0)
-            // Facility Number will be needed in other forms
             (activity as MainActivity).FacilityNumber = (activity as MainActivity).facilitySelected.facid.toString()
-//            automotiveSpecialistEditText.setText(facilitySelected.)
-//            facilityRepresentativeNameEditText.setText(if (facilitySelected.ow == " ")  "" else facilitySelected.ownerName)
-//            facilityAddressEditText.setText((activity as MainActivity).facilitySelected.fac_addr1)
-//            facilityCityEditText.setText((activity as MainActivity).facilitySelected.city)
-//            facilityStateEditText.setText((activity as MainActivity).facilitySelected.state)
-////            facilityPhoneEditText.setText((activity as MainActivity).facilitySelected.p)
-////            facilityEmailEditText.setText(facilitySelected.email)
-//            facilityZipEditText.setText((activity as MainActivity).facilitySelected.zip)
-//            automotiveSpecialistEmailEditText.setText(facilitySelected.specialistEmail)
             facilityNameListView.visibility = View.GONE
             facilityNameListView.adapter = null
             facilityNameEditText?.setError(null)
@@ -180,16 +169,18 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             automotiveSpecialistEditText?.setError(null)
 
             loadLastInspection()
-
         })
 
-        loadLastInspection()
+
+        if (!(activity as MainActivity).VisitationID.equals("0")) {
+            loadLastInspection()
+        }
     }
 
-    fun loadLastInspection() {
+    private fun loadLastInspection() {
         progressbarGeneralInformation.visibility = View.VISIBLE
         (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getLastInspectionForFacility+(activity as MainActivity).facilitySelected.facid,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
@@ -217,6 +208,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading")
+            Log.v("Loading error", ""+it.message)
             progressbarGeneralInformation.visibility = View.INVISIBLE
             (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }))

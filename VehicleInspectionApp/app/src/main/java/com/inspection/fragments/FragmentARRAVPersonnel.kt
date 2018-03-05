@@ -420,21 +420,11 @@ class FragmentARRAVPersonnel : Fragment() {
         }
 
 
-
         var personnelNamesListViewAdapter = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
             //            itemSelected = true
             Log.v("77777", "I am here")
-            var pos = -1
-            if (personnelDetailsList.size == 1) {
-                if (i == 0) {
-                    personnelNamesList.visibility = View.GONE
-                } else pos = i - 1
-            } else pos = i
-
-            if (pos > -1) {
-                setPersonnelDetails(personnelDetailsList.get(pos))
-            }
-
+            personnelNamesList.visibility = View.GONE
+            setPersonnelDetails(personnelDetailsList.get(i))
         })
 
         (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -445,16 +435,18 @@ class FragmentARRAVPersonnel : Fragment() {
                 if (position > 0) {
 //                        Toast.makeText(context, "You have Selected " + personType_textviewVal.selectedItem.toString() + " ID : " + getTypeID(personType_textviewVal.selectedItem.toString()), Toast.LENGTH_SHORT).show()
                     progressbarPersonnel.visibility = View.VISIBLE
-                    Log.v("99999999",String.format(Consts.personnelDetailsURL, (activity as MainActivity).FacilityNumber, getTypeID(personType_textviewVal.selectedItem.toString())))
+                    Log.v("99999999", String.format(Consts.personnelDetailsURL, (activity as MainActivity).FacilityNumber, getTypeID(personType_textviewVal.selectedItem.toString())))
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.personnelDetailsURL, (activity as MainActivity).FacilityNumber, getTypeID(personType_textviewVal.selectedItem.toString())),
                             Response.Listener { response ->
                                 activity!!.runOnUiThread(Runnable {
+                                    Log.v("*****Response....", response)
                                     personnelDetailsList = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
+                                    Log.v("*****Response....", "Count is: " + personnelDetailsList.size)
                                     if (personnelDetailsList.size >= 1) {
                                         personListArray.clear()
 //                                        if (personnelDetailsList.size == 1) personListArray.add("Add New")
                                         for (perDetails in personnelDetailsList) {
-                                            personListArray.add(perDetails.firstname +" "+ perDetails.lastname)
+                                            personListArray.add(perDetails.firstname + " " + perDetails.lastname)
                                         }
                                         var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
                                         personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -462,12 +454,14 @@ class FragmentARRAVPersonnel : Fragment() {
                                         personnelNamesList.adapter = personDtlsAdapter
                                         personnelNamesList.itemsCanFocus = true
                                         personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
-                                        (0..personnelDetailsList.size - 1)
-                                                .filter { personnelDetailsList.get(it).personnelid == personnelDetails.personnelid }
-                                                .forEach {
-                                                    setPersonnelDetails(personnelDetailsList.get(it))
-                                                    Log.v("And I am *****", "And I am setting selction now "+it +" "+personnelDetailsList.get(it).personnelid)
-                                                }
+                                        if ((activity as MainActivity).lastInspection != null) {
+                                            (0..personnelDetailsList.size - 1)
+                                                    .filter { personnelDetailsList.get(it).personnelid == personnelDetails.personnelid }
+                                                    .forEach {
+                                                        setPersonnelDetails(personnelDetailsList.get(it))
+                                                        Log.v("And I am *****", "And I am setting selction now " + it + " " + personnelDetailsList.get(it).personnelid)
+                                                    }
+                                        }
                                     }
                                 })
                                 progressbarPersonnel.visibility = View.INVISIBLE
@@ -502,7 +496,7 @@ class FragmentARRAVPersonnel : Fragment() {
                         isUsingLastInspectionPersonnel = true
                         (0..personnelTypeList.size - 1)
                                 .filter { personnelTypeList.get(it).personneltypeid == personnelDetails.personneltypeid }
-                                .forEach { personType_textviewVal.setSelection(it+1) }
+                                .forEach { personType_textviewVal.setSelection(it + 1) }
 
                     })
 
@@ -513,7 +507,7 @@ class FragmentARRAVPersonnel : Fragment() {
         }))
     }
 
-    private fun setPersonnelDetails(personnelDetails : AAAPersonnelDetails){
+    private fun setPersonnelDetails(personnelDetails: AAAPersonnelDetails) {
         personnelNamesList.visibility = View.GONE
         personnelNamesList.adapter = null
         firstName_textviewVal.setText(personnelDetails.firstname)
@@ -530,10 +524,10 @@ class FragmentARRAVPersonnel : Fragment() {
         startDateVal.setText(dateTobeFormated)
         Log.v("FORMAT 1 ----- : ", dateTobeFormated)
         dateTobeFormated = ""
-        if (!(personnelDetails.startdate).equals("NULL") && (personnelDetails.enddate).equals("NULL")) {
+        if ( personnelDetails.startdate != null &&  !(personnelDetails.startdate).equals("NULL") && personnelDetails.enddate != null && (personnelDetails.enddate).equals("NULL")) {
             dateTobeFormated = "SELECT DATE"
         } else {
-            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.enddate.substring(0, 10)))
+//            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.enddate.substring(0, 10)))
         }
         endDateVal.setText(dateTobeFormated)
         primaryEmailCheckBox.isChecked = (personnelDetails.primarymailrecipient == 1)
@@ -550,12 +544,12 @@ class FragmentARRAVPersonnel : Fragment() {
                 coSignerStateVal.setSelection(statesArray.indexOf(personnelDetails.state.toString()))
                 coSignerZip4Val.setText(personnelDetails.zip4.toString())
                 coSignerZipVal.setText(personnelDetails.zip.toString())
-            }catch (exp: Exception){
+            } catch (exp: Exception) {
                 exp.printStackTrace()
             }
         }
     }
-    
+
     fun getTypeID(typeName: String): Int {
         var typeID = -1
         for (fac in personnelTypeList) {

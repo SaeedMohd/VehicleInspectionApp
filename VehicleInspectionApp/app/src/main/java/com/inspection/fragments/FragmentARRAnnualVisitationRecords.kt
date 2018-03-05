@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -34,18 +35,19 @@ import java.util.ArrayList
  * Use the [FrgmentARRAnnualVisitationRecords.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentARRAnnualVisitationRecords : Fragment() {
+class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-
+    var fragment: android.support.v4.app.Fragment? = null
     private var mListener: OnFragmentInteractionListener? = null
     var facilityNames = ArrayList<String>()
     var facilitiesList = ArrayList<AAAFacilityComplete>()
     var visitationList = ArrayList<AAAVisitationRecords>()
     var itemSelected = false
     var facilityNameInputField: EditText? = null
+    var firstLoading = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,23 +71,46 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
         visitationfacilityListView.visibility = View.GONE
 
         visitationfacilityNameVal.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
-            Log.v("********** focus is", "Focus is: "+b)
+            Log.v("********** focus is", "Focus is: " + b)
             itemSelected = !b
         })
 
         // Inspection Type
-        var inspectionTypes = arrayOf("Any","Deficient","Quarterly","Annual","Annual / Deficient","Quarter / Deficient")
+        var inspectionTypes = arrayOf("Any", "Deficient", "Quarterly", "Annual", "Annual / Deficient", "Quarter / Deficient")
         var dataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionTypes)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         visitationinpectionTypeSpinner.adapter = dataAdapter
+        visitationinpectionTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                if (!firstLoading) {
+                    showVisitationBtn.performClick()
+                }
+            }
+        }
+
 
         // Inspection Kind
-        var inspectionKinds = arrayOf("All","Planned Visitation","Regular Visitation")
+        var inspectionKinds = arrayOf("All", "Planned Visitation", "Regular Visitation")
         var dataAdapterkind = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionKinds)
         dataAdapterkind.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         visitationinpectionKindSpinner.adapter = dataAdapterkind
+        visitationinpectionKindSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
 
-        visitationfacilityNameVal.addTextChangedListener(object: TextWatcher {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                if(!firstLoading) {
+                    showVisitationBtn.performClick()
+                }
+            }
+        }
+
+        visitationfacilityNameVal.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
             }
@@ -95,24 +120,24 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                if (!itemSelected && visitationfacilityNameVal.text.length >= 3){
-                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL+visitationfacilityNameVal.text,
-                            Response.Listener { response ->
-                                activity!!.runOnUiThread(Runnable {
-                                    facilitiesList = Gson().fromJson(response.toString() , Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
-                                    facilityNames.clear()
-                                    for (fac in facilitiesList){
-                                        facilityNames.add(fac.businessname)
-                                    }
-
-                                    visitationfacilityListView.visibility = View.VISIBLE
-                                    visitationfacilityListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
-                                })
-                            }, Response.ErrorListener {
-                        Log.v("error while loading", "error while loading facilities")
-                    }))
-                }
+                showVisitationBtn.performClick()
+//                if (!itemSelected && visitationfacilityNameVal.text.length >= 3){
+//                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL+visitationfacilityNameVal.text,
+//                            Response.Listener { response ->
+//                                activity!!.runOnUiThread(Runnable {
+//                                    facilitiesList = Gson().fromJson(response.toString() , Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
+//                                    facilityNames.clear()
+//                                    for (fac in facilitiesList){
+//                                        facilityNames.add(fac.businessname)
+//                                    }
+//
+//                                    visitationfacilityListView.visibility = View.VISIBLE
+//                                    visitationfacilityListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
+//                                })
+//                            }, Response.ErrorListener {
+//                        Log.v("error while loading", "error while loading facilities")
+//                    }))
+//                }
             }
 
         })
@@ -121,6 +146,21 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(visitationfacilityNameVal.getWindowToken(), 0)
             itemSelected = true
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationfacilityNameVal.text,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            facilitiesList = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
+                            facilityNames.clear()
+                            for (fac in facilitiesList) {
+                                facilityNames.add(fac.businessname)
+                            }
+
+                            visitationfacilityListView.visibility = View.VISIBLE
+                            visitationfacilityListView.adapter = ArrayAdapter<String>(context, R.layout.custom_visitation_list_item, facilityNames)
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading facilities")
+            }))
             visitationfacilityNameVal.setText(facilityNames.get(i).toString())
             // Facility Name will be needed in other forms
             (activity as MainActivity).FacilityName = facilityNames.get(i).toString()
@@ -140,7 +180,7 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
         clearBtn.setOnClickListener({
             visitationfacilityNameVal.setText("")
             visitationfacilityIdVal.setText("")
-            itemSelected=false
+            itemSelected = false
             showVisitationBtn.setText("SHOW VISITATIONS")
             visitationfacilityNameVal.isEnabled = true
 // Old List View
@@ -148,100 +188,59 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
         })
 
         newVisitationBtn.setOnClickListener({
-            if (visitationfacilityIdVal.text.isNullOrEmpty()) {
-                Toast.makeText(context,"Please select the Facility ...",Toast.LENGTH_LONG).show()
-            } else {
-                (activity as MainActivity).VisitationID = "0"
-
-                Toast.makeText(context, "Selected Visitation ID:  " + (activity as MainActivity).VisitationID, Toast.LENGTH_LONG).show()
-                val fragment: android.support.v4.app.Fragment
-                fragment = FragmentAnnualVisitationPager()
-                val fragmentManagerSC = fragmentManager
-                val ftSC = fragmentManagerSC!!.beginTransaction()
-                ftSC.replace(R.id.fragment, fragment)
-                ftSC.addToBackStack("")
-                ftSC.commit()
-            }
+            (activity as MainActivity).VisitationID = "0"
+            fragment = FragmentAnnualVisitationPager()
+            val fragmentManagerSC = fragmentManager
+            val ftSC = fragmentManagerSC!!.beginTransaction()
+            ftSC.replace(R.id.fragment, fragment)
+            ftSC.addToBackStack("")
+            ftSC.commit()
         })
 
         showVisitationBtn.setOnClickListener({
-            Log.v("Button Pressed"," ------- ")
-            visitationrecordsLL.removeAllViews()
-            if (visitationfacilityIdVal.text.isNullOrEmpty()) {
-                Toast.makeText(context,"Please select the Facility ...",Toast.LENGTH_LONG).show()
-            } else {
-//                Log.v("URL .... " , Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemPosition+1))
-                Log.v("URL .... " , Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemPosition))
-//                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemId+1),
-                var urlStr = Consts.getFacilityVisitationRecords+visitationfacilityIdVal.text+"&inspectionType="+(visitationinpectionTypeSpinner.selectedItemId)
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, urlStr,
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                visitationList = Gson().fromJson(response.toString() , Array<AAAVisitationRecords>::class.java).toCollection(ArrayList())
-                                var visitationRecords = ArrayList<String>()
-                                for (fac in visitationList){
-                                    if (visitationinpectionKindSpinner.selectedItemPosition==0) {
+            Log.v("Button Pressed", " ------- ")
+            Log.v("URL .... ", Consts.getFacilityVisitationRecords + visitationfacilityIdVal.text + "&inspectionType=" + (visitationinpectionTypeSpinner.selectedItemPosition))
+            var urlStr = Consts.getFacilityVisitationRecords + visitationfacilityNameVal.text + "&inspectionType=" + (visitationinpectionTypeSpinner.selectedItemId)
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, urlStr,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            if (visitationrecordsLL != null) {
+                                visitationrecordsLL.removeAllViews()
+                            }
+                            visitationList = Gson().fromJson(response.toString(), Array<AAAVisitationRecords>::class.java).toCollection(ArrayList())
+                            var visitationRecords = ArrayList<String>()
+                            for (fac in visitationList) {
+                                if (visitationinpectionKindSpinner.selectedItemPosition == 0) {
+                                    visitationRecords.add(fac.visitationid.toString() + " - " + fac.performedby)
+                                } else if (visitationinpectionKindSpinner.selectedItemPosition == 1) {
+                                    if (fac.inspectionstatus.equals("Planned Visitation"))
                                         visitationRecords.add(fac.visitationid.toString() + " - " + fac.performedby)
-                                    } else if (visitationinpectionKindSpinner.selectedItemPosition==1) {
-                                        if (fac.inspectionstatus.equals("Planned Visitation"))
+                                } else {
+                                    if (!fac.inspectionstatus.equals("Planned Visitation"))
                                         visitationRecords.add(fac.visitationid.toString() + " - " + fac.performedby)
-                                    } else {
-                                        if (!fac.inspectionstatus.equals("Planned Visitation"))
-                                            visitationRecords.add(fac.visitationid.toString() + " - " + fac.performedby)
-                                    }
                                 }
+                            }
 
-                                val inflater = (activity as MainActivity)
-                                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                                val vVisitationRecordsLL = visitationrecordsLL
-                                BuildVisitationRecords(vVisitationRecordsLL, inflater)
-//Old List View
-//                                visitationrecordsListView.visibility = View.VISIBLE
-//                                var visitationRecordsAdapter = VisitationListAdapter (context,visitationList)
-////                                visitationrecordsListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, visitationRecords)
-//                                visitationrecordsListView.adapter = visitationRecordsAdapter
-//                                showVisitationBtn.setText("SHOW VISITATIONS" + " - ("+visitationRecords.size+")")
-                            })
-                        }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading visitation records")
-                }))
-            }
+//                            val inflater = (activity as MainActivity)
+//                                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//                            val vVisitationRecordsLL = visitationrecordsLL
+//                            BuildVisitationRecords(vVisitationRecordsLL, inflater)
+
+                            visitationfacilityListView.visibility = View.VISIBLE
+                            var visitationRecordsAdapter = VisitationListAdapter(context, visitationList)
+                            visitationfacilityListView.adapter = visitationRecordsAdapter
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading visitation records")
+            }))
         })
+
+        firstLoading = false
+            showVisitationBtn.performClick()
+
+
     }
 
-    fun BuildVisitationRecords(parentLayout : LinearLayout, inflater : LayoutInflater ) {
-        for (fac in visitationList) {
-            val vVisitationRow = inflater.inflate(R.layout.custom_visitation_list_item, parentLayout, false)
-            val vrId= vVisitationRow.findViewById(R.id.visitationItemId) as TextView
-            val vrType= vVisitationRow.findViewById(R.id.visitationItemType) as TextView
-            val vrDate= vVisitationRow.findViewById(R.id.visitationItemPerformedDate) as TextView
-            val vrPlanned= vVisitationRow.findViewById(R.id.visitationItemPlanned) as TextView
-            val vrBy= vVisitationRow.findViewById(R.id.visitationItemPerformedBy) as TextView
-            val vrLoadBtn= vVisitationRow.findViewById(R.id.loadBtn) as TextView
-            val vrStatus= vVisitationRow.findViewById(R.id.visitationItemStatus) as TextView
-            vrId.text = fac.visitationid.toString()
-            vrBy.text = fac.performedby
-            vrDate.text = fac.dateperformed
-            vrPlanned.text = fac.dateplanned
-            vrPlanned.visibility = if (fac.dateplanned.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
-            vrStatus.text = fac.inspectionstatus
-            vrType.text = fac.name
-            vrLoadBtn.setOnClickListener({
-                (activity as MainActivity).VisitationID = fac.visitationid.toString()
-                Toast.makeText(context,"Selected Visitation ID:  "+ (activity as MainActivity).VisitationID,Toast.LENGTH_LONG).show()
-                val fragment: android.support.v4.app.Fragment
-                fragment = FragmentAnnualVisitationPager()
-                val fragmentManagerSC = fragmentManager
-                val ftSC = fragmentManagerSC!!.beginTransaction()
-                ftSC.replace(R.id.fragment,fragment)
-                ftSC.addToBackStack("")
-                ftSC.commit()
-//                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
-            })
-            parentLayout.addView(vVisitationRow)
-        }
-    }
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
             mListener!!.onFragmentInteraction(uri)
@@ -295,16 +294,27 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
 //            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
 //            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
             vh.vrLoadBtn.setOnClickListener({
+                (activity as MainActivity).FacilityName = visitationList[position].name
+                (activity as MainActivity).FacilityNumber = "" + visitationList[position].facid
                 (activity as MainActivity).VisitationID = visitationList[position].visitationid.toString()
-                Toast.makeText(context,"Selected Visitation ID:  "+ (activity as MainActivity).VisitationID,Toast.LENGTH_LONG).show()
-                val fragment: android.support.v4.app.Fragment
-                fragment = FragmentAnnualVisitationPager()
-                val fragmentManagerSC = fragmentManager
-                val ftSC = fragmentManagerSC!!.beginTransaction()
-                ftSC.replace(R.id.fragment,fragment)
-                ftSC.addToBackStack("")
-                ftSC.commit()
-//                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationList[position].facid,
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                var facilityComplete = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList()).get(0) as AAAFacilityComplete
+                                (activity as MainActivity).facilitySelected = facilityComplete
+
+                                val fragment: android.support.v4.app.Fragment
+                                fragment = FragmentAnnualVisitationPager()
+                                val fragmentManagerSC = fragmentManager
+                                val ftSC = fragmentManagerSC!!.beginTransaction()
+                                ftSC.replace(R.id.fragment, fragment)
+                                ftSC.addToBackStack("")
+                                ftSC.commit()
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading facilities")
+                    Log.v("Loading error", "" + it.message)
+                }))
             })
             return view
         }
@@ -333,17 +343,17 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
         val vrPlanned: TextView
         val vrDate: TextView
         val vrLoadBtn: TextView
-        val vrLL: LinearLayout
+        val vrLL: RelativeLayout
 
         init {
             this.vrID = view?.findViewById(R.id.visitationItemId) as TextView
-            this.vrBy= view?.findViewById(R.id.visitationItemPerformedBy) as TextView
-            this.vrStatus= view?.findViewById(R.id.visitationItemStatus) as TextView
+            this.vrBy = view?.findViewById(R.id.visitationItemPerformedBy) as TextView
+            this.vrStatus = view?.findViewById(R.id.visitationItemStatus) as TextView
             this.vrType = view?.findViewById(R.id.visitationItemType) as TextView
             this.vrDate = view?.findViewById(R.id.visitationItemPerformedDate) as TextView
             this.vrPlanned = view?.findViewById(R.id.visitationItemPlanned) as TextView
-            this.vrLL = view?.findViewById(R.id.list_item_ll) as LinearLayout
-            this.vrLoadBtn= view?.findViewById(R.id.loadBtn) as TextView
+            this.vrLL = view?.findViewById(R.id.list_item_ll) as RelativeLayout
+            this.vrLoadBtn = view?.findViewById(R.id.loadBtn) as TextView
         }
 
     }
@@ -387,8 +397,6 @@ class FragmentARRAnnualVisitationRecords : Fragment() {
             return fragment
         }
     }
-
-
 }
 
 

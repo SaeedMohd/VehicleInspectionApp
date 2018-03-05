@@ -65,7 +65,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Toast.makeText(context, "continued view created", Toast.LENGTH_SHORT).show()
         var opHoursAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, opHoursArray)
         opHoursAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         saturday_closed_spinner.adapter = opHoursAdapter
@@ -132,182 +132,193 @@ class FragmentARRAVFacilityContinued : Fragment() {
         if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
             isFirstRun = false
             progressbarFacContinued.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.paymentMethodsURL,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
 
-                            paymentMethodsList = Gson().fromJson(response.toString(), Array<AAAPaymentMethods>::class.java).toCollection(ArrayList())
-                            var lastInspectionPaymentMethods = ArrayList<String>()
-                            if ((activity as MainActivity).lastInspection != null){
-                                lastInspectionPaymentMethods = (activity as MainActivity).lastInspection!!.paymentmethods.split(",") as ArrayList<String>
-                            }
-                            for (fac in paymentMethodsList) {
-                                if (fac.pmtmethodid == 1) {
-                                    visa_checkbox.isChecked = lastInspectionPaymentMethods.contains("1")
-                                } else if (fac.pmtmethodid == 2) {
-                                    mastercard_checkbox.isChecked = lastInspectionPaymentMethods.contains("2")
-                                } else if (fac.pmtmethodid == 3) {
-                                    americanexpress_checkbox.isChecked = lastInspectionPaymentMethods.contains("3")
-                                } else if (fac.pmtmethodid == 4) {
-                                    discover_checkbox.isChecked = lastInspectionPaymentMethods.contains("4")
-                                } else if (fac.pmtmethodid == 5) {
-                                    paypal_checkbox.isChecked = lastInspectionPaymentMethods.contains("5")
-                                } else if (fac.pmtmethodid == 6) {
-                                    debit_checkbox.isChecked = lastInspectionPaymentMethods.contains("6")
-                                } else if (fac.pmtmethodid == 7) {
-                                    cash_checkbox.isChecked = lastInspectionPaymentMethods.contains("7")
-                                } else if (fac.pmtmethodid == 8) {
-                                    check_checkbox.isChecked = lastInspectionPaymentMethods.contains("8")
-                                } else if (fac.pmtmethodid == 9) {
-                                    goodyear_checkbox.isChecked = lastInspectionPaymentMethods.contains("9")
-                                }
-                            }
-                        })
-                    }, Response.ErrorListener {
-                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
-            }))
-
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL+(activity as MainActivity).FacilityNumber,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            facilityHoursList = Gson().fromJson(response.toString(), Array<AAAFacilityHours>::class.java).toCollection(ArrayList())
-                            for (fac in facilityHoursList) {
-                                // Monday
-                                if (fac.monopen.isNullOrEmpty())
-                                    monday_open_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.monopen))
-                                    monday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                if (fac.monclose.isNullOrEmpty())
-                                    monday_closed_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.monclose))
-                                    monday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                // Tuesday
-                                if (fac.tueopen.isNullOrEmpty())
-                                    tuesday_open_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.tueopen))
-                                    tuesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                if (fac.tueclose.isNullOrEmpty())
-                                    tuesday_closed_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.tueclose))
-                                    tuesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                // Wednesday
-                                if (fac.wedopen.isNullOrEmpty())
-                                    wednesday_open_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.wedopen))
-                                    wednesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                if (fac.wedclose.isNullOrEmpty())
-                                    wednesday_closed_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.wedclose))
-                                    wednesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                // Thursday
-                                if (fac.thuopen.isNullOrEmpty())
-                                    thursday_open_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.thuopen))
-                                    thursday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                if (fac.thuclose.isNullOrEmpty())
-                                    thursday_closed_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.thuclose))
-                                    thursday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                // Friday
-                                if (fac.friopen.isNullOrEmpty())
-                                    friday_open_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.friopen))
-                                    friday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                if (fac.friclose.isNullOrEmpty())
-                                    friday_closed_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.friclose))
-                                    friday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                // Saturday
-                                if (fac.satopen.isNullOrEmpty())
-                                    saturday_open_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.satopen))
-                                    saturday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                if (fac.satclose.isNullOrEmpty())
-                                    saturday_closed_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.satclose))
-                                    saturday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                // Sunday
-                                if (fac.sunopen.isNullOrEmpty())
-                                    sunday_open_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.sunopen))
-                                    sunday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                if (fac.sunclose.isNullOrEmpty())
-                                    sunday_closed_spinner.setSelection(0)
-                                else {
-                                    dateTobeFormated = appFormat.format(dbFormat.parse(fac.sunclose))
-                                    sunday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
-                                }
-                                nightdrop_checkbox.isChecked = (fac.nightdrop ==1)
-                                nightinstructions_textviewVal.setText(if (fac.nightdropinstr.isNullOrEmpty()) "" else fac.nightdropinstr)
-                            }
-                        })
-                        progressbarFacContinued.visibility = View.INVISIBLE
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading Facility Timing")
-                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
-            }))
-            if ((activity as MainActivity).lastInspection != null && (activity as MainActivity).lastInspection!!.emailaddressid>0) {
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getEmailFromFacilityAndId, (activity as MainActivity).facilitySelected.facid, (activity as MainActivity).lastInspection!!.emailaddressid),
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-
-                                var lastInspectionEmail = Gson().fromJson(response.toString(), Array<AAAEmailModel>::class.java).toCollection(ArrayList()).get(0)
-
-                                emailtype_textviewVal.setSelection(lastInspectionEmail.emailtypeid)
-                                email_textviewVal.setText(lastInspectionEmail.email)
-                            })
-                        }, Response.ErrorListener {
-                    Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
-                }))
-            }
-
-            if ((activity as MainActivity).lastInspection != null && (activity as MainActivity).lastInspection!!.phonenumberid>0) {
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getPhoneNumberWithFacilityAndId, (activity as MainActivity).facilitySelected.facid, (activity as MainActivity).lastInspection!!.phonenumberid),
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-
-                                var lastInspectionPhone = Gson().fromJson(response.toString(), Array<AAAPhoneModel>::class.java).toCollection(ArrayList()).get(0)
-
-                                phonetype_textviewVal.setSelection(lastInspectionPhone.phonetypeid)
-                                phone_textviewVal.setText(lastInspectionPhone.phonenumber)
-                            })
-                        }, Response.ErrorListener {
-                    Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
-                }))
-            }
+            getPaymentMethods()
         }
     }
 
-    fun getHourPosition (strHour : String) : Int {
-        var pos=0
+    fun getPaymentMethods(){
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.paymentMethodsURL,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
 
-        return pos
+                        paymentMethodsList = Gson().fromJson(response.toString(), Array<AAAPaymentMethods>::class.java).toCollection(ArrayList())
+                        var lastInspectionPaymentMethods = ArrayList<String>()
+                        if ((activity as MainActivity).lastInspection != null){
+                            lastInspectionPaymentMethods = (activity as MainActivity).lastInspection!!.paymentmethods.split(",") as ArrayList<String>
+                        }
+                        for (fac in paymentMethodsList) {
+                            if (fac.pmtmethodid == 1) {
+                                visa_checkbox.isChecked = lastInspectionPaymentMethods.contains("1")
+                            } else if (fac.pmtmethodid == 2) {
+                                mastercard_checkbox.isChecked = lastInspectionPaymentMethods.contains("2")
+                            } else if (fac.pmtmethodid == 3) {
+                                americanexpress_checkbox.isChecked = lastInspectionPaymentMethods.contains("3")
+                            } else if (fac.pmtmethodid == 4) {
+                                discover_checkbox.isChecked = lastInspectionPaymentMethods.contains("4")
+                            } else if (fac.pmtmethodid == 5) {
+                                paypal_checkbox.isChecked = lastInspectionPaymentMethods.contains("5")
+                            } else if (fac.pmtmethodid == 6) {
+                                debit_checkbox.isChecked = lastInspectionPaymentMethods.contains("6")
+                            } else if (fac.pmtmethodid == 7) {
+                                cash_checkbox.isChecked = lastInspectionPaymentMethods.contains("7")
+                            } else if (fac.pmtmethodid == 8) {
+                                check_checkbox.isChecked = lastInspectionPaymentMethods.contains("8")
+                            } else if (fac.pmtmethodid == 9) {
+                                goodyear_checkbox.isChecked = lastInspectionPaymentMethods.contains("9")
+                            }
+                        }
+                    })
+                    getFacilityHours()
+                }, Response.ErrorListener {
+            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+        }))
+    }
+
+    fun getFacilityHours(){
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL+(activity as MainActivity).FacilityNumber,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        facilityHoursList = Gson().fromJson(response.toString(), Array<AAAFacilityHours>::class.java).toCollection(ArrayList())
+                        for (fac in facilityHoursList) {
+                            // Monday
+                            if (fac.monopen.isNullOrEmpty())
+                                monday_open_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.monopen))
+                                monday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            if (fac.monclose.isNullOrEmpty())
+                                monday_closed_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.monclose))
+                                monday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            // Tuesday
+                            if (fac.tueopen.isNullOrEmpty())
+                                tuesday_open_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.tueopen))
+                                tuesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            if (fac.tueclose.isNullOrEmpty())
+                                tuesday_closed_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.tueclose))
+                                tuesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            // Wednesday
+                            if (fac.wedopen.isNullOrEmpty())
+                                wednesday_open_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.wedopen))
+                                wednesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            if (fac.wedclose.isNullOrEmpty())
+                                wednesday_closed_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.wedclose))
+                                wednesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            // Thursday
+                            if (fac.thuopen.isNullOrEmpty())
+                                thursday_open_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.thuopen))
+                                thursday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            if (fac.thuclose.isNullOrEmpty())
+                                thursday_closed_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.thuclose))
+                                thursday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            // Friday
+                            if (fac.friopen.isNullOrEmpty())
+                                friday_open_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.friopen))
+                                friday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            if (fac.friclose.isNullOrEmpty())
+                                friday_closed_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.friclose))
+                                friday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            // Saturday
+                            if (fac.satopen.isNullOrEmpty())
+                                saturday_open_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.satopen))
+                                saturday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            if (fac.satclose.isNullOrEmpty())
+                                saturday_closed_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.satclose))
+                                saturday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            // Sunday
+                            if (fac.sunopen.isNullOrEmpty())
+                                sunday_open_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.sunopen))
+                                sunday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            if (fac.sunclose.isNullOrEmpty())
+                                sunday_closed_spinner.setSelection(0)
+                            else {
+                                dateTobeFormated = appFormat.format(dbFormat.parse(fac.sunclose))
+                                sunday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
+                            }
+                            nightdrop_checkbox.isChecked = (fac.nightdrop ==1)
+                            nightinstructions_textviewVal.setText(if (fac.nightdropinstr.isNullOrEmpty()) "" else fac.nightdropinstr)
+                        }
+                    })
+                    if ((activity as MainActivity).lastInspection != null && (activity as MainActivity).lastInspection!!.emailaddressid>0) {
+                        getFacilityEmail()
+                    }
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading Facility Timing")
+            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+        }))
+    }
+
+    fun getFacilityEmail(){
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getEmailFromFacilityAndId, (activity as MainActivity).facilitySelected.facid, (activity as MainActivity).lastInspection!!.emailaddressid),
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+
+                        var lastInspectionEmail = Gson().fromJson(response.toString(), Array<AAAEmailModel>::class.java).toCollection(ArrayList()).get(0)
+
+                        emailtype_textviewVal.setSelection(lastInspectionEmail.emailtypeid)
+                        email_textviewVal.setText(lastInspectionEmail.email)
+                    })
+
+                    if ((activity as MainActivity).lastInspection != null && (activity as MainActivity).lastInspection!!.phonenumberid>0) {
+                        getFacilityPhoneNumber()
+                    }
+
+                }, Response.ErrorListener {
+            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+        }))
+    }
+
+    fun getFacilityPhoneNumber(){
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getPhoneNumberWithFacilityAndId, (activity as MainActivity).facilitySelected.facid, (activity as MainActivity).lastInspection!!.phonenumberid),
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+
+                        var lastInspectionPhone = Gson().fromJson(response.toString(), Array<AAAPhoneModel>::class.java).toCollection(ArrayList()).get(0)
+
+                        phonetype_textviewVal.setSelection(lastInspectionPhone.phonetypeid)
+                        phone_textviewVal.setText(lastInspectionPhone.phonenumber)
+                    })
+                    progressbarFacContinued.visibility = View.INVISIBLE
+                }, Response.ErrorListener {
+            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+        }))
     }
 
     override fun onAttach(context: Context?) {

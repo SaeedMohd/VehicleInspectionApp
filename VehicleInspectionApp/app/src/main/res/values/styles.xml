@@ -5,9 +5,12 @@
 
 
     <style name="myAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-            <item name="colorPrimary">@color/mainColor</item>
-            <item name="colorPrimaryDark">@color/headerColor</item>
-            <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+            
+        <item name="colorPrimary">@color/mainColor</item>
+            
+        <item name="colorPrimaryDark">@color/headerColor</item>
+            
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <!--<item name="android:colorActivatedHighlight">#691A40</item>-->
         <!--<item name="android:colorPressedHighlight">#691A40</item>-->
@@ -17,9 +20,15 @@
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-            <item name="spinBars">true</item>
-            <item name="color">@android:color/white</item>
+            
+        <item name="spinBars">true</item>
+            
+        <item name="color">@android:color/white</item>
     </style>
+
+    <style name="myAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="myAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

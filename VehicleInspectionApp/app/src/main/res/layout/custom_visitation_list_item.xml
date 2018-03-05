@@ -1,125 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
     android:layout_marginTop="5dp"
-    android:background="@drawable/item_solid_border"
-    android:id="@+id/list_item_ll"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <View
+        android:id="@+id/separatorView"
+        android:layout_width="1dp"
         android:layout_height="wrap_content"
-        android:weightSum="6"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_weight="1"
-            android:text="ID:"
-            />
-        <TextView
-            android:id="@+id/visitationItemId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="ID:"
-            />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:text="Type:"
-            />
-        <TextView
-            android:id="@+id/visitationItemType"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="ID:"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:weightSum="6"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textColor="@color/black"
-            android:text="Performed By:"
-            />
-        <TextView
-            android:id="@+id/visitationItemPerformedBy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="ID:"
-            />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:textColor="@color/black"
-            android:text="On:"
-            />
-        <TextView
-            android:id="@+id/visitationItemPerformedDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="ID:"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:weightSum="6"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:text="Status:"
-            />
-        <TextView
-            android:id="@+id/visitationItemStatus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="ID:"
-            />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:textColor="@color/black"
-            android:text="On:"
-            />
-        <TextView
-            android:id="@+id/visitationItemPlanned"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="ID:"
-            />
-    </LinearLayout>
-    <TextView
-        android:id="@+id/loadBtn"
+        android:layout_centerHorizontal="true"
+        />
+    
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/separatorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:clickable="true"
-        android:layout_gravity="right"
-        android:background="@color/transparent"
-        android:textColor="#0000ff"
-        android:text="Load Visitation -->"/>
-</LinearLayout>
+        >
+
+        <TextView
+            android:id="@+id/idTextView"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ID:"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/performedByTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Performed By:"
+            android:textStyle="bold"
+            android:layout_below="@id/idTextView"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Status:"
+            android:textStyle="bold"
+            android:layout_below="@id/performedByTextView"
+            />
+
+        <TextView
+            android:id="@+id/visitationItemId"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/performedByTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_alignParentRight="true"
+            android:text="1" />
+
+
+        <TextView
+            android:id="@+id/visitationItemPerformedBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visitationItemId"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/performedByTextView"
+            android:textAlignment="center"
+            android:text="ID:" />
+
+        <TextView
+            android:id="@+id/visitationItemStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visitationItemPerformedBy"
+            android:layout_toRightOf="@id/performedByTextView"
+            android:layout_alignParentRight="true"
+            android:textAlignment="center"
+            android:text="ID:" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_toRightOf="@id/separatorView"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/typeTextView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Type:"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/performedOn"
+            android:layout_below="@id/typeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Performed:"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/plannedOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Planned:"
+            android:layout_below="@id/performedOn"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/visitationItemType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/performedOn"
+            android:layout_alignParentRight="true"
+            android:textAlignment="center"
+            android:text="ID:" />
+
+        <TextView
+            android:id="@+id/visitationItemPerformedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/performedOn"
+            android:layout_alignParentRight="true"
+            android:textAlignment="center"
+            android:layout_below="@id/visitationItemType"
+            android:text="ID:" />
+
+
+        <TextView
+            android:id="@+id/visitationItemPlanned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/performedOn"
+            android:layout_alignParentRight="true"
+            android:textAlignment="center"
+            android:layout_below="@id/visitationItemPerformedDate"
+            android:text="ID:" />
+
+        <TextView
+            android:id="@+id/loadBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/transparent"
+            android:clickable="true"
+            android:padding="5dp"
+            android:text="Load Visitation -->"
+            android:textColor="#0000ff"
+            android:layout_below="@id/visitationItemPlanned"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+</RelativeLayout>
