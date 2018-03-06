@@ -22,6 +22,7 @@ import com.google.gson.Gson
 import com.inspection.Utils.Consts
 import com.inspection.model.AAAFacilityComplete
 import com.inspection.model.AnnualVisitationInspectionFormData
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,8 +45,6 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-//        (activity as MainActivity).supportActionBar!!.title = "Forms"
-
         return inflater.inflate(R.layout.fragment_aar_manual_visitation_form, container, false)
     }
 
@@ -56,8 +55,9 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         facilityIdTextView.visibility = View.GONE
         facilityNameListView.visibility = View.GONE
 
-        if (!(activity as MainActivity).VisitationID.equals("0")){
+        if (!AnnualVisitationSingleton.getInstance().facilityName.isNullOrEmpty()){
             facilityNameEditText.isEnabled = false
+            facilityNameEditText.setText(AnnualVisitationSingleton.getInstance().facilityName)
         }
 
         facilityNameEditText.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
@@ -68,15 +68,11 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             validateInputs()
         })
 
-        if ((activity as MainActivity).FacilityName != null && (activity as MainActivity).FacilityName.isNotEmpty()){
-            facilityNameEditText.setText((activity as MainActivity).FacilityName)
-            itemSelected = true
-            (activity as MainActivity).isLoadNewDetailsRequired = true
-        }
-        p1top0btn.setText("<")
-        p1top2btn.setOnClickListener({
-            (activity as MainActivity).viewPager?.setCurrentItem(1)
-        })
+//        if ((activity as MainActivity).FacilityName != null && (activity as MainActivity).FacilityName.isNotEmpty()){
+//            facilityNameEditText.setText((activity as MainActivity).FacilityName)
+//            itemSelected = true
+//            (activity as MainActivity).isLoadNewDetailsRequired = true
+//        }
 
         facilityNameEditText.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
@@ -172,9 +168,9 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         })
 
 
-        if (!(activity as MainActivity).VisitationID.equals("0")) {
-            loadLastInspection()
-        }
+//        if (!(activity as MainActivity).VisitationID.equals("0")) {
+//            loadLastInspection()
+//        }
     }
 
     private fun loadLastInspection() {

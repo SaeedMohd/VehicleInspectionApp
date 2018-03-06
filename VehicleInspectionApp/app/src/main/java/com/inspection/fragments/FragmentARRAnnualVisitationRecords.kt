@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -24,6 +25,8 @@ import com.inspection.R
 import com.inspection.Utils.Consts
 import com.inspection.model.AAAFacilityComplete
 import com.inspection.model.AAAVisitationRecords
+import com.inspection.model.AnnualVisitationInspectionFormData
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 import java.util.ArrayList
 
@@ -44,7 +47,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
     var facilityNames = ArrayList<String>()
     var facilitiesList = ArrayList<AAAFacilityComplete>()
-    var visitationList = ArrayList<AAAVisitationRecords>()
+    var visitationList = ArrayList<AnnualVisitationInspectionFormData>()
     var itemSelected = false
     var facilityNameInputField: EditText? = null
     var firstLoading = true
@@ -188,36 +191,36 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         })
 
         newVisitationBtn.setOnClickListener({
-            (activity as MainActivity).VisitationID = "0"
-            fragment = FragmentAnnualVisitationPager()
-            val fragmentManagerSC = fragmentManager
-            val ftSC = fragmentManagerSC!!.beginTransaction()
-            ftSC.replace(R.id.fragment, fragment)
-            ftSC.addToBackStack("")
-            ftSC.commit()
+//            (activity as MainActivity).VisitationID = "0"
+//            fragment = FragmentAnnualVisitationPager()
+//            val fragmentManagerSC = fragmentManager
+//            val ftSC = fragmentManagerSC!!.beginTransaction()
+//            ftSC.replace(R.id.fragment, fragment)
+//            ftSC.addToBackStack("")
+//            ftSC.commit()
+            var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+            startActivity(intent)
         })
 
         showVisitationBtn.setOnClickListener({
-            Log.v("Button Pressed", " ------- ")
-            Log.v("URL .... ", Consts.getFacilityVisitationRecords + visitationfacilityIdVal.text + "&inspectionType=" + (visitationinpectionTypeSpinner.selectedItemPosition))
-            var urlStr = Consts.getFacilityVisitationRecords + visitationfacilityNameVal.text + "&inspectionType=" + (visitationinpectionTypeSpinner.selectedItemId)
+            var urlStr = String.format(Consts.getAnnualVisitations, visitationfacilityNameVal.text, visitationinpectionTypeSpinner.selectedItemId)
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, urlStr,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             if (visitationrecordsLL != null) {
                                 visitationrecordsLL.removeAllViews()
                             }
-                            visitationList = Gson().fromJson(response.toString(), Array<AAAVisitationRecords>::class.java).toCollection(ArrayList())
+                            visitationList = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList())
                             var visitationRecords = ArrayList<String>()
                             for (fac in visitationList) {
                                 if (visitationinpectionKindSpinner.selectedItemPosition == 0) {
-                                    visitationRecords.add(fac.visitationid.toString() + " - " + fac.performedby)
+                                    visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
                                 } else if (visitationinpectionKindSpinner.selectedItemPosition == 1) {
                                     if (fac.inspectionstatus.equals("Planned Visitation"))
-                                        visitationRecords.add(fac.visitationid.toString() + " - " + fac.performedby)
+                                        visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
                                 } else {
                                     if (!fac.inspectionstatus.equals("Planned Visitation"))
-                                        visitationRecords.add(fac.visitationid.toString() + " - " + fac.performedby)
+                                        visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
                                 }
                             }
 
@@ -303,13 +306,36 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                                 var facilityComplete = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList()).get(0) as AAAFacilityComplete
                                 (activity as MainActivity).facilitySelected = facilityComplete
 
-                                val fragment: android.support.v4.app.Fragment
-                                fragment = FragmentAnnualVisitationPager()
-                                val fragmentManagerSC = fragmentManager
-                                val ftSC = fragmentManagerSC!!.beginTransaction()
-                                ftSC.replace(R.id.fragment, fragment)
-                                ftSC.addToBackStack("")
-                                ftSC.commit()
+                                AnnualVisitationSingleton.getInstance().facilityId = facilityComplete.facid
+                                AnnualVisitationSingleton.getInstance().facilityName = facilityComplete.businessname
+                                AnnualVisitationSingleton.getInstance().facilityType = facilityComplete.facilitytypeid
+                                AnnualVisitationSingleton.getInstance().billingMonth = facilityComplete.billingmonth
+                                AnnualVisitationSingleton.getInstance().billingAmount = facilityComplete.billingamount
+                                AnnualVisitationSingleton.getInstance().contractType = facilityComplete.contracttypeid
+                                AnnualVisitationSingleton.getInstance().webSiteUrl = facilityComplete.website
+                                AnnualVisitationSingleton.getInstance().facilityType = facilityComplete.facilitytypeid
+                                AnnualVisitationSingleton.getInstance().currentContractDate = facilityComplete.contractcurrentdate
+                                AnnualVisitationSingleton.getInstance().setInsuranceExpirationDate(facilityComplete.insuranceexpdate)
+                                AnnualVisitationSingleton.getInstance().setInitialContractDate(facilityComplete.contractinitialdate)
+                                AnnualVisitationSingleton.getInstance().assignedTo = facilityComplete.assignedtoid
+                                AnnualVisitationSingleton.getInstance().office = facilityComplete.officeid
+                                AnnualVisitationSingleton.getInstance().entityName = facilityComplete.entityname
+                                AnnualVisitationSingleton.getInstance().timeZone = facilityComplete.timezoneid
+                                AnnualVisitationSingleton.getInstance().taxId = facilityComplete.taxidnumber
+                                AnnualVisitationSingleton.getInstance().repairOrderCount =  facilityComplete.facilityrepairordercount
+                                AnnualVisitationSingleton.getInstance().serviceAvailability = facilityComplete.svcavailability
+                                AnnualVisitationSingleton.getInstance().ardNumber = facilityComplete.automotiverepairnumber
+                                AnnualVisitationSingleton.getInstance().setArdExpirationDate(facilityComplete.automotiverepairexpdate)
+
+//                                val fragment: android.support.v4.app.Fragment
+//                                fragment = FragmentAnnualVisitationPager()
+//                                val fragmentManagerSC = fragmentManager
+//                                val ftSC = fragmentManagerSC!!.beginTransaction()
+//                                ftSC.replace(R.id.fragment, fragment)
+//                                ftSC.addToBackStack("")
+//                                ftSC.commit()
+                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+                                startActivity(intent)
                             })
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading facilities")
