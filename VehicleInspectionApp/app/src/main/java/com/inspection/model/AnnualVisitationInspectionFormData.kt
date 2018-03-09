@@ -6,7 +6,9 @@ package com.inspection.model
  */
 class AnnualVisitationInspectionFormData {
    var annualvisitationid = 0 
-   var facilityid = 0 
+   var facilityid = 0
+   var entityName = ""
+   var businessName = ""
    var automotivespecialistname = "" 
    var automotivespecialistsignatureid = 0 
    var facilityrepresentativename = "" 

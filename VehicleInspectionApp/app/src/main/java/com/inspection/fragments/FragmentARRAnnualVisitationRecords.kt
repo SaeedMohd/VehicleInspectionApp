@@ -23,12 +23,13 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toTime
 import com.inspection.model.AAAFacilityComplete
 import com.inspection.model.AAAVisitationRecords
 import com.inspection.model.AnnualVisitationInspectionFormData
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
-import java.util.ArrayList
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -107,7 +108,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                if(!firstLoading) {
+                if (!firstLoading) {
                     showVisitationBtn.performClick()
                 }
             }
@@ -191,7 +192,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         })
 
         newVisitationBtn.setOnClickListener({
-//            (activity as MainActivity).VisitationID = "0"
+            //            (activity as MainActivity).VisitationID = "0"
 //            fragment = FragmentAnnualVisitationPager()
 //            val fragmentManagerSC = fragmentManager
 //            val ftSC = fragmentManagerSC!!.beginTransaction()
@@ -216,10 +217,10 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                                 if (visitationinpectionKindSpinner.selectedItemPosition == 0) {
                                     visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
                                 } else if (visitationinpectionKindSpinner.selectedItemPosition == 1) {
-                                    if (fac.inspectionstatus.equals("Planned Visitation"))
+                                    if (fac.dateofinspection.toTime() > Date().time)
                                         visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
                                 } else {
-                                    if (!fac.inspectionstatus.equals("Planned Visitation"))
+                                    if (fac.dateofinspection.toTime() < Date().time)
                                         visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
                                 }
                             }
@@ -239,7 +240,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         })
 
         firstLoading = false
-            showVisitationBtn.performClick()
+        showVisitationBtn.performClick()
 
 
     }
@@ -266,10 +267,10 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
     inner class VisitationListAdapter : BaseAdapter {
 
-        private var visitationList = ArrayList<AAAVisitationRecords>()
+        private var visitationList = ArrayList<AnnualVisitationInspectionFormData>()
         private var context: Context? = null
 
-        constructor(context: Context?, visitationList: ArrayList<AAAVisitationRecords>) : super() {
+        constructor(context: Context?, visitationList: ArrayList<AnnualVisitationInspectionFormData>) : super() {
             this.visitationList = visitationList
             this.context = context
         }
@@ -287,45 +288,53 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 vh = view.tag as ViewHolder
             }
 
-            vh.vrID.text = visitationList[position].visitationid.toString()
-            vh.vrBy.text = visitationList[position].performedby
-            vh.vrDate.text = visitationList[position].dateperformed
-            vh.vrPlanned.text = visitationList[position].dateplanned
-            vh.vrPlanned.visibility = if (visitationList[position].dateplanned.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
-            vh.vrStatus.text = visitationList[position].inspectionstatus
-            vh.vrType.text = visitationList[position].name
+            vh.vrID.text = visitationList[position].annualvisitationid.toString()
+            vh.vrBy.text = visitationList[position].facilityrepresentativename
+            vh.vrDate.text = visitationList[position].dateofinspection
+            vh.vrPlanned.text = visitationList[position].dateofinspection
+            vh.vrPlanned.visibility = if (visitationList[position].dateofinspection.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
+            vh.vrStatus.text = if (visitationList[position].dateofinspection.toTime() > Date().time) "Planned" else "regular"
+            vh.vrType.text = visitationList[position].entityName
 //            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
 //            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
             vh.vrLoadBtn.setOnClickListener({
-                (activity as MainActivity).FacilityName = visitationList[position].name
-                (activity as MainActivity).FacilityNumber = "" + visitationList[position].facid
-                (activity as MainActivity).VisitationID = visitationList[position].visitationid.toString()
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationList[position].facid,
+                AnnualVisitationSingleton.getInstance().apply {
+                    annualVisitationId = visitationList[position].annualvisitationid
+                    facilityRepresentative = visitationList[position].facilityrepresentativename
+                    automotiveSpecialist = visitationList[position].automotivespecialistname
+                    dateOfVisitation = visitationList[position].dateofinspection.toTime()
+                    inspectionType = visitationList[position].inspectiontypeid
+                    monthDue = visitationList[position].monthdue
+                    changesMade = visitationList[position].changesmade
+                }
+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationList[position].facilityid,
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 var facilityComplete = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList()).get(0) as AAAFacilityComplete
                                 (activity as MainActivity).facilitySelected = facilityComplete
-
-                                AnnualVisitationSingleton.getInstance().facilityId = facilityComplete.facid
-                                AnnualVisitationSingleton.getInstance().facilityName = facilityComplete.businessname
-                                AnnualVisitationSingleton.getInstance().facilityType = facilityComplete.facilitytypeid
-                                AnnualVisitationSingleton.getInstance().billingMonth = facilityComplete.billingmonth
-                                AnnualVisitationSingleton.getInstance().billingAmount = facilityComplete.billingamount
-                                AnnualVisitationSingleton.getInstance().contractType = facilityComplete.contracttypeid
-                                AnnualVisitationSingleton.getInstance().webSiteUrl = facilityComplete.website
-                                AnnualVisitationSingleton.getInstance().facilityType = facilityComplete.facilitytypeid
-                                AnnualVisitationSingleton.getInstance().currentContractDate = facilityComplete.contractcurrentdate
-                                AnnualVisitationSingleton.getInstance().setInsuranceExpirationDate(facilityComplete.insuranceexpdate)
-                                AnnualVisitationSingleton.getInstance().setInitialContractDate(facilityComplete.contractinitialdate)
-                                AnnualVisitationSingleton.getInstance().assignedTo = facilityComplete.assignedtoid
-                                AnnualVisitationSingleton.getInstance().office = facilityComplete.officeid
-                                AnnualVisitationSingleton.getInstance().entityName = facilityComplete.entityname
-                                AnnualVisitationSingleton.getInstance().timeZone = facilityComplete.timezoneid
-                                AnnualVisitationSingleton.getInstance().taxId = facilityComplete.taxidnumber
-                                AnnualVisitationSingleton.getInstance().repairOrderCount =  facilityComplete.facilityrepairordercount
-                                AnnualVisitationSingleton.getInstance().serviceAvailability = facilityComplete.svcavailability
-                                AnnualVisitationSingleton.getInstance().ardNumber = facilityComplete.automotiverepairnumber
-                                AnnualVisitationSingleton.getInstance().setArdExpirationDate(facilityComplete.automotiverepairexpdate)
+                                AnnualVisitationSingleton.getInstance().apply {
+                                    facilityId = facilityComplete.facid
+                                    facilityName = facilityComplete.businessname
+                                    facilityType = facilityComplete.facilitytypeid
+                                    billingMonth = facilityComplete.billingmonth
+                                    billingAmount = facilityComplete.billingamount
+                                    contractType = facilityComplete.contracttypeid
+                                    webSiteUrl = facilityComplete.website
+                                    facilityType = facilityComplete.facilitytypeid
+                                    currentContractDate = facilityComplete.contractcurrentdate
+                                    setInsuranceExpirationDate(facilityComplete.insuranceexpdate)
+                                    setInitialContractDate(facilityComplete.contractinitialdate)
+                                    assignedTo = facilityComplete.assignedtoid
+                                    office = facilityComplete.officeid
+                                    entityName = facilityComplete.entityname
+                                    timeZone = facilityComplete.timezoneid
+                                    taxId = facilityComplete.taxidnumber
+                                    repairOrderCount = facilityComplete.facilityrepairordercount
+                                    serviceAvailability = facilityComplete.svcavailability
+                                    ardNumber = facilityComplete.automotiverepairnumber
+                                    setArdExpirationDate(facilityComplete.automotiverepairexpdate)
+                                }
 
 //                                val fragment: android.support.v4.app.Fragment
 //                                fragment = FragmentAnnualVisitationPager()

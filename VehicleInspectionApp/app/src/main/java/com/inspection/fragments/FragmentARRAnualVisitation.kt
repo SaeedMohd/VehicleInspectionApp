@@ -20,6 +20,9 @@ import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import com.google.gson.Gson
 import com.inspection.Utils.Consts
+import com.inspection.Utils.Toaster
+import com.inspection.Utils.dbToAppFormat
+import com.inspection.Utils.toTime
 import com.inspection.model.AAAFacilityComplete
 import com.inspection.model.AnnualVisitationInspectionFormData
 import com.inspection.singletons.AnnualVisitationSingleton
@@ -35,8 +38,6 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     var itemSelected = false
     var facilityNameInputField: EditText? = null
 
-    private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    private val appFormat = SimpleDateFormat("dd MMM yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,44 +75,46 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 //            (activity as MainActivity).isLoadNewDetailsRequired = true
 //        }
 
-        facilityNameEditText.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                if (!itemSelected && facilityNameEditText.text.length >= 1){
-//                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "http://jet-matics.com/JetComService/JetCom.svc/getAAAFacilityFormDetails?facilityName="+facilityNameEditText.text,
-                    Log.v("Facility URL:  --> " , Consts.getfacilitiesURL+facilityNameEditText.text)
-                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL+facilityNameEditText.text,
-                            Response.Listener { response ->
-                                activity!!.runOnUiThread(Runnable {
-//                                val jObject = JSONObject(response.toString())
-//                                val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
-//                                facilitiesList = Gson().fromJson(facResult.toString() , Array<AAAFacility>::class.java).toCollection(ArrayList())
-                                facilitiesList = Gson().fromJson(response.toString() , Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
-                                facilityNames.clear()
-                                for (fac in facilitiesList){
-                                    facilityNames.add(fac.businessname)
-                                }
-
-                                    facilityNameListView.visibility = View.VISIBLE
-                                    facilityNameListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
-                                })
-                            }, Response.ErrorListener {
-                        Log.v("error while loading", "error while loading")
-                    }))
-
+        if (AnnualVisitationSingleton.getInstance().annualVisitationId == -1) {
+            facilityNameEditText.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
 
                 }
-            }
 
-        })
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                    if (!itemSelected && facilityNameEditText.text.length >= 1) {
+//                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "http://jet-matics.com/JetComService/JetCom.svc/getAAAFacilityFormDetails?facilityName="+facilityNameEditText.text,
+                        Log.v("Facility URL:  --> ", Consts.getfacilitiesURL + facilityNameEditText.text)
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL + facilityNameEditText.text,
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread(Runnable {
+                                        //                                val jObject = JSONObject(response.toString())
+//                                val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
+//                                facilitiesList = Gson().fromJson(facResult.toString() , Array<AAAFacility>::class.java).toCollection(ArrayList())
+                                        facilitiesList = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
+                                        facilityNames.clear()
+                                        for (fac in facilitiesList) {
+                                            facilityNames.add(fac.businessname)
+                                        }
+
+                                        facilityNameListView.visibility = View.VISIBLE
+                                        facilityNameListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
+                                    })
+                                }, Response.ErrorListener {
+                            Log.v("error while loading", "error while loading")
+                        }))
+
+
+                    }
+                }
+
+            })
+        }
 
         // Inspection Type
         var inspectionTypes = arrayOf("Quarterly","Ad Hoc")
@@ -168,9 +171,23 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         })
 
 
-//        if (!(activity as MainActivity).VisitationID.equals("0")) {
-//            loadLastInspection()
-//        }
+        if (AnnualVisitationSingleton.getInstance().annualVisitationId > -1) {
+            facilityNameInputField!!.setText(AnnualVisitationSingleton.getInstance().facilityName)
+            facilityNameInputField!!.isEnabled = false
+            Toast.makeText(context, "I am here", Toast.LENGTH_SHORT).show()
+            setFieldsValues()
+        }
+    }
+
+    private fun setFieldsValues(){
+        automotiveSpecialistEditText.setText(AnnualVisitationSingleton.getInstance().automotiveSpecialist)
+        facilityRepresentativeNameEditText.setText(AnnualVisitationSingleton.getInstance().facilityRepresentative)
+        inspectionTypeSpinner.setSelection(AnnualVisitationSingleton.getInstance().inspectionType-1)
+        monthDueSpinner.setSelection(AnnualVisitationSingleton.getInstance().monthDue-1)
+        changesMadeSwitch.setSelection(if (AnnualVisitationSingleton.getInstance().changesMade) 1 else 0)
+        dateOfVisitationButton.text = AnnualVisitationSingleton.getInstance().dateOfVisitation.toString()
+
+
     }
 
     private fun loadLastInspection() {
@@ -181,19 +198,38 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         try {
-                            (activity as MainActivity).lastInspection = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList()).get(0)
-                            automotiveSpecialistEditText.setText((activity as MainActivity).lastInspection!!.automotivespecialistname)
-                            facilityRepresentativeNameEditText.setText((activity as MainActivity).lastInspection!!.facilityrepresentativename)
-                            inspectionTypeSpinner.setSelection((activity as MainActivity).lastInspection!!.inspectiontypeid-1)
-                            monthDueSpinner.setSelection((activity as MainActivity).lastInspection!!.monthdue-1)
+                            var lastInspection = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList()).get(0)
+                            automotiveSpecialistEditText.setText(lastInspection!!.automotivespecialistname)
+                            facilityRepresentativeNameEditText.setText(lastInspection!!.facilityrepresentativename)
+                            inspectionTypeSpinner.setSelection(lastInspection!!.inspectiontypeid-1)
+                            monthDueSpinner.setSelection(lastInspection!!.monthdue-1)
 
-                            if ((activity as MainActivity).lastInspection!!.changesmade){
-                                changesMadeSwitch.setSelection(0)
-                            }else{
-                                changesMadeSwitch.setSelection(1)
+                            changesMadeSwitch.setSelection(if (lastInspection.changesmade) 1 else 0)
+                            dateOfVisitationButton.text = lastInspection.dateofinspection.dbToAppFormat()
+
+                            AnnualVisitationSingleton.getInstance().apply {
+                               automotiveSpecialist = lastInspection.automotivespecialistname
+//                                = lastInspection.automotivespecialistsignatureid TODO add signature logic
+                               facilityRepresentative = lastInspection.facilityrepresentativename
+//                                = lastInspection.facilityrepresentativesignatureid TODO add signature logic
+                               inspectionType = lastInspection.inspectiontypeid
+                               monthDue = lastInspection.monthdue
+                               changesMade = lastInspection.changesmade
+                               dateOfVisitation = lastInspection.dateofinspection.toTime()
+                               paymentMethods = lastInspection.paymentmethods
+                               emailAddressId = lastInspection.emailaddressid
+                               phoneNumberId = lastInspection.phonenumberid
+                               personnelId = lastInspection.personnelid
+                               vehicleServices = lastInspection.vehicleservices
+                               vehicles = lastInspection.vehicles
+                               programs = lastInspection.programs
+                               facilityServices = lastInspection.facilityservices
+                               affliations = lastInspection.affiliations
+                               defeciencies = lastInspection.defeciencies
+                               complaints = lastInspection.complaints
                             }
-                            changesMadeSwitch.selectedItem
-                            dateOfVisitationButton.text = appFormat.format(dbFormat.parse( (activity as MainActivity).lastInspection!!.dateofinspection))
+
+                            setFieldsValues()
 
                         }catch (exp: Exception){
 

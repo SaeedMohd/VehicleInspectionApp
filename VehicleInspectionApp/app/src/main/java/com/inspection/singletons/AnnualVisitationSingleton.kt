@@ -1,7 +1,6 @@
 package com.inspection.singletons
 
-import com.inspection.MainActivity
-import java.text.SimpleDateFormat
+import com.inspection.Utils.toTime
 
 /**
  * Created by devsherif on 3/5/18.
@@ -10,6 +9,8 @@ class AnnualVisitationSingleton {
 
 
     var facilityId = -1
+
+    var annualVisitationId = -1
 
     //General Information Detials
     var facilityName: String? = ""
@@ -38,7 +39,7 @@ class AnnualVisitationSingleton {
     var ardNumber = -1
     var ardExpirationDate = -1L
     fun setArdExpirationDate(dateString: String) {
-        ardExpirationDate = dateString.toDate()
+        ardExpirationDate = dateString.toTime()
     }
 
     var providerType = ""
@@ -46,7 +47,7 @@ class AnnualVisitationSingleton {
     var currentContractDate = ""
     var initialContractDate = -1L
     fun setInitialContractDate(dateString: String) {
-        initialContractDate = dateString.toDate()
+        initialContractDate = dateString.toTime()
     }
 
     var billingMonth = -1
@@ -54,7 +55,7 @@ class AnnualVisitationSingleton {
 
     var insuranceExpirationDate = -1L
     fun setInsuranceExpirationDate(dateString: String){
-        insuranceExpirationDate = dateString.toDate()
+        insuranceExpirationDate = dateString.toTime()
     }
 
 
@@ -80,9 +81,11 @@ class AnnualVisitationSingleton {
     var nightInstructions = ""
 
     var emailType = -1
+    var emailAddressId = -1
     var emailAddress = ""
 
     var phoneType = -1
+    var phoneNumberId = -1
     var phoneNumber = ""
 
     // Location Information
@@ -104,6 +107,7 @@ class AnnualVisitationSingleton {
     var billingLocationAddress2 = ""
 
     //Personnel Information
+    var personnelId = -1
     var personnelType = -1
     var personnelFirstName = ""
     var personnelLastName = ""
@@ -148,14 +152,21 @@ class AnnualVisitationSingleton {
     var c1ExpirationDate = -1L
 
 
+    //VehicleServices
+    var vehicleServices = ""
+    var vehicles = ""
+    var programs = ""
+    var facilityServices = ""
+    var affliations = ""
+    var defeciencies = ""
+    var complaints = ""
 
-
-    fun String.toDate(): Long {
-        return dbFormat.parse(this).time
-    }
-
-    private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    private val appFormat = SimpleDateFormat("dd MMM yyyy")
+//    fun String.toDate(): Long {
+//        return dbFormat.parse(this).time
+//    }
+//
+//    private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//    private val appFormat = SimpleDateFormat("dd MMM yyyy")
 
     companion object {
 
