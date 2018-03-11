@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_main_visitation.*
 import android.app.AlertDialog
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.Log
+import com.inspection.Utils.toast
 import kotlinx.android.synthetic.*
 
 
@@ -208,7 +209,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         else
             simpleAlert.setMessage("Validation Completed Succesfully  ... Proceed to submission? ")
         simpleAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", { dialogInterface, i ->
-            Toast.makeText(context, "You clicked on OK", Toast.LENGTH_SHORT).show()
+            context!!.toast("You clicked on OK")
         })
         simpleAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", { dialogInterface, i -> })
 

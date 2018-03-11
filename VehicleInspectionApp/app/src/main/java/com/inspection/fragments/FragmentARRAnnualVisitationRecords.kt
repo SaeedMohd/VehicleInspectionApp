@@ -165,16 +165,16 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading facilities")
             }))
-            visitationfacilityNameVal.setText(facilityNames.get(i).toString())
+//            visitationfacilityNameVal.setText(facilityNames.get(i).toString())
             // Facility Name will be needed in other forms
-            (activity as MainActivity).FacilityName = facilityNames.get(i).toString()
-            (activity as MainActivity).facilitySelected = facilitiesList.filter { s -> s.businessname == facilityNames.get(i) }.get(0)
+//            (activity as MainActivity).FacilityName = facilityNames.get(i).toString()
+//            (activity as MainActivity).facilitySelected = facilitiesList.filter { s -> s.businessname == facilityNames.get(i) }.get(0)
             // Facility Number will be needed in other forms
-            (activity as MainActivity).FacilityNumber = (activity as MainActivity).facilitySelected.facid.toString()
-            visitationfacilityIdVal.setText((activity as MainActivity).facilitySelected.facid.toString())
-            visitationfacilityListView.visibility = View.GONE
-            visitationfacilityListView.adapter = null
-            visitationfacilityNameVal.isEnabled = false
+//            (activity as MainActivity).FacilityNumber = (activity as MainActivity).facilitySelected.facid.toString()
+//            visitationfacilityIdVal.setText((activity as MainActivity).facilitySelected.facid.toString())
+//            visitationfacilityListView.visibility = View.GONE
+//            visitationfacilityListView.adapter = null
+//            visitationfacilityNameVal.isEnabled = false
 //            facilityNameEditText?.setError(null)
 //            facilityRepresentativeNameEditText?.setError(null)
 //            automotiveSpecialistEditText?.setError(null)
@@ -306,6 +306,17 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     inspectionType = visitationList[position].inspectiontypeid
                     monthDue = visitationList[position].monthdue
                     changesMade = visitationList[position].changesmade
+                    paymentMethods = visitationList[position].paymentmethods
+                    emailAddressId = visitationList[position].emailaddressid
+                    phoneNumberId = visitationList[position].phonenumberid
+                    personnelId = visitationList[position].personnelid
+                    vehicleServices = visitationList[position].vehicleservices
+                    vehicles = visitationList[position].vehicles
+                    affliations = visitationList[position].affiliations
+                    defeciencies = visitationList[position].defeciencies
+                    complaints = visitationList[position].complaints
+
+
                 }
 
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationList[position].facilityid,

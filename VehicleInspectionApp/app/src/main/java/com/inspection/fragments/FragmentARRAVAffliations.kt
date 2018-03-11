@@ -18,12 +18,14 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.inspection.MainActivity
+
 
 import com.inspection.R
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toast
 import com.inspection.model.AAAAffiliationTypes
 import com.inspection.model.AAAFacilityAffiliations
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -148,7 +150,7 @@ class FragmentARRAVAffliations : Fragment() {
             var validAffType = true
             for (fac in facilityAffList) {
                 if (fac.typename.equals(affiliations_textviewVal.selectedItem.toString())){
-                    Toast.makeText(context,"Affiliation Type cannot be duplicated",Toast.LENGTH_SHORT).show()
+                    context!!.toast("Affiliation Type cannot be duplicated")
                     validAffType=false
                 }
             }
@@ -191,6 +193,7 @@ class FragmentARRAVAffliations : Fragment() {
             }
         })
 
+        prepareAffiliations()
 
 //        affiliations_textviewVal.onItemSelectedListener = AdapterView.OnItemSelectedListener { adapterView, view, i, l ->
 //            if (affiliations_textviewVal.selectedItemPosition==7) {
@@ -225,8 +228,8 @@ class FragmentARRAVAffliations : Fragment() {
 
 
     fun prepareAffiliations () {
-        Log.v("AFFILIATIONS PREP ","XXX")
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+
+
             progressbarAff.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getAffTypesURL,
                     Response.Listener { response ->
@@ -267,10 +270,10 @@ class FragmentARRAVAffliations : Fragment() {
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading Affiliations Types")
-                Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                activity!!.toast("Connection Error. Please check the internet connection")
             }))
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityAffiliations+(activity as MainActivity).FacilityNumber,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityAffiliations+ AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facilityAffList= Gson().fromJson(response.toString(), Array<AAAFacilityAffiliations>::class.java).toCollection(ArrayList())
@@ -279,15 +282,14 @@ class FragmentARRAVAffliations : Fragment() {
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading facility programs")
-                Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                activity!!.toast("Connection Error. Please check the internet connection")
             }))
 
             progressbarAff.visibility = View.INVISIBLE
-        }
     }
 
     fun BuildAffiliationsList() {
-        val inflater = (activity as MainActivity)
+        val inflater = activity!!
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val parentLayout = affListLL
         parentLayout.removeAllViews()

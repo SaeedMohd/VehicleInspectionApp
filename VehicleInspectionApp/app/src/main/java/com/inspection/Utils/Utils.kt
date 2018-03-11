@@ -1,5 +1,7 @@
 package com.inspection.Utils
 
+import android.content.Context
+import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,4 +22,12 @@ fun String.toTime(): Long {
 
 fun String.dbToAppFormat(): String{
     return appFormat.format(dbFormat.parse(this))
+}
+
+fun Date.toAppFormat(): String{
+    return appFormat.format(this)
+}
+
+fun Context.toast(message: String, length : Int = Toast.LENGTH_SHORT){
+    Toast.makeText(this, message, length)
 }

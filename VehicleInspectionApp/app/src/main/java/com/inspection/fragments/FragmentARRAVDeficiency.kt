@@ -93,8 +93,6 @@ class FragmentARRAVDeficiency : Fragment() {
             }, year, month, day)
             dpd.show()
         }
-
-
     }
 
     fun validateInputs() : Boolean {

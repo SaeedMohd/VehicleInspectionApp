@@ -25,8 +25,10 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toast
 import com.inspection.model.AAALocations
 import com.inspection.model.AAAScopeOfServices
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
@@ -84,20 +86,19 @@ class FragmentARRAVScopeOfService : Fragment() {
                 }
                 simpleAlert.show()
             }else{
-                Toast.makeText(context, "Please make sure camera and storage permissions are granted", Toast.LENGTH_LONG).show()
+                context!!.toast("Please make sure camera and storage permissions are granted")
             }
         }
+        prepareScopePage()
     }
 
     var isFirstRun = true
 
     fun prepareScopePage () {
-
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
             isFirstRun = false
             progressbarScope.visibility = View.VISIBLE
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL+(activity as MainActivity).FacilityNumber,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL+AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             var facScopeOfSvcList = Gson().fromJson(response.toString(), Array<AAAScopeOfServices>::class.java).toCollection(ArrayList())
@@ -115,9 +116,8 @@ class FragmentARRAVScopeOfService : Fragment() {
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading Scope Of Services")
-                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                activity!!.toast("Connection Error. Please check the internet connection")
             }))
-        }
     }
 
     fun validateInputs() : Boolean {

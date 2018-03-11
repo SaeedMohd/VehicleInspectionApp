@@ -13,6 +13,7 @@ import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import android.util.Log
 import android.widget.Toast
+import androidx.view.isInvisible
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -20,7 +21,9 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.MainActivity
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toast
 import com.inspection.model.*
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.dialog_user_register.*
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -65,7 +68,6 @@ class FragmentARRAVFacilityContinued : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(context, "continued view created", Toast.LENGTH_SHORT).show()
         var opHoursAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, opHoursArray)
         opHoursAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         saturday_closed_spinner.adapter = opHoursAdapter
@@ -93,18 +95,11 @@ class FragmentARRAVFacilityContinued : Fragment() {
         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         phonetype_textviewVal.adapter = phoneTypeAdapter
 
-        p3top2btn.setText("<")
 
-        p3top2btn.setOnClickListener({
-            (activity as MainActivity).viewPager?.setCurrentItem(1)
-        })
-
-        p3top4btn.setOnClickListener({
-            (activity as MainActivity).viewPager?.setCurrentItem(3)
-        })
-
+        prepareFacilityContinuedPage()
 
     }
+
 
     fun validateInputs() : Boolean {
         var isInputsValid = true
@@ -128,13 +123,9 @@ class FragmentARRAVFacilityContinued : Fragment() {
     var isFirstRun: Boolean = true
 
     fun prepareFacilityContinuedPage(){
-
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
-            isFirstRun = false
             progressbarFacContinued.visibility = View.VISIBLE
-
             getPaymentMethods()
-        }
+
     }
 
     fun getPaymentMethods(){
@@ -143,40 +134,39 @@ class FragmentARRAVFacilityContinued : Fragment() {
                     activity!!.runOnUiThread(Runnable {
 
                         paymentMethodsList = Gson().fromJson(response.toString(), Array<AAAPaymentMethods>::class.java).toCollection(ArrayList())
-                        var lastInspectionPaymentMethods = ArrayList<String>()
-                        if ((activity as MainActivity).lastInspection != null){
-                            lastInspectionPaymentMethods = (activity as MainActivity).lastInspection!!.paymentmethods.split(",") as ArrayList<String>
-                        }
+                        var selectedPaymentMethods = AnnualVisitationSingleton.getInstance().paymentMethods.split(",").toCollection(ArrayList<String>())
+
+
                         for (fac in paymentMethodsList) {
                             if (fac.pmtmethodid == 1) {
-                                visa_checkbox.isChecked = lastInspectionPaymentMethods.contains("1")
+                                visa_checkbox.isChecked = selectedPaymentMethods.contains("1")
                             } else if (fac.pmtmethodid == 2) {
-                                mastercard_checkbox.isChecked = lastInspectionPaymentMethods.contains("2")
+                                mastercard_checkbox.isChecked = selectedPaymentMethods.contains("2")
                             } else if (fac.pmtmethodid == 3) {
-                                americanexpress_checkbox.isChecked = lastInspectionPaymentMethods.contains("3")
+                                americanexpress_checkbox.isChecked = selectedPaymentMethods.contains("3")
                             } else if (fac.pmtmethodid == 4) {
-                                discover_checkbox.isChecked = lastInspectionPaymentMethods.contains("4")
+                                discover_checkbox.isChecked = selectedPaymentMethods.contains("4")
                             } else if (fac.pmtmethodid == 5) {
-                                paypal_checkbox.isChecked = lastInspectionPaymentMethods.contains("5")
+                                paypal_checkbox.isChecked = selectedPaymentMethods.contains("5")
                             } else if (fac.pmtmethodid == 6) {
-                                debit_checkbox.isChecked = lastInspectionPaymentMethods.contains("6")
+                                debit_checkbox.isChecked = selectedPaymentMethods.contains("6")
                             } else if (fac.pmtmethodid == 7) {
-                                cash_checkbox.isChecked = lastInspectionPaymentMethods.contains("7")
+                                cash_checkbox.isChecked = selectedPaymentMethods.contains("7")
                             } else if (fac.pmtmethodid == 8) {
-                                check_checkbox.isChecked = lastInspectionPaymentMethods.contains("8")
+                                check_checkbox.isChecked = selectedPaymentMethods.contains("8")
                             } else if (fac.pmtmethodid == 9) {
-                                goodyear_checkbox.isChecked = lastInspectionPaymentMethods.contains("9")
+                                goodyear_checkbox.isChecked = selectedPaymentMethods.contains("9")
                             }
                         }
                     })
                     getFacilityHours()
                 }, Response.ErrorListener {
-            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            activity!!.toast("Connection Error. Please check the internet connection")
         }))
     }
 
     fun getFacilityHours(){
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL+(activity as MainActivity).FacilityNumber,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL+AnnualVisitationSingleton.getInstance().facilityId,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         facilityHoursList = Gson().fromJson(response.toString(), Array<AAAFacilityHours>::class.java).toCollection(ArrayList())
@@ -276,17 +266,19 @@ class FragmentARRAVFacilityContinued : Fragment() {
                             nightinstructions_textviewVal.setText(if (fac.nightdropinstr.isNullOrEmpty()) "" else fac.nightdropinstr)
                         }
                     })
-                    if ((activity as MainActivity).lastInspection != null && (activity as MainActivity).lastInspection!!.emailaddressid>0) {
+                    if (AnnualVisitationSingleton.getInstance().emailAddressId > -1) {
                         getFacilityEmail()
+                    }else{
+                        progressbarFacContinued.visibility = View.INVISIBLE
                     }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading Facility Timing")
-            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            activity!!.toast("Connection Error. Please check the internet connection")
         }))
     }
 
     fun getFacilityEmail(){
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getEmailFromFacilityAndId, (activity as MainActivity).facilitySelected.facid, (activity as MainActivity).lastInspection!!.emailaddressid),
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getEmailFromFacilityAndId, AnnualVisitationSingleton.getInstance().facilityId, AnnualVisitationSingleton.getInstance().emailAddressId),
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
 
@@ -296,17 +288,19 @@ class FragmentARRAVFacilityContinued : Fragment() {
                         email_textviewVal.setText(lastInspectionEmail.email)
                     })
 
-                    if ((activity as MainActivity).lastInspection != null && (activity as MainActivity).lastInspection!!.phonenumberid>0) {
+                    if (AnnualVisitationSingleton.getInstance().phoneNumberId > -1) {
                         getFacilityPhoneNumber()
+                    }else{
+                        progressbarFacContinued.visibility = View.INVISIBLE
                     }
 
                 }, Response.ErrorListener {
-            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            activity!!.toast("Connection Error. Please check the internet connection")
         }))
     }
 
     fun getFacilityPhoneNumber(){
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getPhoneNumberWithFacilityAndId, (activity as MainActivity).facilitySelected.facid, (activity as MainActivity).lastInspection!!.phonenumberid),
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getPhoneNumberWithFacilityAndId, AnnualVisitationSingleton.getInstance().facilityId, AnnualVisitationSingleton.getInstance().phoneNumberId),
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
 
@@ -317,7 +311,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
                     })
                     progressbarFacContinued.visibility = View.INVISIBLE
                 }, Response.ErrorListener {
-            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            activity!!.toast("Connection Error. Please check the internet connection")
         }))
     }
 

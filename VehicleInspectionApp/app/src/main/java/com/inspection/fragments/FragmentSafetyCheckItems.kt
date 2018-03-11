@@ -53,6 +53,7 @@ import android.view.View.GONE
 import android.widget.*
 import com.inspection.MainActivity.Companion.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID
 import com.inspection.MainActivity.Companion.fragmentRequestingPermission
+import com.inspection.Utils.toast
 
 
 import kotlinx.android.synthetic.main.fragment_safety_check_view.*
@@ -91,7 +92,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
 
-//        Toast.makeText(context, "vehicle name= " + vehicleName, Toast.LENGTH_SHORT).show()
+//        context!!.toast("vehicle name= " + vehicleName)
         view2 = inflater?.inflate(R.layout.fragment_safety_check_view, container, false)
 
 
@@ -986,7 +987,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
             }.execute()
         })
         alert.setNegativeButton("Cancel", { dialog, which ->
-            Toast.makeText(context, "Cancel Clicked", Toast.LENGTH_SHORT).show()
+            context!!.toast("Cancel Clicked")
         })
         alert.create().show()
     }

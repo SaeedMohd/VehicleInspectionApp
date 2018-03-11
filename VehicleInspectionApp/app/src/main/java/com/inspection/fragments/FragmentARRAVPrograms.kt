@@ -35,6 +35,8 @@ import android.view.ViewGroup.LayoutParams.FILL_PARENT
 import android.widget.*
 import com.inspection.Utils.Consts.appFormat
 import com.inspection.Utils.Consts.dbFormat
+import com.inspection.Utils.toast
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 
 
@@ -101,7 +103,7 @@ class FragmentARRAVPrograms : Fragment() {
             var validProgram = true
             for (fac in facilityProgramsList) {
                 if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
-                    Toast.makeText(context,"Program Name cannot be duplicated",Toast.LENGTH_SHORT).show()
+                    context!!.toast("Program Name cannot be duplicated")
                     validProgram=false
                 }
             }
@@ -142,11 +144,12 @@ class FragmentARRAVPrograms : Fragment() {
                 BuildProgramsList()
             }
         })
+        prepareProgramTypes()
     }
 
 
     fun prepareProgramTypes () {
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+
             progressbarPrograms.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.programTypesURL,
                     Response.Listener { response ->
@@ -162,10 +165,10 @@ class FragmentARRAVPrograms : Fragment() {
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading program Types")
-                Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                activity!!.toast("Connection Error. Please check the internet connection")
             }))
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityPrograms+(activity as MainActivity).FacilityNumber,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityPrograms+AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facilityProgramsList= Gson().fromJson(response.toString(), Array<AAAFacilityPrograms>::class.java).toCollection(ArrayList())
@@ -174,11 +177,10 @@ class FragmentARRAVPrograms : Fragment() {
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading facility programs")
-                Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                context!!.toast("Error loading Facility Program. Please check your internet connectivity")
             }))
 
             progressbarPrograms.visibility = View.INVISIBLE
-        }
     }
 
 
@@ -220,7 +222,7 @@ class FragmentARRAVPrograms : Fragment() {
     }
 
     fun BuildProgramsList() {
-        val inflater = (activity as MainActivity)
+        val inflater = activity!!
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val parentLayout = programsListLL
         parentLayout.removeAllViews()

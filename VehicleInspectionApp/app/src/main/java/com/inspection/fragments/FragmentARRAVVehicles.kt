@@ -19,12 +19,14 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toast
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.model.AAAVehiclesModel
 import com.inspection.model.VehicleItem
 import com.inspection.model.VehicleServiceHeader
 import com.inspection.model.VehicleServiceItem
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravvehicles.*
 import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
 
@@ -44,11 +46,11 @@ class FragmentARRAVVehicles : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
 
-    private var vehiclesListView : ListView? = null
+    private var vehiclesListView: ListView? = null
     private var vehiclesListItems = ArrayList<VehicleServicesListItem>()
     private var vehiclesList = ArrayList<AAAVehiclesModel>()
 
-    var vehiclesArrayAdapter : VehicleServicesArrayAdapter? = null
+    var vehiclesArrayAdapter: VehicleServicesArrayAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,14 +65,11 @@ class FragmentARRAVVehicles : Fragment() {
         // Inflate the layout for this fragment
 
 
-
-
-
         var view = inflater!!.inflate(R.layout.fragment_arravvehicles, container, false)
         vehiclesListView = view.findViewById<ListView>(R.id.vehiclesListView)
 
 
-        loadVehicles()
+        prepareView()
 
 //        var vehiclesListItems = ArrayList<VehicleServicesListItem>()
 
@@ -84,13 +83,13 @@ class FragmentARRAVVehicles : Fragment() {
 
         vehiclesListView!!.adapter = vehiclesArrayAdapter
 
-        return  view
+        return view
 
     }
 
     private fun loadVehicles() {
-        if (progressbarVehicles!=null) {
-                progressbarVehicles.visibility = View.VISIBLE
+        if (progressbarVehicles != null) {
+            progressbarVehicles.visibility = View.VISIBLE
         }
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getVehiclesURL,
                 Response.Listener { response ->
@@ -103,7 +102,7 @@ class FragmentARRAVVehicles : Fragment() {
                             vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehiclesListItems)
                             vehiclesListView!!.adapter = vehiclesArrayAdapter
                         }
-                        if (progressbarVehicles!=null) {
+                        if (progressbarVehicles != null) {
                             progressbarVehicles.visibility = View.INVISIBLE
                         }
                         if (isPreparingView) {
@@ -112,7 +111,7 @@ class FragmentARRAVVehicles : Fragment() {
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnel Types")
-            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            activity!!.toast("Connection Error. Please check the internet connection")
         }))
     }
 
@@ -127,28 +126,21 @@ class FragmentARRAVVehicles : Fragment() {
             isPreparingView = true
             loadVehicles()
         }
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
-            isFirstRun = false
+        isFirstRun = false
 
-            if ((activity as MainActivity).lastInspection != null) {
-                (0..(activity as MainActivity).lastInspection!!.vehicles.split(",").size - 1)
-                        .forEach {
-                            (1 until vehiclesListItems.size)
-                                    .forEach { it2 ->
-                                        if (it2 != 0) {
-                                            Log.v("8888888", "" + (activity as MainActivity).lastInspection!!.vehicles.split(",")[it].toInt() + "  " + "" + (vehiclesListItems[it2] as VehicleItem).vehicleModel.vehmaketypeid+ "->")
-                                            if ((activity as MainActivity).lastInspection!!.vehicles.split(",")[it].toInt() == (vehiclesListItems[it2] as VehicleItem).vehicleModel.vehmaketypeid) {
-                                                Log.v("yesss", "yes i am selecteddddddd")
-                                                (vehiclesListItems[it2] as VehicleItem).setVehicleSelected(true)
-                                                vehiclesArrayAdapter!!.notifyDataSetChanged()
-                                            }
+
+            (0..AnnualVisitationSingleton.getInstance().vehicles.split(",").size - 1)
+                    .forEach {
+                        (1 until vehiclesListItems.size)
+                                .forEach { it2 ->
+                                    if (it2 != 0) {
+                                        if (AnnualVisitationSingleton.getInstance().vehicles.split(",")[it].toInt() == (vehiclesListItems[it2] as VehicleItem).vehicleModel.vehmaketypeid) {
+                                            (vehiclesListItems[it2] as VehicleItem).setVehicleSelected(true)
+                                            vehiclesArrayAdapter!!.notifyDataSetChanged()
                                         }
                                     }
-                        }
-            }
-
-
-        }
+                                }
+                    }
     }
 
 

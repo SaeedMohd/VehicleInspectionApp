@@ -84,6 +84,7 @@ import android.support.v4.view.ViewPager
 import android.widget.*
 import com.android.volley.toolbox.StringRequest
 import com.google.gson.Gson
+import com.inspection.Utils.toast
 import com.inspection.model.AnnualVisitationInspectionFormData
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import org.json.JSONObject
@@ -496,7 +497,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 //                        }
                 //                    });
                 //                } else {
-                Toast.makeText(this, "Press back button again to leave the app", Toast.LENGTH_LONG).show()
+                toast("Press back button again to leave the app")
                 object : Thread() {
                     override fun run() {
                         try {

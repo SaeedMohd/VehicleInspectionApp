@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter
 import com.inspection.MainActivity
 
 import com.inspection.R
+import com.inspection.Utils.toAppFormat
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import java.text.SimpleDateFormat
@@ -80,7 +82,7 @@ class FragmentARRAVFacility : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 ARDexp_textviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -95,7 +97,7 @@ class FragmentARRAVFacility : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 ARDexp_textviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -116,10 +118,40 @@ class FragmentARRAVFacility : Fragment() {
             dpd.show()
         }
 
+        setFieldsValues()
+
+    }
+
+
+    fun setFieldsValues(){
+        AnnualVisitationSingleton.getInstance().apply{
+            contract_number_textviewVal.text = "" + contractNumber
+            contract_type_textviewVal.text = "" + contractType
+            office_textviewVal.text = ""+ office
+            assignedto_textviewVal.text = assignedTo
+            dba_textviewVal.text = dba
+            entity_textviewVal.text = entityName
+            bustype_textviewVal.text = businessType
+            timezone_textviewVal.setSelection(timeZone)
+            website_textviewVal.setText(webSiteUrl)
+            wifi_textview.isChecked = wifiAvailable
+            texno_textviewVal.setText(taxId)
+            repairorder_textviewVal.setText("" + repairOrderCount)
+            availability_textviewVal.setSelection(serviceAvailability)
+            facilitytype_textviewVal.setSelection(facilityType)
+//            ARDno_textviewVal.setText(ardNumber)
+            ARDexp_textviewVal.setText(Date(ardExpirationDate).toAppFormat())
+            providertype_textviewVal.setText(providerType)
+            shopmanagement_textviewVal.setText(shopManagementSystem)
+            currcodate_textviewVal.setText(currentContractDate)
+            initcodate_textviewVal.setText(Date(initialContractDate).toAppFormat())
+//            billingmonth_textviewVal.setText(billingMonth)
+            billingamount_textviewVal.text = ""+billingAmount
+            InsuranceExpDate_textviewVal.text = Date(insuranceExpirationDate).toAppFormat()
         }
+    }
 
-
-    fun validateInputs() : Boolean {
+    fun validateInputs(): Boolean {
         var isInputsValid = true
 
         ARDno_textviewVal.setError(null)
@@ -127,23 +159,22 @@ class FragmentARRAVFacility : Fragment() {
         InsuranceExpDate_textviewVal.setError(null)
 
         if (ARDno_textviewVal.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+            isInputsValid = false
             ARDno_textviewVal.setError("Required Field")
         }
 
         if (ARDexp_textviewVal.text.toString().equals("SELECT DATE")) {
-            isInputsValid=false
+            isInputsValid = false
             ARDexp_textviewVal.setError("Required Field")
         }
 
         if (InsuranceExpDate_textviewVal.text.toString().equals("SELECT DATE")) {
-            isInputsValid=false
+            isInputsValid = false
             InsuranceExpDate_textviewVal.setError("Required Field")
         }
 
         return isInputsValid
     }
-
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -153,10 +184,7 @@ class FragmentARRAVFacility : Fragment() {
         }
     }
 
-    fun prepareFacilityPage (){
-        Log.v("i am here", "i am here")
-        Log.v("I am 777777", "77777"+(activity as MainActivity).FacilityName)
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+    fun prepareFacilityPage() {
             contract_number_textviewVal.setText((activity as MainActivity).facilitySelected.origcontractno)
             contract_type_textviewVal.setText((activity as MainActivity).facilitySelected.contracttypeid.toString())
             office_textviewVal.setText((activity as MainActivity).facilitySelected.officeid.toString())
@@ -166,14 +194,14 @@ class FragmentARRAVFacility : Fragment() {
             bustype_textviewVal.setText((activity as MainActivity).facilitySelected.bustypeid.toString())
 //            timezone_textviewVal.setText((activity as MainActivity).facilitySelected.timezoneid)
             website_textviewVal.setText((activity as MainActivity).facilitySelected.website)
-            wifi_textview.isChecked = ((activity as MainActivity).facilitySelected.internetaccess ==1)
+            wifi_textview.isChecked = ((activity as MainActivity).facilitySelected.internetaccess == 1)
             texno_textviewVal.setText((activity as MainActivity).facilitySelected.taxidnumber.toString())
             repairorder_textviewVal.setText((activity as MainActivity).facilitySelected.facilityrepairordercount.toString())
             availability_textviewVal.setSelection((activity as MainActivity).facilitySelected.svcavailability)
             facilitytype_textviewVal.setSelection((activity as MainActivity).facilitySelected.facilitytypeid)
-            var dateTobeFormated =""
+            var dateTobeFormated = ""
             dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.contractcurrentdate))
-            currcodate_textviewVal.setText(dateTobeFormated )
+            currcodate_textviewVal.setText(dateTobeFormated)
             dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.contractinitialdate))
             initcodate_textviewVal.setText(dateTobeFormated)
             dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.automotiverepairexpdate))
@@ -185,9 +213,8 @@ class FragmentARRAVFacility : Fragment() {
 //            providertype_textviewVal.setText((activity as MainActivity).facilitySelected.)
             dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.insuranceexpdate))
             InsuranceExpDate_textviewVal.setText(dateTobeFormated)
-
-        }
     }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 //        if (context is OnFragmentInteractionListener) {

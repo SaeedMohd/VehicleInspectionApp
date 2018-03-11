@@ -78,6 +78,8 @@ class FragmentARRAVFacilityServices : Fragment() {
         servicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fc_services_textviewVal.adapter = servicesAdapter
 
+
+
     }
 
 

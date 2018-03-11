@@ -20,9 +20,11 @@ import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.R.id.vehicleServicesListView
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toast
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.model.*
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
@@ -58,13 +60,13 @@ class FragmentARRAVVehicleServices : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater!!.inflate(R.layout.fragment_array_vehicle_services, container, false)
         vehicleServicesListView = view.findViewById<ListView>(R.id.vehicleServicesListView)
-        loadServices()
-
+//        loadServices()
+        prepareView()
         return view
     }
 
     private fun loadServices() {
-        if (progressbarVehicleServices!=null) {
+        if (progressbarVehicleServices != null) {
             progressbarVehicleServices.visibility = View.VISIBLE
         }
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getVehicleServicesURL,
@@ -78,16 +80,16 @@ class FragmentARRAVVehicleServices : Fragment() {
                             vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
                             vehicleServicesListView!!.adapter = vehiclesArrayAdapter
                         }
-                        if (progressbarVehicleServices!=null) {
+                        if (progressbarVehicleServices != null) {
                             progressbarVehicleServices.visibility = View.INVISIBLE
                         }
                         if (isPreparingView) {
-                            loadServices()
+                            prepareView()
                         }
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnel Types")
-            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            activity!!.toast("Connection Error. Please check the internet connection")
         }))
     }
 
@@ -100,28 +102,26 @@ class FragmentARRAVVehicleServices : Fragment() {
             isPreparingView = true
             loadServices()
         }
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
-            isFirstRun = false
 
-            if ((activity as MainActivity).lastInspection != null) {
-                (0..(activity as MainActivity).lastInspection!!.vehicleservices.split(",").size - 1)
-                        .forEach {
-                            (1 until vehicleServicesListItems.size)
-                                    .forEach { it2 ->
-                                        if (it2 != 0) {
-                                            Log.v("8888888", "" + (activity as MainActivity).lastInspection!!.vehicleservices.split(",")[it].toInt() + "  " + "" + (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid + "->")
-                                            if ((activity as MainActivity).lastInspection!!.vehicleservices.split(",")[it].toInt() == (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid) {
-                                                Log.v("yesss", "yes i am selecteddddddd")
-                                                (vehicleServicesListItems[it2] as VehicleServiceItem).setServiceSelected(true)
-                                                vehiclesArrayAdapter.notifyDataSetChanged()
-                                            }
+        isFirstRun = false
+
+
+        (0..AnnualVisitationSingleton.getInstance().vehicleServices.split(",").size - 1)
+                .forEach {
+                    (1 until vehicleServicesListItems.size)
+                            .forEach { it2 ->
+                                try {
+                                    if (it2 != 0) {
+                                        if (AnnualVisitationSingleton.getInstance().vehicleServices.split(",")[it].toInt() == (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid) {
+                                            (vehicleServicesListItems[it2] as VehicleServiceItem).setServiceSelected(true)
+                                            vehiclesArrayAdapter.notifyDataSetChanged()
                                         }
                                     }
-                        }
-            }
+                                } catch (exp: Exception) {
 
-
-        }
+                                }
+                            }
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.facebook.FacebookSdk
 import com.inspection.Utils.Utility
 import com.inspection.R
+import com.inspection.Utils.toast
 import com.inspection.model.UserProfileModel
 import kotlinx.android.synthetic.main.dialog_user_register.*
 
@@ -65,11 +66,11 @@ class SignupActivity : Activity() {
                         CreateProfile().execute(firstNameEditText!!.text.toString(), lastNameEditText!!.text.toString(), phoneEditText!!.text.toString(), emailEditText!!.text.toString(), "", "", userNameEditText!!.text.toString(), passwordEditText!!.text.toString(), email2EditText!!.text.toString(), email3EditText!!.text.toString(), phone2EditText!!.text.toString(), phone3EditText!!.text.toString(), addressEditText!!.text.toString(), cityEditText!!.text.toString(), streetEditText!!.text.toString(),
                                 zipEditText!!.text.toString(), facebookEditText!!.text.toString(), "", "", "", "")
                     } else {
-                        Toast.makeText(activity, "Invalid Email format. Please check your input in Email fields", Toast.LENGTH_LONG).show()
+                        activity!!.toast("Invalid Email format. Please check your input in Email fields")
                     }
 
                 } else {
-                    Toast.makeText(activity, "FirstName, LastName, UserName, Password, Email, and Phone are mandatory fields", Toast.LENGTH_LONG).show()
+                    activity!!.toast("FirstName, LastName, UserName, Password, Email, and Phone are mandatory fields")
                 }
             } else {
                 Toast.makeText(activity,
@@ -181,9 +182,9 @@ class SignupActivity : Activity() {
 
             if (result.contains("IsSuccess\":true")) {
                 //                    new GetAccountDetailByEmailAndPhoneID(activity, false, userProfileModel.getEmail(), "").execute();
-                //                    Toast.makeText(activity, "Profile created successfully", Toast.LENGTH_LONG).show();
+                //                    activity!!.toast("Profile created successfully");
             } else {
-                Toast.makeText(activity, "Error while creating profile, please try again later.", Toast.LENGTH_LONG).show()
+                activity!!.toast("Error while creating profile, please try again later.")
                 registerProgressDialog!!.dismiss()
                 enableFields()
             }

@@ -73,9 +73,6 @@ public class Utility {
         return bd.doubleValue();
     }
 
-    public static void toast(String toastMessage, Context context) {
-        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
-    }
 
     public static void cLog(Context mContext, String msg) {
         if (DEBUG == true) {
@@ -285,7 +282,7 @@ public class Utility {
             return true;
         } else {
             //Log.dMainActivity.TAG, "Internet Connection Not Present");
-//	        Toast.makeText(context, "Internet Connection Not Present", Toast.LENGTH_LONG).show();
+//	        context!!.toast("Internet Connection Not Present");
             return false;
         }
     }

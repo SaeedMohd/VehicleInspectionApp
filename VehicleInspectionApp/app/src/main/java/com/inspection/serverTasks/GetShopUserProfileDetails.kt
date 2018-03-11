@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Utility
+import com.inspection.Utils.toast
 import com.inspection.model.AccountDetailModel
 import com.inspection.model.UserProfileModel
 
@@ -78,7 +79,7 @@ abstract class GetShopUserProfileDetails(internal var context: Context, internal
     fun checkAccountDetailsRetrievedFromCloud(result: String?) {
         //Log.dMainActivity.TAG, "result : " + result!!)
         if (result == null) {
-            Toast.makeText(context, "Connection error. Please try again later", Toast.LENGTH_LONG).show()
+            context!!.toast("Connection error. Please try again later")
             val failedLoginDialog = AlertDialog.Builder(context)
             failedLoginDialog.setMessage("Couldn't login, Please try again")
             failedLoginDialog.setPositiveButton("OK", null)
@@ -87,7 +88,7 @@ abstract class GetShopUserProfileDetails(internal var context: Context, internal
             return
         }
         if (result.contains("Timeout") || result.contains("timeout") || result.contains("<HTML></HTML>")) {
-            Toast.makeText(context, "Connection error. Please try again later", Toast.LENGTH_LONG).show()
+            context!!.toast("Connection error. Please try again later")
             val failedLoginDialog = AlertDialog.Builder(context)
             failedLoginDialog.setMessage("Couldn't login, Please try again")
             failedLoginDialog.setPositiveButton("OK", null)

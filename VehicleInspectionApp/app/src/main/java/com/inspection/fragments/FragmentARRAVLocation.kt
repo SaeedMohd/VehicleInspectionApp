@@ -19,8 +19,10 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toast
 import com.inspection.model.AAALocations
 import com.inspection.model.AAAPersonnelType
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
@@ -55,14 +57,14 @@ class FragmentARRAVLocation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        prepareLocationPage()
     }
 
     fun prepareLocationPage (){
 
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
             progressbarLocation.visibility = View.VISIBLE
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL+(activity as MainActivity).FacilityNumber,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL+AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facLocationsList = Gson().fromJson(response.toString(), Array<AAALocations>::class.java).toCollection(ArrayList())
@@ -89,12 +91,11 @@ class FragmentARRAVLocation : Fragment() {
                             progressbarLocation.visibility = View.INVISIBLE
                         })
                     }, Response.ErrorListener {
+                progressbarLocation.visibility = View.INVISIBLE
                 Log.v("error while loading", "error while loading Locations")
                 Log.v("error", ""+it.message)
-                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                activity!!.toast("Connection Error. Please check the internet connection")
             }))
-        }
-
     }
 
 

@@ -17,6 +17,7 @@ import android.widget.Toast
 import com.inspection.MainActivity
 
 import com.inspection.R
+import com.inspection.Utils.toast
 import kotlinx.android.synthetic.main.fragment_arrav_visitation_tracking.*
 
 /**
@@ -65,7 +66,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
                     }
                     simpleAlert.show()
                 }else{
-                Toast.makeText(context, "Please make sure camera and storage permissions are granted", Toast.LENGTH_LONG).show()
+                context!!.toast("Please make sure camera and storage permissions are granted")
             }
         }
 

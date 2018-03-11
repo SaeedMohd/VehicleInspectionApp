@@ -25,9 +25,11 @@ import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.R.id.progressBar
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toast
 import com.inspection.model.AAAFacility
 import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.AAAPersonnelType
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
@@ -381,6 +383,9 @@ class FragmentARRAVPersonnel : Fragment() {
             }, year, month, day)
             dpd.show()
         }
+
+        preparePersonnelPage()
+
     }
 
     var isFirstRun: Boolean = true
@@ -388,16 +393,14 @@ class FragmentARRAVPersonnel : Fragment() {
     fun preparePersonnelPage() {
 
 
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty() && isFirstRun) {
             isFirstRun = false
             progressbarPersonnel.visibility = View.VISIBLE
-            (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL + (activity as MainActivity).FacilityNumber,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL + AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
-
                             personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
                             personTypeArray.clear()
                             personTypeArray.add("Not Selected")
@@ -409,34 +412,28 @@ class FragmentARRAVPersonnel : Fragment() {
                             personType_textviewVal.adapter = personTypeAdapter
                         })
                         progressbarPersonnel.visibility = View.INVISIBLE
-                        if ((activity as MainActivity).lastInspection != null) {
+                        if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
                             getLastYearPersonnel()
                         }
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading personnel Types")
-                Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                activity!!.toast("Connection Error. Please check the internet connection")
             }))
-
-        }
 
 
         var personnelNamesListViewAdapter = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
-            //            itemSelected = true
-            Log.v("77777", "I am here")
             personnelNamesList.visibility = View.GONE
             setPersonnelDetails(personnelDetailsList.get(i))
         })
 
-        (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         personType_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 personnelNamesList.visibility = View.GONE
                 if (position > 0) {
-//                        Toast.makeText(context, "You have Selected " + personType_textviewVal.selectedItem.toString() + " ID : " + getTypeID(personType_textviewVal.selectedItem.toString()), Toast.LENGTH_SHORT).show()
                     progressbarPersonnel.visibility = View.VISIBLE
-                    Log.v("99999999", String.format(Consts.personnelDetailsURL, (activity as MainActivity).FacilityNumber, getTypeID(personType_textviewVal.selectedItem.toString())))
-                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.personnelDetailsURL, (activity as MainActivity).FacilityNumber, getTypeID(personType_textviewVal.selectedItem.toString())),
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.personnelDetailsURL, AnnualVisitationSingleton.getInstance().facilityId, getTypeID(personType_textviewVal.selectedItem.toString())),
                             Response.Listener { response ->
                                 activity!!.runOnUiThread(Runnable {
                                     Log.v("*****Response....", response)
@@ -454,12 +451,11 @@ class FragmentARRAVPersonnel : Fragment() {
                                         personnelNamesList.adapter = personDtlsAdapter
                                         personnelNamesList.itemsCanFocus = true
                                         personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
-                                        if ((activity as MainActivity).lastInspection != null) {
+                                        if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
                                             (0..personnelDetailsList.size - 1)
                                                     .filter { personnelDetailsList.get(it).personnelid == personnelDetails.personnelid }
                                                     .forEach {
                                                         setPersonnelDetails(personnelDetailsList.get(it))
-                                                        Log.v("And I am *****", "And I am setting selction now " + it + " " + personnelDetailsList.get(it).personnelid)
                                                     }
                                         }
                                     }
@@ -467,7 +463,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                 progressbarPersonnel.visibility = View.INVISIBLE
                             }, Response.ErrorListener {
                         Log.v("error while loading", "error while loading personnel Types")
-                        Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                        activity!!.toast("Connection Error. Please check the internet connection")
                     }))
 
                 }
@@ -489,7 +485,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var isUsingLastInspectionPersonnel: Boolean = false
 
     private fun getLastYearPersonnel() {
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsWithIdUrl + (activity as MainActivity).lastInspection!!.personnelid,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsWithIdUrl + AnnualVisitationSingleton.getInstance().personnelId,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         personnelDetails = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList()).get(0)
@@ -503,7 +499,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     progressbarPersonnel.visibility = View.INVISIBLE
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnel Types")
-            Toast.makeText(activity, "Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+            activity!!.toast("Connection Error. Please check the internet connection")
         }))
     }
 

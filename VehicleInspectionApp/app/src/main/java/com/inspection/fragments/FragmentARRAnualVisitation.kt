@@ -19,10 +19,7 @@ import com.inspection.MainActivity
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import com.google.gson.Gson
-import com.inspection.Utils.Consts
-import com.inspection.Utils.Toaster
-import com.inspection.Utils.dbToAppFormat
-import com.inspection.Utils.toTime
+import com.inspection.Utils.*
 import com.inspection.model.AAAFacilityComplete
 import com.inspection.model.AnnualVisitationInspectionFormData
 import com.inspection.singletons.AnnualVisitationSingleton
@@ -174,7 +171,6 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         if (AnnualVisitationSingleton.getInstance().annualVisitationId > -1) {
             facilityNameInputField!!.setText(AnnualVisitationSingleton.getInstance().facilityName)
             facilityNameInputField!!.isEnabled = false
-            Toast.makeText(context, "I am here", Toast.LENGTH_SHORT).show()
             setFieldsValues()
         }
     }
@@ -185,9 +181,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         inspectionTypeSpinner.setSelection(AnnualVisitationSingleton.getInstance().inspectionType-1)
         monthDueSpinner.setSelection(AnnualVisitationSingleton.getInstance().monthDue-1)
         changesMadeSwitch.setSelection(if (AnnualVisitationSingleton.getInstance().changesMade) 1 else 0)
-        dateOfVisitationButton.text = AnnualVisitationSingleton.getInstance().dateOfVisitation.toString()
-
-
+        dateOfVisitationButton.text = Date(AnnualVisitationSingleton.getInstance().dateOfVisitation!!).toAppFormat()
     }
 
     private fun loadLastInspection() {

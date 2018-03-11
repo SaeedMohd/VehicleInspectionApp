@@ -114,7 +114,7 @@ public class MyService extends Service {
 //		
 //		try {
 //			MainActivity.storeBooleanUserDetails("VehicalHealth", false);
-//			Toast.makeText(this, "Matics Service Stopped", Toast.LENGTH_LONG).show();
+//			Toast.makeText(this, "Matics Service Stopped");
 //			//Log.e(TAG, "onDestroy");
 ////			time1.cancel();
 //			time.cancel();
@@ -144,7 +144,7 @@ public class MyService extends Service {
 ////		player.stop();
 //	}
 //	public void onStart(Intent intent, int startid) {
-////		Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
+////		Toast.makeText(this, "My Service Started");
 //		//Log.e(TAG, "onStart");
 //		SendNotification();
 //		
@@ -787,7 +787,7 @@ public class MyService extends Service {
 //	    public void onReceive(Context context, Intent intent) {
 //	        String action = intent.getAction();
 //	        if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-//	            Toast.makeText(getApplicationContext(), "BT Connected", Toast.LENGTH_LONG).show();
+//	            Toast.makeText(getApplicationContext(), "BT Connected");
 //	            isProceed=true;
 //	            //------------Refreshing  pager and TabIndicator after connect the Socket
 ////	            try {
@@ -804,7 +804,7 @@ public class MyService extends Service {
 ////				} 
 //	        }
 //	        else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-//	            Toast.makeText(getApplicationContext(), "BT Disconnected", Toast.LENGTH_LONG).show();
+//	            Toast.makeText(getApplicationContext(), "BT Disconnected");
 //	            MyService.mNotificationManager.cancel(MyService.NOTIFY_ME_ID);
 ////	            try {
 ////	            	WeakReference<TextView> text = new WeakReference<TextView>(FragmentConnection.Connect);

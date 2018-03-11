@@ -19,7 +19,9 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.Consts
+import com.inspection.Utils.toast
 import com.inspection.model.AAAFacilityComplaints
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_complaints.*
 import java.util.ArrayList
 
@@ -60,17 +62,16 @@ class FragmentARRAVComplaints : Fragment() {
         compShowAllBtn.setOnClickListener({
             prepareComplaints(true)
         })
-
+        prepareComplaints(true)
     }
 
 
 
 
     fun prepareComplaints (boolAll : Boolean) {
-        Log.v("COMPLAINTS PREP ","XXX")
-        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
+
             progressbarComp.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityComplaintsURL+(activity as MainActivity).FacilityNumber+"&all="+boolAll.toString(),
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityComplaintsURL+ AnnualVisitationSingleton.getInstance().facilityId+"&all="+boolAll.toString(),
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facilityComplaintsList= Gson().fromJson(response.toString(), Array<AAAFacilityComplaints>::class.java).toCollection(ArrayList())
@@ -79,11 +80,9 @@ class FragmentARRAVComplaints : Fragment() {
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading facility complaints")
-                Toast.makeText(activity,"Connection Error. Please check the internet connection", Toast.LENGTH_LONG).show()
+                context!!.toast("Connection Error. Please check the internet connection")
             }))
             progressbarComp.visibility = View.INVISIBLE
-
-        }
     }
 
     fun BuildComplaintsList() {

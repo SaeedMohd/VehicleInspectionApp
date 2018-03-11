@@ -44,6 +44,7 @@ import com.inspection.model.VehicleProfileModel
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Utility
 import com.inspection.R
+import com.inspection.Utils.toast
 import com.inspection.serverTasks.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.dialog_forgot_password.*
@@ -786,7 +787,7 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
                                         }
                                     }.execute()
                                 } else {
-                                    Toast.makeText(activity, "Error while Registering. Please try again later.", Toast.LENGTH_SHORT).show()
+                                    activity!!.toast("Error while Registering. Please try again later.")
                                 }
                             }
                         }
@@ -813,12 +814,10 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
                     //                        }.execute();
 
                 } else {
-                    Toast.makeText(activity, "Please enter valid email or username", Toast.LENGTH_LONG).show()
+                    activity!!.toast("Please enter valid email or username")
                 }
             } else {
-                Toast.makeText(activity,
-                        "No internet Connection.",
-                        Toast.LENGTH_SHORT).show()
+                activity!!.toast("No internet Connection.")
             }
         }
 
@@ -924,10 +923,10 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
                         }
                     }
                 }.execute()
-                Toast.makeText(activity, "Profile created successfully", Toast.LENGTH_LONG).show()
+                activity!!.toast("Profile created successfully")
                 userIsLoggedInGotoMainActivity()
             } else {
-                Toast.makeText(activity, "Error while creating profile, please try again later.", Toast.LENGTH_LONG).show()
+                activity!!.toast("Error while creating profile, please try again later.")
             }
         }
 
@@ -946,7 +945,7 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
         var accountDetailModel: AccountDetailModel? = AccountDetailModel()
         //Log.dMainActivity.TAG, "result : " + result!!)
         if (result == null) {
-            Toast.makeText(applicationContext, "Connection error. Please try again later", Toast.LENGTH_LONG).show()
+            applicationContext.toast("Connection error. Please try again later")
             val failedLoginDialog = AlertDialog.Builder(activity)
             failedLoginDialog.setMessage("Couldn't login, Please try again")
             failedLoginDialog.setPositiveButton("OK", null)
@@ -955,7 +954,7 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
             return
         }
         if (result.contains("Timeout") || result.contains("timeout") || result.contains("<HTML></HTML>")) {
-            Toast.makeText(applicationContext, "Connection error. Please try again later", Toast.LENGTH_LONG).show()
+            applicationContext.toast("Connection error. Please try again later")
             val failedLoginDialog = AlertDialog.Builder(activity)
             failedLoginDialog.setMessage("Couldn't login, Please try again")
             failedLoginDialog.setPositiveButton("OK", null)
@@ -1069,7 +1068,7 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
                     saveFacebookUser()
                 } else {
                     jsonExp.printStackTrace()
-                    Toast.makeText(activity, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                    activity!!.toast("Invalid username or password")
                     val failedLoginDialog = AlertDialog.Builder(activity)
                     failedLoginDialog.setMessage("Invalid username or password")
                     failedLoginDialog.setPositiveButton("OK", null)
