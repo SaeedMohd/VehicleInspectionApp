@@ -86,8 +86,7 @@ class FragmentARRAVComplaints : Fragment() {
     }
 
     fun BuildComplaintsList() {
-        val inflater = (activity as MainActivity)
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = (activity as ItemListActivity).getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val parentLayout = compListLL
         parentLayout.removeAllViews()
         for (fac in facilityComplaintsList) {

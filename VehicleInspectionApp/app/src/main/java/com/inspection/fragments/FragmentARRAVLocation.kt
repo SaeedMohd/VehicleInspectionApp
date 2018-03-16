@@ -42,13 +42,6 @@ class FragmentARRAVLocation : Fragment() {
     private var facLocationsList = ArrayList<AAALocations>()
     private var facLocationsArray = ArrayList<String>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -57,7 +50,12 @@ class FragmentARRAVLocation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        prepareLocationPage()
+        if (AnnualVisitationSingleton.getInstance().locationsList == null) {
+            prepareLocationPage()
+        }else{
+            setLocations()
+
+        }
     }
 
     fun prepareLocationPage (){
@@ -67,28 +65,8 @@ class FragmentARRAVLocation : Fragment() {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL+AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
-                            facLocationsList = Gson().fromJson(response.toString(), Array<AAALocations>::class.java).toCollection(ArrayList())
-                            for (fac in facLocationsList) {
-                                if (fac.loctypename.equals("Physical")) {
-                                    phyloc1addr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
-                                    phyloc1addr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
-                                    phyloc1addr1latitude.setText(if (fac.latitude.isNullOrEmpty()) "" else fac.latitude)
-                                    phyloc1addr1longitude.setText(if (fac.longitude.isNullOrEmpty()) "" else fac.longitude)
-                                    phylocAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
-                                    phylocAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
-                                } else if (fac.loctypename.equals("Mailing")) {
-                                    mailaddr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
-                                    mailaddr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
-                                    mailAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
-                                    mailAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
-                                } else if (fac.loctypename.equals("Billing")) {
-                                    billaddr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
-                                    billaddr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
-                                    billAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
-                                    billAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
-                                }
-                            }
-                            progressbarLocation.visibility = View.INVISIBLE
+                            AnnualVisitationSingleton.getInstance().locationsList = Gson().fromJson(response.toString(), Array<AAALocations>::class.java).toCollection(ArrayList())
+                            setLocations()
                         })
                     }, Response.ErrorListener {
                 progressbarLocation.visibility = View.INVISIBLE
@@ -98,7 +76,30 @@ class FragmentARRAVLocation : Fragment() {
             }))
     }
 
-
+    private fun setLocations(){
+        context!!.toast("I am here in physical")
+        for (fac in AnnualVisitationSingleton.getInstance().locationsList!!) {
+            if (fac.loctypename.equals("Physical")) {
+                phyloc1addr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
+                phyloc1addr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
+                phyloc1addr1latitude.setText(if (fac.latitude.isNullOrEmpty()) "" else fac.latitude)
+                phyloc1addr1longitude.setText(if (fac.longitude.isNullOrEmpty()) "" else fac.longitude)
+                phylocAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
+                phylocAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
+            } else if (fac.loctypename.equals("Mailing")) {
+                mailaddr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
+                mailaddr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
+                mailAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
+                mailAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
+            } else if (fac.loctypename.equals("Billing")) {
+                billaddr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
+                billaddr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
+                billAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
+                billAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
+            }
+        }
+        progressbarLocation.visibility = View.INVISIBLE
+    }
 
     fun validateInputs() : Boolean {
         var isInputsValid = true
@@ -135,8 +136,7 @@ class FragmentARRAVLocation : Fragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
+        private val isValidating = "param1"
 
         /**
          * Use this factory method to create a new instance of
@@ -147,11 +147,10 @@ class FragmentARRAVLocation : Fragment() {
          * @return A new instance of fragment FragmentARRAVLocation.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): FragmentARRAVLocation {
+        fun newInstance(isValidating: Boolean): FragmentARRAVLocation {
             val fragment = FragmentARRAVLocation()
             val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            args.putBoolean(this.isValidating, isValidating)
             fragment.arguments = args
             return fragment
         }

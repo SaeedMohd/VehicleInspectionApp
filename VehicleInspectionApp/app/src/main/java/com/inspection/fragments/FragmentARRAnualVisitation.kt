@@ -20,7 +20,9 @@ import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import com.google.gson.Gson
 import com.inspection.Utils.*
+import com.inspection.model.AAAEmailModel
 import com.inspection.model.AAAFacilityComplete
+import com.inspection.model.AAAPhoneModel
 import com.inspection.model.AnnualVisitationInspectionFormData
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
@@ -53,13 +55,13 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         facilityIdTextView.visibility = View.GONE
         facilityNameListView.visibility = View.GONE
 
-        if (!AnnualVisitationSingleton.getInstance().facilityName.isNullOrEmpty()){
+        if (!AnnualVisitationSingleton.getInstance().facilityName.isNullOrEmpty()) {
             facilityNameEditText.isEnabled = false
             facilityNameEditText.setText(AnnualVisitationSingleton.getInstance().facilityName)
         }
 
         facilityNameEditText.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
-            Log.v("********** focus is", "Focus is: "+b)
+            Log.v("********** focus is", "Focus is: " + b)
             itemSelected = !b
         })
         generalInformationTextView.setOnClickListener({
@@ -114,18 +116,18 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         }
 
         // Inspection Type
-        var inspectionTypes = arrayOf("Quarterly","Ad Hoc")
+        var inspectionTypes = arrayOf("Quarterly", "Ad Hoc")
         var dataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionTypes)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inspectionTypeSpinner.adapter = dataAdapter
 
         // Changes Made
-        var changesMadeArray= arrayOf("Yes","No")
+        var changesMadeArray = arrayOf("Yes", "No")
         var chgdataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, changesMadeArray)
         chgdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         changesMadeSwitch.adapter = chgdataAdapter
 
-        var monthsArray= arrayOf("January","February","March","April","May","June","July","August","September","October","November","December")
+        var monthsArray = arrayOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
         var monthdataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, monthsArray)
         monthdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthDueSpinner.adapter = monthdataAdapter
@@ -139,7 +141,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
+                c.set(year, monthOfYear, dayOfMonth)
                 dateOfVisitationButton!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -173,13 +175,17 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             facilityNameInputField!!.isEnabled = false
             setFieldsValues()
         }
+
+        if (arguments!!.getBoolean(isValidating)) {
+            validateInputs()
+        }
     }
 
-    private fun setFieldsValues(){
+    private fun setFieldsValues() {
         automotiveSpecialistEditText.setText(AnnualVisitationSingleton.getInstance().automotiveSpecialist)
         facilityRepresentativeNameEditText.setText(AnnualVisitationSingleton.getInstance().facilityRepresentative)
-        inspectionTypeSpinner.setSelection(AnnualVisitationSingleton.getInstance().inspectionType-1)
-        monthDueSpinner.setSelection(AnnualVisitationSingleton.getInstance().monthDue-1)
+        inspectionTypeSpinner.setSelection(AnnualVisitationSingleton.getInstance().inspectionType - 1)
+        monthDueSpinner.setSelection(AnnualVisitationSingleton.getInstance().monthDue - 1)
         changesMadeSwitch.setSelection(if (AnnualVisitationSingleton.getInstance().changesMade) 1 else 0)
         dateOfVisitationButton.text = Date(AnnualVisitationSingleton.getInstance().dateOfVisitation!!).toAppFormat()
     }
@@ -188,44 +194,46 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         progressbarGeneralInformation.visibility = View.VISIBLE
         (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getLastInspectionForFacility+(activity as MainActivity).facilitySelected.facid,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getLastInspectionForFacility + (activity as MainActivity).facilitySelected.facid,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         try {
                             var lastInspection = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList()).get(0)
                             automotiveSpecialistEditText.setText(lastInspection!!.automotivespecialistname)
                             facilityRepresentativeNameEditText.setText(lastInspection!!.facilityrepresentativename)
-                            inspectionTypeSpinner.setSelection(lastInspection!!.inspectiontypeid-1)
-                            monthDueSpinner.setSelection(lastInspection!!.monthdue-1)
+                            inspectionTypeSpinner.setSelection(lastInspection!!.inspectiontypeid - 1)
+                            monthDueSpinner.setSelection(lastInspection!!.monthdue - 1)
 
                             changesMadeSwitch.setSelection(if (lastInspection.changesmade) 1 else 0)
                             dateOfVisitationButton.text = lastInspection.dateofinspection.dbToAppFormat()
 
                             AnnualVisitationSingleton.getInstance().apply {
-                               automotiveSpecialist = lastInspection.automotivespecialistname
+                                automotiveSpecialist = lastInspection.automotivespecialistname
 //                                = lastInspection.automotivespecialistsignatureid TODO add signature logic
-                               facilityRepresentative = lastInspection.facilityrepresentativename
+                                facilityRepresentative = lastInspection.facilityrepresentativename
 //                                = lastInspection.facilityrepresentativesignatureid TODO add signature logic
-                               inspectionType = lastInspection.inspectiontypeid
-                               monthDue = lastInspection.monthdue
-                               changesMade = lastInspection.changesmade
-                               dateOfVisitation = lastInspection.dateofinspection.toTime()
-                               paymentMethods = lastInspection.paymentmethods
-                               emailAddressId = lastInspection.emailaddressid
-                               phoneNumberId = lastInspection.phonenumberid
-                               personnelId = lastInspection.personnelid
-                               vehicleServices = lastInspection.vehicleservices
-                               vehicles = lastInspection.vehicles
-                               programs = lastInspection.programs
-                               facilityServices = lastInspection.facilityservices
-                               affliations = lastInspection.affiliations
-                               defeciencies = lastInspection.defeciencies
-                               complaints = lastInspection.complaints
+                                inspectionType = lastInspection.inspectiontypeid
+                                monthDue = lastInspection.monthdue
+                                changesMade = lastInspection.changesmade
+                                dateOfVisitation = lastInspection.dateofinspection.toTime()
+                                paymentMethods = lastInspection.paymentmethods
+                                emailModel = AAAEmailModel()
+                                emailModel!!.emailid = lastInspection.emailaddressid
+                                phoneModel = AAAPhoneModel()
+                                phoneModel!!.phoneid = lastInspection.phonenumberid
+                                personnelId = lastInspection.personnelid
+                                vehicleServices = lastInspection.vehicleservices
+                                vehicles = lastInspection.vehicles
+                                programs = lastInspection.programs
+                                facilityServices = lastInspection.facilityservices
+                                affliations = lastInspection.affiliations
+                                defeciencies = lastInspection.defeciencies
+                                complaints = lastInspection.complaints
                             }
 
                             setFieldsValues()
 
-                        }catch (exp: Exception){
+                        } catch (exp: Exception) {
 
                         }
                         progressbarGeneralInformation.visibility = View.INVISIBLE
@@ -234,7 +242,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading")
-            Log.v("Loading error", ""+it.message)
+            Log.v("Loading error", "" + it.message)
             progressbarGeneralInformation.visibility = View.INVISIBLE
             (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }))
@@ -248,60 +256,47 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         super.onResume()
     }
 
-    public fun validateInputs() : Boolean {
-        var isInputsValid = true
-        facilityNameEditText?.setError(null)
-        facilityRepresentativeNameEditText?.setError(null)
-        automotiveSpecialistEditText?.setError(null)
-        dateOfVisitationButton?.setError(null)
-        if (facilityNameInputField?.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
-            facilityNameInputField?.setError("Required Field")
-        }
+    fun validateInputs(): Boolean {
+        AnnualVisitationSingleton.getInstance().apply {
 
-        if (inspectionTypeSpinner?.selectedItem.toString().isNullOrEmpty()) {
-            isInputsValid=false
-        }
+            if (facilityName.isNullOrBlank()) {
+                facilityNameEditText.error = ""
+            }
 
-        if (facilityRepresentativeNameEditText?.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
-            facilityRepresentativeNameEditText?.setError("Required Field")
-        }
+            if (facilityRepresentative.isNullOrBlank()) {
+                facilityRepresentativeNameEditText.error = ""
+            }
 
-        if (automotiveSpecialistEditText?.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
-            automotiveSpecialistEditText?.setError("Required Field")
-        }
+            if (automotiveSpecialist.isNullOrBlank()) {
+                automotiveSpecialistEditText.error = ""
+            }
 
-        if (dateOfVisitationButton?.text.toString().equals("SELECT DATE")) {
-            isInputsValid=false
-            dateOfVisitationButton?.setError("Required Field")
-        }
+            if (dateOfVisitation == -1L) {
+                dateOfVisitationButton.error = "Mandatory"
+            }
 
-        return isInputsValid
+        }
+        return false
     }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
+        private val isValidating = "param1"
 
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment FragmentAnnualVisitationPager.
          */
         // TODO: Rename and change types and number of parameters
 
-        fun newInstance(param1: String, param2: String): FragmentARRAnualVisitation {
-            val fragment = FragmentARRAnualVisitation ()
+        fun newInstance(param1: Boolean): FragmentARRAnualVisitation {
+            val fragment = FragmentARRAnualVisitation()
             val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            args.putBoolean(isValidating, param1)
             fragment.arguments = args
             return fragment
         }

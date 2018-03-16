@@ -123,11 +123,11 @@ class FragmentARRAVFacility : Fragment() {
     }
 
 
-    fun setFieldsValues(){
-        AnnualVisitationSingleton.getInstance().apply{
+    private fun setFieldsValues() {
+        AnnualVisitationSingleton.getInstance().apply {
             contract_number_textviewVal.text = "" + contractNumber
             contract_type_textviewVal.text = "" + contractType
-            office_textviewVal.text = ""+ office
+            office_textviewVal.text = "" + office
             assignedto_textviewVal.text = assignedTo
             dba_textviewVal.text = dba
             entity_textviewVal.text = entityName
@@ -146,34 +146,33 @@ class FragmentARRAVFacility : Fragment() {
             currcodate_textviewVal.setText(currentContractDate)
             initcodate_textviewVal.setText(Date(initialContractDate).toAppFormat())
 //            billingmonth_textviewVal.setText(billingMonth)
-            billingamount_textviewVal.text = ""+billingAmount
+            billingamount_textviewVal.text = "" + billingAmount
             InsuranceExpDate_textviewVal.text = Date(insuranceExpirationDate).toAppFormat()
         }
+
+        if (arguments!!.getBoolean(isValidating)) {
+            validateInputs()
+        }
+
     }
 
-    fun validateInputs(): Boolean {
-        var isInputsValid = true
+    fun validateInputs() {
 
-        ARDno_textviewVal.setError(null)
-        ARDexp_textviewVal.setError(null)
-        InsuranceExpDate_textviewVal.setError(null)
+        AnnualVisitationSingleton.getInstance().apply {
+            if (ardNumber == -1){
+                ARDno_textviewVal.error = ""
+            }
 
-        if (ARDno_textviewVal.text.toString().isNullOrEmpty()) {
-            isInputsValid = false
-            ARDno_textviewVal.setError("Required Field")
+            if (ardExpirationDate == -1L) {
+                ARDexp_textviewVal.error = ""
+            }
+
+            if (insuranceExpirationDate == -1L) {
+                InsuranceExpDate_textviewVal.error = ""
+            }
+
+
         }
-
-        if (ARDexp_textviewVal.text.toString().equals("SELECT DATE")) {
-            isInputsValid = false
-            ARDexp_textviewVal.setError("Required Field")
-        }
-
-        if (InsuranceExpDate_textviewVal.text.toString().equals("SELECT DATE")) {
-            isInputsValid = false
-            InsuranceExpDate_textviewVal.setError("Required Field")
-        }
-
-        return isInputsValid
     }
 
 
@@ -182,37 +181,6 @@ class FragmentARRAVFacility : Fragment() {
         if (mListener != null) {
             mListener!!.onFragmentInteraction(uri)
         }
-    }
-
-    fun prepareFacilityPage() {
-            contract_number_textviewVal.setText((activity as MainActivity).facilitySelected.origcontractno)
-            contract_type_textviewVal.setText((activity as MainActivity).facilitySelected.contracttypeid.toString())
-            office_textviewVal.setText((activity as MainActivity).facilitySelected.officeid.toString())
-            assignedto_textviewVal.setText((activity as MainActivity).facilitySelected.assignedtoid.toString())
-            dba_textviewVal.setText((activity as MainActivity).facilitySelected.businessname)
-            entity_textviewVal.setText((activity as MainActivity).facilitySelected.entityname)
-            bustype_textviewVal.setText((activity as MainActivity).facilitySelected.bustypeid.toString())
-//            timezone_textviewVal.setText((activity as MainActivity).facilitySelected.timezoneid)
-            website_textviewVal.setText((activity as MainActivity).facilitySelected.website)
-            wifi_textview.isChecked = ((activity as MainActivity).facilitySelected.internetaccess == 1)
-            texno_textviewVal.setText((activity as MainActivity).facilitySelected.taxidnumber.toString())
-            repairorder_textviewVal.setText((activity as MainActivity).facilitySelected.facilityrepairordercount.toString())
-            availability_textviewVal.setSelection((activity as MainActivity).facilitySelected.svcavailability)
-            facilitytype_textviewVal.setSelection((activity as MainActivity).facilitySelected.facilitytypeid)
-            var dateTobeFormated = ""
-            dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.contractcurrentdate))
-            currcodate_textviewVal.setText(dateTobeFormated)
-            dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.contractinitialdate))
-            initcodate_textviewVal.setText(dateTobeFormated)
-            dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.automotiverepairexpdate))
-            ARDexp_textviewVal.setText(dateTobeFormated)
-            billingmonth_textviewVal.setText((activity as MainActivity).facilitySelected.billingmonth.toString())
-            billingamount_textviewVal.setText((activity as MainActivity).facilitySelected.billingamount.toString())
-            ARDno_textviewVal.setText((activity as MainActivity).facilitySelected.automotiverepairnumber.toString())
-
-//            providertype_textviewVal.setText((activity as MainActivity).facilitySelected.)
-            dateTobeFormated = appFprmat.format(dbFormat.parse((activity as MainActivity).facilitySelected.insuranceexpdate))
-            InsuranceExpDate_textviewVal.setText(dateTobeFormated)
     }
 
     override fun onAttach(context: Context?) {
@@ -246,8 +214,7 @@ class FragmentARRAVFacility : Fragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
+        private val isValidating = "param1"
 
         /**
          * Use this factory method to create a new instance of
@@ -258,11 +225,10 @@ class FragmentARRAVFacility : Fragment() {
          * @return A new instance of fragment FragmentARRAVFacility.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): FragmentARRAVFacility {
+        fun newInstance(isValidating: Boolean): FragmentARRAVFacility {
             val fragment = FragmentARRAVFacility()
             val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            args.putBoolean(this.isValidating, isValidating)
             fragment.arguments = args
             return fragment
         }

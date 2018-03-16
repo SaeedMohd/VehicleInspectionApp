@@ -54,38 +54,39 @@ class FragmentARRAVVehicleServices : Fragment() {
 
     }
 
-    private lateinit var vehicleServicesList: ArrayList<AAAVehicleServicesModel>
     lateinit var vehiclesArrayAdapter: VehicleServicesArrayAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater!!.inflate(R.layout.fragment_array_vehicle_services, container, false)
-        vehicleServicesListView = view.findViewById<ListView>(R.id.vehicleServicesListView)
-//        loadServices()
-        prepareView()
+        vehicleServicesListView = view.findViewById(R.id.vehicleServicesListView)
+
         return view
     }
 
-    private fun loadServices() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         if (progressbarVehicleServices != null) {
             progressbarVehicleServices.visibility = View.VISIBLE
         }
+
+        if (AnnualVisitationSingleton.getInstance().vehicleServicesList == null) {
+            loadServices()
+        } else {
+            setServices()
+        }
+
+    }
+
+
+    private fun loadServices() {
+
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getVehicleServicesURL,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         isServicesLoaded = true
-                        vehicleServicesList = Gson().fromJson(response.toString(), Array<AAAVehicleServicesModel>::class.java).toCollection(ArrayList())
-                        vehicleServicesListItems.add(VehicleServiceHeader("Automobile"))
-                        (0..vehicleServicesList.size - 1).forEach {
-                            vehicleServicesListItems.add(VehicleServiceItem(vehicleServicesList[it]))
-                            vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
-                            vehicleServicesListView!!.adapter = vehiclesArrayAdapter
-                        }
-                        if (progressbarVehicleServices != null) {
-                            progressbarVehicleServices.visibility = View.INVISIBLE
-                        }
-                        if (isPreparingView) {
-                            prepareView()
-                        }
+                        AnnualVisitationSingleton.getInstance().vehicleServicesList = Gson().fromJson(response.toString(), Array<AAAVehicleServicesModel>::class.java).toCollection(ArrayList())
+                        setServices()
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnel Types")
@@ -93,20 +94,24 @@ class FragmentARRAVVehicleServices : Fragment() {
         }))
     }
 
-    private var isFirstRun = true
+    private fun setServices() {
+        vehicleServicesListItems.add(VehicleServiceHeader("Automobile"))
+        (0 until AnnualVisitationSingleton.getInstance().vehicleServicesList!!.size).forEach {
+            vehicleServicesListItems.add(VehicleServiceItem(AnnualVisitationSingleton.getInstance().vehicleServicesList!![it]))
+            vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
+            vehicleServicesListView!!.adapter = vehiclesArrayAdapter
+        }
+        prepareView()
+        if (progressbarVehicleServices != null) {
+            context!!.toast("removing progress")
+            progressbarVehicleServices.visibility = View.INVISIBLE
+        }
+    }
 
-    private var isPreparingView = false
 
     fun prepareView() {
-        if (!isServicesLoaded) {
-            isPreparingView = true
-            loadServices()
-        }
 
-        isFirstRun = false
-
-
-        (0..AnnualVisitationSingleton.getInstance().vehicleServices.split(",").size - 1)
+        (0 until AnnualVisitationSingleton.getInstance().vehicleServices.split(",").size)
                 .forEach {
                     (1 until vehicleServicesListItems.size)
                             .forEach { it2 ->
@@ -124,13 +129,6 @@ class FragmentARRAVVehicleServices : Fragment() {
                 }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
 
     override fun onDetach() {
         super.onDetach()

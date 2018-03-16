@@ -66,16 +66,6 @@ class FragmentARRAVPersonnel : Fragment() {
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
     private val appFprmat = SimpleDateFormat("dd MMM yyyy")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
-        }
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
@@ -84,31 +74,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //inputField.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-//
-//        if (!(activity as MainActivity).FacilityNumber.isNullOrEmpty()) {
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL+(activity as MainActivity).FacilityNumber,
-//                    Response.Listener { response ->
-//                        activity!!.runOnUiThread(Runnable {
-//                            //                        val facResult = JSONArray(response.toString())
-////                        val jObject = JSONObject(response.toString())
-////                        val facResult = jObject.getJSONArray("getAAAFacilityDetailsResult")
-////                        val facResult = jObject.getJSONArray("")
-////                        peronnelTypeList = Gson().fromJson(facResult.toString() , Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
-//                            personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
-//                            personTypeArray.clear()
-//                            for (fac in personnelTypeList) {
-//                                personTypeArray.add(fac.personneltypename)
-//                            }
-//                            var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
-//                            personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                            personType_textviewVal.adapter = personTypeAdapter
-//                        })
-//                    }, Response.ErrorListener {
-//                Log.v("error while loading", "error while loading personnel Types")
-//                Toast.makeText(activity,"Connection Error. Please check the internet connection",Toast.LENGTH_LONG).show()
-//            }))
-//        }
+
         statesArray = arrayOf("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming").toCollection(ArrayList<String>())
 
         var statesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, statesArray)
@@ -391,8 +357,6 @@ class FragmentARRAVPersonnel : Fragment() {
     var isFirstRun: Boolean = true
 
     fun preparePersonnelPage() {
-
-
             isFirstRun = false
             progressbarPersonnel.visibility = View.VISIBLE
             activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -708,23 +672,20 @@ class FragmentARRAVPersonnel : Fragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
+        private val isValidating = "param1"
 
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
+         * @param param1 Parameter 1..
          * @return A new instance of fragment FragmentARRAVPersonnel.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): FragmentARRAVPersonnel {
+        fun newInstance(isValidating: Boolean): FragmentARRAVPersonnel {
             val fragment = FragmentARRAVPersonnel()
             val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            args.putBoolean(this.isValidating, isValidating)
             fragment.arguments = args
             return fragment
         }

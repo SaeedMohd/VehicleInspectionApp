@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.support.design.widget.Snackbar
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import com.inspection.R
 
@@ -18,6 +15,13 @@ import kotlinx.android.synthetic.main.activity_item_list.*
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
 import kotlinx.android.synthetic.main.item_list.*
+import android.R.menu
+import android.util.Log
+import android.view.*
+import androidx.view.get
+import com.inspection.Utils.toast
+import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+
 
 /**
  * An activity representing a list of Pings. This activity
@@ -33,7 +37,10 @@ class ItemListActivity : AppCompatActivity() {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
+    var isValidating = false
+
     private var mTwoPane: Boolean = false
+    var activeFragment : android.support.v4.app.Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +61,29 @@ class ItemListActivity : AppCompatActivity() {
 
         setupRecyclerView(item_list)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.validate_submit_visitation, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId){
+            R.id.validate_and_submit_menu_item -> {
+                validateAndSubmit()
+            }
+        }
+        return true
+    }
+
+    private fun validateAndSubmit(){
+        isValidating = true
+        AnnualVisitationSingleton.getInstance().apply {
+//            if (facilityRepresentative.isNullOrBlank()){
+                item_list.get(0).performClick()
+//            }
+        }
     }
 
     private val formTitles = arrayOf("General Information", "Facility", "Facility Continued", "Location Info.", "Personnel", "Order Tracking",
@@ -77,29 +107,30 @@ class ItemListActivity : AppCompatActivity() {
                 var fragment : android.support.v4.app.Fragment
                 if (mTwoPane) {
                     when(position){
-                        0 -> fragment = FragmentARRAnualVisitation.newInstance("Test", "Test")
-                        1 -> fragment = FragmentARRAVFacility.newInstance("Test", "Test")
-                        2 -> fragment = FragmentARRAVFacilityContinued.newInstance("Test", "Test")
-                        3 -> fragment = FragmentARRAVLocation.newInstance("Test", "Test")
-                        4 -> fragment = FragmentARRAVPersonnel.newInstance("Test", "Test")
-                        5 -> fragment = FragmentARRAVAmOrderTracking.newInstance("Test", "Test")
-                        6 -> fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("Test", "Test")
-                        7 -> fragment = FragmentARRAVVisitationTracking.newInstance("Test", "Test")
-                        8 -> fragment = FragmentARRAVScopeOfService.newInstance("Test", "Test")
-                        9 -> fragment = FragmentARRAVVehicleServices.newInstance("Test", "Test")
-                        10 -> fragment = FragmentARRAVVehicles.newInstance("Test", "Test")
-                        11 -> fragment = FragmentARRAVPrograms.newInstance("Test", "Test")
-                        12 -> fragment = FragmentARRAVFacilityServices.newInstance("Test", "Test")
-                        13 -> fragment = FragmentARRAVAffliations.newInstance("Test", "Test")
-                        14 -> fragment = FragmentARRAVDeficiency.newInstance("Test", "Test")
-                        15 -> fragment = FragmentARRAVComplaints.newInstance("Test", "Test")
-                        else -> fragment = FragmentARRAnualVisitation.newInstance("Test", "Test")
+                        0 -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                        1 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
+                        2 -> fragment = FragmentARRAVFacilityContinued.newInstance(mParentActivity.isValidating)
+                        3 -> fragment = FragmentARRAVLocation.newInstance(mParentActivity.isValidating)
+                        4 -> fragment = FragmentARRAVPersonnel.newInstance(mParentActivity.isValidating)
+                        5 -> fragment = FragmentARRAVAmOrderTracking.newInstance("test", "test")
+                        6 -> fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("test", "test")
+                        7 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
+                        8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
+                        9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
+                        10 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
+                        11 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
+                        12 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
+                        13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
+                        14 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
+                        15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                        else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
                     }
 
                     mParentActivity.supportFragmentManager
                             .beginTransaction()
                             .replace(R.id.item_detail_container, fragment)
                             .commit()
+                    mParentActivity.isValidating = false
                 } else {
 //                    val intent = Intent(v.context, ItemDetailActivity::class.java).apply {
 //                        putExtra(ItemDetailFragment.ARG_ITEM_ID, "asdf")
@@ -136,5 +167,7 @@ class ItemListActivity : AppCompatActivity() {
         inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
             val mIdView: TextView = mView.id_text
         }
+
+
     }
 }

@@ -29,5 +29,5 @@ fun Date.toAppFormat(): String{
 }
 
 fun Context.toast(message: String, length : Int = Toast.LENGTH_SHORT){
-    Toast.makeText(this, message, length)
+    Toast.makeText(this, message, length).show()
 }

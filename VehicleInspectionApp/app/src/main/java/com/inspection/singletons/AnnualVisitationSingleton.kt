@@ -1,6 +1,7 @@
 package com.inspection.singletons
 
 import com.inspection.Utils.toTime
+import com.inspection.model.*
 
 /**
  * Created by devsherif on 3/5/18.
@@ -60,6 +61,10 @@ class AnnualVisitationSingleton {
 
 
     //Facility Continued
+
+    var paymentMethodsList : ArrayList<AAAPaymentMethods>? = null
+    var facilityHoursList : ArrayList<AAAFacilityHours>? = null
+
     var paymentMethods = ""
 
     var mondayOpen = ""
@@ -81,14 +86,13 @@ class AnnualVisitationSingleton {
     var nightInstructions = ""
 
     var emailType = -1
-    var emailAddressId = -1
-    var emailAddress = ""
+    var emailModel : AAAEmailModel? = null
 
     var phoneType = -1
-    var phoneNumberId = -1
-    var phoneNumber = ""
+    var phoneModel : AAAPhoneModel? = null
 
     // Location Information
+    var locationsList : ArrayList<AAALocations>? = null
     var physicalLocationAddress = ""
     var physicalLocationLatitude = ""
     var physicalLocationLongitude = ""
@@ -153,6 +157,7 @@ class AnnualVisitationSingleton {
 
 
     //VehicleServices
+    var vehicleServicesList: ArrayList<AAAVehicleServicesModel>? = null
     var vehicleServices = ""
     var vehicles = ""
     var programs = ""
@@ -179,6 +184,9 @@ class AnnualVisitationSingleton {
                 }
     }
 
+    fun clear() {
+        INSTANCE = null
+    }
 
 
 }

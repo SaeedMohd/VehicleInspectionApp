@@ -117,7 +117,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                     fragmentProgramType?.prepareProgramTypes()
                 } else if (position == 1) {
                     val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as? FragmentARRAVFacility
-                    fragmentFac?.prepareFacilityPage()
+
                 } else if (position == 9) {
                     val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":9") as? FragmentARRAVVehicleServices
                     fragmentFac?.prepareView()
@@ -170,9 +170,6 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         if (!fragmentVisitation.validateInputs()) {
             isValidInput = !isValidInput
             errorText = " Please complete General Information Form"
-        } else if (!fragmentFacility.validateInputs()) {
-            isValidInput = !isValidInput
-            errorText += "Please complete Facility Form"
         } else if (!fragmentFacilityContinued.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Facility Continued Form"
@@ -235,11 +232,11 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         override fun getItem(position: Int): android.support.v4.app.Fragment? {
             var ft: android.support.v4.app.Fragment? = null
             when (position) {
-                 0 -> ft = FragmentARRAnualVisitation.newInstance("Test", "Test")
-                 1 -> ft = FragmentARRAVFacility.newInstance("Test", "Test")
-                 2 -> ft = FragmentARRAVFacilityContinued.newInstance("Test", "Test")
-                 3 -> ft = FragmentARRAVLocation.newInstance("Test", "Test")
-                 4 -> ft = FragmentARRAVPersonnel.newInstance("Test", "Test")
+//                 0 -> ft = FragmentARRAnualVisitation.newInstance("Test", "Test")
+                 1 -> ft = FragmentARRAVFacility.newInstance(false)
+                 2 -> ft = FragmentARRAVFacilityContinued.newInstance(false)
+                 3 -> ft = FragmentARRAVLocation.newInstance(false)
+                 4 -> ft = FragmentARRAVPersonnel.newInstance(false)
                  5 -> ft = FragmentARRAVAmOrderTracking.newInstance("Test", "Test")
                  6 -> ft = FragmentARRAVRepairShopPortalAddendum.newInstance("Test", "Test")
                  7 -> ft = FragmentARRAVVisitationTracking.newInstance("Test", "Test")

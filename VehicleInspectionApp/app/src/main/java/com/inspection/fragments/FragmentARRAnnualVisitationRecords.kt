@@ -24,9 +24,7 @@ import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.Utils.Consts
 import com.inspection.Utils.toTime
-import com.inspection.model.AAAFacilityComplete
-import com.inspection.model.AAAVisitationRecords
-import com.inspection.model.AnnualVisitationInspectionFormData
+import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 import java.util.*
@@ -298,6 +296,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
 //            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
             vh.vrLoadBtn.setOnClickListener({
+                AnnualVisitationSingleton.getInstance().clear()
                 AnnualVisitationSingleton.getInstance().apply {
                     annualVisitationId = visitationList[position].annualvisitationid
                     facilityRepresentative = visitationList[position].facilityrepresentativename
@@ -307,23 +306,25 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     monthDue = visitationList[position].monthdue
                     changesMade = visitationList[position].changesmade
                     paymentMethods = visitationList[position].paymentmethods
-                    emailAddressId = visitationList[position].emailaddressid
-                    phoneNumberId = visitationList[position].phonenumberid
+
+                    emailModel = AAAEmailModel()
+                    emailModel!!.emailid = visitationList[position].emailaddressid
+
+                    phoneModel = AAAPhoneModel()
+                    phoneModel!!.phoneid = visitationList[position].phonenumberid
+
                     personnelId = visitationList[position].personnelid
                     vehicleServices = visitationList[position].vehicleservices
                     vehicles = visitationList[position].vehicles
                     affliations = visitationList[position].affiliations
                     defeciencies = visitationList[position].defeciencies
                     complaints = visitationList[position].complaints
-
-
                 }
 
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationList[position].facilityid,
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 var facilityComplete = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList()).get(0) as AAAFacilityComplete
-                                (activity as MainActivity).facilitySelected = facilityComplete
                                 AnnualVisitationSingleton.getInstance().apply {
                                     facilityId = facilityComplete.facid
                                     facilityName = facilityComplete.businessname
