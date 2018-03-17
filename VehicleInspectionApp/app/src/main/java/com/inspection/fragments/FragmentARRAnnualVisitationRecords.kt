@@ -27,6 +27,7 @@ import com.inspection.Utils.toTime
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
+import java.time.Year
 import java.util.*
 
 /**
@@ -68,8 +69,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         facilityNameInputField = visitationfacilityNameVal
-        visitationfacilityIdVal.visibility = View.GONE
-        visitationfacilityIdTextView.visibility = View.GONE
+//        visitationfacilityIdVal.visibility = View.GONE
+//        visitationfacilityIdTextView.visibility = View.GONE
         visitationfacilityListView.visibility = View.GONE
 
         visitationfacilityNameVal.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
@@ -79,38 +80,48 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
         // Inspection Type
         var inspectionTypes = arrayOf("Any", "Deficient", "Quarterly", "Annual", "Annual / Deficient", "Quarter / Deficient")
+
+        var visitationYearFilterSpinnerEntries = mutableListOf<String>()
+        var currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+        (currentYear - 30 .. currentYear).forEach {
+            visitationYearFilterSpinnerEntries.add(""+it)
+        }
+
+        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
+
         var dataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionTypes)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        visitationinpectionTypeSpinner.adapter = dataAdapter
-        visitationinpectionTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                if (!firstLoading) {
-                    showVisitationBtn.performClick()
-                }
-            }
-        }
+//        visitationinpectionTypeSpinner.adapter = dataAdapter
+//        visitationinpectionTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+//                if (!firstLoading) {
+//                    showVisitationBtn.performClick()
+//                }
+//            }
+//        }
 
 
         // Inspection Kind
         var inspectionKinds = arrayOf("All", "Planned Visitation", "Regular Visitation")
         var dataAdapterkind = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionKinds)
         dataAdapterkind.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        visitationinpectionKindSpinner.adapter = dataAdapterkind
-        visitationinpectionKindSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                if (!firstLoading) {
-                    showVisitationBtn.performClick()
-                }
-            }
-        }
+//        visitationinpectionKindSpinner.adapter = dataAdapterkind
+//        visitationinpectionKindSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+//                if (!firstLoading) {
+//                    showVisitationBtn.performClick()
+//                }
+//            }
+//        }
 
         visitationfacilityNameVal.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -179,15 +190,15 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //            loadLastInspection()
         })
 
-        clearBtn.setOnClickListener({
-            visitationfacilityNameVal.setText("")
-            visitationfacilityIdVal.setText("")
-            itemSelected = false
-            showVisitationBtn.setText("SHOW VISITATIONS")
-            visitationfacilityNameVal.isEnabled = true
-// Old List View
-//            visitationrecordsListView.adapter=null
-        })
+//        clearBtn.setOnClickListener({
+//            visitationfacilityNameVal.setText("")
+//            visitationfacilityIdVal.setText("")
+//            itemSelected = false
+//            showVisitationBtn.setText("SHOW VISITATIONS")
+//            visitationfacilityNameVal.isEnabled = true
+//// Old List View
+////            visitationrecordsListView.adapter=null
+//        })
 
         newVisitationBtn.setOnClickListener({
             //            (activity as MainActivity).VisitationID = "0"
@@ -201,41 +212,41 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             startActivity(intent)
         })
 
-        showVisitationBtn.setOnClickListener({
-            var urlStr = String.format(Consts.getAnnualVisitations, visitationfacilityNameVal.text, visitationinpectionTypeSpinner.selectedItemId)
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, urlStr,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            if (visitationrecordsLL != null) {
-                                visitationrecordsLL.removeAllViews()
-                            }
-                            visitationList = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList())
-                            var visitationRecords = ArrayList<String>()
-                            for (fac in visitationList) {
-                                if (visitationinpectionKindSpinner.selectedItemPosition == 0) {
-                                    visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
-                                } else if (visitationinpectionKindSpinner.selectedItemPosition == 1) {
-                                    if (fac.dateofinspection.toTime() > Date().time)
-                                        visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
-                                } else {
-                                    if (fac.dateofinspection.toTime() < Date().time)
-                                        visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
-                                }
-                            }
-
-//                            val inflater = (activity as MainActivity)
-//                                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-//                            val vVisitationRecordsLL = visitationrecordsLL
-//                            BuildVisitationRecords(vVisitationRecordsLL, inflater)
-
-                            visitationfacilityListView.visibility = View.VISIBLE
-                            var visitationRecordsAdapter = VisitationListAdapter(context, visitationList)
-                            visitationfacilityListView.adapter = visitationRecordsAdapter
-                        })
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading visitation records")
-            }))
-        })
+//        showVisitationBtn.setOnClickListener({
+////            var urlStr = String.format(Consts.getAnnualVisitations, visitationfacilityNameVal.text, visitationinpectionTypeSpinner.selectedItemId)
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, urlStr,
+//                    Response.Listener { response ->
+//                        activity!!.runOnUiThread(Runnable {
+//                            if (visitationrecordsLL != null) {
+//                                visitationrecordsLL.removeAllViews()
+//                            }
+//                            visitationList = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList())
+//                            var visitationRecords = ArrayList<String>()
+//                            for (fac in visitationList) {
+//                                if (visitationinpectionKindSpinner.selectedItemPosition == 0) {
+//                                    visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
+//                                } else if (visitationinpectionKindSpinner.selectedItemPosition == 1) {
+//                                    if (fac.dateofinspection.toTime() > Date().time)
+//                                        visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
+//                                } else {
+//                                    if (fac.dateofinspection.toTime() < Date().time)
+//                                        visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
+//                                }
+//                            }
+//
+////                            val inflater = (activity as MainActivity)
+////                                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+////                            val vVisitationRecordsLL = visitationrecordsLL
+////                            BuildVisitationRecords(vVisitationRecordsLL, inflater)
+//
+//                            visitationfacilityListView.visibility = View.VISIBLE
+//                            var visitationRecordsAdapter = VisitationListAdapter(context, visitationList)
+//                            visitationfacilityListView.adapter = visitationRecordsAdapter
+//                        })
+//                    }, Response.ErrorListener {
+//                Log.v("error while loading", "error while loading visitation records")
+//            }))
+//        })
 
         firstLoading = false
         showVisitationBtn.performClick()

@@ -1,21 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:tools="http://schemas.android.com/tools"
-android:background="@color/light_gray"
-tools:context="com.inspection.fragments.FragmentARRAnnualVisitationRecords">
-<TextView
-    android:id="@+id/titleTextView"
-    android:layout_width="wrap_content"
-    android:layout_height="40dp"
-    android:gravity="center"
-    android:text="Visitation Records"
-    android:textStyle="bold"
-    android:textSize="18dp"
-    android:paddingLeft="10dp"
-    android:paddingTop="5dp"
-    />
-<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    tools:context="com.inspection.fragments.FragmentARRAnnualVisitationRecords">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="Visitation Records"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+    <!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="wrap_content"-->
     <!--android:layout_below="@+id/titleTextView"-->
@@ -29,136 +29,251 @@ tools:context="com.inspection.fragments.FragmentARRAnnualVisitationRecords">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_below="@+id/titleTextView"
+        android:background="@color/white"
         android:orientation="vertical"
         android:padding="5dp">
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="3"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="Inspection Type: "
-                android:textStyle="bold"
-                />
-            <Spinner
-                android:id="@+id/visitationinpectionTypeSpinner"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="3"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="Inspection Kind: "
-                android:textStyle="bold"
-                />
-            <Spinner
-                android:id="@+id/visitationinpectionKindSpinner"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/visitationfacilityIdTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Facility #:"
-            android:textStyle="bold"
-            />
-        <TextView
-            android:id="@+id/visitationfacilityIdVal"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Facility Name:"
-            android:layout_marginTop="5dp"
-            android:textStyle="bold"
-            />
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/clubCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="Club Code: "
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/clubCodeEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/clubCodeTextView"
+                android:ems="4"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/visitationfacilityIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="40dp"
+                android:layout_toRightOf="@id/clubCodeEditText"
+                android:text="Facility #:"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/visitationfacilityIdVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/visitationfacilityIdTextView"
+                android:layout_centerVertical="true"
+                android:ems="5"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/visitationMonthTextView"
+                android:text="Month: "
+                android:layout_toRightOf="@id/visitationfacilityIdVal"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="40dp"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/visitationMonthsSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/visitationMonthTextView"
+                android:layout_centerVertical="true"
+                android:entries="@array/visitationMonthsFilter"
+                android:layout_marginLeft="10dp"
+                />
+
+            <TextView
+                android:id="@+id/visitationYearTextView"
+                android:text="Year: "
+                android:layout_toRightOf="@id/visitationMonthsSpinner"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:layout_marginLeft="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/visitationYearFilterSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/visitationYearTextView"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="5"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="6">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Specialist Name:"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/visitationfacilityNameVal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:layout_weight="2"
+                android:layout_gravity="center_vertical"
+                android:ems="8"
+                android:textSize="16sp"
+                android:layout_marginRight="20dp"
+                android:hint="Enter Specialist Name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Facility Name:"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/visitationfacilityNameVal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:layout_weight="5"
+                android:layout_gravity="center_vertical"
+                android:ems="8"
+                android:textSize="16sp"
+                android:hint="Enter Facility Name" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
-        <EditText
-            android:id="@+id/visitationfacilityNameVal"
-            android:layout_width="0dp"
-            android:ems="8"
-            android:layout_weight="4"
-            android:hint="Enter Facility Name"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/clearBtn"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="CLear"/>
+
+            <CheckBox
+                android:id="@+id/AnnualVisistationsCheckBox"
+                android:text="Annual Visitations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_marginRight="10dp"
+                />
+
+            <CheckBox
+                android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
+                android:text="Quarterly / Other Visitations"
+                android:layout_marginRight="10dp"
+                android:checked="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:id="@+id/adHocVisitationsCheckBox"
+                android:text="Ad Hoc Visitations"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:id="@+id/deficienciesCheckBox"
+                android:text="Deficiences"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+
+            <CheckBox
+                android:id="@+id/pendingCheckBox"
+                android:text="Pending"
+                android:layout_marginRight="10dp"
+                android:checked="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:id="@+id/completedCheckBox"
+                android:text="Completed"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
+
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
             android:id="@+id/btns_ll"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="20dp"
+            android:weightSum="2">
+
             <Button
                 android:id="@+id/showVisitationBtn"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:text="Show Visitations"/>
+                android:layout_weight="1"
+                android:text="Show Visitations"
+                android:visibility="invisible" />
+
             <Button
                 android:id="@+id/newVisitationBtn"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="New Visitation Form"/>
+                android:layout_weight="1"
+                android:text="New Visitation Form" />
         </LinearLayout>
+
         <ListView
             android:id="@+id/visitationfacilityListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
         <!--<ListView-->
-            <!--android:id="@+id/visitationrecordsListView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:divider="@android:color/transparent"-->
-            <!--android:dividerHeight="10dp"-->
-            <!--android:layout_margin="10dp"-->
-            <!--android:layout_height="400dp"/>-->
+        <!--android:id="@+id/visitationrecordsListView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:divider="@android:color/transparent"-->
+        <!--android:dividerHeight="10dp"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:layout_height="400dp"/>-->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/btns_ll"
             android:background="@drawable/frame_solid_border"
-            android:scrollbars="none"
-            >
+            android:scrollbars="none">
+
             <LinearLayout
                 android:id="@+id/visitationrecordsLL"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:orientation="vertical"
-                >
-            </LinearLayout>
+                android:orientation="vertical"></LinearLayout>
         </ScrollView>
     </LinearLayout>
-<!--</ScrollView>-->
+    <!--</ScrollView>-->
 </RelativeLayout>
