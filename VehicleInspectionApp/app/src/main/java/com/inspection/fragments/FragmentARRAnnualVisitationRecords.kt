@@ -74,7 +74,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         visitationfacilityListView.visibility = View.GONE
 
         visitationfacilityNameVal.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
-            Log.v("********** focus is", "Focus is: " + b)
             itemSelected = !b
         })
 
@@ -89,6 +88,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         }
 
         visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
+
+        
 
         var dataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionTypes)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
