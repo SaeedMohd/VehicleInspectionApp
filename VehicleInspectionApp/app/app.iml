@@ -126,7 +126,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaPrecompile" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/multi-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/prebuild" />
@@ -239,6 +238,7 @@
     <orderEntry type="library" name="com.google.android.gms:play-services-appinvite-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-messaging-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-tasks-11.8.0" level="project" />
+    <orderEntry type="library" name="com.github.d-max:spots-dialog-0.7" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-location-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.zxing:core:3.3.0@jar" level="project" />
     <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.30@jar" level="project" />

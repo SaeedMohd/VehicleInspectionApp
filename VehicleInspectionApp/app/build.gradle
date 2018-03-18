@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.googlecode.libphonenumber:libphonenumber:7.0.4'
     implementation 'androidx.core:core-ktx:0.2'
+    implementation 'com.github.d-max:spots-dialog:0.7@aar'
 }
 repositories {
     mavenCentral()

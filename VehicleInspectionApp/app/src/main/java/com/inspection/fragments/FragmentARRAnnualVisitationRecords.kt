@@ -23,9 +23,11 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.Consts
+import com.inspection.Utils.SearchDialog
 import com.inspection.Utils.toTime
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 import java.time.Year
 import java.util.*
@@ -68,7 +70,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        facilityNameInputField = visitationfacilityNameVal
+//        facilityNameInputField = visitationfacilityNameVal
 //        visitationfacilityIdVal.visibility = View.GONE
 //        visitationfacilityIdTextView.visibility = View.GONE
         visitationfacilityListView.visibility = View.GONE
@@ -83,13 +85,12 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         var visitationYearFilterSpinnerEntries = mutableListOf<String>()
         var currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
-        (currentYear - 30 .. currentYear).forEach {
-            visitationYearFilterSpinnerEntries.add(""+it)
+        (currentYear - 30..currentYear).forEach {
+            visitationYearFilterSpinnerEntries.add("" + it)
         }
 
         visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
 
-        
 
         var dataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionTypes)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -249,9 +250,35 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //            }))
 //        })
 
+
+        visitationfacilityNameVal.setOnClickListener(View.OnClickListener {
+            var loadingDialog = SpotsDialog(context)
+            loadingDialog.show()
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL + "",
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            loadingDialog.dismiss()
+                            var facilities = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
+                            var facilityNames = ArrayList<String>()
+                            (0 until facilities.size).forEach {
+                                facilityNames.add(facilities[it].businessname)
+                            }
+                            facilityNames.sort()
+                            var searchDialog = SearchDialog(context, facilityNames)
+                            searchDialog.show()
+                            searchDialog.setOnDismissListener {
+
+                            }
+                        })
+                    }, Response.ErrorListener {
+                loadingDialog.dismiss()
+                Log.v("error while loading", "error while loading facilities")
+                Log.v("Loading error", "" + it.message)
+            }))
+        })
+
         firstLoading = false
         showVisitationBtn.performClick()
-
 
     }
 
