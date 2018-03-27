@@ -10,6 +10,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.BaseAdapter
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -47,25 +48,25 @@ class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog
 
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                searchResultArrayList = arrayList.filter { s -> s.contains(text!!, true) } as ArrayList<String>
+                searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList)
             }
 
         })
+
+        searchDialogListView.setOnItemClickListener { parent, view, position, id ->
+            selectedString = searchResultArrayList!![position]
+            dismiss()
+
+        }
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
 
     override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.searchDialogListView -> {
-                selectedString = "Eshta"
-            }
-            else -> {
-                selectedString = "Eshtaaaaaa"
-            }
-        }
-        dismiss()
+
     }
 
 }

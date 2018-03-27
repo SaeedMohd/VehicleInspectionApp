@@ -25,9 +25,11 @@ import com.inspection.R
 import com.inspection.Utils.Consts
 import com.inspection.Utils.SearchDialog
 import com.inspection.Utils.toTime
+import com.inspection.Utils.toast
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import dmax.dialog.SpotsDialog
+import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 import java.time.Year
 import java.util.*
@@ -67,6 +69,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.frgment_arrav_visitation_records, container, false)
     }
+
+    private var personnelNames = ArrayList<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -250,6 +254,32 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //            }))
 //        })
 
+        visitationSpecialistNameButton.setOnClickListener(View.OnClickListener {
+            var loadingDialog = SpotsDialog(context)
+            loadingDialog.show()
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.allPersonnel,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            loadingDialog.dismiss()
+                            personnelNames.clear()
+                            var personnels = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
+                            (0 until personnelNames.size).forEach {
+                                personnelNames.add(personnels[it].lastname + " " + personnels[it].firstname)
+                            }
+                            personnelNames.sort()
+                            var searchDialog = SearchDialog(context, personnelNames)
+                            searchDialog.show()
+                            searchDialog.setOnDismissListener {
+                                visitationSpecialistNameButton.text = searchDialog.selectedString
+                            }
+                        })
+                    }, Response.ErrorListener {
+                loadingDialog.dismiss()
+                Log.v("error while loading", "error while loading facilities")
+                Log.v("Loading error", "" + it.message)
+            }))
+        })
+
 
         visitationfacilityNameVal.setOnClickListener(View.OnClickListener {
             var loadingDialog = SpotsDialog(context)
@@ -267,7 +297,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                             var searchDialog = SearchDialog(context, facilityNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
-
+                                visitationfacilityNameVal.text = searchDialog.selectedString
                             }
                         })
                     }, Response.ErrorListener {
