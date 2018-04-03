@@ -75,9 +75,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //        visitationfacilityIdTextView.visibility = View.GONE
         visitationfacilityListView.visibility = View.GONE
 
-        visitationfacilityNameVal.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
-            itemSelected = !b
-        })
 
         // Inspection Type
         var inspectionTypes = arrayOf("Any", "Deficient", "Quarterly", "Annual", "Annual / Deficient", "Quarter / Deficient")
@@ -125,82 +122,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //            }
 //        }
 
-        visitationfacilityNameVal.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                showVisitationBtn.performClick()
-//                if (!itemSelected && visitationfacilityNameVal.text.length >= 3){
-//                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL+visitationfacilityNameVal.text,
-//                            Response.Listener { response ->
-//                                activity!!.runOnUiThread(Runnable {
-//                                    facilitiesList = Gson().fromJson(response.toString() , Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
-//                                    facilityNames.clear()
-//                                    for (fac in facilitiesList){
-//                                        facilityNames.add(fac.businessname)
-//                                    }
-//
-//                                    visitationfacilityListView.visibility = View.VISIBLE
-//                                    visitationfacilityListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
-//                                })
-//                            }, Response.ErrorListener {
-//                        Log.v("error while loading", "error while loading facilities")
-//                    }))
-//                }
-            }
-
-        })
-
-        visitationfacilityListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(visitationfacilityNameVal.getWindowToken(), 0)
-            itemSelected = true
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationfacilityNameVal.text,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            facilitiesList = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
-                            facilityNames.clear()
-                            for (fac in facilitiesList) {
-                                facilityNames.add(fac.businessname)
-                            }
-
-                            visitationfacilityListView.visibility = View.VISIBLE
-                            visitationfacilityListView.adapter = ArrayAdapter<String>(context, R.layout.custom_visitation_list_item, facilityNames)
-                        })
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading facilities")
-            }))
-//            visitationfacilityNameVal.setText(facilityNames.get(i).toString())
-            // Facility Name will be needed in other forms
-//            (activity as MainActivity).FacilityName = facilityNames.get(i).toString()
-//            (activity as MainActivity).facilitySelected = facilitiesList.filter { s -> s.businessname == facilityNames.get(i) }.get(0)
-            // Facility Number will be needed in other forms
-//            (activity as MainActivity).FacilityNumber = (activity as MainActivity).facilitySelected.facid.toString()
-//            visitationfacilityIdVal.setText((activity as MainActivity).facilitySelected.facid.toString())
-//            visitationfacilityListView.visibility = View.GONE
-//            visitationfacilityListView.adapter = null
-//            visitationfacilityNameVal.isEnabled = false
-//            facilityNameEditText?.setError(null)
-//            facilityRepresentativeNameEditText?.setError(null)
-//            automotiveSpecialistEditText?.setError(null)
-//            loadLastInspection()
-        })
-
-//        clearBtn.setOnClickListener({
-//            visitationfacilityNameVal.setText("")
-//            visitationfacilityIdVal.setText("")
-//            itemSelected = false
-//            showVisitationBtn.setText("SHOW VISITATIONS")
-//            visitationfacilityNameVal.isEnabled = true
-//// Old List View
-////            visitationrecordsListView.adapter=null
-//        })
 
         newVisitationBtn.setOnClickListener({
             //            (activity as MainActivity).VisitationID = "0"
@@ -214,42 +135,32 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             startActivity(intent)
         })
 
-//        showVisitationBtn.setOnClickListener({
-////            var urlStr = String.format(Consts.getAnnualVisitations, visitationfacilityNameVal.text, visitationinpectionTypeSpinner.selectedItemId)
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, urlStr,
-//                    Response.Listener { response ->
-//                        activity!!.runOnUiThread(Runnable {
-//                            if (visitationrecordsLL != null) {
-//                                visitationrecordsLL.removeAllViews()
-//                            }
-//                            visitationList = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList())
-//                            var visitationRecords = ArrayList<String>()
-//                            for (fac in visitationList) {
-//                                if (visitationinpectionKindSpinner.selectedItemPosition == 0) {
-//                                    visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
-//                                } else if (visitationinpectionKindSpinner.selectedItemPosition == 1) {
-//                                    if (fac.dateofinspection.toTime() > Date().time)
-//                                        visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
-//                                } else {
-//                                    if (fac.dateofinspection.toTime() < Date().time)
-//                                        visitationRecords.add(fac.annualvisitationid.toString() + " - " + fac.facilityrepresentativename)
-//                                }
-//                            }
-//
-////                            val inflater = (activity as MainActivity)
-////                                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-////                            val vVisitationRecordsLL = visitationrecordsLL
-////                            BuildVisitationRecords(vVisitationRecordsLL, inflater)
-//
-//                            visitationfacilityListView.visibility = View.VISIBLE
-//                            var visitationRecordsAdapter = VisitationListAdapter(context, visitationList)
-//                            visitationfacilityListView.adapter = visitationRecordsAdapter
-//                        })
-//                    }, Response.ErrorListener {
-//                Log.v("error while loading", "error while loading visitation records")
-//            }))
-//        })
 
+        visitationSpecialistName.setOnClickListener(View.OnClickListener {
+            var loadingDialog = SpotsDialog(context)
+            loadingDialog.show()
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getAllPersonnelDetails + "",
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            loadingDialog.dismiss()
+                            var personnels = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
+                            var personnelNames = ArrayList<String>()
+                            (0 until personnels.size).forEach {
+                                personnelNames.add(personnels[it].firstname)
+                            }
+                            personnelNames.sort()
+                            var searchDialog = SearchDialog(context, personnelNames)
+                            searchDialog.show()
+                            searchDialog.setOnDismissListener {
+                                visitationSpecialistName.text = searchDialog.selectedString
+                            }
+                        })
+                    }, Response.ErrorListener {
+                loadingDialog.dismiss()
+                Log.v("error while loading", "error while loading facilities")
+                Log.v("Loading error", "" + it.message)
+            }))
+        })
 
         visitationfacilityNameVal.setOnClickListener(View.OnClickListener {
             var loadingDialog = SpotsDialog(context)
@@ -267,7 +178,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                             var searchDialog = SearchDialog(context, facilityNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
-
+                                visitationfacilityNameVal.text = searchDialog.selectedString
                             }
                         })
                     }, Response.ErrorListener {
