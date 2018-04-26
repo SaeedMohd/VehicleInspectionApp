@@ -53,7 +53,6 @@ abstract class GetVehicleDetailsResolvedFromVinTask(private val mContext: Contex
                 val make = makeJson.get("name")
                 val modelJson = jObject.getJSONObject("model")
                 val model = modelJson.get("name")
-                Log.v("i am hereeeeeeeeeeee", "$year!-!$make!-!$model!-!$vin")
                 return "$year!-!$make!-!$model!-!$vin"
             } else if (jObject.has("error")) {
                 IsSuccess = "false"

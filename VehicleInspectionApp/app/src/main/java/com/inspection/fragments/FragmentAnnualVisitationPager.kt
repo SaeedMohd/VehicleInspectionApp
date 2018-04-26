@@ -206,7 +206,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         else
             simpleAlert.setMessage("Validation Completed Succesfully  ... Proceed to submission? ")
         simpleAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", { dialogInterface, i ->
-            context!!.toast("You clicked on OK")
+
         })
         simpleAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", { dialogInterface, i -> })
 

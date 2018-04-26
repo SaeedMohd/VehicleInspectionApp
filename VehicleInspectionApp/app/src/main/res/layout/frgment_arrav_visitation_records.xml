@@ -57,6 +57,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@id/clubCodeTextView"
                 android:ems="4"
+                android:inputType="number"
                 android:textSize="16sp" />
 
             <TextView
@@ -75,8 +76,78 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/visitationfacilityIdTextView"
                 android:layout_centerVertical="true"
+                android:inputType="number"
                 android:ems="5"
                 android:text="" />
+
+
+
+            <LinearLayout
+                android:layout_toRightOf="@id/visitationfacilityIdVal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Specialist Name:"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/visitationSpecialistName"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="Select Specialist" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="0.25"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Facility Name:"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/facilityNameButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:hint="Select Facility" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="6">
 
             <TextView
                 android:id="@+id/visitationMonthTextView"
@@ -116,57 +187,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:weightSum="6">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Specialist Name:"
-                android:layout_gravity="center_vertical"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/visitationSpecialistName"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:hint="Select Specialist Name" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-
-                android:layout_weight="2"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Facility Name:"
-                android:layout_gravity="center_vertical"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/visitationfacilityNameVal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:hint="Select Facility Name" />
 
         </LinearLayout>
 
@@ -249,6 +269,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="invisible"
                 android:text="New Visitation Form" />
         </LinearLayout>
 

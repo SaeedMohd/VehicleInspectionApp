@@ -77,7 +77,6 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     private fun setLocations(){
-        context!!.toast("I am here in physical")
         for (fac in AnnualVisitationSingleton.getInstance().locationsList!!) {
             if (fac.loctypename.equals("Physical")) {
                 phyloc1addr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)

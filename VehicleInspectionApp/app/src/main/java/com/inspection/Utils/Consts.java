@@ -26,30 +26,34 @@ public class Consts {
     public static final SimpleDateFormat appFormat = new SimpleDateFormat("dd MMM yyyy");
 
     // WebServices
-    public static final String personnelTypeURL = "http://www.jet-matics.com:5000/getPersonnelTypes?facilityId=";
-    public static final String personnelDetailsURL = "http://jet-matics.com:5000/getPersonnelsDetails?facilityId=%s&personnelTypeId=%d";
-    public static final String allPersonnel = "http://jet-matics.com:5000/getAllPersonnelsDetails";
-    public static final String personnelDetailsWithIdUrl = "http://jet-matics.com:5000/getPersonnelDetailsWithId?personnelId=";
-    public static final String facilityLocationsURL = "http://www.jet-matics.com:5000/getFacilityAddresses?facilityId=";
-    public static final String paymentMethodsURL = "http://www.jet-matics.com:5000/getPaymentMethods";
-    public static final String facilityHoursURL = "http://www.jet-matics.com:5000/getFacilityHours?facilityId=";
-    public static final String facilityScopeOfSvcURL = "http://www.jet-matics.com:5000/getScopeOfServicDetails?facilityId=";
-    public static final String programTypesURL = "http://www.jet-matics.com:5000/getProgramTypes";
-    public static final String facilityCompleteURL = "http://www.jet-matics.com:5000/getFacilities?facilityLike=";
-    public static final String getFacilityComplaintsURL= "http://www.jet-matics.com:5000/getFacilityComplaints?facilityId=";
-    public static final String facilityEmailPhoneURL = "http://www.jet-matics.com:5000/getFacilityEmailAndPhone?facilityId=";
-    public static final String contractSignerDtlsURL = "http://www.jet-matics.com:5000/getContractSignerDetails?personnelId=";
-    public static final String getfacilitiesURL = "http://www.jet-matics.com:5000/getFacilities?facilityName=";
-    public static final String getFacilityWithIdUrl = "http://www.jet-matics.com:5000/getFacilityWithId?facilityId=";
-    public static final String getLastInspectionForFacility= "http://www.jet-matics.com:5000/getLastAnnualVisitationInspectionForFacility?facilityId=";
-    public static final String getEmailFromFacilityAndId = "http://www.jet-matics.com:5000/getEmailFromFacilityAndId?facilityId=%s&emailId=%d";
-    public static final String getPhoneNumberWithFacilityAndId = "http://www.jet-matics.com:5000/getPhoneNumberWithFacilityAndId?facilityId=%s&phoneId=%d";
-    public static final String getVehicleServicesURL = "http://www.jet-matics.com:5000/getVehicleServices";
-    public static final String getVehiclesURL = "http://www.jet-matics.com:5000/getVehicles";
-    public static final String getFacilityPrograms= "http://www.jet-matics.com:5000/getFacilityPrograms?facilityId=";
-    public static final String getFacilityVisitationRecords= "http://www.jet-matics.com:5000/getVisitationRecords?facilityName=";
-    public static final String getAnnualVisitations= "http://www.jet-matics.com:5000/getAnnualVisitations?facilityName=%s&inspectionTypeId=%d";
-    public static final String getFacilityAffiliations= "http://www.jet-matics.com:5000/getFacilityAffiliations?facilityId=";
-    public static final String getAffTypesURL = "http://www.jet-matics.com:5000/getAffiliationTypes";
-    public static final String getAllPersonnelDetails = "http://jet-matics.com:5000/getAllPersonnelsDetails";
+    public static final String personnelTypeURL = "http://144.217.24.163:5000/getPersonnelTypes?facilityId=";
+    public static final String personnelDetailsURL = "http://144.217.24.163:5000/getPersonnelsDetails?facilityId=%s&personnelTypeId=%d";
+    public static final String allPersonnel = "http://144.217.24.163:5000/getAllPersonnelsDetails";
+    public static final String personnelDetailsWithIdUrl = "http://144.217.24.163:5000/getPersonnelDetailsWithId?personnelId=";
+    public static final String facilityLocationsURL = "http://144.217.24.163:5000/getFacilityAddresses?facilityId=";
+    public static final String paymentMethodsURL = "http://144.217.24.163:5000/getPaymentMethods";
+    public static final String facilityHoursURL = "http://144.217.24.163:5000/getFacilityHours?facilityId=";
+    public static final String facilityScopeOfSvcURL = "http://144.217.24.163:5000/getScopeOfServicDetails?facilityId=";
+    public static final String programTypesURL = "http://144.217.24.163:5000/getProgramTypes";
+    public static final String facilityCompleteURL = "http://144.217.24.163:5000/getFacilities?facilityLike=";
+    public static final String getFacilityComplaintsURL= "http://144.217.24.163:5000/getFacilityComplaints?facilityId=";
+    public static final String facilityEmailPhoneURL = "http://144.217.24.163:5000/getFacilityEmailAndPhone?facilityId=";
+    public static final String contractSignerDtlsURL = "http://144.217.24.163:5000/getContractSignerDetails?personnelId=";
+    public static final String getfacilitiesURL = "http://144.217.24.163:5000/getFacilities?facilityName=";
+    public static final String getFacilityWithIdUrl = "http://144.217.24.163:5000/getFacilityWithId?facilityId=";
+    public static final String getLastInspectionForFacility= "http://144.217.24.163:5000/getLastAnnualVisitationInspectionForFacility?facilityId=";
+    public static final String getEmailFromFacilityAndId = "http://144.217.24.163:5000/getEmailFromFacilityAndId?facilityId=%s&emailId=%d";
+    public static final String getPhoneNumberWithFacilityAndId = "http://144.217.24.163:5000/getPhoneNumberWithFacilityAndId?facilityId=%s&phoneId=%d";
+    public static final String getVehicleServicesURL = "http://144.217.24.163:5000/getVehicleServices";
+    public static final String getVehiclesURL = "http://144.217.24.163:5000/getVehicles";
+    public static final String getFacilityPrograms= "http://144.217.24.163:5000/getFacilityPrograms?facilityId=";
+    public static final String getFacilityVisitationRecords= "http://144.217.24.163:5000/getVisitationRecords?facilityName=";
+    public static final String getAnnualVisitations= "http://144.217.24.163:5000/getAnnualVisitations?%s";
+    public static final String getFacilityAffiliations= "http://144.217.24.163:5000/getFacilityAffiliations?facilityId=";
+    public static final String getAffTypesURL = "http://144.217.24.163:5000/getAffiliationTypes";
+    public static final String getAllPersonnelDetails = "http://144.217.24.163:5000/getAllPersonnelsDetails";
+
+
+    //AAA APIs WebServices
+    public static final String getFacilityData= "https://dev.facilityappointment.com/ACEAPI.asmx/ProcessRequest?facnum=%d&clubcode=%s";
 }
