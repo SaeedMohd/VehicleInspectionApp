@@ -14,6 +14,7 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.toAppFormat
+import com.inspection.model.FacilityDataModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
@@ -33,6 +34,8 @@ class FragmentARRAVFacility : Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
     private val appFprmat = SimpleDateFormat("dd MMM yyyy")
+    private var timeZonesArray = arrayOf("")
+    private var facilityTypeArray = arrayOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +50,8 @@ class FragmentARRAVFacility : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Fill Dop Down
-        var timeZonesArray = arrayOf("Atlantic Time", "Eastern  Time", "Central  Time", "Mountain  Time", "Pacific  Time", "Hawaii  Time")
-        var tzdataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, timeZonesArray)
+        timeZonesArray = arrayOf("Atlantic Time", "Eastern Time", "Central Time", "Mountain Time", "Pacific Time", "Hawaii  Time")
+        var tzdataAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, timeZonesArray)
         tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timezone_textviewVal.adapter = tzdataAdapter
 
@@ -58,7 +61,7 @@ class FragmentARRAVFacility : Fragment() {
         svcAvldataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         availability_textviewVal.adapter = svcAvldataAdapter
 
-        var facilityTypeArray = arrayOf("Independent", "Service Station", "Specialty", "Dealership", "Club Owned Repair - Attached", "Club Owned Repair - Standalone")
+        facilityTypeArray = arrayOf("Independent", "Service Station", "Specialty", "Dealership", "Club Owned Repair - Attached", "Club Owned Repair - Standalone")
         var facilityTypedataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, facilityTypeArray)
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         facilitytype_textviewVal.adapter = facilityTypedataAdapter
@@ -124,30 +127,30 @@ class FragmentARRAVFacility : Fragment() {
 
 
     private fun setFieldsValues() {
-        AnnualVisitationSingleton.getInstance().apply {
-            contract_number_textviewVal.text = "" + contractNumber
-            contract_type_textviewVal.text = "" + contractType
-            office_textviewVal.text = "" + office
-            assignedto_textviewVal.text = assignedTo
-            dba_textviewVal.text = dba
-            entity_textviewVal.text = entityName
-            bustype_textviewVal.text = businessType
-            timezone_textviewVal.setSelection(timeZone)
-            website_textviewVal.setText(webSiteUrl)
-            wifi_textview.isChecked = wifiAvailable
-            texno_textviewVal.setText(taxId)
-            repairorder_textviewVal.setText("" + repairOrderCount)
-            availability_textviewVal.setSelection(serviceAvailability)
-            facilitytype_textviewVal.setSelection(facilityType)
+        FacilityDataModel.getInstance().apply {
+            contract_number_textviewVal.text = "" + -1
+            contract_type_textviewVal.text = "" + tblContractTypes.ContractTypeName
+            office_textviewVal.text = "" + tblOfficeType.OfficeName
+            assignedto_textviewVal.text = tblFacilities.get(0).AssignedTo
+            dba_textviewVal.text = tblFacilities.get(0).AdminAssistants
+            entity_textviewVal.text = tblFacilities.get(0).EntityName
+            bustype_textviewVal.text = tblBusinessType.BusTypeName
+            timezone_textviewVal.setSelection(timeZonesArray.indexOf(tblTimezoneType.TimezoneName))
+            website_textviewVal.setText(tblFacilities.get(0).WebSite)
+            wifi_textview.isChecked = tblFacilities.get(0).SvcAvailability.toInt() ==1
+            texno_textviewVal.setText(tblFacilities.get(0).TaxIDNumber)
+            repairorder_textviewVal.setText("" + tblFacilities.get(0).FacilityRepairOrderCount)
+            availability_textviewVal.setSelection(tblFacilities.get(0).SvcAvailability)
+            facilitytype_textviewVal.setSelection(facilityTypeArray.indexOf(tblFacilityType.FacilityTypeName))
 //            ARDno_textviewVal.setText(ardNumber)
-            ARDexp_textviewVal.setText(Date(ardExpirationDate).toAppFormat())
-            providertype_textviewVal.setText(providerType)
-            shopmanagement_textviewVal.setText(shopManagementSystem)
-            currcodate_textviewVal.setText(currentContractDate)
-            initcodate_textviewVal.setText(Date(initialContractDate).toAppFormat())
-//            billingmonth_textviewVal.setText(billingMonth)
-            billingamount_textviewVal.text = "" + billingAmount
-            InsuranceExpDate_textviewVal.text = Date(insuranceExpirationDate).toAppFormat()
+            ARDexp_textviewVal.setText(tblFacilities.get(0).AutomotiveRepairExpDate)
+            providertype_textviewVal.setText(tblFacilityServiceProvider.SrvProviderId)
+            shopmanagement_textviewVal.setText("")
+            currcodate_textviewVal.setText(tblFacilities.get(0).ContractCurrentDate)
+            initcodate_textviewVal.setText(tblFacilities.get(0).ContractInitialDate)
+            billingmonth_textviewVal.text=""+tblFacilities.get(0).BillingMonth
+            billingamount_textviewVal.text = "" + tblFacilities.get(0).BillingAmount
+            InsuranceExpDate_textviewVal.text = tblFacilities.get(0).InsuranceExpDate
         }
 
         if (arguments!!.getBoolean(isValidating)) {

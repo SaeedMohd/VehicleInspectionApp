@@ -21,22 +21,24 @@ class FacilityDataModel {
         INSTANCE = null
     }
 
+    var annualVisitationId = -1
     var tblFacilities = ArrayList<TblFacilities>()
     var tblPaymentMethods = ArrayList<TblPaymentMethods>()
-    var tblBusinessType = ArrayList<TblBusinessType>()
-    var tblContractTypes = ArrayList<TblContractType>()
-    var tblFacilityServiceProvider = ArrayList<TblFacilityServiceProvider>()
-    var tblOfficeType = ArrayList<TblOfficeType>()
-    var tblFacilityManagers = ArrayList<TblFacilityManagers>()
-    var tblTimezoneType = ArrayList<TblTimezoneType>()
+    var tblBusinessType = TblBusinessType()
+    var tblContractTypes = TblContractType()
+    var tblFacilityServiceProvider = TblFacilityServiceProvider()
+    var tblOfficeType = TblOfficeType()
+    var tblFacilityManagers = TblFacilityManagers()
+    var tblTimezoneType = TblTimezoneType()
     var tblVisitationTracking = ArrayList<TblVisitationTracking>()
-    var tblFacilityType = ArrayList<TblFacilityType>()
-    var tblSurveySoftwares = ArrayList<TblSurveySoftwares>()
+//    var tblTerminationCodeType = TblTerminationCodeType()
+    var tblFacilityType = TblFacilityType()
+//    var tblSurveySoftwares = ArrayList<TblSurveySoftwares>()
     var tblAddress = ArrayList<TblAddress>()
     var tblPhone = ArrayList<TblPhone>()
-    var tblFacilityEmail = ArrayList<TblFacilityEmail>()
-    var tblHours = ArrayList<TblHours>()
-    var tblFacilityClosure = ArrayList<TblFacilityClosure>()
+    var tblFacilityEmail = TblFacilityEmail()
+    var tblHours = TblHours()
+//    var tblFacilityClosure = TblFacilityClosure()
     var tblLanguage = ArrayList<TblLanguage>()
     var tblPersonnel = ArrayList<TblPersonnel>()
     var tblAmendementOrderTracking = ArrayList<TblAmendmentOrderTracking>()
@@ -44,13 +46,13 @@ class FacilityDataModel {
     var tblScopeOfService = ArrayList<TblScopeofService>()
     var tblPrograms = ArrayList<TblPrograms>()
     var tblFacilityServices = ArrayList<TblFacilityServices>()
-    var tblAffiliations = ArrayList<TblAffiliations>()
+//    var tblAffiliations = ArrayList<TblAffiliations>()
     var tblDeficiency = ArrayList<TblDeficiency>()
-    var tblComplaintFiles = ArrayList<TblComplaintFiles>()
-    var NumberofComplaints = ArrayList<numberofComplaints>()
-    var NumberofJustifiedComplaints = ArrayList<numberofJustifiedComplaints>()
-    var JustifiedComplaintRadio = ArrayList<justifiedComplaintRatio>()
-    var tblFacilityPhotos = ArrayList<TblFacilityPhotos>()
+//    var tblComplaintFiles = ArrayList<TblComplaintFiles>()
+    var NumberofComplaints = numberofComplaints()
+    var NumberofJustifiedComplaints = numberofJustifiedComplaints()
+    var JustifiedComplaintRadio = justifiedComplaintRatio()
+//    var tblFacilityPhotos = TblFacilityPhotos()
 
     class TblFacilities {
         var FACID = 0
@@ -93,7 +95,9 @@ class FacilityDataModel {
         var ProviderNum = 0
     }
 
-    var tblTerminationCodeType = ""
+    class TblTerminationCodeType{
+        var TerminationCodeName=""
+    }
 
     class TblOfficeType {
         var OfficeName = ""
@@ -123,7 +127,6 @@ class FacilityDataModel {
     }
 
     class TblSurveySoftwares {
-        var ShopMgmtSoftwareName = ""
     }
 
     class TblPaymentMethods {

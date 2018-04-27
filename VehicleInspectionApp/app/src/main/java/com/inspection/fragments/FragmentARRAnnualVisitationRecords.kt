@@ -328,30 +328,30 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
 //            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
             vh.vrLoadBtn.setOnClickListener({
-                //                AnnualVisitationSingleton.getInstance().clear()
-//                AnnualVisitationSingleton.getInstance().apply {
-//                    annualVisitationId = visitationList[position].annualvisitationid
-//                    facilityRepresentative = visitationList[position].facilityrepresentativename
-//                    automotiveSpecialist = visitationList[position].automotivespecialistname
-//                    dateOfVisitation = visitationList[position].dateofinspection.toTime()
-//                    inspectionType = visitationList[position].inspectiontypeid
-//                    monthDue = visitationList[position].monthdue
-//                    changesMade = visitationList[position].changesmade
-//                    paymentMethods = visitationList[position].paymentmethods
-//
-//                    emailModel = AAAEmailModel()
-//                    emailModel!!.emailid = visitationList[position].emailaddressid
-//
-//                    phoneModel = AAAPhoneModel()
-//                    phoneModel!!.phoneid = visitationList[position].phonenumberid
-//
-//                    personnelId = visitationList[position].personnelid
-//                    vehicleServices = visitationList[position].vehicleservices
-//                    vehicles = visitationList[position].vehicles
-//                    affliations = visitationList[position].affiliations
-//                    defeciencies = visitationList[position].defeciencies
-//                    complaints = visitationList[position].complaints
-//                }
+                                AnnualVisitationSingleton.getInstance().clear()
+                AnnualVisitationSingleton.getInstance().apply {
+                    annualVisitationId = visitationList[position].annualvisitationid
+                    facilityRepresentative = visitationList[position].facilityrepresentativename
+                    automotiveSpecialist = visitationList[position].automotivespecialistname
+                    dateOfVisitation = visitationList[position].dateofinspection.toTime()
+                    inspectionType = visitationList[position].inspectiontypeid
+                    monthDue = visitationList[position].monthdue
+                    changesMade = visitationList[position].changesmade
+                    paymentMethods = visitationList[position].paymentmethods
+
+                    emailModel = AAAEmailModel()
+                    emailModel!!.emailid = visitationList[position].emailaddressid
+
+                    phoneModel = AAAPhoneModel()
+                    phoneModel!!.phoneid = visitationList[position].phonenumberid
+
+                    personnelId = visitationList[position].personnelid
+                    vehicleServices = visitationList[position].vehicleservices
+                    vehicles = visitationList[position].vehicles
+                    affliations = visitationList[position].affiliations
+                    defeciencies = visitationList[position].defeciencies
+                    complaints = visitationList[position].complaints
+                }
 
 //                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationList[position].facilityid,
 //                        Response.Listener { response ->
@@ -387,21 +387,23 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 ////                                ftSC.replace(R.id.fragment, fragment)
 ////                                ftSC.addToBackStack("")
 ////                                ftSC.commit()
-//                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-//                                startActivity(intent)
+////                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+////                                startActivity(intent)
 //                            })
 //                        }, Response.ErrorListener {
 //                    Log.v("error while loading", "error while loading facilities")
 //                    Log.v("Loading error", "" + it.message)
 //                }))
-
+                Log.v("#######URL", ""+String.format(Consts.getFacilityData, visitationList[position].facno, "004"))
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getFacilityData, visitationList[position].facno, "004"),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                print(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<"))
-                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<"))
+
+                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&").replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", "")
+                                        .replace("<tblAffiliations/>", ""))
                                 var jsonObj = obj.getJSONObject("responseXml")
                                 FacilityDataModel.setInstance(Gson().fromJson(jsonObj.toString(), FacilityDataModel::class.java))
+                                FacilityDataModel.getInstance().annualVisitationId = visitationList[position].annualvisitationid
                                 var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
                                 startActivity(intent)
                             })

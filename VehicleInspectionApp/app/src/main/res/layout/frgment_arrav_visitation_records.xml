@@ -175,7 +175,7 @@
                 android:layout_toRightOf="@id/visitationMonthsSpinner"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/visitationYearTextView"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 />
 
         </LinearLayout>
@@ -209,7 +209,7 @@
 
             <CheckBox
                 android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
-                android:text="Quarterly / Other Visitations"
+                android:text="Quarterly"
                 android:layout_marginRight="10dp"
                 android:checked="true"
                 android:layout_width="wrap_content"

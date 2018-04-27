@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
@@ -20,12 +21,10 @@ import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import com.google.gson.Gson
 import com.inspection.Utils.*
-import com.inspection.model.AAAEmailModel
-import com.inspection.model.AAAFacilityComplete
-import com.inspection.model.AAAPhoneModel
-import com.inspection.model.AnnualVisitationInspectionFormData
+import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -55,9 +54,10 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         facilityIdTextView.visibility = View.GONE
         facilityNameListView.visibility = View.GONE
 
-        if (!AnnualVisitationSingleton.getInstance().facilityName.isNullOrEmpty()) {
+        if (!FacilityDataModel.getInstance().tblFacilities.get(0).BusinessName.isNullOrEmpty()) {
             facilityNameEditText.isEnabled = false
-            facilityNameEditText.setText(AnnualVisitationSingleton.getInstance().facilityName)
+            facilityNameEditText.setText(FacilityDataModel.getInstance().tblFacilities.get(0).BusinessName)
+
         }
 
         facilityNameEditText.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->
@@ -74,7 +74,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 //            (activity as MainActivity).isLoadNewDetailsRequired = true
 //        }
 
-        if (AnnualVisitationSingleton.getInstance().annualVisitationId == -1) {
+        if (FacilityDataModel.getInstance().annualVisitationId == -1) {
             facilityNameEditText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
 
@@ -166,12 +166,13 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             facilityRepresentativeNameEditText?.setError(null)
             automotiveSpecialistEditText?.setError(null)
 
-            loadLastInspection()
+//            loadLastInspection()
+            setFieldsValues()
         })
 
 
-        if (AnnualVisitationSingleton.getInstance().annualVisitationId > -1) {
-            facilityNameInputField!!.setText(AnnualVisitationSingleton.getInstance().facilityName)
+        if (FacilityDataModel.getInstance().annualVisitationId > -1) {
+            facilityNameInputField!!.setText(FacilityDataModel.getInstance().tblFacilities.get(0).BusinessName)
             facilityNameInputField!!.isEnabled = false
             setFieldsValues()
         }
@@ -182,71 +183,71 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     }
 
     private fun setFieldsValues() {
-        automotiveSpecialistEditText.setText(AnnualVisitationSingleton.getInstance().automotiveSpecialist)
-        facilityRepresentativeNameEditText.setText(AnnualVisitationSingleton.getInstance().facilityRepresentative)
-        inspectionTypeSpinner.setSelection(AnnualVisitationSingleton.getInstance().inspectionType - 1)
-        monthDueSpinner.setSelection(AnnualVisitationSingleton.getInstance().monthDue - 1)
-        changesMadeSwitch.setSelection(if (AnnualVisitationSingleton.getInstance().changesMade) 1 else 0)
+        automotiveSpecialistEditText.setText(FacilityDataModel.getInstance().tblFacilities.get(0).AutomotiveSpecialist)
+        facilityRepresentativeNameEditText.setText(FacilityDataModel.getInstance().tblFacilities.get(0).AdminAssistants)
+        inspectionTypeSpinner.setSelection(0)
+        monthDueSpinner.setSelection(FacilityDataModel.getInstance().tblFacilities.get(0).BillingMonth -1)
+        changesMadeSwitch.setSelection(1)
         dateOfVisitationButton.text = Date(AnnualVisitationSingleton.getInstance().dateOfVisitation!!).toAppFormat()
     }
 
-    private fun loadLastInspection() {
-        progressbarGeneralInformation.visibility = View.VISIBLE
-        (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getLastInspectionForFacility + (activity as MainActivity).facilitySelected.facid,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        try {
-                            var lastInspection = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList()).get(0)
-                            automotiveSpecialistEditText.setText(lastInspection!!.automotivespecialistname)
-                            facilityRepresentativeNameEditText.setText(lastInspection!!.facilityrepresentativename)
-                            inspectionTypeSpinner.setSelection(lastInspection!!.inspectiontypeid - 1)
-                            monthDueSpinner.setSelection(lastInspection!!.monthdue - 1)
-
-                            changesMadeSwitch.setSelection(if (lastInspection.changesmade) 1 else 0)
-                            dateOfVisitationButton.text = lastInspection.dateofinspection.dbToAppFormat()
-
-                            AnnualVisitationSingleton.getInstance().apply {
-                                automotiveSpecialist = lastInspection.automotivespecialistname
-//                                = lastInspection.automotivespecialistsignatureid TODO add signature logic
-                                facilityRepresentative = lastInspection.facilityrepresentativename
-//                                = lastInspection.facilityrepresentativesignatureid TODO add signature logic
-                                inspectionType = lastInspection.inspectiontypeid
-                                monthDue = lastInspection.monthdue
-                                changesMade = lastInspection.changesmade
-                                dateOfVisitation = lastInspection.dateofinspection.toTime()
-                                paymentMethods = lastInspection.paymentmethods
-                                emailModel = AAAEmailModel()
-                                emailModel!!.emailid = lastInspection.emailaddressid
-                                phoneModel = AAAPhoneModel()
-                                phoneModel!!.phoneid = lastInspection.phonenumberid
-                                personnelId = lastInspection.personnelid
-                                vehicleServices = lastInspection.vehicleservices
-                                vehicles = lastInspection.vehicles
-                                programs = lastInspection.programs
-                                facilityServices = lastInspection.facilityservices
-                                affliations = lastInspection.affiliations
-                                defeciencies = lastInspection.defeciencies
-                                complaints = lastInspection.complaints
-                            }
-
-                            setFieldsValues()
-
-                        } catch (exp: Exception) {
-
-                        }
-                        progressbarGeneralInformation.visibility = View.INVISIBLE
-                        (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading")
-            Log.v("Loading error", "" + it.message)
-            progressbarGeneralInformation.visibility = View.INVISIBLE
-            (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        }))
-    }
+//    private fun loadLastInspection() {
+//        progressbarGeneralInformation.visibility = View.VISIBLE
+//        (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+//                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getLastInspectionForFacility + (activity as MainActivity).facilitySelected.facid,
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        try {
+//                            var lastInspection = Gson().fromJson(response.toString(), Array<AnnualVisitationInspectionFormData>::class.java).toCollection(ArrayList()).get(0)
+//                            automotiveSpecialistEditText.setText(lastInspection!!.automotivespecialistname)
+//                            facilityRepresentativeNameEditText.setText(lastInspection!!.facilityrepresentativename)
+//                            inspectionTypeSpinner.setSelection(lastInspection!!.inspectiontypeid - 1)
+//                            monthDueSpinner.setSelection(lastInspection!!.monthdue - 1)
+//
+//                            changesMadeSwitch.setSelection(if (lastInspection.changesmade) 1 else 0)
+//                            dateOfVisitationButton.text = lastInspection.dateofinspection.dbToAppFormat()
+//
+//                            FacilityDataModel.getInstance().apply {
+//                                automotiveSpecialist = lastInspection.automotivespecialistname
+////                                = lastInspection.automotivespecialistsignatureid TODO add signature logic
+//                                facilityRepresentative = lastInspection.facilityrepresentativename
+////                                = lastInspection.facilityrepresentativesignatureid TODO add signature logic
+//                                inspectionType = lastInspection.inspectiontypeid
+//                                monthDue = lastInspection.monthdue
+//                                changesMade = lastInspection.changesmade
+//                                dateOfVisitation = lastInspection.dateofinspection.toTime()
+//                                paymentMethods = lastInspection.paymentmethods
+//                                emailModel = AAAEmailModel()
+//                                emailModel!!.emailid = lastInspection.emailaddressid
+//                                phoneModel = AAAPhoneModel()
+//                                phoneModel!!.phoneid = lastInspection.phonenumberid
+//                                personnelId = lastInspection.personnelid
+//                                vehicleServices = lastInspection.vehicleservices
+//                                vehicles = lastInspection.vehicles
+//                                programs = lastInspection.programs
+//                                facilityServices = lastInspection.facilityservices
+//                                affliations = lastInspection.affiliations
+//                                defeciencies = lastInspection.defeciencies
+//                                complaints = lastInspection.complaints
+//                            }
+//
+//                            setFieldsValues()
+//
+//                        } catch (exp: Exception) {
+//
+//                        }
+//                        progressbarGeneralInformation.visibility = View.INVISIBLE
+//                        (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//
+//                    })
+//                }, Response.ErrorListener {
+//            Log.v("error while loading", "error while loading")
+//            Log.v("Loading error", "" + it.message)
+//            progressbarGeneralInformation.visibility = View.INVISIBLE
+//            (activity as MainActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//        }))
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -257,25 +258,25 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     }
 
     fun validateInputs(): Boolean {
-        AnnualVisitationSingleton.getInstance().apply {
-
-            if (facilityName.isNullOrBlank()) {
-                facilityNameEditText.error = ""
-            }
-
-            if (facilityRepresentative.isNullOrBlank()) {
-                facilityRepresentativeNameEditText.error = ""
-            }
-
-            if (automotiveSpecialist.isNullOrBlank()) {
-                automotiveSpecialistEditText.error = ""
-            }
-
-            if (dateOfVisitation == -1L) {
-                dateOfVisitationButton.error = "Mandatory"
-            }
-
-        }
+//        FacilityDataModel.getInstance().apply {
+//
+//            if (facilityName.isNullOrBlank()) {
+//                facilityNameEditText.error = ""
+//            }
+//
+//            if (facilityRepresentative.isNullOrBlank()) {
+//                facilityRepresentativeNameEditText.error = ""
+//            }
+//
+//            if (automotiveSpecialist.isNullOrBlank()) {
+//                automotiveSpecialistEditText.error = ""
+//            }
+//
+//            if (dateOfVisitation == -1L) {
+//                dateOfVisitationButton.error = "Mandatory"
+//            }
+//
+//        }
         return false
     }
 
