@@ -29,6 +29,7 @@ import com.inspection.Utils.toast
 import com.inspection.model.AAAFacility
 import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.AAAPersonnelType
+import com.inspection.model.FacilityDataModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
@@ -57,7 +58,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var mParam1: String? = null
     private var mParam2: String? = null
     private var personnelTypeList = ArrayList<AAAPersonnelType>()
-    private var personnelDetailsList = ArrayList<AAAPersonnelDetails>()
+
     private var personTypeArray = ArrayList<String>()
     private var personListArray = ArrayList<String>()
     private var statesArray = ArrayList<String>()
@@ -362,14 +363,18 @@ class FragmentARRAVPersonnel : Fragment() {
             activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL + AnnualVisitationSingleton.getInstance().facilityId,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL + FacilityDataModel.getInstance().tblFacilities[0].FACID,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
                             personTypeArray.clear()
                             personTypeArray.add("Not Selected")
                             for (fac in personnelTypeList) {
-                                personTypeArray.add(fac.personneltypename)
+                                if (FacilityDataModel.getInstance().tblPersonnel.filter {
+                                            it.PersonnelTypeID.toInt() == fac.personneltypeid
+                                        }.count() > 0 && !personTypeArray.contains(fac.personneltypename)) {
+                                    personTypeArray.add(fac.personneltypename)
+                                }
                             }
                             var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
                             personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -377,7 +382,7 @@ class FragmentARRAVPersonnel : Fragment() {
                         })
                         progressbarPersonnel.visibility = View.INVISIBLE
                         if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
-                            getLastYearPersonnel()
+//                            getLastYearPersonnel()
                         }
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading personnel Types")
@@ -387,27 +392,54 @@ class FragmentARRAVPersonnel : Fragment() {
 
         var personnelNamesListViewAdapter = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
             personnelNamesList.visibility = View.GONE
-            setPersonnelDetails(personnelDetailsList.get(i))
+            setPersonnelDetails(FacilityDataModel.getInstance().tblPersonnel.get(i))
         })
 
-        activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
         personType_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 personnelNamesList.visibility = View.GONE
                 if (position > 0) {
                     progressbarPersonnel.visibility = View.VISIBLE
-                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.personnelDetailsURL, AnnualVisitationSingleton.getInstance().facilityId, getTypeID(personType_textviewVal.selectedItem.toString())),
-                            Response.Listener { response ->
-                                activity!!.runOnUiThread(Runnable {
-                                    Log.v("*****Response....", response)
-                                    personnelDetailsList = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
-                                    Log.v("*****Response....", "Count is: " + personnelDetailsList.size)
-                                    if (personnelDetailsList.size >= 1) {
+//                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.personnelDetailsURL, AnnualVisitationSingleton.getInstance().facilityId, getTypeID(personType_textviewVal.selectedItem.toString())),
+//                            Response.Listener { response ->
+//                                activity!!.runOnUiThread(Runnable {
+//                                    Log.v("*****Response....", response)
+//                                    personnelDetailsList = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
+//                                    Log.v("*****Response....", "Count is: " + personnelDetailsList.size)
+//                                    if (personnelDetailsList.size >= 1) {
+//                                        personListArray.clear()
+////                                        if (personnelDetailsList.size == 1) personListArray.add("Add New")
+//                                        for (perDetails in personnelDetailsList) {
+//                                            personListArray.add(perDetails.firstname + " " + perDetails.lastname)
+//                                        }
+//                                        var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
+//                                        personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                                        personnelNamesList.visibility = View.VISIBLE
+//                                        personnelNamesList.adapter = personDtlsAdapter
+//                                        personnelNamesList.itemsCanFocus = true
+//                                        personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
+//                                        if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
+//                                            (0..personnelDetailsList.size - 1)
+//                                                    .filter { personnelDetailsList.get(it).personnelid == personnelDetails.personnelid }
+//                                                    .forEach {
+//                                                        setPersonnelDetails(personnelDetailsList.get(it))
+//                                                    }
+//                                        }
+//                                    }
+//                                })
+//                                progressbarPersonnel.visibility = View.INVISIBLE
+//                            }, Response.ErrorListener {
+//                        Log.v("error while loading", "error while loading personnel Types")
+//                        activity!!.toast("Connection Error. Please check the internet connection")
+//                    }))
+
+                                    if (FacilityDataModel.getInstance().tblPersonnel.size >= 1) {
                                         personListArray.clear()
 //                                        if (personnelDetailsList.size == 1) personListArray.add("Add New")
-                                        for (perDetails in personnelDetailsList) {
-                                            personListArray.add(perDetails.firstname + " " + perDetails.lastname)
+                                        for (perDetails in FacilityDataModel.getInstance().tblPersonnel) {
+                                            personListArray.add(perDetails.FirstName + " " + perDetails.LastName)
                                         }
                                         var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
                                         personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -416,19 +448,19 @@ class FragmentARRAVPersonnel : Fragment() {
                                         personnelNamesList.itemsCanFocus = true
                                         personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
                                         if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
-                                            (0..personnelDetailsList.size - 1)
-                                                    .filter { personnelDetailsList.get(it).personnelid == personnelDetails.personnelid }
+                                            context!!.toast(AnnualVisitationSingleton.getInstance().personnelFirstName +" "
+                                                    + AnnualVisitationSingleton.getInstance().personnelLastName)
+                                            (0 until FacilityDataModel.getInstance().tblPersonnel.size)
+                                                    .filter {
+                                                        (FacilityDataModel.getInstance().tblPersonnel.get(it).FirstName + " " + FacilityDataModel.getInstance().tblPersonnel.get(it).LastName) == (AnnualVisitationSingleton.getInstance().personnelFirstName +" "
+                                                                + AnnualVisitationSingleton.getInstance().personnelLastName)
+                                                    }
                                                     .forEach {
-                                                        setPersonnelDetails(personnelDetailsList.get(it))
+                                                        context!!.toast("Found it")
+                                                        setPersonnelDetails(FacilityDataModel.getInstance().tblPersonnel.get(it))
                                                     }
                                         }
                                     }
-                                })
-                                progressbarPersonnel.visibility = View.INVISIBLE
-                            }, Response.ErrorListener {
-                        Log.v("error while loading", "error while loading personnel Types")
-                        activity!!.toast("Connection Error. Please check the internet connection")
-                    }))
 
                 }
             }
@@ -454,10 +486,9 @@ class FragmentARRAVPersonnel : Fragment() {
                     activity!!.runOnUiThread(Runnable {
                         personnelDetails = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList()).get(0)
                         isUsingLastInspectionPersonnel = true
-                        (0..personnelTypeList.size - 1)
+                        (0 until personnelTypeList.size)
                                 .filter { personnelTypeList.get(it).personneltypeid == personnelDetails.personneltypeid }
                                 .forEach { personType_textviewVal.setSelection(it + 1) }
-
                     })
 
                     progressbarPersonnel.visibility = View.INVISIBLE
@@ -467,43 +498,43 @@ class FragmentARRAVPersonnel : Fragment() {
         }))
     }
 
-    private fun setPersonnelDetails(personnelDetails: AAAPersonnelDetails) {
+    private fun setPersonnelDetails(personnelDetails: FacilityDataModel.TblPersonnel) {
         personnelNamesList.visibility = View.GONE
         personnelNamesList.adapter = null
-        firstName_textviewVal.setText(personnelDetails.firstname)
-        lastName_textviewVal.setText(personnelDetails.lastname)
-        certNo_textviewVal.setText(personnelDetails.certificationnum)
-        rspUserID_textviewVal.text = if ((personnelDetails.rsp_username).equals("NULL")) "" else (personnelDetails.rsp_username)
-        rspEmail_textviewVal.text = if ((personnelDetails.rsp_email).equals("NULL")) "" else (personnelDetails.rsp_email)
-        certNo_textviewVal.setText(personnelDetails.certificationnum)
-        seniorityDateVal.text = if ((personnelDetails.senioritydate).equals("NULL") || (personnelDetails.senioritydate).length < 10) "" else (personnelDetails.senioritydate)
+        firstName_textviewVal.setText(personnelDetails.FirstName)
+        lastName_textviewVal.setText(personnelDetails.LastName)
+        certNo_textviewVal.setText(personnelDetails.CertificationNum)
+        rspUserID_textviewVal.text = if ((personnelDetails.PrimaryMailRecipient).equals("NULL")) "" else (personnelDetails.PrimaryMailRecipient)
+        rspEmail_textviewVal.text = if ((personnelDetails.email).equals("NULL")) "" else (personnelDetails.email)
+        certNo_textviewVal.setText(personnelDetails.CertificationNum)
+        seniorityDateVal.text = if ((personnelDetails.startDate).equals("NULL") || (personnelDetails.startDate).length < 10) "" else (personnelDetails.startDate)
         var dateTobeFormated = ""
-        if (!((personnelDetails.startdate).isNullOrEmpty())) {
-            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.startdate.substring(0, 10)))
+        if (!((personnelDetails.startDate).isNullOrEmpty())) {
+            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.startDate.substring(0, 10)))
         }
         startDateVal.setText(dateTobeFormated)
         Log.v("FORMAT 1 ----- : ", dateTobeFormated)
         dateTobeFormated = ""
-        if ( personnelDetails.startdate != null &&  !(personnelDetails.startdate).equals("NULL") && personnelDetails.enddate != null && (personnelDetails.enddate).equals("NULL")) {
-            dateTobeFormated = "SELECT DATE"
-        } else {
-//            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.enddate.substring(0, 10)))
-        }
-        endDateVal.setText(dateTobeFormated)
-        primaryEmailCheckBox.isChecked = (personnelDetails.primarymailrecipient == 1)
-        if (personnelDetails.contractsigner == 1) {
+//        if ( personnelDetails.startdate != null &&  !(personnelDetails.startDate).equals("NULL") && personnelDetails. != null && (personnelDetails.enddate).equals("NULL")) {
+//            dateTobeFormated = "SELECT DATE"
+//        } else {
+////            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.enddate.substring(0, 10)))
+//        }
+//        endDateVal.setText(dateTobeFormated)
+        primaryEmailCheckBox.isChecked = (personnelDetails.PrimaryMailRecipient.toInt() == 1)
+        if (personnelDetails.ContractSigner.toInt() == 1) {
             try {
                 contractSignerCheckBox.isChecked = true
-                coSignerAddr1Val.setText(personnelDetails.addr1)
-                coSignerAddr2Val.setText(personnelDetails.addr2)
-                coSignerCityVal.setText(personnelDetails.city)
-                coSignerCoEndDateVal.text = personnelDetails.contractenddate
-                coSignerCoStartDateVal.text = personnelDetails.contractstartdate
+                coSignerAddr1Val.setText(personnelDetails.Addr1)
+                coSignerAddr2Val.setText(personnelDetails.Addr2)
+                coSignerCityVal.setText(personnelDetails.CITY)
+                coSignerCoEndDateVal.text = personnelDetails.ContractStartDate
+                coSignerCoStartDateVal.text = personnelDetails.ContractStartDate
                 coSignerEmailVal.setText(personnelDetails.email)
-                coSignerPhoneVal.setText(personnelDetails.phone.toString())
-                coSignerStateVal.setSelection(statesArray.indexOf(personnelDetails.state.toString()))
-                coSignerZip4Val.setText(personnelDetails.zip4.toString())
-                coSignerZipVal.setText(personnelDetails.zip.toString())
+                coSignerPhoneVal.setText(personnelDetails.Phone.toString())
+                coSignerStateVal.setSelection(statesArray.indexOf(personnelDetails.ST.toString()))
+                coSignerZip4Val.setText(personnelDetails.ZIP4.toString())
+                coSignerZipVal.setText(personnelDetails.ZIP.toString())
             } catch (exp: Exception) {
                 exp.printStackTrace()
             }

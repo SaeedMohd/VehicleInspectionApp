@@ -22,6 +22,7 @@ import com.inspection.Utils.Consts
 import com.inspection.Utils.toast
 import com.inspection.model.AAALocations
 import com.inspection.model.AAAPersonnelType
+import com.inspection.model.FacilityDataModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
@@ -50,57 +51,38 @@ class FragmentARRAVLocation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (AnnualVisitationSingleton.getInstance().locationsList == null) {
-            prepareLocationPage()
-        }else{
-            setLocations()
-
-        }
+        setLocations()
     }
 
-    fun prepareLocationPage (){
-
-            progressbarLocation.visibility = View.VISIBLE
-
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityLocationsURL+AnnualVisitationSingleton.getInstance().facilityId,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            AnnualVisitationSingleton.getInstance().locationsList = Gson().fromJson(response.toString(), Array<AAALocations>::class.java).toCollection(ArrayList())
-                            setLocations()
-                        })
-                    }, Response.ErrorListener {
-                progressbarLocation.visibility = View.INVISIBLE
-                Log.v("error while loading", "error while loading Locations")
-                Log.v("error", ""+it.message)
-                activity!!.toast("Connection Error. Please check the internet connection")
-            }))
+    fun prepareLocationPage(){
+        setLocations()
     }
 
-    private fun setLocations(){
-        for (fac in AnnualVisitationSingleton.getInstance().locationsList!!) {
-            if (fac.loctypename.equals("Physical")) {
-                phyloc1addr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
-                phyloc1addr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
-                phyloc1addr1latitude.setText(if (fac.latitude.isNullOrEmpty()) "" else fac.latitude)
-                phyloc1addr1longitude.setText(if (fac.longitude.isNullOrEmpty()) "" else fac.longitude)
-                phylocAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
-                phylocAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
-            } else if (fac.loctypename.equals("Mailing")) {
-                mailaddr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
-                mailaddr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
-                mailAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
-                mailAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
-            } else if (fac.loctypename.equals("Billing")) {
-                billaddr1branchname.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchname)
-                billaddr1branchno.setText(if (fac.branchname.isNullOrEmpty()) "" else fac.branchnumber)
-                billAddr1address.setText(if (fac.fac_addr1.isNullOrEmpty()) "" else fac.fac_addr1)
-                billAddr2address.setText(if (fac.fac_addr2.isNullOrEmpty()) "" else fac.fac_addr2)
+    private fun setLocations() {
+        for (fac in FacilityDataModel.getInstance().tblAddress) {
+            if (fac.LocationTypeID.toInt() == 1) {
+                phyloc1addr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
+                phyloc1addr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
+                phyloc1addr1latitude.setText(if (fac.LATITUDE.isNullOrEmpty()) "" else fac.LATITUDE)
+                phyloc1addr1longitude.setText(if (fac.LONGITUDE.isNullOrEmpty()) "" else fac.LONGITUDE)
+                phylocAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
+                phylocAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
+            } else if (fac.LocationTypeID.toInt() == 2) {
+                mailaddr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
+                mailaddr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
+                mailAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
+                mailAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
+            } else if (fac.LocationTypeID.toInt() == 3) {
+                billaddr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
+                billaddr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
+                billAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
+                billAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
             }
         }
         progressbarLocation.visibility = View.INVISIBLE
     }
 
-    fun validateInputs() : Boolean {
+    fun validateInputs(): Boolean {
         var isInputsValid = true
 
         phyloc1addr1latitude.setError(null)
@@ -108,8 +90,8 @@ class FragmentARRAVLocation : Fragment() {
 //        phyloc1addr2longitude.setError(null)
         phyloc1addr1longitude.setError(null)
 
-        if(phyloc1addr1latitude.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+        if (phyloc1addr1latitude.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
             phyloc1addr1latitude.setError("Required Field")
         }
 
@@ -118,8 +100,8 @@ class FragmentARRAVLocation : Fragment() {
 //            loc1addr2latitude.setError("Required Field")
 //        }
 
-        if(phyloc1addr1longitude.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+        if (phyloc1addr1longitude.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
             phyloc1addr1longitude.setError("Required Field")
         }
 

@@ -39,10 +39,10 @@ import java.util.ArrayList
  */
 class FragmentARRAVFacilityContinued : Fragment() {
 
-    private var opHoursArray = arrayOf("Closed", "00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30"
-            , "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00"
-            , "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"
-            , "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30")
+    private var opHoursArray = arrayOf("Closed", "12:00:00 AM", "12:30:00 AM", "01:00:00 AM", "01:30:00 AM", "02:00:00 AM", "02:30:00 AM", "03:00:00 AM", "03:30:00 AM", "04:00:00 AM", "04:30:00 AM", "05:00:00 AM", "05:30:00 AM", "06:00:00 AM", "06:30:00 AM"
+            , "07:00:00 AM", "07:30:00 AM", "08:00:00 AM", "08:30:00 AM", "09:00:00 AM", "09:30:00 AM", "10:00:00 AM", "10:30:00 AM", "11:00:00 AM", "11:30:00 AM", "12:00:00 PM", "12:30:00 PM", "01:00:00 PM", "01:30:00 PM", "02:00:00 PM", "02:30:00 PM"
+            , "03:00:00 PM", "03:30:00 PM", "04:00:00 PM", "04:30:00 PM", "05:00:00 PM", "05:30:00 PM", "06:00:00 PM", "06:30:00 PM", "07:00:00 PM", "07:30:00 PM", "08:00:00 PM", "08:30:00 PM", "09:00:00 PM", "09:30:00 PM", "10:00:00 PM", "10:30:00 PM"
+            , "11:00:00 PM", "11:30:00 PM")
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     private val appFormat = SimpleDateFormat("HH:mm")
     private var dateTobeFormated = ""
@@ -113,219 +113,140 @@ class FragmentARRAVFacilityContinued : Fragment() {
     fun prepareFacilityContinuedPage() {
         progressbarFacContinued.visibility = View.VISIBLE
 
-        AnnualVisitationSingleton.getInstance().apply {
-            if (paymentMethodsList == null) {
-                getPaymentMethods()
-            } else {
-                setPaymentMethods()
-                setFacilityHours()
-                setFacilityEmail()
-                setFacilityPhoneNumber()
-            }
-        }
+        setPaymentMethods()
+        setFacilityHours()
+        setFacilityEmail()
+        setFacilityPhoneNumber()
+
         progressbarFacContinued.visibility = View.GONE
 
     }
 
-    fun getPaymentMethods() {
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.paymentMethodsURL,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-
-                        AnnualVisitationSingleton.getInstance().paymentMethodsList = Gson().fromJson(response.toString(), Array<AAAPaymentMethods>::class.java).toCollection(ArrayList())
-                        setPaymentMethods()
-                    })
-                    getFacilityHours()
-                }, Response.ErrorListener {
-            activity!!.toast("Connection Error. Please check the internet connection")
-        }))
-    }
-
     fun setPaymentMethods() {
-        var selectedPaymentMethods = AnnualVisitationSingleton.getInstance().paymentMethods.split(",").toCollection(ArrayList<String>())
 
-        for (fac in AnnualVisitationSingleton.getInstance().paymentMethodsList!!) {
-            if (fac.pmtmethodid == 1) {
-                visa_checkbox.isChecked = selectedPaymentMethods.contains("1")
-            } else if (fac.pmtmethodid == 2) {
-                mastercard_checkbox.isChecked = selectedPaymentMethods.contains("2")
-            } else if (fac.pmtmethodid == 3) {
-                americanexpress_checkbox.isChecked = selectedPaymentMethods.contains("3")
-            } else if (fac.pmtmethodid == 4) {
-                discover_checkbox.isChecked = selectedPaymentMethods.contains("4")
-            } else if (fac.pmtmethodid == 5) {
-                paypal_checkbox.isChecked = selectedPaymentMethods.contains("5")
-            } else if (fac.pmtmethodid == 6) {
-                debit_checkbox.isChecked = selectedPaymentMethods.contains("6")
-            } else if (fac.pmtmethodid == 7) {
-                cash_checkbox.isChecked = selectedPaymentMethods.contains("7")
-            } else if (fac.pmtmethodid == 8) {
-                check_checkbox.isChecked = selectedPaymentMethods.contains("8")
-            } else if (fac.pmtmethodid == 9) {
-                goodyear_checkbox.isChecked = selectedPaymentMethods.contains("9")
+        for (fac in FacilityDataModel.getInstance().tblPaymentMethods) {
+            when (fac.PmtMethodID.toInt()) {
+                1 -> visa_checkbox.isChecked = true
+                2 -> mastercard_checkbox.isChecked = true
+                3 -> americanexpress_checkbox.isChecked = true
+                4 -> discover_checkbox.isChecked = true
+                5 -> paypal_checkbox.isChecked = true
+                6 -> debit_checkbox.isChecked = true
+                7 -> cash_checkbox.isChecked = true
+                8 -> check_checkbox.isChecked = true
+                9 -> goodyear_checkbox.isChecked = true
             }
         }
-    }
-
-    fun getFacilityHours() {
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityHoursURL + AnnualVisitationSingleton.getInstance().facilityId,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        AnnualVisitationSingleton.getInstance().facilityHoursList = Gson().fromJson(response.toString(), Array<AAAFacilityHours>::class.java).toCollection(ArrayList())
-                        setFacilityHours()
-                    })
-                    if (AnnualVisitationSingleton.getInstance().emailModel == null || AnnualVisitationSingleton.getInstance().emailModel!!.emailid > -1) {
-                        getFacilityEmail()
-                    } else {
-                        progressbarFacContinued.visibility = View.INVISIBLE
-                    }
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading Facility Timing")
-            activity!!.toast("Connection Error. Please check the internet connection")
-        }))
     }
 
     fun setFacilityHours() {
 
-        for (fac in AnnualVisitationSingleton.getInstance().facilityHoursList!!) {
+        for (fac in FacilityDataModel.getInstance().tblHours) {
             // Monday
-            if (fac.monopen.isNullOrEmpty())
+            if (fac.MonOpen.isNullOrEmpty())
                 monday_open_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.monopen))
+                dateTobeFormated = fac.MonOpen
                 monday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
-            if (fac.monclose.isNullOrEmpty())
+            if (fac.MonClose.isNullOrEmpty())
                 monday_closed_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.monclose))
+                dateTobeFormated = fac.MonClose
                 monday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
             // Tuesday
-            if (fac.tueopen.isNullOrEmpty())
+            if (fac.TueOpen.isNullOrEmpty())
                 tuesday_open_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.tueopen))
+                dateTobeFormated = fac.TueOpen
                 tuesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
-            if (fac.tueclose.isNullOrEmpty())
+            if (fac.TueClose.isNullOrEmpty())
                 tuesday_closed_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.tueclose))
+                dateTobeFormated = fac.TueClose
                 tuesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
             // Wednesday
-            if (fac.wedopen.isNullOrEmpty())
+            if (fac.WedOpen.isNullOrEmpty())
                 wednesday_open_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.wedopen))
+                dateTobeFormated = fac.WedOpen
                 wednesday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
-            if (fac.wedclose.isNullOrEmpty())
+            if (fac.WedClose.isNullOrEmpty())
                 wednesday_closed_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.wedclose))
+                dateTobeFormated = fac.WedClose
                 wednesday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
             // Thursday
-            if (fac.thuopen.isNullOrEmpty())
+            if (fac.ThuOpen.isNullOrEmpty())
                 thursday_open_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.thuopen))
+                dateTobeFormated = fac.ThuOpen
                 thursday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
-            if (fac.thuclose.isNullOrEmpty())
+            if (fac.ThuClose.isNullOrEmpty())
                 thursday_closed_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.thuclose))
+                dateTobeFormated = fac.ThuClose
                 thursday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
             // Friday
-            if (fac.friopen.isNullOrEmpty())
+            if (fac.FriOpen.isNullOrEmpty())
                 friday_open_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.friopen))
+                dateTobeFormated = fac.FriOpen
                 friday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
-            if (fac.friclose.isNullOrEmpty())
+            if (fac.FriClose.isNullOrEmpty())
                 friday_closed_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.friclose))
+                dateTobeFormated = fac.FriClose
                 friday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
             // Saturday
-            if (fac.satopen.isNullOrEmpty())
+            if (fac.SatOpen.isNullOrEmpty())
                 saturday_open_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.satopen))
+                dateTobeFormated = fac.SatOpen
                 saturday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
-            if (fac.satclose.isNullOrEmpty())
+            if (fac.SatClose.isNullOrEmpty())
                 saturday_closed_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.satclose))
+                dateTobeFormated = fac.SatClose
                 saturday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
             // Sunday
-            if (fac.sunopen.isNullOrEmpty())
+            if (fac.SunOpen.isNullOrEmpty())
                 sunday_open_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.sunopen))
+                dateTobeFormated = fac.SunOpen
                 sunday_open_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
-            if (fac.sunclose.isNullOrEmpty())
+            if (fac.SunClose.isNullOrEmpty())
                 sunday_closed_spinner.setSelection(0)
             else {
-                dateTobeFormated = appFormat.format(dbFormat.parse(fac.sunclose))
+                dateTobeFormated = fac.SunClose
                 sunday_closed_spinner.setSelection(opHoursArray.indexOf(dateTobeFormated))
             }
-            nightdrop_checkbox.isChecked = (fac.nightdrop == 1)
-            nightinstructions_textviewVal.setText(if (fac.nightdropinstr.isNullOrEmpty()) "" else fac.nightdropinstr)
+            nightdrop_checkbox.isChecked = fac.NightDrop
+            nightinstructions_textviewVal.setText(if (fac.NightDropInstr.isNullOrEmpty()) "" else fac.NightDropInstr)
         }
 
     }
 
-    private fun getFacilityEmail() {
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getEmailFromFacilityAndId, AnnualVisitationSingleton.getInstance().facilityId, AnnualVisitationSingleton.getInstance().emailModel!!.emailid),
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-
-                        AnnualVisitationSingleton.getInstance().emailModel = Gson().fromJson(response.toString(), Array<AAAEmailModel>::class.java).toCollection(ArrayList()).get(0)
-                        setFacilityEmail()
-                    })
-
-                    if (AnnualVisitationSingleton.getInstance().phoneModel != null) {
-                        getFacilityPhoneNumber()
-                    } else {
-                        progressbarFacContinued.visibility = View.INVISIBLE
-                    }
-
-                }, Response.ErrorListener {
-            activity!!.toast("Connection Error. Please check the internet connection")
-        }))
-    }
-
     private fun setFacilityEmail() {
-        emailtype_textviewVal.setSelection(AnnualVisitationSingleton.getInstance().emailModel!!.emailtypeid)
-        email_textviewVal.setText(AnnualVisitationSingleton.getInstance().emailModel!!.email)
-    }
-
-    private fun getFacilityPhoneNumber() {
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getPhoneNumberWithFacilityAndId, AnnualVisitationSingleton.getInstance().facilityId, AnnualVisitationSingleton.getInstance().phoneModel!!.phoneid),
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        AnnualVisitationSingleton.getInstance().phoneModel = Gson().fromJson(response.toString(), Array<AAAPhoneModel>::class.java).toCollection(ArrayList()).get(0)
-                        setFacilityPhoneNumber()
-                    })
-                    progressbarFacContinued.visibility = View.INVISIBLE
-                }, Response.ErrorListener {
-            activity!!.toast("Connection Error. Please check the internet connection")
-        }))
+        emailtype_textviewVal.setSelection(FacilityDataModel.getInstance().tblFacilityEmail[0].emailTypeId.toInt())
+        email_textviewVal.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
     }
 
     private fun setFacilityPhoneNumber() {
-        phonetype_textviewVal.setSelection(AnnualVisitationSingleton.getInstance().phoneModel!!.phonetypeid)
-        phone_textviewVal.setText(AnnualVisitationSingleton.getInstance().phoneModel!!.phonenumber)
+        phonetype_textviewVal.setSelection(FacilityDataModel.getInstance().tblPhone[0].PhoneTypeID.toInt())
+        phone_textviewVal.setText(FacilityDataModel.getInstance().tblPhone[0].PhoneNumber)
     }
 
     override fun onAttach(context: Context?) {
