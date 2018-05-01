@@ -987,7 +987,7 @@ class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
             }.execute()
         })
         alert.setNegativeButton("Cancel", { dialog, which ->
-            context!!.toast("Cancel Clicked")
+
         })
         alert.create().show()
     }

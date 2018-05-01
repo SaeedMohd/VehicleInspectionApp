@@ -183,7 +183,6 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
     }
 
     private fun setFieldsValues() {
-        context!!.toast("facility specialist = "+FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist)
         automotiveSpecialistEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist)
         facilityRepresentativeNameEditText.setText(FacilityDataModel.getInstance().tblFacilities.get(0).AdminAssistants)
         inspectionTypeSpinner.setSelection(0)

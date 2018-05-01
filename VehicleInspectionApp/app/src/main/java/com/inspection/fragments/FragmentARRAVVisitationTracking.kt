@@ -18,6 +18,7 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.toast
+import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_arrav_visitation_tracking.*
 
 /**
@@ -44,6 +45,17 @@ class FragmentARRAVVisitationTracking : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        FacilityDataModel.getInstance().tblVisitationTracking[0].apply{
+            visitationDateButton.text = DatePerformed
+            performedByButton.text = performedBy
+            aarSignEditText.setText(AARSigns)
+            certificateOfApprovalEditText.setText(CertificateOfApproval)
+            memberBenefitsPosterEditText.setText(MemberBenefitPoster)
+            qualityControlProcessEditText.setText(QualityControl)
+            staffTrainingProcessEditText.setText(StaffTraining)
+        }
+
 
         takePhotoButton.setOnClickListener {
                 if (ContextCompat.checkSelfPermission((activity as MainActivity),

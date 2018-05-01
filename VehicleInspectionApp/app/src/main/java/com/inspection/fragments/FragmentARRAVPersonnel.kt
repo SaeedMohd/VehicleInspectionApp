@@ -60,6 +60,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var personnelTypeList = ArrayList<AAAPersonnelType>()
 
     private var personTypeArray = ArrayList<String>()
+    private var personTypeIDsArray = ArrayList<Int>()
     private var personListArray = ArrayList<String>()
     private var statesArray = ArrayList<String>()
     private var firstSelection = false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
@@ -358,36 +359,39 @@ class FragmentARRAVPersonnel : Fragment() {
     var isFirstRun: Boolean = true
 
     fun preparePersonnelPage() {
-            isFirstRun = false
-            progressbarPersonnel.visibility = View.VISIBLE
-            activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        isFirstRun = false
+        progressbarPersonnel.visibility = View.VISIBLE
+        activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL + FacilityDataModel.getInstance().tblFacilities[0].FACID,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
-                            personTypeArray.clear()
-                            personTypeArray.add("Not Selected")
-                            for (fac in personnelTypeList) {
-                                if (FacilityDataModel.getInstance().tblPersonnel.filter {
-                                            it.PersonnelTypeID.toInt() == fac.personneltypeid
-                                        }.count() > 0 && !personTypeArray.contains(fac.personneltypename)) {
-                                    personTypeArray.add(fac.personneltypename)
-                                }
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL + FacilityDataModel.getInstance().tblFacilities[0].FACID,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+                        personTypeArray.clear()
+                        personTypeIDsArray.clear()
+                        personTypeIDsArray.add(-1)
+                        personTypeArray.add("Not Selected")
+                        for (fac in personnelTypeList) {
+                            if (FacilityDataModel.getInstance().tblPersonnel.filter {
+                                        it.PersonnelTypeID.toInt() == fac.personneltypeid
+                                    }.count() > 0 && !personTypeArray.contains(fac.personneltypename)) {
+                                personTypeArray.add(fac.personneltypename)
+                                personTypeIDsArray.add(fac.personneltypeid)
                             }
-                            var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
-                            personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            personType_textviewVal.adapter = personTypeAdapter
-                        })
-                        progressbarPersonnel.visibility = View.INVISIBLE
-                        if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
-//                            getLastYearPersonnel()
                         }
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading personnel Types")
-                activity!!.toast("Connection Error. Please check the internet connection")
-            }))
+                        var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
+                        personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        personType_textviewVal.adapter = personTypeAdapter
+                    })
+                    progressbarPersonnel.visibility = View.INVISIBLE
+                    if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
+//                            getLastYearPersonnel()
+                    }
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading personnel Types")
+            activity!!.toast("Connection Error. Please check the internet connection")
+        }))
 
 
         var personnelNamesListViewAdapter = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
@@ -401,7 +405,7 @@ class FragmentARRAVPersonnel : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 personnelNamesList.visibility = View.GONE
                 if (position > 0) {
-                    progressbarPersonnel.visibility = View.VISIBLE
+//                    progressbarPersonnel.visibility = View.VISIBLE
 //                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.personnelDetailsURL, AnnualVisitationSingleton.getInstance().facilityId, getTypeID(personType_textviewVal.selectedItem.toString())),
 //                            Response.Listener { response ->
 //                                activity!!.runOnUiThread(Runnable {
@@ -435,32 +439,34 @@ class FragmentARRAVPersonnel : Fragment() {
 //                        activity!!.toast("Connection Error. Please check the internet connection")
 //                    }))
 
-                                    if (FacilityDataModel.getInstance().tblPersonnel.size >= 1) {
-                                        personListArray.clear()
+                    if (FacilityDataModel.getInstance().tblPersonnel.size >= 1) {
+                        personListArray.clear()
 //                                        if (personnelDetailsList.size == 1) personListArray.add("Add New")
-                                        for (perDetails in FacilityDataModel.getInstance().tblPersonnel) {
-                                            personListArray.add(perDetails.FirstName + " " + perDetails.LastName)
-                                        }
-                                        var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
-                                        personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                        personnelNamesList.visibility = View.VISIBLE
-                                        personnelNamesList.adapter = personDtlsAdapter
-                                        personnelNamesList.itemsCanFocus = true
-                                        personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
-                                        if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
-                                            context!!.toast(AnnualVisitationSingleton.getInstance().personnelFirstName +" "
-                                                    + AnnualVisitationSingleton.getInstance().personnelLastName)
-                                            (0 until FacilityDataModel.getInstance().tblPersonnel.size)
-                                                    .filter {
-                                                        (FacilityDataModel.getInstance().tblPersonnel.get(it).FirstName + " " + FacilityDataModel.getInstance().tblPersonnel.get(it).LastName) == (AnnualVisitationSingleton.getInstance().personnelFirstName +" "
-                                                                + AnnualVisitationSingleton.getInstance().personnelLastName)
-                                                    }
-                                                    .forEach {
-                                                        context!!.toast("Found it")
-                                                        setPersonnelDetails(FacilityDataModel.getInstance().tblPersonnel.get(it))
-                                                    }
-                                        }
-                                    }
+                        for (perDetails in FacilityDataModel.getInstance().tblPersonnel) {
+                            if (perDetails.PersonnelTypeID.toInt() == personTypeIDsArray.get(position)) {
+                                personListArray.add(perDetails.FirstName + " " + perDetails.LastName)
+                            }
+                        }
+                        var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
+                        personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        personnelNamesList.visibility = View.VISIBLE
+                        personnelNamesList.adapter = personDtlsAdapter
+                        personnelNamesList.itemsCanFocus = true
+                        personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
+//                                        if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
+//                                            context!!.toast(AnnualVisitationSingleton.getInstance().personnelFirstName +" "
+//                                                    + AnnualVisitationSingleton.getInstance().personnelLastName)
+//                                            (0 until FacilityDataModel.getInstance().tblPersonnel.size)
+//                                                    .filter {
+//                                                        (FacilityDataModel.getInstance().tblPersonnel.get(it).FirstName + " " + FacilityDataModel.getInstance().tblPersonnel.get(it).LastName) == (AnnualVisitationSingleton.getInstance().personnelFirstName +" "
+//                                                                + AnnualVisitationSingleton.getInstance().personnelLastName)
+//                                                    }
+//                                                    .forEach {
+//                                                        context!!.toast("Found it")
+//                                                        setPersonnelDetails(FacilityDataModel.getInstance().tblPersonnel.get(it))
+//                                                    }
+//                                        }
+                    }
 
                 }
             }
@@ -504,8 +510,8 @@ class FragmentARRAVPersonnel : Fragment() {
         firstName_textviewVal.setText(personnelDetails.FirstName)
         lastName_textviewVal.setText(personnelDetails.LastName)
         certNo_textviewVal.setText(personnelDetails.CertificationNum)
-        rspUserID_textviewVal.text = if ((personnelDetails.PrimaryMailRecipient).equals("NULL")) "" else (personnelDetails.PrimaryMailRecipient)
-        rspEmail_textviewVal.text = if ((personnelDetails.email).equals("NULL")) "" else (personnelDetails.email)
+        rspUserID_textviewVal.text = if ((personnelDetails.RSP_UserName).equals("NULL")) "" else (personnelDetails.RSP_UserName)
+        rspEmail_textviewVal.text = if ((personnelDetails.RSP_Email).equals("NULL")) "" else (personnelDetails.RSP_Email)
         certNo_textviewVal.setText(personnelDetails.CertificationNum)
         seniorityDateVal.text = if ((personnelDetails.startDate).equals("NULL") || (personnelDetails.startDate).length < 10) "" else (personnelDetails.startDate)
         var dateTobeFormated = ""
@@ -521,15 +527,15 @@ class FragmentARRAVPersonnel : Fragment() {
 ////            dateTobeFormated = appFprmat.format(dbFormat.parse(personnelDetails.enddate.substring(0, 10)))
 //        }
 //        endDateVal.setText(dateTobeFormated)
-        primaryEmailCheckBox.isChecked = (personnelDetails.PrimaryMailRecipient.toInt() == 1)
-        if (personnelDetails.ContractSigner.toInt() == 1) {
+        primaryEmailCheckBox.isChecked = personnelDetails.PrimaryMailRecipient.toBoolean()
+        if (personnelDetails.ContractSigner.toBoolean()) {
             try {
                 contractSignerCheckBox.isChecked = true
                 coSignerAddr1Val.setText(personnelDetails.Addr1)
                 coSignerAddr2Val.setText(personnelDetails.Addr2)
                 coSignerCityVal.setText(personnelDetails.CITY)
-                coSignerCoEndDateVal.text = personnelDetails.ContractStartDate
-                coSignerCoStartDateVal.text = personnelDetails.ContractStartDate
+                coSignerCoEndDateVal.text = personnelDetails.CertificationDate
+                coSignerCoStartDateVal.text = personnelDetails.ExpirationDate
                 coSignerEmailVal.setText(personnelDetails.email)
                 coSignerPhoneVal.setText(personnelDetails.Phone.toString())
                 coSignerStateVal.setSelection(statesArray.indexOf(personnelDetails.ST.toString()))

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.inspection.R
+import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
@@ -97,8 +98,22 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             dpd.show()
         }
 
+        fillData()
     }
 
+    fun fillData(){
+        FacilityDataModel.getInstance().tblAARPortalAdmin[0].apply {
+            startDateButton.text = startDate
+            endDateButton.text = PortalInspectionDate
+            addendumSignedDateButton.text = AddendumSigned
+            numberOfCardsReaderEditText.setText(CardReaders)
+            inspectionDateButton.text = PortalInspectionDate
+            numberOfUnacknowledgedRecordsEditText.setText(NumberUnacknowledgedTows)
+            numberOfInProgressTwoIns.setText(InProgressTows)
+            numberOfInProgressWalkIns.setText(InProgressWalkIns)
+
+        }
+    }
 
 
     fun validateInputs() : Boolean {

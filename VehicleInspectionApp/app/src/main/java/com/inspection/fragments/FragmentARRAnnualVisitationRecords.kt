@@ -329,6 +329,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
 //            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
             vh.vrLoadBtn.setOnClickListener({
+                recordsProgressView.visibility = View.VISIBLE
                 AnnualVisitationSingleton.getInstance().clear()
                 AnnualVisitationSingleton.getInstance().apply {
                     facilityId = visitationList[position].facilityid
@@ -408,8 +409,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getFacilityData, visitationList[visitationListSelectedPosition].facno, "004"),
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
-
-
+                            recordsProgressView.visibility = View.GONE
                             var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
                                     .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                             var jsonObj = obj.getJSONObject("responseXml")
@@ -420,6 +420,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                             startActivity(intent)
                         })
                     }, Response.ErrorListener {
+                recordsProgressView.visibility = View.GONE
+                context!!.toast("Connection Error.")
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
             }))
@@ -675,8 +677,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     FacilityDataModel.getInstance().tblFacilityPhotos.add(Gson().fromJson<FacilityDataModel.TblFacilityPhotos>(jsonObj.get("tblFacilityPhotos").toString(), FacilityDataModel.TblFacilityPhotos::class.java))
                 }
             }
- 
-            context!!.toast("facility name = " + FacilityDataModel.getInstance().tblFacilities[0].EntityName)
+
         }
 
         override fun getItem(position: Int): Any {

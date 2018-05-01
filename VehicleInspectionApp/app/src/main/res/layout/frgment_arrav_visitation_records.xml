@@ -5,6 +5,7 @@
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FragmentARRAnnualVisitationRecords">
 
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
@@ -74,66 +75,65 @@
                 android:id="@+id/visitationfacilityIdVal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/visitationfacilityIdTextView"
                 android:layout_centerVertical="true"
-                android:inputType="number"
+                android:layout_toRightOf="@id/visitationfacilityIdTextView"
                 android:ems="5"
+                android:inputType="number"
                 android:text="" />
 
 
-
             <LinearLayout
-                android:layout_toRightOf="@id/visitationfacilityIdVal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/visitationfacilityIdVal"
+                android:orientation="horizontal"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:weightSum="6">
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:text="Specialist Name:"
-                    android:layout_gravity="center_vertical"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/visitationSpecialistName"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
+                    android:layout_weight="1"
                     android:hint="Select Specialist" />
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_weight="0.25"/>
+                    android:layout_weight="0.25" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Facility Name:"
-                    android:layout_gravity="center_vertical"
                     android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/facilityNameButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:hint="Select Facility" />
 
             </LinearLayout>
@@ -143,107 +143,104 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:weightSum="6">
 
             <TextView
                 android:id="@+id/visitationMonthTextView"
-                android:text="Month: "
-                android:layout_toRightOf="@id/visitationfacilityIdVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40dp"
-                android:layout_width="wrap_content"
-                android:textStyle="bold"
-                android:layout_height="wrap_content" />
+                android:layout_toRightOf="@id/visitationfacilityIdVal"
+                android:text="Month: "
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/visitationMonthsSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/visitationMonthTextView"
                 android:layout_centerVertical="true"
-                android:entries="@array/visitationMonthsFilter"
                 android:layout_marginLeft="10dp"
-                />
+                android:layout_toRightOf="@id/visitationMonthTextView"
+                android:entries="@array/visitationMonthsFilter" />
 
             <TextView
                 android:id="@+id/visitationYearTextView"
-                android:text="Year: "
-                android:layout_toRightOf="@id/visitationMonthsSpinner"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/visitationMonthsSpinner"
+                android:text="Year: "
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/visitationYearFilterSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/visitationYearTextView"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
-                />
+                android:layout_toRightOf="@id/visitationYearTextView" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <CheckBox
                 android:id="@+id/AnnualVisistationsCheckBox"
-                android:text="Annual Visitations"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
                 android:layout_marginRight="10dp"
-                />
+                android:checked="true"
+                android:text="Annual Visitations" />
 
             <CheckBox
                 android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
-                android:text="Quarterly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:checked="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="Quarterly" />
 
             <CheckBox
                 android:id="@+id/adHocVisitationsCheckBox"
-                android:text="Ad Hoc Visitations"
-                android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Ad Hoc Visitations" />
 
             <CheckBox
                 android:id="@+id/deficienciesCheckBox"
-                android:text="Deficiences"
-                android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"/>
+                android:layout_marginRight="10dp"
+                android:checked="true"
+                android:text="Deficiences" />
 
             <CheckBox
                 android:id="@+id/pendingCheckBox"
-                android:text="Pending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:checked="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="Pending" />
 
             <CheckBox
                 android:id="@+id/completedCheckBox"
-                android:text="Completed"
-                android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Completed" />
 
         </LinearLayout>
 
@@ -269,8 +266,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:visibility="invisible"
-                android:text="New Visitation Form" />
+                android:text="New Visitation Form"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <ListView
@@ -300,4 +297,35 @@
         </ScrollView>
     </LinearLayout>
     <!--</ScrollView>-->
+
+    <RelativeLayout
+        android:id="@+id/recordsProgressView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:alpha="0.8"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBarReords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarReords"
+            android:layout_centerHorizontal="true"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="Loading..."
+            />
+
+
+    </RelativeLayout>
+
 </RelativeLayout>

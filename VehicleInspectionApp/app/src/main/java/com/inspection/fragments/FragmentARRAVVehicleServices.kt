@@ -103,7 +103,7 @@ class FragmentARRAVVehicleServices : Fragment() {
         }
         prepareView()
         if (progressbarVehicleServices != null) {
-            context!!.toast("removing progress")
+
             progressbarVehicleServices.visibility = View.INVISIBLE
         }
     }

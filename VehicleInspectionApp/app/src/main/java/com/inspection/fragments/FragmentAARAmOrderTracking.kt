@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 
 import com.inspection.R
+import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_aaram_order_tracking.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 
@@ -40,10 +41,15 @@ class FragmentARRAVAmOrderTracking : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var reasonArray = arrayOf("Update", "Terminate", "Add New")
-        var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonArray)
-        reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        employeeDropDown.adapter = reasonAdapter
+        if (FacilityDataModel.getInstance().tblAmendmentOrderTracking.size>0) {
+            aoIDVal.text = FacilityDataModel.getInstance().tblAmendmentOrderTracking[0].AOID
+            employeeDropDown.text = FacilityDataModel.getInstance().tblAmendmentOrderTracking[0].AOTEmployee
+            eventIDVal.text = FacilityDataModel.getInstance().tblAmendmentOrderTracking[0].EventID
+        }
+//        var reasonArray = arrayOf("Update", "Terminate", "Add New")
+//        var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonArray)
+//        reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        employeeDropDown.adapter = reasonAdapter
 
     }
     companion object {
