@@ -57,7 +57,6 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         if (!FacilityDataModel.getInstance().tblFacilities.get(0).BusinessName.isNullOrEmpty()) {
             facilityNameEditText.isEnabled = false
             facilityNameEditText.setText(FacilityDataModel.getInstance().tblFacilities.get(0).BusinessName)
-
         }
 
         facilityNameEditText.onFocusChangeListener = View.OnFocusChangeListener({ view: View, b: Boolean ->

@@ -16,8 +16,10 @@ import kotlinx.android.synthetic.main.item_list_content.view.*
 
 import kotlinx.android.synthetic.main.item_list.*
 import android.R.menu
+import android.graphics.Color
 import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import androidx.view.get
 import com.inspection.Utils.toast
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
@@ -86,9 +88,16 @@ class ItemListActivity : AppCompatActivity() {
         }
     }
 
-    private val formTitles = arrayOf("General Information", "Facility", "Facility Continued", "Location Info.", "Personnel", "Order Tracking",
-            "Portal Addendum", "Visitation Tracking", "Scope Of Service", "Vehicle Services", "Vehicles", "Programs", "Facility Services",
-            "Affliations", "Deficiency", "Complaints").toMutableList()
+    private val formTitles = arrayOf("Facility", "General Information", "AAR Portal",  "Contact Info", "Personnel", "Visitation Tracking", "Amendment Orders Tracking",
+             "Scope Of Service", "General Information", "Vehicle Services", "Programs", "Facility Services", "Vehicles",
+            "Affiliations", "Promotions", "Awards And Distinctions", "Others", "Deficiency", "Deficiency", "Complaints", "Complaints", "Billing", "Billing Plan", "Billing", "Payments",
+            "Vendor Revenue", "Billing History", "Billing Adjustments", "Surveys", "CSI Results", "Software", "Comments", "Comments", "Photos").toMutableList()
+
+
+
+//    private val formTitles = arrayOf("General Information", "Facility", "Facility Continued", "Location Info.", "Personnel", "Order Tracking",
+//            "Portal Addendum", "Visitation Tracking", "Scope Of Service", "Vehicle Services", "Vehicles", "Programs", "Facility Services",
+//            "Affliations", "Deficiency", "Complaints").toMutableList()
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
         recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, formTitles, mTwoPane)
@@ -102,6 +111,7 @@ class ItemListActivity : AppCompatActivity() {
         private val mOnClickListener: View.OnClickListener
 
         init {
+            val formHeadersIndexes = arrayOf(0,7, 17, 19, 21, 28, 31, 32)
             mOnClickListener = View.OnClickListener { v ->
                 val position = v.tag
                 var fragment : android.support.v4.app.Fragment
@@ -144,12 +154,17 @@ class ItemListActivity : AppCompatActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_list_content, parent, false)
+
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = mValues[position]
             holder.mIdView.text = item
+            if (position in formHeadersIndexes) {
+                holder.mIdView.setTextColor(Color.WHITE)
+                holder.listLayout.setBackgroundColor(Color.GRAY)
+            }
 
             with(holder.itemView) {
                 tag = position
@@ -166,6 +181,7 @@ class ItemListActivity : AppCompatActivity() {
 
         inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
             val mIdView: TextView = mView.id_text
+            val listLayout: LinearLayout = mView.listLayout
         }
 
 
