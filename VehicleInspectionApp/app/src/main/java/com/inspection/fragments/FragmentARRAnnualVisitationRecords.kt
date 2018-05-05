@@ -114,13 +114,15 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                             (0 until facilities.size).forEach {
                                 facilityNames.add(facilities[it].businessname)
                             }
+
+
                             facilityNames.sort()
                             var searchDialog = SearchDialog(context, facilityNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
-                                facilityNameButton.text = searchDialog.selectedString
-
-                                getFullFacilityDataFromAAA(facilities[facilityNames.indexOf(searchDialog.selectedString)].facno)
+                                if (searchDialog.selectedString.isNotEmpty()) {
+                                    getFullFacilityDataFromAAA(facilities.filter { it.businessname == searchDialog.selectedString }[0].facno)
+                                }
                             }
                         })
                     }, Response.ErrorListener {
@@ -129,8 +131,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 Log.v("Loading error", "" + it.message)
             }))
 
-            var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-            startActivity(intent)
+//            var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+//            startActivity(intent)
         })
 
 
@@ -345,11 +347,10 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             vh.vrPlanned.text = visitationList[position].dateofinspection
             vh.vrPlanned.visibility = if (visitationList[position].dateofinspection.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             vh.vrStatus.text = if (visitationList[position].dateofinspection.toTime() > Date().time) "Planned" else "regular"
-            vh.vrType.text = visitationList[position].entityName
+            vh.vrType.text = visitationList[position].businessname
 //            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
 //            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
             vh.vrLoadBtn.setOnClickListener({
-                recordsProgressView.visibility = View.VISIBLE
                 AnnualVisitationSingleton.getInstance().clear()
                 AnnualVisitationSingleton.getInstance().apply {
                     facilityId = visitationList[position].facilityid
@@ -446,7 +447,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int) {
 
-        Log.v("*******", String.format(Consts.getFacilityData, facilityNumber, "004"))
+        recordsProgressView.visibility = View.VISIBLE
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getFacilityData, facilityNumber, "004"),
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {

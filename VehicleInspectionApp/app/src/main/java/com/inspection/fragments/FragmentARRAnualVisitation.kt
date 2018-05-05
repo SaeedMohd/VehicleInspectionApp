@@ -173,12 +173,16 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         if (FacilityDataModel.getInstance().annualVisitationId > -1) {
             facilityNameInputField!!.setText(FacilityDataModel.getInstance().tblFacilities.get(0).BusinessName)
             facilityNameInputField!!.isEnabled = false
-            setFieldsValues()
+
+        }else{
+
         }
 
         if (arguments!!.getBoolean(isValidating)) {
             validateInputs()
         }
+
+        setFieldsValues()
     }
 
     private fun setFieldsValues() {

@@ -9,7 +9,7 @@ class AnnualVisitationInspectionFormData {
    var facilityid = 0
    var facno = 0
    var entityName = ""
-   var businessName = ""
+   var businessname = ""
    var automotivespecialistname = "" 
    var automotivespecialistsignatureid = 0 
    var facilityrepresentativename = "" 
