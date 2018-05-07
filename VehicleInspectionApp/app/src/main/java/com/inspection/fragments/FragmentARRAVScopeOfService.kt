@@ -15,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -24,14 +23,11 @@ import com.google.gson.Gson
 import com.inspection.MainActivity
 
 import com.inspection.R
-import com.inspection.Utils.Consts
+import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
-import com.inspection.model.AAALocations
 import com.inspection.model.AAAScopeOfServices
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
-import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import java.util.ArrayList
 
 /**
@@ -98,7 +94,7 @@ class FragmentARRAVScopeOfService : Fragment() {
             isFirstRun = false
             progressbarScope.visibility = View.VISIBLE
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.facilityScopeOfSvcURL+AnnualVisitationSingleton.getInstance().facilityId,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.facilityScopeOfSvcURL+AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             var facScopeOfSvcList = Gson().fromJson(response.toString(), Array<AAAScopeOfServices>::class.java).toCollection(ArrayList())

@@ -1,11 +1,7 @@
 package com.inspection.fragments
 
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.ProgressDialog
-import android.content.Context
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -13,35 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.inspection.MainActivity
 
 import com.inspection.R
-import com.inspection.R.id.progressBar
-import com.inspection.Utils.Consts
+import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
-import com.inspection.model.AAAFacility
 import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.AAAPersonnelType
 import com.inspection.model.FacilityDataModel
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
-import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
-import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
-import org.json.JSONArray
-import org.json.JSONObject
-import java.text.DateFormat
-import java.text.ParsePosition
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -364,7 +347,7 @@ class FragmentARRAVPersonnel : Fragment() {
         activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelTypeURL + FacilityDataModel.getInstance().tblFacilities[0].FACID,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.personnelTypeURL + FacilityDataModel.getInstance().tblFacilities[0].FACID,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
@@ -406,7 +389,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 personnelNamesList.visibility = View.GONE
                 if (position > 0) {
 //                    progressbarPersonnel.visibility = View.VISIBLE
-//                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.personnelDetailsURL, AnnualVisitationSingleton.getInstance().facilityId, getTypeID(personType_textviewVal.selectedItem.toString())),
+//                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.personnelDetailsURL, AnnualVisitationSingleton.getInstance().facilityId, getTypeID(personType_textviewVal.selectedItem.toString())),
 //                            Response.Listener { response ->
 //                                activity!!.runOnUiThread(Runnable {
 //                                    Log.v("*****Response....", response)
@@ -487,7 +470,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var isUsingLastInspectionPersonnel: Boolean = false
 
     private fun getLastYearPersonnel() {
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.personnelDetailsWithIdUrl + AnnualVisitationSingleton.getInstance().personnelId,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.personnelDetailsWithIdUrl + AnnualVisitationSingleton.getInstance().personnelId,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         personnelDetails = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList()).get(0)

@@ -69,6 +69,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:0.2'
     implementation 'com.github.d-max:spots-dialog:0.7@aar'
     implementation group: 'org.json', name: 'json', version: '20180130'
+    implementation 'com.google.android:flexbox:0.3.2'
 }
 repositories {
     mavenCentral()

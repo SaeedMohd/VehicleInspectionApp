@@ -128,7 +128,7 @@ class FragmentARRAVFacility : Fragment() {
 
     private fun setFieldsValues() {
         FacilityDataModel.getInstance().apply {
-            contract_number_textviewVal.text = "" + -1
+            contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
             contract_type_textviewVal.text = "" + tblContractType[0].ContractTypeName
             office_textviewVal.text = "" + tblOfficeType[0].OfficeName
             assignedto_textviewVal.text = tblFacilities.get(0).AssignedTo
@@ -142,10 +142,10 @@ class FragmentARRAVFacility : Fragment() {
             repairorder_textviewVal.setText("" + tblFacilities.get(0).FacilityRepairOrderCount)
             availability_textviewVal.setSelection(tblFacilities.get(0).SvcAvailability)
             facilitytype_textviewVal.setSelection(facilityTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
-//            ARDno_textviewVal.setText(ardNumber)
+            ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
             ARDexp_textviewVal.setText(tblFacilities.get(0).AutomotiveRepairExpDate)
             providertype_textviewVal.setText(tblFacilityServiceProvider[0].SrvProviderId)
-            shopmanagement_textviewVal.setText("")
+
             currcodate_textviewVal.setText(tblFacilities.get(0).ContractCurrentDate)
             initcodate_textviewVal.setText(tblFacilities.get(0).ContractInitialDate)
             billingmonth_textviewVal.text=""+tblFacilities.get(0).BillingMonth
@@ -157,9 +157,17 @@ class FragmentARRAVFacility : Fragment() {
             validateInputs()
         }
 
+        setPaymentMethods()
+
+        saveButton.setOnClickListener {
+            if (validateInputs()){
+
+            }
+        }
+
     }
 
-    fun validateInputs() {
+    fun validateInputs() : Boolean{
 
         AnnualVisitationSingleton.getInstance().apply {
             if (ardNumber == -1){
@@ -173,8 +181,25 @@ class FragmentARRAVFacility : Fragment() {
             if (insuranceExpirationDate == -1L) {
                 InsuranceExpDate_textviewVal.error = ""
             }
+        }
+        return true
+    }
 
 
+    fun setPaymentMethods() {
+
+        for (fac in FacilityDataModel.getInstance().tblPaymentMethods) {
+            when (fac.PmtMethodID.toInt()) {
+                1 -> visa_checkbox.isChecked = true
+                2 -> mastercard_checkbox.isChecked = true
+                3 -> americanexpress_checkbox.isChecked = true
+                4 -> discover_checkbox.isChecked = true
+                5 -> paypal_checkbox.isChecked = true
+                6 -> debit_checkbox.isChecked = true
+                7 -> cash_checkbox.isChecked = true
+                8 -> check_checkbox.isChecked = true
+                9 -> goodyear_checkbox.isChecked = true
+            }
         }
     }
 

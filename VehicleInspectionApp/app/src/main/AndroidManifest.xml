@@ -135,6 +135,7 @@
         <activity
             android:name=".fragments.ItemListActivity"
             android:label="@string/title_item_list"
+            android:screenOrientation="landscape"
             android:theme="@style/myAppTheme">
         </activity>
         <activity

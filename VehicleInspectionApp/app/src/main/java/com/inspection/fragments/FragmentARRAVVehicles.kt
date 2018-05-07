@@ -9,26 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.inspection.MainActivity
 
 import com.inspection.R
-import com.inspection.Utils.Consts
+import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.model.AAAVehiclesModel
 import com.inspection.model.VehicleItem
 import com.inspection.model.VehicleServiceHeader
-import com.inspection.model.VehicleServiceItem
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravvehicles.*
-import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
 
 /**
  * A simple [Fragment] subclass.
@@ -91,7 +87,7 @@ class FragmentARRAVVehicles : Fragment() {
         if (progressbarVehicles != null) {
             progressbarVehicles.visibility = View.VISIBLE
         }
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getVehiclesURL,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVehiclesURL,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         isVehiclesLoaded = true

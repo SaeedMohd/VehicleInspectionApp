@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -21,7 +20,7 @@ import com.google.gson.Gson
 
 
 import com.inspection.R
-import com.inspection.Utils.Consts
+import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
 import com.inspection.model.AAAAffiliationTypes
 import com.inspection.model.AAAFacilityAffiliations
@@ -231,7 +230,7 @@ class FragmentARRAVAffliations : Fragment() {
 
 
             progressbarAff.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getAffTypesURL,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAffTypesURL,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             affTypesList= Gson().fromJson(response.toString(), Array<AAAAffiliationTypes>::class.java).toCollection(ArrayList())
@@ -273,7 +272,7 @@ class FragmentARRAVAffliations : Fragment() {
                 activity!!.toast("Connection Error. Please check the internet connection")
             }))
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityAffiliations+ AnnualVisitationSingleton.getInstance().facilityId,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityAffiliations+ AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facilityAffList= Gson().fromJson(response.toString(), Array<AAAFacilityAffiliations>::class.java).toCollection(ArrayList())
@@ -303,17 +302,17 @@ class FragmentARRAVAffliations : Fragment() {
             affId.text = fac.affiliationid.toString()
             affTypeName.text = fac.typename
             affTypeDetailName.text = fac.typedetailname
-            affEffDate.text = if (fac.effdate.length>11 ) Consts.appFormat.format(Consts.dbFormat.parse(fac.effdate)) else fac.effdate
-            affExpDate.text = if (fac.expdate.length>11 ) Consts.appFormat.format(Consts.dbFormat.parse(fac.expdate)) else fac.expdate
+            affEffDate.text = if (fac.effdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.effdate)) else fac.effdate
+            affExpDate.text = if (fac.expdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.expdate)) else fac.expdate
             vAffRow.setOnClickListener({
                 affiliations_textviewVal.setSelection(affTypesArray.indexOf(fac.typename))
 //                afDetails_textviewVal.setSelection(affTypesDetailsArray.indexOf(fac.typedetailname))
                 selectedTypeDetailName=fac.typedetailname
                 afDtlseffective_date_textviewVal.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL") || fac.effdate.equals("") || fac.effdate.toLowerCase().equals("no date provided")) "No Date Provided" else  {
-                    if (fac.effdate.length>11 ) Consts.appFormat.format(Consts.dbFormat.parse(fac.effdate)) else fac.effdate
+                    if (fac.effdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.effdate)) else fac.effdate
                 }
                 afDtlsexpiration_date_textviewVal.text = if (fac.expdate.isNullOrEmpty() || fac.expdate.equals("NULL") || fac.expdate.equals("") || fac.expdate.toLowerCase().equals("no date provided")) "No Date Provided" else   {
-                    if (fac.expdate.length>11 ) Consts.appFormat.format(Consts.dbFormat.parse(fac.expdate)) else fac.expdate
+                    if (fac.expdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.expdate)) else fac.expdate
                 }
                 affcomments_editTextVal.setText(fac.comments)
             })

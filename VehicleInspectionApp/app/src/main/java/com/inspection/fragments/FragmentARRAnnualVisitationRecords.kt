@@ -17,11 +17,9 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.inspection.R
-import com.inspection.Utils.Consts
+import com.inspection.Utils.Constants
 import com.inspection.Utils.SearchDialog
 import com.inspection.Utils.toTime
 import com.inspection.Utils.toast
@@ -29,11 +27,9 @@ import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import dmax.dialog.SpotsDialog
 
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 import org.json.JSONObject
 import org.json.XML
-import org.xmlpull.v1.XmlPullParserFactory
 import java.util.*
 
 
@@ -105,7 +101,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             var loadingDialog = SpotsDialog(context)
             loadingDialog.show()
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL + "",
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getfacilitiesURL + "",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             loadingDialog.dismiss()
@@ -168,21 +164,20 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         visitationSpecialistName.setOnClickListener(View.OnClickListener {
             var loadingDialog = SpotsDialog(context)
             loadingDialog.show()
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getAllPersonnelDetails + "",
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             loadingDialog.dismiss()
-                            var personnels = Gson().fromJson(response.toString(), Array<AAAPersonnelDetails>::class.java).toCollection(ArrayList())
+                            var personnels = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                             var personnelNames = ArrayList<String>()
                             (0 until personnels.size).forEach {
-                                personnelNames.add(personnels[it].firstname + " " + personnels[it].lastname)
+                                personnelNames.add(personnels[it].specialistname)
                             }
                             personnelNames.sort()
                             personnelNames.add(0, "Any")
                             var searchDialog = SearchDialog(context, personnelNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
-                                Log.v("i am dismissed", "I am dismissed")
                                 if (searchDialog.selectedString == "Any") {
                                     visitationSpecialistName.text = ""
                                 } else {
@@ -201,21 +196,20 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         facilityNameButton.setOnClickListener(View.OnClickListener {
             var loadingDialog = SpotsDialog(context)
             loadingDialog.show()
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL + "",
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             loadingDialog.dismiss()
-                            var facilities = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
+                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                             var facilityNames = ArrayList<String>()
                             (0 until facilities.size).forEach {
-                                facilityNames.add(facilities[it].businessname)
+                                facilityNames.add(facilities[it].facname)
                             }
                             facilityNames.sort()
                             facilityNames.add(0, "Any")
                             var searchDialog = SearchDialog(context, facilityNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
-                                Log.v("i am dismissed", "I am dismissed")
                                 if (searchDialog.selectedString == "Any") {
                                     facilityNameButton.text = ""
                                 } else {
@@ -275,7 +269,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 }
             }
 
-            var urlStr = String.format(Consts.getAnnualVisitations, parametersString.toString())
+            var urlStr = String.format(Constants.getAnnualVisitations, parametersString.toString())
             Log.v("*****urlString", urlStr)
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, urlStr,
                     Response.Listener { response ->
@@ -380,7 +374,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 FacilityDataModel.getInstance().annualVisitationId = visitationList[position].annualvisitationid
                 getFullFacilityDataFromAAA(visitationList[position].facno)
 
-//                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityWithIdUrl + visitationList[position].facilityid,
+//                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityWithIdUrl + visitationList[position].facilityid,
 //                        Response.Listener { response ->
 //                            activity!!.runOnUiThread(Runnable {
 //                                var facilityComplete = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList()).get(0) as AAAFacilityComplete
@@ -448,7 +442,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     fun getFullFacilityDataFromAAA(facilityNumber: Int) {
 
         recordsProgressView.visibility = View.VISIBLE
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Consts.getFacilityData, facilityNumber, "004"),
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         recordsProgressView.visibility = View.GONE

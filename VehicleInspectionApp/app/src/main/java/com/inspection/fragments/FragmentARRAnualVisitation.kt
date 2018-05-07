@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.text.Html
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
@@ -23,8 +22,6 @@ import com.google.gson.Gson
 import com.inspection.Utils.*
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
-import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -87,8 +84,8 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 
                     if (!itemSelected && facilityNameEditText.text.length >= 1) {
 //                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "http://jet-matics.com/JetComService/JetCom.svc/getAAAFacilityFormDetails?facilityName="+facilityNameEditText.text,
-                        Log.v("Facility URL:  --> ", Consts.getfacilitiesURL + facilityNameEditText.text)
-                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getfacilitiesURL + facilityNameEditText.text,
+                        Log.v("Facility URL:  --> ", Constants.getfacilitiesURL + facilityNameEditText.text)
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getfacilitiesURL + facilityNameEditText.text,
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         //                                val jObject = JSONObject(response.toString())
@@ -198,7 +195,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
 //        progressbarGeneralInformation.visibility = View.VISIBLE
 //        (activity as MainActivity).window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
 //                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getLastInspectionForFacility + (activity as MainActivity).facilitySelected.facid,
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getLastInspectionForFacility + (activity as MainActivity).facilitySelected.facid,
 //                Response.Listener { response ->
 //                    activity!!.runOnUiThread(Runnable {
 //                        try {

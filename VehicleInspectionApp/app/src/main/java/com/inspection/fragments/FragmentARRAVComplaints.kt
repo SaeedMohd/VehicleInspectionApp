@@ -9,16 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.inspection.MainActivity
 
 import com.inspection.R
-import com.inspection.Utils.Consts
+import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
 import com.inspection.model.AAAFacilityComplaints
 import com.inspection.singletons.AnnualVisitationSingleton
@@ -71,7 +69,7 @@ class FragmentARRAVComplaints : Fragment() {
     fun prepareComplaints (boolAll : Boolean) {
 
             progressbarComp.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityComplaintsURL+ AnnualVisitationSingleton.getInstance().facilityId+"&all="+boolAll.toString(),
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityComplaintsURL+ AnnualVisitationSingleton.getInstance().facilityId+"&all="+boolAll.toString(),
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facilityComplaintsList= Gson().fromJson(response.toString(), Array<AAAFacilityComplaints>::class.java).toCollection(ArrayList())
@@ -101,14 +99,14 @@ class FragmentARRAVComplaints : Fragment() {
             compId.text = fac.complaintid.toString()
             compFirstName.text = fac.firstname
             complastName.text = fac.lastname
-            compReceievedDate.text = if (fac.receiveddate.length>11 ) Consts.appFormat.format(Consts.dbFormat.parse(fac.receiveddate)) else fac.receiveddate
+            compReceievedDate.text = if (fac.receiveddate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.receiveddate)) else fac.receiveddate
             compReason.text = fac.complaintreasonname
             compResolution.text = fac.complaintresolutionname
             compComments.text = fac.comments
             vCompRow.setOnClickListener({
                 complaint_id_textviewVal.setText(fac.complaintid)
                 received_date_textviewVal.text = if (fac.receiveddate.isNullOrEmpty() || fac.receiveddate.equals("NULL") || fac.receiveddate.equals("") || fac.receiveddate.toLowerCase().equals("no date provided")) "No Date Provided" else  {
-                    if (fac.receiveddate.length>11 ) Consts.appFormat.format(Consts.dbFormat.parse(fac.receiveddate)) else fac.receiveddate
+                    if (fac.receiveddate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.receiveddate)) else fac.receiveddate
                 }
                 first_name_textviewVal.setText(fac.firstname)
                 last_name_textviewVal.setText(fac.lastname)

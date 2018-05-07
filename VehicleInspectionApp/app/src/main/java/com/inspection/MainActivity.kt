@@ -10,8 +10,6 @@ import java.util.Timer
 
 
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.pm.PackageManager
@@ -30,7 +28,6 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -54,9 +51,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.Volley
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
@@ -64,31 +58,20 @@ import com.google.android.gms.plus.Plus
 import com.inspection.GCM.GcmBroadcastReceiver
 import com.inspection.GCM.GcmRegistration
 
-import com.inspection.Utils.Consts
 import com.inspection.fragments.FragmentForms
 import com.inspection.fragments.FragmentSafetyCheckInitial
 import com.inspection.fragments.FragmentSafetyCheckItems
 import com.inspection.fragments.FragmentSafetyCheckReports
 
 import com.inspection.imageloader.ImageLoader
-import com.inspection.R
 import com.inspection.model.AAAFacilityComplete
-import com.inspection.model.UserAccountModel
-import com.inspection.serverTasks.GetAccountDetailByEmailAndPhoneIDTask
-import com.inspection.serverTasks.GetShopUserProfileDetails
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Utility
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.support.v4.view.ViewPager
 import android.widget.*
-import com.android.volley.toolbox.StringRequest
-import com.google.gson.Gson
 import com.inspection.Utils.toast
 import com.inspection.model.AnnualVisitationInspectionFormData
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
-import org.json.JSONObject
-import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity(), LocationListener {

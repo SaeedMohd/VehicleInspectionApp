@@ -1,7 +1,6 @@
 package com.inspection.fragments
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -11,22 +10,8 @@ import android.widget.ArrayAdapter
 
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
-import android.util.Log
-import android.widget.Toast
-import androidx.view.isInvisible
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
-import com.inspection.MainActivity
-import com.inspection.Utils.Consts
-import com.inspection.Utils.toast
 import com.inspection.model.*
-import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.dialog_user_register.*
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 
 
 /**
@@ -113,7 +98,6 @@ class FragmentARRAVFacilityContinued : Fragment() {
     fun prepareFacilityContinuedPage() {
         progressbarFacContinued.visibility = View.VISIBLE
 
-        setPaymentMethods()
         setFacilityHours()
         setFacilityEmail()
         setFacilityPhoneNumber()
@@ -122,22 +106,6 @@ class FragmentARRAVFacilityContinued : Fragment() {
 
     }
 
-    fun setPaymentMethods() {
-
-        for (fac in FacilityDataModel.getInstance().tblPaymentMethods) {
-            when (fac.PmtMethodID.toInt()) {
-                1 -> visa_checkbox.isChecked = true
-                2 -> mastercard_checkbox.isChecked = true
-                3 -> americanexpress_checkbox.isChecked = true
-                4 -> discover_checkbox.isChecked = true
-                5 -> paypal_checkbox.isChecked = true
-                6 -> debit_checkbox.isChecked = true
-                7 -> cash_checkbox.isChecked = true
-                8 -> check_checkbox.isChecked = true
-                9 -> goodyear_checkbox.isChecked = true
-            }
-        }
-    }
 
     fun setFacilityHours() {
 

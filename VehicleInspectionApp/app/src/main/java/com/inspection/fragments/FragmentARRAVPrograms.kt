@@ -15,29 +15,20 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.inspection.MainActivity
 
 import com.inspection.R
-import com.inspection.Utils.Consts
+import com.inspection.Utils.Constants
 import com.inspection.model.AAAFacilityPrograms
-import com.inspection.model.AAAPersonnelType
 import com.inspection.model.AAAProgramTypes
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
-import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
-import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
-import kotlinx.android.synthetic.main.tablerow5cols.*
 import kotlinx.android.synthetic.main.tablerow5cols.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import android.view.ViewGroup.LayoutParams.FILL_PARENT
 import android.widget.*
-import com.inspection.Utils.Consts.appFormat
-import com.inspection.Utils.Consts.dbFormat
+import com.inspection.Utils.Constants.appFormat
+import com.inspection.Utils.Constants.dbFormat
 import com.inspection.Utils.toast
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.frgment_arrav_visitation_records.*
 
 
 /**
@@ -151,7 +142,7 @@ class FragmentARRAVPrograms : Fragment() {
     fun prepareProgramTypes () {
 
             progressbarPrograms.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.programTypesURL,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.programTypesURL,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             programTypesList= Gson().fromJson(response.toString(), Array<AAAProgramTypes>::class.java).toCollection(ArrayList())
@@ -168,7 +159,7 @@ class FragmentARRAVPrograms : Fragment() {
                 activity!!.toast("Connection Error. Please check the internet connection")
             }))
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Consts.getFacilityPrograms+AnnualVisitationSingleton.getInstance().facilityId,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPrograms+AnnualVisitationSingleton.getInstance().facilityId,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             facilityProgramsList= Gson().fromJson(response.toString(), Array<AAAFacilityPrograms>::class.java).toCollection(ArrayList())

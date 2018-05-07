@@ -107,54 +107,9 @@ class ItemListActivity : AppCompatActivity() {
                                         private val mTwoPane: Boolean) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
-        private var selectedPosition = -1
-        private val mOnClickListener: View.OnClickListener
+        private var selectedPosition = 1
         val formHeadersIndexes = arrayOf(0, 7, 17, 19, 21, 28, 31, 33)
 
-        init {
-
-            mOnClickListener = View.OnClickListener { v ->
-                val position = v.tag as Int
-//                if (position !in formHeadersIndexes) {
-//                    v.setBackgroundColor(Color.parseColor("#d1d1d1"))
-//                }
-                selectedPosition = position
-
-                var fragment: android.support.v4.app.Fragment
-                if (mTwoPane) {
-                    when (position) {
-
-                        1 -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
-                        300 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
-                        3 -> fragment = FragmentARRAVFacilityContinued.newInstance(mParentActivity.isValidating)
-                        100 -> fragment = FragmentARRAVLocation.newInstance(mParentActivity.isValidating)
-                        4 -> fragment = FragmentARRAVPersonnel.newInstance(mParentActivity.isValidating)
-                        6 -> fragment = FragmentARRAVAmOrderTracking.newInstance("test", "test")
-                        2 -> fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("test", "test")
-                        5 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
-                        8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
-                        9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
-                        10 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
-                        11 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
-                        12 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
-                        13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
-                        14 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
-                        15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
-                        else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
-                    }
-                    mParentActivity.supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
-                            .commit()
-                    mParentActivity.isValidating = false
-                } else {
-//                    val intent = Intent(v.context, ItemDetailActivity::class.java).apply {
-//                        putExtra(ItemDetailFragment.ARG_ITEM_ID, "asdf")
-//                    }
-//                    v.context.startActivity(intent)
-                }
-            }
-        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
@@ -182,7 +137,7 @@ class ItemListActivity : AppCompatActivity() {
                 if (mTwoPane) {
                     when (position) {
 
-                        1 -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                        1 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
                         300 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
                         3 -> fragment = FragmentARRAVFacilityContinued.newInstance(mParentActivity.isValidating)
                         100 -> fragment = FragmentARRAVLocation.newInstance(mParentActivity.isValidating)
@@ -192,9 +147,9 @@ class ItemListActivity : AppCompatActivity() {
                         5 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
                         8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
                         9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
-                        10 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
-                        11 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
-                        12 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
+                        12 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
+                        10 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
+                        11 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
                         13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
                         14 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
                         15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
