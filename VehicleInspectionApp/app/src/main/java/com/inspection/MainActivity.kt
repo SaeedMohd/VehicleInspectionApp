@@ -151,23 +151,23 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         if (toolbar != null) {
             setSupportActionBar(toolbar)
-            mDrawerList!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id -> selectItem(position) }
+//            mDrawerList!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id -> selectItem(position) }
             toolbar!!.setTitleTextColor(Color.WHITE)
 
             //ActionBar bar = getActionBar();
             //bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f7fa")));
-            drawerToggle = object : ActionBarDrawerToggle(mContext, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
-
-                override fun onDrawerClosed(drawerView: View) {
-                    super.onDrawerClosed(drawerView)
-                }
-
-                override fun onDrawerOpened(drawerView: View) {
-                    super.onDrawerOpened(drawerView)
-
-                }
-            }
-            mDrawerLayout.setDrawerListener(drawerToggle)
+//            drawerToggle = object : ActionBarDrawerToggle(mContext, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+//
+//                override fun onDrawerClosed(drawerView: View) {
+//                    super.onDrawerClosed(drawerView)
+//                }
+//
+//                override fun onDrawerOpened(drawerView: View) {
+//                    super.onDrawerOpened(drawerView)
+//
+//                }
+//            }
+//            mDrawerLayout.setDrawerListener(drawerToggle)
         }
 
         ApplicationPrefs.getInstance(mContext).clearVehicleProfilePrefs()
@@ -227,7 +227,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        drawerToggle!!.syncState()
+//        drawerToggle!!.syncState()
     }
 
 
@@ -239,13 +239,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     private fun initView() {
-        mDrawerList = findViewById<View>(R.id.left_drawer) as ListView
-        //mDrawerList.setOnItemClickListener(activity);
+//        mDrawerList = findViewById<View>(R.id.left_drawer) as ListView
+//        //mDrawerList.setOnItemClickListener(activity);
         toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         saveBtn = findViewById<View>(R.id.saveBtn) as Button
-        mDrawerLayout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
-        drawerNavigationListAdapter = DrawerNavigationListAdapter()
-        mDrawerList!!.adapter = drawerNavigationListAdapter
+//        mDrawerLayout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
+//        drawerNavigationListAdapter = DrawerNavigationListAdapter()
+//        mDrawerList!!.adapter = drawerNavigationListAdapter
 
         //pageAdapter = new MyPagerAdapter(getSupportFragmentManager());
         //ViewPager pager=(ViewPager)findViewById(R.id.pager);

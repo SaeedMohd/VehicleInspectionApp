@@ -12,14 +12,14 @@
         android:layout_marginRight="26dp"
         android:layout_marginTop="10dp">
 
-        <ImageView
-            android:id="@+id/graphicLoginImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/ic_launcher" />
+        <!--<ImageView-->
+            <!--android:id="@+id/graphicLoginImageView"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:background="@drawable/ic_launcher" />-->
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -27,106 +27,106 @@
             android:layout_centerInParent="true"
             >
 
-        <RelativeLayout
-            android:id="@+id/loginSocialButtonsLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            >
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/loginSocialButtonsLayout"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--&gt;-->
 
-            <View
-                android:id="@+id/loginSocialButtonsSeparator"
-                android:layout_width="10dp"
-                android:layout_height="50dp"
-                android:layout_centerInParent="true" />
+            <!--<View-->
+                <!--android:id="@+id/loginSocialButtonsSeparator"-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_centerInParent="true" />-->
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/googlePlusSignInButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/loginSocialButtonsSeparator"
-                android:layout_alignParentStart="true" />
+            <!--<com.google.android.gms.common.SignInButton-->
+                <!--android:id="@+id/googlePlusSignInButton"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_toLeftOf="@id/loginSocialButtonsSeparator"-->
+                <!--android:layout_alignParentStart="true" />-->
 
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/facebookLogInButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/googlePlusSignInButton"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/googlePlusSignInButton"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_toRightOf="@+id/loginSocialButtonsSeparator"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:textAlignment="center"
+            <!--<com.facebook.login.widget.LoginButton-->
+                <!--android:id="@+id/facebookLogInButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignBottom="@id/googlePlusSignInButton"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignTop="@id/googlePlusSignInButton"-->
+                <!--android:layout_marginBottom="4dp"-->
+                <!--android:layout_marginTop="4dp"-->
+                <!--android:layout_toRightOf="@+id/loginSocialButtonsSeparator"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:textAlignment="center"-->
 
-                />
+                <!--/>-->
 
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/loginSeparatorLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/loginSocialButtonsLayout"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/loginSeparatorLayout"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:orientation="horizontal">-->
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/white" />
-
-
-            <TextView
-                android:id="@+id/orTextViewSeparator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:text="OR"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
-
-                />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/white" />
-        </LinearLayout>
+            <!--<View-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@color/white" />-->
 
 
-        <TextView
-            android:id="@+id/loginWithEmailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/loginSeparatorLayout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="Login with your email"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            />
+            <!--<TextView-->
+                <!--android:id="@+id/orTextViewSeparator"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:text="OR"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textStyle="bold"-->
+
+                <!--/>-->
+
+            <!--<View-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@color/white" />-->
+        <!--</LinearLayout>-->
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/loginWithEmailTextView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:text="Login with your email"-->
+            <!--android:textSize="16sp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="@color/white"-->
+            <!--/>-->
 
         <EditText
             android:id="@+id/loginEmailEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@id/loginWithEmailTextView"
+            android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:background="@drawable/edittext_bg"
             android:ems="50"
@@ -139,7 +139,7 @@
 
         <EditText
             android:id="@+id/loginPasswordEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="11dp"
             android:background="@drawable/edittext_bg"
@@ -194,5 +194,6 @@
                     android:text="@string/sign_up_button_text"
                     android:textColor="@color/white" />
 
-    </RelativeLayout>
+
+
 </RelativeLayout>

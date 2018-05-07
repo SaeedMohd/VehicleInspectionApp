@@ -58,7 +58,7 @@ import org.json.JSONObject
 
 import java.util.ArrayList
 
-class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
+class LoginActivity : Activity(){
 
     internal var registerDialog: AlertDialog? = null
     private var mCirclesList: ArrayList<String>? = null
@@ -109,6 +109,7 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
 
         loginForgetPasswordButton!!.setOnClickListener { showForgotPasswordDialog() }
 
+        loginEmailEditText.setText("Johnson.Fredrick@aaa-texas.Com")
 
         loginSignInButton!!.setOnClickListener {
             if (loginEmailEditText!!.text.toString().trim { it <= ' ' }.length > 0 && loginPasswordEditText!!.text.toString().trim { it <= ' ' }.length > 0) {
@@ -117,7 +118,9 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
                 //                            .execute("");
 //                GetUserLoginCredentialsResultTask().execute(loginEmailEditText!!.text.toString(), loginPasswordEditText!!.text.toString())
                 //TODO: easy login just for demo, should be updated later
-                GetUserLoginCredentialsResultTask().execute("FL111111", "4CE678CE")
+//                GetUserLoginCredentialsResultTask().execute("FL111111", "4CE678CE")
+                ApplicationPrefs.getInstance(activity).loggedInUserEmail = loginEmailEditText!!.text.toString()
+                userIsLoggedInGotoMainActivity()
             } else {
                 val alertDialog = AlertDialog.Builder(activity)
                 alertDialog.setMessage("Please enter your email and password")
@@ -126,520 +129,16 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
             }
         }
 
-
-//        callbackManager = CallbackManager.Factory.create()
-//
-//        facebookLogInButton!!.setReadPermissions("user_friends, email")
-//        facebookLogInButton!!.setOnClickListener {
-//            //                progressDialog = new ProgressDialog(activity);
-//            //                progressDialog.setIndeterminate(true);
-//            //                progressDialog.setCancelable(true);
-//            //                progressDialog.setMessage("Logging in ...");
-//            //                progressDialog.show();
-//            isFacebookLogin = true
-//        }
-//
-//        // If using in a fragment
-//
-//        // Other app specific specialization
-//
-//        // Callback registration
-//        facebookLogInButton!!.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-//            override fun onSuccess(loginResult: LoginResult) {
-//                // App code
-//                //Log.dTAG, "login result is: " + loginResult.recentlyGrantedPermissions)
-//                progressDialog = ProgressDialog(activity)
-//                progressDialog!!.setMessage("Loading...")
-//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), true)
-//                accessToken = AccessToken.getCurrentAccessToken()
-//                val request = GraphRequest.newMeRequest(
-//                        accessToken
-//                ) { `object`, response ->
-//                    try {
-//                        facebookUser = FacebookUser()
-//                        facebookUser!!.firstName = `object`.getString("first_name")
-//                        facebookUser!!.lastName = `object`.getString("last_name")
-//                        facebookUser!!.displayName = `object`.getString("name")
-//                        facebookUser!!.facebookId = `object`.getString("id")
-//                        facebookUser!!.email = `object`.getString("email")
-//                    } catch (jsonException: JSONException) {
-//                        //Log.dMainActivity.TAG, jsonException.message)
-//                    }
-//
-//                    isFacebookLogin = true
-//                    isGooglePlusLogin = false
-//
-//                    //Log.dMainActivity.TAG, "Facebook Email is: " + facebookUser!!.email!!)
-//                    progressDialog!!.show()
-//                    object : GetAccountDetailByEmailAndPhoneIDTask(activity!!, false, facebookUser!!.email!!, "") {
-//                        override fun onTaskCompleted(result: String) {
-//                            progressDialog!!.dismiss()
-//                            checkAccountDetailsRetrievedFromCloudHere(result)
-//                        }
-//                    }.execute()
-//                }
-//                val parameters = Bundle()
-//                parameters.putString("fields", "id,name,link, birthday, first_name, last_name, gender, email")
-//                request.parameters = parameters
-//                request.executeAsync()
-//
-//                // If the access token is available already assign it.
-//                //                progressDialog.dismiss();
-//
-//                //userIsLoggedInGotoMainActivity();
-//            }
-//
-//            override fun onCancel() {
-//                // App code
-//                //Log.dTAG, "login cancelled")
-//                //progressDialog.dismiss();
-//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
-//            }
-//
-//            override fun onError(exception: FacebookException) {
-//                // App code
-//                //Log.dTAG, "login error is: " + exception.message)
-//                //progressDialog.dismiss();
-//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
-//            }
-//        })
-//
-//
-//        googlePlusSignInButton!!.setOnClickListener(this)
-//
-//
-//        mCirclesList = ArrayList<String>()
-//        //        mCirclesAdapter = new ArrayAdapter<String>(
-//        //                this, R.layout.circle_member, mCirclesList);
-//        //        mCirclesListView.setAdapter(mCirclesAdapter);
-//
-//        //Log.d"G+ Connection ----- : ", ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus)).toString())
-//
-//        if (ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus))) {
-////            mGoogleApiClient = buildGoogleApiClient()
-//            //Log.dMainActivity.TAG, "user is logged in with google plus")
-//            userIsLoggedInGotoMainActivity()
-//            //   mGoogleApiClient.connect();
-//        }
-//
-//        if (ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_facebook))) {
-//            //Log.dMainActivity.TAG, "user is logged in with FACEBOOK")
-//            if (facebookLogInButton!!.text.toString().startsWith("Log out")) {
-//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), true)
-//                userIsLoggedInGotoMainActivity()
-//            } else {
-//                ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
-//            }
-//
-//        }
-        if (ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_email))) {
-            //Log.dMainActivity.TAG, "user is logged in with EMAIL")
-            userIsLoggedInGotoMainActivity()
-        }
-
-    }
-
-
-    private fun buildGoogleApiClient(): GoogleApiClient {
-        // When we build the GoogleApiClient we specify where connected and
-        // connection failed callbacks should be returned, which Google APIs our
-        // app uses and which OAuth 2.0 scopes our app requests.
-        val builder = GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-//                .addApi<Plus.PlusOptions>(Plus.API, Plus.PlusOptions.builder().build())
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-//                .addScope(Plus.SCOPE_PLUS_LOGIN)
-
-        //        if (mRequestServerAuthCode) {
-        //            checkServerAuthConfiguration();
-        //            builder = builder.requestServerAuthCode(WEB_CLIENT_ID, this);
-        //        }
-
-        return builder.build()
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        //        if (mGoogleApiClient.isConnected()) {
-        //            mGoogleApiClient.disconnect();
-        //        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int,
-                                  data: Intent?) {
-        when (requestCode) {
-            RC_SIGN_IN -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    // If the error resolution was successful we should continue
-                    // processing errors.
-                    mSignInProgress = STATE_SIGN_IN
-
-                } else {
-                    // If the error resolution was not successful or the user canceled,
-                    // we should stop processing errors.
-                    mSignInProgress = STATE_DEFAULT
-                }
-
-                if (!mGoogleApiClient!!.isConnecting) {
-                    // If Google Play services resolved the issue with a dialog then
-                    // onStart is not called so we need to re-attempt connection here.
-//                    mGoogleApiClient!!.connect()
-                    handleGPlusLogin(data)
-                }
-            }
-        }
-
-        if (isFacebookLogin) {
-            callbackManager!!.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
-
-    private fun handleGPlusLogin(data: Intent?){
-        val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-        if (result.isSuccess()) {
-            currentUser = result.getSignInAccount();
-            // Get account information
-
-//           currentUser =
-            googlePlusEmail = currentUser!!.email
-        }
-//        currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient)
-//        googlePlusEmail = Plus.AccountApi.getAccountName(mGoogleApiClient)
-
-        if (!ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus))) {
-            //Log.dTAG, "current user is: " + currentUser!!)
-            isGooglePlusLogin = true
-            progressDialog = ProgressDialog(activity)
-            progressDialog!!.setMessage("Loading...")
-            progressDialog!!.show()
-            object : GetAccountDetailByEmailAndPhoneIDTask(activity!!, false, googlePlusEmail!!, "") {
-                override fun onTaskCompleted(result: String) {
-                    checkAccountDetailsRetrievedFromCloudHere(result)
-
-                }
-            }.execute()
-
-        } else {
-            mSignInProgress = STATE_DEFAULT
-
-            userIsLoggedInGotoMainActivity()
-        }
-    }
-    override fun onDestroy() {
-        // TODO Auto-generated method stub
-        super.onDestroy()
-    }
-
-    override fun onClick(v: View) {
-
-        // We only process button clicks when GoogleApiClient is not transitioning
-        // between connected and not connected.
-        when (v.id) {
-            R.id.googlePlusSignInButton -> {
-                //mStatus.setText(R.string.status_signing_in);
-                // Saeed Mostafa - 05092017 - Remove deprecated G PLUS API [Start]
-//                mGoogleApiClient = buildGoogleApiClient()
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build()
-                mGoogleApiClient = GoogleApiClient.Builder(this)
-                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                        .build()
-
-                val signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
-                startActivityForResult(signInIntent, RC_SIGN_IN)
-
-//                if (!mGoogleApiClient!!.isConnecting) {
-//                    mSignInProgress = STATE_SIGN_IN
-//                    //Log.dTAG, "Connecting to google+")
-//                    mGoogleApiClient!!.connect()
-//                }
-            }
-        }
-    }
-
-
-    override fun onConnected(bundle: Bundle?) {
-        // Reaching onConnected means we consider the user signed in.
-        //Log.dTAG, "onConnected")
-
-//        currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient).toString()
-        googlePlusEmail = Plus.AccountApi.getAccountName(mGoogleApiClient)
-
-        if (!ApplicationPrefs.getInstance(this).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus))) {
-            //Log.dTAG, "current user is: " + currentUser!!)
-            isGooglePlusLogin = true
-            progressDialog = ProgressDialog(activity)
-            progressDialog!!.setMessage("Loading...")
-            progressDialog!!.show()
-            object : GetAccountDetailByEmailAndPhoneIDTask(activity!!, false, googlePlusEmail!!, "") {
-                override fun onTaskCompleted(result: String) {
-                    checkAccountDetailsRetrievedFromCloudHere(result)
-
-                }
-            }.execute()
-
-            object : GetAccountDetailByEmailAndPhoneIDTask(activity!!, false, googlePlusEmail!!, "") {
-                override fun onTaskCompleted(result: String) {
-                    checkAccountDetailsRetrievedFromCloudHere(result)
-
-                }
-            }.execute()
-
-        } else {
-            mSignInProgress = STATE_DEFAULT
-
-            userIsLoggedInGotoMainActivity()
-        }
-
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-        mGoogleApiClient!!.connect()
-    }
-
-    override fun onConnectionFailed(result: ConnectionResult) {
-        // Refer to the javadoc for ConnectionResult to see what error codes might
-        // be returned in onConnectionFailed.
-        //Log.dTAG, "onConnectionFailed: ConnectionResult.getErrorCode() = " + result.errorCode)
-
-        if (result.errorCode == ConnectionResult.API_UNAVAILABLE) {
-            // An API requested for GoogleApiClient is not available. The device's current
-            // configuration might not be supported with the requested API or a required component
-            // may not be installed, such as the Android Wear application. You may need to use a
-            // second GoogleApiClient to manage the application's optional APIs.
-            Log.w(TAG, "API Unavailable.")
-        } else if (mSignInProgress != STATE_IN_PROGRESS) {
-            // We do not have an intent in progress so we should store the latest
-            // error resolution intent for use when the sign in button is clicked.
-            mSignInIntent = result.resolution
-            mSignInError = result.errorCode
-
-            if (mSignInProgress == STATE_SIGN_IN) {
-                // STATE_SIGN_IN indicates the user already clicked the sign in button
-                // so we should continue processing errors until the user is signed in
-                // or they click cancel.
-                resolveSignInError()
-            }
-        }
-
-        // In this sample we consider the user signed out whenever they do not have
-        // a connection to Google Play services.
-        onSignedOut()
-    }
-
-    private fun onSignedOut() {
-        // Update the UI to reflect that the user is signed out.
-        //        mSignInButton.setEnabled(true);
-        //        mSignOutButton.setEnabled(false);
-        //        mRevokeButton.setEnabled(false);
-
-        // Show the sign-in options
-        //        findViewById(R.id.layout_server_auth).setVisibility(View.VISIBLE);
-
-        //        mStatus.setText(R.string.status_signed_out);
-
-        //        mCirclesList.clear();
-        //        mCirclesAdapter.notifyDataSetChanged();
-    }
-
-    private fun resolveSignInError() {
-        if (mSignInIntent != null) {
-            // We have an intent which will allow our user to sign in or
-            // resolve an error.  For example if the user needs to
-            // select an account to sign in with, or if they need to consent
-            // to the permissions your app is requesting.
-
-            try {
-                // Send the pending intent that we stored on the most recent
-                // OnConnectionFailed callback.  This will allow the user to
-                // resolve the error currently preventing our connection to
-                // Google Play services.
-                mSignInProgress = STATE_IN_PROGRESS
-                startIntentSenderForResult(mSignInIntent!!.intentSender,
-                        RC_SIGN_IN, null, 0, 0, 0)
-            } catch (e: IntentSender.SendIntentException) {
-                //Log.dTAG, "Sign in intent could not be sent: " + e.localizedMessage)
-                // The intent was canceled before it was sent.  Attempt to connect to
-                // get an updated ConnectionResult.
-                mSignInProgress = STATE_SIGN_IN
-                mGoogleApiClient!!.connect()
-            }
-
-        } else {
-            // Google Play services wasn't able to provide an intent for some
-            // error types, so we show the default Google Play services error
-            // dialog which may still start an intent on our behalf if the
-            // user can resolve the issue.
-            createErrorDialog().show()
-        }
-    }
-
-    private fun createErrorDialog(): Dialog {
-        if (GooglePlayServicesUtil.isUserRecoverableError(mSignInError)) {
-            return GooglePlayServicesUtil.getErrorDialog(
-                    mSignInError,
-                    this,
-                    RC_SIGN_IN
-            ) {
-                //Log.e(TAG, "Google Play services resolution cancelled")
-                mSignInProgress = STATE_DEFAULT
-                //mStatus.setText(R.string.status_signed_out);
-            }
-        } else {
-            return AlertDialog.Builder(this)
-                    .setMessage(R.string.play_services_error)
-                    .setPositiveButton(R.string.close
-                    ) { dialog, which ->
-                        //Log.e(TAG, "Google Play services error could not be "
-//                                + "resolved: " + mSignInError)
-                        mSignInProgress = STATE_DEFAULT
-                        //                                    mStatus.setText(R.string.status_signed_out);
-                    }.create()
-        }
-    }
-
-    override fun onResult(peopleData: People.LoadPeopleResult) {
-        if (peopleData.status.statusCode == CommonStatusCodes.SUCCESS) {
-            mCirclesList!!.clear()
-            val personBuffer = peopleData.personBuffer
-            try {
-                val count = personBuffer.count
-                for (i in 0..count - 1) {
-                    mCirclesList!!.add(personBuffer.get(i).displayName)
-                    //Log.dTAG, "" + personBuffer.get(i).displayName)
-                }
-            } finally {
-                personBuffer.close()
-            }
-
-            for (circ in mCirclesList!!) {
-                //Log.dTAG, "Circle list is: " + circ)
-            }
-
-            //            mCirclesAdapter.notifyDataSetChanged();
-        } else {
-            //Log.e(TAG, "Error requesting visible circles: " + peopleData.status)
-        }
     }
 
 
     private fun userIsLoggedInGotoMainActivity() {
-        //new BackgroundDailyServerCallsThread(activity).start();
-        ApplicationPrefs.getInstance(activity).setLoggedInPrefs(true)
-        object : GetCompetitorsListTask(this) {
-            override fun onTaskCompleted(result: String) {
-
-            }
-        }.execute()
-
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }
 
-
-    private fun saveGooglePlusCurrentUser() {
-
-        if (currentUser != null) {
-            val placeLived: String
-//            if (currentUser!!.placesLived != null) {
-//                placeLived = currentUser!!.placesLived[0].value
-//            } else {
-            placeLived = ""
-//            }
-
-            CreateProfile().execute(Utils.getStringOrEmptyForNull(currentUser!!.givenName),
-                    Utils.getStringOrEmptyForNull(currentUser!!.familyName),
-                    "Not set2",
-                    Utils.getStringOrEmptyForNull(googlePlusEmail),
-                    "",
-                    "",
-                    Utils.getStringOrEmptyForNull(currentUser!!.displayName),
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    Utils.getStringOrEmptyForNull(placeLived),
-                    "",
-                    "",
-                    "",
-                    "",
-                    Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID),
-                    "googleplus",
-                    currentUser!!.id)
-//            userIsLoggedInGotoMainActivity()
-
-        } else {
-            isGooglePlusLogin = false
-            val facebookLoginErrorDialog = AlertDialog.Builder(activity)
-            facebookLoginErrorDialog.setMessage("User doesn't have active Google+ user")
-            facebookLoginErrorDialog.setPositiveButton("OK", null)
-            facebookLoginErrorDialog.show()
-        }
-    }
-
-
-    private fun saveFacebookUser() {
-        CreateProfile().execute(facebookUser!!.firstName,
-                facebookUser!!.lastName,
-                "Not set",
-                facebookUser!!.email,
-                "",
-                "",
-                facebookUser!!.displayName,
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID),
-                "facebook",
-                facebookUser!!.facebookId)
-
-        //        UserProfileModel userProfileModel = new UserProfileModel();
-        //        userProfileModel.setFirstName(facebookUser.firstName);
-        //        userProfileModel.setLastName(facebookUser.lastName);
-        //        userProfileModel.setUserName(facebookUser.displayName);
-        //        userProfileModel.setPhoneNumber("Not Set");
-        //        userProfileModel.setPhoneNumber2("");
-        //        userProfileModel.setPhoneNumber3("");
-        //        userProfileModel.setEmail("Not Set");
-        //        userProfileModel.setEmail2("");
-        //        userProfileModel.setEmail3("");
-        //        userProfileModel.setAddress("");
-        //        userProfileModel.setCity("Not Set");
-        //        userProfileModel.setState("");
-        //        userProfileModel.setZip("");
-        //        userProfileModel.setFacebook("");
-        //        userProfileModel.setDeviceID("");
-        //        userProfileModel.setPhone_ID(Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID));
-        //        userProfileModel.setAccountID("");
-        //        userProfileModel.setSocialMedia("facebook");
-        //        userProfileModel.setSocialMediaID(facebookUser.facebookId);
-
-        //        ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), true);
-        //        ApplicationPrefs.getInstance(activity).setUserProfilePref(userProfileModel);
-
-        //        userIsLoggedInGotoMainActivity();
-    }
 
 
     internal inner class GetUserLoginCredentialsResultTask : AsyncTask<String, Void, String>() {
@@ -977,17 +476,7 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
                             userProfileObject.toString(),
                             UserProfileModel::class.java)
 
-                    if (isGooglePlusLogin && (userProfileModel.socialMedia == null || userProfileModel.socialMedia != "googleplus")) {
-                        //Log.dMainActivity.TAG, "User needs to be udpated to be a Google Plus user")
-                        saveGooglePlusCurrentUser()
 
-                    }
-
-                    if (isFacebookLogin && (userProfileModel.socialMedia == null || userProfileModel.socialMedia != "facebook")) {
-                        //Log.dMainActivity.TAG, "User needs to be udpated to be a Facebook user")
-                        saveFacebookUser()
-
-                    }
                     val userAccountModel = Gson().fromJson(
                             userAccountObject.toString(),
                             UserAccountModel::class.java)
@@ -1045,28 +534,15 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
 
                 }
 
-                if (isGooglePlusLogin) {
-                    ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_google_plus), true)
-                    ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
-                    ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_email), false)
-                } else if (isFacebookLogin) {
-                    ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_google_plus), false)
-                    ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), true)
-                    ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_email), false)
-                } else {
+
                     ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_google_plus), false)
                     ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
                     ApplicationPrefs.getInstance(activity).setBooleanPref(getString(R.string.is_user_logged_in_with_email), true)
-                }
+
                 userIsLoggedInGotoMainActivity()
 
             } catch (jsonExp: JSONException) {
-                //Log.dMainActivity.TAG, jsonExp.message)
-                if (isGooglePlusLogin) {
-                    saveGooglePlusCurrentUser()
-                } else if (isFacebookLogin) {
-                    saveFacebookUser()
-                } else {
+
                     jsonExp.printStackTrace()
                     activity!!.toast("Invalid username or password")
                     val failedLoginDialog = AlertDialog.Builder(activity)
@@ -1074,25 +550,18 @@ class LoginActivity : Activity(), View.OnClickListener, GoogleApiClient.Connecti
                     failedLoginDialog.setPositiveButton("OK", null)
                     failedLoginDialog.show()
                     //progressDialog.dismiss();
-                }
                 return
             }
 
         } else {
 
-            if (isGooglePlusLogin) {
-                saveGooglePlusCurrentUser()
-            } else if (isFacebookLogin) {
-                saveFacebookUser()
-            } else {
+
                 //Log.dMainActivity.TAG, "I am here !!!!  ")
                 val failedLoginDialog = AlertDialog.Builder(activity)
                 failedLoginDialog.setMessage("Invalid username or password")
                 failedLoginDialog.setPositiveButton("OK", null)
                 failedLoginDialog.show()
-            }
-
-        }
+           }
     }
 
     companion object {

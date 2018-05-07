@@ -128,29 +128,33 @@ class FragmentARRAVFacility : Fragment() {
 
     private fun setFieldsValues() {
         FacilityDataModel.getInstance().apply {
-            contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
-            contract_type_textviewVal.text = "" + tblContractType[0].ContractTypeName
-            office_textviewVal.text = "" + tblOfficeType[0].OfficeName
-            assignedto_textviewVal.text = tblFacilities.get(0).AssignedTo
-            dba_textviewVal.text = tblFacilities.get(0).AdminAssistants
-            entity_textviewVal.text = tblFacilities.get(0).EntityName
-            bustype_textviewVal.text = tblBusinessType[0].BusTypeName
-            timezone_textviewVal.setSelection(timeZonesArray.indexOf(tblTimezoneType[0].TimezoneName))
-            website_textviewVal.setText(tblFacilities.get(0).WebSite)
-            wifi_textview.isChecked = tblFacilities.get(0).SvcAvailability.toInt() ==1
-            texno_textviewVal.setText(tblFacilities.get(0).TaxIDNumber)
-            repairorder_textviewVal.setText("" + tblFacilities.get(0).FacilityRepairOrderCount)
-            availability_textviewVal.setSelection(tblFacilities.get(0).SvcAvailability)
-            facilitytype_textviewVal.setSelection(facilityTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
-            ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
-            ARDexp_textviewVal.setText(tblFacilities.get(0).AutomotiveRepairExpDate)
-            providertype_textviewVal.setText(tblFacilityServiceProvider[0].SrvProviderId)
+            try {
+                contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
+                contract_type_textviewVal.text = "" + tblContractType[0].ContractTypeName
+//            office_textviewVal.text = "" + tblOfficeType[0].OfficeName
+                assignedto_textviewVal.text = tblFacilities.get(0).AssignedTo
+                dba_textviewVal.text = tblFacilities.get(0).AdminAssistants
+                entity_textviewVal.text = tblFacilities.get(0).EntityName
+                bustype_textviewVal.text = tblBusinessType[0].BusTypeName
+                timezone_textviewVal.setSelection(timeZonesArray.indexOf(tblTimezoneType[0].TimezoneName))
+                website_textviewVal.setText(tblFacilities.get(0).WebSite)
+                wifi_textview.isChecked = tblFacilities.get(0).SvcAvailability.toInt() == 1
+                texno_textviewVal.setText(tblFacilities.get(0).TaxIDNumber)
+                repairorder_textviewVal.setText("" + tblFacilities.get(0).FacilityRepairOrderCount)
+                availability_textviewVal.setSelection(tblFacilities.get(0).SvcAvailability)
+                facilitytype_textviewVal.setSelection(facilityTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
+                ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
+                ARDexp_textviewVal.setText(tblFacilities.get(0).AutomotiveRepairExpDate)
+                providertype_textviewVal.setText(tblFacilityServiceProvider[0].SrvProviderId)
 
-            currcodate_textviewVal.setText(tblFacilities.get(0).ContractCurrentDate)
-            initcodate_textviewVal.setText(tblFacilities.get(0).ContractInitialDate)
-            billingmonth_textviewVal.text=""+tblFacilities.get(0).BillingMonth
-            billingamount_textviewVal.text = "" + tblFacilities.get(0).BillingAmount
-            InsuranceExpDate_textviewVal.text = tblFacilities.get(0).InsuranceExpDate
+                currcodate_textviewVal.setText(tblFacilities.get(0).ContractCurrentDate)
+                initcodate_textviewVal.setText(tblFacilities.get(0).ContractInitialDate)
+                billingmonth_textviewVal.text = "" + tblFacilities.get(0).BillingMonth
+                billingamount_textviewVal.text = "" + tblFacilities.get(0).BillingAmount
+                InsuranceExpDate_textviewVal.text = tblFacilities.get(0).InsuranceExpDate
+            }catch (exp:Exception){
+
+            }
         }
 
         if (arguments!!.getBoolean(isValidating)) {

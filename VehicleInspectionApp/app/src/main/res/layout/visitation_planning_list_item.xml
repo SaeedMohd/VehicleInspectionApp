@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <View
+        android:id="@+id/separatorView"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        />
+    
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/separatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/facilityNameTextView"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ID:"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+
+
+        <TextView
+            android:id="@+id/facilityNameValueTextView"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/facilityNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_alignParentRight="true"
+            android:text="" />
+
+
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_toRightOf="@id/separatorView"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/initialContractDateTextView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Initial Contract Date:"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+
+
+        <TextView
+            android:id="@+id/initialContractDateValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/initialContractDateTextView"
+            android:layout_alignParentRight="true"
+            android:textAlignment="center"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/loadBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/transparent"
+            android:clickable="true"
+            android:padding="5dp"
+            android:text="Load Visitation -->"
+            android:textColor="#0000ff"
+            android:layout_below="@id/visitationItemPlanned"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+</RelativeLayout>

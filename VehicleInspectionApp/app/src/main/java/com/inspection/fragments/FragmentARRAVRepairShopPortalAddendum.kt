@@ -5,9 +5,14 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
@@ -56,19 +61,19 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             dpd.show()
         }
 
-        endDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                endDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
+//        endDateButton.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year,monthOfYear,dayOfMonth)
+//                endDateButton!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
 
         addendumSignedDateButton.setOnClickListener {
             val c = Calendar.getInstance()
@@ -99,12 +104,13 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
 
         fillData()
+        fillPortalTrackingTableView();
     }
 
     fun fillData(){
         FacilityDataModel.getInstance().tblAARPortalAdmin[0].apply {
             startDateButton.text = startDate
-            endDateButton.text = PortalInspectionDate
+//            endDateButton.text = PortalInspectionDate
             addendumSignedDateButton.text = AddendumSigned
             numberOfCardsReaderEditText.setText(CardReaders)
             inspectionDateButton.text = PortalInspectionDate
@@ -120,7 +126,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         var isInputsValid = true
 
         startDateButton.setError(null)
-        endDateButton.setError(null)
+//        endDateButton.setError(null)
         addendumSignedDateButton.setError(null)
         numberOfCardsReaderEditText.setError(null)
         inspectionDateButton.setError(null)
@@ -131,10 +137,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         if (!startDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
 
-            if (endDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-                isInputsValid = false
-                endDateButton.setError("Required Field")
-            }
+//            if (endDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+//                isInputsValid = false
+//                endDateButton.setError("Required Field")
+//            }
 
             if (addendumSignedDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
                 isInputsValid = false
@@ -170,9 +176,72 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
 
 
+
         return isInputsValid
     }
 
+    fun fillPortalTrackingTableView(){
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
+
+            (0 until size/2).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).PortalInspectionDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).LoggedIntoPortal
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = get(it).NumberUnacknowledgedTows
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).InProgressTows
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).InProgressWalkIns
+                tableRow.addView(textView)
+
+                aarPortalTrackingTableLayout.addView(tableRow)
+            }
+        }
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
