@@ -108,7 +108,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                     fragmentLocations?.prepareLocationPage()
                 } else if (position == 2) {
                     val fragmentFacilityCont = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as? FragmentARRAVFacilityContinued
-                    fragmentFacilityCont?.prepareFacilityContinuedPage()
+//                    fragmentFacilityCont?.prepareFacilityContinuedPage()
                 } else if (position == 8) {
                     val fragmentScope = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as? FragmentARRAVScopeOfService
                     fragmentScope?.prepareScopePage()
@@ -170,9 +170,9 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         if (!fragmentVisitation.validateInputs()) {
             isValidInput = !isValidInput
             errorText = " Please complete General Information Form"
-        } else if (!fragmentFacilityContinued.validateInputs()) {
-            isValidInput = !isValidInput
-            errorText += "Please complete Facility Continued Form"
+//        } else if (!fragmentFacilityContinued.validateInputs()) {
+//            isValidInput = !isValidInput
+//            errorText += "Please complete Facility Continued Form"
         } else if (!fragmentFacilityLocation.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Location Information Form"

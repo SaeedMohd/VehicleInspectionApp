@@ -111,7 +111,6 @@
                     />
                 <Button
                     android:id="@+id/afDtlseffective_date_textviewVal"
-                    android:layout_toRightOf="@id/contract_type_textview"
                     android:layout_below="@id/connumberll"
                     android:layout_width="0dp"
                     android:text="select date"

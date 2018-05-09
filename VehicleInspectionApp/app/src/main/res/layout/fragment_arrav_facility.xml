@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/p2top1btn"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/p2top3btn"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginRight="15dp"
@@ -70,15 +70,59 @@
             android:padding="5dp">
 
             <LinearLayout
-                android:id="@+id/connumberll"
+                android:id="@+id/contractStatusLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/contractStatusTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="Contract Status: "
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/contractStatusRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/contractStatusTextView"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/activeRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:checked="true"
+                        android:text="Active" />
+
+                    <RadioButton
+                        android:id="@+id/inActiveRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="InActive" />
+
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/contractStatusLayout"
+                android:orientation="horizontal"
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/contract_number_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
@@ -87,56 +131,242 @@
 
                 <TextView
                     android:id="@+id/contract_number_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
                     android:layout_toRightOf="@id/contract_number_textview"
                     android:layout_weight="1"
+                    android:background="@drawable/textview_background"
+                    android:padding="5dp"
                     android:text="test" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/contypell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/connumberll"
-                android:orientation="horizontal"
-                android:weightSum="2">
 
                 <TextView
-                    android:id="@+id/contract_type_textview"
-                    android:layout_width="0dp"
+                    android:id="@+id/contractTypeTextView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/connumberll"
-                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:text="Contract Type: "
                     android:textStyle="bold" />
 
+                <Spinner
+                    android:id="@+id/contractTypeValueSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@id/contractTypeTextView"
+                    android:layout_weight="1"
+                    android:entries="@array/contractTypesEntries"
+                    android:text="test" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/providertypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
                 <TextView
-                    android:id="@+id/contract_type_textviewVal"
-                    android:layout_width="0dp"
+                    android:id="@+id/providertype_textview"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/connumberll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/contract_type_textview"
                     android:layout_weight="1"
-                    android:text="test" />
+                    android:text="Provider Type: "
+                    android:textStyle="bold" />
+
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/aarCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AAR"
+                        android:checked="true"/>
+
+                    <CheckBox
+                        android:id="@+id/aabCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AAB" />
+
+                    <CheckBox
+                        android:id="@+id/aagCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AAG" />
+
+                    <CheckBox
+                        android:id="@+id/cogCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="COG" />
+
+                    <CheckBox
+                        android:id="@+id/corCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="COR" />
+
+                    <CheckBox
+                        android:id="@+id/ersCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ERS" />
+
+                    <CheckBox
+                        android:id="@+id/mprCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MPR" />
+
+                    <CheckBox
+                        android:id="@+id/pspCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PSP" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/aarEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:background="@drawable/textview_background"
+                        android:ems="10"
+                        android:padding="5dp"
+                        />
+
+
+                    <EditText
+                        android:id="@+id/aabEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_background"
+                        android:ems="10"
+                        android:textSize="12sp"
+                        android:padding="5dp"
+                        android:text="" />
+
+                    <EditText
+                        android:id="@+id/aagEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_background"
+                        android:ems="10"
+                        android:textSize="12sp"
+                        android:padding="5dp"
+                        android:text="" />
+
+                    <EditText
+                        android:id="@+id/cogEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:background="@drawable/textview_background"
+                        android:ems="10"
+                        android:padding="5dp"
+                        android:text="" />
+
+                    <EditText
+                        android:id="@+id/corEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:textSize="12sp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="5dp"
+
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_background"
+                        android:ems="10"
+                        android:padding="5dp"
+                        android:text="" />
+
+                    <EditText
+                        android:id="@+id/ersEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:textSize="12sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_background"
+                        android:ems="10"
+                        android:padding="5dp"
+                        android:text="" />
+
+                    <EditText
+                        android:id="@+id/mprEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:background="@drawable/textview_background"
+                        android:ems="10"
+                        android:padding="5dp"
+                        android:text="" />
+
+                    <EditText
+                        android:id="@+id/pspEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:background="@drawable/textview_background"
+                        android:ems="10"
+                        android:padding="5dp"
+                        android:text="" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/officell"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/contypell"
+                android:layout_below="@id/providertypell"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/office_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/contypell"
+                    android:layout_below="@id/providertypell"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:text="Office: "
@@ -144,9 +374,9 @@
 
                 <TextView
                     android:id="@+id/office_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/contypell"
+                    android:layout_below="@id/providertypell"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@id/office_textview"
                     android:layout_weight="1"
@@ -159,11 +389,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/officell"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/assignedto_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/officell"
                     android:layout_marginTop="10dp"
@@ -173,7 +403,7 @@
 
                 <TextView
                     android:id="@+id/assignedto_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/officell"
                     android:layout_marginTop="10dp"
@@ -188,11 +418,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/AssignedToll"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/dba_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/AssignedToll"
                     android:layout_marginTop="10dp"
@@ -202,7 +432,7 @@
 
                 <TextView
                     android:id="@+id/dba_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/AssignedToll"
                     android:layout_marginTop="10dp"
@@ -217,11 +447,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dball"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/entity_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/dball"
                     android:layout_marginTop="10dp"
@@ -231,7 +461,7 @@
 
                 <TextView
                     android:id="@+id/entity_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/dball"
                     android:layout_marginTop="10dp"
@@ -246,11 +476,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/entityll"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/bustype_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/entityll"
                     android:layout_marginTop="10dp"
@@ -260,7 +490,7 @@
 
                 <TextView
                     android:id="@+id/bustype_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/entityll"
                     android:layout_marginTop="10dp"
@@ -269,19 +499,107 @@
                     android:text="test" />
             </LinearLayout>
 
+
             <LinearLayout
-                android:id="@+id/timezonell"
+                android:id="@+id/terminationDateLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/bustypell"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/terminationDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Termination Date: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/terminationDateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/terminationReasonLinearLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/terminationDateLinearLayout"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/terminationReasonTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Termination Reason: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/terminationReasonEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/terminationCommentLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/terminationReasonLinearLayout"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/terminationReasonTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Termination Comment: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/terminationCommentEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="3"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:lines="8"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/timezonell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/terminationCommentLinearLayout"
+                android:orientation="horizontal"
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/timezone_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/bustypell"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:text="Time Zone: "
@@ -289,9 +607,8 @@
 
                 <Spinner
                     android:id="@+id/timezone_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/bustypell"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@id/timezone_textview"
                     android:layout_weight="1"
@@ -304,19 +621,19 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/timezonell"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/payment_methods_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:text="Payment Methods: "
                     android:textStyle="bold" />
 
                 <com.google.android.flexbox.FlexboxLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_weight="1"
@@ -403,11 +720,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/paymentMethodsLinearLayout"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/website_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/timezonell"
                     android:layout_marginTop="10dp"
@@ -417,7 +734,7 @@
 
                 <EditText
                     android:id="@+id/website_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/timezonell"
                     android:layout_marginTop="10dp"
@@ -443,11 +760,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/wifi_textview"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/website_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/wifi_textview"
                     android:layout_marginTop="10dp"
@@ -457,7 +774,7 @@
 
                 <TextView
                     android:id="@+id/texno_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/wifi_textview"
                     android:layout_marginTop="10dp"
@@ -472,11 +789,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tax_textview"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/repairorder_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tax_textview"
                     android:layout_marginTop="10dp"
@@ -486,7 +803,7 @@
 
                 <EditText
                     android:id="@+id/repairorder_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tax_textview"
                     android:layout_marginTop="10dp"
@@ -500,16 +817,69 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/availabilityll"
+                android:id="@+id/inspectionMonth"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/repairorderll"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/InspectionMonthTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/repairorderll"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Inspection Monthn:"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/inspectionMonthsSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/repairorderll"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@id/availability_textview"
+                    android:entries="@array/inspectionMonths"
+                    android:layout_weight="1"
+                    />
+
+
+                <TextView
+                    android:id="@+id/InspectionCycleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/repairorderll"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Inspection Monthn:"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/inspectionCycleSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/repairorderll"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@id/availability_textview"
+                    android:entries="@array/inspectionCycle"
+                    android:layout_weight="1"
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/availabilityll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/inspectionMonth"
+                android:orientation="horizontal"
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/availability_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/repairorderll"
                     android:layout_marginTop="10dp"
@@ -519,7 +889,7 @@
 
                 <Spinner
                     android:id="@+id/availability_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/repairorderll"
                     android:layout_marginTop="10dp"
@@ -534,11 +904,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/availabilityll"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/facilitytype_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/availabilityll"
                     android:layout_marginTop="10dp"
@@ -548,7 +918,7 @@
 
                 <Spinner
                     android:id="@+id/facilitytype_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/availabilityll"
                     android:layout_marginTop="10dp"
@@ -563,11 +933,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/facilitytypell"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/ARDno_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/facilitytypell"
                     android:layout_marginTop="10dp"
@@ -577,7 +947,7 @@
 
                 <EditText
                     android:id="@+id/ARDno_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/facilitytypell"
                     android:layout_marginTop="10dp"
@@ -596,11 +966,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ARDnoll"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/ARDexp_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ARDnoll"
                     android:layout_marginTop="10dp"
@@ -610,7 +980,7 @@
 
                 <Button
                     android:id="@+id/ARDexp_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ARDnoll"
                     android:layout_marginTop="10dp"
@@ -622,49 +992,20 @@
                     android:textSize="12dp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/providertypell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ARDexpll"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/providertype_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ARDexpll"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Provider Type: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/providertype_textviewVal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ARDexpll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/providertype_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/currcodatell"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/providertypell"
+                android:layout_below="@id/ARDexpll"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/currcodate_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/providertypell"
+                    android:layout_below="@id/ARDexpll"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:text="Current Contract Date: "
@@ -672,9 +1013,9 @@
 
                 <TextView
                     android:id="@+id/currcodate_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/providertypell"
+                    android:layout_below="@id/ARDexpll"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@id/currcodate_textview"
                     android:layout_weight="1"
@@ -687,11 +1028,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/currcodatell"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/initcodate_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/currcodatell"
                     android:layout_marginTop="10dp"
@@ -701,7 +1042,7 @@
 
                 <TextView
                     android:id="@+id/initcodate_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/currcodatell"
                     android:layout_marginTop="10dp"
@@ -711,76 +1052,18 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/billingmonthll"
+                android:id="@+id/InsuranceExpDatell"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/initcodatell"
                 android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/billingmonth_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/initcodatell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Billing Month: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/billingmonth_textviewVal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/initcodatell"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/billingmonth_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/billingamountll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/billingmonthll"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/billingamount_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/billingmonthll"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Billing Amount: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/billingamount_textviewVal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/billingmonthll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/billingamount_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/InsuranceExpDatell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/billingamountll"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/InsuranceExpDate_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/billingamountll"
+                    android:layout_below="@id/initcodatell"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:text="Insurance Expiration Date: "
@@ -788,9 +1071,9 @@
 
                 <Button
                     android:id="@+id/InsuranceExpDate_textviewVal"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/billingamountll"
+                    android:layout_below="@id/initcodatell"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@id/InsuranceExpDate_textview"
                     android:layout_weight="1"
@@ -801,23 +1084,23 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_below="@id/InsuranceExpDatell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_below="@id/InsuranceExpDatell"
+                android:layout_centerHorizontal="true"
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/saveButton"
                     android:text="Save" />
 
                 <Button
+                    android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cancelButton"
                     android:text="Cancel" />
             </LinearLayout>
         </RelativeLayout>

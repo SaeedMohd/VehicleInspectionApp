@@ -125,7 +125,7 @@
                     />
                 <EditText
                     android:id="@+id/laborRateMatrixMinEditText"
-                    android:layout_toRightOf="@id/contract_type_textview"
+
                     android:layout_below="@id/connumberll"
                     android:layout_width="0dp"
                     android:background="@null"

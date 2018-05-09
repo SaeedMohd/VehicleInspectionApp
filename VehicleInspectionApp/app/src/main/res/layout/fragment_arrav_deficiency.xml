@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/connumberll"
                     android:layout_gravity="center_vertical"
-                    android:layout_toRightOf="@id/contract_type_textview"
+
                     android:layout_weight="1"
                     android:background="@null"
                     android:text="select date"

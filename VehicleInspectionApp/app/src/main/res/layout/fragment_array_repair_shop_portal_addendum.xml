@@ -13,7 +13,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:textAllCaps="true"
-        android:text="repair shop portal addendum"
+        android:text="Repair Shop Portal"
         android:textSize="18dp"
         android:textStyle="bold" />
 
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/program_name_textview"
@@ -84,7 +84,7 @@
                 android:layout_below="@id/connumberll"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/program_name_textview"
@@ -114,7 +114,7 @@
                 android:layout_below="@id/affliationdetails"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
 
@@ -212,6 +212,14 @@
                 </TableRow>
             </TableLayout>
 
+            <Button
+                android:id="@+id/addNewAarButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Add new AAR Portal Tracking"
+                />
+
             <LinearLayout
                 android:id="@+id/affliationdetails"
                 android:layout_width="fill_parent"
@@ -219,11 +227,11 @@
                 android:layout_below="@id/connumberll"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/program_name_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -232,7 +240,7 @@
 
                 <Button
                     android:id="@+id/inspectionDateButton"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_toRightOf="@id/contract_number_textview"
@@ -249,26 +257,25 @@
                 android:layout_below="@id/connumberll"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/program_name_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="Logged Into RSP: "
                     android:textStyle="bold" />
 
-                <Button
+                <Switch
                     android:id="@+id/loggedIntoRspButton"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_toRightOf="@id/contract_number_textview"
                     android:layout_weight="1"
-                    android:background="@null"
-                    android:text="Select Date"
+                    android:gravity="center"
                     android:textColor="@color/blue_krayola" />
             </LinearLayout>
 
@@ -279,15 +286,15 @@
                 android:layout_below="@id/affliationdetails"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/effective_date_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/connumberll"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:text="Number Of Unacknowledged Records: "
                     android:textStyle="bold" />
 
@@ -295,14 +302,12 @@
                     android:id="@+id/numberOfUnacknowledgedRecordsEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:background="@null"
-                    android:ems="2"
+                    android:layout_weight="1"
+                    android:background="@drawable/textview_background"
                     android:layout_gravity="center"
                     android:gravity="center_horizontal"
-                    android:text="00"
+                    android:text="0"
                     android:inputType="number"
-
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -314,15 +319,15 @@
                 android:layout_below="@id/affliationdetails"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/effective_date_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/connumberll"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:text="Number Of In-Progress Two-Ins: "
                     android:textStyle="bold" />
 
@@ -330,12 +335,11 @@
                     android:id="@+id/numberOfInProgressTwoIns"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:ems="2"
-                    android:background="@null"
+                    android:layout_weight="1"
+                    android:background="@drawable/textview_background"
                     android:layout_gravity="center"
                     android:gravity="center_horizontal"
-                    android:text=""
+                    android:text="0"
                     android:inputType="number"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -348,15 +352,15 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/effective_date_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/connumberll"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:text="Number Of In-Progress Walk-Ins: "
                     android:textStyle="bold" />
 
@@ -364,12 +368,11 @@
                     android:id="@+id/numberOfInProgressWalkIns"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:background="@null"
+                    android:layout_weight="1"
+                    android:background="@drawable/textview_background"
                     android:layout_gravity="center"
                     android:gravity="center_horizontal"
-                    android:ems="2"
-                    android:text=""
+                    android:text="0"
                     android:inputType="number"
                     android:textStyle="bold" />
             </LinearLayout>

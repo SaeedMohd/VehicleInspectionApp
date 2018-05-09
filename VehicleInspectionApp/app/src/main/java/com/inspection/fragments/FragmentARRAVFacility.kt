@@ -14,6 +14,7 @@ import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.toAppFormat
+import com.inspection.Utils.toast
 import com.inspection.model.FacilityDataModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
@@ -129,11 +130,25 @@ class FragmentARRAVFacility : Fragment() {
     private fun setFieldsValues() {
         FacilityDataModel.getInstance().apply {
             try {
+
+                if(tblFacilities[0].ACTIVE==1){
+                    activeRadioButton.isChecked = true
+                }else{
+                    inActiveRadioButton.isChecked = true
+                }
+
+
+
                 contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
-                contract_type_textviewVal.text = "" + tblContractType[0].ContractTypeName
-//            office_textviewVal.text = "" + tblOfficeType[0].OfficeName
+                aarEditText.setText(""+tblFacilities[0].FACNo)
+//                contractType.text = "" + tblContractType[0].ContractTypeName
+                if (tblOfficeType[0].OfficeName.isNotEmpty()) {
+                    office_textviewVal.text = "" + tblOfficeType[0].OfficeName
+                }else{
+                    office_textviewVal.text = ""
+                }
                 assignedto_textviewVal.text = tblFacilities.get(0).AssignedTo
-                dba_textviewVal.text = tblFacilities.get(0).AdminAssistants
+                dba_textviewVal.text = tblFacilities.get(0).BusinessName
                 entity_textviewVal.text = tblFacilities.get(0).EntityName
                 bustype_textviewVal.text = tblBusinessType[0].BusTypeName
                 timezone_textviewVal.setSelection(timeZonesArray.indexOf(tblTimezoneType[0].TimezoneName))
@@ -145,15 +160,17 @@ class FragmentARRAVFacility : Fragment() {
                 facilitytype_textviewVal.setSelection(facilityTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
                 ARDexp_textviewVal.setText(tblFacilities.get(0).AutomotiveRepairExpDate)
-                providertype_textviewVal.setText(tblFacilityServiceProvider[0].SrvProviderId)
+                terminationDateButton.setText(""+tblFacilities[0].TerminationDate)
+                terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
+//                providertype_textviewVal.setText(tblFacilityServiceProvider[0].SrvProviderId)
 
                 currcodate_textviewVal.setText(tblFacilities.get(0).ContractCurrentDate)
                 initcodate_textviewVal.setText(tblFacilities.get(0).ContractInitialDate)
-                billingmonth_textviewVal.text = "" + tblFacilities.get(0).BillingMonth
-                billingamount_textviewVal.text = "" + tblFacilities.get(0).BillingAmount
+//                billingmonth_textviewVal.text = "" + tblFacilities.get(0).BillingMonth
+//                billingamount_textviewVal.text = "" + tblFacilities.get(0).BillingAmount
                 InsuranceExpDate_textviewVal.text = tblFacilities.get(0).InsuranceExpDate
             }catch (exp:Exception){
-
+                exp.printStackTrace()
             }
         }
 

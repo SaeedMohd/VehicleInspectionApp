@@ -24,30 +24,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             />
-        <TextView
-            android:id="@+id/p3top2btn"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:paddingTop="5dp"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:gravity="right"
-            android:layout_gravity="center"
-            android:text=">"/>
-        <TextView
-            android:id="@+id/p3top4btn"
-            android:layout_width="0dp"
-            android:paddingTop="5dp"
-            android:paddingLeft="5dp"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:layout_height="match_parent"
-            android:layout_marginRight="15dp"
-            android:textSize="20dp"
-            android:gravity="right"
-            android:layout_gravity="center"
-            android:text=">"/>
+
     </LinearLayout>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -56,959 +33,1603 @@
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:paddingBottom="10dp"
+        android:layout_margin="10dp"
         android:paddingTop="5dp"
-        android:background="@color/light_gray"
+        android:background="@color/white"
         android:orientation="vertical">
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="5dp">
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/paymethodsll">
-                <ProgressBar
-                    android:id="@+id/progressbarFacContinued"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    android:max="100"
-                    android:backgroundTint="@color/white"
-                    android:indeterminateTint="#1a09d6"
-                    android:layout_marginTop="-7dp"/>
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Locations"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_margin="10dp"
+            android:textColor="#827908"
+            />
 
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:background="@color/light_gray"
-                    android:id="@+id/location1ll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Location Type:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/loc1AddrType"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginTop="5dp"
-                        android:text="Physical Location"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Location"
+            />
 
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc1addr1ll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Address 1:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/phylocAddr1address"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:lines="5"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc1addr1latitudell">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Latitude:"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/phyloc1addr1latitude"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:textSize="14dp"
-                        android:hint="Please add location latitude"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc1addr1longitudell">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:textStyle="bold"
-                        android:text="Longitude:"
-                        />
-                    <EditText
-                        android:id="@+id/phyloc1addr1longitude"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:textSize="14dp"
-                        android:layout_marginTop="5dp"
-                        android:hint="Please add location longitude"
-                        android:text=""
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc1addr1branchnoll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Branch Number:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/phyloc1addr1branchno"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc1addr1branchnamell">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Branch Name:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/phyloc1addr1branchname"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc1addr2ll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Address 2:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/phylocAddr2address"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:lines="5"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:visibility="gone"
-                    android:id="@+id/loc1addr2latitudell">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Latitude:"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/phyloc1addr2latitude"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:textSize="14dp"
-                        android:hint="Please add location latitude"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:visibility="gone"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc1addr2longitudell">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:textStyle="bold"
-                        android:text="Longitude:"
-                        />
-                    <EditText
-                        android:id="@+id/phyloc1addr2longitude"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:textSize="14dp"
-                        android:layout_marginTop="5dp"
-                        android:hint="Please add location longitude"
-                        android:text=""
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:visibility="gone"
-                    android:id="@+id/loc1addr2branchnoll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Branch Number:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/phyloc1addr2branchno"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:visibility="gone"
-                    android:id="@+id/loc1addr2branchnamell">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Branch Name:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/phyloc1addr2branchname"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:background="@color/light_gray"
-                    android:id="@+id/location2ll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Location Type:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/loc2AddrType"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginTop="5dp"
-                        android:text="Mailing Location"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc2addr1ll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Address 1:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/mailAddr1address"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:lines="5"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc2addr2branchnoll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Branch Number:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/mailaddr1branchno"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc1addr2branchnamell">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Branch Name:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/mailaddr1branchname"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/loc2addr2ll">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="Address 2:"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/mailAddr2address"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:lines="5"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/paymethodsll"
-                android:orientation="vertical"
-                android:id="@+id/ophoursll">
+            <TableRow>r
                 <TextView
-                    android:id="@+id/ophours_title_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/paymethodsll"
-                    android:layout_marginTop="10dp"
-                    android:text="Hours of Operation"
-                    android:textStyle="bold"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="5"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="Day"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:gravity="center"
-                        android:text="Open Hours"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:layout_weight="2"
-                        android:text="Closed Hours"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="5"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/monday_title_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="Monday"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/monday_open_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:text="Hours of Operation"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/monday_closed_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:text="Hours of Operation"
-                        android:textStyle="bold" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="5"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/tuesday_title_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="Tuesday"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/tuesday_open_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/tuesday_closed_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="5"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/wednesday_title_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="Wednesday"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/wednesday_open_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/wednesday_closed_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="5"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/thursday_title_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="Thursday"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/thursday_open_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/thursday_closed_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="5"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/friday_title_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="Friday"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/friday_open_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/friday_closed_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="5"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/saturday_title_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="Saturday"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/saturday_open_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/saturday_closed_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="5"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/sunday_title_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="Sunday"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/sunday_open_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/sunday_closed_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-            <CheckBox
-                android:id="@+id/nightdrop_checkbox"
-                android:layout_width="match_parent"
-                android:text="Night Drop"
-                android:layout_below="@id/ophoursll"
-                android:layout_marginTop="5dp"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:layout_below="@id/nightdrop_checkbox"
-                android:orientation="horizontal"
-                android:id="@+id/nightinstructionsll">
-                <TextView
-                    android:id="@+id/nightinstructions_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/facilitytypell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Night Instructions: "
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/nightinstructions_textviewVal"
-                    android:layout_toRightOf="@id/nightinstructions_textview"
-                    android:layout_below="@id/facilitytypell"
-                    android:layout_width="0dp"
-                    android:text=""
-                    android:maxLength="250"
-                    android:inputType="textMultiLine"
-                    android:lines="8"
-                    android:minLines="6"
-                    android:gravity="center_vertical|left"
-                    android:hint="Enter Night instructions"
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
-                    android:layout_weight="2"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/nightinstructionsll"
-                android:orientation="horizontal"
-                android:id="@+id/emailtypell">
-                <TextView
-                    android:id="@+id/emailtype_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Email Type: "
-                    android:textStyle="bold"
-                    />
-                <Spinner
-                    android:id="@+id/emailtype_textviewVal"
-                    android:layout_toRightOf="@id/emailtype_textview"
-                    android:layout_width="0dp"
-                    android:text="test"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:layout_below="@id/emailtypell"
-                android:orientation="horizontal"
-                android:id="@+id/emailll">
-                <TextView
-                    android:id="@+id/email_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/emailtypell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Email Address: "
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/email_textviewVal"
-                    android:layout_toRightOf="@id/email_textview"
-                    android:layout_below="@id/emailtypell"
-                    android:layout_width="0dp"
-                    android:hint="Enter Email Address"
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 .@"
-                    android:layout_weight="2"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/emailll"
-                android:orientation="horizontal"
-                android:id="@+id/phonetypell">
-                <TextView
-                    android:id="@+id/phonetype_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Phone Type: "
-                    android:textStyle="bold"
-                    />
-                <Spinner
-                    android:id="@+id/phonetype_textviewVal"
-                    android:layout_toRightOf="@id/phonetype_textview"
-                    android:layout_width="0dp"
-                    android:text="test"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:layout_below="@id/phonetypell"
-                android:orientation="horizontal"
-                android:id="@+id/phonell">
-                <TextView
-                    android:id="@+id/phone_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Phone Number: "
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/phone_textviewVal"
-                    android:layout_toRightOf="@id/phone_textview"
-                    android:layout_width="0dp"
-                    android:hint="Enter Phone Number"
-                    android:inputType="number"
-                    android:layout_weight="2"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:orientation="horizontal"
-                android:layout_below="@id/phonell"
-                >
-
-                <TextView
-                    android:id="@+id/languageSpokenTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Language Spoken:"
+                    android:layout_marginTop="5dp"
+                    android:text="Location Type:"
                     android:textStyle="bold"
-                    android:layout_weight="1"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <Spinner
+                    android:id="@+id/loc1AddrType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_column="1"
+                    android:entries="@array/locationTypes"
+                    android:textStyle="bold"
+
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Address 1:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/addressValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:layout_column="0"
+                    android:text="Address 2:"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/address2Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="City:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    />
+                <EditText
+                    android:id="@+id/cityValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    android:layout_column="1"
                     />
 
-                <com.google.android.flexbox.FlexboxLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginLeft="200dp"
-                    app:flexWrap="wrap"
-                    >
-                    
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Chinese"
-                        />
+                    android:layout_margin="5dp"
+                    android:text="Country:"
+                    android:textStyle="bold"
+                    android:layout_column="3"
+                    />
+                <EditText
+                    android:id="@+id/countryValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="English"
-                        />
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Status:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    />
+                <EditText
+                    android:id="@+id/statusValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_column="1"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Farsi"
-                        />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Zip Code:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/statusValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="French"
-                        />
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Latitude:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    />
+                <EditText
+                    android:id="@+id/latitudeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_column="1"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hindi"
-                        />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Logitude:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/longitudeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Japanese"
-                        />
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Branch Number:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    />
+                <EditText
+                    android:id="@+id/branchNumberValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_column="1"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Korean"
-                        />
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Other"
-                        />
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sign Language"
-                        />
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Spanish"
-                        />
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Urdu"
-                        />
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Vitnamese"
-                        />
-
-
-                </com.google.android.flexbox.FlexboxLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Branch Name:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/branchNameValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
 
 
-            </LinearLayout>
+            <TableRow>r
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Location Type:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <Spinner
+                    android:id="@+id/loc1AddrType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_column="1"
+                    android:entries="@array/locationTypes"
+                    android:textStyle="bold"
 
-        </RelativeLayout>
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Address 1:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/addressValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:layout_column="0"
+                    android:text="Address 2:"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/address2Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="City:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    />
+                <EditText
+                    android:id="@+id/cityValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Country:"
+                    android:textStyle="bold"
+                    android:layout_column="3"
+                    />
+                <EditText
+                    android:id="@+id/countryValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Status:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    />
+                <EditText
+                    android:id="@+id/statusValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_column="1"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Zip Code:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/statusValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Latitude:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    />
+                <EditText
+                    android:id="@+id/latitudeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_column="1"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Logitude:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/longitudeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Branch Number:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    />
+                <EditText
+                    android:id="@+id/branchNumberValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_column="1"
+                    android:text=""
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Branch Name:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/branchNameValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_margin="10dp"
+                    android:textColor="#827908"
+                    />
+            </TableRow>
+\
+            <TableRow>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add New Phone"
+                    />
+            </TableRow>
+
+            <TableRow>r
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Phone Type:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <Spinner
+                    android:id="@+id/loc1AddrType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_column="1"
+                    android:entries="@array/phoneTypes"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Description:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/loc1AddrType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_column="1"
+                    android:textStyle="bold"
+                    android:background="@drawable/textview_background"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Phone Number:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/phoneNumberEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_column="1"
+                    android:textStyle="bold"
+                    android:background="@drawable/textview_background"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Phone Extension:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/phoneExtensionEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_column="1"
+                    android:textStyle="bold"
+                    android:background="@drawable/textview_background"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_margin="10dp"
+                    android:textColor="#827908"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add New Email"
+                    />
+            </TableRow>
+
+            <TableRow>r
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Email Type:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <Spinner
+                    android:id="@+id/emailTypeSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_column="1"
+                    android:entries="@array/emailTypes"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Email Address:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/emailAddressEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_column="1"
+                    android:textStyle="bold"
+                    android:background="@drawable/textview_background"
+                    />
+            </TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_margin="10dp"
+                android:textColor="#827908"
+                />
+            <TableRow>
+
+
+            </TableRow>
+        </TableLayout>
+        </LinearLayout>
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/white"-->
+            <!--android:padding="5dp">-->
+            <!--<LinearLayout android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:id="@+id/paymethodsll">-->
+                <!--<ProgressBar-->
+                    <!--android:id="@+id/progressbarFacContinued"-->
+                    <!--style="?android:attr/progressBarStyleHorizontal"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:indeterminate="true"-->
+                    <!--android:max="100"-->
+                    <!--android:backgroundTint="@color/white"-->
+                    <!--android:indeterminateTint="#1a09d6"-->
+                    <!--android:layout_marginTop="-7dp"/>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:background="@color/light_gray"-->
+                    <!--android:id="@+id/location1ll">-->
+
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc1addr1ll">-->
+
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc1addr1latitudell">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Latitude:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/phyloc1addr1latitude"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textSize="14dp"-->
+                        <!--android:hint="Please add location latitude"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc1addr1longitudell">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:text="Longitude:"-->
+                        <!--/>-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/phyloc1addr1longitude"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textSize="14dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:hint="Please add location longitude"-->
+                        <!--android:text=""-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc1addr1branchnoll">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Branch Number:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/phyloc1addr1branchno"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc1addr1branchnamell">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Branch Name:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/phyloc1addr1branchname"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc1addr2ll">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Address 2:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/phylocAddr2address"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:lines="5"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:id="@+id/loc1addr2latitudell">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Latitude:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/phyloc1addr2latitude"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textSize="14dp"-->
+                        <!--android:hint="Please add location latitude"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc1addr2longitudell">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:text="Longitude:"-->
+                        <!--/>-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/phyloc1addr2longitude"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textSize="14dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:hint="Please add location longitude"-->
+                        <!--android:text=""-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:id="@+id/loc1addr2branchnoll">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Branch Number:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/phyloc1addr2branchno"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:id="@+id/loc1addr2branchnamell">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Branch Name:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/phyloc1addr2branchname"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:background="@color/light_gray"-->
+                    <!--android:id="@+id/location2ll">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Location Type:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/loc2AddrType"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text="Mailing Location"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc2addr1ll">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Address 1:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/mailAddr1address"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:lines="5"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc2addr2branchnoll">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Branch Number:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/mailaddr1branchno"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc1addr2branchnamell">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Branch Name:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/mailaddr1branchname"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3"-->
+                    <!--android:paddingLeft="20dp"-->
+                    <!--android:id="@+id/loc2addr2ll">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Address 2:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/mailAddr2address"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:lines="5"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+
+
+            <!--<LinearLayout android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/paymethodsll"-->
+                <!--android:orientation="vertical"-->
+                <!--android:id="@+id/ophoursll">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/ophours_title_textview"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/paymethodsll"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text="Hours of Operation"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:weightSum="5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Day"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="Open Hours"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:gravity="center"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:text="Closed Hours"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:weightSum="5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/monday_title_textview"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Monday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/monday_open_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:text="Hours of Operation"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/monday_closed_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:text="Hours of Operation"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:weightSum="5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/tuesday_title_textview"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Tuesday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/tuesday_open_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/tuesday_closed_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:weightSum="5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/wednesday_title_textview"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Wednesday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/wednesday_open_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/wednesday_closed_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:weightSum="5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/thursday_title_textview"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Thursday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/thursday_open_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/thursday_closed_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:weightSum="5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/friday_title_textview"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Friday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/friday_open_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/friday_closed_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:weightSum="5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/saturday_title_textview"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Saturday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/saturday_open_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/saturday_closed_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</LinearLayout>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:weightSum="5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/sunday_title_textview"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="Sunday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/sunday_open_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/sunday_closed_spinner"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+            <!--<CheckBox-->
+                <!--android:id="@+id/nightdrop_checkbox"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:text="Night Drop"-->
+                <!--android:layout_below="@id/ophoursll"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:layout_height="wrap_content" />-->
+
+            <!--<LinearLayout android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:weightSum="3"-->
+                <!--android:layout_below="@id/nightdrop_checkbox"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:id="@+id/nightinstructionsll">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/nightinstructions_textview"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/facilitytypell"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Night Instructions: "-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/nightinstructions_textviewVal"-->
+                    <!--android:layout_toRightOf="@id/nightinstructions_textview"-->
+                    <!--android:layout_below="@id/facilitytypell"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:text=""-->
+                    <!--android:maxLength="250"-->
+                    <!--android:inputType="textMultiLine"-->
+                    <!--android:lines="8"-->
+                    <!--android:minLines="6"-->
+                    <!--android:gravity="center_vertical|left"-->
+                    <!--android:hint="Enter Night instructions"-->
+                    <!--android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:textSize="12dp"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:weightSum="2"-->
+                <!--android:layout_below="@id/nightinstructionsll"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:id="@+id/emailtypell">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/emailtype_textview"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Email Type: "-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<Spinner-->
+                    <!--android:id="@+id/emailtype_textviewVal"-->
+                    <!--android:layout_toRightOf="@id/emailtype_textview"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:text="test"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:weightSum="3"-->
+                <!--android:layout_below="@id/emailtypell"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:id="@+id/emailll">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/email_textview"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/emailtypell"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Email Address: "-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/email_textviewVal"-->
+                    <!--android:layout_toRightOf="@id/email_textview"-->
+                    <!--android:layout_below="@id/emailtypell"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:hint="Enter Email Address"-->
+                    <!--android:digits="abcdefghijklmnopqrstuvwxyz1234567890 .@"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:textSize="12dp"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:weightSum="2"-->
+                <!--android:layout_below="@id/emailll"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:id="@+id/phonetypell">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/phonetype_textview"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Phone Type: "-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<Spinner-->
+                    <!--android:id="@+id/phonetype_textviewVal"-->
+                    <!--android:layout_toRightOf="@id/phonetype_textview"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:text="test"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:weightSum="3"-->
+                <!--android:layout_below="@id/phonetypell"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:id="@+id/phonell">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/phone_textview"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Phone Number: "-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/phone_textviewVal"-->
+                    <!--android:layout_toRightOf="@id/phone_textview"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:hint="Enter Phone Number"-->
+                    <!--android:inputType="number"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:textSize="12dp"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:weightSum="3"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_below="@id/phonell"-->
+                <!--&gt;-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/languageSpokenTextView"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Language Spoken:"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:layout_weight="1"-->
+                    <!--/>-->
+
+                <!--<com.google.android.flexbox.FlexboxLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_marginLeft="200dp"-->
+                    <!--app:flexWrap="wrap"-->
+                    <!--&gt;-->
+                    <!---->
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Chinese"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="English"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Farsi"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="French"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hindi"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Japanese"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Korean"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Other"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Sign Language"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Spanish"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Urdu"-->
+                        <!--/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Vitnamese"-->
+                        <!--/>-->
+
+
+                <!--</com.google.android.flexbox.FlexboxLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+        <!--</RelativeLayout>-->
     </ScrollView>
 </RelativeLayout>

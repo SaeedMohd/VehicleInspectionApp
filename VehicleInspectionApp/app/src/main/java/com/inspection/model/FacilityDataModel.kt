@@ -61,6 +61,7 @@ class FacilityDataModel {
         var EntityName = ""
         var ACTIVE = 1
         var TerminationComments = ""
+        var TerminationDate = ""
         var FacilityAnnualInspectionMonth = 0
         var InspectionCycle = ""
         var AutomotiveSpecialist = ""

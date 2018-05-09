@@ -52,7 +52,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
@@ -103,6 +103,32 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             dpd.show()
         }
 
+        addNewAarButton.setOnClickListener {
+            if (inspectionDateButton.text != "Select Date") {
+                val date = inspectionDateButton.text
+                val isLoggedInRsp = loggedIntoRspButton.isChecked
+                val numberOfUnacknowledgedRecords = numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
+                val numberOfInProgressTwoInsvalue = numberOfInProgressTwoIns.text.toString().toInt()
+                val numberOfInProgressWalkInsValue = numberOfInProgressWalkIns.text.toString().toInt()
+                val portalTrackingentry = FacilityDataModel.TblAARPortalAdmin()
+                portalTrackingentry.PortalInspectionDate = "" + date
+                portalTrackingentry.LoggedIntoPortal = "" + isLoggedInRsp
+                portalTrackingentry.InProgressTows = "" + numberOfInProgressTwoInsvalue
+                portalTrackingentry.InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                portalTrackingentry.NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+
+                FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
+                addTheLatestRowOfPortalAdmin()
+
+                inspectionDateButton.text = "Select Date"
+                loggedIntoRspButton.isChecked = false
+                numberOfUnacknowledgedRecordsEditText.setText("0")
+                numberOfInProgressTwoIns.setText("0")
+                numberOfInProgressWalkIns.setText("0")
+            }
+            
+        }
+
         fillData()
         fillPortalTrackingTableView();
     }
@@ -113,10 +139,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 //            endDateButton.text = PortalInspectionDate
             addendumSignedDateButton.text = AddendumSigned
             numberOfCardsReaderEditText.setText(CardReaders)
-            inspectionDateButton.text = PortalInspectionDate
-            numberOfUnacknowledgedRecordsEditText.setText(NumberUnacknowledgedTows)
-            numberOfInProgressTwoIns.setText(InProgressTows)
-            numberOfInProgressWalkIns.setText(InProgressWalkIns)
+//            inspectionDateButton.text = PortalInspectionDate
+//            numberOfUnacknowledgedRecordsEditText.setText(NumberUnacknowledgedTows)
+//            numberOfInProgressTwoIns.setText(InProgressTows)
+//            numberOfInProgressWalkIns.setText(InProgressWalkIns)
 
         }
     }
@@ -204,7 +230,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         rowLayoutParam4.column = 4
         FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
 
-            (0 until size/2).forEach {
+            (0 until size).forEach {
                 var tableRow = TableRow(context)
 
                 var textView = TextView(context)
@@ -240,6 +266,67 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                 aarPortalTrackingTableLayout.addView(tableRow)
             }
+        }
+    }
+
+    fun addTheLatestRowOfPortalAdmin(){
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        FacilityDataModel.getInstance().tblAARPortalAdmin[FacilityDataModel.getInstance().tblAARPortalAdmin.size-1].apply {
+
+            
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = PortalInspectionDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = LoggedIntoPortal
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = NumberUnacknowledgedTows
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = InProgressTows
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = InProgressWalkIns
+                tableRow.addView(textView)
+
+                aarPortalTrackingTableLayout.addView(tableRow)
+            
         }
     }
 

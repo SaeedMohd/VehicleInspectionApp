@@ -166,7 +166,7 @@
                     />
                 <TextView
                     android:id="@+id/first_name_textviewVal"
-                    android:layout_toRightOf="@id/contract_type_textview"
+                    
                     android:layout_below="@id/connumberll"
                     android:layout_width="0dp"
                     android:layout_weight="1"
