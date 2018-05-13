@@ -1,19 +1,28 @@
 package com.inspection.fragments
 
-import android.graphics.Color
+import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.support.design.widget.Snackbar
+import android.widget.TextView
+import com.inspection.R
+
+import com.inspection.model.AAAFacility
+import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.activity_item_list.*
+import kotlinx.android.synthetic.main.item_list_content.view.*
+
+import kotlinx.android.synthetic.main.item_list.*
+import android.R.menu
+import android.graphics.Color
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.view.get
-import com.inspection.R
-import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.activity_item_list.*
-import kotlinx.android.synthetic.main.item_list.*
-import kotlinx.android.synthetic.main.item_list_content.view.*
+import com.inspection.Utils.toast
+import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 
 
 /**
@@ -126,6 +135,7 @@ class ItemListActivity : AppCompatActivity() {
                 holder.listLayout.setBackgroundColor(mParentActivity.getColor(R.color.light_gray))
                 var fragment: android.support.v4.app.Fragment
                 if (mTwoPane) {
+                    Log.v("POSITION:  ",position.toString())
                     when (position) {
 
                         1 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
@@ -144,7 +154,8 @@ class ItemListActivity : AppCompatActivity() {
                         13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
                         14 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
                         15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
-                        15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                        32 -> fragment = FragmentAARAVComments.newInstance("test", "test")
+                        34 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
                         else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
                     }
                     mParentActivity.supportFragmentManager
