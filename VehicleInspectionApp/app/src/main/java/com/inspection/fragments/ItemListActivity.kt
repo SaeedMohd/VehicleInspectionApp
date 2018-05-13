@@ -134,6 +134,7 @@ class ItemListActivity : AppCompatActivity() {
                 holder.listLayout.setBackgroundColor(mParentActivity.getColor(R.color.light_gray))
                 var fragment: android.support.v4.app.Fragment
                 if (mTwoPane) {
+                    Log.v("POSITION:  ",position.toString())
                     when (position) {
 
                         1 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
@@ -152,6 +153,8 @@ class ItemListActivity : AppCompatActivity() {
                         13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
                         14 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
                         15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                        32 -> fragment = FragmentAARAVComments.newInstance("test", "test")
+                        34 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
                         else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
                     }
                     mParentActivity.supportFragmentManager

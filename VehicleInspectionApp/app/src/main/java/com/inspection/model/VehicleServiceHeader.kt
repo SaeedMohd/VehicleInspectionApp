@@ -33,7 +33,11 @@ class VehicleServiceHeader(private val name: String) : VehicleServicesListItem {
         }
 
         val text = view.findViewById(R.id.headerTextView) as TextView
-        text.text = name
+
+        //
+       text.text = name
+
+
 
         return view
     }
