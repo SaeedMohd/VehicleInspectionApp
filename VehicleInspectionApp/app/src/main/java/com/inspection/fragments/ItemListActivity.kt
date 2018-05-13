@@ -130,7 +130,6 @@ class ItemListActivity : AppCompatActivity() {
                 holder.listLayout.setBackgroundColor(Color.WHITE)
             }
 
-            Log.v("####$$$$$$$", "position = "+position)
             if (selectedPosition == position) {
                 holder.listLayout.setBackgroundColor(mParentActivity.getColor(R.color.light_gray))
                 var fragment: android.support.v4.app.Fragment
