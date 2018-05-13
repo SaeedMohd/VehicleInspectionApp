@@ -10,31 +10,125 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="FACILITY SERVICES"
+        android:text="PROGRAMS"
         android:textStyle="bold"
         android:textSize="18dp"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         />
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleTextView"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="5dp"
-        android:background="@color/light_gray"
-        android:orientation="vertical">
-        <RelativeLayout
+        android:background="@color/white"
+        android:padding="5dp">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="5dp">
+            android:id="@+id/progressLinearId">
+            <ProgressBar
+                android:id="@+id/progressbarPrograms"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:max="100"
+                android:backgroundTint="@color/white"
+                android:indeterminateTint="#1a09d6"
+                android:layout_marginTop="-7dp"/>
+        </LinearLayout>
+        <TableLayout
+            android:id="@+id/mainProgramsTableLayout"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/progressLinearId"
+            android:layout_height="wrap_content">
+
+
+            <TableRow>
+                <TextView android:text="service"
+                    android:layout_width="100dp"
+                    android:gravity="center"
+
+                    android:layout_column="0"
+                    android:layout_weight="1"/>
+                <TextView android:text="Effective Date"
+                    android:gravity="center"
+
+                    android:layout_width="30dp"
+                    android:layout_column="1"
+                    android:layout_weight="1">
+                </TextView>
+                <TextView android:text="Expiration Date"
+                    android:layout_width="30dp"
+                    android:layout_column="2"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                </TextView>
+                <TextView android:text="Comments"
+                    android:layout_width="30dp"
+                    android:layout_column="3"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                </TextView>
+            </TableRow>
+
+            <ScrollView android:layout_height="120dp">
+                <TableLayout android:id="@+id/programsTableLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <LinearLayout
+                        android:id="@+id/programsListLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:orientation="vertical"
+                        >
+                    </LinearLayout>
+
+                </TableLayout>
+            </ScrollView>
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mainProgramsTableLayout"
+            android:id="@+id/btnslayout"
+            android:weightSum="3"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/addBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="Add"/>
+            <Button
+                android:id="@+id/editBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="Modify"/>
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="Delete"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/btnslayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/secondPartOfPAGEiD">
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="3"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/connumberll">
                 <TextView
@@ -42,7 +136,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Service: "
+                    android:text="Program Name: "
                     android:layout_gravity="center_vertical"
                     android:textStyle="bold"
                     />
@@ -50,10 +144,10 @@
                     android:id="@+id/fc_services_textviewVal"
                     android:layout_toRightOf="@id/contract_number_textview"
                     android:layout_width="0dp"
-                    android:text="Select Service"
+                    android:text="Select Program"
                     android:textColor="@color/blue_krayola"
                     android:layout_weight="2"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="left"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -61,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:weightSum="3"
                 android:layout_below="@id/connumberll"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/contypell">
                 <TextView
@@ -71,7 +165,7 @@
                     android:layout_below="@id/connumberll"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="Effective Date: "
+                    android:text="Effective Date:: "
                     android:textStyle="bold"
                     />
                 <Button
@@ -91,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:weightSum="3"
                 android:layout_below="@id/contypell"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/officell">
                 <TextView
@@ -119,16 +213,18 @@
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="2"
                 android:layout_below="@id/officell"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/AssignedToll">
                 <TextView
                     android:id="@+id/comments_textview"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/officell"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="Comments: "
                     android:textStyle="bold"
                     />
@@ -136,15 +232,42 @@
 
             <EditText
                 android:id="@+id/comments_editTextVal"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_below="@id/AssignedToll"
                 android:layout_width="match_parent"
+                android:background="@drawable/item_solid_border"
                 android:layout_height="wrap_content"
                 android:maxEms="250"
-                android:lines="5"
+                android:lines="3"
                 />
-
-
-        </RelativeLayout>
-    </ScrollView>
+        </LinearLayout>
+        <!---->
+        <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/programsTableLayout"-->
+        <!--android:layout_below="@id/btnslayout"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:showDividers="middle"-->
+        <!--android:padding="5dp"-->
+        <!--android:scrollbars="horizontal"-->
+        <!--android:stretchColumns="*"-->
+        <!--android:orientation="vertical">-->
+        <!--</TableLayout>-->
+        <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@id/btnslayout"-->
+        <!--android:background="@drawable/frame_solid_border"-->
+        <!--android:scrollbars="none"-->
+        <!--&gt;-->
+        <!--<LinearLayout-->
+        <!--android:id="@+id/programsListLL"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="250dp"-->
+        <!--android:orientation="vertical"-->
+        <!--&gt;-->
+        <!--</LinearLayout>-->
+        <!--</ScrollView>-->
+    </RelativeLayout>
 </RelativeLayout>

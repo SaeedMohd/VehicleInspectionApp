@@ -36,7 +36,67 @@
                     android:indeterminateTint="#1a09d6"
                     android:layout_marginTop="-7dp"/>
             </LinearLayout>
+            <TableLayout
+                android:id="@+id/mainProgramsTableLayout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_below="@+id/progressLinearId"
+                android:layout_height="wrap_content">
+
+
+                <TableRow>
+                    <TextView android:text="Affliation Type"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+
+                        android:layout_column="0"
+                        android:layout_weight="1"/>
+   <TextView android:text="Affliation Details"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+
+                        android:layout_column="1"
+                        android:layout_weight="1"/>
+                    <TextView android:text="Effective Date"
+                        android:gravity="center"
+
+                        android:layout_width="30dp"
+                        android:layout_column="2"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Expiration Date"
+                        android:layout_width="30dp"
+                        android:layout_column="3"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Comments"
+                        android:layout_width="30dp"
+                        android:layout_column="4"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                </TableRow>
+
+                <ScrollView android:layout_height="120dp">
+                    <TableLayout android:id="@+id/programsTableLayout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <LinearLayout
+                            android:id="@+id/programsListLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:orientation="vertical"
+                            >
+                        </LinearLayout>
+
+                    </TableLayout>
+                </ScrollView>
+            </TableLayout>
+
             <LinearLayout
+                android:layout_below="@id/mainProgramsTableLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="3"
@@ -222,5 +282,35 @@
                     >
                 </LinearLayout>
             </ScrollView>
+
         </RelativeLayout>
 </RelativeLayout>
+
+    <!---->
+    <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/programsTableLayout"-->
+    <!--android:layout_below="@id/btnslayout"-->
+    <!--android:visibility="gone"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:showDividers="middle"-->
+    <!--android:padding="5dp"-->
+    <!--android:scrollbars="horizontal"-->
+    <!--android:stretchColumns="*"-->
+    <!--android:orientation="vertical">-->
+    <!--</TableLayout>-->
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@id/btnslayout"-->
+    <!--android:background="@drawable/frame_solid_border"-->
+    <!--android:scrollbars="none"-->
+    <!--&gt;-->
+    <!--<LinearLayout-->
+    <!--android:id="@+id/programsListLL"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="250dp"-->
+    <!--android:orientation="vertical"-->
+    <!--&gt;-->
+    <!--</LinearLayout>-->
+    <!--</ScrollView>-->
