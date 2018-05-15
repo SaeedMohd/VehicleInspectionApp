@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import com.inspection.MainActivity
 
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.toAppFormat
 import com.inspection.Utils.toast
 import com.inspection.model.FacilityDataModel
@@ -37,6 +38,7 @@ class FragmentARRAVFacility : Fragment() {
     private val appFprmat = SimpleDateFormat("dd MMM yyyy")
     private var timeZonesArray = arrayOf("")
     private var facilityTypeArray = arrayOf("")
+    private var contractTypesArray = arrayOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,15 +69,10 @@ class FragmentARRAVFacility : Fragment() {
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         facilitytype_textviewVal.adapter = facilityTypedataAdapter
 
-        p2top1btn.setText("<")
-
-        p2top1btn.setOnClickListener({
-            (activity as MainActivity).viewPager?.setCurrentItem(0)
-        })
-
-        p2top3btn.setOnClickListener({
-            (activity as MainActivity).viewPager?.setCurrentItem(2)
-        })
+        contractTypesArray = arrayOf("AAR", "AAB", "AAG", "COG","COR", "ERS", "MPR", "PSP")
+        var contractTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractTypesArray)
+        contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contractTypeValueSpinner.adapter = contractTypesAdapter
 
         ARDexp_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
@@ -106,14 +103,13 @@ class FragmentARRAVFacility : Fragment() {
             }, year, month, day)
             dpd.show()
         }
-
+//
         InsuranceExpDate_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
@@ -137,38 +133,88 @@ class FragmentARRAVFacility : Fragment() {
                     inActiveRadioButton.isChecked = true
                 }
 
+                        for (provider in tblFacilityServiceProvider) {
+                            when(provider.SrvProviderId){
+                                "AAR" -> {
+                                    aarCheckBox.isChecked = true
+                                    aarEditText.setText(""+provider.ProviderNum)
+                                }
 
+                                "AABِ" -> {
+                                    aabCheckBox.isChecked = true
+                                    aabEditText.setText(provider.ProviderNum)
+                                }
+                                "ِAAG" -> {
+                                    aagCheckBox.isChecked = true
+                                    aagEditText.setText(provider.ProviderNum)
+                                }
+                                "COG" -> {
+                                    cogCheckBox.isChecked = true
+                                    cogEditText.setText(provider.ProviderNum)
+                                }
+                                "CCR" -> {
+                                    corCheckBox.isChecked = true
+                                    corEditText.setText(provider.ProviderNum)
+                                }
+                                "ERS" -> {
+                                    ersCheckBox.isChecked = true
+                                    ersEditText.setText(provider.ProviderNum)
+                                }
+                                "MPR" -> {
+                                    mprCheckBox.isChecked = true
+                                    mprEditText.setText(provider.ProviderNum)
+                                }
+                                "PSP" -> {
+                                    pspCheckBox.isChecked = true
+                                    pspEditText.setText(provider.ProviderNum)
+                                }
+
+                            }
+                        }
+
+
+
+                for(contractType in tblContractType){
+                    for (typeReference in contractTypesArray){
+                        if(contractType.ContractTypeName == typeReference){
+                            contractTypeValueSpinner.setSelection(contractTypesArray.indexOf(typeReference))
+                        }
+                    }
+                }
 
                 contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
-                aarEditText.setText(""+tblFacilities[0].FACNo)
-//                contractType.text = "" + tblContractType[0].ContractTypeName
+
                 if (tblOfficeType[0].OfficeName.isNotEmpty()) {
                     office_textviewVal.text = "" + tblOfficeType[0].OfficeName
                 }else{
                     office_textviewVal.text = ""
                 }
-                assignedto_textviewVal.text = tblFacilities.get(0).AssignedTo
-                dba_textviewVal.text = tblFacilities.get(0).BusinessName
-                entity_textviewVal.text = tblFacilities.get(0).EntityName
+                assignedto_textviewVal.text = tblFacilities[0].AssignedTo
+                dba_textviewVal.text = tblFacilities[0].BusinessName
+                entity_textviewVal.text = tblFacilities[0].EntityName
                 bustype_textviewVal.text = tblBusinessType[0].BusTypeName
                 timezone_textviewVal.setSelection(timeZonesArray.indexOf(tblTimezoneType[0].TimezoneName))
-                website_textviewVal.setText(tblFacilities.get(0).WebSite)
-                wifi_textview.isChecked = tblFacilities.get(0).SvcAvailability.toInt() == 1
-                texno_textviewVal.setText(tblFacilities.get(0).TaxIDNumber)
-                repairorder_textviewVal.setText("" + tblFacilities.get(0).FacilityRepairOrderCount)
-                availability_textviewVal.setSelection(tblFacilities.get(0).SvcAvailability)
+                website_textviewVal.setText(tblFacilities[0].WebSite)
+                wifi_textview.isChecked = tblFacilities[0].SvcAvailability.toInt() == 1
+                texno_textviewVal.text = tblFacilities[0].TaxIDNumber
+                repairorder_textviewVal.setText("" + tblFacilities[0].FacilityRepairOrderCount)
+                availability_textviewVal.setSelection(tblFacilities[0].SvcAvailability)
                 facilitytype_textviewVal.setSelection(facilityTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
-                ARDexp_textviewVal.setText(tblFacilities.get(0).AutomotiveRepairExpDate)
-                terminationDateButton.setText(""+tblFacilities[0].TerminationDate)
+                ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormat()
+                terminationDateButton.text = ""+tblFacilities[0].TerminationDate.apiToAppFormat()
                 terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
-//                providertype_textviewVal.setText(tblFacilityServiceProvider[0].SrvProviderId)
+//                terminationReasonEditText.setText(""+tblFacilities[0].terminationReason)
+                currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormat()
+                initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormat()
+                InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormat()
 
-                currcodate_textviewVal.setText(tblFacilities.get(0).ContractCurrentDate)
-                initcodate_textviewVal.setText(tblFacilities.get(0).ContractInitialDate)
-//                billingmonth_textviewVal.text = "" + tblFacilities.get(0).BillingMonth
-//                billingamount_textviewVal.text = "" + tblFacilities.get(0).BillingAmount
-                InsuranceExpDate_textviewVal.text = tblFacilities.get(0).InsuranceExpDate
+                inspectionMonthsSpinner.setSelection(tblFacilities[0].FacilityAnnualInspectionMonth-1)
+
+                for(paymentMethod in tblPaymentMethods){
+
+                }
+
             }catch (exp:Exception){
                 exp.printStackTrace()
             }
@@ -200,7 +246,7 @@ class FragmentARRAVFacility : Fragment() {
             }
 
             if (insuranceExpirationDate == -1L) {
-                InsuranceExpDate_textviewVal.error = ""
+//                InsuranceExpDate_textviewVal.error = ""
             }
         }
         return true

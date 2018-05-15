@@ -284,7 +284,6 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/InsuranceExpDatell"
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:orientation="horizontal">

@@ -1,0 +1,320 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.inspection.fragments.OthersFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Scope Of Services"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:background="@color/white"
+        android:padding="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:id="@+id/progressbarAff"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:max="100"
+                android:backgroundTint="@color/white"
+                android:indeterminateTint="#1a09d6"
+                android:layout_marginTop="-7dp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/subTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="OtherServices"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:textColor="#8b2323"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            />
+   <TextView
+       android:layout_below="@+id/subTitleTextView"
+            android:id="@+id/resultsNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Showing 1-3 of 3 Results"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:textColor="#8b2323"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            />
+
+        <TableLayout
+            android:id="@+id/mainProgramsTableLayout"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/resultsNo"
+            android:layout_height="wrap_content">
+
+
+            <TableRow>
+                <TextView android:text="Other Service"
+                    android:layout_width="100dp"
+                    android:gravity="center"
+
+                    android:layout_column="0"
+                    android:layout_weight="1"/>
+                <TextView android:text="Effective Date"
+                    android:layout_width="100dp"
+                    android:gravity="center"
+
+                    android:layout_column="1"
+                    android:layout_weight="1"/>
+                <TextView android:text="Expiration Date"
+                    android:gravity="center"
+
+                    android:layout_width="30dp"
+                    android:layout_column="2"
+                    android:layout_weight="1">
+                </TextView>
+                <TextView android:text="Comments"
+                    android:layout_width="30dp"
+                    android:layout_column="3"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                </TextView>
+     <TextView android:text="Last Updated By"
+                    android:layout_width="30dp"
+                    android:layout_column="4"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                </TextView>
+     <TextView android:text="Last Updated Date"
+                    android:layout_width="30dp"
+                    android:layout_column="5"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                </TextView>
+            </TableRow>
+
+            <ScrollView android:layout_height="120dp">
+                <TableLayout android:id="@+id/programsTableLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <LinearLayout
+                        android:id="@+id/otherListLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:orientation="vertical"
+                        >
+                    </LinearLayout>
+
+                </TableLayout>
+            </ScrollView>
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_below="@id/mainProgramsTableLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:id="@+id/connumberll">
+            <TextView
+                android:id="@+id/others_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Name: "
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/Others_textviewVal"
+                android:layout_toRightOf="@id/contract_number_textview"
+                android:layout_width="0dp"
+                android:text="Select Other Service Name"
+                android:textColor="@color/blue_krayola"
+                android:layout_weight="2"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/connumberll"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:id="@+id/contypell">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Effective Date: "
+                android:textStyle="bold"
+                />
+            <Button
+                android:id="@+id/afDtlseffective_date_textviewVal"
+                android:layout_below="@id/connumberll"
+                android:layout_width="0dp"
+                android:text="select date"
+                android:textColor="@color/blue_krayola"
+                android:background="@null"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/contypell"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:id="@+id/officell">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/contypell"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Expiration Date: "
+                android:textStyle="bold"
+                />
+            <Button
+                android:id="@+id/afDtlsexpiration_date_textviewVal"
+                android:layout_toRightOf="@id/office_textview"
+                android:layout_below="@id/contypell"
+                android:layout_width="0dp"
+                android:text="Select Date"
+                android:textColor="@color/blue_krayola"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/officell"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:id="@+id/AssignedToll">
+            <TextView
+                android:id="@+id/comments_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/officell"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Comments: "
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/affcomments_editTextVal"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/AssignedToll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_solid_border"
+            android:maxEms="250"
+            android:lines="3"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/affcomments_editTextVal"
+            android:id="@+id/affbtnslayout"
+            android:weightSum="3"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/affaddBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="Add"/>
+            <Button
+                android:id="@+id/affeditBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="Modify"/>
+            <Button
+                android:id="@+id/affdeleteBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="Delete"/>
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/affbtnslayout"
+            android:background="@drawable/frame_solid_border"
+            android:scrollbars="none"
+            >
+            <LinearLayout
+                android:id="@+id/affListLL"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:orientation="vertical"
+                >
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</RelativeLayout>
+
+    <!---->
+    <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/programsTableLayout"-->
+    <!--android:layout_below="@id/btnslayout"-->
+    <!--android:visibility="gone"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:showDividers="middle"-->
+    <!--android:padding="5dp"-->
+    <!--android:scrollbars="horizontal"-->
+    <!--android:stretchColumns="*"-->
+    <!--android:orientation="vertical">-->
+    <!--</TableLayout>-->
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@id/btnslayout"-->
+    <!--android:background="@drawable/frame_solid_border"-->
+    <!--android:scrollbars="none"-->
+    <!--&gt;-->
+    <!--<LinearLayout-->
+    <!--android:id="@+id/programsListLL"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="250dp"-->
+    <!--android:orientation="vertical"-->
+    <!--&gt;-->
+    <!--</LinearLayout>-->
+    <!--</ScrollView>-->

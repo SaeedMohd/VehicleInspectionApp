@@ -16,7 +16,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="left"
+            android:layout_gravity="center_vertical"
             android:layout_weight="8"
             android:gravity="left"
             android:paddingLeft="10dp"
@@ -25,1070 +25,897 @@
             android:textSize="18dp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/p2top1btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:paddingTop="5dp"
-            android:text=">"
-            android:textSize="20dp"
-            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/p2top3btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginRight="15dp"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:text=">"
-            android:textSize="20dp"
-            android:textStyle="bold" />
     </LinearLayout>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/facll"
-        android:background="@color/light_gray"
+        android:layout_margin="10dp"
+        android:background="@color/white"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="5dp">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/contractStatusLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/contractStatusTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Contract Status: "
-                    android:textStyle="bold" />
-
-                <RadioGroup
-                    android:id="@+id/contractStatusRadioGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/contractStatusTextView"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/activeRadioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:checked="true"
-                        android:text="Active" />
-
-                    <RadioButton
-                        android:id="@+id/inActiveRadioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="InActive" />
-
-
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/connumberll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/contractStatusLayout"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/contract_number_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Contract Number: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/contract_number_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_background"
-                    android:padding="5dp"
-                    android:text="test" />
-
-                <TextView
-                    android:id="@+id/contractTypeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="Contract Type: "
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/contractTypeValueSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_toRightOf="@id/contractTypeTextView"
-                    android:layout_weight="1"
-                    android:entries="@array/contractTypesEntries"
-                    android:text="test" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/providertypell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/connumberll"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/providertype_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/connumberll"
-                    android:layout_weight="1"
-                    android:text="Provider Type: "
-                    android:textStyle="bold" />
-
-                <LinearLayout
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <CheckBox
-                        android:id="@+id/aarCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="AAR"
-                        android:checked="true"/>
-
-                    <CheckBox
-                        android:id="@+id/aabCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="AAB" />
-
-                    <CheckBox
-                        android:id="@+id/aagCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="AAG" />
-
-                    <CheckBox
-                        android:id="@+id/cogCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="COG" />
-
-                    <CheckBox
-                        android:id="@+id/corCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="COR" />
-
-                    <CheckBox
-                        android:id="@+id/ersCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ERS" />
-
-                    <CheckBox
-                        android:id="@+id/mprCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MPR" />
-
-                    <CheckBox
-                        android:id="@+id/pspCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PSP" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/aarEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:textSize="12sp"
-                        android:background="@drawable/textview_background"
-                        android:ems="10"
-                        android:padding="5dp"
-                        />
-
-
-                    <EditText
-                        android:id="@+id/aabEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_background"
-                        android:ems="10"
-                        android:textSize="12sp"
-                        android:padding="5dp"
-                        android:text="" />
-
-                    <EditText
-                        android:id="@+id/aagEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="left"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_background"
-                        android:ems="10"
-                        android:textSize="12sp"
-                        android:padding="5dp"
-                        android:text="" />
-
-                    <EditText
-                        android:id="@+id/cogEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="left"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:textSize="12sp"
-                        android:background="@drawable/textview_background"
-                        android:ems="10"
-                        android:padding="5dp"
-                        android:text="" />
-
-                    <EditText
-                        android:id="@+id/corEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:textSize="12sp"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="5dp"
-
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_background"
-                        android:ems="10"
-                        android:padding="5dp"
-                        android:text="" />
-
-                    <EditText
-                        android:id="@+id/ersEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="5dp"
-                        android:textSize="12sp"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_background"
-                        android:ems="10"
-                        android:padding="5dp"
-                        android:text="" />
-
-                    <EditText
-                        android:id="@+id/mprEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:textSize="12sp"
-                        android:background="@drawable/textview_background"
-                        android:ems="10"
-                        android:padding="5dp"
-                        android:text="" />
-
-                    <EditText
-                        android:id="@+id/pspEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:textSize="12sp"
-                        android:background="@drawable/textview_background"
-                        android:ems="10"
-                        android:padding="5dp"
-                        android:text="" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/officell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/providertypell"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/office_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/providertypell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Office: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/office_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/providertypell"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/office_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/AssignedToll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/officell"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/assignedto_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/officell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Assigned To: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/assignedto_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/officell"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/assignedto_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/dball"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/AssignedToll"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/dba_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/AssignedToll"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="DBA: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/dba_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/AssignedToll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/dba_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/entityll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dball"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/entity_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/dball"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Entity Name: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/entity_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/dball"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/entity_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/bustypell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/entityll"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/bustype_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/entityll"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Business Type: "
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/bustype_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/entityll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/bustype_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/terminationDateLinearLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bustypell"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/terminationDateTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Termination Date: "
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/terminationDateButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/transparent"
-                    android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/terminationReasonLinearLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/terminationDateLinearLayout"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/terminationReasonTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Termination Reason: "
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/terminationReasonEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/textview_background"
-                    android:layout_weight="1"
-                    android:text=""
-                    android:textSize="12dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/terminationCommentLinearLayout"
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/terminationReasonLinearLayout"
-                android:orientation="horizontal"
-                android:layout_marginRight="10dp"
-                android:weightSum="5">
+                android:layout_marginVertical="10dp"
+                android:stretchColumns="5dp">
 
-                <TextView
-                    android:id="@+id/terminationReasonTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Termination Comment: "
-                    android:textStyle="bold" />
+                <TableRow>
 
-                <EditText
-                    android:id="@+id/terminationCommentEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="3"
-                    android:text=""
-                    android:background="@drawable/textview_background"
-                    android:lines="8"
-                    android:textSize="12dp" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/timezonell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/terminationCommentLinearLayout"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/timezone_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Time Zone: "
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/timezone_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/timezone_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/paymentMethodsLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/timezonell"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/payment_methods_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1.5"
-                    android:text="Payment Methods: "
-                    android:textStyle="bold" />
-
-                <com.google.android.flexbox.FlexboxLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    app:flexWrap="wrap">
-
-                    <CheckBox
-                        android:id="@+id/americanexpress_checkbox"
+                    <TextView
+                        android:id="@+id/contractStatusTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="American Express" />
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Contract Status: "
+                        android:textStyle="bold" />
 
-                    <CheckBox
-                        android:id="@+id/cash_checkbox"
+                    <RadioGroup
+                        android:id="@+id/contractStatusRadioGroup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="Cash" />
+                        android:layout_column="1"
+                        android:layout_toRightOf="@id/contractStatusTextView"
+                        android:orientation="horizontal">
 
-                    <CheckBox
-                        android:id="@+id/check_checkbox"
+                        <RadioButton
+                            android:id="@+id/activeRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:checked="true"
+                            android:text="Active" />
+
+                        <RadioButton
+                            android:id="@+id/inActiveRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="InActive" />
+
+
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/contract_number_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="Check" />
+                        android:layout_column="0"
+                        android:text="Contract Number: "
+                        android:textStyle="bold" />
 
-                    <CheckBox
-                        android:id="@+id/debit_checkbox"
+                    <TextView
+                        android:id="@+id/contract_number_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_column="1"
+                        android:textSize="12sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="6"
+                        android:padding="5dp"
+                        android:text="test" />
+
+                    <TextView
+                        android:id="@+id/contractTypeTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="Debit" />
+                        android:layout_column="2"
+                        android:text="Contract Type: "
+                        android:textStyle="bold" />
 
-                    <CheckBox
-                        android:id="@+id/discover_checkbox"
+                    <Spinner
+                        android:id="@+id/contractTypeValueSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="Discover" />
+                        android:layout_column="3"
+                        android:text="test" />
 
-                    <CheckBox
-                        android:id="@+id/goodyear_checkbox"
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/providertype_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="Goodyear Credit Card" />
+                        android:layout_column="0"
+                        android:text="Provider Type: "
+                        android:textStyle="bold" />
 
-                    <CheckBox
-                        android:id="@+id/mastercard_checkbox"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="Master Card" />
+                        android:layout_column="1"
+                        android:orientation="horizontal">
 
-                    <CheckBox
-                        android:id="@+id/paypal_checkbox"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:orientation="vertical">
+
+                            <CheckBox
+                                android:id="@+id/aarCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="AAR" />
+
+                            <CheckBox
+                                android:id="@+id/aabCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="AAB" />
+
+                            <CheckBox
+                                android:id="@+id/aagCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="AAG" />
+
+                            <CheckBox
+                                android:id="@+id/cogCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="COG" />
+
+                            <CheckBox
+                                android:id="@+id/corCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="COR" />
+
+                            <CheckBox
+                                android:id="@+id/ersCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ERS" />
+
+                            <CheckBox
+                                android:id="@+id/mprCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="MPR" />
+
+                            <CheckBox
+                                android:id="@+id/pspCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PSP" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/aarEditText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_gravity="left"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="10"
+                                android:padding="5dp"
+                                android:textSize="12sp" />
+
+
+                            <EditText
+                                android:id="@+id/aabEditText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_gravity="left"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="10"
+                                android:padding="5dp"
+                                android:text=""
+                                android:textSize="12sp" />
+
+                            <EditText
+                                android:id="@+id/aagEditText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_gravity="left"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="10"
+                                android:padding="5dp"
+                                android:text=""
+                                android:textSize="12sp" />
+
+                            <EditText
+                                android:id="@+id/cogEditText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_gravity="left"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="10"
+                                android:padding="5dp"
+                                android:text=""
+                                android:textSize="12sp" />
+
+                            <EditText
+                                android:id="@+id/corEditText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_gravity="left"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+
+                                android:background="@drawable/textview_background"
+                                android:ems="10"
+                                android:padding="5dp"
+                                android:text=""
+                                android:textSize="12sp" />
+
+                            <EditText
+                                android:id="@+id/ersEditText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_gravity="left"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="10"
+                                android:padding="5dp"
+                                android:text=""
+                                android:textSize="12sp" />
+
+                            <EditText
+                                android:id="@+id/mprEditText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_gravity="left"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="10"
+                                android:padding="5dp"
+                                android:text=""
+                                android:textSize="12sp" />
+
+                            <EditText
+                                android:id="@+id/pspEditText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_gravity="left"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="10"
+                                android:padding="5dp"
+                                android:text=""
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/office_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="PayPal" />
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Office: "
+                        android:textStyle="bold" />
 
-                    <CheckBox
-                        android:id="@+id/visa_checkbox"
+                    <TextView
+                        android:id="@+id/office_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/office_textview"
+                        android:text="test" />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/assignedto_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/officell"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Assigned To: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/assignedto_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/officell"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/assignedto_textview"
+                        android:text="test" />
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/dba_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/AssignedToll"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="DBA: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/dba_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/AssignedToll"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/dba_textview"
+                        android:text="test" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/entity_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dball"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Entity Name: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/entity_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dball"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/entity_textview"
+                        android:text="test" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/bustype_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/entityll"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Business Type: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/bustype_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/entityll"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/bustype_textview"
+                        android:text="test" />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/terminationDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Termination Date: "
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/terminationDateButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/terminationReasonTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Termination Reason: "
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/terminationReasonEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/textview_background"
+                        android:text=""
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/terminationReasonTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Termination Comment: "
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/terminationCommentEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:paddingRight="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/textview_background"
+                        android:lines="8"
+                        android:inputType=""
+                        android:text=""
+                        android:scrollHorizontally="false"
+                        android:textSize="12dp" />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/timezone_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Time Zone: "
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/timezone_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/timezone_textview"
+                        android:text="test" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/payment_methods_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
                         android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:text="Visa" />
-                </com.google.android.flexbox.FlexboxLayout>
+                        android:text="Payment Methods: "
+                        android:textStyle="bold" />
 
-            </LinearLayout>
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        app:flexWrap="wrap">
 
-            <LinearLayout
-                android:id="@+id/websitell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/paymentMethodsLinearLayout"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                        <CheckBox
+                            android:id="@+id/americanexpress_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:padding="5dp"
+                            android:text="American Express" />
 
-                <TextView
-                    android:id="@+id/website_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/timezonell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Website URL: "
-                    android:textStyle="bold" />
+                        <CheckBox
+                            android:id="@+id/cash_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:padding="5dp"
+                            android:clickable="true"
+                            android:text="Cash" />
 
-                <EditText
-                    android:id="@+id/website_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/timezonell"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/website_textview"
-                    android:layout_weight="1"
-                    android:hint="Enter website URL"
-                    android:text=""
-                    android:textSize="12dp" />
-            </LinearLayout>
+                        <CheckBox
+                            android:id="@+id/check_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:padding="5dp"
+                            android:text="Check" />
 
-            <CheckBox
-                android:id="@+id/wifi_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/websitell"
-                android:layout_marginTop="10dp"
-                android:text="Wi-Fi Available"
-                android:textStyle="bold" />
+                        <CheckBox
+                            android:id="@+id/debit_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:layout_wrapBefore="true"
+                            android:clickable="true"
+                            android:padding="5dp"
+                            android:text="Debit" />
 
-            <LinearLayout
-                android:id="@+id/tax_textview"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wifi_textview"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                        <CheckBox
+                            android:id="@+id/discover_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:padding="5dp"
+                            android:text="Discover" />
 
-                <TextView
-                    android:id="@+id/website_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/wifi_textview"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Tax-ID: "
-                    android:textStyle="bold" />
+                        <CheckBox
+                            android:id="@+id/goodyear_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:padding="5dp"
+                            android:text="Goodyear Credit Card" />
 
-                <TextView
-                    android:id="@+id/texno_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/wifi_textview"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/website_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
+                        <CheckBox
+                            android:id="@+id/mastercard_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:layout_wrapBefore="true"
+                            android:padding="5dp"
+                            android:clickable="true"
+                            android:text="Master Card" />
 
-            <LinearLayout
-                android:id="@+id/repairorderll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tax_textview"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                        <CheckBox
+                            android:id="@+id/paypal_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:text="PayPal" />
 
-                <TextView
-                    android:id="@+id/repairorder_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tax_textview"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Repair Order Count: "
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/repairorder_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tax_textview"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/repairorder_textview"
-                    android:layout_weight="1"
-                    android:hint="Enter repair order count"
-                    android:inputType="number"
-                    android:maxLength="6"
-                    android:text=""
-                    android:textSize="12dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/inspectionMonth"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/repairorderll"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/InspectionMonthTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/repairorderll"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="Inspection Monthn:"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/inspectionMonthsSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/repairorderll"
-                    android:layout_gravity="center"
-                    android:layout_toRightOf="@id/availability_textview"
-                    android:entries="@array/inspectionMonths"
-                    android:layout_weight="1"
-                    />
+                        <CheckBox
+                            android:id="@+id/visa_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:padding="5dp"
+                            android:text="Visa" />
+                    </com.google.android.flexbox.FlexboxLayout>
 
 
-                <TextView
-                    android:id="@+id/InspectionCycleTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/repairorderll"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="Inspection Monthn:"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/inspectionCycleSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/repairorderll"
-                    android:layout_gravity="center"
-                    android:layout_toRightOf="@id/availability_textview"
-                    android:entries="@array/inspectionCycle"
-                    android:layout_weight="1"
-                    />
-            </LinearLayout>
+                </TableRow>
 
 
-            <LinearLayout
-                android:id="@+id/availabilityll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/inspectionMonth"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                <TableRow>
 
-                <TextView
-                    android:id="@+id/availability_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/repairorderll"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Service Availability:"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/website_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Website URL: "
+                        android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/availability_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/repairorderll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/availability_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/website_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/website_textview"
+                        android:hint="Enter website URL"
+                        android:background="@drawable/textview_background"
+                        android:text=""
+                        android:padding="5dp"
+                        android:textSize="12dp" />
+                </TableRow>
 
-            <LinearLayout
-                android:id="@+id/facilitytypell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/availabilityll"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                <TableRow>
 
-                <TextView
-                    android:id="@+id/facilitytype_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/availabilityll"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Facility Type: "
-                    android:textStyle="bold" />
+                    <CheckBox
+                        android:id="@+id/wifi_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Wi-Fi Available"
+                        android:textStyle="bold" />
+                </TableRow>
 
-                <Spinner
-                    android:id="@+id/facilitytype_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/availabilityll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/facilitytype_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
+                <TableRow>
 
-            <LinearLayout
-                android:id="@+id/ARDnoll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/facilitytypell"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                    <TextView
+                        android:id="@+id/website_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/wifi_textview"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Tax-ID: "
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/ARDno_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/facilitytypell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="ARD Number: "
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/texno_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/wifi_textview"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/website_textview"
+                        android:text="test" />
+                </TableRow>
 
-                <EditText
-                    android:id="@+id/ARDno_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/facilitytypell"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/ARDno_textview"
-                    android:layout_weight="1"
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
-                    android:hint="Enter ARD Number"
-                    android:maxLength="12"
-                    android:text=""
-                    android:textSize="12dp" />
-            </LinearLayout>
+                <TableRow>
 
-            <LinearLayout
-                android:id="@+id/ARDexpll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ARDnoll"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                    <TextView
+                        android:id="@+id/repairorder_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Repair Order Count: "
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/ARDexp_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ARDnoll"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="ARD Expiration Date: "
-                    android:textStyle="bold" />
+                    <EditText
+                        android:id="@+id/repairorder_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/repairorder_textview"
+                        android:hint="Enter repair order count"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:text=""
+                        android:textSize="12dp" />
+                </TableRow>
 
-                <Button
-                    android:id="@+id/ARDexp_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ARDnoll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/ARDexp_textview"
-                    android:layout_weight="1"
-                    android:background="@color/transparent"
-                    android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-            </LinearLayout>
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/InspectionMonthTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:text="Inspection Month:"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/inspectionMonthsSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:entries="@array/inspectionMonths" />
 
 
-            <LinearLayout
-                android:id="@+id/currcodatell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ARDexpll"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                    <TextView
+                        android:id="@+id/InspectionCycleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:layout_gravity="center"
+                        android:text="Inspection Monthn:"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/currcodate_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ARDexpll"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Current Contract Date: "
-                    android:textStyle="bold" />
+                    <Spinner
+                        android:id="@+id/inspectionCycleSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+                        android:layout_gravity="center"
+                        android:entries="@array/inspectionCycle" />
+                </TableRow>
 
-                <TextView
-                    android:id="@+id/currcodate_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ARDexpll"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/currcodate_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
+                <TableRow>
 
-            <LinearLayout
-                android:id="@+id/initcodatell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/currcodatell"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                    <TextView
+                        android:id="@+id/availability_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Service Availability:"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/initcodate_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/currcodatell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Initial Contract Date: "
-                    android:textStyle="bold" />
+                    <Spinner
+                        android:id="@+id/availability_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/availability_textview"
+                        android:text="test" />
+                </TableRow>
 
-                <TextView
-                    android:id="@+id/initcodate_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/currcodatell"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/initcodate_textview"
-                    android:layout_weight="1"
-                    android:text="test" />
-            </LinearLayout>
+                <TableRow>
 
-            <LinearLayout
-                android:id="@+id/InsuranceExpDatell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/initcodatell"
-                android:orientation="horizontal"
-                android:weightSum="5">
+                    <TextView
+                        android:id="@+id/facilitytype_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Facility Type: "
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/InsuranceExpDate_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/initcodatell"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Insurance Expiration Date: "
-                    android:textStyle="bold" />
+                    <Spinner
+                        android:id="@+id/facilitytype_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/facilitytype_textview"
+                        android:text="test" />
+                </TableRow>
 
-                <Button
-                    android:id="@+id/InsuranceExpDate_textviewVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/initcodatell"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/InsuranceExpDate_textview"
-                    android:layout_weight="1"
-                    android:background="@color/transparent"
-                    android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-            </LinearLayout>
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/ARDno_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="ARD Number: "
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/ARDno_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/ARDno_textview"
+                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+                        android:hint="Enter ARD Number"
+                        android:maxLength="12"
+                        android:text=""
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/ARDexp_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="ARD Expiration Date: "
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/ARDexp_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/currcodate_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Current Contract Date: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/currcodate_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:text="test" />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/initcodate_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Initial Contract Date: "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/initcodate_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/initcodate_textview"
+                        android:text="test" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/InsuranceExpDate_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="Insurance Expiration Date: "
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/InsuranceExpDate_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+
+                </TableRow>
+
+
+            </TableLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/InsuranceExpDatell"
-                android:layout_centerHorizontal="true"
+                android:layout_below="@id/scrollView"
                 android:orientation="horizontal">
 
                 <Button
@@ -1103,6 +930,6 @@
                     android:layout_height="wrap_content"
                     android:text="Cancel" />
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>

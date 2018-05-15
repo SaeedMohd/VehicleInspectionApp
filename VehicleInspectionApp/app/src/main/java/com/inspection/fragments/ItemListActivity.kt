@@ -148,7 +148,8 @@ class ItemListActivity : AppCompatActivity() {
                         5 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
                         8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
                         9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
-                        12 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
+                        //this frag below VehiclesFragmentInScopeOfServicesView is used instead the original one FragmentARRAVVehicles > sherif yousry
+                        12 -> fragment = VehiclesFragmentInScopeOfServicesView.newInstance("test", "test")
                         10 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
                         11 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
                         13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
@@ -161,6 +162,11 @@ class ItemListActivity : AppCompatActivity() {
                         26 -> fragment = FragmentAARAVBillingHistory.newInstance("test", "test")
                         27 -> fragment = FragmentAARAVBillingAdjustment.newInstance("test", "test")
                         30 -> fragment = FragmentAARAVSoftware.newInstance("test", "test")
+                    //this frag below PromotionsFragment is used instead the original one FragmentARRAVDeficiency > sherif yousry
+                        14 -> fragment = PromotionsFragment.newInstance("test", "test")
+                        15 -> fragment = AwardsAndDistinctionsFragment.newInstance("test", "test")
+                        16 -> fragment = OthersFragment.newInstance("test", "test")
+                        17 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
                         32 -> fragment = FragmentAARAVComments.newInstance("test", "test")
                         34 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
                         else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)

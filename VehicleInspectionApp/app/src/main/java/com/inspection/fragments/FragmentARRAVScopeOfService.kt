@@ -21,14 +21,13 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.MainActivity
-
 import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
 import com.inspection.model.AAAScopeOfServices
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
-import java.util.ArrayList
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -100,8 +99,10 @@ class FragmentARRAVScopeOfService : Fragment() {
                             var facScopeOfSvcList = Gson().fromJson(response.toString(), Array<AAAScopeOfServices>::class.java).toCollection(ArrayList())
                             for (fac in facScopeOfSvcList ) {
                                 fixedLaborRateEditText.setText(fac.fixedlaborrate.toString())
-                                laborRateMatrixMinEditText.setText(fac.labormin.toString())
-                                laborRateMatrixMaxEditText.setText(fac.labormax.toString())
+                                //commented out code below cuz i commented out the refrenced view from xml cuz
+                                // i cant find the refrenced this view in the pdf > sherif yousry
+                        //        laborRateMatrixMinEditText.setText(fac.labormin.toString())
+                          //      laborRateMatrixMaxEditText.setText(fac.labormax.toString())
                                 diagnosticRateEditText.setText(fac.diagnosticsrate.toString())
                                 numberOfBaysEditText.setText(fac.numofbays.toString())
                                 numberOfLiftsEditText.setText(fac.numoflifts.toString())
@@ -121,8 +122,11 @@ class FragmentARRAVScopeOfService : Fragment() {
 
         fixedLaborRateEditText.setError(null)
         diagnosticRateEditText.setError(null)
-        laborRateMatrixMaxEditText.setError(null)
-        laborRateMatrixMinEditText.setError(null)
+        //commented out code below cuz i commented out the refrenced view from xml cuz
+        // i cant find the refrenced this view in the pdf > sherif yousry
+
+     //   laborRateMatrixMaxEditText.setError(null)
+      //  laborRateMatrixMinEditText.setError(null)
 
 
         if(fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
@@ -135,15 +139,18 @@ class FragmentARRAVScopeOfService : Fragment() {
             diagnosticRateEditText.setError("Required Field")
         }
 
-        if(laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
-            laborRateMatrixMaxEditText.setError("Required Field")
-        }
+        //commented out code below cuz i commented out the refrenced view from xml cuz
+        // i cant find the refrenced this view in the pdf > sherif yousry
 
-        if(laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
-            laborRateMatrixMinEditText.setError("Required Field")
-        }
+//        if(laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+//            isInputsValid=false
+//            laborRateMatrixMaxEditText.setError("Required Field")
+//        }
+
+//        if(laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+//            isInputsValid=false
+//            laborRateMatrixMinEditText.setError("Required Field")
+//        }
 
 
         return isInputsValid
