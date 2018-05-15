@@ -124,7 +124,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="3"
-                        android:entries="@array/contractTypesEntries"
                         android:text="test" />
 
                 </TableRow>

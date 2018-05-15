@@ -38,6 +38,7 @@ class FragmentARRAVFacility : Fragment() {
     private val appFprmat = SimpleDateFormat("dd MMM yyyy")
     private var timeZonesArray = arrayOf("")
     private var facilityTypeArray = arrayOf("")
+    private var contractTypesArray = arrayOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +69,10 @@ class FragmentARRAVFacility : Fragment() {
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         facilitytype_textviewVal.adapter = facilityTypedataAdapter
 
+        contractTypesArray = arrayOf("AAR", "AAB", "AAG", "COG","COR", "ERS", "MPR", "PSP")
+        var contractTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractTypesArray)
+        contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contractTypeValueSpinner.adapter = contractTypesAdapter
 
         ARDexp_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
@@ -167,6 +172,16 @@ class FragmentARRAVFacility : Fragment() {
                             }
                         }
 
+
+
+                for(contractType in tblContractType){
+                    for (typeReference in contractTypesArray){
+                        if(contractType.ContractTypeName == typeReference){
+                            contractTypeValueSpinner.setSelection(contractTypesArray.indexOf(typeReference))
+                        }
+                    }
+                }
+
                 contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
 
                 if (tblOfficeType[0].OfficeName.isNotEmpty()) {
@@ -189,10 +204,12 @@ class FragmentARRAVFacility : Fragment() {
                 ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormat()
                 terminationDateButton.text = ""+tblFacilities[0].TerminationDate.apiToAppFormat()
                 terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
+//                terminationReasonEditText.setText(""+tblFacilities[0].terminationReason)
                 currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormat()
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormat()
                 InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormat()
 
+                inspectionMonthsSpinner.setSelection(tblFacilities[0].FacilityAnnualInspectionMonth-1)
 
                 for(paymentMethod in tblPaymentMethods){
 
