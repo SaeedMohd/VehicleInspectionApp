@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:background="@color/light_gray"
+tools:context=".fragments.FragmentAARAVVendorRevenue">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:id="@+id/facVenRev"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="left"
+        android:layout_weight="8"
+        android:text="Vendor Revenue"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_gravity="left"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/facVenRev"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:layout_margin="10dp"
+    android:paddingTop="5dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vendor Revenue"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_margin="10dp"
+            android:textColor="#827908"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Showing 1-2 of 2 Results"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_margin="10dp"
+            android:textColor="#800000"
+            />
+
+        <TableLayout
+            android:id="@+id/commentsResultsTbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:showDividers="middle|beginning|end"
+            android:divider="@drawable/divider_table_layout"
+            >
+            <TableRow
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Revenue ID"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Revenue Source"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Check"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Receipt Date"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Receipt Number"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    />
+            </TableRow>
+        </TableLayout>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Vendor Revenue"
+            android:id="@+id/addNewBtn"
+            />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Revenue ID:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newRevID"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Date of Check:"
+                    android:ems="8"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/newCheckDateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_column="4"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="8"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Revenue Source:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <Spinner
+                    android:id="@+id/newRevSourceSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:entries="@array/contractTypesEntries"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Amount:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Receipt Date:"
+                    android:ems="8"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/newReceiptDateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_column="1"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="8"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Receipt Number:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newReceiptNoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="4"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="State Revenue Account #:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/newStateRevAccountText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text=""
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Comments:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/newCommentsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="16"
+                    android:layout_column="1"
+                    android:lines="5"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+        </TableLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/InsuranceExpDatell"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
+</RelativeLayout>

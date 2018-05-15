@@ -1,19 +1,28 @@
 package com.inspection.fragments
 
-import android.graphics.Color
+import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.support.design.widget.Snackbar
+import android.widget.TextView
+import com.inspection.R
+
+import com.inspection.model.AAAFacility
+import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.activity_item_list.*
+import kotlinx.android.synthetic.main.item_list_content.view.*
+
+import kotlinx.android.synthetic.main.item_list.*
+import android.R.menu
+import android.graphics.Color
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.view.get
-import com.inspection.R
-import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.activity_item_list.*
-import kotlinx.android.synthetic.main.item_list.*
-import kotlinx.android.synthetic.main.item_list_content.view.*
+import com.inspection.Utils.toast
+import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 
 
 /**
@@ -121,6 +130,7 @@ class ItemListActivity : AppCompatActivity() {
                 holder.listLayout.setBackgroundColor(Color.WHITE)
             }
 
+            Log.v("####$$$$$$$", "position = "+position)
             if (selectedPosition == position) {
                 holder.listLayout.setBackgroundColor(mParentActivity.getColor(R.color.light_gray))
                 var fragment: android.support.v4.app.Fragment
@@ -138,11 +148,19 @@ class ItemListActivity : AppCompatActivity() {
                         5 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
                         8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
                         9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
-                        //this frag below VehiclesFragmentInScopeOfServicesView is used instead the original one FragmentARRAVVehicles > sherif yousry
-                        12 -> fragment = VehiclesFragmentInScopeOfServicesView.newInstance("test", "test")
+                        12 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
                         10 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
                         11 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
                         13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
+                        14 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
+                        15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                        22 -> fragment = FragmentAARAVBillingPlans.newInstance("test", "test")
+                        23 -> fragment = FragmentAARAVBilling.newInstance("test", "test")
+                        24 -> fragment = FragmentAARAVPayments.newInstance("test", "test")
+                        25 -> fragment = FragmentAARAVVendorRevenue.newInstance("test", "test")
+                        26 -> fragment = FragmentAARAVBillingHistory.newInstance("test", "test")
+                        27 -> fragment = FragmentAARAVBillingAdjustment.newInstance("test", "test")
+                        30 -> fragment = FragmentAARAVSoftware.newInstance("test", "test")
                     //this frag below PromotionsFragment is used instead the original one FragmentARRAVDeficiency > sherif yousry
                         14 -> fragment = PromotionsFragment.newInstance("test", "test")
                         15 -> fragment = AwardsAndDistinctionsFragment.newInstance("test", "test")
