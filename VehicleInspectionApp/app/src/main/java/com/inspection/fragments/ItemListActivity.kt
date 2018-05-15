@@ -148,8 +148,7 @@ class ItemListActivity : AppCompatActivity() {
                         5 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
                         8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
                         9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
-                        //this frag below VehiclesFragmentInScopeOfServicesView is used instead the original one FragmentARRAVVehicles > sherif yousry
-                        12 -> fragment = VehiclesFragmentInScopeOfServicesView.newInstance("test", "test")
+                        12 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
                         10 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
                         11 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
                         13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
