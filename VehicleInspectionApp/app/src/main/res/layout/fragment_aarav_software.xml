@@ -1,0 +1,1589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:background="@color/light_gray"
+tools:context=".fragments.FragmentAARAVSoftware">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:id="@+id/facSW"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="left"
+        android:layout_weight="8"
+        android:text="Software"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_gravity="left"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        />
+</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/facSW"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:layout_margin="10dp"
+    android:paddingTop="5dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Software"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_margin="10dp"
+            android:textColor="#827908"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Showing 1-2 of 2 Results"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_margin="10dp"
+            android:textColor="#800000"
+            />
+
+        <TableLayout
+            android:id="@+id/commentsResultsTbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:showDividers="middle|beginning|end"
+            android:divider="@drawable/divider_table_layout"
+            >
+            <TableRow
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Software ID"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:ems="4"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date Completed"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    android:ems="4"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    />
+            </TableRow>
+        </TableLayout>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Software"
+            android:id="@+id/addNewBtn"
+            />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Date Completed:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newDateCompleted"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="1. Indicate ALL repair and estimating software you use."
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Rank (1-5) from most to least software usage."
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ADBCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="ADP"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/ADB_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onADBRadioButtonClicked"
+                        />
+                    <RadioButton android:id="@+id/ADB_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onADBRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/ADB_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onADBRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/ADB_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onADBRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/ADB_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onADBRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/AlldataCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Alldata"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/ALLDATA_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onALLDATARadioButtonClicked"/>
+                    <RadioButton android:id="@+id/ALLDATA_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onALLDATARadioButtonClicked"/>
+                    <RadioButton android:id="@+id/ALLDATA_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onALLDATARadioButtonClicked"/>
+                    <RadioButton android:id="@+id/ALLDATA_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onALLDATARadioButtonClicked"/>
+                    <RadioButton android:id="@+id/ALLDATA_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onALLDATARadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ArkonnaCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Arkonna"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Arkonna_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onArkonnaRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Arkonna_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onArkonnaRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Arkonna_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onArkonnaRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Arkonna_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onArkonnaRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Arkonna_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onArkonnaRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/AutomakeCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Automake"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Automake_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onAutomakeRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Automake_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onAutomakeRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Automake_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onAutomakeRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Automake_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onAutomakeRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Automake_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onAutomakeRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/AutosoftCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Autosoft"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Autosoft_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onAutosoftRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Autosoft_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onAutosoftRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Autosoft_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onAutosoftRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Autosoft_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onAutosoftRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Autosoft_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onAutosoftRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ChiltonCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Chilton"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Chilton_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onChiltonRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Chilton_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onChiltonRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Chilton_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onChiltonRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Chilton_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onChiltonRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Chilton_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onChiltonRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/DelphiCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Delphi"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Delphi_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onDelphiRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Delphi_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onDelphiRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Delphi_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onDelphiRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Delphi_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onDelphiRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Delphi_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onDelphiRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/GarageCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Garage IQ"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Garage_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onGarageRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Garage_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onGarageRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Garage_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onGarageRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Garage_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onGarageRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Garage_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onGarageRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/InvoCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Invo Max"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Invo_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onInvoRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Invo_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onInvoRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Invo_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onInvoRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Invo_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onInvoRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Invo_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onInvoRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ManufacturerCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Manufaturer"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Manufaturer_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onManufaturerRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Manufaturer_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onManufaturerRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Manufaturer_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onManufaturerRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Manufaturer_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onManufaturerRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Manufaturer_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onInvoRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/MitchellCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Mitchell 1"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Mitchell_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onMitchellRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Mitchell_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onMitchellRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Mitchell_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onMitchellRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Mitchell_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onMitchellRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Mitchell_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onMitchellRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/NAPACheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="NAPA Tracs"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/NAPA_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onNAPARadioButtonClicked"/>
+                    <RadioButton android:id="@+id/NAPA_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onNAPARadioButtonClicked"/>
+                    <RadioButton android:id="@+id/NAPA_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onNAPARadioButtonClicked"/>
+                    <RadioButton android:id="@+id/NAPA_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onNAPARadioButtonClicked"/>
+                    <RadioButton android:id="@+id/NAPA_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onNAPARadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ReyCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Reynolds"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Rey_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onReyRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Rey_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onReyRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Rey_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onReyRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Rey_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onReyRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Rey_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onReyRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ROCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="RO Writer"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/RO_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onRORadioButtonClicked"/>
+                    <RadioButton android:id="@+id/RO_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onRORadioButtonClicked"/>
+                    <RadioButton android:id="@+id/RO_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onRORadioButtonClicked"/>
+                    <RadioButton android:id="@+id/RO_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onRORadioButtonClicked"/>
+                    <RadioButton android:id="@+id/RO_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onRORadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ScottCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Scott Systems"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Scott_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onScottRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Scott_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onScottRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Scott_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onScottRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Scott_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onScottRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Scott_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onScottRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/OtherCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Other"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Other_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onOtherRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Other_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onOtherRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Other_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onOtherRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Other_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onOtherRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Other_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onOtherRadioButtonClicked"/>
+                </RadioGroup>
+                <EditText
+                    android:id="@+id/newOthersText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="3"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="2. What repair order writing software you use?"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <Spinner
+                    android:id="@+id/new2Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:entries="@array/contractTypesEntries"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="3. What version of repair order writing software selected above you are using?"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/new3Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="4. When was the repair order writing software purchased? Year:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <Spinner
+                    android:id="@+id/new4Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:entries="@array/contractTypesEntries"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="5. How much did you spend on the repair order writing software?"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/new5Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="6. Does your repair order writing software have recurring monthly charges or one-time fee?"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+            </TableRow>
+
+            <TableRow>
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="0"
+                    >
+                    <RadioButton android:id="@+id/chargeType_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recurring"
+                        android:onClick="onchargeTypeRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/chargeType_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="One-time fee"
+                        android:onClick="onchargeTypeRadioButtonClicked"/>
+                </RadioGroup>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Amount:"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/new6Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="2"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="7. Do you use shop management software different from your repair order writing software?"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="0"
+                    >
+                    <RadioButton android:id="@+id/shop_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onShopRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/shop_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onShopRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+            <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="If 'Yes', what shop management software you use?"
+                android:textStyle="bold"
+                android:layout_column="0"
+                android:layout_margin="5dp"
+                />
+            <EditText
+                android:id="@+id/new7swText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:text=""
+                android:ems="8"
+                android:layout_column="1"
+                android:background="@drawable/textview_background"
+                android:textStyle="bold"
+                />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="What version #?"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/new7verText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="When was the software purchased? Year:"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <Spinner
+                    android:id="@+id/new7yesrSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:entries="@array/contractTypesEntries"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="How much dod you spend?"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/new7SpendText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="0"
+                    >
+                    <RadioButton android:id="@+id/chargeType7_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recurring"
+                        android:onClick="onShopchargeTypeRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/chargeType7_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="One-time fee"
+                        android:onClick="onShopchargeTypeRadioButtonClicked"/>
+                </RadioGroup>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Amount:"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/new7AmountText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="2"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="8. List ALL parts houses/suppliers where you buy parts"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ShopAutoZoneCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="AutoZone"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <CheckBox
+                    android:id="@+id/ShopQuestCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="CarQuest"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <CheckBox
+                    android:id="@+id/ShopCSKCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="CSK"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <CheckBox
+                    android:id="@+id/ShopFactoryCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Factory Motor Parts"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+            </TableRow>
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ShopNAPACheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="NAPA"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <CheckBox
+                    android:id="@+id/ShopRellyCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="O'Relly"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <CheckBox
+                    android:id="@+id/ShopOneStopCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="OneStop"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <CheckBox
+                    android:id="@+id/ShopPepCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Pep Boys"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+            </TableRow>
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ShopPacCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="WorldPac"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+            </TableRow>
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/ShopOtherCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Other"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <EditText
+                    android:id="@+id/newShopPartsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="9. How do you order your parts ?"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Rank (1-5) from most to least how you order your parts."
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/InPersonCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="In Person"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/InPerson_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onInPersonRadioButtonClicked"
+                        />
+                    <RadioButton android:id="@+id/InPerson_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onInPersonRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/InPerson_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onInPersonRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/InPerson_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onInPersonRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/InPerson_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onInPersonRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/IntegratedCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Integrated Software"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Integrated_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onIntegratedRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Integrated_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onIntegratedRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Integrated_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onIntegratedRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Integrated_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onIntegratedRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Integrated_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onIntegratedRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/OnLineCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="On Line"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/OnLine_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onOnLineRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OnLine_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onOnLineRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OnLine_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onOnLineRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OnLine_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onOnLineRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OnLine_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onOnLineRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/TeleCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Telephone"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/Tele_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onTeleRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Tele_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onTeleRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Tele_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onTeleRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Tele_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onTeleRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Tele_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onTeleRadioButtonClicked"/>
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/OrderOthersCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Other"
+                    android:textStyle="bold"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    />
+                <RadioGroup
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_column="1">
+                    <RadioButton android:id="@+id/OrderOthers_radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:onClick="onOrderOthersRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OrderOthers_radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:onClick="onOrderOthersRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OrderOthers_radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:onClick="onOrderOthersRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OrderOthers_radio_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:onClick="onOrderOthersRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OrderOthers_radio_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:onClick="onOrderOthersRadioButtonClicked"/>
+                </RadioGroup>
+                <EditText
+                    android:id="@+id/newOrderOthersText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="3"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+        </TableLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/InsuranceExpDatell"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
+</RelativeLayout>

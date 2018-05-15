@@ -24,6 +24,7 @@ import com.inspection.model.AAAPersonnelType
 import com.inspection.model.FacilityDataModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
+import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -689,6 +690,111 @@ class FragmentARRAVPersonnel : Fragment() {
     }
 
 
+
+    fun fillPortalTrackingTableView(){
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+
+        val rowLayoutParam8 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 8
+
+        FacilityDataModel.getInstance().tblPersonnel.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).PersonnelTypeID
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).FirstName
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = get(it).LastName
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).SeniorityDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).CertificationNum
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam5
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).startDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam6
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).ExpirationDate
+                tableRow.addView(textView)
+
+                var checkBox= CheckBox(context)
+
+                checkBox = CheckBox(context)
+                checkBox.layoutParams = rowLayoutParam7
+                checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                checkBox.isChecked = (get(it).ContractSigner.equals("true"))
+                tableRow.addView(checkBox)
+
+                checkBox = CheckBox(context)
+                checkBox.layoutParams = rowLayoutParam8
+                checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                checkBox.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
+                tableRow.addView(checkBox)
+
+                aarPortalTrackingTableLayout.addView(tableRow)
+            }
+        }
+    }
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
