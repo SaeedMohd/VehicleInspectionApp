@@ -8,4 +8,5 @@ class AAAAffiliationTypes {
     var typename = ""
     var typedetailid = 0
     var typedetailname = ""
+
 }

@@ -2,7 +2,6 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.database.DatabaseErrorHandler
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-
+import android.widget.LinearLayout
+import android.widget.TableRow
+import android.widget.TextView
 import com.inspection.R
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility.*
-import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,6 +48,25 @@ class FragmentARRAVDeficiency : Fragment() {
         deffAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         deff_dropdown.adapter = deffAdapter
 
+        defAddBtn.setOnClickListener({
+            var validProgram = true
+
+            if (validProgram) {
+                var item = FacilityDataModel.TblDeficiency()
+                item.DefTypeID =""+ -1
+                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+                item.VisitationDate= if (visitationDateBtn.text.equals("SELECT DATE")) "" else visitationDateBtn.text.toString()
+             //   item.expDate = if (fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else fcexpiration_date_textviewVal.text.toString()
+                item.Comments=comments_editTextVal.text.toString()
+                FacilityDataModel.getInstance().tblDeficiency.add(item)
+                //  BuildProgramsList()
+
+                addTheLatestRowOfPortalAdmin()
+
+            }
+        })
+        fillPortalTrackingTableView();
+
         visitationDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -64,7 +82,7 @@ class FragmentARRAVDeficiency : Fragment() {
             dpd.show()
         }
 
-        clearedDateBtn.setOnClickListener {
+        visitationDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
@@ -74,12 +92,12 @@ class FragmentARRAVDeficiency : Fragment() {
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                clearedDateBtn!!.text = sdf.format(c.time)
+                visitationDateBtn!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        DateBtn.setOnClickListener {
+        enteredDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
@@ -89,23 +107,148 @@ class FragmentARRAVDeficiency : Fragment() {
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                DateBtn!!.text = sdf.format(c.time)
+                enteredDateBtn!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
     }
 
+    fun fillPortalTrackingTableView() {
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        FacilityDataModel.getInstance().tblDeficiency.apply {
+
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).DefTypeID
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).VisitationDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = get(it).EnteredDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).ClearedDate
+                tableRow.addView(textView)
+ textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).Comments
+                tableRow.addView(textView)
+
+
+                deficiencyTableLayout.addView(tableRow)
+            }
+        }
+    }
+
+    fun addTheLatestRowOfPortalAdmin() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        FacilityDataModel.getInstance().tblDeficiency[FacilityDataModel.getInstance().tblDeficiency.size - 1].apply {
+
+
+            var tableRow = TableRow(context)
+
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = DefTypeID
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = VisitationDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = EnteredDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ClearedDate
+            tableRow.addView(textView)
+ textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = Comments
+            tableRow.addView(textView)
+
+
+            deficiencyTableLayout.addView(tableRow)
+
+        }
+    }
+
+
     fun validateInputs() : Boolean {
         var isInputsValid = true
 
-        clearedDateBtn.setError(null)
+        enteredDateBtn.setError(null)
         visitationDateBtn.setError(null)
-        DateBtn.setError(null)
+        enteredDateBtn.setError(null)
 
 
-        if(clearedDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(enteredDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid=false
-            clearedDateBtn.setError("Required Field")
+            enteredDateBtn.setError("Required Field")
         }
 
         if(visitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
@@ -113,9 +256,9 @@ class FragmentARRAVDeficiency : Fragment() {
             visitationDateBtn.setError("Required Field")
         }
 
-        if(DateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(enteredDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid=false
-            DateBtn.setError("Required Field")
+            enteredDateBtn.setError("Required Field")
         }
 
         return isInputsValid

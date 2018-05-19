@@ -22,26 +22,10 @@
             android:layout_below="@+id/titleTextView"
             android:background="@color/white"
             android:padding="5dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressLinearId">
-                <ProgressBar
-                    android:id="@+id/progressbarPrograms"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    android:max="100"
-                    android:backgroundTint="@color/white"
-                    android:indeterminateTint="#1a09d6"
-                    android:layout_marginTop="-7dp"/>
-            </LinearLayout>
             <TableLayout
-                android:id="@+id/mainProgramsTableLayout"
+                android:id="@+id/aarPortalTrackingTableLayout"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_below="@+id/progressLinearId"
                 android:layout_height="wrap_content">
 
 
@@ -73,38 +57,23 @@
                     </TextView>
                 </TableRow>
 
-                <ScrollView android:layout_height="120dp">
-                    <TableLayout android:id="@+id/programsTableLayout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-
-                        <LinearLayout
-                        android:id="@+id/programsListLL"
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:orientation="vertical"
-                        >
-                        </LinearLayout>
-
-                    </TableLayout>
-                </ScrollView>
             </TableLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/mainProgramsTableLayout"
+                android:layout_below="@id/aarPortalTrackingTableLayout"
                 android:id="@+id/btnslayout"
                 android:weightSum="3"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/addBtn"
+                    android:id="@+id/addNewAarButton"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="Add"/>
+                    android:text="Add Program"/>
                 <Button
                     android:id="@+id/editBtn"
                     android:layout_width="0dp"

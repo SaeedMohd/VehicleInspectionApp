@@ -1,28 +1,19 @@
 package com.inspection.fragments
 
-import android.app.Fragment
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.support.design.widget.Snackbar
-import android.widget.TextView
-import com.inspection.R
-
-import com.inspection.model.AAAFacility
-import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.activity_item_list.*
-import kotlinx.android.synthetic.main.item_list_content.view.*
-
-import kotlinx.android.synthetic.main.item_list.*
-import android.R.menu
-import android.graphics.Color
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.view.get
-import com.inspection.Utils.toast
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+import com.inspection.R
+import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.activity_item_list.*
+import kotlinx.android.synthetic.main.item_list.*
+import kotlinx.android.synthetic.main.item_list_content.view.*
 
 
 /**
@@ -148,12 +139,10 @@ class ItemListActivity : AppCompatActivity() {
                         5 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
                         8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
                         9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
-                        12 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
+                        12 -> fragment = VehiclesFragmentInScopeOfServicesView.newInstance("test", "test")
                         10 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
                         11 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
                         13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
-                        14 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
-                        15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
                         22 -> fragment = FragmentAARAVBillingPlans.newInstance("test", "test")
                         23 -> fragment = FragmentAARAVBilling.newInstance("test", "test")
                         24 -> fragment = FragmentAARAVPayments.newInstance("test", "test")
@@ -165,7 +154,8 @@ class ItemListActivity : AppCompatActivity() {
                         14 -> fragment = PromotionsFragment.newInstance("test", "test")
                         15 -> fragment = AwardsAndDistinctionsFragment.newInstance("test", "test")
                         16 -> fragment = OthersFragment.newInstance("test", "test")
-                        17 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                        17 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
+                        18 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
                         32 -> fragment = FragmentAARAVComments.newInstance("test", "test")
                         34 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
                         else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)

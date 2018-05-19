@@ -130,7 +130,8 @@ class FragmentARRAVVehicles : Fragment() {
                         (1 until vehiclesListItems.size)
                                 .forEach { it2 ->
                                     if (it2 != 0) {
-                                        if (AnnualVisitationSingleton.getInstance().vehicles.split(",")[it].toInt() == (vehiclesListItems[it2] as VehicleItem).vehicleModel.vehmaketypeid) {
+                                        if (AnnualVisitationSingleton.getInstance().vehicles.split(",")[it].toInt()
+                                                == (vehiclesListItems[it2] as VehicleItem).vehicleModel.vehmaketypeid) {
                                             (vehiclesListItems[it2] as VehicleItem).setVehicleSelected(true)
                                             vehiclesArrayAdapter!!.notifyDataSetChanged()
                                         }
