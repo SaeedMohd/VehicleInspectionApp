@@ -156,6 +156,8 @@ class ItemListActivity : AppCompatActivity() {
                         16 -> fragment = OthersFragment.newInstance("test", "test")
                         17 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
                         18 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
+                        19 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                        20 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
                         32 -> fragment = FragmentAARAVComments.newInstance("test", "test")
                         34 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
                         else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
