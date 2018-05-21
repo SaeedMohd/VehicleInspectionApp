@@ -33,32 +33,64 @@
             android:orientation="vertical"
             android:padding="5dp"
             >
+            <TableLayout
+                android:id="@+id/AmendmentOrdersAndTrackingTableLayout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-            <LinearLayout android:layout_width="fill_parent"
+
+                <TableRow>
+                    <TextView android:text="AO ID"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+
+                        android:layout_column="0"
+                        android:layout_weight="1"/>
+
+                    <TextView android:text="Employee"
+                        android:gravity="center"
+
+                        android:layout_width="30dp"
+                        android:layout_column="1"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Reason"
+                        android:layout_width="30dp"
+                        android:layout_column="2"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                </TableRow>
+
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/aarPortalTrackingTableLayout"
+                android:id="@+id/btnslayout"
                 android:weightSum="3"
-                android:orientation="horizontal"
-                >
-                <TextView
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/addNewAarButton"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="AO ID: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/aoIDVal"
+                    android:layout_height="match_parent"
+                    android:text="Add New AO Tracking"/>
+                <Button
+                    android:id="@+id/editBtn"
                     android:layout_width="0dp"
-                    android:text="TEST"
-                    android:layout_weight="2"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Amendment Order Form"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="3"
+                android:weightSum="5"
                 android:orientation="horizontal"
                 >
                 <TextView
@@ -69,8 +101,8 @@
                     android:text="Employee:"
                     android:textStyle="bold"
                     />
-                <TextView
-                    android:id="@+id/employeeDropDown"
+                <Spinner
+                    android:id="@+id/reasonDropDown"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_marginTop="10dp"
@@ -79,7 +111,7 @@
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="3"
+                android:weightSum="5"
                 android:orientation="horizontal"
                 >
                 <TextView
@@ -97,10 +129,63 @@
                     android:layout_marginTop="10dp"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            <TableLayout
+                android:id="@+id/newEventTableLayout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+
+                <TableRow>
+                    <TextView android:text="AO ID"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+
+                        android:layout_column="0"
+                        android:layout_weight="1"/>
+                    <TextView android:text="Event ID"
+                        android:gravity="center"
+
+                        android:layout_width="30dp"
+                        android:layout_column="1"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Event Date"
+                        android:layout_width="30dp"
+                        android:layout_column="2"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Event"
+                        android:layout_width="30dp"
+                        android:layout_column="3"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                </TableRow>
+
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/aarPortalTrackingTableLayout"
+                android:id="@+id/btnslayout"
+                android:weightSum="2"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/addNewAarButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Add New Event"/>
+             </LinearLayout>
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="3"
+                android:weightSum="7"
                 android:orientation="horizontal"
                 >
                 <TextView
@@ -108,21 +193,25 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="Event ID: "
+                    android:text="Event Date: "
                     android:textStyle="bold"
                     />
-                <TextView
-                    android:id="@+id/eventIDVal"
+                <Button
+                    android:id="@+id/event_date_textviewVal"
+
+                    android:layout_below="@id/connumberll"
                     android:layout_width="0dp"
-                    android:text="TEST"
-                    android:layout_weight="2"
-                    android:layout_marginTop="10dp"
+                    android:text="select date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_weight="4"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="3"
+                android:weightSum="5"
                 android:orientation="horizontal"
                 >
                 <TextView
@@ -133,10 +222,9 @@
                     android:text="Event: "
                     android:textStyle="bold"
                     />
-                <TextView
-                    android:id="@+id/eventVal"
+                <Spinner
+                    android:id="@+id/reasonDropDown"
                     android:layout_width="0dp"
-                    android:text="TEST"
                     android:layout_weight="2"
                     android:layout_marginTop="10dp"
                     android:layout_height="wrap_content" />

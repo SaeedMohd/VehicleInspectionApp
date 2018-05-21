@@ -5,347 +5,587 @@
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FragmentARRAVFacility">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="Complaints"
-        android:textStyle="bold"
-        android:textSize="18dp"
+      <TextView
+    android:id="@+id/titleTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:gravity="center"
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    android:text="Complaints"
+    android:textAllCaps="true"
+    android:textSize="18dp"
+    android:textStyle="bold" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:background="@color/light_gray"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        />
-        <RelativeLayout
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:orientation="vertical"
             android:padding="5dp">
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TableLayout
+                android:id="@+id/deficiencyTableLayout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-                <ProgressBar
-                    android:id="@+id/progressbarComp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    android:max="100"
-                    android:backgroundTint="@color/white"
-                    android:indeterminateTint="#1a09d6"
-                    android:layout_marginTop="-7dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/llMain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/item_solid_border"
-                android:orientation="vertical">
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:id="@+id/ll1">
-                <TextView
-                    android:id="@+id/no_of_complaints_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:text="No of complaints during previous 12 months: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/no_of_complaints_textviewVal"
-                    android:layout_toRightOf="@id/timezone_textview"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/ll1"
-                android:orientation="horizontal"
-                android:id="@+id/ll2">
-                <TextView
-                    android:id="@+id/no_of_justified_complaints_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll1"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:text="No of justified complaints during previous 12 months: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/no_of_justified_complaints_textviewVal"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/ll2"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/ll3">
-                <TextView
-                    android:id="@+id/justified_complaint_ratio_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll2"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:text="Justified complaint ratio: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/justified_complaint_ratio_textviewVal"
-                    android:layout_toRightOf="@id/website_textview"
-                    android:layout_below="@id/ll2"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            </LinearLayout>
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/llMain"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:id="@+id/connumberll">
-                <TextView
-                    android:id="@+id/complaint_id_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="ID: "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/complaint_id_textviewVal"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <TableRow>
+                    <TextView android:text="Complaint ID"
+                        android:layout_width="100dp"
+                        android:gravity="center"
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/connumberll"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:id="@+id/contypell">
-                <TextView
-                    android:id="@+id/first_name_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/connumberll"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="First Name: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/first_name_textviewVal"
-                    
-                    android:layout_below="@id/connumberll"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                        android:layout_column="0"
+                        android:layout_weight="1"/>
+                    <TextView android:text="Contract No"
+                        android:layout_width="100dp"
+                        android:gravity="center"
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/contypell"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:id="@+id/officell">
-                <TextView
-                    android:id="@+id/last_name_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/contypell"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Last Name: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/last_name_textviewVal"
-                    android:layout_toRightOf="@id/office_textview"
-                    android:layout_below="@id/contypell"
-                    android:layout_width="0dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                        android:layout_column="1"
+                        android:layout_weight="1"/>
+                    <TextView android:text="Entered By"
+                        android:gravity="center"
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/officell"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:id="@+id/AssignedToll">
-                <TextView
-                    android:id="@+id/received_date_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/officell"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Received Date: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/received_date_textviewVal"
-                    android:layout_toRightOf="@id/assignedto_textview"
-                    android:layout_below="@id/officell"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                        android:layout_width="30dp"
+                        android:layout_column="2"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Assigned To"
+                        android:layout_width="30dp"
+                        android:layout_column="3"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+  <TextView android:text="First Name"
+                        android:layout_width="100dp"
+                        android:gravity="center"
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/AssignedToll"
-                android:orientation="horizontal"
-                android:id="@+id/dball">
-                <TextView
-                    android:id="@+id/complaint_reason_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/AssignedToll"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:text="Complaint Reason: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/complaint_reason_textviewVal"
-                    android:layout_toRightOf="@id/dba_textview"
-                    android:layout_below="@id/AssignedToll"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                        android:layout_column="4"
+                        android:layout_weight="1"/>
+                    <TextView android:text="Last Name"
+                        android:layout_width="100dp"
+                        android:gravity="center"
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/dball"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:id="@+id/entityll">
-                <TextView
-                    android:id="@+id/complaint_resolution_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/dball"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Complaint Resolution: "
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/complaint_resolution_textviewVal"
-                    android:layout_toRightOf="@id/entity_textview"
-                    android:layout_below="@id/dball"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                        android:layout_column="5"
+                        android:layout_weight="1"/>
+                    <TextView android:text="Received Date"
+                        android:gravity="center"
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/entityll"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:id="@+id/bustypell">
-                <TextView
-                    android:id="@+id/comments_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/entityll"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:text="Comments: "
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/comments_textviewVal"
-                    android:layout_toRightOf="@id/bustype_textview"
-                    android:layout_below="@id/entityll"
-                    android:layout_width="0dp"
-                    android:maxEms="250"
-                    android:lines="3"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                        android:layout_width="30dp"
+                        android:layout_column="6"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Closed Date"
+                        android:layout_width="30dp"
+                        android:layout_column="7"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                </TableRow>
+
+            </TableLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/bustypell"
-                android:id="@+id/compbtnslayout"
-                android:weightSum="2"
+                android:layout_below="@id/affcomments_editTextVal"
+                android:id="@+id/affbtnslayout"
+                android:weightSum="3"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/compeditBtn"
+                    android:id="@+id/defAddBtn"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="Modify"/>
-                <Button
-                    android:id="@+id/compShowAllBtn"
+                    android:text="Add New Complaint"/>
+                           </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Show All"/>
+                    android:text="Initiated By: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/deff_dropdown"
+                    android:layout_width="0dp"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/compbtnslayout"
-                android:background="@drawable/frame_solid_border"
-                android:scrollbars="none"
-                >
-                <LinearLayout
-                    android:id="@+id/compListLL"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:orientation="vertical"
-                    >
-                </LinearLayout>
-            </ScrollView>
-        </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/checkBoxes1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    />
+  <TextView
+                     android:text="Tow In"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:textStyle="bold"
+                    />
+  <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    />
+  <TextView
+                     android:text="Out of State"
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    />
+
+                 </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Complaint ID:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                     />
+          <TextView
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+              android:paddingHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:text="CTS/SOSS ID:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                     />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="First Name:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                     />
+          <TextView
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+              android:paddingHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:text="Last Name:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                     />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/checkBoxes1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    />
+                <TextView
+                    android:text="Don't Count Complaint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/checkBoxes1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    />
+                <TextView
+                    android:text="Ers Complaint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Entered By: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/deff_dropdown"
+                    android:layout_width="0dp"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+ <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Assigned To: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/deff_dropdown"
+                    android:layout_width="0dp"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Reason: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/deff_dropdown"
+                    android:layout_width="0dp"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Resolution: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/deff_dropdown"
+                    android:layout_width="0dp"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Received Date:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                    />
+               </LinearLayout>
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Date Opened:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                    />
+                <TextView
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:paddingHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:text="Closed Date:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/contypell"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affliationdetails"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="2nd Date Opened:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                    />
+                <TextView
+                    android:id="@+id/clearedDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:paddingHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:text="2nd Closed Date:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:paddingHorizontal="8dp"
+
+                    android:id="@+id/enteredDateBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/textview_background"
+                    android:layout_weight="1"
+
+                    />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Work Days Not Counted:"/>
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

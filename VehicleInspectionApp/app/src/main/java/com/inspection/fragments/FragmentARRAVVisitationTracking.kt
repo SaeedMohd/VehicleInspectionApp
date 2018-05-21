@@ -1,25 +1,21 @@
 package com.inspection.fragments
 
-import android.Manifest
-import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.inspection.MainActivity
-
+import android.widget.LinearLayout
+import android.widget.TableRow
+import android.widget.TextView
 import com.inspection.R
-import com.inspection.Utils.toast
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_arrav_visitation_tracking.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -47,41 +43,235 @@ class FragmentARRAVVisitationTracking : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         FacilityDataModel.getInstance().tblVisitationTracking[0].apply{
-            visitationDateButton.text = DatePerformed
-            performedByButton.text = performedBy
+            //visitationDateButton.text = DatePerformed
+     //       performedByButton.text = performedBy
             aarSignEditText.setText(AARSigns)
             certificateOfApprovalEditText.setText(CertificateOfApproval)
             memberBenefitsPosterEditText.setText(MemberBenefitPoster)
             qualityControlProcessEditText.setText(QualityControl)
             staffTrainingProcessEditText.setText(StaffTraining)
         }
-
-
-        takePhotoButton.setOnClickListener {
-                if (ContextCompat.checkSelfPermission((activity as MainActivity),
-                                Manifest.permission.CAMERA)
-                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as MainActivity),
-                                Manifest.permission.READ_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    val simpleAlert = AlertDialog.Builder(context)
-                    simpleAlert.setTitle("Options")
-                    simpleAlert.setItems(arrayOf("Blank Canvas", "Take Photo", "Pick Photo")) { dialog, which ->
-                        if (which == 1) {
-                            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                            startActivityForResult(takePictureIntent, 66)
-                        } else if (which == 2) {
-                            val intent = Intent()
-                            intent.type = "image/*"
-                            intent.action = Intent.ACTION_GET_CONTENT
-                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
-                        }
-                    }
-                    simpleAlert.show()
-                }else{
-                context!!.toast("Please make sure camera and storage permissions are granted")
-            }
+        performed_date_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                performed_date_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        recieved_date_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                recieved_date_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+        entered_date_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                entered_date_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
         }
 
+
+        newVisitTrackingAddBtn.setOnClickListener({
+            var validProgram = true
+//            for (fac in facilityProgramsList) {
+//                if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
+//                    context!!.toast("Program Name cannot be duplicated")
+//                    validProgram=false
+//                }
+//            }
+            if (validProgram) {
+                var item = FacilityDataModel.TblVisitationTracking()
+               // item.performedBy =performedBy_dropdown.selectedItem.toString()
+                item.performedBy =""
+                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+                item.DatePerformed = if (performed_date_textviewVal.text.equals("SELECT DATE")) "" else performed_date_textviewVal.text.toString()
+//                item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
+//                item.Comments=comments_editTextVal.text.toString()
+//                FacilityDataModel.getInstance().tblPrograms.add(item)
+                //  BuildProgramsList()
+
+                addTheLatestRowOfPortalAdmin()
+
+            }
+        })
+
+        fillPortalTrackingTableView();
+
+
+//        takePhotoButton.setOnClickListener {
+//                if (ContextCompat.checkSelfPermission((activity as MainActivity),
+//                                Manifest.permission.CAMERA)
+//                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as MainActivity),
+//                                Manifest.permission.READ_EXTERNAL_STORAGE)
+//                        == PackageManager.PERMISSION_GRANTED) {
+//                    val simpleAlert = AlertDialog.Builder(context)
+//                    simpleAlert.setTitle("Options")
+//                    simpleAlert.setItems(arrayOf("Blank Canvas", "Take Photo", "Pick Photo")) { dialog, which ->
+//                        if (which == 1) {
+//                            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                            startActivityForResult(takePictureIntent, 66)
+//                        } else if (which == 2) {
+//                            val intent = Intent()
+//                            intent.type = "image/*"
+//                            intent.action = Intent.ACTION_GET_CONTENT
+//                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
+//                        }
+//                    }
+//                    simpleAlert.show()
+//                }else{
+//                context!!.toast("Please make sure camera and storage permissions are granted")
+//            }
+//        }
+
+    }
+    fun fillPortalTrackingTableView() {
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        FacilityDataModel.getInstance().tblVisitationTracking.apply {
+
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).DatePerformed
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).performedBy
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+              //  textView.text = get(it).EnteredDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+              //  textView.text = get(it).ClearedDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            //  textView.text = get(it).Comments
+                tableRow.addView(textView)
+
+
+                deficiencyTableLayout.addView(tableRow)
+            }
+        }
+    }
+
+    fun addTheLatestRowOfPortalAdmin() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        FacilityDataModel.getInstance().tblVisitationTracking[FacilityDataModel.getInstance().tblVisitationTracking.size - 1].apply {
+
+
+            var tableRow = TableRow(context)
+
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = DatePerformed
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = performedBy
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+          //  textView.text = EnteredDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+        //    textView.text = ClearedDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+        //    textView.text = Comments
+            tableRow.addView(textView)
+
+
+            deficiencyTableLayout.addView(tableRow)
+
+        }
     }
 
     override fun onAttach(context: Context?) {

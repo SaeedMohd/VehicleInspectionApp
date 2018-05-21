@@ -243,7 +243,9 @@ class FacilityDataModel {
     }
 
     class TblPrograms {
+
         var ProgramTypeID = ""
+        var programtypename = ""
         var effDate = ""
         var expDate = ""
         var Comments = ""
@@ -252,6 +254,7 @@ class FacilityDataModel {
     class TblFacilityServices {
         var ServiceID = ""
         var effDate = ""
+        var expDate = ""
         var Comments = ""
     }
 
@@ -263,7 +266,8 @@ class FacilityDataModel {
         var DefTypeID = ""
         var VisitationDate = ""
         var ClearedDate = ""
-        var Comments = ""
+        var EnteredDate = ""
+        var Comments : String? = ""
     }
 
     class TblComplaintFiles {

@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+
 import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
@@ -11,14 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-
-
 import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
@@ -162,7 +160,7 @@ class FragmentARRAVAffliations : Fragment() {
                 item.expdate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString()
                 item.comments=affcomments_editTextVal.text.toString()
                 facilityAffList.add(facilityAffList.size, item)
-                BuildAffiliationsList()
+              //  BuildAffiliationsList()
             }
         })
 
@@ -177,7 +175,7 @@ class FragmentARRAVAffliations : Fragment() {
             }
             if (itemFound) {
                 facilityAffList.remove(item)
-                BuildAffiliationsList()
+                //BuildAffiliationsList()
             }
         })
 
@@ -188,7 +186,7 @@ class FragmentARRAVAffliations : Fragment() {
                     fac.expdate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE") || afDtlsexpiration_date_textviewVal.text.isNullOrEmpty() || afDtlsexpiration_date_textviewVal.text.equals("") || afDtlsexpiration_date_textviewVal.text.equals("NULL") || afDtlsexpiration_date_textviewVal.text.toString().toLowerCase().equals("no date provided")) "" else afDtlsexpiration_date_textviewVal.text.toString()
                     fac.comments = affcomments_editTextVal.text.toString()
                 }
-                BuildAffiliationsList()
+                //BuildAffiliationsList()
             }
         })
 
@@ -229,7 +227,6 @@ class FragmentARRAVAffliations : Fragment() {
     fun prepareAffiliations () {
 
 
-            progressbarAff.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAffTypesURL,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
@@ -277,48 +274,47 @@ class FragmentARRAVAffliations : Fragment() {
                         activity!!.runOnUiThread(Runnable {
                             facilityAffList= Gson().fromJson(response.toString(), Array<AAAFacilityAffiliations>::class.java).toCollection(ArrayList())
 //                            drawProgramsTable()
-                            BuildAffiliationsList()
+                  //          BuildAffiliationsList()
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading facility programs")
                 activity!!.toast("Connection Error. Please check the internet connection")
             }))
 
-            progressbarAff.visibility = View.INVISIBLE
     }
 
-    fun BuildAffiliationsList() {
-        val inflater = activity!!
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val parentLayout = affListLL
-        parentLayout.removeAllViews()
-        for (fac in facilityAffList) {
-            val vAffRow = inflater.inflate(R.layout.custom_aff_list_item, parentLayout, false)
-            val affId= vAffRow.findViewById(R.id.affItemId) as TextView
-            val affTypeName= vAffRow.findViewById(R.id.affItemtypeName) as TextView
-            val affTypeDetailName= vAffRow.findViewById(R.id.affItemtypeDetailName) as TextView
-            val affEffDate= vAffRow.findViewById(R.id.affItemEffDate) as TextView
-            val affExpDate= vAffRow.findViewById(R.id.affItemExpDate) as TextView
-            affId.text = fac.affiliationid.toString()
-            affTypeName.text = fac.typename
-            affTypeDetailName.text = fac.typedetailname
-            affEffDate.text = if (fac.effdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.effdate)) else fac.effdate
-            affExpDate.text = if (fac.expdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.expdate)) else fac.expdate
-            vAffRow.setOnClickListener({
-                affiliations_textviewVal.setSelection(affTypesArray.indexOf(fac.typename))
-//                afDetails_textviewVal.setSelection(affTypesDetailsArray.indexOf(fac.typedetailname))
-                selectedTypeDetailName=fac.typedetailname
-                afDtlseffective_date_textviewVal.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL") || fac.effdate.equals("") || fac.effdate.toLowerCase().equals("no date provided")) "No Date Provided" else  {
-                    if (fac.effdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.effdate)) else fac.effdate
-                }
-                afDtlsexpiration_date_textviewVal.text = if (fac.expdate.isNullOrEmpty() || fac.expdate.equals("NULL") || fac.expdate.equals("") || fac.expdate.toLowerCase().equals("no date provided")) "No Date Provided" else   {
-                    if (fac.expdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.expdate)) else fac.expdate
-                }
-                affcomments_editTextVal.setText(fac.comments)
-            })
-            parentLayout.addView(vAffRow)
-        }
-    }
+//    fun BuildAffiliationsList() {
+//        val inflater = activity!!
+//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//        val parentLayout = affListLL
+//        parentLayout.removeAllViews()
+//        for (fac in facilityAffList) {
+//            val vAffRow = inflater.inflate(R.layout.custom_aff_list_item, parentLayout, false)
+//            val affId= vAffRow.findViewById(R.id.affItemId) as TextView
+//            val affTypeName= vAffRow.findViewById(R.id.affItemtypeName) as TextView
+//            val affTypeDetailName= vAffRow.findViewById(R.id.affItemtypeDetailName) as TextView
+//            val affEffDate= vAffRow.findViewById(R.id.affItemEffDate) as TextView
+//            val affExpDate= vAffRow.findViewById(R.id.affItemExpDate) as TextView
+//            affId.text = fac.affiliationid.toString()
+//            affTypeName.text = fac.typename
+//            affTypeDetailName.text = fac.typedetailname
+//            affEffDate.text = if (fac.effdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.effdate)) else fac.effdate
+//            affExpDate.text = if (fac.expdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.expdate)) else fac.expdate
+//            vAffRow.setOnClickListener({
+//                affiliations_textviewVal.setSelection(affTypesArray.indexOf(fac.typename))
+////                afDetails_textviewVal.setSelection(affTypesDetailsArray.indexOf(fac.typedetailname))
+//                selectedTypeDetailName=fac.typedetailname
+//                afDtlseffective_date_textviewVal.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL") || fac.effdate.equals("") || fac.effdate.toLowerCase().equals("no date provided")) "No Date Provided" else  {
+//                    if (fac.effdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.effdate)) else fac.effdate
+//                }
+//                afDtlsexpiration_date_textviewVal.text = if (fac.expdate.isNullOrEmpty() || fac.expdate.equals("NULL") || fac.expdate.equals("") || fac.expdate.toLowerCase().equals("no date provided")) "No Date Provided" else   {
+//                    if (fac.expdate.length>11 ) Constants.appFormat.format(Constants.dbFormat.parse(fac.expdate)) else fac.expdate
+//                }
+//                affcomments_editTextVal.setText(fac.comments)
+//            })
+//            parentLayout.addView(vAffRow)
+//        }
+//    }
 
     fun validateInputs() : Boolean {
         var isInputsValid = true

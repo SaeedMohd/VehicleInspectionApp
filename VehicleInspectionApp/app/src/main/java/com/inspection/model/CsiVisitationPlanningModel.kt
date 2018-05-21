@@ -8,4 +8,6 @@ class CsiVisitationPlanningModel {
     var facnum = -1
     var facname = ""
     var joindate = ""
+
+
 }

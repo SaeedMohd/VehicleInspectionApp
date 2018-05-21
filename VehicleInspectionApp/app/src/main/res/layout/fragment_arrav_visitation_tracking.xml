@@ -35,64 +35,6 @@
             android:padding="5dp">
 
             <LinearLayout
-                android:id="@+id/connumberll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/program_name_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Visitation Date: "
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/visitationDateButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:text="Select Date"
-                    android:textColor="@color/blue_krayola" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/affliationdetails"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/connumberll"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/program_name_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Performed By: "
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/performedByButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:text="Select Person"
-                    android:textColor="@color/blue_krayola" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/contypell"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -118,7 +60,8 @@
                     android:layout_weight="0.1"
                     android:background="@null"
                     android:gravity="right|center_vertical"
-                    android:text="X  "
+                    android:textColor="@color/blue_krayola"
+                    android:text="hide  "
                     android:textAppearance="?android:textAppearanceLarge"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -154,7 +97,8 @@
                     android:layout_weight="0.1"
                     android:background="@null"
                     android:gravity="right|center_vertical"
-                    android:text="X  "
+                    android:text="hide  "
+                    android:textColor="@color/blue_krayola"
                     android:textAppearance="?android:textAppearanceLarge"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -191,7 +135,8 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical|right"
-                    android:text="X  "
+                    android:text="hide  "
+                    android:textColor="@color/blue_krayola"
                     android:textAppearance="?android:textAppearanceLarge"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -228,7 +173,8 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical|right"
-                    android:text="X  "
+                    android:text="hide  "
+                    android:textColor="@color/blue_krayola"
                     android:textAppearance="?android:textAppearanceLarge"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -264,7 +210,8 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:gravity="center_vertical|right"
-                android:text="X  "
+                android:text="hide  "
+                android:textColor="@color/blue_krayola"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -273,21 +220,204 @@
 
 
 
-                <Button
-                    android:id="@+id/takePhotoButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:background="@null"
-                    android:text="Take Photo"
-                    android:textColor="@color/blue_krayola" />
-
         <EditText
             android:id="@+id/staffTrainingProcessEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+            <TableLayout
+                android:id="@+id/deficiencyTableLayout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+
+                <TableRow>
+                    <TextView android:text="Date Performed"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+
+                        android:layout_column="0"
+                        android:layout_weight="1"/>
+                    <TextView android:text="Performed By"
+                        android:layout_width="100dp"
+                        android:gravity="center"
+
+                        android:layout_column="1"
+                        android:layout_weight="1"/>
+                    <TextView android:text="Date Recieved"
+                        android:gravity="center"
+
+                        android:layout_width="30dp"
+                        android:layout_column="2"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Date Entered"
+                        android:layout_width="30dp"
+                        android:layout_column="3"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                    <TextView android:text="Entered By"
+                        android:layout_width="30dp"
+                        android:layout_column="4"
+                        android:gravity="center"
+                        android:layout_weight="1">
+                    </TextView>
+                </TableRow>
+
+            </TableLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affcomments_editTextVal"
+                android:id="@+id/affbtnslayout"
+                android:weightSum="3"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/newVisitTrackingAddBtn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Add New Visitation Tracking"/>
+                <Button
+                    android:id="@+id/affeditBtn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Modify"/>
+                <Button
+                    android:id="@+id/affdeleteBtn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Delete"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Date Recieved: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/recieved_date_textviewVal"
+
+                    android:layout_below="@id/connumberll"
+                    android:layout_width="0dp"
+                    android:text="select date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_weight="4"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Performed By: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/performedBy_dropdown"
+                    android:layout_width="0dp"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+  <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Date Performed: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/performed_date_textviewVal"
+
+                    android:layout_below="@id/connumberll"
+                    android:layout_width="0dp"
+                    android:text="select date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Entered By: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/deff_dropdown"
+                    android:layout_width="0dp"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+  <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Date Entered: "
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/entered_date_textviewVal"
+
+                    android:layout_below="@id/connumberll"
+                    android:layout_width="0dp"
+                    android:text="select date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
+
+
+
     </ScrollView>
 </RelativeLayout>
