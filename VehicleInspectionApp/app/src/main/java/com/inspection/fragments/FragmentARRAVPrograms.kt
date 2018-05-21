@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the

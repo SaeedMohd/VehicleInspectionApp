@@ -7,6 +7,7 @@ public class GcmMessageModel {
     String message;
     String image;
 
+
     public String getMessage() {
         return message;
     }

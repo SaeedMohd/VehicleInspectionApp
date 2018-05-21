@@ -58,6 +58,32 @@ class FragmentARRAVComplaints : Fragment() {
 //            prepareComplaints(true)
 //        })
         prepareComplaints(true)
+
+//        newComplaintAddBtn.setOnClickListener({
+//            var validProgram = true
+////            for (fac in facilityProgramsList) {
+////                if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
+////                    context!!.toast("Program Name cannot be duplicated")
+////                    validProgram=false
+////                }
+////            }
+//            if (validProgram) {
+//
+//
+//               var item = FacilityDataModel.TblPrograms()
+//                item.ProgramTypeID =""+ -1
+//                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+//                item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString()
+//                item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
+//                item.Comments=comments_editTextVal.text.toString()
+//                FacilityDataModel.getInstance().tblPrograms.add(item)
+//                //  BuildProgramsList()
+//
+//                addTheLatestRowOfPortalAdmin()
+//
+//            }
+//        })
+
     }
 
 
