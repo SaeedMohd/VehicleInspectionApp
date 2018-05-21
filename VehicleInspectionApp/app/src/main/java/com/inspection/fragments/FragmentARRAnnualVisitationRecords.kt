@@ -54,6 +54,10 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     var isVisitationPlanning = false
     var requiredSpecialistName = ""
 
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -98,7 +102,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         }
 
         newVisitationBtn.setOnClickListener({
-
+            shouldShowVisitation = true
             var loadingDialog = SpotsDialog(context)
             loadingDialog.show()
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
@@ -161,35 +165,22 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         })
 
         visitationSpecialistName.setOnClickListener(View.OnClickListener {
-            var loadingDialog = SpotsDialog(context)
-            loadingDialog.show()
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            loadingDialog.dismiss()
-                            var personnels = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                            var personnelNames = ArrayList<String>()
-                            (0 until personnels.size).forEach {
-                                personnelNames.add(personnels[it].specialistname)
-                            }
-                            personnelNames.sort()
-                            personnelNames.add(0, "Any")
-                            var searchDialog = SearchDialog(context, personnelNames)
-                            searchDialog.show()
-                            searchDialog.setOnDismissListener {
-                                if (searchDialog.selectedString == "Any") {
-                                    visitationSpecialistName.text = ""
-                                } else {
-                                    visitationSpecialistName.text = searchDialog.selectedString
-                                }
-                                showVisitationBtn.performClick()
-                            }
-                        })
-                    }, Response.ErrorListener {
-                loadingDialog.dismiss()
-                Log.v("error while loading", "error while loading facilities")
-                Log.v("Loading error", "" + it.message)
-            }))
+            var personnelNames = ArrayList<String>()
+            (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
+                personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
+            }
+            personnelNames.sort()
+            personnelNames.add(0, "Any")
+            var searchDialog = SearchDialog(context, personnelNames)
+            searchDialog.show()
+            searchDialog.setOnDismissListener {
+                if (searchDialog.selectedString == "Any") {
+                    visitationSpecialistName.text = ""
+                } else {
+                    visitationSpecialistName.text = searchDialog.selectedString
+                }
+                showVisitationBtn.performClick()
+            }
         })
 
         facilityNameButton.setOnClickListener(View.OnClickListener {
@@ -309,8 +300,19 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 }))
             }
         })
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+                        showVisitationBtn.performClick()
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading facilities")
+            Log.v("Loading error", "" + it.message)
+        }))
+
         firstLoading = false
-        showVisitationBtn.performClick()
     }
 
     val spinnersOnItemSelectListener = object : AdapterView.OnItemSelectedListener {
@@ -567,32 +569,52 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     }
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int) {
-
         recordsProgressView.visibility = View.VISIBLE
-        Log.v("*******url", String.format(Constants.getFacilityData, facilityNumber, "004"))
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getTypeTables + "",
                 Response.Listener { response ->
-                    Log.v("*****response = ", response)
                     activity!!.runOnUiThread(Runnable {
-                        recordsProgressView.visibility = View.GONE
-                        if (!response.contains("FacID not found")) {
-                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                            var jsonObj = obj.getJSONObject("responseXml")
-                            parseFacilityDataJsonToObject(jsonObj)
+                        var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                        var jsonObj = obj.getJSONObject("responseXml")
 
-                            var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-                            startActivity(intent)
-                        } else {
-                            context!!.toast("Facility data not found")
-                        }
+                        TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
+
+                        context!!.toast("number of deficiencies = "+ TypeTablesModel.getInstance().AARDeficiencyType.size)
+
+                        Log.v("*******url", String.format(Constants.getFacilityData, facilityNumber, "004"))
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
+                                Response.Listener { response ->
+                                    Log.v("*****response = ", response)
+                                    activity!!.runOnUiThread(Runnable {
+                                        recordsProgressView.visibility = View.GONE
+                                        if (!response.contains("FacID not found")) {
+                                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+                                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+                                            var jsonObj = obj.getJSONObject("responseXml")
+                                            parseFacilityDataJsonToObject(jsonObj)
+
+                                            var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+                                            startActivity(intent)
+                                        } else {
+                                            context!!.toast("Facility data not found")
+                                        }
+                                    })
+                                }, Response.ErrorListener {
+                            recordsProgressView.visibility = View.GONE
+                            context!!.toast("Connection Error.")
+                            Log.v("error while loading", "error while loading facilities")
+                            Log.v("Loading error", "" + it.message)
+                        }))
+
+
                     })
                 }, Response.ErrorListener {
             recordsProgressView.visibility = View.GONE
-            context!!.toast("Connection Error.")
             Log.v("error while loading", "error while loading facilities")
             Log.v("Loading error", "" + it.message)
         }))
+
+
+
     }
 
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
@@ -906,6 +928,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
         private val ARG_PARAM2 = "param2"
+
+        var shouldShowVisitation = false
 
         /**
          * Use this factory method to create a new instance of

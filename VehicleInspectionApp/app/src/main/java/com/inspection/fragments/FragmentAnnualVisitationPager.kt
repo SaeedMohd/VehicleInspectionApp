@@ -102,7 +102,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
             override fun onPageSelected(position: Int) {
                 if (position == 4) {
                     val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as? FragmentARRAVPersonnel
-                    fragmentPersonnel?.preparePersonnelPage()
+//                    fragmentPersonnel?.preparePersonnelPage()
                 } else if (position == 3) {
                     val fragmentLocations = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3") as? FragmentARRAVLocation
                     fragmentLocations?.prepareLocationPage()
@@ -111,7 +111,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
 //                    fragmentFacilityCont?.prepareFacilityContinuedPage()
                 } else if (position == 8) {
                     val fragmentScope = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as? FragmentARRAVScopeOfService
-                    fragmentScope?.prepareScopePage()
+//                    fragmentScope?.prepareScopePage()
                 } else if (position == 11) {
                     val fragmentProgramType = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11") as? FragmentARRAVPrograms
                     fragmentProgramType?.prepareProgramTypes()
@@ -143,7 +143,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         }
     }
 
-//    fun flagLoadNewDetailsRequired(){
+    //    fun flagLoadNewDetailsRequired(){
 //        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued).isFirstRun = true
 //        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel).isFirstRun = true
 //        (fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService).isFirstRun = true
@@ -176,7 +176,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         } else if (!fragmentFacilityLocation.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Location Information Form"
-        } else if (!fragmentPersonnel.validateInputs()) {
+//        } else if (!fragmentPersonnel.validateInputs()) {
             isValidInput = !isValidInput
             errorText += "Please complete Personnel Information Form"
         } else if (!fragmentRepairShopPortal.validateInputs()) {

@@ -21,6 +21,7 @@ import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import androidx.view.get
+import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.toast
 import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 
@@ -93,13 +94,22 @@ class ItemListActivity : AppCompatActivity() {
             "Affiliations", "Promotions", "Awards And Distinctions", "Others", "Deficiency", "Deficiency", "Complaints", "Complaints", "Billing", "Billing Plan", "Billing", "Payments",
             "Vendor Revenue", "Billing History", "Billing Adjustments", "Surveys", "CSI Results", "Software", "Comments", "Comments", "Photos", "Photos").toMutableList()
 
+    private val formTitlesWithVisitations = arrayOf("Visitation", "Visitation", "Facility", "General Information", "RSP", "Contact Info", "Personnel", "Visitation Tracking", "Amendment Orders Tracking",
+            "Scope Of Service", "General Information", "Vehicle Services", "Programs", "Facility Services", "Vehicles",
+            "Affiliations", "Promotions", "Awards And Distinctions", "Others", "Deficiency", "Deficiency", "Complaints", "Complaints", "Billing", "Billing Plan", "Billing", "Payments",
+            "Vendor Revenue", "Billing History", "Billing Adjustments", "Surveys", "CSI Results", "Software", "Comments", "Comments", "Photos", "Photos").toMutableList()
 
 //    private val formTitles = arrayOf("General Information", "Facility", "Facility Continued", "Location Info.", "Personnel", "Order Tracking",
 //            "Portal Addendum", "Visitation Tracking", "Scope Of Service", "Vehicle Services", "Vehicles", "Programs", "Facility Services",
 //            "Affliations", "Deficiency", "Complaints").toMutableList()
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, formTitles, mTwoPane)
+//        if (FragmentARRAnnualVisitationRecords.shouldShowVisitation){
+        if (true) {
+            recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, formTitlesWithVisitations, mTwoPane)
+        } else {
+            recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, formTitles, mTwoPane)
+        }
     }
 
     class SimpleItemRecyclerViewAdapter(private val mParentActivity: ItemListActivity,
@@ -109,11 +119,13 @@ class ItemListActivity : AppCompatActivity() {
 
         private var selectedPosition = 1
         val formHeadersIndexes = arrayOf(0, 7, 17, 19, 21, 28, 31, 33)
+        val formHeadersIndexesWithVisitation = arrayOf(0, 2, 9, 19, 21, 23, 30, 33, 35)
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_list_content, parent, false)
+
 
             return ViewHolder(view)
         }
@@ -122,53 +134,99 @@ class ItemListActivity : AppCompatActivity() {
 
             val item = mValues[position]
             holder.mIdView.text = item
-            if (position in formHeadersIndexes) {
-                holder.mIdView.setTextColor(Color.WHITE)
-                holder.listLayout.setBackgroundColor(Color.GRAY)
+//            if (FragmentARRAnnualVisitationRecords.shouldShowVisitation) {
+            if (true    ) {
+                if (position in formHeadersIndexesWithVisitation) {
+                    holder.mIdView.setTextColor(Color.WHITE)
+                    holder.listLayout.setBackgroundColor(Color.GRAY)
+                } else {
+                    holder.mIdView.setTextColor(Color.BLACK)
+                    holder.listLayout.setBackgroundColor(Color.WHITE)
+                }
             } else {
-                holder.mIdView.setTextColor(Color.BLACK)
-                holder.listLayout.setBackgroundColor(Color.WHITE)
+                if (position in formHeadersIndexes) {
+                    holder.mIdView.setTextColor(Color.WHITE)
+                    holder.listLayout.setBackgroundColor(Color.GRAY)
+                } else {
+                    holder.mIdView.setTextColor(Color.BLACK)
+                    holder.listLayout.setBackgroundColor(Color.WHITE)
+                }
             }
 
-            Log.v("####$$$$$$$", "position = "+position)
             if (selectedPosition == position) {
                 holder.listLayout.setBackgroundColor(mParentActivity.getColor(R.color.light_gray))
                 var fragment: android.support.v4.app.Fragment
                 if (mTwoPane) {
-                    Log.v("POSITION:  ",position.toString())
-                    when (position) {
+                    Log.v("POSITION:  ", position.toString())
+//                    if (FragmentARRAnnualVisitationRecords.shouldShowVisitation) {
+                    if (true) {
+                        when (position) {
+                            1 -> fragment = FragmentVisitation()
+                            3 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
+                            300 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
+                            5 -> fragment = FragmentARRAVFacilityContinued.newInstance(mParentActivity.isValidating)
+                            100 -> fragment = FragmentARRAVLocation.newInstance(mParentActivity.isValidating)
+                            6 -> fragment = FragmentARRAVPersonnel.newInstance(mParentActivity.isValidating)
+                            8 -> fragment = FragmentARRAVAmOrderTracking.newInstance("test", "test")
+                            4 -> fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("test", "test")
+                            7 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
+                            10 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
+                            11 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
+                            14 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
+                            12 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
+                            13 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
+                            15 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
+                            16 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
+                            17 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                            24 -> fragment = FragmentAARAVBillingPlans.newInstance("test", "test")
+                            25 -> fragment = FragmentAARAVBilling.newInstance("test", "test")
+                            26 -> fragment = FragmentAARAVPayments.newInstance("test", "test")
+                            27 -> fragment = FragmentAARAVVendorRevenue.newInstance("test", "test")
+                            28 -> fragment = FragmentAARAVBillingHistory.newInstance("test", "test")
+                            29 -> fragment = FragmentAARAVBillingAdjustment.newInstance("test", "test")
+                            32 -> fragment = FragmentAARAVSoftware.newInstance("test", "test")
+                        //this frag below PromotionsFragment is used instead the original one FragmentARRAVDeficiency > sherif yousry
+                            16 -> fragment = PromotionsFragment.newInstance("test", "test")
+                            17 -> fragment = AwardsAndDistinctionsFragment.newInstance("test", "test")
+                            18 -> fragment = OthersFragment.newInstance("test", "test")
+                            19 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                            34 -> fragment = FragmentAARAVComments.newInstance("test", "test")
+                            36 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
+                            else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                        }
 
-                        1 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
-                        300 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
-                        3 -> fragment = FragmentARRAVFacilityContinued.newInstance(mParentActivity.isValidating)
-                        100 -> fragment = FragmentARRAVLocation.newInstance(mParentActivity.isValidating)
-                        4 -> fragment = FragmentARRAVPersonnel.newInstance(mParentActivity.isValidating)
-                        6 -> fragment = FragmentARRAVAmOrderTracking.newInstance("test", "test")
-                        2 -> fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("test", "test")
-                        5 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
-                        8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
-                        9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
-                        12 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
-                        10 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
-                        11 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
-                        13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
-                        14 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
-                        15 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
-                        22 -> fragment = FragmentAARAVBillingPlans.newInstance("test", "test")
-                        23 -> fragment = FragmentAARAVBilling.newInstance("test", "test")
-                        24 -> fragment = FragmentAARAVPayments.newInstance("test", "test")
-                        25 -> fragment = FragmentAARAVVendorRevenue.newInstance("test", "test")
-                        26 -> fragment = FragmentAARAVBillingHistory.newInstance("test", "test")
-                        27 -> fragment = FragmentAARAVBillingAdjustment.newInstance("test", "test")
-                        30 -> fragment = FragmentAARAVSoftware.newInstance("test", "test")
-                    //this frag below PromotionsFragment is used instead the original one FragmentARRAVDeficiency > sherif yousry
-                        14 -> fragment = PromotionsFragment.newInstance("test", "test")
-                        15 -> fragment = AwardsAndDistinctionsFragment.newInstance("test", "test")
-                        16 -> fragment = OthersFragment.newInstance("test", "test")
-                        17 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
-                        32 -> fragment = FragmentAARAVComments.newInstance("test", "test")
-                        34 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
-                        else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                    } else {
+                        when (position) {
+                            1 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
+                            300 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
+                            3 -> fragment = FragmentARRAVFacilityContinued.newInstance(mParentActivity.isValidating)
+                            100 -> fragment = FragmentARRAVLocation.newInstance(mParentActivity.isValidating)
+                            4 -> fragment = FragmentARRAVPersonnel.newInstance(mParentActivity.isValidating)
+                            6 -> fragment = FragmentARRAVAmOrderTracking.newInstance("test", "test")
+                            2 -> fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("test", "test")
+                            5 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
+                            8 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
+                            9 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
+                            12 -> fragment = VehiclesFragmentInScopeOfServicesView.newInstance("test", "test")
+                            10 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
+                            11 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
+                            13 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
+                        //this frag below PromotionsFragment is used instead the original one FragmentARRAVDeficiency > sherif yousry
+                            14 -> fragment = PromotionsFragment.newInstance("test", "test")
+                            15 -> fragment = AwardsAndDistinctionsFragment.newInstance("test", "test")
+                            16 -> fragment = OthersFragment.newInstance("test", "test")
+                            17 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
+                            22 -> fragment = FragmentAARAVBillingPlans.newInstance("test", "test")
+                            23 -> fragment = FragmentAARAVBilling.newInstance("test", "test")
+                            24 -> fragment = FragmentAARAVPayments.newInstance("test", "test")
+                            25 -> fragment = FragmentAARAVVendorRevenue.newInstance("test", "test")
+                            26 -> fragment = FragmentAARAVBillingHistory.newInstance("test", "test")
+                            27 -> fragment = FragmentAARAVBillingAdjustment.newInstance("test", "test")
+                            30 -> fragment = FragmentAARAVSoftware.newInstance("test", "test")
+                            32 -> fragment = FragmentAARAVComments.newInstance("test", "test")
+                            34 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
+                            else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                        }
                     }
                     mParentActivity.supportFragmentManager
                             .beginTransaction()

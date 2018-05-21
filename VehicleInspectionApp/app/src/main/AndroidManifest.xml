@@ -71,18 +71,18 @@
             android:screenOrientation="landscape"
             android:theme="@style/myAppTheme"
             android:windowSoftInputMode="adjustResize">
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
-        </activity>
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="landscape"
-            >
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             android:windowSoftInputMode="adjustResize|stateHidden"
         </activity>
         <activity android:name=".SignupActivity" />
@@ -137,8 +137,7 @@
             android:name=".fragments.ItemListActivity"
             android:label="@string/title_item_list"
             android:screenOrientation="landscape"
-            android:theme="@style/myAppTheme">
-        </activity>
+            android:theme="@style/myAppTheme"></activity>
         <activity
             android:name=".fragments.ItemDetailActivity"
             android:label="@string/title_item_detail"

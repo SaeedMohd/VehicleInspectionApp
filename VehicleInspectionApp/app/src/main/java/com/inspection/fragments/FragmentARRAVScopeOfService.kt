@@ -25,6 +25,7 @@ import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
 import com.inspection.model.AAAScopeOfServices
+import com.inspection.model.FacilityDataModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import java.util.*
@@ -38,6 +39,8 @@ import java.util.*
  * create an instance of this fragment.
  */
 class FragmentARRAVScopeOfService : Fragment() {
+
+    var warrantyArray = emptyArray<String>()
 
     private var mListener: OnFragmentInteractionListener? = null
 
@@ -84,38 +87,50 @@ class FragmentARRAVScopeOfService : Fragment() {
                 context!!.toast("Please make sure camera and storage permissions are granted")
             }
         }
-        prepareScopePage()
+//        prepareScopePage()
+        setFields()
+    }
+
+    fun setFields(){
+        if (FacilityDataModel.getInstance().tblScopeofService.size > 0){
+            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                fixedLaborRateEditText.setText(FixedLaborRate)
+                diagnosticRateEditText.setText(DiagnosticsRate)
+                numberOfBaysEditText.setText(NumOfBays)
+                numberOfLiftsEditText.setText(NumOfLifts)
+            }
+        }
     }
 
     var isFirstRun = true
 
-    fun prepareScopePage () {
-            isFirstRun = false
-            progressbarScope.visibility = View.VISIBLE
-
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.facilityScopeOfSvcURL+AnnualVisitationSingleton.getInstance().facilityId,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            var facScopeOfSvcList = Gson().fromJson(response.toString(), Array<AAAScopeOfServices>::class.java).toCollection(ArrayList())
-                            for (fac in facScopeOfSvcList ) {
-                                fixedLaborRateEditText.setText(fac.fixedlaborrate.toString())
-                                //commented out code below cuz i commented out the refrenced view from xml cuz
-                                // i cant find the refrenced this view in the pdf > sherif yousry
-                        //        laborRateMatrixMinEditText.setText(fac.labormin.toString())
-                          //      laborRateMatrixMaxEditText.setText(fac.labormax.toString())
-                                diagnosticRateEditText.setText(fac.diagnosticsrate.toString())
-                                numberOfBaysEditText.setText(fac.numofbays.toString())
-                                numberOfLiftsEditText.setText(fac.numoflifts.toString())
-                                warrantyPeriodVal.setSelection(fac.warrantytypeid)
-
-                            }
-                            progressbarScope.visibility = View.INVISIBLE
-                        })
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading Scope Of Services")
-                activity!!.toast("Connection Error. Please check the internet connection")
-            }))
-    }
+//    fun prepareScopePage () {
+//            isFirstRun = false
+//            progressbarScope.visibility = View.VISIBLE
+//
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.facilityScopeOfSvcURL+AnnualVisitationSingleton.getInstance().facilityId,
+//                    Response.Listener { response ->
+//                        activity!!.runOnUiThread(Runnable {
+//                            var facScopeOfSvcList = Gson().fromJson(response.toString(), Array<AAAScopeOfServices>::class.java).toCollection(ArrayList())
+//                            for (fac in facScopeOfSvcList ) {
+//                                fixedLaborRateEditText.setText(fac.fixedlaborrate.toString())
+//                                //commented out code below cuz i commented out the refrenced view from xml cuz
+//                                // i cant find the refrenced this view in the pdf > sherif yousry
+//                        //        laborRateMatrixMinEditText.setText(fac.labormin.toString())
+//                          //      laborRateMatrixMaxEditText.setText(fac.labormax.toString())
+//                                diagnosticRateEditText.setText(fac.diagnosticsrate.toString())
+//                                numberOfBaysEditText.setText(fac.numofbays.toString())
+//                                numberOfLiftsEditText.setText(fac.numoflifts.toString())
+//                                warrantyPeriodVal.setSelection(fac.warrantytypeid)
+//
+//                            }
+//                            progressbarScope.visibility = View.INVISIBLE
+//                        })
+//                    }, Response.ErrorListener {
+//                Log.v("error while loading", "error while loading Scope Of Services")
+//                activity!!.toast("Connection Error. Please check the internet connection")
+//            }))
+//    }
 
     fun validateInputs() : Boolean {
         var isInputsValid = true

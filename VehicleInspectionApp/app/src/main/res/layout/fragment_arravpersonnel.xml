@@ -1,988 +1,694 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:tools="http://schemas.android.com/tools"
-android:background="@color/light_gray"
-tools:context="com.inspection.fragments.FragmentARRAVPersonnel">
-
-<TextView
-    android:id="@+id/titleTextView"
-    android:layout_width="wrap_content"
-    android:layout_height="40dp"
-    android:gravity="center"
-    android:text="Personnel Information"
-    android:textStyle="bold"
-    android:textSize="18dp"
-    android:paddingLeft="10dp"
-    android:paddingTop="5dp"
-    />
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/titleTextView"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
-    android:paddingBottom="10dp"
-    android:paddingTop="5dp"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_gray"
-    android:orientation="vertical">
+    tools:context=".fragments.FragmentARRAVPersonnel">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="5dp"
-        >
-        <ProgressBar
-            android:id="@+id/progressbarPersonnel"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:max="100"
-            android:backgroundTint="@color/white"
-            android:indeterminateTint="#1a09d6"
-            android:layout_marginTop="-7dp"/>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="vertical"
-            android:id="@+id/personTypell">
-            <TextView
-                android:id="@+id/personType_textview"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="Personnel Type:"
-                android:textStyle="bold"
-                />
-            <Spinner
-                android:id="@+id/personType_textviewVal"
-                android:layout_width="match_parent"
-                android:text="test"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_height="0dp" />
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/personnelNamesList"
+        android:id="@+id/facPersonnel"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="100dp"/>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="First Name: "
-                android:textStyle="bold"
-                />
-            <EditText
-                android:id="@+id/firstName_textviewVal"
-                android:layout_width="0dp"
-                android:text=""
-                android:hint="Enter First Name"
-                android:digits="abcdefghijklmnopqrstuvwxyz "
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="Last Name: "
-                android:textStyle="bold"
-                />
-            <EditText
-                android:id="@+id/lastName_textviewVal"
-                android:layout_width="0dp"
-                android:text=""
-                android:hint="Enter Last Name"
-                android:digits="abcdefghijklmnopqrstuvwxyz "
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="Certification Number: "
-                android:textStyle="bold"
-                />
-            <EditText
-                android:id="@+id/certNo_textviewVal"
-                android:layout_width="0dp"
-                android:text=""
-                android:maxLength="16"
-                android:hint="Enter Certification Number"
-                android:digits="abcdefghijklmnopqrstuvwxyz "
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="RSP User ID: "
-                android:textStyle="bold"
-                />
-            <TextView
-                android:id="@+id/rspUserID_textviewVal"
-                android:layout_width="0dp"
-                android:text=""
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="RSP Email Address: "
-                android:textStyle="bold"
-                />
-            <TextView
-                android:id="@+id/rspEmail_textviewVal"
-                android:layout_width="0dp"
-                android:text=""
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="Seniority Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/seniorityDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:textAlignment="center"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="Start Date: "
-                android:textStyle="bold"
-                />
-            <TextView
-                android:id="@+id/startDateVal"
-                android:layout_width="0dp"
-                android:text=""
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="End Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/endDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:textAlignment="center"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <CheckBox
-            android:id="@+id/contractSignerCheckBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Contract Signer"
+            android:layout_height="40dp"
+            android:gravity="left"
+            android:layout_weight="8"
+            android:text="Personnel"
             android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
             />
+    </LinearLayout>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/facPersonnel"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:layout_margin="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/white"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/contractSignerll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_gray"
             android:orientation="vertical">
-
-            <LinearLayout android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Signer Addres 1:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/coSignerAddr1Val"
-                    android:layout_width="0dp"
-                    android:text=""
-                    android:hint="Enter Address 1"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                android:text="Personnel"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_margin="10dp"
+                android:textColor="#827908"
+                />
 
-            <LinearLayout android:layout_width="match_parent"
+            <TableLayout
+                android:id="@+id/PersonnelResultsTbl"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
+                android:showDividers="middle|beginning|end"
+                android:divider="@drawable/divider_table_layout"
                 >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Signer Addres 2:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/coSignerAddr2Val"
-                    android:layout_width="0dp"
-                    android:text=""
-                    android:hint="Enter Address 2"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <TableRow
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Type"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
 
-            <LinearLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Signer City:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/coSignerCityVal"
-                    android:layout_width="0dp"
-                    android:text=""
-                    android:hint="Enter City"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="First Name"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last Name"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Seniority Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cert ID#"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Start Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="End Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contract Signer"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Primary Mail Recipient"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                </TableRow>
+            </TableLayout>
 
-            <LinearLayout android:layout_width="fill_parent"
+            <Button
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Signer State:"
-                    android:textStyle="bold"
-                    />
-                <Spinner
-                    android:id="@+id/coSignerStateVal"
-                    android:layout_width="0dp"
-                    android:text="test"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                android:text="Add New Personnel"
+                android:id="@+id/addNewBtn"
+                />
 
-            <LinearLayout android:layout_width="match_parent"
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
                 >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Signer Zip:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/coSignerZipVal"
-                    android:layout_width="0dp"
-                    android:text=""
-                    android:maxLength="5"
-                    android:inputType="number"
-                    android:hint="Enter Zip"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <TableRow>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/newSignerCheck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:layout_column="0"
+                        android:text="Contract Signer"
+                        android:textStyle="bold"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/newACSCheck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:layout_column="1"
+                        android:text="Primary Mail Recipients"
+                        android:textStyle="bold"
+                        />
 
-            <LinearLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Signer Zip 4:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/coSignerZip4Val"
-                    android:layout_width="0dp"
-                    android:text=""
-                    android:maxLength="4"
-                    android:inputType="number"
-                    android:hint="Enter Zip 4"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                </TableRow>
 
-            <LinearLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Signer Phone:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/coSignerPhoneVal"
-                    android:layout_width="0dp"
-                    android:text=""
-                    android:maxLength="4"
-                    android:inputType="number"
-                    android:hint="Enter Phone"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Personnel Type:"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        />
+                    <Spinner
+                        android:id="@+id/newPersonnelTypeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:layout_column="1"
+                        android:entries="@array/contractTypesEntries"
+                        />
+                </TableRow>
 
-            <LinearLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Signer Email:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/coSignerEmailVal"
-                    android:layout_width="0dp"
-                    android:text=""
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 .@"
-                    android:hint="Enter Email Address"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="First Name:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newFirstNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text=""
+                        android:layout_column="1"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Last Name:*"
+                        android:textStyle="bold"
+                        android:layout_column="3"
+                        android:layout_margin="5dp"
+                        />
+                    <EditText
+                        android:id="@+id/newLastNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:layout_column="4"
+                        />
+                </TableRow>
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                >
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Seniority Date:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newSeniorityDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Certification ID #:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newCertNoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:layout_column="4"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Start Date:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newStartDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="End Date:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newEndDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract Start Date: "
+                    android:text="Contract Signer"
                     android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_margin="10dp"
+                    android:textColor="#827908"
                     />
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Addres 1:*"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        />
+
+                    <EditText
+                        android:id="@+id/newAdd1Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:ems="8"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Address 2:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newAdd2Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:ems="8"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="City:*"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        />
+
+                    <EditText
+                        android:id="@+id/newCityText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="State:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newStateText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:ems="8"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Zip Code:*"
+                        android:textStyle="bold"
+                        android:layout_column="3"
+                        android:layout_margin="5dp"
+                        />
+
+                    <EditText
+                        android:id="@+id/newZipText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:ems="8"
+                        android:layout_column="4"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Phone:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newPhoneText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Email Address:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newEmailText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:ems="8"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Contract Start Date:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newCoStartDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Contract End Date:"
+                        android:layout_column="3"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newCoEndDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="4"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Personnel Certification(s)"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_margin="10dp"
+                    android:textColor="#827908"
+                    />
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Certification Type"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Certification Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Expiration Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Description"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                </TableRow>
+            </TableLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add New Certification"
+                android:id="@+id/addNewCertBtn"
+                />
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Certification Type:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/newCertTypeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:layout_column="1"
+                        android:entries="@array/contractTypesEntries"
+                        />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Contract Start Date:"
+                        android:ems="8"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newCertStartDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:ems="8"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Contract End Date:"
+                        android:layout_column="3"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newCertEndDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="4"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Description:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newCertDescText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:lines="5"
+                        android:ems="16"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+            </TableLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
                 <Button
-                    android:id="@+id/coSignerCoStartDateVal"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SELECT DATE"
-                    android:background="@color/transparent"
-                    android:textColor="@color/blue"/>
-            </LinearLayout>
+                    android:text="Save" />
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Contract End Date: "
-                    android:textStyle="bold"
-                    />
                 <Button
-                    android:id="@+id/coSignerCoEndDateVal"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12dp"
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SELECT DATE"
-                    android:background="@color/transparent"
-                    android:textColor="@color/blue"/>
+                    android:text="Cancel" />
             </LinearLayout>
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/primaryEmailCheckBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Primary Mail Recipient"
-            android:textStyle="bold"
-            />
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A1 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a1CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A1 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a1ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A2 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a2CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A2 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a2ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A3 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a3CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A3 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a3ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A4 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a4CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A4 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a4ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A5 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a5CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A5 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a5ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A6 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a6CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A6 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a6ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A7 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a7CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A7 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a7ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A8 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a8CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="A8 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/a8ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="C1 Certification Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/c1CertDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="C1 Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/c1ExpDateVal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
-                android:text="SELECT DATE"
-                android:background="@color/transparent"
-                android:textColor="@color/blue"/>
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
 </RelativeLayout>

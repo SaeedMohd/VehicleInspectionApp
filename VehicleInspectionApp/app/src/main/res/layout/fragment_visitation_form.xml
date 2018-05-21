@@ -45,8 +45,6 @@
             android:orientation="vertical">
 
 
-
-
             <TableLayout
                 android:id="@+id/topTable"
                 android:layout_width="match_parent"
@@ -57,51 +55,53 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Visitation Type"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
                         android:layout_column="0"
-                        />
+                        android:text="Visitation Type"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
-                        android:orientation="horizontal"
-                        android:layout_column="1">
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Annual"
-                            />
+                        android:layout_column="1"
+                        android:orientation="horizontal">
 
                         <RadioButton
+                            android:id="@+id/annualVisitationType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Quarterly/Other"/>
+                            android:text="Annual" />
 
                         <RadioButton
+                            android:id="@+id/quarterlyVisitationType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ad Hoc"/>
+                            android:text="Quarterly/Other" />
+
+                        <RadioButton
+                            android:id="@+id/adhocVisitationType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ad Hoc" />
                     </RadioGroup>
                 </TableRow>
 
 
-                <TableRow>
+                <TableRow android:layout_marginTop="5dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Date Of Visitation"
-                        android:layout_gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
                         android:layout_column="0"
-                        />
+                        android:layout_gravity="center_vertical"
+                        android:text="Date Of Visitation"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/ARDexp_textviewVal"
+                        android:id="@+id/dateOfVisitationButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
@@ -109,27 +109,471 @@
 
                 </TableRow>
 
-                <TableRow>
+                <TableRow android:layout_marginTop="5dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Visitation Reason"
-                        android:layout_gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
                         android:layout_column="0"
-                        />
+                        android:layout_gravity="center_vertical"
+                        android:text="Visitation Reason"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:entries="@array/visitation_reasons"
-                        />
+                        android:entries="@array/visitation_reasons" />
 
 
                 </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Data Changes Made?"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:layout_column="1"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/dataChangedYesRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes" />
+
+                        <RadioButton
+                            android:id="@+id/dataChangedNoRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No" />
+
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Club Code"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/clubCodeEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background" />
+
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Facility Number"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/facilityNumberEditText"
+                        android:gravity="center"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background" />
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Facility Name"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/facilityNameEditText"
+                        android:layout_column="1"
+                        android:gravity="center"
+                        android:background="@drawable/textview_background" />
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Facility Representative"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/facilityRepresentativesSpinner"
+                        android:gravity="center"
+                        android:layout_column="1" />
+                </TableRow>
+
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Facility Representative's Signature"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/facilityRepresentativeSignatureButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="center"
+                        android:background="@color/transparent"
+                        android:text="Add Signature"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Automotive Specialist"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/automotiveSpecialistSpinner"
+                        android:gravity="center"
+                        android:layout_column="1" />
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Automotive Specialist's Signature"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/automotiveSpecialistSignature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="center"
+                        android:background="@color/transparent"
+                        android:text="Add Signature"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TableLayout
+                        android:id="@+id/deficienciesTableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@drawable/divider_table_layout"
+                        android:stretchColumns="*"
+                        android:layout_span="3"
+                        android:showDividers="middle|beginning|end">
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_gravity="center"
+                                android:text="Deficiency"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_column="1"
+                                android:text="Inspection Date" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_column="2"
+                                android:text="Due Date" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Facility Representative's Signature (Deficiencies)"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/automotiveSpecialistSignature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="center"
+                        android:background="@color/transparent"
+                        android:text="Add Signature"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <!--<TableRow android:layout_marginTop="5dp">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--android:text="Vendor Revenue"-->
+                        <!--android:textSize="15sp"-->
+                        <!--android:textStyle="bold" />-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/vendorRevenueEditText"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:gravity="center"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:enabled="false" />-->
+                <!--</TableRow>-->
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="AAR Sign"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/aarSignEditText"
+                        android:layout_column="1"
+                        android:gravity="center"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Certificate Of Approval"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/certificateOfApprovalEditText"
+                        android:layout_column="1"
+                        android:gravity="center"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Member Benefits Poster(s)"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/memberBenefitsPosterEditText"
+                        android:layout_column="1"
+                        android:gravity="center"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Quality Control Process"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/qualityControlProcessEditText"
+                        android:layout_column="1"
+                        android:gravity="left|top"
+                        android:lines="6"
+                        android:inputType="textMultiLine"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Staff Training Process"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:id="@+id/staffTrainingProcessEditText"
+                        android:layout_column="1"
+                        android:gravity="left|top"
+                        android:lines="6"
+                        android:inputType="textMultiLine"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <CheckBox
+                        android:id="@+id/emailPdfCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Email PDF ?"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Email"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/emailEditText"
+                        android:layout_column="1"
+                        android:gravity="center"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <CheckBox
+                        android:id="@+id/waiveVisitationCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Waive Visitation?"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Waiver Comments"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/waiverCommentsEditText"
+                        android:layout_column="1"
+                        android:gravity="center"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+
+                <TableRow android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Waiver Signature"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/waiversSignature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="center"
+                        android:background="@color/transparent"
+                        android:text="Add Signature"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
             </TableLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -139,7 +583,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/saveButton"
+                    android:id="@+id/completeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Save" />
