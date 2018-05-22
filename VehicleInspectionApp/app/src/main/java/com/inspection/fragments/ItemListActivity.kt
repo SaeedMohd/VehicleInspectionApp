@@ -1,29 +1,19 @@
 package com.inspection.fragments
 
-import android.app.Fragment
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.support.design.widget.Snackbar
-import android.widget.TextView
-import com.inspection.R
-
-import com.inspection.model.AAAFacility
-import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.activity_item_list.*
-import kotlinx.android.synthetic.main.item_list_content.view.*
-
-import kotlinx.android.synthetic.main.item_list.*
-import android.R.menu
-import android.graphics.Color
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.view.get
-import com.inspection.Utils.ApplicationPrefs
-import com.inspection.Utils.toast
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+import com.inspection.R
+import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.activity_item_list.*
+import kotlinx.android.synthetic.main.item_list.*
+import kotlinx.android.synthetic.main.item_list_content.view.*
 
 
 /**
@@ -172,7 +162,7 @@ class ItemListActivity : AppCompatActivity() {
                             7 -> fragment = FragmentARRAVVisitationTracking.newInstance("test", "test")
                             10 -> fragment = FragmentARRAVScopeOfService.newInstance("test", "test")
                             11 -> fragment = FragmentARRAVVehicleServices.newInstance("test", "test")
-                            14 -> fragment = FragmentARRAVVehicles.newInstance("test", "test")
+                            14 -> fragment = VehiclesFragmentInScopeOfServicesView.newInstance("test", "test")
                             12 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
                             13 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
                             15 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")

@@ -24,7 +24,7 @@
             android:textStyle="bold"
             />
         <Spinner
-            android:id="@+id/program_name_textviewVal"
+            android:id="@+id/vehicleType_textviewVal"
             android:layout_toRightOf="@id/contract_number_textview"
             android:layout_width="0dp"
             android:text="Select Program"
