@@ -24,6 +24,7 @@ import com.inspection.Utils.toast
 import com.inspection.model.AAAFacilityPrograms
 import com.inspection.model.AAAProgramTypes
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.text.SimpleDateFormat
@@ -144,22 +145,15 @@ class FragmentARRAVPrograms : Fragment() {
 
     fun prepareProgramTypes() {
 
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.programTypesURL,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        programTypesList = Gson().fromJson(response.toString(), Array<AAAProgramTypes>::class.java).toCollection(ArrayList())
-                        programTypesArray.clear()
-                        for (fac in programTypesList) {
-                            programTypesArray.add(fac.programtypename)
-                        }
-                        var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, programTypesArray)
-                        programsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        program_name_textviewVal.adapter = programsAdapter
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading program Types")
-            activity!!.toast("Connection Error. Please check the internet connection")
-        }))
+        for (fac in TypeTablesModel.getInstance().ProgramsType) {
+
+
+            programTypesArray.add(fac.ProgramTypeName)
+        }
+        var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, programTypesArray)
+        programsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        program_name_textviewVal.adapter = programsAdapter
+
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPrograms + AnnualVisitationSingleton.getInstance().facilityId,
                 Response.Listener { response ->
@@ -218,7 +212,11 @@ class FragmentARRAVPrograms : Fragment() {
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).ProgramTypeID
+                for (fac in TypeTablesModel.getInstance().ProgramsType) {
+                if (get(it).ProgramTypeID.equals(fac.ProgramTypeID))
+
+                    textView.text =fac.ProgramTypeName
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -274,7 +272,11 @@ class FragmentARRAVPrograms : Fragment() {
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ProgramTypeID
+            for (fac in TypeTablesModel.getInstance().ProgramsType) {
+                if (ProgramTypeID.equals(fac.ProgramTypeID))
+
+                    textView.text =fac.ProgramTypeName
+            }
             tableRow.addView(textView)
 
             textView = TextView(context)
