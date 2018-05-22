@@ -99,7 +99,13 @@ class FragmentARRAVPrograms : Fragment() {
             }
             if (validProgram) {
                 var item = FacilityDataModel.TblPrograms()
-                item.ProgramTypeID =""+ -1
+                for (fac in TypeTablesModel.getInstance().ProgramsType) {
+                    if (program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName))
+
+                        item.ProgramTypeID =fac.ProgramTypeID
+                }
+
+
             //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
                 item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString()
                 item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
