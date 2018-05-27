@@ -130,6 +130,8 @@ class ItemListActivity : AppCompatActivity() {
             return ViewHolder(view)
         }
 
+        private var shouldNavigate = true
+
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
             val item = mValues[position]
@@ -192,7 +194,10 @@ class ItemListActivity : AppCompatActivity() {
                             19 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
                             34 -> fragment = FragmentAARAVComments.newInstance("test", "test")
                             36 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
-                            else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                            else -> {
+                                fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                                shouldNavigate = false
+                            }
                         }
 
                     } else {
@@ -225,14 +230,21 @@ class ItemListActivity : AppCompatActivity() {
                             30 -> fragment = FragmentAARAVSoftware.newInstance("test", "test")
                             32 -> fragment = FragmentAARAVComments.newInstance("test", "test")
                             34 -> fragment = FragmentAARAVPhotos.newInstance("test", "test")
-                            else -> fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                            else -> {
+                                fragment = FragmentARRAnualVisitation.newInstance(mParentActivity.isValidating)
+                                shouldNavigate = false
+                            }
                         }
                     }
-                    mParentActivity.supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
-                            .commit()
-                    mParentActivity.isValidating = false
+                    if (shouldNavigate) {
+                        mParentActivity.supportFragmentManager
+                                .beginTransaction()
+                                .replace(R.id.item_detail_container, fragment)
+                                .commit()
+                        mParentActivity.isValidating = false
+                    }else{
+                        shouldNavigate = true
+                    }
                 }
             }
 

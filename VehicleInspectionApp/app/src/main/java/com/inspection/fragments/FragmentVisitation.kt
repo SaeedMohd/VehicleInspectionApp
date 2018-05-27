@@ -74,8 +74,6 @@ class FragmentVisitation : Fragment() {
 
         facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
 
-        context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
-
         automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map {s -> s.specialistname})
 
         adhocVisitationType.isChecked = true
@@ -100,7 +98,11 @@ class FragmentVisitation : Fragment() {
 
         staffTrainingProcessEditText.setText(" "+FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
 
-        emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+        if (FacilityDataModel.getInstance().tblFacilityEmail[0].email.isNullOrEmpty()){
+
+        }else {
+            emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+        }
 
 
 

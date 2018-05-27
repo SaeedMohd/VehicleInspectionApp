@@ -285,6 +285,7 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val isValidating = "param1"
 
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -298,6 +299,9 @@ class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
             val fragment = FragmentARRAnualVisitation()
             val args = Bundle()
             args.putBoolean(isValidating, param1)
+
+
+
             fragment.arguments = args
             return fragment
         }
