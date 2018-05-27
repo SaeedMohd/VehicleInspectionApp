@@ -224,7 +224,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             var parametersString = StringBuilder()
             if (true) {
-                context!!.toast("I am here")
                 if (clubCodeEditText.text.trim().isNotEmpty()) {
                     with(parametersString) {
                         append("clubCode=" + clubCodeEditText.text.trim())
@@ -339,12 +338,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     }
                 }
 
-                Log.v("***Sending Request", ""+Constants.getVisitations + parametersString)
-                context!!.toast("Requestingggggg")
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                context!!.toast(response)
                                 if (visitationrecordsLL != null) {
                                     visitationrecordsLL.removeAllViews()
                                 }
