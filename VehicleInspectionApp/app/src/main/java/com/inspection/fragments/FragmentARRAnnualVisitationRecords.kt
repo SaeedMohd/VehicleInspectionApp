@@ -19,6 +19,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import com.inspection.BuildConfig
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
@@ -135,6 +136,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
 
 
+
+
 //            var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
 //            startActivity(intent)
         })
@@ -220,6 +223,30 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             }))
         })
 
+        annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            showVisitationBtn.performClick()
+        }
+
+        quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            showVisitationBtn.performClick()
+        }
+
+        adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            showVisitationBtn.performClick()
+        }
+
+        deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            showVisitationBtn.performClick()
+        }
+
+        pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            showVisitationBtn.performClick()
+        }
+
+        completedCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            showVisitationBtn.performClick()
+        }
+
         showVisitationBtn.setOnClickListener({
 
             var parametersString = StringBuilder()
@@ -243,8 +270,15 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
                 if (!visitationSpecialistName.text.contains("Select") && visitationSpecialistName.text.length > 1) {
                     with(parametersString) {
-                        append("specialist=" + visitationSpecialistName.text)
+                        //TODO added to void specialist value until they let us know how we will use it
+                        //**********************
+//                        append("specialist=" + visitationSpecialistName.text)
+//                        append("&")
+                        //**********************
+
+                        append("specialist=")
                         append("&")
+
                     }
                 }else{
                     with(parametersString) {
@@ -356,14 +390,13 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                                 visitationfacilityListView.adapter = visitationPlanningAdapter
                             })
                         }, Response.ErrorListener {
+                    context!!.toast("Error while loading visitations: "+it.message)
                     Log.v("error while loading", "error while loading visitation records")
                 }))
             } else {
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("*******url", Constants.getVisitations + parametersString)
-                                Log.v("*********response", response)
                                 if (visitationrecordsLL != null) {
                                     visitationrecordsLL.removeAllViews()
                                 }
@@ -627,22 +660,22 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             }
 
 
-            if (position < visitationPlanningModelList.pendingVisitationsArray.size) {
+
+            if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].EntityName
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].AutomotiveRepairExpDate
                 vh.visitationTypeValueTextView.text = "Pending"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt())
                 })
-            } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.completedVisitationsArray.size) {
+            } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].EntityName
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].AutomotiveRepairExpDate
                 vh.visitationTypeValueTextView.text = "Completed"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt())
                 })
-            } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size &&
-                    position < visitationPlanningModelList.completedVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
+            } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].EntityName
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].AutomotiveRepairExpDate
                 vh.visitationTypeValueTextView.text = "Deficiency"
