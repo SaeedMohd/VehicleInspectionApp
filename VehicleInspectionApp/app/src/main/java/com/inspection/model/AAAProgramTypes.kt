@@ -7,4 +7,6 @@ package com.inspection.model
 class AAAProgramTypes {
     var programtypeid = 0
     var programtypename = ""
+
+
 }

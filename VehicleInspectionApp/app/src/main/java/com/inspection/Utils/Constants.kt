@@ -61,4 +61,5 @@ object Constants {
     //AAA APIs WebServices
     val getFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=%d&clubcode=%s"
     val getTypeTables = "https://dev.facilityappointment.com/ACEAPI.asmx/GetTypeTables"
+    val getVisitations = "https://dev.facilityappointment.com/ACEAPI.asmx/GetVisitations?"
 }

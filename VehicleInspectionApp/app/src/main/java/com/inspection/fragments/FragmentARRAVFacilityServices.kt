@@ -14,6 +14,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,7 +75,13 @@ class FragmentARRAVFacilityServices : Fragment() {
             dpd.show()
         }
 
-        var servicesArray= arrayOf("Free Coffee Service", "Off-Site Rental Vehicle Delivered to Customer", "On-Site Loaner Vehicles", "On-Site Rental Vehicles", "Shuttle Service", "Shuttle to Rental Agency")
+        var servicesArray= ArrayList<String>()
+        for (fac in TypeTablesModel.getInstance().ServicesType) {
+
+
+            servicesArray.add(fac.ServiceTypeName)
+        }
+
         var servicesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, servicesArray)
         servicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fc_services_textviewVal.adapter = servicesAdapter
@@ -84,7 +91,11 @@ class FragmentARRAVFacilityServices : Fragment() {
 
             if (validProgram) {
                 var item = FacilityDataModel.TblFacilityServices()
-                item.ServiceID =""+ -1
+                for (fac in TypeTablesModel.getInstance().ServicesType) {
+                    if (fc_services_textviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
+
+                        item.ServiceID =fac.ServiceTypeID
+                }
                 //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
                 item.effDate = if (fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else fceffective_date_textviewVal.text.toString()
                 item.expDate = if (fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else fcexpiration_date_textviewVal.text.toString()
@@ -131,7 +142,11 @@ class FragmentARRAVFacilityServices : Fragment() {
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).ServiceID
+                for (fac in TypeTablesModel.getInstance().ServicesType) {
+                    if (get(it).ServiceID.equals(fac.ServiceTypeID))
+
+                        textView.text =fac.ServiceTypeName
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -187,7 +202,11 @@ class FragmentARRAVFacilityServices : Fragment() {
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ServiceID
+            for (fac in TypeTablesModel.getInstance().ServicesType) {
+                if (ServiceID.equals(fac.ServiceTypeID))
+
+                    textView.text =fac.ServiceTypeName
+            }
             tableRow.addView(textView)
 
             textView = TextView(context)
