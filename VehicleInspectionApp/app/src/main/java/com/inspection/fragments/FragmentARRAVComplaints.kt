@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -15,9 +17,14 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.toast
 import com.inspection.model.AAAFacilityComplaints
+import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.fragment_aarav_complaints.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -40,7 +47,7 @@ class FragmentARRAVComplaints : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_arrav_complaints, container, false)
+        return inflater!!.inflate(R.layout.fragment_aarav_complaints, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,10 +64,127 @@ class FragmentARRAVComplaints : Fragment() {
 //        compShowAllBtn.setOnClickListener({
 //            prepareComplaints(true)
 //        })
-        prepareComplaints(true)
+//        prepareComplaints(true)
+        prepareComplaintsSpinners()
+        fillComplaintsTableView()
+
+        newRecDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                newRecDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        newOpenDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                newOpenDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        new2ndOpenDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                new2ndOpenDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        newClosedDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                newClosedDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        new2ndClosedDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                new2ndClosedDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
     }
 
+    private var initiatedTypeList = ArrayList<TypeTablesModel.complaintInitiatedType>()
+    private var initiatedTypeArray = ArrayList<String>()
+    private var reasonTypeList = ArrayList<TypeTablesModel.complaintFilesReasonType>()
+    private var reasonTypeArray = ArrayList<String>()
+    private var resTypeList = ArrayList<TypeTablesModel.complaintFilesResolutionType>()
+    private var resTypeArray = ArrayList<String>()
 
+
+    fun prepareComplaintsSpinners () {
+
+        initiatedTypeList = TypeTablesModel.getInstance().ComplaintInitiatedType
+        initiatedTypeArray .clear()
+        for (fac in initiatedTypeList ) {
+            initiatedTypeArray.add(fac.ComplaintInitName)
+        }
+        var ComplaintInitAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, initiatedTypeArray)
+        ComplaintInitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newInitiatedBySpinner.adapter = ComplaintInitAdapter
+
+        reasonTypeList= TypeTablesModel.getInstance().ComplaintFilesReasonType
+        reasonTypeArray.clear()
+        for (fac in reasonTypeList) {
+            reasonTypeArray.add(fac.ComplaintReasonName)
+        }
+        var reasonTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonTypeArray)
+        reasonTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newReasonSpinner.adapter = reasonTypeAdapter
+
+        resTypeList= TypeTablesModel.getInstance().ComplaintFilesResolutionType
+        resTypeArray.clear()
+        for (fac in resTypeList) {
+            resTypeArray.add(fac.ComplaintResolutionName)
+        }
+        var resTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, resTypeArray)
+        resTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newResolutionSpinner.adapter = resTypeAdapter
+
+        newAssignedToSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
+        newEnteredBySpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
+    }
 
 
     fun prepareComplaints (boolAll : Boolean) {
@@ -76,6 +200,116 @@ class FragmentARRAVComplaints : Fragment() {
                 Log.v("error while loading", "error while loading facility complaints")
                 context!!.toast("Connection Error. Please check the internet connection")
             }))
+    }
+
+
+    fun fillComplaintsTableView() {
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+//        val rowLayoutParam8 = TableRow.LayoutParams()
+//        rowLayoutParam7.weight = 1F
+//        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+//        rowLayoutParam7.column = 8
+        var dateTobeFormated = ""
+        FacilityDataModel.getInstance().tblComplaintFiles.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = getTypeName(get(it).PersonnelTypeID)
+                textView.text = get(it).ComplaintID
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+//                textView.text = get(it).LastName
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                if (!(get(it).SeniorityDate.isNullOrEmpty())) {
+//                    textView.text = get(it).SeniorityDate.apiToAppFormat()
+//                } else {
+//                    textView.text = ""
+//                }
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).FirstName
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam5
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text  = get(it).LastName
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam6
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                if (!(get(it).ReceivedDate.isNullOrEmpty())) {
+                    textView.text = get(it).ReceivedDate.apiToAppFormat()
+                } else {
+                    textView.text = ""
+                }
+                tableRow.addView(textView)
+                ComplaintsResultsTbl.addView(tableRow)
+
+            }
+        }
     }
 
 //    fun BuildComplaintsList() {

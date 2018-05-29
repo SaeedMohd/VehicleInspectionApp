@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_arrav_visitation_tracking.*
 import java.text.SimpleDateFormat
@@ -26,6 +28,9 @@ import java.util.*
  * create an instance of this fragment.
  */
 class FragmentARRAVVisitationTracking : Fragment() {
+
+    private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
+    private val appFormat = SimpleDateFormat("dd MMM yyyy")
 
     private var mListener: OnFragmentInteractionListener? = null
 
@@ -94,7 +99,8 @@ class FragmentARRAVVisitationTracking : Fragment() {
             dpd.show()
         }
 
-
+        performedBy_dropdown.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
+        enteredBydropdown.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
         newVisitTrackingAddBtn.setOnClickListener({
             var validProgram = true
 //            for (fac in facilityProgramsList) {
@@ -178,7 +184,8 @@ class FragmentARRAVVisitationTracking : Fragment() {
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).DatePerformed
+
+                textView.text = get(it).DatePerformed.apiToAppFormat()
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -191,7 +198,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
                 textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-              //  textView.text = get(it).EnteredDate
+//                textView.text = get(it).EnteredDate
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -240,7 +247,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = DatePerformed
+            textView.text = DatePerformed.apiToAppFormat()
             tableRow.addView(textView)
 
             textView = TextView(context)

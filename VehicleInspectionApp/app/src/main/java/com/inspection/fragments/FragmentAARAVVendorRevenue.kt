@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -7,8 +8,13 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 
 import com.inspection.R
+import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.fragment_aarav_vendorrevenue.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,6 +48,59 @@ class FragmentAARAVVendorRevenue : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_aarav_vendorrevenue, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        prepareVendorRevSpinners()
+        newReceiptDateBtn.setOnClickListener {
+//            if (newReceiptDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newReceiptDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newCheckDateBtn.setOnClickListener {
+//            if (newCheckDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCheckDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+    }
+
+    private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
+    private var revSourceArray = ArrayList<String>()
+
+    fun prepareVendorRevSpinners() {
+
+        revSourceList= TypeTablesModel.getInstance().RevenueSourceType
+        revSourceArray.clear()
+        for (fac in revSourceList) {
+            revSourceArray.add(fac.RevenueSourceName)
+        }
+        var revSourceAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, revSourceArray)
+        revSourceAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newRevSourceSpinner.adapter = revSourceAdapter
     }
 
 

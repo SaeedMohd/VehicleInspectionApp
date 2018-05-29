@@ -1,229 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_gray"
-    tools:context="com.inspection.fragments.FragmentARRAVFacility">
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:text="Defeciency"
-        android:textAllCaps="true"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-
+    tools:context=".fragments.FragmentARRAVDeficiency">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/facComp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="left"
+            android:layout_weight="8"
+            android:text="Deficiencies"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            />
+    </LinearLayout>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
-        android:background="@color/light_gray"
-        android:orientation="vertical"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
+        android:layout_below="@id/facComp"
         android:paddingRight="10dp"
-        android:paddingTop="5dp">
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:layout_margin="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Defficiency"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_margin="10dp"
+                android:textColor="#827908"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Showing 1-1 of 1 Results"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_margin="10dp"
+                android:textColor="#800000"
+                />
             <TableLayout
-                android:id="@+id/deficiencyTableLayout"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-
-                <TableRow>
-                    <TextView android:text="Deficiency"
-                        android:layout_width="100dp"
-                        android:gravity="center"
-
+                android:id="@+id/DeffResultsTbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:showDividers="middle|beginning|end"
+                android:divider="@drawable/divider_table_layout"
+                >
+                <TableRow
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Defeciency"
+                        android:textStyle="bold"
                         android:layout_column="0"
-                        android:layout_weight="1"/>
-                    <TextView android:text="Visitation Date"
-                        android:layout_width="100dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Visitation Date"
+                        android:textStyle="bold"
                         android:layout_column="1"
-                        android:layout_weight="1"/>
-                    <TextView android:text="Entered Date"
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Entered Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cleared Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Comments"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
 
-                        android:layout_width="30dp"
-                        android:layout_column="2"
-                        android:layout_weight="1">
-                    </TextView>
-                    <TextView android:text="Cleared Date"
-                        android:layout_width="30dp"
-                        android:layout_column="3"
-                        android:gravity="center"
-                        android:layout_weight="1">
-                    </TextView>
-                    <TextView android:text="Comments"
-                        android:layout_width="30dp"
-                        android:layout_column="4"
-                        android:gravity="center"
-                        android:layout_weight="1">
-                    </TextView>
+                </TableRow>
+            </TableLayout>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add New Deficiency"
+                android:id="@+id/addNewBtn"
+                />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Deficiency:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/newDefSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:layout_column="1"
+                        />
                 </TableRow>
 
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Visitation Date:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newVisitationDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Entered Date:*"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        />
+
+                    <Button
+                        android:id="@+id/newEnteredDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Cleared Date:*"
+                        android:layout_column="4"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newClearedDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="5"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+                <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Comments:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/newCommentSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="8"
+                    android:layout_column="1"
+                    />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Last Updated Date:"
+                        android:ems="8"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newUpdatedByDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Last Updated By:"
+                        android:layout_column="4"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newUpdatedByText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:layout_column="5"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
             </TableLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/affcomments_editTextVal"
-                android:id="@+id/affbtnslayout"
-                android:weightSum="3"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:orientation="horizontal">
-                <Button
-                    android:id="@+id/defAddBtn"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Add New Deficiency"/>
-                <Button
-                    android:id="@+id/affeditBtn"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Modify"/>
-                <Button
-                    android:id="@+id/affdeleteBtn"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Delete"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/connumberll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/program_name_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Defeciency: "
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/deff_dropdown"
-                    android:layout_width="0dp"
-                    android:textColor="@color/blue_krayola"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/affliationdetails"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/connumberll"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/visitationDateText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Visitation Date: "
-                    android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/visitationDateBtn"
-                    android:layout_width="0dp"
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:text="Select Date"
-                    android:textColor="@color/blue_krayola" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/contypell"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/affliationdetails"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/clearedDateTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/connumberll"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Entered Date:"
-                    android:textStyle="bold" />
+                    android:text="Save" />
 
                 <Button
-                    android:id="@+id/enteredDateBtn"
-                    android:layout_width="0dp"
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/connumberll"
-                    android:layout_gravity="center_vertical"
-
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:text="select date"
-                    android:textColor="@color/blue_krayola" />
+                    android:text="Cancel" />
             </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/AssignedToll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/officell"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/comments_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/officell"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Comments: "
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/comments_editTextVal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/AssignedToll"
-                android:layout_marginTop="10dp"
-                android:lines="3"
-                android:maxEms="250" />
-
-
         </LinearLayout>
+
     </ScrollView>
 </RelativeLayout>

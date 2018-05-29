@@ -16,8 +16,6 @@ import android.widget.TextView
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
-import kotlinx.android.synthetic.main.fragment_arravlocation.*
-import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
 import java.util.*

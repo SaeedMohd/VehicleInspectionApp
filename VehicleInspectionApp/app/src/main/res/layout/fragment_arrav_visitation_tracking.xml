@@ -387,7 +387,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/deff_dropdown"
+                    android:id="@+id/enteredBydropdown"
                     android:layout_width="0dp"
                     android:textColor="@color/blue_krayola"
                     android:layout_weight="1"

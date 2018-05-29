@@ -33,6 +33,25 @@
             android:orientation="vertical"
             android:padding="5dp"
             >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amendments Orders Tracking"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_margin="10dp"
+                android:textColor="#827908"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Showing 1-1 of 1 Results"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_margin="10dp"
+                android:textColor="#800000"
+                />
             <TableLayout
                 android:id="@+id/AmendmentOrdersAndTrackingTableLayout"
                 xmlns:android="http://schemas.android.com/apk/res/android"

@@ -243,7 +243,7 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
                     android:layout_gravity="center"
                     android:ems="8"
                     android:layout_column="1"
-                    android:entries="@array/contractTypesEntries"
+                    android:entries="@array/debitcredit"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -285,6 +285,47 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
                     android:ems="15"
                     android:layout_column="1"
                     android:lines="5"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Effective Date:"
+                    android:ems="8"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/newUpdatedByDateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_column="1"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Updated By:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newUpdatedByText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="4"
                     android:background="@drawable/textview_background"
                     android:textStyle="bold"
                     />

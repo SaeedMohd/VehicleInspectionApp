@@ -111,17 +111,19 @@ tools:context=".fragments.FragmentAARAVComments">
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
-                <EditText
-                    android:id="@+id/startDateText"
+
+                <Button
+                    android:id="@+id/startDateBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="8"
+                    android:layout_marginTop="10dp"
                     android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="8"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -131,17 +133,17 @@ tools:context=".fragments.FragmentAARAVComments">
                     android:layout_column="3"
                     />
 
-                <EditText
-                    android:id="@+id/endDateText"
+                <Button
+                    android:id="@+id/endDateBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="8"
+                    android:layout_marginTop="10dp"
                     android:layout_column="4"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="8"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
             </TableRow>
 
             <TableRow>
@@ -309,6 +311,47 @@ tools:context=".fragments.FragmentAARAVComments">
                     android:ems="24"
                     android:lines="5"
                     android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Effective Date:"
+                    android:ems="8"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/newUpdatedByDateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_column="1"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Updated By:"
+                    android:layout_column="3"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newUpdatedByText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:layout_column="4"
                     android:background="@drawable/textview_background"
                     android:textStyle="bold"
                     />

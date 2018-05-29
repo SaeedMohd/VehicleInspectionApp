@@ -18,13 +18,15 @@ import com.google.gson.Gson
 
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.toast
 import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.AAAPersonnelType
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
 
-import kotlinx.android.synthetic.main.fragment_arravpersonnel.*
 import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,355 +44,228 @@ class FragmentARRAVPersonnel : Fragment() {
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-    private var personnelTypeList = ArrayList<AAAPersonnelType>()
+    private var personnelTypeList = ArrayList<TypeTablesModel.personnelType>()
+    private var certificationTypeList= ArrayList<TypeTablesModel.personnelCertificationType>()
 
     private var personTypeArray = ArrayList<String>()
-    private var personTypeIDsArray = ArrayList<Int>()
+    private var certTypeArray = ArrayList<String>()
+    private var personTypeIDsArray = ArrayList<String>()
     private var personListArray = ArrayList<String>()
     private var statesArray = ArrayList<String>()
     private var firstSelection = false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
     //    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
-    private val appFprmat = SimpleDateFormat("dd MMM yyyy")
+    private val appFormat = SimpleDateFormat("dd MMM yyyy")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
 //        return inflater!!.inflate(R.layout.fragment_arravpersonnel, container, false)
-        return inflater!!.inflate(R.layout.fragment_arravpersonnel, container, false)
+        return inflater!!.inflate(R.layout.fragment_aarav_personnel, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        preparePersonnelPage()
         fillPersonnelTableView()
-//        statesArray = arrayOf("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming").toCollection(ArrayList<String>())
-//
-//        var statesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, statesArray)
-//        statesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        coSignerStateVal.adapter = statesAdapter
-//
-//        endDateVal.setOnClickListener {
-//            if (endDateVal.text.equals("SELECT DATE")) {
-//                val c = Calendar.getInstance()
-//                val year = c.get(Calendar.YEAR)
-//                val month = c.get(Calendar.MONTH)
-//                val day = c.get(Calendar.DAY_OF_MONTH)
-//                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                    // Display Selected date in textbox
-//                    val myFormat = "dd MMM yyyy" // mention the format you need
-//                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                    c.set(year, monthOfYear, dayOfMonth)
-//                    endDateVal!!.text = sdf.format(c.time)
-//                }, year, month, day)
-//                dpd.show()
+
+
+        newCertStartDateBtn.setOnClickListener {
+//            if (newCertStartDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCertStartDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
 //            }
-//        }
-//
-//        a1CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a1CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a2CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a2CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a3CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a3CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a4CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a4CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a5CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a5CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a6CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a6CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a7CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a7CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a8CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a8CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        c1CertDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                c1CertDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//
-//        a1ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a1ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a2ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a2ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a3ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a3ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a4ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a4ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a5ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a5ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a6ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a6ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a7ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a7ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        a8ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                a8ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//        c1ExpDateVal.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year, monthOfYear, dayOfMonth)
-//                c1ExpDateVal!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-//
-//        preparePersonnelPage()
+        }
+
+
+
+        newCertEndDateBtn.setOnClickListener {
+//            if (newCertEndDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCertEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+
+        newCoStartDateBtn.setOnClickListener {
+//            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCoStartDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newCoEndDateBtn.setOnClickListener {
+//            if (newCoEndDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCoEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newEndDateBtn.setOnClickListener {
+//            if (newEndDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newEndDateBtn.setOnClickListener {
+//            if (newEndDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newSeniorityDateBtn.setOnClickListener {
+//            if (newSeniorityDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newSeniorityDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newStartDateBtn.setOnClickListener {
+//            if (newStartDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newStartDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+
+
+
+
 
     }
 
     var isFirstRun: Boolean = true
 
-//    fun preparePersonnelPage() {
-//        isFirstRun = false
-//
+    fun preparePersonnelPage() {
+        isFirstRun = false
+//        progressbarPersonnel.visibility = View.VISIBLE
 //        activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
 //                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-//
-////        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.personnelTypeURL + FacilityDataModel.getInstance().tblFacilities[0].FACID,
-////                Response.Listener { response ->
-////                    activity!!.runOnUiThread(Runnable {
-////                        personnelTypeList = Gson().fromJson(response.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
-////                        personTypeArray.clear()
-////                        personTypeIDsArray.clear()
-////                        personTypeIDsArray.add(-1)
-////                        personTypeArray.add("Not Selected")
-////                        for (fac in personnelTypeList) {
-////                            if (FacilityDataModel.getInstance().tblPersonnel.filter {
-////                                        it.PersonnelTypeID.toInt() == fac.personneltypeid
-////                                    }.count() > 0 && !personTypeArray.contains(fac.personneltypename)) {
-////                                personTypeArray.add(fac.personneltypename)
-////                                personTypeIDsArray.add(fac.personneltypeid)
-////                            }
-////                        }
-////                        var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
-////                        personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-////                        personType_textviewVal.adapter = personTypeAdapter
-////                    })
-////                    progressbarPersonnel.visibility = View.INVISIBLE
-////                    if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
-//////                            getLastYearPersonnel()
-////                    }
-////                }, Response.ErrorListener {
-////            Log.v("error while loading", "error while loading personnel Types")
-////            activity!!.toast("Connection Error. Please check the internet connection")
-////        }))
-//
-//
-////        var personnelNamesListViewAdapter = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
+
+//                        personnelTypeList = Gson().fromJson(TypeTablesModel.getInstance().PersonnelType.toString(), Array<AAAPersonnelType>::class.java).toCollection(ArrayList())
+        personnelTypeList=TypeTablesModel.getInstance().PersonnelType
+        personTypeArray.clear()
+        personTypeIDsArray.clear()
+        personTypeIDsArray.add("-1")
+        personTypeArray.add("Not Selected")
+        for (fac in personnelTypeList) {
+                personTypeArray.add(fac.PersonnelTypeName)
+                personTypeIDsArray.add(fac.PersonnelTypeID)
+        }
+         var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
+        personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newPersonnelTypeSpinner.adapter = personTypeAdapter
+
+        certificationTypeList=TypeTablesModel.getInstance().PersonnelCertificationType
+        certTypeArray.clear()
+        certTypeArray.add("Not Selected")
+        for (fac in certificationTypeList) {
+            certTypeArray.add(fac.PersonnelCertName)
+//            cert.add(fac.PersonnelCertID)
+        }
+        var certTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, certTypeArray)
+        certTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newCertTypeSpinner.adapter = certTypeAdapter
+//                    progressbarPersonnel.visibility = View.INVISIBLE
+                    if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
+//                            getLastYearPersonnel()
+                    }
+
+
+
+//        var personnelNamesListViewAdapter = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
 ////            personnelNamesList.visibility = View.GONE
 ////            setPersonnelDetails(FacilityDataModel.getInstance().tblPersonnel.get(i))
-////        })
-//
+//        })
+
 //        activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-//
-////        personType_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-////            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-////                personnelNamesList.visibility = View.GONE
-////                if (position > 0) {?
+
+//        personType_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+//                personnelNamesList.visibility = View.GONE
+//                if (position > 0) {
 ////                    progressbarPersonnel.visibility = View.VISIBLE
 ////                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.personnelDetailsURL, AnnualVisitationSingleton.getInstance().facilityId, getTypeID(personType_textviewVal.selectedItem.toString())),
 ////                            Response.Listener { response ->
@@ -428,17 +303,17 @@ class FragmentARRAVPersonnel : Fragment() {
 //                    if (FacilityDataModel.getInstance().tblPersonnel.size >= 1) {
 //                        personListArray.clear()
 ////                                        if (personnelDetailsList.size == 1) personListArray.add("Add New")
-////                        for (perDetails in FacilityDataModel.getInstance().tblPersonnel) {
-////                            if (perDetails.PersonnelTypeID.toInt() == personTypeIDsArray.get(position)) {
-////                                personListArray.add(perDetails.FirstName + " " + perDetails.LastName)
-////                            }
-////                        }
+//                        for (perDetails in FacilityDataModel.getInstance().tblPersonnel) {
+//                            if (perDetails.PersonnelTypeID.toInt() == personTypeIDsArray.get(position)) {
+//                                personListArray.add(perDetails.FirstName + " " + perDetails.LastName)
+//                            }
+//                        }
 //                        var personDtlsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personListArray)
-////                        personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-////                        personnelNamesList.visibility = View.VISIBLE
-////                        personnelNamesList.adapter = personDtlsAdapter
-////                        personnelNamesList.itemsCanFocus = true
-////                        personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
+//                        personDtlsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        personnelNamesList.visibility = View.VISIBLE
+//                        personnelNamesList.adapter = personDtlsAdapter
+//                        personnelNamesList.itemsCanFocus = true
+//                        personnelNamesList.onItemClickListener = personnelNamesListViewAdapter
 ////                                        if (AnnualVisitationSingleton.getInstance().personnelId > -1) {
 ////                                            context!!.toast(AnnualVisitationSingleton.getInstance().personnelFirstName +" "
 ////                                                    + AnnualVisitationSingleton.getInstance().personnelLastName)
@@ -457,16 +332,16 @@ class FragmentARRAVPersonnel : Fragment() {
 //                }
 //            }
 //
-////            override fun onNothingSelected(parent: AdapterView<*>) {
-////
-////                /*Do something if nothing selected*/
-////
-////
-////            }
+//            override fun onNothingSelected(parent: AdapterView<*>) {
+//
+//                /*Do something if nothing selected*/
+//
+//
+//            }
 //        }
-//
-//
-//    }
+
+
+    }
 
     private lateinit var personnelDetails: AAAPersonnelDetails
 
@@ -533,14 +408,44 @@ class FragmentARRAVPersonnel : Fragment() {
 //        }
 //    }
 
-    fun getTypeID(typeName: String): Int {
-        var typeID = -1
+    fun getTypeID(typeName: String): String {
+        var typeID = "-1"
         for (fac in personnelTypeList) {
-            if (fac.personneltypename.equals(typeName)) {
-                typeID = fac.personneltypeid
+            if (fac.PersonnelTypeName.equals(typeName)) {
+                typeID = fac.PersonnelTypeID
             }
         }
         return typeID
+    }
+
+    fun getTypeName(typeID: String): String {
+        var typeName = "Not Selected"
+        for (fac in personnelTypeList) {
+            if (fac.PersonnelTypeID.equals(typeID)) {
+                typeName= fac.PersonnelTypeName
+            }
+        }
+        return typeName
+    }
+
+    fun getCertTypeID(typeName: String): String {
+        var typeID = "-1"
+        for (fac in certificationTypeList) {
+            if (fac.PersonnelCertName.equals(typeName)) {
+                typeID = fac.PersonnelCertID
+            }
+        }
+        return typeID
+    }
+
+    fun getCertTypeName(typeID: String): String {
+        var typeName = "Not Selected"
+        for (fac in certificationTypeList) {
+            if (fac.PersonnelCertID.equals(typeID)) {
+                typeName= fac.PersonnelCertName
+            }
+        }
+        return typeName
     }
 
 //    fun validateInputs(): Boolean {
@@ -693,45 +598,54 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
 
-    fun fillPersonnelTableView(){
+    fun fillPersonnelTableView() {
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
         rowLayoutParam7.column = 8
-
+        var dateTobeFormated = ""
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
                 var tableRow = TableRow(context)
@@ -739,7 +653,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).PersonnelTypeID
+                textView.text = getTypeName(get(it).PersonnelTypeID)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -758,7 +672,12 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam3
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).SeniorityDate
+                if (!(get(it).SeniorityDate.isNullOrEmpty())) {
+                    textView.text = get(it).SeniorityDate.apiToAppFormat()
+                } else {
+                    textView.text = ""
+                }
+
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -770,33 +689,48 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam5
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).startDate
+                if (!(get(it).startDate.isNullOrEmpty())) {
+                    textView.text  = get(it).startDate.apiToAppFormat()
+                } else {
+                    textView.text  = ""
+                }
+
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam6
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).ExpirationDate
+                if (!(get(it).ExpirationDate.isNullOrEmpty())) {
+                    textView.text = get(it).ExpirationDate.apiToAppFormat()
+                } else {
+                    textView.text = ""
+                }
+
+
                 tableRow.addView(textView)
 
-                var checkBox= CheckBox(context)
+                var checkBox = CheckBox(context)
 
                 checkBox = CheckBox(context)
                 checkBox.layoutParams = rowLayoutParam7
                 checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 checkBox.isChecked = (get(it).ContractSigner.equals("true"))
+                checkBox.isEnabled=false
                 tableRow.addView(checkBox)
 
                 checkBox = CheckBox(context)
                 checkBox.layoutParams = rowLayoutParam8
                 checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 checkBox.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
+                checkBox.isEnabled=false
                 tableRow.addView(checkBox)
 
                 PersonnelResultsTbl.addView(tableRow)
+
             }
         }
     }
+
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

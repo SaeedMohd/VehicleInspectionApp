@@ -240,17 +240,17 @@
                             android:layout_column="0"
                             android:textStyle="bold"
                             />
-                        <EditText
-                            android:id="@+id/newBillDueDateText"
+                        <Button
+                            android:id="@+id/newBillDueDateBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
+                            android:layout_marginTop="10dp"
                             android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
                     </TableRow>
                     <TableRow>
                         <TextView
@@ -262,17 +262,16 @@
                             android:layout_column="0"
                             android:layout_margin="5dp"
                             />
-
-                        <EditText
+                        <Button
                             android:id="@+id/newSecondDueDateText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
+                            android:layout_marginTop="10dp"
                             android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -282,17 +281,17 @@
                             android:layout_column="4"
                             android:textStyle="bold"
                             />
-                        <EditText
+                        <Button
                             android:id="@+id/newFinalDueDateText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:layout_column="5"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
+                            android:layout_marginTop="10dp"
+                            android:layout_column="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
                     </TableRow>
 
                     <TableRow>
@@ -349,17 +348,16 @@
                             android:layout_column="0"
                             android:textStyle="bold"
                             />
-                        <EditText
-                            android:id="@+id/newACHDateText"
+                        <Button
+                            android:id="@+id/newACHDateBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
+                            android:layout_marginTop="10dp"
                             android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
                     </TableRow>
                     <TableRow>
                         <TextView
@@ -371,17 +369,17 @@
                             android:layout_column="0"
                             android:layout_margin="5dp"
                             />
-
-                        <EditText
-                            android:id="@+id/newPayRecDateText"
+                        <Button
+                            android:id="@+id/newPayRecDateBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
+                            android:layout_marginTop="10dp"
                             android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -455,17 +453,17 @@
                             android:layout_column="4"
                             android:textStyle="bold"
                             />
-                        <EditText
-                            android:id="@+id/newCreditAppliedDateText"
+                        <Button
+                            android:id="@+id/newCreditAppliedDateBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:layout_column="5"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
+                            android:layout_marginTop="10dp"
+                            android:layout_column="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
                     </TableRow>
                     <TableRow>
                         <TextView

@@ -30,7 +30,7 @@ class FragmentARRAVLocation : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_arravlocation, container, false)
+        return inflater!!.inflate(R.layout.fragment_aarav_location, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,6 +53,7 @@ class FragmentARRAVLocation : Fragment() {
                 phylocAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
             } else if (fac.LocationTypeID.toInt() == 2) {
                 mailaddr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
+                mailaddr1branchname.text = if ((fac.BranchName.isNullOrEmpty())) "" else fac.BranchName
                 mailaddr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
                 mailAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
                 mailAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2

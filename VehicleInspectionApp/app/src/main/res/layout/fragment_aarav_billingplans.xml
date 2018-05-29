@@ -190,16 +190,17 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
-                <EditText
-                    android:id="@+id/newEffDateText"
+                <Button
+                    android:id="@+id/newEffDateBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
+                    android:layout_marginTop="10dp"
                     android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+
             </TableRow>
             <TableRow>
                 <TextView
@@ -315,16 +316,16 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
-                <EditText
-                    android:id="@+id/newLastUpdatedText"
+                <Button
+                    android:id="@+id/newLastUpdatedBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
+                    android:layout_marginTop="10dp"
                     android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

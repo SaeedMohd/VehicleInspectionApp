@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_gray"
-    tools:context=".fragments.FragmentARRAVPersonnel">
+    tools:context=".fragments.FragmentARRAVComplaints">
     <LinearLayout
         android:layout_width="match_parent"
-        android:id="@+id/facPersonnel"
+        android:id="@+id/facComp"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/titleTextView"
@@ -16,7 +16,7 @@
             android:layout_height="40dp"
             android:gravity="left"
             android:layout_weight="8"
-            android:text="Personnel"
+            android:text="Complaints"
             android:textStyle="bold"
             android:textSize="18dp"
             android:layout_gravity="left"
@@ -27,7 +27,7 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/facPersonnel"
+        android:layout_below="@id/facComp"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:paddingBottom="10dp"
@@ -36,6 +36,8 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Personnel"
+                android:text="Complaints"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_margin="10dp"
@@ -51,7 +53,85 @@
                 />
 
             <TableLayout
-                android:id="@+id/PersonnelResultsTbl"
+                android:id="@+id/searchTbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Complaint ID:"
+                android:textStyle="bold"
+                android:layout_column="0"
+                />
+
+                <EditText
+                    android:id="@+id/searchCompIDText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="First Name:"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        />
+
+                    <EditText
+                        android:id="@+id/searchFirstNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:ems="8"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Second Name:"
+                        android:textStyle="bold"
+                        android:layout_column="4"
+                        />
+
+                    <EditText
+                        android:id="@+id/searchSecondNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:ems="8"
+                        android:layout_column="5"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Showing 1-1 of 1 Results"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_margin="10dp"
+                android:textColor="#800000"
+                />
+            <TableLayout
+                android:id="@+id/ComplaintsResultsTbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:showDividers="middle|beginning|end"
@@ -62,13 +142,40 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Type"
+                        android:text="Complaint ID"
                         android:textStyle="bold"
                         android:layout_column="0"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contract No"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Entered By"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Assigned To"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,7 +197,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Seniority Date"
+                        android:text="Received Date"
                         android:textStyle="bold"
                         android:layout_column="1"
                         android:layout_weight="1"
@@ -99,43 +206,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cert ID#"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Start Date"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="End Date"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Contract Signer"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Primary Mail Recipient"
+                        android:text="Closed Date"
                         android:textStyle="bold"
                         android:layout_column="1"
                         android:layout_weight="1"
@@ -144,10 +215,11 @@
                 </TableRow>
             </TableLayout>
 
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add New Personnel"
+                android:text="Add New Complaint"
                 android:id="@+id/addNewBtn"
                 />
 
@@ -156,27 +228,45 @@
                 android:layout_height="wrap_content"
                 >
                 <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Initiated By:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/newInitiatedBySpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:layout_column="1"
+                        />
+                </TableRow>
+                <TableRow>
                     <CheckBox
                         android:layout_width="wrap_content"
-                        android:id="@+id/newSignerCheck"
+                        android:id="@+id/newTowCheck"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
                         android:layout_column="0"
-                        android:text="Contract Signer"
+                        android:text="Tow In"
                         android:textStyle="bold"
                         />
                     <CheckBox
                         android:layout_width="wrap_content"
-                        android:id="@+id/newACSCheck"
+                        android:id="@+id/newOOStateCheck"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
                         android:layout_column="1"
-                        android:text="Primary Mail Recipients"
+                        android:text="Out of State"
                         android:textStyle="bold"
                         />
-
                 </TableRow>
 
                 <TableRow>
@@ -184,19 +274,40 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Personnel Type:"
-                        android:textStyle="bold"
-                        android:layout_column="0"
                         android:layout_margin="5dp"
+                        android:text="Complaint ID:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
                         />
-                    <Spinner
-                        android:id="@+id/newPersonnelTypeSpinner"
+                    <TextView
+                        android:id="@+id/newComplaintIDText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text=""
                         android:layout_column="1"
-                        android:entries="@array/contractTypesEntries"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="CTS/SOSS ID:"
+                        android:layout_column="4"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/newCTSIDText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:ems="8"
+                        android:layout_column="5"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
                         />
                 </TableRow>
 
@@ -215,227 +326,54 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
                         android:text=""
+                        android:ems="8"
                         android:layout_column="1"
+                        android:background="@drawable/textview_background"
                         android:textStyle="bold"
                         />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Last Name:*"
-                        android:textStyle="bold"
-                        android:layout_column="3"
                         android:layout_margin="5dp"
+                        android:text="Last Name:*"
+                        android:layout_column="4"
+                        android:textStyle="bold"
                         />
                     <EditText
                         android:id="@+id/newLastNameText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:text=""
                         android:ems="8"
-                        android:layout_column="4"
-                        />
-                </TableRow>
-
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Seniority Date:"
-                        android:layout_column="0"
+                        android:layout_column="5"
+                        android:background="@drawable/textview_background"
                         android:textStyle="bold"
                         />
-                    <Button
-                        android:id="@+id/newSeniorityDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
                 </TableRow>
                 <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Certification ID #:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newCertNoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="4"
-                        />
-                </TableRow>
-
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Start Date:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newStartDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="End Date:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newEndDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-                <TextView
+                <CheckBox
                     android:layout_width="wrap_content"
+                    android:id="@+id/newNoCountCheck"
                     android:layout_height="wrap_content"
-                    android:text="Contract Signer"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:layout_column="0"
+                    android:text="Don't Count Complaint"
                     android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_margin="10dp"
-                    android:textColor="#827908"
                     />
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Addres 1:*"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        />
-
-                    <EditText
-                        android:id="@+id/newAdd1Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
                 </TableRow>
                 <TableRow>
-                    <TextView
+                    <CheckBox
                         android:layout_width="wrap_content"
+                        android:id="@+id/newERSCheck"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
-                        android:text="Address 2:"
                         android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newAdd2Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="City:*"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        />
-
-                    <EditText
-                        android:id="@+id/newCityText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="State:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newStateText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Zip Code:*"
-                        android:textStyle="bold"
-                        android:layout_column="3"
-                        android:layout_margin="5dp"
-                        />
-
-                    <EditText
-                        android:id="@+id/newZipText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
+                        android:text="ERS Complaint"
                         android:textStyle="bold"
                         />
                 </TableRow>
@@ -444,183 +382,115 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
-                        android:text="Phone:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newPhoneText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Email Address:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newEmailText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Contract Start Date:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newCoStartDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Contract End Date:"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newCoEndDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="4"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Personnel Certification(s)"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_margin="10dp"
-                    android:textColor="#827908"
-                    />
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Certification Type"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Certification Date"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Expiration Date"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Description"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                </TableRow>
-            </TableLayout>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add New Certification"
-                android:id="@+id/addNewCertBtn"
-                />
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Certification Type:*"
+                        android:text="Entered By:*"
                         android:layout_column="0"
                         android:textStyle="bold"
                         />
                     <Spinner
-                        android:id="@+id/newCertTypeSpinner"
+                        android:id="@+id/newEnteredBySpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:ems="8"
                         android:layout_column="1"
-                        android:entries="@array/contractTypesEntries"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Assigned To:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/newAssignedToSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:layout_column="1"
                         />
                 </TableRow>
+
+                <TableRow>
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Reason:*"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                    <Spinner
+                        android:id="@+id/newReasonSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:layout_column="1"
+                        />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
-                        android:text="Contract Start Date:"
+                        android:text="Resolution:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <Spinner
+                        android:id="@+id/newResolutionSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:ems="8"
+                        android:layout_column="1"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Received Date:*"
                         android:layout_column="0"
                         android:textStyle="bold"
                         />
                     <Button
-                        android:id="@+id/newCertStartDateBtn"
+                        android:id="@+id/newRecDateBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_column="1"
-                        android:ems="8"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Date Opened:"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        />
+
+                    <Button
+                        android:id="@+id/newOpenDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
@@ -630,43 +500,84 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
-                        android:text="Contract End Date:"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newCertEndDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:text="Closed Date:"
                         android:layout_column="4"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/newClosedDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="2nd Date Opened:"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        />
+
+                    <Button
+                        android:id="@+id/new2ndOpenDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="2nd Closed Date:"
+                        android:layout_column="4"
+                        android:textStyle="bold"
+                        />
+                    <Button
+                        android:id="@+id/new2ndClosedDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_column="1"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
                 </TableRow>
                 <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Description:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newCertDescText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:lines="5"
-                        android:ems="16"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Work Days Not Counted:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newWDNotCountedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
                 </TableRow>
             </TableLayout>
             <LinearLayout

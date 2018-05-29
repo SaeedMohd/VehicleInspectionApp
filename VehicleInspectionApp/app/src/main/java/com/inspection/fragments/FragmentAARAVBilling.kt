@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -7,8 +8,14 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 
 import com.inspection.R
+import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.fragment_aarav_billing.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +36,9 @@ class FragmentAARAVBilling : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
+    private var revSourceArray = ArrayList<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +54,127 @@ class FragmentAARAVBilling : Fragment() {
         return inflater.inflate(R.layout.fragment_aarav_billing, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        prepareBillingSpinners()
+
+        newBillDueDateBtn.setOnClickListener {
+//            if (newBillDueDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newBillDueDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newSecondDueDateText.setOnClickListener {
+//            if (newSecondDueDateText.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newSecondDueDateText!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newFinalDueDateText.setOnClickListener {
+//            if (newFinalDueDateText.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newFinalDueDateText!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newACHDateBtn.setOnClickListener {
+//            if (newACHDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newACHDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newPayRecDateBtn.setOnClickListener {
+//            if (newPayRecDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newPayRecDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+        newCreditAppliedDateBtn.setOnClickListener {
+//            if (newCreditAppliedDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCreditAppliedDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+
+    }
+
+
+
+    fun prepareBillingSpinners() {
+
+        revSourceList = TypeTablesModel.getInstance().RevenueSourceType
+        revSourceArray.clear()
+        for (fac in revSourceList) {
+            revSourceArray.add(fac.RevenueSourceName)
+        }
+        var revSourceAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, revSourceArray)
+        revSourceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newRevSourceSpinner.adapter = revSourceAdapter
+    }
 
     /**
      * This interface must be implemented by activities that contain this

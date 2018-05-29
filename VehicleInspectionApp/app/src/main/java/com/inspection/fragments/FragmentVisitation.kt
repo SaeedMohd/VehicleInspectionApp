@@ -100,7 +100,9 @@ class FragmentVisitation : Fragment() {
 
         staffTrainingProcessEditText.setText(" "+FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
 
-        emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+        if (FacilityDataModel.getInstance().tblFacilityEmail.count()>0) {
+            emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+        }
 
 
 
