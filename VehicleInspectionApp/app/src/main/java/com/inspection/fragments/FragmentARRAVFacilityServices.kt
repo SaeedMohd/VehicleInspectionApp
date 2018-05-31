@@ -131,10 +131,7 @@ class FragmentARRAVFacilityServices : Fragment() {
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
 
-        val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
-        rowLayoutParam4.column = 4
-        FacilityDataModel.getInstance().tblFacilityServices.apply {
+           FacilityDataModel.getInstance().tblFacilityServices.apply {
 
             (0 until size).forEach {
                 var tableRow = TableRow(context)

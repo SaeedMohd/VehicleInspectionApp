@@ -8,10 +8,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.FacilityDataModel
@@ -111,13 +108,13 @@ class FragmentARRAVVisitationTracking : Fragment() {
 //            }
             if (validProgram) {
                 var item = FacilityDataModel.TblVisitationTracking()
-               // item.performedBy =performedBy_dropdown.selectedItem.toString()
-                item.performedBy =""
+                item.performedBy =performedBy_dropdown.selectedItem.toString()
+                Toast.makeText(context,performedBy_dropdown.selectedItem.toString(),Toast.LENGTH_SHORT).show()
                 //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
                 item.DatePerformed = if (performed_date_textviewVal.text.equals("SELECT DATE")) "" else performed_date_textviewVal.text.toString()
 //                item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
 //                item.Comments=comments_editTextVal.text.toString()
-//                FacilityDataModel.getInstance().tblPrograms.add(item)
+                FacilityDataModel.getInstance().tblVisitationTracking.add(item)
                 //  BuildProgramsList()
 
                 addTheLatestRowOfPortalAdmin()
@@ -247,7 +244,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = DatePerformed.apiToAppFormat()
+            textView.text = DatePerformed
             tableRow.addView(textView)
 
             textView = TextView(context)

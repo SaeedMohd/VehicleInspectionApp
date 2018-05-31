@@ -106,7 +106,97 @@ class FragmentARRAVDeficiency : Fragment() {
             }, year, month, day)
             dpd.show()
         }
+        addNewBtn.setOnClickListener({
+            var validProgram = true
+            if (validProgram) {
+                var item = FacilityDataModel.TblDeficiency()
+                for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
+                    if (newDefSpinner.getSelectedItem().toString().equals(fac.DeficiencyName))
+
+                        item.DefTypeID =fac.DeficiencyTypeID
+                }
+
+
+                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+                item.VisitationDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString()
+                item.EnteredDate = if (newEnteredDateBtn.text.equals("SELECT DATE")) "" else newEnteredDateBtn.text.toString()
+                item.ClearedDate=newClearedDateBtn.text.toString()
+                item.Comments=newCommentSpinner.selectedItem.toString()
+                FacilityDataModel.getInstance().tblDeficiency.add(item)
+                //  BuildProgramsList()
+
+                addTheLatestRowOfPortalAdmin()
+
+            }
+        })
+
     }
+    fun addTheLatestRowOfPortalAdmin() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        FacilityDataModel.getInstance().tblDeficiency[FacilityDataModel.getInstance().tblDeficiency.size - 1].apply {
+
+
+            var tableRow = TableRow(context)
+
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
+                if (DefTypeID.equals(fac.DeficiencyTypeID))
+
+                    textView.text =fac.DeficiencyName
+            }
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = VisitationDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = EnteredDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ClearedDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = Comments
+            tableRow.addView(textView)
+
+
+            DeffResultsTbl.addView(tableRow)
+
+        }
+    }
+
 
     private var defTypeList = ArrayList<TypeTablesModel.aarDeficiencyType>()
     private var defTypeArray = ArrayList<String>()
