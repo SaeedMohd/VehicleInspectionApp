@@ -74,6 +74,33 @@
                     android:text="SELECT DATE"
                     android:textColor="@color/blue_krayola" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/connumberll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="End Date: "
+                    android:textStyle="bold" />
+
+                    <Button
+                    android:id="@+id/endDateButton"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="SELECT DATE"
+                    android:textColor="@color/blue_krayola" />
+            </LinearLayout>
 
 
 
@@ -133,6 +160,7 @@
                     android:layout_weight="0.5"
                     android:background="@null"
                     android:ems="2"
+                    android:maxLength="2"
                     android:layout_gravity="center"
                     android:gravity="center_horizontal"
                     android:text="00"
@@ -376,6 +404,26 @@
                     android:inputType="number"
                     android:textStyle="bold" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/completeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save" />
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel" />
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

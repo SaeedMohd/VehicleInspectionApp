@@ -209,6 +209,26 @@
                 android:maxEms="250"
                 android:lines="3"
                 />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/saveProgramBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="save"/>
+                <Button
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cancel"/>
+
+
+                </LinearLayout>
+
                       </LinearLayout>
                        <!---->
             <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->

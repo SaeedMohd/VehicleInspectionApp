@@ -9,10 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
@@ -59,19 +56,19 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             dpd.show()
         }
 
-//        endDateButton.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                val myFormat = "dd MMM yyyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year,monthOfYear,dayOfMonth)
-//                endDateButton!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
+        endDateButton.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                endDateButton!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
 
         addendumSignedDateButton.setOnClickListener {
             val c = Calendar.getInstance()
@@ -102,41 +99,44 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
 
         addNewAarButton.setOnClickListener {
-            if (inspectionDateButton.text != "Select Date") {
                 val date = inspectionDateButton.text
                 val isLoggedInRsp = loggedIntoRspButton.isChecked
                 val numberOfUnacknowledgedRecords = numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
                 val numberOfInProgressTwoInsvalue = numberOfInProgressTwoIns.text.toString().toInt()
                 val numberOfInProgressWalkInsValue = numberOfInProgressWalkIns.text.toString().toInt()
-                val portalTrackingentry = FacilityDataModel.TblAARPortalAdmin()
+                var portalTrackingentry = FacilityDataModel.TblAARPortalAdmin()
+                portalTrackingentry.startDate=startDateButton.text.toString()
                 portalTrackingentry.PortalInspectionDate = "" + date
                 portalTrackingentry.LoggedIntoPortal = "" + isLoggedInRsp
                 portalTrackingentry.InProgressTows = "" + numberOfInProgressTwoInsvalue
                 portalTrackingentry.InProgressWalkIns = "" + numberOfInProgressWalkInsValue
                 portalTrackingentry.NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                portalTrackingentry.CardReaders=numberOfCardsReaderEditText.text.toString()
+                portalTrackingentry.AddendumSigned=addendumSignedDateButton.text.toString()
 
                 FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
                 addTheLatestRowOfPortalAdmin()
 
-                inspectionDateButton.text = "Select Date"
-                loggedIntoRspButton.isChecked = false
-                numberOfUnacknowledgedRecordsEditText.setText("0")
-                numberOfInProgressTwoIns.setText("0")
-                numberOfInProgressWalkIns.setText("0")
-            }
+
             
         }
 
-        fillData()
+      //  fillData()
         fillPortalTrackingTableView();
+        completeButton.setOnClickListener(View.OnClickListener {
+            if (validateInputs()){
+
+                Toast.makeText(context,"inputs valid",Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun fillData(){
         FacilityDataModel.getInstance().tblAARPortalAdmin[0].apply {
-            startDateButton.text = startDate
+           // startDateButton.text = startDate
 //            endDateButton.text = PortalInspectionDate
-            addendumSignedDateButton.text = AddendumSigned
-            numberOfCardsReaderEditText.setText(CardReaders)
+         //   addendumSignedDateButton.text = AddendumSigned
+         //   numberOfCardsReaderEditText.setText(CardReaders)
 //            inspectionDateButton.text = PortalInspectionDate
 //            numberOfUnacknowledgedRecordsEditText.setText(NumberUnacknowledgedTows)
 //            numberOfInProgressTwoIns.setText(InProgressTows)
@@ -150,7 +150,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         var isInputsValid = true
 
         startDateButton.setError(null)
-//        endDateButton.setError(null)
+        endDateButton.setError(null)
         addendumSignedDateButton.setError(null)
         numberOfCardsReaderEditText.setError(null)
         inspectionDateButton.setError(null)
@@ -161,25 +161,27 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         if (!startDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
 
-//            if (endDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-//                isInputsValid = false
-//                endDateButton.setError("Required Field")
-//            }
-
             if (addendumSignedDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
                 isInputsValid = false
                 addendumSignedDateButton.setError("Required Field")
             }
+
+
+            if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
+                isInputsValid = false
+                numberOfCardsReaderEditText.setError("Required Field")
+            }
+
+        }
+
+
+
 
             if (inspectionDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
                 isInputsValid = false
                 inspectionDateButton.setError("Required Field")
             }
 
-            if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
-                isInputsValid = false
-                numberOfCardsReaderEditText.setError("Required Field")
-            }
 
             if (numberOfUnacknowledgedRecordsEditText.text.toString().isNullOrEmpty()) {
                 isInputsValid = false
@@ -197,7 +199,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             }
 
 
-        }
+
 
 
 
@@ -323,7 +325,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 textView.text = InProgressWalkIns
                 tableRow.addView(textView)
 
-                aarPortalTrackingTableLayout.addView(tableRow)
+            aarPortalTrackingTableLayout.addView(tableRow)
             
         }
     }

@@ -64,19 +64,19 @@
                         android:layout_column="1"
                         android:orientation="horizontal">
 
-                        <RadioButton
+                        <CheckBox
                             android:id="@+id/annualVisitationType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Annual" />
 
-                        <RadioButton
+                        <CheckBox
                             android:id="@+id/quarterlyVisitationType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Quarterly/Other" />
 
-                        <RadioButton
+                        <CheckBox
                             android:id="@+id/adhocVisitationType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -100,6 +100,7 @@
                         android:id="@+id/dateOfVisitationButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:layout_column="1"
                         android:layout_gravity="center"
                         android:background="@color/transparent"
@@ -124,6 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
+                        android:id="@+id/visitationReasonDropListId"
                         android:entries="@array/visitation_reasons" />
 
 
@@ -194,6 +196,7 @@
                     <EditText
                         android:id="@+id/facilityNumberEditText"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:layout_column="1"
                         android:background="@drawable/textview_background" />
                 </TableRow>
@@ -212,6 +215,7 @@
                     <EditText
                         android:id="@+id/facilityNameEditText"
                         android:layout_column="1"
+                        android:textColor="@color/black"
                         android:gravity="center"
                         android:background="@drawable/textview_background" />
                 </TableRow>
@@ -230,6 +234,7 @@
                     <Spinner
                         android:id="@+id/facilityRepresentativesSpinner"
                         android:gravity="center"
+                        android:tooltipText="please select a representative"
                         android:layout_column="1" />
                 </TableRow>
 
@@ -256,6 +261,11 @@
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
                 </TableRow>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="textWatcherSignature"
+                    android:id="@+id/textWatcherSignature"/>
 
                 <TableRow android:layout_marginTop="5dp">
 

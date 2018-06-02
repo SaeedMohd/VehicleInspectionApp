@@ -110,6 +110,7 @@
     </string-array>
 
     <string-array name="visitation_reasons">
+        <item>Please Select Reason</item>
         <item>Deficiency Inspection</item>
         <item>Member Complaint</item>
         <item>Motorsport Ticket Delivery</item>
@@ -117,5 +118,6 @@
         <item>Courtesy Visit</item>
         <item>Annual Visitation</item>
         <item>Quarterly Visitation</item>
+
     </string-array>
 </resources>
