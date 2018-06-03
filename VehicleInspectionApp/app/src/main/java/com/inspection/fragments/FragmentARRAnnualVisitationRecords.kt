@@ -89,7 +89,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         clubCodeEditText.setText("004")
 
         if (isVisitationPlanning) {
-            btns_ll.visibility = View.GONE
+            
             loadSpecialistName()
             visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
             visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
@@ -97,7 +97,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
             visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
         } else {
-            btns_ll.visibility = View.VISIBLE
+            
             visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
             visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
@@ -106,47 +106,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         }
 
         progressBarRecords.indeterminateDrawable.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
-
-        newVisitationBtn.setOnClickListener({
-            shouldShowVisitation = true
-            recordsProgressView.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            recordsProgressView.visibility = View.INVISIBLE
-                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                            var facilityNames = ArrayList<String>()
-
-                            (0 until facilities.size).forEach {
-                                facilityNames.add(facilities[it].facname)
-                            }
-
-                            facilityNames.sort()
-                            var searchDialog = SearchDialog(context, facilityNames)
-                            searchDialog.show()
-                            searchDialog.setOnDismissListener {
-                                if (searchDialog.selectedString.isNotEmpty()) {
-                                    getFullFacilityDataFromAAA(facilities.filter { it.facname == searchDialog.selectedString }[0].facnum.toInt())
-                                }
-                            }
-                        })
-                    }, Response.ErrorListener {
-                recordsProgressView.visibility = View.INVISIBLE
-                context!!.toast("Connection Error")
-                Log.v("error while loading", "error while loading facilities")
-                Log.v("Loading error", "" + it.message)
-            }))
-
-
-
-
-
-
-
-//            var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-//            startActivity(intent)
-        })
-
 
         clubCodeEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -158,7 +117,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                showVisitationBtn.performClick()
+                reloadVisitationsList()
             }
         })
 
@@ -172,7 +131,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                showVisitationBtn.performClick()
+                reloadVisitationsList()
             }
 
         })
@@ -192,7 +151,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 } else {
                     visitationSpecialistName.setText(searchDialog.selectedString)
                 }
-                showVisitationBtn.performClick()
+                reloadVisitationsList()
             }
         })
 
@@ -217,7 +176,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                                 } else {
                                     facilityNameButton.setText(searchDialog.selectedString)
                                 }
-                                showVisitationBtn.performClick()
+                                reloadVisitationsList()
                             }
                         })
                     }, Response.ErrorListener {
@@ -228,200 +187,34 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         })
 
         annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
+            reloadVisitationsList()
         }
 
         quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
+            reloadVisitationsList()
         }
 
         adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
+            reloadVisitationsList()
         }
 
         deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
+            reloadVisitationsList()
         }
 
         pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
+            reloadVisitationsList()
         }
 
         completedCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
+            reloadVisitationsList()
         }
-
-        showVisitationBtn.setOnClickListener({
-
-            var parametersString = StringBuilder()
-            if (true) {
-                if (clubCodeEditText.text.trim().isNotEmpty()) {
-                    with(parametersString) {
-                        append("clubCode=" + clubCodeEditText.text.trim())
-                        append("&")
-                    }
-                }else {
-                    with(parametersString) {
-                        append("clubCode=004")
-                        append("&")
-                    }
-                }
-
-                    with(parametersString) {
-                        append("facNum=" + visitationfacilityIdVal.text.trim())
-                        append("&")
-                    }
-
-                if (!visitationSpecialistName.text.contains("Select") && visitationSpecialistName.text.length > 1) {
-                    with(parametersString) {
-                        //TODO added to void specialist value until they let us know how we will use it
-                        //**********************
-//                        append("specialist=" + visitationSpecialistName.text)
-//                        append("&")
-                        //**********************
-
-                        append("specialist=")
-                        append("&")
-
-                    }
-                }else{
-                    with(parametersString) {
-                        append("specialist=")
-                        append("&")
-                    }
-                }
-
-                if (!facilityNameButton.text.contains("Select") && facilityNameButton.text.length > 1) {
-                    with(parametersString) {
-                        append(("dba=" + facilityNameButton.text))
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("dba=")
-                        append("&")
-                    }
-                }
-
-                if (visitationYearFilterSpinner.selectedItem != "Any") {
-                    with(parametersString) {
-                        append("inspectionYear=" + visitationYearFilterSpinner.selectedItem)
-                        append("&")
-                    }
-                }
-
-                if (visitationMonthsSpinner.selectedItem != "Any") {
-                    with(parametersString) {
-                        append("inspectionMonth=" + visitationMonthsSpinner.selectedItemPosition)
-                        append("&")
-                    }
-                }
-
-                if (annualVisitationCheckBox.isChecked){
-                    with(parametersString) {
-                        append("annualVisitations=1")
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("annualVisitations=0")
-                        append("&")
-                    }
-                }
-
-                if (quarterlyOrOtherVisistationsCheckBox.isChecked){
-                    with(parametersString) {
-                        append("quarterlyVisitations=1")
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("quarterlyVisitations=0")
-                        append("&")
-                    }
-                }
-
-
-                if (pendingCheckBox.isChecked){
-                    with(parametersString) {
-                        append("pendingVisitations=1")
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("pendingVisitations=0")
-                        append("&")
-                    }
-                }
-
-                if (completedCheckBox.isChecked){
-                    with(parametersString) {
-                        append("completedVisitations=1")
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("completedVisitations=0")
-                        append("&")
-                    }
-                }
-
-                if (deficienciesCheckBox.isChecked){
-                    with(parametersString) {
-                        append("deficiencies=1")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("deficiencies=0")
-                    }
-                }
-                recordsProgressView.visibility = View.VISIBLE
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                recordsProgressView.visibility = View.INVISIBLE
-
-                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                                var jsonObj = obj.getJSONObject("responseXml")
-
-
-                                var visitationsModel = parseVisitationsData(jsonObj)
-
-                                visitationfacilityListView.visibility = View.VISIBLE
-                                var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                visitationfacilityListView.adapter = visitationPlanningAdapter
-                            })
-                        }, Response.ErrorListener {
-                    context!!.toast("Error while loading visitations: "+it.message)
-                    Log.v("error while loading", "error while loading visitation records")
-                }))
-            } else {
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-
-
-                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                                var jsonObj = obj.getJSONObject("responseXml")
-
-
-                                var visitationsModel = parseVisitationsData(jsonObj)
-
-                                visitationfacilityListView.visibility = View.VISIBLE
-                                var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                visitationfacilityListView.adapter = visitationPlanningAdapter
-                            })
-                        }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading visitation records")
-                }))
-            }
-        })
-
+        
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                        showVisitationBtn.performClick()
+                        reloadVisitationsList()
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading facilities")
@@ -437,9 +230,175 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            showVisitationBtn.performClick()
+            reloadVisitationsList()
         }
 
+    }
+    
+    fun reloadVisitationsList(){
+
+        var parametersString = StringBuilder()
+        if (true) {
+            if (clubCodeEditText.text.trim().isNotEmpty()) {
+                with(parametersString) {
+                    append("clubCode=" + clubCodeEditText.text.trim())
+                    append("&")
+                }
+            }else {
+                with(parametersString) {
+                    append("clubCode=004")
+                    append("&")
+                }
+            }
+
+            with(parametersString) {
+                append("facNum=" + visitationfacilityIdVal.text.trim())
+                append("&")
+            }
+
+            if (!visitationSpecialistName.text.contains("Select") && visitationSpecialistName.text.length > 1) {
+                with(parametersString) {
+                    //TODO added to void specialist value until they let us know how we will use it
+                    //**********************
+//                        append("specialist=" + visitationSpecialistName.text)
+//                        append("&")
+                    //**********************
+
+                    append("specialist=")
+                    append("&")
+
+                }
+            }else{
+                with(parametersString) {
+                    append("specialist=")
+                    append("&")
+                }
+            }
+
+            if (!facilityNameButton.text.contains("Select") && facilityNameButton.text.length > 1) {
+                with(parametersString) {
+                    append(("dba=" + facilityNameButton.text))
+                    append("&")
+                }
+            }else{
+                with(parametersString) {
+                    append("dba=")
+                    append("&")
+                }
+            }
+
+            if (visitationYearFilterSpinner.selectedItem != "Any") {
+                with(parametersString) {
+                    append("inspectionYear=" + visitationYearFilterSpinner.selectedItem)
+                    append("&")
+                }
+            }
+
+            if (visitationMonthsSpinner.selectedItem != "Any") {
+                with(parametersString) {
+                    append("inspectionMonth=" + visitationMonthsSpinner.selectedItemPosition)
+                    append("&")
+                }
+            }
+
+            if (annualVisitationCheckBox.isChecked){
+                with(parametersString) {
+                    append("annualVisitations=1")
+                    append("&")
+                }
+            }else{
+                with(parametersString) {
+                    append("annualVisitations=0")
+                    append("&")
+                }
+            }
+
+            if (quarterlyOrOtherVisistationsCheckBox.isChecked){
+                with(parametersString) {
+                    append("quarterlyVisitations=1")
+                    append("&")
+                }
+            }else{
+                with(parametersString) {
+                    append("quarterlyVisitations=0")
+                    append("&")
+                }
+            }
+
+
+            if (pendingCheckBox.isChecked){
+                with(parametersString) {
+                    append("pendingVisitations=1")
+                    append("&")
+                }
+            }else{
+                with(parametersString) {
+                    append("pendingVisitations=0")
+                    append("&")
+                }
+            }
+
+            if (completedCheckBox.isChecked){
+                with(parametersString) {
+                    append("completedVisitations=1")
+                    append("&")
+                }
+            }else{
+                with(parametersString) {
+                    append("completedVisitations=0")
+                    append("&")
+                }
+            }
+
+            if (deficienciesCheckBox.isChecked){
+                with(parametersString) {
+                    append("deficiencies=1")
+                }
+            }else{
+                with(parametersString) {
+                    append("deficiencies=0")
+                }
+            }
+            recordsProgressView.visibility = View.VISIBLE
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            recordsProgressView.visibility = View.INVISIBLE
+
+                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                            var jsonObj = obj.getJSONObject("responseXml")
+
+
+                            var visitationsModel = parseVisitationsData(jsonObj)
+
+                            visitationfacilityListView.visibility = View.VISIBLE
+                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                            visitationfacilityListView.adapter = visitationPlanningAdapter
+                        })
+                    }, Response.ErrorListener {
+                context!!.toast("Error while loading visitations: "+it.message)
+                Log.v("error while loading", "error while loading visitation records")
+            }))
+        } else {
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+
+
+                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                            var jsonObj = obj.getJSONObject("responseXml")
+
+
+                            var visitationsModel = parseVisitationsData(jsonObj)
+
+                            visitationfacilityListView.visibility = View.VISIBLE
+                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                            visitationfacilityListView.adapter = visitationPlanningAdapter
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading visitation records")
+            }))
+        }
     }
 
     fun parseVisitationsData(jsonObject: JSONObject): VisitationsModel {

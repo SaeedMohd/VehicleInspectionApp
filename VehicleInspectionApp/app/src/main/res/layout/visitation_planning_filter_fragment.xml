@@ -223,30 +223,6 @@
         </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/btns_ll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingRight="20dp"
-            android:weightSum="2">
-
-            <Button
-                android:id="@+id/showVisitationBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Show Visitations"
-                android:visibility="invisible" />
-
-            <Button
-                android:id="@+id/newVisitationBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="New Visitation Form" />
-        </LinearLayout>
-
         <ListView
             android:id="@+id/visitationfacilityListView"
             android:divider="@null"
@@ -254,7 +230,7 @@
             android:layout_height="match_parent"
             android:paddingTop="10dp"
             android:background="@color/light_gray"
-            android:layout_below="@id/btns_ll"
+
             android:layout_marginTop="10dp" />
     </LinearLayout>
 

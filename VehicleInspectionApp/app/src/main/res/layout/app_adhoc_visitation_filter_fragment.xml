@@ -1,9 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
-    >
-
+    android:background="@color/light_gray">
 
 
     <LinearLayout
@@ -12,11 +11,12 @@
         android:layout_below="@+id/titleTextView"
         android:background="@color/white"
         android:orientation="vertical"
-        android:padding="5dp">
+        >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
@@ -32,47 +32,22 @@
             <EditText
                 android:id="@+id/clubCodeEditText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@id/clubCodeTextView"
+                android:background="@drawable/textview_background"
                 android:ems="4"
+                android:gravity="center"
                 android:inputType="number"
                 android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DBA: "
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/facilityDbaButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:hint="Select DBA" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/visitationfacilityIdVal"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:weightSum="6">
 
             <TextView
                 android:id="@+id/visitationfacilityIdTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/clubCodeEditText"
                 android:text="Facility #:"
                 android:textStyle="bold" />
@@ -80,118 +55,120 @@
             <EditText
                 android:id="@+id/visitationfacilityIdVal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/visitationfacilityIdTextView"
-                android:ems="6"
-                android:maxEms="6"
+                android:background="@drawable/textview_background"
+                android:ems="5"
+                android:gravity="center"
                 android:inputType="number"
                 android:text="" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="0.25" />
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Entity Name:"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/entityNameButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:hint="Select Facility" />
-
-        </LinearLayout>
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/visitationfacilityIdVal"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
 
-        <LinearLayout
-            android:id="@+id/btns_ll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingRight="20dp"
-            android:weightSum="2">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:text="DBA:"
+                    android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/showVisitationBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Show Visitations"
-                android:visibility="invisible" />
+                <EditText
+                    android:id="@+id/facilityDbaButton"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="5"
+                    android:background="@drawable/textview_background"
+                    android:drawableRight="@drawable/downarrow"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:hint="Select DBA"
+                    android:paddingRight="10dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:text="Entity Name:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/entityNameButton"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="5"
+                    android:background="@drawable/textview_background"
+                    android:drawableRight="@drawable/downarrow"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:hint="Select Facility"
+                    android:paddingRight="10dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
             <Button
                 android:id="@+id/newVisitationBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="New Visitation Form"
-                />
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="25dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/green_background_button"
+                android:text="New Visitation Form" />
 
         <ListView
             android:id="@+id/facilitiesListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <!--<ListView-->
-        <!--android:id="@+id/visitationrecordsListView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:divider="@android:color/transparent"-->
-        <!--android:dividerHeight="10dp"-->
-        <!--android:layout_margin="10dp"-->
-        <!--android:layout_height="400dp"/>-->
-        <ScrollView
+            android:divider="@null"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/btns_ll"
-            android:background="@drawable/frame_solid_border"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:id="@+id/visitationrecordsLL"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:orientation="vertical"></LinearLayout>
-        </ScrollView>
+            android:paddingTop="10dp"
+            android:background="@color/light_gray"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
-    <!--</ScrollView>-->
 
     <RelativeLayout
         android:id="@+id/recordsProgressView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
         android:alpha="0.8"
-        android:visibility="gone"
-        >
+        android:background="@color/mainColor"
+        android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarReords"
+            android:id="@+id/progressBarRecords"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            />
+            android:progressTint="@color/white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarReords"
+            android:layout_above="@id/progressBarRecords"
             android:layout_centerHorizontal="true"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
             android:text="Loading..."
-            />
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

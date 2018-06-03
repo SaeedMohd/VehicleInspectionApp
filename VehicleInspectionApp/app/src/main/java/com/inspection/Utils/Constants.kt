@@ -64,4 +64,7 @@ object Constants {
     val getVisitations = "https://dev.facilityappointment.com/ACEAPI.asmx/GetVisitations?"
     val updateScopeofServiceData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=2276&clubCode=004&laborRateId=1&fixedLaborRate=119.72&laborMin=0.00&laborMax=0.00&diagnosticRate=119.72&numOfBays=8&numOfLifts=8&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773"
 
+
+
+
 }
