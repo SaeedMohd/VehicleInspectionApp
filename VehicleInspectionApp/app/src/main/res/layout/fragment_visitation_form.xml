@@ -4,7 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_gray"
     tools:context=".fragments.FragmentAARAVComments">
+
+    <LinearLayout
+        android:id="@+id/facComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:layout_weight="8"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Visitation"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -15,18 +35,18 @@
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingTop="5dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
             android:orientation="vertical">
+
 
             <TableLayout
                 android:id="@+id/topTable"
-                android:stretchColumns="0,1"
-                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -42,23 +62,21 @@
 
                     <RadioGroup
                         android:layout_column="1"
-                        android:layout_gravity="right"
                         android:orientation="horizontal">
-                        <requestFocus></requestFocus>
 
-                        <RadioButton
+                        <CheckBox
                             android:id="@+id/annualVisitationType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Annual" />
 
-                        <RadioButton
+                        <CheckBox
                             android:id="@+id/quarterlyVisitationType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Quarterly/Other" />
 
-                        <RadioButton
+                        <CheckBox
                             android:id="@+id/adhocVisitationType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -82,8 +100,9 @@
                         android:id="@+id/dateOfVisitationButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:layout_column="1"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
@@ -106,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_gravity="right"
+                        android:id="@+id/visitationReasonDropListId"
                         android:entries="@array/visitation_reasons" />
 
 
@@ -125,7 +144,6 @@
 
                     <RadioGroup
                         android:layout_column="1"
-                        android:layout_gravity="right"
                         android:orientation="horizontal">
 
                         <RadioButton
@@ -158,9 +176,7 @@
                         android:id="@+id/clubCodeEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
                         android:gravity="center"
-                        android:ems="18"
                         android:layout_column="1"
                         android:background="@drawable/textview_background" />
 
@@ -179,10 +195,9 @@
 
                     <EditText
                         android:id="@+id/facilityNumberEditText"
-                        android:layout_gravity="right"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:layout_column="1"
-                        android:ems="18"
                         android:background="@drawable/textview_background" />
                 </TableRow>
 
@@ -199,10 +214,9 @@
 
                     <EditText
                         android:id="@+id/facilityNameEditText"
-                        android:layout_gravity="right"
-                        android:gravity="center"
                         android:layout_column="1"
-                        android:ems="18"
+                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:background="@drawable/textview_background" />
                 </TableRow>
 
@@ -219,7 +233,8 @@
 
                     <Spinner
                         android:id="@+id/facilityRepresentativesSpinner"
-                        android:layout_gravity="right"
+                        android:gravity="center"
+                        android:tooltipText="please select a representative"
                         android:layout_column="1" />
                 </TableRow>
 
@@ -240,12 +255,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center"
                         android:background="@color/transparent"
                         android:text="Add Signature"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
                 </TableRow>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="textWatcherSignature"
+                    android:id="@+id/textWatcherSignature"/>
 
                 <TableRow android:layout_marginTop="5dp">
 
@@ -260,7 +280,7 @@
 
                     <Spinner
                         android:id="@+id/automotiveSpecialistSpinner"
-                        android:layout_gravity="right"
+                        android:gravity="center"
                         android:layout_column="1" />
                 </TableRow>
 
@@ -280,7 +300,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center"
                         android:background="@color/transparent"
                         android:text="Add Signature"
                         android:textColor="@color/blue"
@@ -344,7 +364,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center"
                         android:background="@color/transparent"
                         android:text="Add Signature"
                         android:textColor="@color/blue"
@@ -384,8 +404,7 @@
                     <EditText
                         android:id="@+id/aarSignEditText"
                         android:layout_column="1"
-                        android:ems="18"
-                        android:layout_gravity="right"
+                        android:gravity="center"
                         android:background="@drawable/textview_background"
                         />
                 </TableRow>
@@ -405,8 +424,7 @@
                     <EditText
                         android:id="@+id/certificateOfApprovalEditText"
                         android:layout_column="1"
-                        android:ems="18"
-                        android:layout_gravity="right"
+                        android:gravity="center"
                         android:background="@drawable/textview_background"
                         />
                 </TableRow>
@@ -426,8 +444,7 @@
                     <EditText
                         android:id="@+id/memberBenefitsPosterEditText"
                         android:layout_column="1"
-                        android:ems="18"
-                        android:layout_gravity="right"
+                        android:gravity="center"
                         android:background="@drawable/textview_background"
                         />
                 </TableRow>
@@ -446,8 +463,7 @@
                     <EditText
                         android:id="@+id/qualityControlProcessEditText"
                         android:layout_column="1"
-                        android:ems="18"
-                        android:layout_gravity="right"
+                        android:gravity="left|top"
                         android:lines="6"
                         android:inputType="textMultiLine"
                         android:background="@drawable/textview_background"
@@ -470,8 +486,7 @@
                         android:layout_width="wrap_content"
                         android:id="@+id/staffTrainingProcessEditText"
                         android:layout_column="1"
-                        android:ems="18"
-                        android:layout_gravity="right"
+                        android:gravity="left|top"
                         android:lines="6"
                         android:inputType="textMultiLine"
                         android:background="@drawable/textview_background"
@@ -506,8 +521,7 @@
                     <EditText
                         android:id="@+id/emailEditText"
                         android:layout_column="1"
-                        android:ems="18"
-                        android:layout_gravity="right"
+                        android:gravity="center"
                         android:background="@drawable/textview_background"
                         />
                 </TableRow>
@@ -540,8 +554,7 @@
                     <EditText
                         android:id="@+id/waiverCommentsEditText"
                         android:layout_column="1"
-                        android:ems="18"
-                        android:layout_gravity="right"
+                        android:gravity="center"
                         android:background="@drawable/textview_background"
                         />
                 </TableRow>
@@ -562,7 +575,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center"
                         android:background="@color/transparent"
                         android:text="Add Signature"
                         android:textColor="@color/blue"

@@ -143,6 +143,119 @@ class FragmentARRAVComplaints : Fragment() {
             dpd.show()
         }
 
+
+        addNewBtn.setOnClickListener({
+            var validProgram = true
+            if (validProgram) {
+                var item = FacilityDataModel.TblComplaintFiles()
+
+
+                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+                item.ReceivedDate = if (newRecDateBtn.text.equals("SELECT DATE")) "" else newRecDateBtn.text.toString()
+                item.ComplaintID=newComplaintIDText.text.toString()
+                item.FirstName=searchFirstNameText.text.toString()
+                item.LastName=searchSecondNameText.text.toString()
+                 FacilityDataModel.getInstance().tblComplaintFiles.add(item)
+                //  BuildProgramsList()
+
+                addTheLatestRowOfPortalAdmin()
+
+            }
+        })
+
+
+
+    }
+    fun addTheLatestRowOfPortalAdmin() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+  val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+  val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+  val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        FacilityDataModel.getInstance().tblComplaintFiles[FacilityDataModel.getInstance().tblComplaintFiles.size - 1].apply {
+
+
+            var tableRow = TableRow(context)
+
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text =ComplaintID
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ""
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = ""
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ""
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = FirstName
+            tableRow.addView(textView)
+
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam5
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = LastName
+            tableRow.addView(textView)
+
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam6
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ""
+            tableRow.addView(textView)
+
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam7
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ""
+            tableRow.addView(textView)
+
+
+            ComplaintsResultsTbl.addView(tableRow)
+
+        }
     }
 
     private var initiatedTypeList = ArrayList<TypeTablesModel.complaintInitiatedType>()
@@ -300,12 +413,20 @@ class FragmentARRAVComplaints : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam6
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = ""
+
+                tableRow.addView(textView)
+         textView = TextView(context)
+                textView.layoutParams = rowLayoutParam7
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 if (!(get(it).ReceivedDate.isNullOrEmpty())) {
                     textView.text = get(it).ReceivedDate.apiToAppFormat()
                 } else {
                     textView.text = ""
                 }
                 tableRow.addView(textView)
+
+
                 ComplaintsResultsTbl.addView(tableRow)
 
             }

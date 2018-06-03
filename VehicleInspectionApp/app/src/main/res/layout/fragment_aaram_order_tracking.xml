@@ -121,7 +121,7 @@
                     android:textStyle="bold"
                     />
                 <Spinner
-                    android:id="@+id/reasonDropDown"
+                    android:id="@+id/employeeDropDown"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_marginTop="10dp"
@@ -195,7 +195,7 @@
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/addNewAarButton"
+                    android:id="@+id/addNewEventButton"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
@@ -242,7 +242,7 @@
                     android:textStyle="bold"
                     />
                 <Spinner
-                    android:id="@+id/reasonDropDown"
+                    android:id="@+id/eventsDropDown"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_marginTop="10dp"

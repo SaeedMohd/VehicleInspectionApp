@@ -9,10 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -58,6 +55,7 @@ class FragmentARRAVPrograms : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Toast.makeText(context,"annual checked", Toast.LENGTH_LONG).show()
 
         effective_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
@@ -267,10 +265,7 @@ class FragmentARRAVPrograms : Fragment() {
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
 
-        val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
-        rowLayoutParam4.column = 4
-        FacilityDataModel.getInstance().tblPrograms[FacilityDataModel.getInstance().tblPrograms.size - 1].apply {
+            FacilityDataModel.getInstance().tblPrograms[FacilityDataModel.getInstance().tblPrograms.size - 1].apply {
 
 
             var tableRow = TableRow(context)

@@ -4,15 +4,26 @@ package com.inspection.fragments
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.inspection.R
+import com.inspection.Utils.Constants
+import com.inspection.Utils.toast
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
+import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aaram_order_tracking.*
+import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +34,10 @@ import java.util.*
  * create an instance of this fragment.
  */
 class FragmentARRAVAmOrderTracking : Fragment() {
+    private var reasonsTypesArray = ArrayList<String>()
+    private var eventsTypesArray = ArrayList<String>()
+    private var employeeNamesArray = ArrayList<String>()
+
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -69,8 +84,72 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         }
         fillAmendmentOrdersAndTrackingTableLayout();
         fillNewEventTableLayout();
+        prepareSpinnerReasonTypes()
+        prepareSpinnerEventsTypes()
+        addNewEventButton.setOnClickListener(View.OnClickListener {
+
+                var item = FacilityDataModel.TblAmendmentOrderTracking()
+                for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
+                    if (eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
+
+                        item.EventTypeID = fac.AmendmentEventID
+
+                }
+
+                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+//                item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString()
+//                item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
+//                item.Comments=comments_editTextVal.text.toString()
+                FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(item)
+                //  BuildProgramsList()
+
+                addTheLatestRowOfNewEventTableView()
+
+
+        })
 
     }
+    fun prepareSpinnerReasonTypes() {
+
+        for (fac in TypeTablesModel.getInstance().tblAmendmentOrderTrackingSubReasonsType) {
+
+
+            reasonsTypesArray.add(fac.AmendmentSubReasonName)
+        }
+        var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonsTypesArray)
+        reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        reasonDropDown.adapter = reasonAdapter
+
+
+    }
+    fun prepareSpinnerEventsTypes() {
+
+        for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
+
+
+            eventsTypesArray.add(fac.AmendmentEventName)
+        }
+        var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, eventsTypesArray)
+        reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        eventsDropDown.adapter = reasonAdapter
+
+
+    }
+//    fun prepareSpinnerEmployeeNames() {
+//
+//        for (fac in TypeTablesModel.getInstance().tblAmendmentOrderTrackingSubReasonsType) {
+//
+//
+//            reasonsTypesArray.add(fac.AmendmentSubReasonName)
+//        }
+//        var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonsTypesArray)
+//        reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        reasonDropDown.adapter = reasonAdapter
+//
+//
+//    }
+
+
     fun fillAmendmentOrdersAndTrackingTableLayout() {
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
@@ -107,7 +186,11 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                 textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                 textView.text = get(it).ReasonID
+                for (fac in TypeTablesModel.getInstance().tblAmendmentOrderTrackingSubReasonsType) {
+                    if (get(it).ReasonID.equals(fac.AmendmentSubReasonID))
+
+                        textView.text =fac.AmendmentSubReasonName
+                }
                 tableRow.addView(textView)
 
 
@@ -174,8 +257,8 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
   val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 3
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
 
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.apply {
 
@@ -198,13 +281,17 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                 textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-               //  textView.text = get(it).ReasonID
+               textView.text = ""
                 tableRow.addView(textView)
   textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
+                textView.layoutParams = rowLayoutParam3
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = get(it).EventTypeID
+                for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
+                    if (get(it).EventTypeID.equals(fac.AmendmentEventID))
+
+                        textView.text =fac.AmendmentEventName
+                }
                 tableRow.addView(textView)
 
 
@@ -228,8 +315,8 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         rowLayoutParam2.column = 2
 
   val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 3
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
 
         FacilityDataModel.getInstance().tblAmendmentOrderTracking[FacilityDataModel.getInstance().tblAmendmentOrderTracking.size - 1].apply {
 
@@ -255,10 +342,15 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             //  textView.text = ReasonID
             tableRow.addView(textView)
   textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
+            textView.layoutParams = rowLayoutParam3
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-              textView.text = EventTypeID
+            for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
+                if (EventTypeID.equals(fac.AmendmentEventID))
+
+                    textView.text =fac.AmendmentEventName
+            }
+
             tableRow.addView(textView)
 
 

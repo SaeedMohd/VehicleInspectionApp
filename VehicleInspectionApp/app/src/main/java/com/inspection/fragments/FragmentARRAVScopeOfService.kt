@@ -63,29 +63,22 @@ class FragmentARRAVScopeOfService : Fragment() {
         warrantyPeriodVal.adapter = warrantyAdapter
 
 
-        takePhotoButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission((activity as MainActivity),
-                            Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as MainActivity),
-                            Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                val simpleAlert = AlertDialog.Builder(context)
-                simpleAlert.setTitle("Options")
-                simpleAlert.setItems(arrayOf("Blank Canvas", "Take Photo", "Pick Photo")) { dialog, which ->
-                    if (which == 1) {
-                        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                        startActivityForResult(takePictureIntent, 66)
-                    } else if (which == 2) {
-                        val intent = Intent()
-                        intent.type = "image/*"
-                        intent.action = Intent.ACTION_GET_CONTENT
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
-                    }
-                }
-                simpleAlert.show()
-            }else{
-                context!!.toast("Please make sure camera and storage permissions are granted")
-            }
+
+
+        saveBtnId.setOnClickListener {
+
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateScopeofServiceData ,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+
+
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading ")
+                context!!.toast("Error loading  Please check your internet connectivity")
+            }))
+
+
         }
 //        prepareScopePage()
         setFields()
@@ -170,6 +163,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
         return isInputsValid
     }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

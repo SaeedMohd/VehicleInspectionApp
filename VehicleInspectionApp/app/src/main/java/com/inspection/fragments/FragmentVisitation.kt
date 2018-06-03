@@ -1,22 +1,20 @@
 package com.inspection.fragments
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.TableRow
-import android.widget.TextView
-import com.inspection.MainActivity
+import android.widget.*
 
 import com.inspection.R
+import com.inspection.R.array.visitation_reasons
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.toAppFormat
 import com.inspection.Utils.toast
@@ -26,6 +24,16 @@ import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+import com.inspection.R.id.passwordEditText
+import android.text.Editable
+import android.content.DialogInterface
+import android.content.DialogInterface.BUTTON_NEUTRAL
+import android.text.TextUtils
+import android.util.Patterns
+import com.inspection.MainActivity
+import com.inspection.model.TypeTablesModel
+
 
 /**
  * A simple [Fragment] subclass.
@@ -38,6 +46,7 @@ import java.util.*
 class FragmentVisitation : Fragment() {
 
 
+var emailValid=true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,43 +60,86 @@ class FragmentVisitation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//quarterlyVisitationType
+        //adhocVisitationType
+            annualVisitationType.isClickable=false
 
-        dateOfVisitationButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                dateOfVisitationButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
+           quarterlyVisitationType.isClickable=false
+
+            adhocVisitationType.isClickable=false
+        dataChangedYesRadioButton.isClickable=false
+            adhocVisitationType.isClickable=false
+
+
+        dateOfVisitationButton.isClickable=false
+        dataChangedNoRadioButton.isClickable=false
+        clubCodeEditText.isClickable=false
+
+              textWatcherSignature.visibility=View.INVISIBLE
+        textWatcherSignature.visibility=View.GONE
+
 
         setFieldsValues()
+
+            textWatcherSignature.setText(facilityRepresentativesSpinner.selectedItem.toString())
+
+        completeButton.setOnClickListener(View.OnClickListener {
+            if (validateInputs()){
+                Toast.makeText(context,"inputs validated",Toast.LENGTH_SHORT).show()
+            }else  Toast.makeText(context,"missing required fields",Toast.LENGTH_SHORT).show()
+        })
+
+        if (annualVisitationType.isChecked) {
+            visitationReasonDropListId.setSelection(6)
+
+        }
+        if (quarterlyVisitationType.isChecked) {
+            visitationReasonDropListId.setSelection(7)
+
+        }
+        if (adhocVisitationType.isChecked) {
+            visitationReasonDropListId.setSelection(0)
+
+
+        }
+        cancelBtnPressed()
+
     }
 
 
     private fun setFieldsValues() {
 
-        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
 
-//        context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
+        var representativeSpinners=ArrayList<String>()
+        representativeSpinners.add("please select a representative")
+
+        for (fac in FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct()){
+
+        representativeSpinners.add(fac)
+
+
+        }
+
+        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, representativeSpinners)
+
+
+
+      //  context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
 
         automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map {s -> s.specialistname})
 
-        annualVisitationType.isChecked = true
+        adhocVisitationType.isChecked = true
 
         dateOfVisitationButton.text = Date().toAppFormat()
 
         clubCodeEditText.setText("004")
 
-        facilityNumberEditText.setText(""+FacilityDataModel.getInstance().tblFacilities[0].FACNo)
 
-        facilityNameEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].EntityName)
+       facilityNumberEditText.setText(""+FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+
+
+
+     //   facilityNameEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].EntityName)
 
         aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
 
@@ -106,11 +158,143 @@ class FragmentVisitation : Fragment() {
         }
 
 
+        facilityNameAndNumberRelationForSelection()
+
+
+        emailValidation()
 
         fillDeficiencyTable()
     }
 
+    fun facilityNameAndNumberRelationForSelection(){
 
+        for (fac in FacilityDataModel.getInstance().tblFacilities) {
+
+            if (fac.FACNo.toString() == facilityNumberEditText.text.toString()) {
+                facilityNumberEditText.isEnabled=false
+
+                facilityNameEditText.setText(fac.EntityName.toString())
+
+
+            }
+            if (fac.EntityName == facilityNameEditText.text.toString()) {
+
+                facilityNameEditText.isEnabled=false
+
+                facilityNumberEditText.setText(fac.FACNo.toString())
+            }
+
+        }
+
+        var facNameWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                if (facilityNumberEditText.text.toString().isNullOrEmpty()){
+
+                for (fac in FacilityDataModel.getInstance().tblFacilities) {
+
+
+                    if (fac.EntityName == facilityNameEditText.text.toString()) {
+
+                        facilityNumberEditText.setText(fac.FACNo.toString())
+                    }
+                }
+                }
+            }
+        }
+        var facNumberWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+                if (facilityNameEditText.text.toString().isNullOrEmpty()){
+
+                for (fac in FacilityDataModel.getInstance().tblFacilities) {
+
+                    if (fac.FACNo.toString() == facilityNumberEditText.text.toString()) {
+
+                        facilityNameEditText.setText(fac.EntityName.toString())
+
+
+                    }
+                }
+
+
+                }
+            }
+        }
+       facilityNameEditText.addTextChangedListener(facNameWatcher)
+        facilityNumberEditText.addTextChangedListener(facNumberWatcher)
+
+        representativeSignatureConditionedEnabling()
+
+    }
+
+    fun representativeSignatureConditionedEnabling(){
+
+        if (facilityRepresentativesSpinner.selectedItem.toString().isNullOrEmpty()||
+                facilityRepresentativesSpinner.selectedItem.toString().contains("please")||
+                visitationReasonDropListId.selectedItem.toString().isNullOrEmpty()||
+                visitationReasonDropListId.selectedItem.toString().contains("please")){
+
+            facilityRepresentativeSignatureButton.isEnabled=false
+        }
+        var representativeNameWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+                facilityRepresentativeSignatureButton.setText("Add Signature")
+
+
+            }
+        }
+        textWatcherSignature.addTextChangedListener(representativeNameWatcher)
+
+
+    }
+
+    fun isValidEmail(target : CharSequence) : Boolean{
+
+
+       if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
+           emailValid=true else emailValid=false
+
+
+   return emailValid }
+
+    fun emailValidation(){
+        if (emailPdfCheckBox.isChecked==true){
+
+            emailEditText.isEnabled=true
+        }else emailEditText.isEnabled=false
+
+        emailPdfCheckBox.setOnClickListener(View.OnClickListener {
+            if (emailPdfCheckBox.isChecked==true){
+
+            emailEditText.isEnabled=true
+        }else emailEditText.isEnabled=false })
+
+    }
     private fun fillDeficiencyTable(){
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
@@ -155,6 +339,105 @@ class FragmentVisitation : Fragment() {
             }
         }
     }
+    fun validateInputs() : Boolean{
 
+        var isInputValid=true
+
+        if (adhocVisitationType.isChecked) {
+            if (visitationReasonDropListId.selectedItem.toString()== visitationReasonDropListId.setSelection(0).toString()){
+
+                isInputValid = false
+                Toast.makeText(context,"please select a visitation reason",Toast.LENGTH_LONG).show()
+
+            }
+
+        }else if (facilityRepresentativeSignatureButton.text.toString()=="Add Signature"){
+
+            isInputValid = false
+            facilityRepresentativeSignatureButton.setError("required field")
+
+        }
+        if ( facilityRepresentativesSpinner.selectedItem.toString().contains("please")){
+            isInputValid = false
+            Toast.makeText(context,"please select a representative",Toast.LENGTH_LONG).show()
+        }
+
+        if (automotiveSpecialistSignature.text.toString()=="Add Signature"){
+
+            isInputValid = false
+            automotiveSpecialistSignature.setError("required field")
+
+        }
+  if (emailPdfCheckBox.isChecked==true){
+
+      if (emailEditText.text.toString().isNullOrEmpty()){
+
+            isInputValid = false
+          emailEditText.setError("required field")
+      }
+
+
+  } else {emailEditText.setError(null)}
+
+ if (waiveVisitationCheckBox.isChecked==true){
+
+      if (waiverCommentsEditText.text.toString().isNullOrEmpty()||waiversSignature.text.toString().isNullOrEmpty()){
+
+            isInputValid = false
+          waiverCommentsEditText.setError("required field")
+          waiversSignature.setError("required field")
+      }
+
+ }else {waiverCommentsEditText.setError(null)
+        waiversSignature.setError(null)}
+
+
+        if (emailPdfCheckBox.isChecked==true){
+if (!isValidEmail(emailEditText.text.toString())){
+    isInputValid = false
+    emailEditText.setError("please type your email correctly")
+
+
+}else {emailEditText.setError(null)}
+        }else {emailEditText.setError(null)}
+
+
+
+
+        return isInputValid}
+
+    fun cancelBtnPressed(){
+
+        cancelButton.setOnClickListener(View.OnClickListener {
+
+
+            val alertDialogBuilder = AlertDialog.Builder(
+                    context)
+
+            // set title
+            alertDialogBuilder.setTitle("Your Title")
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Are you sure you want to cancel")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes") { dialog, id ->
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel()
+                    }
+                    .setNegativeButton("No") { dialog, id ->
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel()
+                    }
+
+            // create alert dialog
+            val alertDialog = alertDialogBuilder.create()
+
+            // show it
+            alertDialog.show()
+                  })
+    }
 
 }
