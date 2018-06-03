@@ -17,14 +17,6 @@ import android.view.WindowManager
 import android.widget.Toast
 
 
-import com.facebook.AccessToken
-import com.facebook.AccessTokenTracker
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.FacebookSdk
-import com.facebook.GraphRequest
-import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -64,7 +56,7 @@ class LoginActivity : Activity(){
     private var mCirclesList: ArrayList<String>? = null
 
 
-    internal var accessTokenTracker: AccessTokenTracker? = null
+
 
     private var mSignInProgress: Int = 0
 
@@ -78,8 +70,6 @@ class LoginActivity : Activity(){
 
     private val mServerHasToken = true
 
-    internal var callbackManager: CallbackManager? = null
-
     internal var isFacebookLogin = false
     internal var isGooglePlusLogin = false
 
@@ -90,29 +80,22 @@ class LoginActivity : Activity(){
 
     internal var currentUser: GoogleSignInAccount? = null
 
-    internal var accessToken: AccessToken? = null
-
-    internal var facebookUser: FacebookUser? = null
-
-    internal var googlePlusEmail: String? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FacebookSdk.sdkInitialize(applicationContext)
         setContentView(R.layout.activity_login)
         window.setBackgroundDrawableResource(R.drawable.login_background_image_dark)
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         activity = this
 
-        loginRegisterButton!!.setOnClickListener { showRegisterDialog() }
+        signUpButton!!.setOnClickListener { showRegisterDialog() }
 
-        loginForgetPasswordButton!!.setOnClickListener { showForgotPasswordDialog() }
+        forgotPasswordButton!!.setOnClickListener { showForgotPasswordDialog() }
 
         loginEmailEditText.setText("Johnson.Fredrick@aaa-texas.Com")
 
-        loginSignInButton!!.setOnClickListener {
-            if (loginEmailEditText!!.text.toString().trim { it <= ' ' }.length > 0 && loginPasswordEditText!!.text.toString().trim { it <= ' ' }.length > 0) {
+        loginButton!!.setOnClickListener {
+            if (loginEmailEditText!!.text.toString().trim { it <= ' ' }.isNotEmpty() && loginPasswordEditText!!.text.toString().trim { it <= ' ' }.isNotEmpty()) {
                 // new GetAccountDetailByEmailAndPhoneID(context,
                 //                            true, dialogEditText.getText().toString().trim(), "")
                 //                            .execute("");

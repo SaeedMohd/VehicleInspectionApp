@@ -221,16 +221,16 @@
                         android:background="@drawable/textview_background"
                         android:textStyle="bold"
                         />
-                    <EditText
-                        android:id="@+id/newLocZip4Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:layout_column="5"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                    <!--<EditText-->
+                        <!--android:id="@+id/newLocZip4Text"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:layout_column="5"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
                 </TableRow>
 
                 <TableRow>
@@ -507,16 +507,16 @@
                         android:background="@drawable/textview_background"
                         android:textStyle="bold"
                         />
-                    <EditText
-                        android:id="@+id/newLoc2Zip4Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:layout_column="5"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                    <!--<EditText-->
+                        <!--android:id="@+id/newLoc2Zip4Text"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:layout_column="5"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
                 </TableRow>
 
                 <TableRow>

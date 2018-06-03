@@ -441,6 +441,12 @@ data.</string>
     <string name="forgotPassword"><u>Forgot your password?</u></string>
     <string name="title_item_list">Annual Visitation</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="title_activity_forms">Visitation</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Automotive Provider Portal</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
 
 
 </resources>

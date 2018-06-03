@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TableRow
@@ -74,11 +75,11 @@ class FragmentVisitation : Fragment() {
 
         facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
 
-        context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
+//        context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
 
         automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map {s -> s.specialistname})
 
-        adhocVisitationType.isChecked = true
+        annualVisitationType.isChecked = true
 
         dateOfVisitationButton.text = Date().toAppFormat()
 

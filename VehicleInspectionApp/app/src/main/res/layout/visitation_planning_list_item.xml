@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_item_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="5dp"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="5dp"
+    >
 
 
-    <TableLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp"
+        tools:cardElevation="5dp"
+        android:layout_margin="10dp"
+        >
 
-        <TableRow
-            android:weightSum="4"
-            >
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:columnCount="5"
+        android:padding="15dp">
+
             <TextView
                 android:id="@+id/facilityNameTextView"
                 android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facility Name:"
-                android:layout_weight="1"
-                android:textStyle="bold"
                 android:layout_column="0"
+                android:layout_row="0"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
                 android:textColor="@color/black" />
 
 
@@ -35,10 +45,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:layout_weight="1"
-                android:layout_alignParentRight="true"
                 android:layout_column="1"
-                android:text="" />
+                android:layout_margin="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_row="0"
+                android:layout_alignParentRight="true"
+                android:text="tesst" />
 
 
             <TextView
@@ -47,10 +59,11 @@
                 android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Initial Contract Date:"
-                android:layout_weight="1"
-                android:textStyle="bold"
                 android:layout_column="2"
+                android:layout_row="0"
+                android:layout_margin="5dp"
+                android:text="Initial Contract Date:"
+                android:textStyle="bold"
                 android:textColor="@color/black" />
 
 
@@ -60,18 +73,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/initialContractDateTextView"
-                android:layout_weight="1"
                 android:layout_alignParentRight="true"
-                android:textAlignment="center"
                 android:layout_column="3"
+                android:layout_row="0"
+                android:textAlignment="center"
+                android:layout_margin="5dp"
                 android:text="" />
 
-        </TableRow>
-
-
-        <TableRow
-            android:layout_marginTop="20dp"
-            android:weightSum="4">
 
             <TextView
                 android:id="@+id/visitationTypeTextView"
@@ -79,9 +87,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facility Name:"
-                android:layout_weight="1"
-                android:textStyle="bold"
                 android:layout_column="0"
+                android:layout_row="1"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
                 android:textColor="@color/black" />
 
 
@@ -90,27 +99,32 @@
                 android:id="@+id/visitationTypeValueTextView"
                 android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:layout_margin="10dp"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:layout_weight="1"
                 android:layout_alignParentRight="true"
-                android:layout_column="1"
                 android:text="" />
 
 
             <Button
                 android:id="@+id/loadBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_column="4"
+                android:layout_row="0"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center_vertical|right"
                 android:text="Load Visitation"
-                android:layout_column="3"
-                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/green_background_button"
                 />
-
-        </TableRow>
-    </TableLayout>
+    </GridLayout>
 
 
-
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

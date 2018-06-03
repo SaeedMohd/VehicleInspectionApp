@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/visitationGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_visitation"
+            android:title="Visitation" />
+    </group>
+    <group
+        android:id="@+id/facilityGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_facility"
+            android:title="Facility" />
+    </group>
+    <group
+        android:id="@+id/scopeOfServiceGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_scopeOfService"
+            android:title="Scope Of Service" />
+    </group>
+    <group
+        android:id="@+id/deficiencyGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_deficiency"
+            android:title="Deficiency" />
+    </group>
+    <group
+        android:id="@+id/complaintsGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_complaints"
+            android:title="Complaints" />
+    </group>
+    <group
+        android:id="@+id/billingGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_billing"
+            android:title="Billing" />
+    </group>
+    <group
+        android:id="@+id/surveysGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_surveys"
+            android:title="Surveys" />
+    </group>
+    <group
+        android:id="@+id/commentsGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_comments"
+            android:title="Comments" />
+    </group>
+    <group
+        android:id="@+id/photosGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_photos"
+            android:title="Photos" />
+    </group>
+</menu>

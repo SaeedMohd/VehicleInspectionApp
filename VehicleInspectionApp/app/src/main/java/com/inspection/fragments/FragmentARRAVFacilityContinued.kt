@@ -95,7 +95,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
         val locCountry = if (newLocCountryText.text.isNullOrEmpty())  "" else newLocCountryText.text
         val locState = "CA"//newLocStateSpinner.selectedItem.toString()
         val locZip3= if (newLocZipText.text.isNullOrEmpty())  "" else newLocZipText.text
-        val locZip4= if (newLocZip4Text.text.isNullOrEmpty())  "" else newLocZip4Text.text
+//        val locZip4= if (newLocZip4Text.text.isNullOrEmpty())  "" else newLocZip4Text.text
         val locLat= if (newLocLatText.text.isNullOrEmpty())  "" else newLocLatText.text
         val locLong = if (newLocLongText.text.isNullOrEmpty())  "" else newLocLongText.text
         val locBranchNo = if (newLocBranchNoText.text.isNullOrEmpty())  "" else newLocBranchNoText.text
@@ -104,7 +104,8 @@ class FragmentARRAVFacilityContinued : Fragment() {
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode ="004"
         val insertedBy ="sa"
-        val urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locType+"&FAC_Addr1="+locAddr1+"&FAC_Addr2="+locAddr2+"&CITY="+locCity+"&ST="+locState+"&ZIP="+locZip3+"&ZIP4="+locZip4+"&Country="+locCountry+"&BranchName="+locBranchName+"&BranchNumber="+locBranchNo+"&LATITUDE="+locLat+"&LONGITUDE="+locLong+"&insertBy="+insertedBy+"&insertDate="+insertDate.toDate().toString()+"&updateBy="+insertedBy+"&updateDate="+insertDate+"&active=1"
+//        val urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locType+"&FAC_Addr1="+locAddr1+"&FAC_Addr2="+locAddr2+"&CITY="+locCity+"&ST="+locState+"&ZIP="+locZip3+"&ZIP4="+locZip4+"&Country="+locCountry+"&BranchName="+locBranchName+"&BranchNumber="+locBranchNo+"&LATITUDE="+locLat+"&LONGITUDE="+locLong+"&insertBy="+insertedBy+"&insertDate="+insertDate.toDate().toString()+"&updateBy="+insertedBy+"&updateDate="+insertDate+"&active=1"
+        var urlString = ""
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitContactInfoAddress + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {

@@ -71,16 +71,18 @@
             android:screenOrientation="landscape"
             android:theme="@style/myAppTheme"
             android:windowSoftInputMode="adjustResize">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             android:windowSoftInputMode="adjustResize|stateHidden"
@@ -137,7 +139,7 @@
             android:name=".fragments.ItemListActivity"
             android:label="@string/title_item_list"
             android:screenOrientation="landscape"
-            android:theme="@style/myAppTheme"></activity>
+            android:theme="@style/myAppTheme" />
         <activity
             android:name=".fragments.ItemDetailActivity"
             android:label="@string/title_item_detail"
@@ -147,6 +149,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.inspection.fragments.ItemListActivity" />
         </activity>
+        <activity
+            android:name=".FormsActivity"
+            android:label="@string/title_activity_forms"
+            android:theme="@style/myAppTheme"
+        android:windowSoftInputMode="stateHidden"
+            ></activity>
     </application>
 
 </manifest>

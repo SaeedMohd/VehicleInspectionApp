@@ -2,7 +2,6 @@ package com.inspection.fragments
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -23,9 +22,8 @@ import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
 
-
-import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
 import org.json.JSONObject
 import org.json.XML
 import java.util.*
@@ -39,7 +37,7 @@ import java.util.*
  * Use the [FrgmentARRAnnualVisitationRecords.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
+class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -67,45 +65,16 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.visitation_planning_filter_fragment, container, false)
+        return inflater.inflate(R.layout.app_adhoc_visitation_filter_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        visitationfacilityListView.visibility = View.GONE
-
-
-        var visitationYearFilterSpinnerEntries = mutableListOf<String>()
-        var currentYear = Calendar.getInstance().get(Calendar.YEAR)
-//        visitationYearFilterSpinnerEntries.add("Any")
-        (currentYear - 30..currentYear).forEach {
-            visitationYearFilterSpinnerEntries.add("" + it)
-        }
-        visitationYearFilterSpinnerEntries.sortDescending()
-        visitationYearFilterSpinnerEntries.add(0, "Any")
-        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
-        visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
+        facilitiesListView.visibility = View.GONE
 
         clubCodeEditText.setText("004")
-
-        if (isVisitationPlanning) {
-            btns_ll.visibility = View.GONE
             loadSpecialistName()
-            visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
-            visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
-            visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
-            visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-        } else {
-            btns_ll.visibility = View.VISIBLE
-            visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
-            visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-
-            visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
-            visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-        }
-
-        progressBarRecords.indeterminateDrawable.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         newVisitationBtn.setOnClickListener({
             shouldShowVisitation = true
@@ -177,7 +146,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
         })
 
-        visitationSpecialistName.setOnClickListener(View.OnClickListener {
+        facilityDbaButton.setOnClickListener(View.OnClickListener {
             var personnelNames = ArrayList<String>()
             (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
                 personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
@@ -188,15 +157,15 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             searchDialog.show()
             searchDialog.setOnDismissListener {
                 if (searchDialog.selectedString == "Any") {
-                    visitationSpecialistName.setText("")
+                    facilityDbaButton.text = ""
                 } else {
-                    visitationSpecialistName.setText(searchDialog.selectedString)
+                    facilityDbaButton.text = searchDialog.selectedString
                 }
                 showVisitationBtn.performClick()
             }
         })
 
-        facilityNameButton.setOnClickListener(View.OnClickListener {
+        entityNameButton.setOnClickListener(View.OnClickListener {
             recordsProgressView.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                     Response.Listener { response ->
@@ -213,9 +182,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
                                 if (searchDialog.selectedString == "Any") {
-                                    facilityNameButton.setText("")
+                                    entityNameButton.text = ""
                                 } else {
-                                    facilityNameButton.setText(searchDialog.selectedString)
+                                    entityNameButton.text = searchDialog.selectedString
                                 }
                                 showVisitationBtn.performClick()
                             }
@@ -227,29 +196,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             }))
         })
 
-        annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
-        }
-
-        quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
-        }
-
-        adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
-        }
-
-        deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
-        }
-
-        pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
-        }
-
-        completedCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            showVisitationBtn.performClick()
-        }
 
         showVisitationBtn.setOnClickListener({
 
@@ -272,7 +218,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                         append("&")
                     }
 
-                if (!visitationSpecialistName.text.contains("Select") && visitationSpecialistName.text.length > 1) {
+                if (!facilityDbaButton.text.contains("Select") && facilityDbaButton.text.length > 1) {
                     with(parametersString) {
                         //TODO added to void specialist value until they let us know how we will use it
                         //**********************
@@ -291,9 +237,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     }
                 }
 
-                if (!facilityNameButton.text.contains("Select") && facilityNameButton.text.length > 1) {
+                if (!entityNameButton.text.contains("Select") && entityNameButton.text.length > 1) {
                     with(parametersString) {
-                        append(("dba=" + facilityNameButton.text))
+                        append(("dba=" + entityNameButton.text))
                         append("&")
                     }
                 }else{
@@ -303,83 +249,15 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     }
                 }
 
-                if (visitationYearFilterSpinner.selectedItem != "Any") {
-                    with(parametersString) {
-                        append("inspectionYear=" + visitationYearFilterSpinner.selectedItem)
-                        append("&")
-                    }
-                }
 
-                if (visitationMonthsSpinner.selectedItem != "Any") {
-                    with(parametersString) {
-                        append("inspectionMonth=" + visitationMonthsSpinner.selectedItemPosition)
-                        append("&")
-                    }
-                }
-
-                if (annualVisitationCheckBox.isChecked){
-                    with(parametersString) {
-                        append("annualVisitations=1")
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("annualVisitations=0")
-                        append("&")
-                    }
-                }
-
-                if (quarterlyOrOtherVisistationsCheckBox.isChecked){
-                    with(parametersString) {
-                        append("quarterlyVisitations=1")
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("quarterlyVisitations=0")
-                        append("&")
-                    }
-                }
-
-
-                if (pendingCheckBox.isChecked){
-                    with(parametersString) {
-                        append("pendingVisitations=1")
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("pendingVisitations=0")
-                        append("&")
-                    }
-                }
-
-                if (completedCheckBox.isChecked){
-                    with(parametersString) {
-                        append("completedVisitations=1")
-                        append("&")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("completedVisitations=0")
-                        append("&")
-                    }
-                }
-
-                if (deficienciesCheckBox.isChecked){
-                    with(parametersString) {
-                        append("deficiencies=1")
-                    }
-                }else{
-                    with(parametersString) {
-                        append("deficiencies=0")
-                    }
-                }
-                recordsProgressView.visibility = View.VISIBLE
+//                recordsProgressView.visibility = View.VISIBLE
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 recordsProgressView.visibility = View.INVISIBLE
+                                if (visitationrecordsLL != null) {
+                                    visitationrecordsLL.removeAllViews()
+                                }
 
                                 var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                                 var jsonObj = obj.getJSONObject("responseXml")
@@ -387,9 +265,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
                                 var visitationsModel = parseVisitationsData(jsonObj)
 
-                                visitationfacilityListView.visibility = View.VISIBLE
+                                facilitiesListView.visibility = View.VISIBLE
                                 var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                visitationfacilityListView.adapter = visitationPlanningAdapter
+                                facilitiesListView.adapter = visitationPlanningAdapter
                             })
                         }, Response.ErrorListener {
                     context!!.toast("Error while loading visitations: "+it.message)
@@ -399,7 +277,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-
+                                if (visitationrecordsLL != null) {
+                                    visitationrecordsLL.removeAllViews()
+                                }
 
                                 var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                                 var jsonObj = obj.getJSONObject("responseXml")
@@ -407,9 +287,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
                                 var visitationsModel = parseVisitationsData(jsonObj)
 
-                                visitationfacilityListView.visibility = View.VISIBLE
+                                facilitiesListView.visibility = View.VISIBLE
                                 var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                visitationfacilityListView.adapter = visitationPlanningAdapter
+                                facilitiesListView.adapter = visitationPlanningAdapter
                             })
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading visitation records")
@@ -480,7 +360,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                         var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                         if (specialistName != null && specialistName.size > 0) {
                             requiredSpecialistName = specialistName[0].specialistname
-                            visitationSpecialistName.setText(requiredSpecialistName)
+                            facilityDbaButton.text = requiredSpecialistName
                         }
                     })
                 }, Response.ErrorListener {
@@ -704,7 +584,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     }
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int) {
-        recordsProgressView.visibility = View.VISIBLE
+//        recordsProgressView.visibility = View.VISIBLE
         if (TypeTablesModel.getInstance().AARDeficiencyType.size == 0) {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getTypeTables + "",
                     Response.Listener { response ->
@@ -1104,8 +984,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
          * @return A new instance of fragment FrgmentARRAnnualVisitationRecords.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): FragmentARRAnnualVisitationRecords {
-            val fragment = FragmentARRAnnualVisitationRecords()
+        fun newInstance(param1: String, param2: String): AppAdHockVisitationFilterFragment {
+            val fragment = AppAdHockVisitationFilterFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)

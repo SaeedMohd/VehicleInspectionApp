@@ -1,0 +1,199 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    >
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleTextView"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/clubCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="Club Code: "
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/clubCodeEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/clubCodeTextView"
+                android:ems="4"
+                android:inputType="number"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DBA: "
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/facilityDbaButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:hint="Select DBA" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/visitationfacilityIdVal"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:weightSum="6">
+
+            <TextView
+                android:id="@+id/visitationfacilityIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+
+                android:layout_toRightOf="@id/clubCodeEditText"
+                android:text="Facility #:"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/visitationfacilityIdVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/visitationfacilityIdTextView"
+                android:ems="6"
+                android:maxEms="6"
+                android:inputType="number"
+                android:text="" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.25" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Entity Name:"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/entityNameButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:hint="Select Facility" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/btns_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="20dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/showVisitationBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Show Visitations"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/newVisitationBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="New Visitation Form"
+                />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/facilitiesListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--<ListView-->
+        <!--android:id="@+id/visitationrecordsListView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:divider="@android:color/transparent"-->
+        <!--android:dividerHeight="10dp"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:layout_height="400dp"/>-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/btns_ll"
+            android:background="@drawable/frame_solid_border"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/visitationrecordsLL"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:orientation="vertical"></LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <!--</ScrollView>-->
+
+    <RelativeLayout
+        android:id="@+id/recordsProgressView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:alpha="0.8"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBarReords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarReords"
+            android:layout_centerHorizontal="true"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="Loading..."
+            />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

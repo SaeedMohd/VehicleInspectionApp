@@ -8,7 +8,7 @@ import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.view.get
+import androidx.core.view.get
 import com.inspection.R
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.activity_item_list.*

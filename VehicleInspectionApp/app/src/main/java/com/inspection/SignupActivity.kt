@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 
-import com.facebook.FacebookSdk
 import com.inspection.Utils.Utility
 import com.inspection.R
 import com.inspection.Utils.toast
@@ -27,7 +26,6 @@ class SignupActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FacebookSdk.sdkInitialize(applicationContext)
         setContentView(R.layout.dialog_user_register)
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         activity = this

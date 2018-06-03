@@ -9,11 +9,12 @@ import android.view.ViewGroup
 import com.inspection.MainActivity
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_forms.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 
     var formsStringsArray = arrayOf("Visitation Planning", "APP / AdHoc Visitation", "My Performance")
-    var fragment: FragmentARRAnnualVisitationRecords? = null
+
     //another added code for frag testing > sherif yousry
    // var fragment2: VehiclesFragmentInScopeOfServicesView? = null
 
@@ -25,7 +26,7 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        (activity as MainActivity).supportActionBar!!.title = "Forms"
+        (activity as MainActivity).supportActionBar!!.title = "ACE AAR Inspection"
         return inflater.inflate(R.layout.fragment_forms, container, false)
     }
 
@@ -33,18 +34,19 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         visitationPlanningButton.setOnClickListener {
-            fragment = FragmentARRAnnualVisitationRecords()
+            (activity as MainActivity).supportActionBar!!.title = "Visitation Planning"
+            var fragment = FragmentARRAnnualVisitationRecords()
             fragment!!.isVisitationPlanning = true
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()
                 ftSC.replace(R.id.fragment,fragment)
                 ftSC.addToBackStack("frag")
                 ftSC.commit()
-//                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
         }
 
         adHocVisitationButton.setOnClickListener {
-            fragment = FragmentARRAnnualVisitationRecords()
+            (activity as MainActivity).supportActionBar!!.title = "App / AdHoc Visitation"
+            var fragment = AppAdHockVisitationFilterFragment()
             fragment!!.isVisitationPlanning = false
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()

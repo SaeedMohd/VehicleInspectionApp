@@ -14,52 +14,103 @@
     <!--</ListView>-->
 
     <LinearLayout
+        android:id="@+id/visitationPlanningButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:gravity="center"
         android:layout_centerInParent="true">
 
-        <Button
-            android:id="@+id/visitationPlanningButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Visitation Planning"
-            android:padding="15dp"
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            android:background="@drawable/big_button_background"
+            android:gravity="center"
+            android:padding="10dp">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:src="@drawable/calendar"
             android:layout_marginBottom="20dp"
-            android:textSize="18sp"
+            android:tint="@color/mainColor"
             />
 
-        <Button
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Visitation\nPlanning"
+                android:textSize="26sp"
+                android:textColor="@color/mainColor"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/adHocVisitationButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="APP / AdHoc Visitation"
-            android:padding="15dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="18sp"
-            />
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            android:background="@drawable/big_button_background"
+            android:layout_marginLeft="50dp"
+            android:gravity="center"
+            android:padding="10dp">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/todo"
+                android:layout_marginBottom="20dp"
+                />
 
-        <Button
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APP / ADHOC VISITATION"
+                android:textSize="26sp"
+                android:textColor="@color/mainColor"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/myPerformanceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Performance"
-            android:padding="15dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="18sp"
-            />
- <!--<Button-->
-            <!--android:id="@+id/fragmentTester"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Fragment_Tester"-->
-            <!--android:padding="15dp"-->
-            <!--android:layout_marginBottom="20dp"-->
-            <!--android:textSize="18sp"-->
-            <!--/>-->
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            android:background="@drawable/big_button_background"
+            android:layout_marginLeft="50dp"
+            android:gravity="center"
+            android:padding="10dp">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/speedometer"
+                android:tint="@color/mainColor"
+                android:layout_marginBottom="20dp"
+                />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MY\nPERFORMANCE"
+                android:textSize="26sp"
+                android:textColor="@color/mainColor"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
 
+        </LinearLayout>
 
     </LinearLayout>
 

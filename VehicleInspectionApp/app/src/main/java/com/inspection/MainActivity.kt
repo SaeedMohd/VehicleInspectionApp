@@ -51,9 +51,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 
-import com.facebook.FacebookSdk
-import com.facebook.appevents.AppEventsLogger
-import com.facebook.login.LoginManager
 import com.google.android.gms.plus.Plus
 import com.inspection.GCM.GcmBroadcastReceiver
 import com.inspection.GCM.GcmRegistration
@@ -235,14 +232,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         // Pass any configuration change to the drawer toggls
-        drawerToggle!!.onConfigurationChanged(newConfig)
+//        drawerToggle!!.onConfigurationChanged(newConfig)
     }
 
     private fun initView() {
 //        mDrawerList = findViewById<View>(R.id.left_drawer) as ListView
 //        //mDrawerList.setOnItemClickListener(activity);
         toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        saveBtn = findViewById<View>(R.id.saveBtn) as Button
+//        saveBtn = findViewById<View>(R.id.saveBtn) as Button
 //        mDrawerLayout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
 //        drawerNavigationListAdapter = DrawerNavigationListAdapter()
 //        mDrawerList!!.adapter = drawerNavigationListAdapter
@@ -313,10 +310,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         isAppInForeground = false
 
-        //Facebook track app closed or paused
-        AppEventsLogger.deactivateApp(this)
-
-
         super.onPause()
     }
 
@@ -325,10 +318,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         //Log.e("", "onResume");
 
         isAppInForeground = true
-
-        //Facebook tracking app installs and opens
-        AppEventsLogger.activateApp(this)
-
 
         if (welcomeMessage.length > 0) {
             val builder = AlertDialog.Builder(mContext)
@@ -463,7 +452,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     override fun onBackPressed() {
         //Log.dMainActivity.TAG, "" + getFragmentManager().getBackStackEntryCount());
-        if (fragmentManager.backStackEntryCount == 2){
+        if (fragmentManager.backStackEntryCount == 1){
             viewPager?.adapter = null
         }else if (fragmentManager.backStackEntryCount != 0) {
             fragmentManager.popBackStack()
@@ -552,8 +541,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
                     }
 
                     if (ApplicationPrefs.getInstance(mContext).getBooleanPref(getString(R.string.is_user_logged_in_with_facebook))) {
-                        FacebookSdk.sdkInitialize(applicationContext)
-                        LoginManager.getInstance().logOut()
 
                         ApplicationPrefs.getInstance(mContext).setBooleanPref(getString(R.string.is_user_logged_in_with_facebook), false)
                     }
