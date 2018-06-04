@@ -4,30 +4,26 @@ package com.inspection.fragments
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.*
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
+import com.inspection.MainActivity.Companion.activity
 
 import com.inspection.R
-import com.inspection.Utils.Constants
+import com.inspection.R.id.*
 import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.toast
 import com.inspection.model.AAAPersonnelDetails
-import com.inspection.model.AAAPersonnelType
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
+import kotlinx.android.synthetic.main.fragment_visitation_form.*
 
-import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,10 +38,12 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
     // TODO: Rename and change types of parameters
+    var emailValid=true
     private var mParam1: String? = null
     private var mParam2: String? = null
     private var personnelTypeList = ArrayList<TypeTablesModel.personnelType>()
     private var certificationTypeList= ArrayList<TypeTablesModel.personnelCertificationType>()
+    private var states= arrayOf("select city","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
 
     private var personTypeArray = ArrayList<String>()
     private var certTypeArray = ArrayList<String>()
@@ -89,22 +87,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
 
-        newCertEndDateBtn.setOnClickListener {
-//            if (newCertEndDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newCertEndDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
+
 
 
         newCoStartDateBtn.setOnClickListener {
@@ -119,57 +102,6 @@ class FragmentARRAVPersonnel : Fragment() {
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newCoStartDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
-
-        newCoEndDateBtn.setOnClickListener {
-//            if (newCoEndDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newCoEndDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
-
-        newEndDateBtn.setOnClickListener {
-//            if (newEndDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newEndDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
-
-        newEndDateBtn.setOnClickListener {
-//            if (newEndDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newEndDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
@@ -210,7 +142,7 @@ class FragmentARRAVPersonnel : Fragment() {
         }
 
 
-
+        fillData()
 
 
 
@@ -340,6 +272,9 @@ class FragmentARRAVPersonnel : Fragment() {
 //            }
 //        }
 
+        var citiesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, states)
+        citiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newStateSpinner.adapter = citiesAdapter
 
     }
 
@@ -447,6 +382,222 @@ class FragmentARRAVPersonnel : Fragment() {
         }
         return typeName
     }
+    fun fillData(){
+
+        //1-
+        newCertNoText.addTextChangedListener(certificateIdNoLengthWatcher)
+        //2-
+        endDateMustBeAfterStartDateLogic()
+        //3-
+        newZipText.addTextChangedListener(zipOfFiveDigitsWatcher)
+        newZipText2.addTextChangedListener(zipOfFourDigitsWatcher)
+        newPhoneText.addTextChangedListener(phoneTenDigitsWatcher)
+        newEmailText.addTextChangedListener(emailValidationWatcher)
+
+
+    }
+    fun emailFormatValidation(target : CharSequence) : Boolean{
+
+
+        if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
+            emailValid=true else emailValid=false
+
+
+        return emailValid }
+
+
+    var certificateIdNoLengthWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+
+            if (s.length>16||s.length<16){
+
+                newCertNoText.setError("input required 16 elements")
+
+            }
+
+
+
+        }
+    }
+    var emailValidationWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+
+            if (!emailFormatValidation(newEmailText.text.toString())){
+                newEmailText.setError("assure email format standards")
+
+
+            }
+
+
+
+        }
+    }
+    var zipOfFiveDigitsWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+
+            if (s.length>5||s.length<5){
+
+                newZipText.setError("input required 5 elements")
+
+            }
+
+
+
+        }
+    }
+    var zipOfFourDigitsWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+
+            if (s.length>4||s.length<4){
+
+                newZipText2.setError("input required 4 elements")
+
+            }
+
+
+
+        }
+    }
+    var phoneTenDigitsWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+
+            if (s.length>10||s.length<10){
+
+                newPhoneText.setError("input required 10 elements")
+
+            }
+
+
+
+        }
+    }
+    fun endDateMustBeAfterStartDateLogic(){
+
+        newCoEndDateBtn.setOnClickListener(View.OnClickListener {
+            if (newCoStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
+
+                newCoEndDateBtn.setError("please enter a start date first")
+
+                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+            }
+            else {
+                newCoEndDateBtn.setError(null)
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCoEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+
+            }
+
+        })
+        newEndDateBtn.setOnClickListener(View.OnClickListener {
+            if (newStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
+
+                newEndDateBtn.setError("please enter a start date first")
+                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+
+            }
+            else {
+                newEndDateBtn.setError(null)
+
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+
+            }
+
+        })
+        newCertEndDateBtn.setOnClickListener(View.OnClickListener {
+            if (newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
+
+                newCertEndDateBtn.setError("please enter a start date first")
+                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+
+            }
+            else {
+                newCertEndDateBtn.setError(null)
+
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCertEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+
+            }
+
+        })
+    }
+
+
 
 //    fun validateInputs(): Boolean {
 //        var isInputsValid = true

@@ -31,6 +31,14 @@
             android:text="RSP"
             android:layout_marginLeft="10dp"
             />
+    <Button
+            android:id="@+id/personnelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="Personnel"
+            android:layout_marginLeft="10dp"
+            />
     </LinearLayout>
 
 

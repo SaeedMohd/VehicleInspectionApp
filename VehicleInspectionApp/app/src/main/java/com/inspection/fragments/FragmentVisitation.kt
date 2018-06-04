@@ -1,38 +1,25 @@
 package com.inspection.fragments
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 
 import com.inspection.R
-import com.inspection.R.array.visitation_reasons
-import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.toAppFormat
-import com.inspection.Utils.toast
 import com.inspection.model.CsiSpecialistSingletonModel
 import com.inspection.model.FacilityDataModel
 
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import com.inspection.R.id.passwordEditText
 import android.text.Editable
-import android.content.DialogInterface
-import android.content.DialogInterface.BUTTON_NEUTRAL
 import android.text.TextUtils
 import android.util.Patterns
-import com.inspection.MainActivity
-import com.inspection.model.TypeTablesModel
 
 
 /**
@@ -273,7 +260,7 @@ var emailValid=true
 
     }
 
-    fun isValidEmail(target : CharSequence) : Boolean{
+    fun emailFormatValidation(target : CharSequence) : Boolean{
 
 
        if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
@@ -393,7 +380,7 @@ var emailValid=true
 
 
         if (emailPdfCheckBox.isChecked==true){
-if (!isValidEmail(emailEditText.text.toString())){
+if (!emailFormatValidation(emailEditText.text.toString())){
     isInputValid = false
     emailEditText.setError("please type your email correctly")
 

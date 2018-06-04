@@ -77,6 +77,13 @@ class FacilityGroupFragment : Fragment() {
                     .commit()
         }
 
+        personnelButton.setOnClickListener {
+            var fragment = FragmentARRAVPersonnel.newInstance(false)
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+        }
+
     }
 
 

@@ -275,8 +275,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="4"
+                        android:background="@drawable/textview_background"
+                        android:maxLength="16"
+                        android:hint="Enter certificate ID"
+                        android:layout_column="1"
                         />
                 </TableRow>
 
@@ -390,31 +392,30 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text=""
                         android:layout_column="1"
                         android:background="@drawable/textview_background"
+                        android:text=""
+                        android:ems="8"
                         android:textStyle="bold"
                         />
                 </TableRow>
-                <TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
                         android:text="State:*"
-                        android:layout_column="0"
                         android:textStyle="bold"
                         />
-                    <EditText
-                        android:id="@+id/newStateText"
+                    <Spinner
+                        android:id="@+id/newStateSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
                         android:textStyle="bold"
                         />
                     <TextView
@@ -423,22 +424,36 @@
                         android:layout_marginTop="5dp"
                         android:text="Zip Code:*"
                         android:textStyle="bold"
-                        android:layout_column="3"
                         android:layout_margin="5dp"
                         />
 
                     <EditText
                         android:id="@+id/newZipText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text=""
+                        android:inputType="number"
                         android:ems="8"
-                        android:layout_column="4"
+                        android:maxLength="5"
                         android:background="@drawable/textview_background"
-                        android:textStyle="bold"
                         />
-                </TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  -  "
+
+                        />
+                        <EditText
+                        android:id="@+id/newZipText2"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:inputType="number"
+                        android:ems="8"
+                        android:maxLength="4"
+                        android:background="@drawable/textview_background"
+                        />
+                </LinearLayout>
 
                 <TableRow>
                     <TextView
@@ -455,10 +470,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text=""
+                        android:hint="(XXX) XXX-XXXX"
+                        android:maxLength="10"
+                        android:inputType="number"
                         android:layout_column="1"
                         android:background="@drawable/textview_background"
-                        android:textStyle="bold"
                         />
                 </TableRow>
                 <TableRow>
@@ -609,7 +625,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
-                        android:text="Contract Start Date:"
+                        android:text="Certification Date:"
                         android:ems="8"
                         android:layout_column="0"
                         android:textStyle="bold"
@@ -630,7 +646,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
-                        android:text="Contract End Date:"
+                        android:text="Expiration Date:"
                         android:layout_column="3"
                         android:textStyle="bold"
                         />
