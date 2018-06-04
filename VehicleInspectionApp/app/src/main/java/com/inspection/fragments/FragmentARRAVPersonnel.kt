@@ -43,7 +43,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var mParam2: String? = null
     private var personnelTypeList = ArrayList<TypeTablesModel.personnelType>()
     private var certificationTypeList= ArrayList<TypeTablesModel.personnelCertificationType>()
-    private var states= arrayOf("select city","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
+    private var states= arrayOf("select state","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
 
     private var personTypeArray = ArrayList<String>()
     private var certTypeArray = ArrayList<String>()
@@ -66,6 +66,7 @@ class FragmentARRAVPersonnel : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         preparePersonnelPage()
         fillPersonnelTableView()
+        fillCertificationTableView()
 
 
         newCertStartDateBtn.setOnClickListener {
@@ -144,6 +145,25 @@ class FragmentARRAVPersonnel : Fragment() {
 
         fillData()
 
+        addNewCertBtn.setOnClickListener({
+            var validProgram = true
+
+            if (validProgram) {
+                var item = FacilityDataModel.TblPersonnel()
+                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+                    if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
+
+                        item.CertificationTypeId =fac.PersonnelCertID
+                }
+
+                item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
+                item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
+                FacilityDataModel.getInstance().tblPersonnel.add(item)
+
+                addTheLatestRowOfPortalAdmin()
+
+            }
+        })
 
 
     }
@@ -881,6 +901,124 @@ class FragmentARRAVPersonnel : Fragment() {
             }
         }
     }
+    fun fillCertificationTableView() {
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+        FacilityDataModel.getInstance().tblPersonnel.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+                    if (get(it).CertificationTypeId.equals(fac.PersonnelCertID))
+
+                        textView.text =fac.PersonnelCertName
+                }
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).CertificationDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = get(it).ExpirationDate
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = ""
+                tableRow.addView(textView)
+
+
+                certificationsTable.addView(tableRow)
+
+            }
+        }
+    }
+    fun addTheLatestRowOfPortalAdmin() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+
+        FacilityDataModel.getInstance().tblPersonnel[FacilityDataModel.getInstance().tblPersonnel.size - 1].apply {
+
+
+            var tableRow = TableRow(context)
+
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+                if (CertificationTypeId.equals(fac.PersonnelCertID))
+
+                    textView.text =fac.PersonnelCertName
+            }
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = CertificationDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = ExpirationDate
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ""
+            tableRow.addView(textView)
+
+
+            certificationsTable.addView(tableRow)
+
+        }
+    }
+
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

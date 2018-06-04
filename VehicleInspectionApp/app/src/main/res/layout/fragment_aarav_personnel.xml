@@ -548,9 +548,18 @@
                     android:layout_margin="10dp"
                     android:textColor="#827908"
                     />
-                <TableRow>
+            </TableLayout>
+            <TableLayout
+                android:id="@+id/certificationsTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:showDividers="middle|beginning|end"
+                android:divider="@drawable/divider_table_layout"
+                >
 
-                <TextView
+
+            <TableRow>
+                    <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Certification Type"
@@ -574,7 +583,7 @@
                     android:layout_height="wrap_content"
                     android:text="Expiration Date"
                     android:textStyle="bold"
-                    android:layout_column="1"
+                    android:layout_column="2"
                     android:layout_weight="1"
                     android:textAlignment="center"
                     />
@@ -583,7 +592,7 @@
                     android:layout_height="wrap_content"
                     android:text="Description"
                     android:textStyle="bold"
-                    android:layout_column="1"
+                    android:layout_column="3"
                     android:layout_weight="1"
                     android:textAlignment="center"
                     />
@@ -597,6 +606,7 @@
                 android:id="@+id/addNewCertBtn"
                 />
             <TableLayout
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TableRow>
