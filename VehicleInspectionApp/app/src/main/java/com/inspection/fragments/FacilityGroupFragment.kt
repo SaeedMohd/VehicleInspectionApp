@@ -84,6 +84,13 @@ class FacilityGroupFragment : Fragment() {
                     .commit()
         }
 
+        amendmentOrderTrackingButton.setOnClickListener {
+            var fragment = FragmentARRAVAmOrderTracking.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+        }
+
     }
 
 

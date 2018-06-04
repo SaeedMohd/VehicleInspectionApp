@@ -39,6 +39,14 @@
             android:text="Personnel"
             android:layout_marginLeft="10dp"
             />
+    <Button
+            android:id="@+id/amendmentOrderTrackingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="Amendment Order Tracking"
+            android:layout_marginLeft="10dp"
+            />
     </LinearLayout>
 
 
