@@ -69,7 +69,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_visitation -> {
+            R.id.visitation -> {
                 toolbar.title = "Visitation"
                 var fragment = FragmentVisitation()
                         supportFragmentManager
@@ -78,7 +78,73 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                         .commit()
             }
 
-            R.id.nav_facility -> {
+            R.id.facility -> {
+                toolbar.title = "Facility"
+                var fragment = FacilityGroupFragment()
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment, fragment)
+                        .commit()
+            }
+
+            R.id.scopeOfService -> {
+                toolbar.title = "Facility"
+                var fragment = FacilityGroupFragment()
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment, fragment)
+                        .commit()
+            }
+
+
+            R.id.deficiency -> {
+                toolbar.title = "Facility"
+                var fragment = FacilityGroupFragment()
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment, fragment)
+                        .commit()
+            }
+
+
+            R.id.complaints -> {
+                toolbar.title = "Facility"
+                var fragment = FacilityGroupFragment()
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment, fragment)
+                        .commit()
+            }
+
+
+            R.id.billing -> {
+                toolbar.title = "Facility"
+                var fragment = FacilityGroupFragment()
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment, fragment)
+                        .commit()
+            }
+
+            R.id.surveys -> {
+                toolbar.title = "Facility"
+                var fragment = FacilityGroupFragment()
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment, fragment)
+                        .commit()
+            }
+
+            R.id.comments -> {
+                toolbar.title = "Facility"
+                var fragment = FacilityGroupFragment()
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment, fragment)
+                        .commit()
+            }
+
+            R.id.photos -> {
                 toolbar.title = "Facility"
                 var fragment = FacilityGroupFragment()
                 supportFragmentManager

@@ -1,1185 +1,606 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_gray"
     tools:context=".fragments.FragmentARRAVDeficiency">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:id="@+id/facComp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:gravity="left"
-            android:layout_weight="8"
-            android:text="Contact Info"
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            />
-    </LinearLayout>
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/facComp"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
         android:layout_margin="10dp"
-        android:paddingTop="5dp"
         android:background="@color/white"
-        android:orientation = "vertical">
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
-                android:textColor="#827908"
-                />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add New Location"
-                android:id="@+id/addNewLocBtn"
-                />
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Location"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/addNewLocationButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/green_background_button"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text=" +Add New Location"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
-                <TableRow>
+                android:stretchColumns="*">
+
+                <TableRow android:background="@color/mainColor">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center_vertical"
                         android:text="Location Type:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newLocTypeSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
 
-                <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        
+                        android:layout_gravity="center_vertical"
                         android:text="Address 1:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocAddr1Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        
+                        android:layout_gravity="center_vertical"
                         android:text="Address 2:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocAddr2Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="City:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocCityText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Country:*"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocCountryText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="State:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newLocStateSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Zip Code:*"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocZipText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocZip4Text"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text=""-->
-                        <!--android:layout_column="5"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:textStyle="bold"-->
-                        <!--/>-->
-                </TableRow>
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
 
-                <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Latitude:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocLatText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Longitude:*"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocLongText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
 
-                <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Branch Number:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocBranchNoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Branch Name:*"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLocBranchNameText"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:ems="5"
+                        android:text="" />
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Location Type:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newLoc2TypeSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_column="1"
-                        />
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:text="Copy From Physical Address"
-                        android:id="@+id/addNewLoc2Btn"
-                        />
-                </TableRow>
+            </TableLayout>
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        
-                        android:text="Address 1:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2Addr1Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Address 2:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2Addr2Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="City:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2CityText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Country:*"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2CountryText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="State:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newLoc2StateSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Zip Code:*"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2ZipText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLoc2Zip4Text"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text=""-->
-                        <!--android:layout_column="5"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:textStyle="bold"-->
-                        <!--/>-->
-                </TableRow>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="30dp">
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Latitude:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2LatText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Longitude:*"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2LongText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp" />
 
-                <TableRow>
+                <Button
+                    android:id="@+id/addNewPhoneButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/green_background_button"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="+ add new phone"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="0,1,2,3">
+
+                <TableRow android:background="@color/mainColor">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Branch Number:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2BranchNoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Branch Name:*"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLoc2BranchNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="4"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Phone"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:layout_margin="10dp"
-                        android:textColor="#827908"
-                        />
-                </TableRow>
-                <TableRow>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add New Phone Type"
-                        android:id="@+id/addNewPhoneBtn"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Phone Type:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newPhoneTypeSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
 
-                <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Description:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newPhoneDescText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
+                        android:layout_gravity="center_vertical"
+                        android:text="Description"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
 
-                <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Phone Number:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newPhoneNoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
                         android:text="Phone Extension:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newPhoneExtText"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:ems="5"
+                        android:text="" />
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Phone Type:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newPhone2TypeSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
+            </TableLayout>
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Description:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newPhone2DescText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="30dp">
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Phone Number:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newPhone2NoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Phone Extension:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newPhone2ExtText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="E-mail"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp" />
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="E-mail"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:layout_margin="10dp"
-                        android:textColor="#827908"
-                        />
-                </TableRow>
-                <TableRow>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add New E-mail"
-                        android:id="@+id/addNewPhoneBtn"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Email Type:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newEmailTypeSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
+                <Button
+                    android:id="@+id/addNewEmailButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/green_background_button"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="+ add new email"
+                    android:textColor="@color/white" />
 
-                <TableRow>
+            </RelativeLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="0,1">
+
+                <TableRow android:background="@color/mainColor">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
+                        android:layout_gravity="center_vertical"
+                        android:text="Email Type:"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="Email Address:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newEmailAddrText"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:ems="5"
+                        android:text="" />
+
                 </TableRow>
 
+
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp">
+
                 <TableRow>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hours"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:layout_margin="10dp"
-                        android:textColor="#827908"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="SUN"
-                        android:layout_column="1"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="MON"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="TUE"
-                        android:layout_column="3"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="WED"
-                        android:layout_column="4"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="THU"
-                        android:layout_column="5"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="FRI"
-                        android:layout_column="6"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="SAT"
-                        android:layout_column="7"
-                        android:textStyle="bold"
-                        />
+                        android:textColor="@color/mainColor"
+                        android:textSize="18sp" />
                 </TableRow>
 
                 <TableRow>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="1"
                         android:layout_marginTop="5dp"
-                         
-                        android:text="Open:"
+                        android:text="SUN"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:layout_marginTop="5dp"
+                        android:text="MON"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+
+                        android:layout_marginTop="5dp"
+                        android:text="TUE"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="4"
+
+                        android:layout_marginTop="5dp"
+                        android:text="WED"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="5"
+
+                        android:layout_marginTop="5dp"
+                        android:text="THU"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="6"
+
+                        android:layout_marginTop="5dp"
+                        android:text="FRI"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="7"
+
+                        android:layout_marginTop="5dp"
+                        android:text="SAT"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:textStyle="bold"
-                        />
+
+                        android:layout_marginTop="5dp"
+                        android:text="Open:"
+                        android:textStyle="bold" />
+
                     <Spinner
                         android:id="@+id/sunOpenSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="1"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="1"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/monOpenSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="2"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="2"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/tueOpenSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="3"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="3"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/wedOpenSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="4"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="4"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/thuOpenSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="5"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="5"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/friOpenSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="6"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="6"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/satOpenSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="7"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="7"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
                 </TableRow>
 
                 <TableRow>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Close:"
                         android:layout_column="0"
-                        android:textStyle="bold"
-                        />
+
+                        android:layout_marginTop="5dp"
+                        android:text="Close:"
+                        android:textStyle="bold" />
+
                     <Spinner
                         android:id="@+id/sunCloseSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="1"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="1"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/monCloseSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="2"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="2"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/tueCloseSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="3"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="3"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/wedCloseSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="4"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="4"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/thuCloseSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="5"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="5"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/friCloseSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="6"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="6"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <Spinner
                         android:id="@+id/satCloseSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="7"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="7"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
                 </TableRow>
 
                 <TableRow>
+
                     <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Copy Hours"
                         android:id="@+id/copyHoursBtn"
-                        />
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@drawable/green_background_button"
+                        android:text="Copy Hours"
+                        android:textColor="@color/white" />
                 </TableRow>
 
-                <TableRow>
+                <TableRow android:layout_marginTop="30dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Facility Availability"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:layout_margin="10dp"
-                        android:textColor="#827908"
-                        />
+                        android:textColor="@color/mainColor"
+                        android:textSize="18sp" />
                 </TableRow>
 
                 <TableRow>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Facility is OPEN:"
                         android:layout_column="0"
-                        android:textStyle="bold"
-                        />
+                        android:layout_marginTop="5dp"
+                        android:text="Facility is OPEN:"
+                        android:textStyle="bold" />
+
                     <Spinner
                         android:id="@+id/facilityIsOpenSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="1"
                         android:layout_gravity="center"
                         android:ems="8"
-                        android:layout_column="1"
-                        android:entries="@array/officeTimes"
-                        />
+                        android:entries="@array/officeTimes" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Effective Date:"
                         android:layout_column="2"
-                        android:textStyle="bold"
-                        />
+
+                        android:layout_marginTop="5dp"
+                        android:text="Effective Date:"
+                        android:textStyle="bold" />
+
                     <Button
                         android:id="@+id/facilityIsOpenEffDateBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_column="3"
+                        android:layout_marginTop="10dp"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Expiration Date:"
                         android:layout_column="4"
-                        android:textStyle="bold"
-                        />
+
+                        android:layout_marginTop="5dp"
+                        android:text="Expiration Date:"
+                        android:textStyle="bold" />
+
                     <Button
                         android:id="@+id/facilityIsOpenExpDateBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_column="5"
+                        android:layout_marginTop="10dp"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
@@ -1187,175 +608,181 @@
                 </TableRow>
 
                 <TableRow>
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/nightDropCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
                         android:layout_column="0"
+
+                        android:layout_marginTop="5dp"
                         android:text="Night Drop"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
                 </TableRow>
+
                 <TableRow>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Night Drop Instructions:"
                         android:layout_column="0"
-                        android:textStyle="bold"
-                        />
+
+                        android:layout_marginTop="5dp"
+                        android:text="Night Drop Instructions:"
+                        android:textStyle="bold" />
                 </TableRow>
+
                 <TableRow>
+
                     <EditText
                         android:id="@+id/nightDropInstText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:lines="5"
-                        android:ems="8"
                         android:layout_column="0"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                        android:ems="8"
+                        android:lines="5"
+                        android:text=""
+                        android:textStyle="bold" />
                 </TableRow>
+
                 <TableRow>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                         
-                        android:text="Language Spoken:"
                         android:layout_column="0"
-                        android:textStyle="bold"
-                        />
+
+                        android:layout_marginTop="5dp"
+                        android:text="Language Spoken:"
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/chiCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="1"
+                        android:layout_marginTop="5dp"
                         android:text="Chinese"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/engCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="2"
+                        android:layout_marginTop="5dp"
                         android:text="English"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/farCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="3"
+                        android:layout_marginTop="5dp"
                         android:text="Farsi"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/freCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="4"
+                        android:layout_marginTop="5dp"
                         android:text="French"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/hinCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="5"
+                        android:layout_marginTop="5dp"
                         android:text="Hindi"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
                 </TableRow>
+
                 <TableRow>
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/signCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="2"
+                        android:layout_marginTop="5dp"
                         android:text="Sign Language"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/spaCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="3"
+                        android:layout_marginTop="5dp"
                         android:text="Spanish"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/urdCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="4"
+                        android:layout_marginTop="5dp"
                         android:text="Urdu"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/VietCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="5"
+                        android:layout_marginTop="5dp"
                         android:text="Vietnamese"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/japCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_column="6"
-                        android:text="Japanese"
-                        android:textStyle="bold"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/KoreanCheck"
-                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:text="Japanese"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/KoreanCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_column="7"
+                        android:layout_marginTop="5dp"
                         android:text="Korean"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
                 </TableRow>
+
                 <TableRow>
+
                     <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/japCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_column="2"
-                        android:text="Japanese"
-                        android:textStyle="bold"
-                        />
-                    <CheckBox
                         android:layout_width="wrap_content"
-                        android:id="@+id/KoreanCheck"
                         android:layout_height="wrap_content"
+                        android:layout_column="2"
                         android:layout_marginTop="5dp"
+                        android:text="Japanese"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/KoreanCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_column="3"
+                        android:layout_marginTop="5dp"
                         android:text="Korean"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
                 </TableRow>
             </TableLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1378,4 +805,478 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <View
+        android:id="@+id/alphaBackgroundForDialogs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mainColor"
+        android:visibility="gone"
+        android:alpha="0.8"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:cardCornerRadius="5dp"
+            android:id="@+id/addNewLocationDialog"
+            app:cardElevation="10dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Submit"
+                android:id="@+id/locationSubmitButton"
+                android:textColor="@color/white"
+                android:background="@drawable/green_background_button"
+                android:layout_gravity="top|right"/>
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="40dp">
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="5dp"
+                        android:text="Location Type:*"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/newLocTypeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="center"
+                        android:ems="8" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="5dp"
+                        android:text="Address 1:*"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocAddr1Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="1"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="5dp"
+                        android:text="Address 2:"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocAddr2Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="1"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+
+                        android:layout_marginTop="5dp"
+                        android:text="City:*"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocCityText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="1"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+
+                        android:layout_marginTop="5dp"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+
+                        android:layout_marginTop="5dp"
+                        android:text="Country:*"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocCountryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="4"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="5dp"
+                        android:text="State:*"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/newLocStateSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="center"
+                        android:ems="8" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+
+                        android:layout_marginTop="5dp"
+                        android:text="Zip Code:*"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocZipText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="4"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:text=""
+                        android:textStyle="bold" />
+                    <!--<EditText-->
+                    <!--android:id="@+id/newLocZip4Text"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:text=""-->
+                    <!--android:layout_column="5"-->
+                    <!--android:background="@drawable/textview_background"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="5dp"
+                        android:text="Latitude:*"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocLatText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="1"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+
+                        android:layout_marginTop="5dp"
+                        android:text="Longitude:*"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocLongText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="4"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+
+                        android:layout_marginTop="5dp"
+                        android:text="Branch Number:*"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocBranchNoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="1"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+
+                        android:layout_marginTop="5dp"
+                        android:text="Branch Name:*"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newLocBranchNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_column="4"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:text=""
+                        android:textStyle="bold" />
+                </TableRow>
+
+            </TableLayout>
+        </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/addNewPhoneDialog"
+        app:cardElevation="10dp">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <TableRow>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Submit"
+                    android:id="@+id/phoneSubmitButton"
+                    android:textColor="@color/white"
+                    android:background="@drawable/green_background_button"
+                    android:layout_column="2"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Phone Type:*"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/newPhoneTypeSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="8"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Description:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newPhoneDescText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Phone Number:*"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newPhoneNoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Phone Extension:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newPhoneExtText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+        </TableLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/addNewEmailDialog"
+        app:cardElevation="10dp">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <TableRow>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:id="@+id/emailSubmitButton"
+                    android:text="Submit"
+                    android:textColor="@color/white"
+                    android:background="@drawable/green_background_button"
+                    android:layout_column="2"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Email Type:*"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/newEmailTypeSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="8"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Email Address:*"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newEmailAddrText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+        </TableLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

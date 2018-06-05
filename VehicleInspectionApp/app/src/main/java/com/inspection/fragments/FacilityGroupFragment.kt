@@ -14,6 +14,7 @@ import com.inspection.R
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.facility_group_layout.*
+import kotlinx.android.synthetic.main.facility_group_layout.view.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,12 +63,14 @@ class FacilityGroupFragment : Fragment() {
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
+        updateSelectedIndicator(R.id.generalInformationButton)
 
         generalInformationButton.setOnClickListener {
             var fragment = FragmentARRAVFacility.newInstance(false)
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            updateSelectedIndicator(R.id.generalInformationButton)
         }
 
         rspButton.setOnClickListener {
@@ -75,6 +78,15 @@ class FacilityGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            updateSelectedIndicator(R.id.rspButton)
+        }
+
+        contactInfoButton.setOnClickListener {
+            var fragment = FragmentARRAVLocation.newInstance(false)
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+            updateSelectedIndicator(R.id.contactInfoButton)
         }
 
         personnelButton.setOnClickListener {
@@ -82,8 +94,82 @@ class FacilityGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            updateSelectedIndicator(R.id.personnelButton)
         }
 
+        visitationTrackingButton.setOnClickListener {
+            var fragment = FragmentARRAVVisitationTracking.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+            updateSelectedIndicator(R.id.visitationTrackingButton)
+        }
+
+        amendmentOrdersTrackingButton.setOnClickListener {
+            var fragment = FragmentARRAVVisitationTracking.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+            updateSelectedIndicator(R.id.amendmentOrdersTrackingButton)
+        }
+    }
+
+    fun updateSelectedIndicator(selectedViewId: Int){
+        when(selectedViewId){
+            R.id.generalInformationButton->{
+                generalInformationSelectedIndicator.visibility = View.VISIBLE
+                        rspSelectedIndicator.visibility = View.INVISIBLE
+                        contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                        personnelSelectedIndicator.visibility = View.INVISIBLE
+                        visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                        amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+            }
+
+            R.id.rspButton->{
+                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                rspSelectedIndicator.visibility = View.VISIBLE
+                contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                personnelSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+            }
+            
+            R.id.contactInfoButton->{
+                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                rspSelectedIndicator.visibility = View.INVISIBLE
+                contactInfoSelectedIndicator.visibility = View.VISIBLE
+                personnelSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+            }
+            
+            R.id.personnelButton->{
+                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                rspSelectedIndicator.visibility = View.INVISIBLE
+                contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                personnelSelectedIndicator.visibility = View.VISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+            }
+            
+            R.id.visitationTrackingButton->{
+                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                rspSelectedIndicator.visibility = View.INVISIBLE
+                contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                personnelSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.VISIBLE
+                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+            }
+            
+            R.id.amendmentOrdersTrackingButton->{
+                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                rspSelectedIndicator.visibility = View.INVISIBLE
+                contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                personnelSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                amendmentOrdersTrackingSelectedIndicator.visibility = View.VISIBLE
+            }
+        }
     }
 
 
