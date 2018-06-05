@@ -238,6 +238,45 @@
                         android:layout_column="4"
                         />
                 </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="RSP USER ID:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:id="@+id/rspUserId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/textview_background"
+                        android:layout_column="1"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="RSP Email Address:"
+                        android:textStyle="bold"
+                        android:layout_column="3"
+                        android:layout_margin="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/rspEmailId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/textview_background"
+                        android:ems="8"
+                        android:layout_column="4"
+                        />
+                </TableRow>
 
                 <TableRow>
                     <TextView
@@ -408,6 +447,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
+                        android:id="@+id/stateTextView"
                         android:text="State:*"
                         android:textStyle="bold"
                         />

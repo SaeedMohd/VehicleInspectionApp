@@ -39,7 +39,11 @@ class FragmentARRAVPersonnel : Fragment() {
 
     // TODO: Rename and change types of parameters
     var emailValid=true
+    var zipFormat=true
+       var contractSignatureIsChecked=false
     private var mParam1: String? = null
+    var countIfContractSignedBefore=0
+    var theContractSigner=false
     private var mParam2: String? = null
     private var personnelTypeList = ArrayList<TypeTablesModel.personnelType>()
     private var certificationTypeList= ArrayList<TypeTablesModel.personnelCertificationType>()
@@ -67,6 +71,18 @@ class FragmentARRAVPersonnel : Fragment() {
         preparePersonnelPage()
         fillPersonnelTableView()
         fillCertificationTableView()
+
+        if (newSignerCheck.isChecked==false) {
+            newEmailText.isEnabled = false
+            newCoStartDateBtn.isEnabled = false
+            newPhoneText.isEnabled = false
+            newZipText.isEnabled = false
+            newCityText.isEnabled = false
+            newAdd1Text.isEnabled = false
+            newStateSpinner.isEnabled = false
+            newZipText2.isEnabled = false
+            newAdd2Text.isEnabled = false
+        }
 
 
         newCertStartDateBtn.setOnClickListener {
@@ -164,7 +180,38 @@ class FragmentARRAVPersonnel : Fragment() {
 
             }
         })
+        addNewBtn.setOnClickListener({
+            var validProgram = true
 
+            if (validProgram) {
+                var item = FacilityDataModel.TblPersonnel()
+                for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                    if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+
+                        item.PersonnelTypeID =fac.PersonnelTypeID
+                }
+
+                item.FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
+                item.LastName=if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                item.CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+                item.ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
+                item.PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
+                item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
+                item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
+                item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
+                FacilityDataModel.getInstance().tblPersonnel.add(item)
+
+                addTheLatestRowOfPersonnelTable()
+
+            }
+        })
+
+        onlyOneContractSignerLogic()
+        onlyOneMailRecepientLogic()
+        conractSignerCheckedCondition()
+        saveButton.setOnClickListener(View.OnClickListener {
+            validateInputs()
+        })
 
     }
 
@@ -402,6 +449,7 @@ class FragmentARRAVPersonnel : Fragment() {
         }
         return typeName
     }
+
     fun fillData(){
 
         //1-
@@ -413,7 +461,6 @@ class FragmentARRAVPersonnel : Fragment() {
         newZipText2.addTextChangedListener(zipOfFourDigitsWatcher)
         newPhoneText.addTextChangedListener(phoneTenDigitsWatcher)
         newEmailText.addTextChangedListener(emailValidationWatcher)
-
 
     }
     fun emailFormatValidation(target : CharSequence) : Boolean{
@@ -485,8 +532,9 @@ class FragmentARRAVPersonnel : Fragment() {
             if (s.length>5||s.length<5){
 
                 newZipText.setError("input required 5 elements")
+                zipFormat=false
 
-            }
+            }else zipFormat=true
 
 
 
@@ -529,6 +577,7 @@ class FragmentARRAVPersonnel : Fragment() {
             if (s.length>10||s.length<10){
 
                 newPhoneText.setError("input required 10 elements")
+
 
             }
 
@@ -1018,6 +1067,310 @@ class FragmentARRAVPersonnel : Fragment() {
 
         }
     }
+    fun addTheLatestRowOfPersonnelTable() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+  val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+  val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+  val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+  val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+  val rowLayoutParam8 = TableRow.LayoutParams()
+        rowLayoutParam8.weight = 1F
+        rowLayoutParam8.column = 8
+
+        FacilityDataModel.getInstance().tblPersonnel[FacilityDataModel.getInstance().tblPersonnel.size - 1].apply {
+
+
+            var tableRow = TableRow(context)
+
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                if (PersonnelTypeID.equals(fac.PersonnelTypeID))
+
+                    textView.text =fac.PersonnelTypeName
+            }
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = FirstName
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = LastName
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = SeniorityDate
+            tableRow.addView(textView)
+
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = CertificationNum
+            tableRow.addView(textView)
+
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam5
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = startDate
+            tableRow.addView(textView)
+
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam6
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ExpirationDate
+            tableRow.addView(textView)
+
+            var checkBox = CheckBox(context)
+
+            checkBox = CheckBox(context)
+            checkBox.layoutParams = rowLayoutParam7
+            checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            checkBox.isChecked = (ContractSigner.equals("true"))
+            checkBox.isEnabled=false
+            tableRow.addView(checkBox)
+
+            checkBox = CheckBox(context)
+            checkBox.layoutParams = rowLayoutParam8
+            checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            checkBox.isChecked = (PrimaryMailRecipient.equals("true"))
+            checkBox.isEnabled=false
+            tableRow.addView(checkBox)
+
+            PersonnelResultsTbl.addView(tableRow)
+
+        }
+    }
+
+    fun onlyOneContractSignerLogic(){
+
+        FacilityDataModel.getInstance().tblPersonnel.apply {
+            (0 until size).forEach {
+
+                if (get(it).ContractSigner.equals("true")){
+
+                    newSignerCheck.isChecked=true
+                    newSignerCheck.isEnabled=false
+                    theContractSigner=true
+
+                }
+
+            }
+        }
+
+
+    }
+    fun onlyOneMailRecepientLogic(){
+
+        FacilityDataModel.getInstance().tblPersonnel.apply {
+            (0 until size).forEach {
+
+                if (get(it).PrimaryMailRecipient.equals("true")){
+
+                    newACSCheck.isEnabled=false
+                }
+
+            }
+        }
+
+    }
+
+    fun conractSignerCheckedCondition(){
+
+        newSignerCheck.setOnClickListener(View.OnClickListener {
+
+            if (newSignerCheck.isChecked==true){
+
+
+                contractSignatureIsChecked=true
+
+                newEmailText.isEnabled=true
+                newCoStartDateBtn.isEnabled=true
+                newPhoneText.isEnabled=true
+                newZipText.isEnabled=true
+                newCityText.isEnabled=true
+                newAdd1Text.isEnabled=true
+                newStateSpinner.isEnabled=true
+                newZipText2.isEnabled=true
+                newAdd2Text.isEnabled=true
+
+
+            }
+            if (newSignerCheck.isChecked==false) {
+                contractSignatureIsChecked = false
+
+
+                newEmailText.isEnabled = false
+                newCoStartDateBtn.isEnabled = false
+                newPhoneText.isEnabled = false
+                newZipText.isEnabled = false
+                newCityText.isEnabled = false
+                newAdd1Text.isEnabled = false
+                newStateSpinner.isEnabled = false
+                newZipText2.isEnabled = false
+                newAdd2Text.isEnabled = false
+
+            }
+
+
+
+        })
+
+
+        }
+    fun validateInputs() : Boolean{
+
+        var isInputValid=true
+
+        if (newFirstNameText.text.toString().isNullOrEmpty()){
+
+            isInputValid=false
+            newFirstNameText.setError("required field")
+
+        }
+        else
+            newFirstNameText.setError(null)
+
+        if (newLastNameText.text.toString().isNullOrEmpty()){
+
+            isInputValid=false
+            newLastNameText.setError("required field")
+
+
+        }
+        else
+            newLastNameText.setError(null)
+
+
+
+        if (contractSignatureIsChecked){
+
+                if (newAdd1Text.text.toString().isNullOrEmpty()){
+
+                    isInputValid=false
+                    newAdd1Text.setError("required field")
+
+                }
+                else
+                    newAdd1Text.setError(null)
+
+                if (newCityText.text.toString().isNullOrEmpty()){
+
+                    isInputValid=false
+                    newCityText.setError("required field")
+
+
+                }
+                else
+                    newCityText.setError(null)
+
+                if (newStateSpinner.selectedItem.toString().contains("select")){
+
+                    isInputValid=false
+                    stateTextView.setError("required field")
+
+
+                }
+                else
+                    stateTextView.setError(null)
+
+
+                if (newZipText.text.toString().isNullOrEmpty()||zipFormat==false){
+
+                    isInputValid=false
+                    newZipText.setError("required field")
+
+
+                }
+                else
+                    newZipText.setError(null)
+
+
+                if (newPhoneText.text.toString().isNullOrEmpty()){
+
+                    isInputValid=false
+                    newPhoneText.setError("required field")
+
+
+                }
+                else
+                    newPhoneText.setError(null)
+
+
+                if (newCoStartDateBtn.text.toString().contains("SELECT")){
+
+                    isInputValid=false
+                    newCoStartDateBtn.setError("required field")
+
+
+                }  else
+                    newCoStartDateBtn.setError(null)
+
+
+
+
+                if (newEmailText.text.toString().isNullOrEmpty()||!emailFormatValidation(newEmailText.text.toString())){
+
+                    isInputValid=false
+                    newEmailText.setError("required field")
+
+
+                }  else
+                    newEmailText.setError(null)
+
+
+
+            }else {
+                newEmailText.setError(null)
+                newCoStartDateBtn.setError(null)
+                newPhoneText.setError(null)
+                newZipText.setError(null)
+                stateTextView.setError(null)
+                newCityText.setError(null)
+                newAdd1Text.setError(null)
+
+
+            }
+
+
+
+
+        return isInputValid
+    }
+
 
 
     companion object {
