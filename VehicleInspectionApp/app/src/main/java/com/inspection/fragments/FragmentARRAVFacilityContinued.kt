@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+//import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,7 +16,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
+//import com.google.gson.Gson
 
 import com.inspection.R
 import com.inspection.Utils.Constants
@@ -60,9 +61,9 @@ class FragmentARRAVFacilityContinued : Fragment() {
         prepareFacilityContinuedPage()
 //        var opHoursAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, opHoursArray)
 //        opHoursAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-
+//        addNewLocBtn.setOnClickListener({
+//            submitLocation()
+//        })
 
 //        saturday_closed_spinner.adapter = opHoursAdapter
 //        saturday_open_spinner.adapter = opHoursAdapter
@@ -127,7 +128,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
 //        }))
     }
 
-    fun prepareFacilityContinuedPage() {
+    fun prepareFacilityContinuedPage(){
         facilityIsOpenEffDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -137,7 +138,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
+                c.set(year,monthOfYear,dayOfMonth)
                 facilityIsOpenEffDateBtn!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -152,7 +153,7 @@ class FragmentARRAVFacilityContinued : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
+                c.set(year,monthOfYear,dayOfMonth)
                 facilityIsOpenExpDateBtn!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
@@ -162,17 +163,35 @@ class FragmentARRAVFacilityContinued : Fragment() {
     private var locationTypeList = ArrayList<TypeTablesModel.locationType>()
     private var locationypeArray = ArrayList<String>()
 
-    private var phoneTypeList = ArrayList<TypeTablesModel.locationPhoneType>()
+    private var phoneTypeList  = ArrayList<TypeTablesModel.locationPhoneType>()
     private var phoneTypeArray = ArrayList<String>()
 
-    private var availabilityTypeList = ArrayList<TypeTablesModel.facilityAvailabilityType>()
+    private var availabilityTypeList  = ArrayList<TypeTablesModel.facilityAvailabilityType>()
     private var availabilityTypeArray = ArrayList<String>()
 
     fun prepareFacilityContinuedSpinners() {
-        var availabilityAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, availabilityTypeArray)
-        availabilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        facilityIsOpenSpinner.adapter = availabilityAdapter
 
+        locationTypeList = TypeTablesModel.getInstance().LocationType
+        locationypeArray.clear()
+        for (fac in locationTypeList) {
+            locationypeArray.add(fac.LocTypeName)
+        }
+
+//        var locTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, locationypeArray)
+//        locTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        newLocTypeSpinner.adapter = locTypeAdapter
+//        newLoc2TypeSpinner.adapter = locTypeAdapter
+
+        phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
+        phoneTypeArray .clear()
+        for (fac in phoneTypeList) {
+            phoneTypeArray .add(fac.LocPhoneName)
+        }
+
+//        var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray )
+//        phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        newPhoneTypeSpinner.adapter = phoneTypeAdapter
+//        newPhone2TypeSpinner.adapter = phoneTypeAdapter
 
         availabilityTypeList = TypeTablesModel.getInstance().FacilityAvailabilityType
         availabilityTypeArray.clear()
@@ -180,10 +199,13 @@ class FragmentARRAVFacilityContinued : Fragment() {
             availabilityTypeArray.add(fac.FacilityAvailabilityName)
         }
 
+        var availabilityAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, availabilityTypeArray )
+        availabilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        facilityIsOpenSpinner.adapter = availabilityAdapter
     }
 
 
-    fun buildLocationsTable() {
+    fun buildLocationsTable(){
         val locationType = TextView(context)
         locationType.text = "Location Type: "
 
@@ -347,7 +369,6 @@ class FragmentARRAVFacilityContinued : Fragment() {
         super.onDetach()
 //        mListener = null
     }
-
 
     /**
      * This interface must be implemented by activities that contain this

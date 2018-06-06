@@ -57,6 +57,7 @@ object Constants {
     val getSpecialistNameFromEmail = "http://144.217.24.163:5000/getSpecialistNameFromEmail?specialistEmail="
     val getVisitationPlanningList = "http://144.217.24.163:5000/getVisitationPlanningList?facilityName=%s&month=%s&year=%s"
     val submitContactInfoAddress = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityAddressData?facnum="
+    val submitFacilityGeneralInfo = "https://dev.facilityappointment.com/ACEAPI.asmx/updateFacilityInfo?facnum="
 
     //AAA APIs WebServices
     val getFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=%d&clubcode=%s"
