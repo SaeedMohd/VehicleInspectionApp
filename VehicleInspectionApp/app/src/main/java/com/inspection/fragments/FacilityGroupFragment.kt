@@ -106,7 +106,7 @@ class FacilityGroupFragment : Fragment() {
         }
 
         amendmentOrdersTrackingButton.setOnClickListener {
-            var fragment = FragmentARRAVVisitationTracking.newInstance("","")
+            var fragment = FragmentARRAVAmOrderTracking.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
