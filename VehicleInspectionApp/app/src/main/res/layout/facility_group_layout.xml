@@ -7,12 +7,14 @@
     android:background="@color/white"
     tools:context=".fragments.FragmentAARAVBilling">
 
-    <LinearLayout
+    <TableLayout
         android:id="@+id/facilityGroupButtonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
+
+        <TableRow>
 
         <Button
             android:id="@+id/generalInformationButton"
@@ -21,6 +23,7 @@
             android:text="General Information"
             android:background="@color/transparent"
             android:layout_marginLeft="10dp"
+            android:layout_column="0"
             />
 
         <Button
@@ -30,6 +33,16 @@
             android:background="@color/transparent"
             android:text="RSP"
             android:layout_marginLeft="10dp"
+            android:layout_column="1"
+            />
+        <Button
+            android:id="@+id/contactInfoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="Contact Info"
+            android:layout_marginLeft="10dp"
+            android:layout_column="2"
             />
     <Button
             android:id="@+id/personnelButton"
@@ -38,16 +51,85 @@
             android:background="@color/transparent"
             android:text="Personnel"
             android:layout_marginLeft="10dp"
+        android:layout_column="3"
             />
-    <Button
-            android:id="@+id/amendmentOrderTrackingButton"
+
+        <Button
+            android:id="@+id/visitationTrackingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:text="Amendment Order Tracking"
+            android:text="Visitation Tracking"
+            android:layout_marginLeft="10dp"
+            android:layout_column="4"
+            />
+
+        <Button
+            android:id="@+id/amendmentOrdersTrackingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="Amendment Orders Tracking"
+            android:layout_column="5"
             android:layout_marginLeft="10dp"
             />
-    </LinearLayout>
+        </TableRow>
+        <TableRow>
+            <View
+                android:id="@+id/generalInformationSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="0"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/rspSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="1"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/contactInfoSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="2"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/personnelSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="3"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/visitationTrackingSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="4"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/amendmentOrdersTrackingSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="5"
+                android:visibility="invisible"
+                />
+        </TableRow>
+    </TableLayout>
 
 
     <FrameLayout

@@ -7,63 +7,63 @@
         android:id="@+id/visitationGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_visitation"
+            android:id="@+id/visitation"
             android:title="Visitation" />
     </group>
     <group
         android:id="@+id/facilityGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_facility"
+            android:id="@+id/facility"
             android:title="Facility" />
     </group>
     <group
         android:id="@+id/scopeOfServiceGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_scopeOfService"
+            android:id="@+id/scopeOfService"
             android:title="Scope Of Service" />
     </group>
     <group
         android:id="@+id/deficiencyGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_deficiency"
+            android:id="@+id/deficiency"
             android:title="Deficiency" />
     </group>
     <group
         android:id="@+id/complaintsGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_complaints"
+            android:id="@+id/complaints"
             android:title="Complaints" />
     </group>
     <group
         android:id="@+id/billingGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_billing"
+            android:id="@+id/billing"
             android:title="Billing" />
     </group>
     <group
         android:id="@+id/surveysGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_surveys"
+            android:id="@+id/surveys"
             android:title="Surveys" />
     </group>
     <group
         android:id="@+id/commentsGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_comments"
+            android:id="@+id/comments"
             android:title="Comments" />
     </group>
     <group
         android:id="@+id/photosGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_photos"
+            android:id="@+id/photos"
             android:title="Photos" />
     </group>
 </menu>

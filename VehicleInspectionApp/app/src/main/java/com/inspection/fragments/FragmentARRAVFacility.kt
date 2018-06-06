@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 import android.app.DatePickerDialog
+//import android.app.Fragment
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -10,15 +11,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.inspection.MainActivity
 
 import com.inspection.R
-import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.toAppFormat
-import com.inspection.Utils.toast
+import com.inspection.R.id.*
+import com.inspection.Utils.*
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,7 +42,7 @@ class FragmentARRAVFacility : Fragment() {
     private val appFprmat = SimpleDateFormat("dd MMM yyyy")
     private var timeZonesArray = arrayOf("")
     private var facilityTypeArray = arrayOf("")
-    private var contractTypesArray = arrayOf("")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,29 +54,89 @@ class FragmentARRAVFacility : Fragment() {
         return inflater!!.inflate(R.layout.fragment_arrav_facility, container, false)
     }
 
+    private var contractTypeList = ArrayList<TypeTablesModel.contractType>()
+    private var contractTypeArray = ArrayList<String>()
+
+    private var timeZoneList = ArrayList<TypeTablesModel.timezoneType>()
+    private var timeZoneArray = ArrayList<String>()
+
+    private var svcAvailabilityList = ArrayList<TypeTablesModel.serviceAvailabilityType>()
+    private var svcAvailabilityArray = ArrayList<String>()
+
+    private var facTypeList = ArrayList<TypeTablesModel.facilityType>()
+    private var facTypeArray = ArrayList<String>()
+
+    private var busTypeList = ArrayList<TypeTablesModel.businessType>()
+    private var busTypeArray = ArrayList<String>()
+
+    private var termReasonList = ArrayList<TypeTablesModel.terminationCodeType>()
+    private var termReasonArray = ArrayList<String>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Fill Dop Down
-        timeZonesArray = arrayOf("Atlantic Time", "Eastern Time", "Central Time", "Mountain Time", "Pacific Time", "Hawaii  Time")
+
+        termReasonList = TypeTablesModel.getInstance().TerminationCodeType
+        termReasonArray .clear()
+        for (fac in termReasonList) {
+            termReasonArray .add(fac.TerminationCodeName)
+        }
+
+        var termReasonAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, termReasonArray)
+        termReasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        terminationReason_textviewVal.adapter = termReasonAdapter
+
+        busTypeList = TypeTablesModel.getInstance().BusinessType
+        busTypeArray .clear()
+        for (fac in busTypeList) {
+            busTypeArray .add(fac.BusTypeName)
+        }
+
+        var busTypeAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, busTypeArray)
+        busTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        bustype_textviewVal.adapter = busTypeAdapter
+
+
+        timeZoneList = TypeTablesModel.getInstance().TimezoneType
+        timeZoneArray .clear()
+        for (fac in timeZoneList) {
+            timeZoneArray .add(fac.TimezoneName)
+        }
+
         var tzdataAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, timeZonesArray)
         tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timezone_textviewVal.adapter = tzdataAdapter
 
-
-        var svcAvailabilityArray = arrayOf("Fixed-Site Service Only", "Fixed and Mobile Service", "Mobile Service Only")
+        svcAvailabilityList = TypeTablesModel.getInstance().ServiceAvailabilityType
+        svcAvailabilityArray .clear()
+        for (fac in svcAvailabilityList) {
+            svcAvailabilityArray .add(fac.SrvAvaName)
+        }
         var svcAvldataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, svcAvailabilityArray)
         svcAvldataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         availability_textviewVal.adapter = svcAvldataAdapter
 
-        facilityTypeArray = arrayOf("Independent", "Service Station", "Specialty", "Dealership", "Club Owned Repair - Attached", "Club Owned Repair - Standalone")
-        var facilityTypedataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, facilityTypeArray)
+        facTypeList = TypeTablesModel.getInstance().FacilityType
+        facTypeArray .clear()
+        for (fac in facTypeList) {
+            facTypeArray .add(fac.FacilityTypeName)
+        }
+        var facilityTypedataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, facTypeArray)
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         facilitytype_textviewVal.adapter = facilityTypedataAdapter
 
-        contractTypesArray = arrayOf("AAR", "AAB", "AAG", "COG","COR", "ERS", "MPR", "PSP")
-        var contractTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractTypesArray)
+
+
+        contractTypeList = TypeTablesModel.getInstance().ContractType
+        contractTypeArray .clear()
+        for (fac in contractTypeList) {
+            contractTypeArray .add(fac.ContractTypeName)
+        }
+
+        var contractTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractTypeArray )
         contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contractTypeValueSpinner.adapter = contractTypesAdapter
+
 
         ARDexp_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
@@ -119,6 +183,11 @@ class FragmentARRAVFacility : Fragment() {
         }
 
         setFieldsValues()
+        ImplementBusinessRules()
+
+        saveButton.setOnClickListener({
+            submitFacilityGeneralInfo()
+        })
 
     }
 
@@ -175,9 +244,9 @@ class FragmentARRAVFacility : Fragment() {
 
 
                 for(contractType in tblContractType){
-                    for (typeReference in contractTypesArray){
+                    for (typeReference in contractTypeArray){
                         if(contractType.ContractTypeName == typeReference){
-                            contractTypeValueSpinner.setSelection(contractTypesArray.indexOf(typeReference))
+                            contractTypeValueSpinner.setSelection(contractTypeArray.indexOf(typeReference))
                         }
                     }
                 }
@@ -192,19 +261,21 @@ class FragmentARRAVFacility : Fragment() {
                 assignedto_textviewVal.text = tblFacilities[0].AssignedTo
                 dba_textviewVal.text = tblFacilities[0].BusinessName
                 entity_textviewVal.text = tblFacilities[0].EntityName
-                bustype_textviewVal.text = tblBusinessType[0].BusTypeName
+                bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
+
                 timezone_textviewVal.setSelection(timeZonesArray.indexOf(tblTimezoneType[0].TimezoneName))
                 website_textviewVal.setText(tblFacilities[0].WebSite)
                 wifi_textview.isChecked = tblFacilities[0].SvcAvailability.toInt() == 1
-                texno_textviewVal.text = tblFacilities[0].TaxIDNumber
+                taxno_textviewVal.text = tblFacilities[0].TaxIDNumber
                 repairorder_textviewVal.setText("" + tblFacilities[0].FacilityRepairOrderCount)
                 availability_textviewVal.setSelection(tblFacilities[0].SvcAvailability)
-                facilitytype_textviewVal.setSelection(facilityTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
+                facilitytype_textviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
                 ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormat()
                 terminationDateButton.text = ""+tblFacilities[0].TerminationDate.apiToAppFormat()
+                //SAEED
                 terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
-//                terminationReasonEditText.setText(""+tblFacilities[0].terminationReason)
+                terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
                 currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormat()
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormat()
                 InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormat()
@@ -234,6 +305,44 @@ class FragmentARRAVFacility : Fragment() {
 
     }
 
+
+    fun ImplementBusinessRules() {
+        activeRadioButton.isClickable = false
+        inActiveRadioButton.isClickable = false
+        contractTypeValueSpinner.isEnabled = false
+        aarCheckBox.isClickable = false
+        aarEditText.isEnabled=false
+        aabCheckBox.isClickable = false
+        aabEditText.isEnabled=false
+        aagCheckBox.isClickable = false
+        aagEditText.isEnabled=false
+        cogCheckBox.isClickable = false
+        cogEditText.isEnabled=false
+        corCheckBox.isClickable = false
+        corEditText.isEnabled=false
+        ersCheckBox.isClickable = false
+        ersEditText.isEnabled=false
+        mprCheckBox.isClickable = false
+        mprEditText.isEnabled=false
+        pspCheckBox.isClickable = false
+        pspEditText.isEnabled=false
+        office_textviewVal.isEnabled = false
+        assignedto_textviewVal.isEnabled = false
+        dba_textviewVal.isEnabled = false
+        entity_textviewVal.isEnabled = false
+        bustype_textviewVal.isEnabled = false
+        terminationDateButton.isClickable = false
+        terminationReason_textviewVal.isEnabled=false
+        terminationCommentEditText.isEnabled=false
+        inspectionMonthsSpinner.isEnabled = false
+        inspectionCycleSpinner.isEnabled=false
+        ARDno_textviewVal.isEnabled=false
+        currcodate_textviewVal.isEnabled=false
+        initcodate_textviewVal.isEnabled=false
+        InsuranceExpDate_textviewVal.isEnabled=false
+
+//
+    }
     fun validateInputs() : Boolean{
 
         AnnualVisitationSingleton.getInstance().apply {
@@ -270,6 +379,60 @@ class FragmentARRAVFacility : Fragment() {
         }
     }
 
+    fun submitFacilityGeneralInfo(){
+        val busName =  if (dba_textviewVal.text.isNullOrEmpty())  "" else dba_textviewVal.text
+        val busType = TypeTablesModel.getInstance().BusinessType.filter { s -> s.BusTypeName==bustype_textviewVal.selectedItem.toString()}[0].BusTypeID
+        val entityName =  if (entity_textviewVal.text.isNullOrEmpty())  "" else entity_textviewVal.text
+        val assignedTo = if (assignedto_textviewVal.text.isNullOrEmpty())  "" else assignedto_textviewVal.text // get the ID
+        val officeID = if (office_textviewVal.text.isNullOrEmpty())  "" else office_textviewVal.text // get The ID
+        val taxIDNo = if (taxno_textviewVal.text.isNullOrEmpty())  "" else taxno_textviewVal.text
+        val facRepairCnt = if (repairorder_textviewVal.text.isNullOrEmpty())  "" else repairorder_textviewVal.text
+        val inspectionMonth = (inspectionMonthsSpinner.selectedItemPosition + 1).toString()
+        val inspectionCycle = inspectionCycleSpinner.selectedItem.toString()
+        val timeZoneID = (timezone_textviewVal.selectedItemPosition+1).toString()
+        val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
+        val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
+        val automtiveRepairNo = if (ARDno_textviewVal.text.isNullOrEmpty())  "" else ARDno_textviewVal.text
+        val automtiveRepairExpDate = ARDexp_textviewVal.text.toString().appToDBFormat()
+        val contractCurrDate = currcodate_textviewVal.text.toString().appToDBFormat()
+        val contractInitDate = initcodate_textviewVal.text.toString().appToDBFormat()
+        val internetAccess = if (wifi_textview.isChecked) "1" else "0"
+        val webSite = if (website_textviewVal.text.isNullOrEmpty())  "" else website_textviewVal.text
+        val terminationDate = terminationDateButton.text.toString().appToDBFormat()
+        val terminationReasonID = TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID
+        val terminationComments = if (terminationCommentEditText.text.isNullOrEmpty())  "" else terminationCommentEditText.text
+        val insertDate = Date().toDBFormat()
+        val insertBy ="sa"
+        val updateDate = Date().toDBFormat()
+        val updateBy ="sa"
+        val activeVal = "0"
+        val insuranceExpDate = InsuranceExpDate_textviewVal.text
+        val contractType = TypeTablesModel.getInstance().ContractType.filter { s -> s.ContractTypeName==contractTypeValueSpinner.selectedItem.toString()}[0].ContractTypeID
+        val billingMonth = FacilityDataModel.getInstance().tblFacilities[0].BillingMonth.toString()
+        val billingAmount = FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toString()
+        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+        val clubCode ="004"
+
+
+        var urlString = facilityNo+"&clubcode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate.toString()+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
+        Log.v("Data To Submit", urlString)
+//        urlString = URLEncoder.encode(urlString, "UTF-8")
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityGeneralInfo + urlString,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        Log.v("RESPONSE",response.toString())
+//                        facilitiesList = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
+//                        facilityNames.clear()
+//////                        for (fac in facilitiesList) {
+//////                            facilityNames.add(fac.businessname)
+//////                        }
+//////                        facilityNameListView.visibility = View.VISIBLE
+//////                        facilityNameListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading")
+        }))
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {

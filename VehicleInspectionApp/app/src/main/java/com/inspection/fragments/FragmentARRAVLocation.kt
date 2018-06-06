@@ -1,15 +1,21 @@
 package com.inspection.fragments
 
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 
 import com.inspection.R
+import com.inspection.Utils.toast
 import com.inspection.model.AAALocations
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import java.util.ArrayList
 
@@ -35,7 +41,74 @@ class FragmentARRAVLocation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        alphaBackgroundForDialogs.setOnClickListener({
+            addNewLocationDialog.visibility = View.GONE
+            addNewPhoneDialog.visibility = View.GONE
+            addNewEmailDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+        })
+
+        addNewLocationButton.setOnClickListener({
+            showLocationDialog()
+        })
+
+        addNewPhoneButton.setOnClickListener({
+            showPhoneDialog()
+        })
+
+        addNewEmailButton.setOnClickListener {
+            showEmailDialog()
+        }
+
         setLocations()
+    }
+
+    private var locationTypeList = ArrayList<TypeTablesModel.locationType>()
+    private var locationypeArray = ArrayList<String>()
+
+    private var phoneTypeList = ArrayList<TypeTablesModel.locationPhoneType>()
+    private var phoneTypeArray = ArrayList<String>()
+
+    private var availabilityTypeList = ArrayList<TypeTablesModel.facilityAvailabilityType>()
+    private var availabilityTypeArray = ArrayList<String>()
+
+
+
+    private fun showLocationDialog() {
+        alphaBackgroundForDialogs.visibility = View.VISIBLE
+        addNewLocationDialog.visibility = View.VISIBLE
+        locationTypeList = TypeTablesModel.getInstance().LocationType
+        locationypeArray.clear()
+        for (fac in locationTypeList) {
+            locationypeArray.add(fac.LocTypeName)
+        }
+
+        var locTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, locationypeArray)
+        locTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newLocTypeSpinner.adapter = locTypeAdapter
+//        locationDialogView.newLoc2TypeSpinner.adapter = locTypeAdapter
+
+
+    }
+
+    private fun showPhoneDialog() {
+        alphaBackgroundForDialogs.visibility = View.VISIBLE
+        addNewPhoneDialog.visibility = View.VISIBLE
+        phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
+        phoneTypeArray.clear()
+        for (fac in phoneTypeList) {
+            phoneTypeArray.add(fac.LocPhoneName)
+        }
+
+        var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray)
+        phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newPhoneTypeSpinner.adapter = phoneTypeAdapter
+    }
+
+    private fun showEmailDialog() {
+        alphaBackgroundForDialogs.visibility = View.VISIBLE
+        addNewEmailDialog.visibility = View.VISIBLE
     }
 
     fun prepareLocationPage(){
@@ -43,28 +116,28 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     private fun setLocations() {
-        for (fac in FacilityDataModel.getInstance().tblAddress) {
-            if (fac.LocationTypeID.toInt() == 1) {
-                phyloc1addr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
-                phyloc1addr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
-                phyloc1addr1latitude.setText(if (fac.LATITUDE.isNullOrEmpty()) "" else fac.LATITUDE)
-                phyloc1addr1longitude.setText(if (fac.LONGITUDE.isNullOrEmpty()) "" else fac.LONGITUDE)
-                phylocAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
-                phylocAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
-            } else if (fac.LocationTypeID.toInt() == 2) {
-                mailaddr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
-                mailaddr1branchname.text = if ((fac.BranchName.isNullOrEmpty())) "" else fac.BranchName
-                mailaddr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
-                mailAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
-                mailAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
-            } else if (fac.LocationTypeID.toInt() == 3) {
-                billaddr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
-                billaddr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
-                billAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
-                billAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
-            }
-        }
-        progressbarLocation.visibility = View.INVISIBLE
+//        for (fac in FacilityDataModel.getInstance().tblAddress) {
+//            if (fac.LocationTypeID.toInt() == 1) {
+//                phyloc1addr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
+//                phyloc1addr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
+//                phyloc1addr1latitude.setText(if (fac.LATITUDE.isNullOrEmpty()) "" else fac.LATITUDE)
+//                phyloc1addr1longitude.setText(if (fac.LONGITUDE.isNullOrEmpty()) "" else fac.LONGITUDE)
+//                phylocAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
+//                phylocAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
+//            } else if (fac.LocationTypeID.toInt() == 2) {
+//                mailaddr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
+//                mailaddr1branchname.text = if ((fac.BranchName.isNullOrEmpty())) "" else fac.BranchName
+//                mailaddr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
+//                mailAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
+//                mailAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
+//            } else if (fac.LocationTypeID.toInt() == 3) {
+//                billaddr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
+//                billaddr1branchno.text = if (fac.BranchNumber.isNullOrEmpty()) "" else fac.BranchNumber
+//                billAddr1address.text = if (fac.FAC_Addr1.isNullOrEmpty()) "" else fac.FAC_Addr1
+//                billAddr2address.text = if (fac.FAC_Addr2.isNullOrEmpty()) "" else fac.FAC_Addr2
+//            }
+//        }
+//        progressbarLocation.visibility = View.INVISIBLE
     }
 
     fun validateInputs(): Boolean {

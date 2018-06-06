@@ -1,6 +1,8 @@
 package com.inspection.fragments
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+//import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,7 +16,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
+//import com.google.gson.Gson
 
 import com.inspection.R
 import com.inspection.Utils.Constants
@@ -24,6 +26,9 @@ import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.content.DialogInterface
+import android.content.DialogInterface.BUTTON_NEUTRAL
+import com.inspection.Utils.toast
 
 
 /**
@@ -56,9 +61,9 @@ class FragmentARRAVFacilityContinued : Fragment() {
         prepareFacilityContinuedPage()
 //        var opHoursAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, opHoursArray)
 //        opHoursAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        addNewLocBtn.setOnClickListener({
-            submitLocation()
-        })
+//        addNewLocBtn.setOnClickListener({
+//            submitLocation()
+//        })
 
 //        saturday_closed_spinner.adapter = opHoursAdapter
 //        saturday_open_spinner.adapter = opHoursAdapter
@@ -87,40 +92,40 @@ class FragmentARRAVFacilityContinued : Fragment() {
 
     }
 
-    fun submitLocation(){
-        val locType = locationTypeList.filter { s -> s.LocTypeName == newLocTypeSpinner.selectedItem.toString()}[0].LocTypeID
-        val locAddr1 = if (newLocAddr1Text.text.isNullOrEmpty())  "" else newLocAddr1Text.text
-        val locAddr2 = if (newLocAddr2Text.text.isNullOrEmpty())  "" else newLocAddr2Text.text
-        val locCity = if (newLocCityText.text.isNullOrEmpty())  "" else newLocCityText.text
-        val locCountry = if (newLocCountryText.text.isNullOrEmpty())  "" else newLocCountryText.text
-        val locState = "CA"//newLocStateSpinner.selectedItem.toString()
-        val locZip3= if (newLocZipText.text.isNullOrEmpty())  "" else newLocZipText.text
-//        val locZip4= if (newLocZip4Text.text.isNullOrEmpty())  "" else newLocZip4Text.text
-        val locLat= if (newLocLatText.text.isNullOrEmpty())  "" else newLocLatText.text
-        val locLong = if (newLocLongText.text.isNullOrEmpty())  "" else newLocLongText.text
-        val locBranchNo = if (newLocBranchNoText.text.isNullOrEmpty())  "" else newLocBranchNoText.text
-        val locBranchName = if (newLocBranchNameText.text.isNullOrEmpty())  "" else newLocBranchNameText.text
-        val insertDate = Date() ///HERE
-        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-        val clubCode ="004"
-        val insertedBy ="sa"
-//        val urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locType+"&FAC_Addr1="+locAddr1+"&FAC_Addr2="+locAddr2+"&CITY="+locCity+"&ST="+locState+"&ZIP="+locZip3+"&ZIP4="+locZip4+"&Country="+locCountry+"&BranchName="+locBranchName+"&BranchNumber="+locBranchNo+"&LATITUDE="+locLat+"&LONGITUDE="+locLong+"&insertBy="+insertedBy+"&insertDate="+insertDate.toDate().toString()+"&updateBy="+insertedBy+"&updateDate="+insertDate+"&active=1"
-        var urlString = ""
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitContactInfoAddress + urlString,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        Log.v("RESPONSE",response.toString())
-//                        facilitiesList = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
-//                        facilityNames.clear()
-//                        for (fac in facilitiesList) {
-//                            facilityNames.add(fac.businessname)
-//                        }
-//                        facilityNameListView.visibility = View.VISIBLE
-//                        facilityNameListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading")
-        }))
+    fun submitLocation() {
+//        val locType = locationTypeList.filter { s -> s.LocTypeName == newLocTypeSpinner.selectedItem.toString()}[0].LocTypeID
+//        val locAddr1 = if (newLocAddr1Text.text.isNullOrEmpty())  "" else newLocAddr1Text.text
+//        val locAddr2 = if (newLocAddr2Text.text.isNullOrEmpty())  "" else newLocAddr2Text.text
+//        val locCity = if (newLocCityText.text.isNullOrEmpty())  "" else newLocCityText.text
+//        val locCountry = if (newLocCountryText.text.isNullOrEmpty())  "" else newLocCountryText.text
+//        val locState = "CA"//newLocStateSpinner.selectedItem.toString()
+//        val locZip3= if (newLocZipText.text.isNullOrEmpty())  "" else newLocZipText.text
+////        val locZip4= if (newLocZip4Text.text.isNullOrEmpty())  "" else newLocZip4Text.text
+//        val locLat= if (newLocLatText.text.isNullOrEmpty())  "" else newLocLatText.text
+//        val locLong = if (newLocLongText.text.isNullOrEmpty())  "" else newLocLongText.text
+//        val locBranchNo = if (newLocBranchNoText.text.isNullOrEmpty())  "" else newLocBranchNoText.text
+//        val locBranchName = if (newLocBranchNameText.text.isNullOrEmpty())  "" else newLocBranchNameText.text
+//        val insertDate = Date() ///HERE
+//        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+//        val clubCode ="004"
+//        val insertedBy ="sa"
+////        val urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locType+"&FAC_Addr1="+locAddr1+"&FAC_Addr2="+locAddr2+"&CITY="+locCity+"&ST="+locState+"&ZIP="+locZip3+"&ZIP4="+locZip4+"&Country="+locCountry+"&BranchName="+locBranchName+"&BranchNumber="+locBranchNo+"&LATITUDE="+locLat+"&LONGITUDE="+locLong+"&insertBy="+insertedBy+"&insertDate="+insertDate.toDate().toString()+"&updateBy="+insertedBy+"&updateDate="+insertDate+"&active=1"
+//        var urlString = ""
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitContactInfoAddress + urlString,
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        Log.v("RESPONSE",response.toString())
+////                        facilitiesList = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
+////                        facilityNames.clear()
+////                        for (fac in facilitiesList) {
+////                            facilityNames.add(fac.businessname)
+////                        }
+////                        facilityNameListView.visibility = View.VISIBLE
+////                        facilityNameListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
+//                    })
+//                }, Response.ErrorListener {
+//            Log.v("error while loading", "error while loading")
+//        }))
     }
 
     fun prepareFacilityContinuedPage(){
@@ -172,10 +177,10 @@ class FragmentARRAVFacilityContinued : Fragment() {
             locationypeArray.add(fac.LocTypeName)
         }
 
-        var locTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, locationypeArray)
-        locTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newLocTypeSpinner.adapter = locTypeAdapter
-        newLoc2TypeSpinner.adapter = locTypeAdapter
+//        var locTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, locationypeArray)
+//        locTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        newLocTypeSpinner.adapter = locTypeAdapter
+//        newLoc2TypeSpinner.adapter = locTypeAdapter
 
         phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
         phoneTypeArray .clear()
@@ -183,10 +188,10 @@ class FragmentARRAVFacilityContinued : Fragment() {
             phoneTypeArray .add(fac.LocPhoneName)
         }
 
-        var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray )
-        phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newPhoneTypeSpinner.adapter = phoneTypeAdapter
-        newPhone2TypeSpinner.adapter = phoneTypeAdapter
+//        var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray )
+//        phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        newPhoneTypeSpinner.adapter = phoneTypeAdapter
+//        newPhone2TypeSpinner.adapter = phoneTypeAdapter
 
         availabilityTypeList = TypeTablesModel.getInstance().FacilityAvailabilityType
         availabilityTypeArray.clear()
