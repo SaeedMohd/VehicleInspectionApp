@@ -16,19 +16,13 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-//import com.google.gson.Gson
 
 import com.inspection.R
-import com.inspection.Utils.Constants
-import com.inspection.Utils.toDate
-import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
-import android.content.DialogInterface
-import android.content.DialogInterface.BUTTON_NEUTRAL
-import com.inspection.Utils.toast
 
 
 /**

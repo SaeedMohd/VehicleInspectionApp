@@ -56,97 +56,111 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/locationTbl"
+                android:scrollbarAlwaysDrawHorizontalTrack="true"
                 android:stretchColumns="*">
-
                 <TableRow android:background="@color/mainColor">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_column="0"
                         android:layout_gravity="center_vertical"
-                        android:text="Location Type:*"
+                        android:text="Location Type:"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Address 1:*"
+                        android:text="Address 1"
+                        android:ems="8"
+                        android:layout_column="1"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Address 2:"
+                        android:text="Address 2"
+                        android:ems="8"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:layout_column="2"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="City:*"
+                        android:text="City"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:layout_column="3"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Country:*"
+                        android:text="Country"
+                        android:layout_column="4"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="State:*"
+                        android:layout_column="5"
+                        android:text="State"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Zip Code:*"
+                        android:text="Zip Code"
+                        android:layout_column="6"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Latitude:*"
+                        android:text="Latitude"
+                        android:layout_column="7"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Longitude:*"
+                        android:text="Longitude"
+                        android:layout_column="8"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Branch Number:*"
+                        android:text="Branch Number"
+                        android:layout_column="9"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Branch Name:*"
+                        android:text="Branch Name"
+                        android:layout_column="10"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -188,7 +202,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="0,1,2,3">
+                android:id="@+id/phoneTbl"
+                android:stretchColumns="0,1">
 
                 <TableRow android:background="@color/mainColor">
 
@@ -196,7 +211,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Phone Type:*"
+                        android:text="Phone Type"
+                        android:layout_column="0"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -204,25 +220,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Description"
+                        android:text="Phone Number"
+                        android:layout_column="1"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Phone Number:*"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Phone Extension:"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -265,6 +267,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/emailTbl"
                 android:stretchColumns="0,1">
 
                 <TableRow android:background="@color/mainColor">
@@ -273,7 +276,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Email Type:"
+                        android:layout_column="1"
+                        android:text="Email Type"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -281,7 +285,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Email Address:*"
+                        android:layout_column="2"
+                        android:text="Email Address"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -927,7 +932,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="2"
-
                         android:layout_marginTop="5dp"
                         android:ems="8"
                         android:text=""
@@ -937,7 +941,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="3"
-
                         android:layout_marginTop="5dp"
                         android:text="Country:*"
                         android:textStyle="bold" />
@@ -1137,28 +1140,28 @@
                     />
             </TableRow>
 
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+            <!--<TableRow>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
 
-                    android:text="Description:"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/newPhoneDescText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="8"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
+                    <!--android:text="Description:"-->
+                    <!--android:layout_column="0"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/newPhoneDescText"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:text=""-->
+                    <!--android:ems="8"-->
+                    <!--android:layout_column="1"-->
+                    <!--android:background="@drawable/textview_background"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+            <!--</TableRow>-->
 
             <TableRow>
                 <TextView
@@ -1182,28 +1185,28 @@
                     android:textStyle="bold"
                     />
             </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+            <!--<TableRow>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
 
-                    android:text="Phone Extension:"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/newPhoneExtText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="8"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
+                    <!--android:text="Phone Extension:"-->
+                    <!--android:layout_column="0"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/newPhoneExtText"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:text=""-->
+                    <!--android:ems="8"-->
+                    <!--android:layout_column="1"-->
+                    <!--android:background="@drawable/textview_background"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+            <!--</TableRow>-->
 
         </TableLayout>
     </android.support.v7.widget.CardView>

@@ -8,16 +8,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.*
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 
 import com.inspection.R
-import com.inspection.Utils.toast
+import com.inspection.Utils.*
 import com.inspection.model.AAALocations
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
-import java.util.ArrayList
+import java.util.*
 
 
 /**
@@ -42,6 +46,10 @@ class FragmentARRAVLocation : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fillLocationTableView()
+        fillPhoneTableView()
+        fillEmailTableView()
+
         alphaBackgroundForDialogs.setOnClickListener({
             addNewLocationDialog.visibility = View.GONE
             addNewPhoneDialog.visibility = View.GONE
@@ -62,6 +70,46 @@ class FragmentARRAVLocation : Fragment() {
         }
 
         setLocations()
+
+        locationSubmitButton.setOnClickListener({
+            // missing validation for states when the lookup is ready
+            if (newLocAddr1Text.text.isNullOrEmpty()) {
+                newLocAddr1Text.setError("please enter address 1")
+            } else if (newLocCityText.text.isNullOrEmpty()) {
+                newLocCityText.setError("please enter city")
+            } else if (newLocCountryText.text.isNullOrEmpty()) {
+                newLocCountryText.setError("please enter country")
+            } else if (newLocZipText.text.isNullOrEmpty()) {
+                newLocZipText.setError("please enter country")
+            } else if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty()) {
+                newLocLongText.setError("please enter longitude")
+            } else if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty()) {
+                newLocLatText.setError("please enter latitude")
+            } else if (newLocBranchNoText.text.isNullOrEmpty()) {
+                newLocBranchNoText.setError("please enter branch number")
+            } else if (newLocBranchNameText.text.isNullOrEmpty()) {
+                newLocLatText.setError("please enter branch name")
+            } else {
+                submitFacilityAddress()
+            }
+        })
+
+
+        phoneSubmitButton.setOnClickListener({
+            if (newPhoneNoText.text.isNullOrEmpty()) {
+                newPhoneNoText.setError("please enter phone number")
+            } else {
+                submitFacilityPhone()
+            }
+        })
+
+        emailSubmitButton.setOnClickListener({
+            if (newEmailAddrText.text.isNullOrEmpty()) {
+                newEmailAddrText.setError("please enter email address")
+            } else {
+                submitFacilityEmail()
+            }
+        })
     }
 
     private var locationTypeList = ArrayList<TypeTablesModel.locationType>()
@@ -70,14 +118,16 @@ class FragmentARRAVLocation : Fragment() {
     private var phoneTypeList = ArrayList<TypeTablesModel.locationPhoneType>()
     private var phoneTypeArray = ArrayList<String>()
 
-    private var availabilityTypeList = ArrayList<TypeTablesModel.facilityAvailabilityType>()
-    private var availabilityTypeArray = ArrayList<String>()
+    private var emailTypeList = ArrayList<TypeTablesModel.emailType>()
+    private var emailTypeArray = ArrayList<String>()
 
 
 
     private fun showLocationDialog() {
+
         alphaBackgroundForDialogs.visibility = View.VISIBLE
         addNewLocationDialog.visibility = View.VISIBLE
+
         locationTypeList = TypeTablesModel.getInstance().LocationType
         locationypeArray.clear()
         for (fac in locationTypeList) {
@@ -90,6 +140,36 @@ class FragmentARRAVLocation : Fragment() {
 //        locationDialogView.newLoc2TypeSpinner.adapter = locTypeAdapter
 
 
+    }
+
+    private fun getLocationTypeName(typeID: String): String {
+        var typeName = ""
+        for (fac in TypeTablesModel.getInstance().LocationType) {
+            if (fac.LocTypeID.equals(typeID)) {
+                typeName= fac.LocTypeName
+            }
+        }
+        return typeName
+    }
+
+    private fun getPhoneTypeName(typeID: String): String {
+        var typeName = ""
+        for (fac in TypeTablesModel.getInstance().LocationPhoneType) {
+            if (fac.LocPhoneID.equals(typeID)) {
+                typeName= fac.LocPhoneName
+            }
+        }
+        return typeName
+    }
+
+    private fun getEmailTypeName(typeID: String): String {
+        var typeName = ""
+        for (fac in TypeTablesModel.getInstance().EmailType) {
+            if (fac.EmailID.equals(typeID)) {
+                typeName= fac.EmailName
+            }
+        }
+        return typeName
     }
 
     private fun showPhoneDialog() {
@@ -109,6 +189,15 @@ class FragmentARRAVLocation : Fragment() {
     private fun showEmailDialog() {
         alphaBackgroundForDialogs.visibility = View.VISIBLE
         addNewEmailDialog.visibility = View.VISIBLE
+        emailTypeList = TypeTablesModel.getInstance().EmailType
+        emailTypeArray.clear()
+        for (fac in emailTypeList) {
+            emailTypeArray.add(fac.EmailName)
+        }
+
+        var emailTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, emailTypeArray)
+        emailTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newEmailTypeSpinner.adapter = emailTypeAdapter
     }
 
     fun prepareLocationPage(){
@@ -171,6 +260,295 @@ class FragmentARRAVLocation : Fragment() {
 
         return isInputsValid
     }
+
+    fun fillPhoneTableView() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        FacilityDataModel.getInstance().tblPhone.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                //getTypeName
+                textView.text = getPhoneTypeName(get(it).PhoneTypeID)
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).PhoneNumber
+                tableRow.addView(textView)
+
+                phoneTbl.addView(tableRow)
+            }
+        }
+    }
+
+    fun fillEmailTableView() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        FacilityDataModel.getInstance().tblFacilityEmail.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                //getTypeName
+                textView.text = getEmailTypeName(get(it).emailTypeId)
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).email
+                tableRow.addView(textView)
+
+                emailTbl.addView(tableRow)
+            }
+        }
+    }
+
+    fun fillLocationTableView() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam8 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.column = 8
+
+        val rowLayoutParam9 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.column = 9
+
+        val rowLayoutParam10 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.column = 10
+
+        val rowLayoutParam11 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.column = 11
+        var dateTobeFormated = ""
+
+        FacilityDataModel.getInstance().tblAddress.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                //getTypeName
+                textView.text = getLocationTypeName(get(it).LocationTypeID)
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).FAC_Addr1
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = get(it).FAC_Addr2
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).CITY
+
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).County
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam5
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).ST
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam6
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).ZIP + "-" + get(it).ZIP4
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam7
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).LATITUDE
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam8
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).LONGITUDE
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam9
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).BranchNumber
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam10
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).BranchName
+                tableRow.addView(textView)
+
+                locationTbl.addView(tableRow)
+
+            }
+        }
+    }
+
+    fun submitFacilityEmail(){
+        val emailTypeID = TypeTablesModel.getInstance().EmailType.filter { s -> s.EmailName==newEmailTypeSpinner.selectedItem.toString()}[0].EmailID
+        val email = if (newEmailAddrText.text.isNullOrEmpty())  "" else newEmailAddrText.text
+        val insertDate = "2017-04-24T13:39:51.700"//Date().toDBFormat()
+        val insertBy ="sa"
+        val updateDate = "2017-04-24T13:39:51.700"//Date().toDBFormat()
+        val updateBy ="sa"
+        val activeVal = "0"
+        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+        val clubCode ="004"
+        var urlString = facilityNo+"&clubcode="+clubCode+"&emailTypeId="+emailTypeID+"&email="+email+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
+        Log.v("Data To Submit", urlString)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityEmail + urlString,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        Log.v("RESPONSE",response.toString())
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while submitting", it.message)
+        }))
+    }
+
+
+    fun submitFacilityAddress(){
+        val locTypeID = TypeTablesModel.getInstance().LocationType.filter { s -> s.LocTypeName==newLocTypeSpinner.selectedItem.toString()}[0].LocTypeID
+        val address1Text = if (newLocAddr1Text.text.isNullOrEmpty())  "" else newLocAddr1Text.text
+        val address2Text = if (newLocAddr2Text.text.isNullOrEmpty())  "" else newLocAddr2Text.text
+        val cityText= if (newLocCityText.text.isNullOrEmpty())  "" else newLocCityText.text
+        val countryText = if (newLocCountryText.text.isNullOrEmpty())  "" else newLocCountryText.text
+        val longText = if (newLocLongText.text.isNullOrEmpty())  "" else newLocLongText.text
+        val latText = if (newLocLatText.text.isNullOrEmpty())  "" else newLocLatText.text
+        val zipText = if (newLocZipText.text.isNullOrEmpty())  "" else newLocZipText.text
+        val branchNameText = if (newLocBranchNameText.text.isNullOrEmpty())  "" else newLocBranchNameText.text
+        val branchNoText = if (newLocBranchNoText.text.isNullOrEmpty())  "" else newLocBranchNoText.text
+        val insertDate = "2017-04-24T13:39:51.700"//Date().toDBFormat()
+        val insertBy ="sa"
+        val updateDate = "2017-04-24T13:39:51.700"//Date().toDBFormat()
+        val updateBy ="sa"
+        val activeVal = "0"
+        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+        val clubCode ="004"
+        var urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locTypeID+"&FAC_Addr1="+address1Text+"&FAC_Addr2="+address2Text+"&CITY="+cityText+"&ST=CA&ZIP="+zipText+"&ZIP4=&Country="+countryText+"&BranchName="+branchNameText+"&BranchNumber="+branchNoText+"&LATITUDE="+latText+"&LONGITUDE="+longText+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
+        Log.v("Data To Submit", urlString)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityAddress + urlString,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        Log.v("RESPONSE",response.toString())
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while submitting", it.message)
+        }))
+    }
+
+    fun submitFacilityPhone(){
+        val phoneTypeID = TypeTablesModel.getInstance().LocationPhoneType.filter { s -> s.LocPhoneName==newPhoneTypeSpinner.selectedItem.toString()}[0].LocPhoneID
+        val phoneNo = if (newPhoneNoText.text.isNullOrEmpty())  "" else newPhoneNoText.text
+        val insertDate = "2017-04-24T13:39:51.700"//Date().toDBFormat()
+        val insertBy ="sa"
+        val updateDate = "2017-04-24T13:39:51.700"//Date().toDBFormat()
+        val updateBy ="sa"
+        val activeVal = "0"
+        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+        val clubCode ="004"
+        var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId="
+        Log.v("Data To Submit", urlString)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityEmail + urlString,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        Log.v("RESPONSE",response.toString())
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while submitting", "Email Details")
+        }))
+    }
+
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match
