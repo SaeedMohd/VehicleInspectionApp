@@ -62,13 +62,13 @@ var emailValid=true
         dataChangedNoRadioButton.isClickable=false
         clubCodeEditText.isClickable=false
 
-              textWatcherSignature.visibility=View.INVISIBLE
-        textWatcherSignature.visibility=View.GONE
+//              textWatcherSignature.visibility=View.INVISIBLE
+//        textWatcherSignature.visibility=View.GONE
 
 
         setFieldsValues()
 
-            textWatcherSignature.setText(facilityRepresentativesSpinner.selectedItem.toString())
+//            textWatcherSignature.setText(facilityRepresentativesSpinner.selectedItem.toString())
 
         completeButton.setOnClickListener(View.OnClickListener {
             if (validateInputs()){
@@ -255,7 +255,7 @@ var emailValid=true
 
             }
         }
-        textWatcherSignature.addTextChangedListener(representativeNameWatcher)
+//        textWatcherSignature.addTextChangedListener(representativeNameWatcher)
 
 
     }

@@ -13,702 +13,877 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/facComments"
         android:layout_margin="10dp"
-        android:background="@color/white"
+        android:background="@color/light_gray"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="5dp">
+            android:background="@color/light_gray"
+            android:orientation="vertical">
 
-
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                app:cardElevation="5dp">
 
-                <RelativeLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:text="Visitation Type"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/annualVisitationType"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Annual" />
+
+                            <CheckBox
+                                android:id="@+id/quarterlyVisitationType"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Quarterly/Other" />
+
+                            <CheckBox
+                                android:id="@+id/adhocVisitationType"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ad Hoc" />
+                        </RadioGroup>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:text="Date Of Visitation"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/dateOfVisitationButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:clickable="false"
+                            android:paddingRight="15dp"
+                            android:paddingLeft="15dp"
+                            android:background="@drawable/blue_background_button"
+                            android:textColor="@color/white"
+                            android:text="SELECT DATE"
+                            android:textSize="12dp" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Visitation Reason"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/visitationReasonDropListId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:entries="@array/visitation_reasons" />
+
+
+                    </RelativeLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:text="Data Changes Made?"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/dataChangedYesRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Yes" />
+
+                            <RadioButton
+                                android:id="@+id/dataChangedNoRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No" />
+
+                        </RadioGroup>
+
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:text="Club Code"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/clubCodeEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/textview_background" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Facility Number"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/facilityNumberEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/textview_background"
+                            android:gravity="center"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Facility Name"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/facilityNameEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/textview_background"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Facility Representative"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/facilityRepresentativesSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:tooltipText="please select a representative" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Facility Representative's Signature"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/facilityRepresentativeSignatureButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:paddingRight="15dp"
+                            android:paddingLeft="15dp"
+                            android:background="@drawable/blue_background_button"
+                            android:textColor="@color/white"
+                            android:text="Add Signature"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Automotive Specialist"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/automotiveSpecialistSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center" />
+
+                    </RelativeLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="40dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Automotive Specialist's   Signature"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/automotiveSpecialistSignature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:paddingRight="15dp"
+                            android:paddingLeft="15dp"
+                            android:background="@drawable/blue_background_button"
+                            android:textColor="@color/white"
+                            android:text="Add Signature"
+                            android:textSize="12dp" />
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                app:cardElevation="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <TableLayout
+                        android:id="@+id/deficienciesTableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:divider="@drawable/divider_table_layout"
+                        android:showDividers="middle|beginning|end"
+                        android:stretchColumns="*">
+
+                        <TableRow android:background="@color/mainColor">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_column="0"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:text="Deficiency"
+                                android:textColor="@color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_column="1"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:text="Inspection Date"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_column="2"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:text="Due Date"
+
+                                android:textColor="@color/white" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Facility Representative's Signature (Deficiencies)"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/automotiveSpecialistSignature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:paddingRight="15dp"
+                            android:paddingLeft="15dp"
+                            android:background="@drawable/blue_background_button"
+                            android:textColor="@color/white"
+                            android:layout_centerVertical="true"
+                            android:text="Add Signature"
+                            android:textSize="12dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                app:cardElevation="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="AAR Sign"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/aarSignEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/textview_background"
+                            android:gravity="center" />
+
+                    </RelativeLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Certificate Of Approval"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/certificateOfApprovalEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/textview_background"
+                            android:gravity="center" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Member Benefits Poster(s)"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/memberBenefitsPosterEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:ems="11"
+                            android:background="@drawable/textview_background"
+                            android:gravity="center" />
+
+                    </RelativeLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Quality Control Process"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/qualityControlProcessEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:ems="11"
+                            android:background="@drawable/textview_background"
+                            android:gravity="left|top"
+                            android:inputType="textMultiLine"
+                            android:lines="6" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_gravity="center_vertical"
+                            android:text="Staff Training Process"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/staffTrainingProcessEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:ems="11"
+                            android:background="@drawable/textview_background"
+                            android:gravity="left|top"
+                            android:inputType="textMultiLine"
+                            android:lines="6" />
+
+                    </RelativeLayout>
+
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <CheckBox
+                        android:id="@+id/emailPdfCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center_vertical"
+                        android:text="Email PDF ?"
+                        android:textSize="15sp"/>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Email"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/emailEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="15"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/textview_background"
+                            android:gravity="center" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <CheckBox
+                        android:id="@+id/waiveVisitationCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_centerVertical="true"
+                        android:text="Waive Visitation?"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+                        <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Waiver Comments"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                        <EditText
+                        android:id="@+id/waiverCommentsEditText"
+                        android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lines="4"
+                            android:layout_alignParentRight="true"
+                            android:ems="15"
+                        android:background="@drawable/textview_background"
+                        android:gravity="center" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Waiver Signature"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/waiversSignature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/blue_background_button"
+                            android:paddingRight="15dp"
+                            android:paddingLeft="15dp"
+                            android:text="Add Signature"
+                            android:textColor="@color/white"
+                            android:textSize="12dp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:padding="30dp"
+                app:cardElevation="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:text="Visitation Type"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <RadioGroup
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/annualVisitationType"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Annual" />
-
-                        <CheckBox
-                            android:id="@+id/quarterlyVisitationType"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Quarterly/Other" />
-
-                        <CheckBox
-                            android:id="@+id/adhocVisitationType"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ad Hoc" />
-                    </RadioGroup>
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:text="Date Of Visitation"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp">
 
                     <Button
-                        android:id="@+id/dateOfVisitationButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/transparent"
-                        android:clickable="false"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                        android:background="@drawable/grey_background_button"
+                    android:text="Cancel"
+                        android:layout_marginRight="10dp"
+                        />
 
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="Visitation Reason"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <Spinner
-                        android:id="@+id/visitationReasonDropListId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:entries="@array/visitation_reasons" />
-
-
-                </RelativeLayout>
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:text="Data Changes Made?"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <RadioGroup
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/dataChangedYesRadioButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Yes" />
-
-                        <RadioButton
-                            android:id="@+id/dataChangedNoRadioButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="No" />
-
-                    </RadioGroup>
-
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:text="Club Code"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/clubCodeEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/textview_background" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="Facility Number"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/facilityNumberEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/textview_background"
-                        android:gravity="center"
-                        android:textColor="@color/black" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="Facility Name"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/facilityNameEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/textview_background"
-                        android:textColor="@color/black" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="Facility Representative"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <Spinner
-                        android:id="@+id/facilityRepresentativesSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:tooltipText="please select a representative" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="Facility Representative's Signature"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/facilityRepresentativeSignatureButton"
+                        android:id="@+id/completeButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/transparent"
-                        android:text="Add Signature"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </RelativeLayout>
+                        android:background="@drawable/green_background_button"
+                        android:text="Save" />
 
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+                </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
 
 
 
-                </RelativeLayout>
-            </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-        </android.support.v7.widget.CardView>
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical">-->
 
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
 
-        <!--<TableLayout-->
-        <!--android:id="@+id/topTable"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
 
+            <!--<TableLayout-->
+            <!--android:id="@+id/topTable"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-        <!--<TableRow android:layout_marginTop="5dp">-->
 
 
-        <!--</TableRow>-->
+            <!--<TableRow android:layout_marginTop="5dp">-->
 
-        <!--<TableRow android:layout_marginTop="5dp">-->
 
+            <!--</TableRow>-->
 
-        <!--</TableRow>-->
 
-        <!--<TableRow android:layout_marginTop="5dp">-->
+            <!--<TableRow android:layout_marginTop="5dp">-->
 
 
-        <!--</TableRow>-->
+            <!--</TableRow>-->
 
-        <!--<TableRow android:layout_marginTop="5dp">-->
+            <!--<TableRow android:layout_marginTop="5dp">-->
 
 
-        <!--</TableRow>-->
+            <!--</TableRow>-->
 
+            <!--</TableLayout>-->
 
-        <!--<TableRow android:layout_marginTop="5dp">-->
 
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:orientation="horizontal">-->
 
-        <!--</TableRow>-->
+            <!--<Button-->
+            <!--android:id="@+id/completeButton"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Save" />-->
 
-        <!--<EditText-->
-        <!--android:id="@+id/textWatcherSignature"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="textWatcherSignature" />-->
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Automotive Specialist"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<Spinner-->
-        <!--android:id="@+id/automotiveSpecialistSpinner"-->
-        <!--android:layout_column="1"-->
-        <!--android:gravity="center" />-->
-        <!--</TableRow>-->
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Automotive Specialist's Signature"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<Button-->
-        <!--android:id="@+id/automotiveSpecialistSignature"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="1"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:background="@color/transparent"-->
-        <!--android:text="Add Signature"-->
-        <!--android:textColor="@color/blue"-->
-        <!--android:textSize="12dp" />-->
-        <!--</TableRow>-->
-
-
-        <!--<TableRow>-->
-
-        <!--<TableLayout-->
-        <!--android:id="@+id/deficienciesTableLayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_span="3"-->
-        <!--android:divider="@drawable/divider_table_layout"-->
-        <!--android:showDividers="middle|beginning|end"-->
-        <!--android:stretchColumns="*">-->
-
-        <!--<TableRow>-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:text="Deficiency"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="1"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:text="Inspection Date" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="2"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:text="Due Date" />-->
-        <!--</TableRow>-->
-
-        <!--</TableLayout>-->
-
-        <!--</TableRow>-->
-
-        <!--<TableRow>-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Facility Representative's Signature (Deficiencies)"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<Button-->
-        <!--android:id="@+id/automotiveSpecialistSignature"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="1"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:background="@color/transparent"-->
-        <!--android:text="Add Signature"-->
-        <!--android:textColor="@color/blue"-->
-        <!--android:textSize="12dp" />-->
-        <!--</TableRow>-->
-
-        <!--&lt;!&ndash;<TableRow android:layout_marginTop="5dp">&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_column="0"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:text="Vendor Revenue"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:textSize="15sp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:textStyle="bold" />&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<EditText&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/vendorRevenueEditText"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_column="1"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:background="@drawable/textview_background"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:enabled="false" />&ndash;&gt;-->
-        <!--&lt;!&ndash;</TableRow>&ndash;&gt;-->
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="AAR Sign"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/aarSignEditText"-->
-        <!--android:layout_column="1"-->
-        <!--android:background="@drawable/textview_background"-->
-        <!--android:gravity="center" />-->
-        <!--</TableRow>-->
-
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Certificate Of Approval"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/certificateOfApprovalEditText"-->
-        <!--android:layout_column="1"-->
-        <!--android:background="@drawable/textview_background"-->
-        <!--android:gravity="center" />-->
-        <!--</TableRow>-->
-
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Member Benefits Poster(s)"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/memberBenefitsPosterEditText"-->
-        <!--android:layout_column="1"-->
-        <!--android:background="@drawable/textview_background"-->
-        <!--android:gravity="center" />-->
-        <!--</TableRow>-->
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Quality Control Process"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/qualityControlProcessEditText"-->
-        <!--android:layout_column="1"-->
-        <!--android:background="@drawable/textview_background"-->
-        <!--android:gravity="left|top"-->
-        <!--android:inputType="textMultiLine"-->
-        <!--android:lines="6" />-->
-        <!--</TableRow>-->
-
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Staff Training Process"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/staffTrainingProcessEditText"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_column="1"-->
-        <!--android:background="@drawable/textview_background"-->
-        <!--android:gravity="left|top"-->
-        <!--android:inputType="textMultiLine"-->
-        <!--android:lines="6" />-->
-        <!--</TableRow>-->
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<CheckBox-->
-        <!--android:id="@+id/emailPdfCheckBox"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Email PDF ?"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--</TableRow>-->
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Email"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/emailEditText"-->
-        <!--android:layout_column="1"-->
-        <!--android:background="@drawable/textview_background"-->
-        <!--android:gravity="center" />-->
-        <!--</TableRow>-->
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<CheckBox-->
-        <!--android:id="@+id/waiveVisitationCheckBox"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Waive Visitation?"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-        <!--</TableRow>-->
-
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Waiver Comments"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/waiverCommentsEditText"-->
-        <!--android:layout_column="1"-->
-        <!--android:background="@drawable/textview_background"-->
-        <!--android:gravity="center" />-->
-        <!--</TableRow>-->
-
-        <!--<TableRow android:layout_marginTop="5dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="0"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:text="Waiver Signature"-->
-        <!--android:textSize="15sp"-->
-        <!--android:textStyle="bold" />-->
-
-        <!--<Button-->
-        <!--android:id="@+id/waiversSignature"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_column="1"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:background="@color/transparent"-->
-        <!--android:text="Add Signature"-->
-        <!--android:textColor="@color/blue"-->
-        <!--android:textSize="12dp" />-->
-        <!--</TableRow>-->
-
-        <!--</TableLayout>-->
-
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<Button-->
-        <!--android:id="@+id/completeButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Save" />-->
-
-        <!--<Button-->
-        <!--android:id="@+id/cancelButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Cancel" />-->
-        <!--</LinearLayout>-->
-        <!--</LinearLayout>-->
-
+            <!--<Button-->
+            <!--android:id="@+id/cancelButton"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Cancel" />-->
+            <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>
