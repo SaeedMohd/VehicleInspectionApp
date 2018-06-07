@@ -23,9 +23,9 @@ import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aaram_order_tracking.*
-import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -82,8 +82,9 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             }, year, month, day)
             dpd.show()
         }
-        fillAmendmentOrdersAndTrackingTableLayout();
-        fillNewEventTableLayout();
+        fillAmendmentOrdersAndTrackingTableLayout()
+        fillNewEventTableLayout()
+        prepareSpinnerEmployees()
         prepareSpinnerReasonTypes()
         prepareSpinnerEventsTypes()
         addNewEventButton.setOnClickListener(View.OnClickListener {
@@ -95,15 +96,64 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                         item.EventTypeID = fac.AmendmentEventID
 
                 }
+                for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
+                    if (eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
+                        for (fac2 in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
+                            if (fac2.EventTypeID.equals(fac.AmendmentEventID)){
 
-                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
-//                item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString()
-//                item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
-//                item.Comments=comments_editTextVal.text.toString()
+                                item.EventID=fac2.EventID
+                            }
+
+
+                        }
+
+
+                }
+                for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
+                    if (eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
+
+                        for (fac2 in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
+                            if (fac2.EventTypeID.equals(fac.AmendmentEventID)){
+
+                                item.AOID=fac2.AOID
+                            }
+
+
+                        }
+
+                }
+
+
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(item)
                 //  BuildProgramsList()
 
                 addTheLatestRowOfNewEventTableView()
+
+
+        })
+        addNewAarButton.setOnClickListener(View.OnClickListener {
+
+                var item = FacilityDataModel.TblAmendmentOrderTracking()
+                for (fac in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
+                    if (employeeDropDown.getSelectedItem().toString().equals(fac.AOTEmployee))
+
+                        item.AOID = fac.AOID
+
+                }
+
+                        item.AOTEmployee=employeeDropDown.getSelectedItem().toString()
+            for (fac in TypeTablesModel.getInstance().tblAmendmentOrderTrackingSubReasonsType) {
+                if (reasonDropDown.getSelectedItem().toString().equals(fac.AmendmentSubReasonName))
+
+                   item.ReasonID = fac.AmendmentSubReasonID
+
+            }
+
+
+                FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(item)
+                //  BuildProgramsList()
+
+            addTheLatestRowOfAmendmentAndTrackingTableView()
 
 
         })
@@ -132,6 +182,21 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, eventsTypesArray)
         reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventsDropDown.adapter = reasonAdapter
+
+
+    }
+    fun prepareSpinnerEmployees() {
+
+        var employeesArray=ArrayList<String>()
+
+        for (fac in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
+
+
+            employeesArray.add(fac.AOTEmployee)
+        }
+        var employeeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, employeesArray)
+        employeeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        employeeDropDown.adapter = employeeAdapter
 
 
     }
@@ -234,7 +299,11 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-              textView.text = ReasonID
+            for (fac in TypeTablesModel.getInstance().tblAmendmentOrderTrackingSubReasonsType) {
+                if (ReasonID.equals(fac.AmendmentSubReasonID))
+
+                    textView.text =fac.AmendmentSubReasonName
+            }
             tableRow.addView(textView)
 
 
@@ -283,7 +352,8 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                 TableRow.LayoutParams()
                textView.text = ""
                 tableRow.addView(textView)
-  textView = TextView(context)
+
+                textView = TextView(context)
                 textView.layoutParams = rowLayoutParam3
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
@@ -339,9 +409,9 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            //  textView.text = ReasonID
+              textView.text = ""
             tableRow.addView(textView)
-  textView = TextView(context)
+            textView = TextView(context)
             textView.layoutParams = rowLayoutParam3
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
