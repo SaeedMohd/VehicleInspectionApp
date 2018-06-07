@@ -212,6 +212,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
                 Response.Listener { response ->
+                    Log.v("****response", response)
                     activity!!.runOnUiThread(Runnable {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                         reloadVisitationsList()
@@ -259,13 +260,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             if (!visitationSpecialistName.text.contains("Select") && visitationSpecialistName.text.length > 1) {
                 with(parametersString) {
                     //TODO added to void specialist value until they let us know how we will use it
-                    //**********************
-//                        append("specialist=" + visitationSpecialistName.text)
-//                        append("&")
-                    //**********************
 
-                    append("specialist=")
-                    append("&")
+                        append("specialist=" + CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == visitationSpecialistName.text.toString() }[0].accspecid)
+                        append("&")
 
                 }
             }else{
@@ -664,7 +661,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int) {
         recordsProgressView.visibility = View.VISIBLE
-        if (TypeTablesModel.getInstance().AARDeficiencyType.size == 0) {
+//        if (TypeTablesModel.getInstance().AARDeficiencyType.size == 0) {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getTypeTables + "",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
@@ -708,32 +705,32 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
             }))
-        } else {
-            recordsProgressView.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
-                    Response.Listener { response ->
-                        Log.v("*****response = ", response)
-                        activity!!.runOnUiThread(Runnable {
-                            recordsProgressView.visibility = View.GONE
-                            if (!response.contains("FacID not found")) {
-                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                                var jsonObj = obj.getJSONObject("responseXml")
-                                parseFacilityDataJsonToObject(jsonObj)
-
-                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-                                startActivity(intent)
-                            } else {
-                                context!!.toast("Facility data not found")
-                            }
-                        })
-                    }, Response.ErrorListener {
-                recordsProgressView.visibility = View.GONE
-                context!!.toast("Connection Error.")
-                Log.v("error while loading", "error while loading facilities")
-                Log.v("Loading error", "" + it.message)
-            }))
-        }
+//        } else {
+//            recordsProgressView.visibility = View.VISIBLE
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
+//                    Response.Listener { response ->
+//                        Log.v("*****response = ", response)
+//                        activity!!.runOnUiThread(Runnable {
+//                            recordsProgressView.visibility = View.GONE
+//                            if (!response.contains("FacID not found")) {
+//                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+//                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+//                                var jsonObj = obj.getJSONObject("responseXml")
+//                                parseFacilityDataJsonToObject(jsonObj)
+//
+//                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+//                                startActivity(intent)
+//                            } else {
+//                                context!!.toast("Facility data not found")
+//                            }
+//                        })
+//                    }, Response.ErrorListener {
+//                recordsProgressView.visibility = View.GONE
+//                context!!.toast("Connection Error.")
+//                Log.v("error while loading", "error while loading facilities")
+//                Log.v("Loading error", "" + it.message)
+//            }))
+//        }
 
 
     }

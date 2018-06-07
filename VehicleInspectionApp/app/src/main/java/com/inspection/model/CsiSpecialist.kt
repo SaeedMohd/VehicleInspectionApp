@@ -6,5 +6,6 @@ package com.inspection.model
 
 class CsiSpecialist {
     var id = -1
+    var accspecid = ""
     var specialistname = ""
 }

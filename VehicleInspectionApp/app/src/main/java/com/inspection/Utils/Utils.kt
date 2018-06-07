@@ -33,8 +33,16 @@ fun String.apiToAppFormat(): String{
     return appFormat.format(apiFormat.parse(this.split("T")[0]))
 }
 
+fun String.appToApiFormat(): String{
+    return apiFormat.format(appFormat.parse(this))
+}
+
 fun Date.toAppFormat(): String{
     return appFormat.format(this)
+}
+
+fun Date.toApiFormat(): String{
+    return apiFormat.format(this)
 }
 
 fun Date.toDBFormat(): String{

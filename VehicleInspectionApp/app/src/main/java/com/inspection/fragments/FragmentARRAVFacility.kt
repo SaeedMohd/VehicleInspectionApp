@@ -393,17 +393,17 @@ class FragmentARRAVFacility : Fragment() {
         val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
         val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
         val automtiveRepairNo = if (ARDno_textviewVal.text.isNullOrEmpty())  "" else ARDno_textviewVal.text
-        val automtiveRepairExpDate = ARDexp_textviewVal.text.toString().appToDBFormat()
-        val contractCurrDate = currcodate_textviewVal.text.toString().appToDBFormat()
-        val contractInitDate = initcodate_textviewVal.text.toString().appToDBFormat()
+        val automtiveRepairExpDate = ARDexp_textviewVal.text.toString().appToApiFormat()
+        val contractCurrDate = currcodate_textviewVal.text.toString().appToApiFormat()
+        val contractInitDate = initcodate_textviewVal.text.toString().appToApiFormat()
         val internetAccess = if (wifi_textview.isChecked) "1" else "0"
         val webSite = if (website_textviewVal.text.isNullOrEmpty())  "" else website_textviewVal.text
-        val terminationDate = terminationDateButton.text.toString().appToDBFormat()
+        val terminationDate = terminationDateButton.text.toString().appToApiFormat()
         val terminationReasonID = TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID
         val terminationComments = if (terminationCommentEditText.text.isNullOrEmpty())  "" else terminationCommentEditText.text
-        val insertDate = Date().toDBFormat()
+        val insertDate = Date().toApiFormat()
         val insertBy ="sa"
-        val updateDate = Date().toDBFormat()
+        val updateDate = Date().toApiFormat()
         val updateBy ="sa"
         val activeVal = "0"
         val insuranceExpDate = InsuranceExpDate_textviewVal.text
@@ -414,20 +414,14 @@ class FragmentARRAVFacility : Fragment() {
         val clubCode ="004"
 
 
-        var urlString = facilityNo+"&clubcode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate.toString()+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
+        Log.v("*******parse", ""+automtiveRepairExpDate)
+        var urlString = facilityNo+"&clubcode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
         Log.v("Data To Submit", urlString)
-//        urlString = URLEncoder.encode(urlString, "UTF-8")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityGeneralInfo + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         Log.v("RESPONSE",response.toString())
-//                        facilitiesList = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList())
-//                        facilityNames.clear()
-//////                        for (fac in facilitiesList) {
-//////                            facilityNames.add(fac.businessname)
-//////                        }
-//////                        facilityNameListView.visibility = View.VISIBLE
-//////                        facilityNameListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
+
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading")
