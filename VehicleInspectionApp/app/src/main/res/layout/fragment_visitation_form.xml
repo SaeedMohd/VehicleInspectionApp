@@ -7,24 +7,6 @@
     android:background="@color/light_gray"
     tools:context=".fragments.FragmentAARAVComments">
 
-    <LinearLayout
-        android:id="@+id/facComments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="left"
-            android:layout_weight="8"
-            android:gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="Visitation"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -38,30 +20,36 @@
         android:paddingRight="10dp"
         android:paddingTop="5dp">
 
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:cardElevation="5dp">
 
 
-            <TableLayout
-                android:id="@+id/topTable"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:text="Visitation Type"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <RadioGroup
-                        android:layout_column="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:orientation="horizontal">
 
                         <CheckBox
@@ -82,16 +70,24 @@
                             android:layout_height="wrap_content"
                             android:text="Ad Hoc" />
                     </RadioGroup>
-                </TableRow>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
 
-                <TableRow android:layout_marginTop="5dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:text="Date Of Visitation"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -100,50 +96,67 @@
                         android:id="@+id/dateOfVisitationButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
+                        android:layout_alignParentRight="true"
                         android:background="@color/transparent"
+                        android:clickable="false"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
 
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow android:layout_marginTop="5dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
                         android:text="Visitation Reason"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <Spinner
+                        android:id="@+id/visitationReasonDropListId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:id="@+id/visitationReasonDropListId"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:entries="@array/visitation_reasons" />
 
 
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow android:layout_marginTop="5dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:text="Data Changes Made?"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <RadioGroup
-                        android:layout_column="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:orientation="horizontal">
 
                         <RadioButton
@@ -159,14 +172,23 @@
                             android:text="No" />
 
                     </RadioGroup>
-                </TableRow>
 
-                <TableRow android:layout_marginTop="5dp">
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:text="Club Code"
                         android:textSize="15sp"
@@ -176,76 +198,109 @@
                         android:id="@+id/clubCodeEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_column="1"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/textview_background" />
 
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow android:layout_marginTop="5dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
                         android:text="Facility Number"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/facilityNumberEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/textview_background"
                         android:gravity="center"
-                        android:textColor="@color/black"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background" />
-                </TableRow>
+                        android:textColor="@color/black" />
 
-                <TableRow android:layout_marginTop="5dp">
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
                         android:text="Facility Name"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/facilityNameEditText"
-                        android:layout_column="1"
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:background="@drawable/textview_background" />
-                </TableRow>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/textview_background"
+                        android:textColor="@color/black" />
 
-                <TableRow android:layout_marginTop="5dp">
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
                         android:text="Facility Representative"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/facilityRepresentativesSpinner"
-                        android:gravity="center"
-                        android:tooltipText="please select a representative"
-                        android:layout_column="1" />
-                </TableRow>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:tooltipText="please select a representative" />
 
+                </RelativeLayout>
 
-                <TableRow android:layout_marginTop="5dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
                         android:text="Facility Representative's Signature"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -254,357 +309,406 @@
                         android:id="@+id/facilityRepresentativeSignatureButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
                         android:background="@color/transparent"
                         android:text="Add Signature"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
-                </TableRow>
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="textWatcherSignature"
-                    android:id="@+id/textWatcherSignature"/>
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Automotive Specialist"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <Spinner
-                        android:id="@+id/automotiveSpecialistSpinner"
-                        android:gravity="center"
-                        android:layout_column="1" />
-                </TableRow>
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Automotive Specialist's Signature"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/automotiveSpecialistSignature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
-                        android:background="@color/transparent"
-                        android:text="Add Signature"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
+                </RelativeLayout>
 
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
-                    <TableLayout
-                        android:id="@+id/deficienciesTableLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="@drawable/divider_table_layout"
-                        android:stretchColumns="*"
-                        android:layout_span="3"
-                        android:showDividers="middle|beginning|end">
-
-                        <TableRow>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_column="0"
-                                android:layout_gravity="center"
-                                android:text="Deficiency"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_column="1"
-                                android:text="Inspection Date" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_column="2"
-                                android:text="Due Date" />
-                        </TableRow>
-
-                    </TableLayout>
-
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Facility Representative's Signature (Deficiencies)"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/automotiveSpecialistSignature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
-                        android:background="@color/transparent"
-                        android:text="Add Signature"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-
-                <!--<TableRow android:layout_marginTop="5dp">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="0"-->
-                        <!--android:layout_gravity="center_vertical"-->
-                        <!--android:text="Vendor Revenue"-->
-                        <!--android:textSize="15sp"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/vendorRevenueEditText"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:gravity="center"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:enabled="false" />-->
-                <!--</TableRow>-->
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="AAR Sign"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/aarSignEditText"
-                        android:layout_column="1"
-                        android:gravity="center"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
 
 
-                <TableRow android:layout_marginTop="5dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Certificate Of Approval"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/certificateOfApprovalEditText"
-                        android:layout_column="1"
-                        android:gravity="center"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Member Benefits Poster(s)"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/memberBenefitsPosterEditText"
-                        android:layout_column="1"
-                        android:gravity="center"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Quality Control Process"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/qualityControlProcessEditText"
-                        android:layout_column="1"
-                        android:gravity="left|top"
-                        android:lines="6"
-                        android:inputType="textMultiLine"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Staff Training Process"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:id="@+id/staffTrainingProcessEditText"
-                        android:layout_column="1"
-                        android:gravity="left|top"
-                        android:lines="6"
-                        android:inputType="textMultiLine"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <CheckBox
-                        android:id="@+id/emailPdfCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Email PDF ?"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                </TableRow>
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Email"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/emailEditText"
-                        android:layout_column="1"
-                        android:gravity="center"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <CheckBox
-                        android:id="@+id/waiveVisitationCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Waive Visitation?"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </TableRow>
-
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Waiver Comments"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/waiverCommentsEditText"
-                        android:layout_column="1"
-                        android:gravity="center"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-
-                <TableRow android:layout_marginTop="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_gravity="center_vertical"
-                        android:text="Waiver Signature"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/waiversSignature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
-                        android:background="@color/transparent"
-                        android:text="Add Signature"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-
-            </TableLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/completeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Save" />
-
-                <Button
-                    android:id="@+id/cancelButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel" />
+                </RelativeLayout>
             </LinearLayout>
-        </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+
+
+        <!--<TableLayout-->
+        <!--android:id="@+id/topTable"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+
+        <!--</TableRow>-->
+
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+
+        <!--</TableRow>-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/textWatcherSignature"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="textWatcherSignature" />-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Automotive Specialist"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<Spinner-->
+        <!--android:id="@+id/automotiveSpecialistSpinner"-->
+        <!--android:layout_column="1"-->
+        <!--android:gravity="center" />-->
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Automotive Specialist's Signature"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<Button-->
+        <!--android:id="@+id/automotiveSpecialistSignature"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="1"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@color/transparent"-->
+        <!--android:text="Add Signature"-->
+        <!--android:textColor="@color/blue"-->
+        <!--android:textSize="12dp" />-->
+        <!--</TableRow>-->
+
+
+        <!--<TableRow>-->
+
+        <!--<TableLayout-->
+        <!--android:id="@+id/deficienciesTableLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_span="3"-->
+        <!--android:divider="@drawable/divider_table_layout"-->
+        <!--android:showDividers="middle|beginning|end"-->
+        <!--android:stretchColumns="*">-->
+
+        <!--<TableRow>-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="Deficiency"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="1"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="Inspection Date" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="2"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="Due Date" />-->
+        <!--</TableRow>-->
+
+        <!--</TableLayout>-->
+
+        <!--</TableRow>-->
+
+        <!--<TableRow>-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Facility Representative's Signature (Deficiencies)"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<Button-->
+        <!--android:id="@+id/automotiveSpecialistSignature"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="1"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@color/transparent"-->
+        <!--android:text="Add Signature"-->
+        <!--android:textColor="@color/blue"-->
+        <!--android:textSize="12dp" />-->
+        <!--</TableRow>-->
+
+        <!--&lt;!&ndash;<TableRow android:layout_marginTop="5dp">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_column="0"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="Vendor Revenue"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textSize="15sp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textStyle="bold" />&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/vendorRevenueEditText"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_column="1"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:background="@drawable/textview_background"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:enabled="false" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</TableRow>&ndash;&gt;-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="AAR Sign"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/aarSignEditText"-->
+        <!--android:layout_column="1"-->
+        <!--android:background="@drawable/textview_background"-->
+        <!--android:gravity="center" />-->
+        <!--</TableRow>-->
+
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Certificate Of Approval"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/certificateOfApprovalEditText"-->
+        <!--android:layout_column="1"-->
+        <!--android:background="@drawable/textview_background"-->
+        <!--android:gravity="center" />-->
+        <!--</TableRow>-->
+
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Member Benefits Poster(s)"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/memberBenefitsPosterEditText"-->
+        <!--android:layout_column="1"-->
+        <!--android:background="@drawable/textview_background"-->
+        <!--android:gravity="center" />-->
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Quality Control Process"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/qualityControlProcessEditText"-->
+        <!--android:layout_column="1"-->
+        <!--android:background="@drawable/textview_background"-->
+        <!--android:gravity="left|top"-->
+        <!--android:inputType="textMultiLine"-->
+        <!--android:lines="6" />-->
+        <!--</TableRow>-->
+
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Staff Training Process"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/staffTrainingProcessEditText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_column="1"-->
+        <!--android:background="@drawable/textview_background"-->
+        <!--android:gravity="left|top"-->
+        <!--android:inputType="textMultiLine"-->
+        <!--android:lines="6" />-->
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<CheckBox-->
+        <!--android:id="@+id/emailPdfCheckBox"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Email PDF ?"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Email"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/emailEditText"-->
+        <!--android:layout_column="1"-->
+        <!--android:background="@drawable/textview_background"-->
+        <!--android:gravity="center" />-->
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<CheckBox-->
+        <!--android:id="@+id/waiveVisitationCheckBox"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Waive Visitation?"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+        <!--</TableRow>-->
+
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Waiver Comments"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/waiverCommentsEditText"-->
+        <!--android:layout_column="1"-->
+        <!--android:background="@drawable/textview_background"-->
+        <!--android:gravity="center" />-->
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_marginTop="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="0"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:text="Waiver Signature"-->
+        <!--android:textSize="15sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<Button-->
+        <!--android:id="@+id/waiversSignature"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_column="1"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@color/transparent"-->
+        <!--android:text="Add Signature"-->
+        <!--android:textColor="@color/blue"-->
+        <!--android:textSize="12dp" />-->
+        <!--</TableRow>-->
+
+        <!--</TableLayout>-->
+
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<Button-->
+        <!--android:id="@+id/completeButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Save" />-->
+
+        <!--<Button-->
+        <!--android:id="@+id/cancelButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Cancel" />-->
+        <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
 
     </ScrollView>
 </RelativeLayout>
