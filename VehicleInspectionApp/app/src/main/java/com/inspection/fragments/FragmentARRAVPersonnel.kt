@@ -7,15 +7,24 @@ import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.VolleyLog
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.inspection.MainActivity.Companion.activity
 
 import com.inspection.R
 import com.inspection.R.id.*
+import com.inspection.Utils.Constants
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.FacilityDataModel
@@ -23,6 +32,7 @@ import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
+import org.json.JSONObject
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,6 +69,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
     private val appFormat = SimpleDateFormat("dd MMM yyyy")
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
@@ -71,6 +82,16 @@ class FragmentARRAVPersonnel : Fragment() {
         preparePersonnelPage()
         fillPersonnelTableView()
         fillCertificationTableView()
+        rspUserId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName.toString())
+        rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
+
+        for (rspMan in FacilityDataModel.getInstance().tblPersonnel){
+
+            Toast.makeText(context,rspMan.RSP_Email.toString(),Toast.LENGTH_SHORT).show()
+
+        }
+
+
 
         if (newSignerCheck.isChecked==false) {
             newEmailText.isEnabled = false
@@ -161,59 +182,129 @@ class FragmentARRAVPersonnel : Fragment() {
 
         fillData()
 
-        addNewCertBtn.setOnClickListener({
-            var validProgram = true
+        submitNewCertBtn.setOnClickListener({
 
-            if (validProgram) {
-                var item = FacilityDataModel.TblPersonnel()
-                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
-                    if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
+            var CertificationTypeId= ""
+            for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+                if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
 
-                        item.CertificationTypeId =fac.PersonnelCertID
-                }
-
-                item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
-                item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
-                FacilityDataModel.getInstance().tblPersonnel.add(item)
-
-                addTheLatestRowOfPortalAdmin()
-
+                    CertificationTypeId =fac.PersonnelCertID
             }
+
+            var CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
+            var ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
+
+
+
+            var urlString=""
+            Log.v("Data To Submit", urlString)
+//        urlString = URLEncoder.encode(urlString, "UTF-8")
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityGeneralInfo + urlString,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            Log.v("RESPONSE",response.toString())
+
+
+
+                            var item = FacilityDataModel.TblPersonnel()
+                            for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+                                if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
+
+                                    item.CertificationTypeId =fac.PersonnelCertID
+                            }
+
+                            item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
+                            item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
+                            FacilityDataModel.getInstance().tblPersonnel.add(item)
+
+                            addTheLatestRowOfPortalAdmin()
+
+
+
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading certificate record")
+            }))
+
+
         })
-        addNewBtn.setOnClickListener({
-            var validProgram = true
+        submitNewPersnRecordBtn.setOnClickListener({
 
-            if (validProgram) {
-                var item = FacilityDataModel.TblPersonnel()
-                for (fac in TypeTablesModel.getInstance().PersonnelType) {
-                    if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+            if (validateInputs()){
 
-                        item.PersonnelTypeID =fac.PersonnelTypeID
-                }
 
-                item.FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
-                item.LastName=if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                item.CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
-                item.ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
-                item.PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
-                item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
-                item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
-                item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
-                FacilityDataModel.getInstance().tblPersonnel.add(item)
+            var PersonnelTypeId=""
 
-                addTheLatestRowOfPersonnelTable()
+            for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+
+                PersonnelTypeId =fac.PersonnelTypeID
+            }
+
+            var FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
+            var LastName=if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+            var RSP_UserName=FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName
+            var RSP_Email=FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email
+            var facNo=FacilityDataModel.getInstance().tblFacilities[0].FACNo
+            var CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+            var ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
+            var PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
+            var startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
+            var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
+            var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
+
+
+
+
+//        urlString = URLEncoder.encode(urlString, "UTF-8")
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=2276&clubCode=004&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate=2013-04-24T13:39:56.490&updateBy=SumA&updateDate=2017-03-23T11:11:08.997&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            Log.v("RESPONSE",response.toString())
+//
+                            var item = FacilityDataModel.TblPersonnel()
+                            for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                                if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+
+                                    item.PersonnelTypeID =fac.PersonnelTypeID
+                            }
+
+                            item.FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
+                            item.LastName=if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                            item.RSP_UserName=if (rspUserId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                            item.RSP_Email=if (rspEmailId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                            item.CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+                            item.ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
+                            item.PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
+                            item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
+                            item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
+                            item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
+                            FacilityDataModel.getInstance().tblPersonnel.add(item)
+
+                            addTheLatestRowOfPersonnelTable()
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading personnal record")
+            }))
+            }
+            else
+            {
+
+                Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
 
             }
+
+
         })
 
         onlyOneContractSignerLogic()
         onlyOneMailRecepientLogic()
         conractSignerCheckedCondition()
         saveButton.setOnClickListener(View.OnClickListener {
-            validateInputs()
         })
 
     }
+
 
     var isFirstRun: Boolean = true
 
@@ -865,6 +956,16 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
         rowLayoutParam7.column = 8
+
+        val rowLayoutParam9 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.column = 9
+
+        val rowLayoutParam10 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.column = 10
         var dateTobeFormated = ""
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
@@ -892,6 +993,20 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam3
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = get(it).RSP_UserName
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = get(it).RSP_Email
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam5
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 if (!(get(it).SeniorityDate.isNullOrEmpty())) {
                     textView.text = get(it).SeniorityDate.apiToAppFormat()
                 } else {
@@ -901,13 +1016,13 @@ class FragmentARRAVPersonnel : Fragment() {
                 tableRow.addView(textView)
 
                 textView = TextView(context)
-                textView.layoutParams = rowLayoutParam4
+                textView.layoutParams = rowLayoutParam6
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView.text = get(it).CertificationNum
                 tableRow.addView(textView)
 
                 textView = TextView(context)
-                textView.layoutParams = rowLayoutParam5
+                textView.layoutParams = rowLayoutParam7
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 if (!(get(it).startDate.isNullOrEmpty())) {
                     textView.text  = get(it).startDate.apiToAppFormat()
@@ -918,7 +1033,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 tableRow.addView(textView)
 
                 textView = TextView(context)
-                textView.layoutParams = rowLayoutParam6
+                textView.layoutParams = rowLayoutParam8
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 if (!(get(it).ExpirationDate.isNullOrEmpty())) {
                     textView.text = get(it).ExpirationDate.apiToAppFormat()
@@ -932,14 +1047,14 @@ class FragmentARRAVPersonnel : Fragment() {
                 var checkBox = CheckBox(context)
 
                 checkBox = CheckBox(context)
-                checkBox.layoutParams = rowLayoutParam7
+                checkBox.layoutParams = rowLayoutParam9
                 checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 checkBox.isChecked = (get(it).ContractSigner.equals("true"))
                 checkBox.isEnabled=false
                 tableRow.addView(checkBox)
 
                 checkBox = CheckBox(context)
-                checkBox.layoutParams = rowLayoutParam8
+                checkBox.layoutParams = rowLayoutParam10
                 checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 checkBox.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
                 checkBox.isEnabled=false
@@ -1098,6 +1213,12 @@ class FragmentARRAVPersonnel : Fragment() {
   val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam8.weight = 1F
         rowLayoutParam8.column = 8
+val rowLayoutParam9 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 9
+  val rowLayoutParam10 = TableRow.LayoutParams()
+        rowLayoutParam8.weight = 1F
+        rowLayoutParam8.column = 10
 
         FacilityDataModel.getInstance().tblPersonnel[FacilityDataModel.getInstance().tblPersonnel.size - 1].apply {
 
@@ -1126,6 +1247,22 @@ class FragmentARRAVPersonnel : Fragment() {
             TableRow.LayoutParams()
             textView.text = LastName
             tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = RSP_UserName
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = RSP_Email
+            tableRow.addView(textView)
+
+
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam3
@@ -1370,6 +1507,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
         return isInputValid
     }
+
+
 
 
 

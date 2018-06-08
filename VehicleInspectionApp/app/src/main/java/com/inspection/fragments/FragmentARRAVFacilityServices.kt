@@ -8,10 +8,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
@@ -86,10 +83,10 @@ class FragmentARRAVFacilityServices : Fragment() {
         servicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fc_services_textviewVal.adapter = servicesAdapter
 
-        addNewserviceButton.setOnClickListener({
-            var validProgram = true
+        submitNewserviceButton.setOnClickListener({
 
-            if (validProgram) {
+            if (validateInputs()){
+
                 var item = FacilityDataModel.TblFacilityServices()
                 for (fac in TypeTablesModel.getInstance().ServicesType) {
                     if (fc_services_textviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
@@ -103,9 +100,10 @@ class FragmentARRAVFacilityServices : Fragment() {
                 FacilityDataModel.getInstance().tblFacilityServices.add(item)
                 //  BuildProgramsList()
 
-                addTheLatestRowOfPortalAdmin()
-
+                addTheLatestRowOfPortalAdmin()}else {
+                Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
             }
+
         })
         fillPortalTrackingTableView();
 

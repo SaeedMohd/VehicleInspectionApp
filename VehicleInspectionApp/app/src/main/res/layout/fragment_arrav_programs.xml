@@ -69,11 +69,11 @@
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/addNewAarButton"
+                    android:id="@+id/submitNewProgramButton"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="Add Program"/>
+                    android:text="submit new Program"/>
                 <Button
                     android:id="@+id/editBtn"
                     android:layout_width="0dp"
@@ -214,17 +214,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/saveProgramBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="save"/>
-                <Button
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="cancel"/>
 
 
                 </LinearLayout>

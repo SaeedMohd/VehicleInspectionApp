@@ -219,11 +219,11 @@
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/affaddBtn"
+                    android:id="@+id/submitNewAffil"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="Add"/>
+                    android:text="submit new affliation"/>
                 <Button
                     android:id="@+id/affeditBtn"
                     android:layout_width="0dp"

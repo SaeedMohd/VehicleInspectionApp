@@ -146,6 +146,55 @@
                     android:background="@null"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="4"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/connumberll">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Labor Rate Matrix Min ($): "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/laborRateMatrixMinEditText"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="12dp"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:layout_gravity="center_vertical"
+                    android:hint="Please enter Min rate"
+                    android:background="@null"
+                    android:layout_height="wrap_content" />
+
+                        <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Labor Rate Matrix Max ($): "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/laborRateMatrixMaxEditText"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:textSize="12dp"
+                    android:hint="Please enter Max rate"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <!--<LinearLayout-->
                 <!--android:layout_width="fill_parent"-->

@@ -17,6 +17,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.toDate
 import com.inspection.Utils.toast
 import com.inspection.model.AAAFacilityPrograms
 import com.inspection.model.AAAProgramTypes
@@ -25,6 +26,8 @@ import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -42,6 +45,8 @@ class FragmentARRAVPrograms : Fragment() {
     private var programTypesList = ArrayList<AAAProgramTypes>()
     private var facilityProgramsList = ArrayList<AAAFacilityPrograms>()
 
+    var dateOne = ""
+    var dateTwo= ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +71,12 @@ class FragmentARRAVPrograms : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
+                val myFormat2 = "dd MM yyyy" // mention the format you need
+                val sdf2 = SimpleDateFormat(myFormat2, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
                 effective_date_textviewVal!!.text = sdf.format(c.time)
+                dateOne = sdf2.format(c.time)
+
             }, year, month, day)
             dpd.show()
         }
@@ -81,19 +90,57 @@ class FragmentARRAVPrograms : Fragment() {
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
+                val myFormat3 = "dd MM yyyy" // mention the format you need
+                val sdf3 = SimpleDateFormat(myFormat3, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
                 expiration_date_textviewVal!!.text = sdf.format(c.time)
+                dateTwo = sdf3.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        addNewAarButton.setOnClickListener({
+        submitNewProgramButton.setOnClickListener({
+
+            if (validateInputs()){
             var validProgram = true
-            for (fac in facilityProgramsList) {
-                if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
-                    context!!.toast("Program Name cannot be duplicated")
-                    validProgram=false
-                }
+                var datesTest=0
+                var  effectiveDateToInt= 0
+                var  expirationDateToInt= 0
+
+                var item = FacilityDataModel.TblPrograms()
+
+                    for (fac in TypeTablesModel.getInstance().ProgramsType) {
+                    if (program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName)){
+                    //   Toast.makeText(context,"spinner match",Toast.LENGTH_SHORT).show()
+
+
+                            for (item1 in FacilityDataModel.getInstance().tblPrograms)
+                        if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
+                       //   datesTest = effective_date_textviewVal.text.toString().toInt()
+                           // Log.v("date value", effective_date_textviewVal.text.toString())
+                            var dateTime =dateOne.toDate()
+
+                          //  Toast.makeText(context,dateOne,Toast.LENGTH_SHORT).show()
+
+
+                            //  Toast.makeText(context,"program type cannot be duplicated",Toast.LENGTH_SHORT).show()
+
+
+
+
+
+                            validProgram = false
+                      }else{
+                  //          Toast.makeText(context,"no duplication in programs",Toast.LENGTH_SHORT).show()
+                      }
+
+                    }else{
+                //        Toast.makeText(context,"spinner doesnt match",Toast.LENGTH_SHORT).show()
+
+                    }
+
+
+
             }
             if (validProgram) {
                 var item = FacilityDataModel.TblPrograms()
@@ -113,6 +160,8 @@ class FragmentARRAVPrograms : Fragment() {
 
                 addTheLatestRowOfPortalAdmin()
 
+            }}else{
+                Toast.makeText(context,"please fill all required fields",Toast.LENGTH_SHORT).show()
             }
         })
 //
@@ -169,6 +218,7 @@ class FragmentARRAVPrograms : Fragment() {
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading facility programs")
             context!!.toast("Error loading Facility Program. Please check your internet connectivity")
+
         }))
 
     }

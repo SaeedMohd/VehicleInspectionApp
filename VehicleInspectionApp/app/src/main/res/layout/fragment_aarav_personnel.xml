@@ -90,7 +90,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Seniority Date"
+                        android:text="RSP User ID"
                         android:textStyle="bold"
                         android:layout_column="3"
                         android:layout_weight="1"
@@ -99,7 +99,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cert ID#"
+                        android:text="Email Address"
                         android:textStyle="bold"
                         android:layout_column="4"
                         android:layout_weight="1"
@@ -108,7 +108,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Start Date"
+                        android:text="Seniority Date"
                         android:textStyle="bold"
                         android:layout_column="5"
                         android:layout_weight="1"
@@ -117,7 +117,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="End Date"
+                        android:text="Cert ID#"
                         android:textStyle="bold"
                         android:layout_column="6"
                         android:layout_weight="1"
@@ -126,7 +126,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Contract Signer"
+                        android:text="Start Date"
                         android:textStyle="bold"
                         android:layout_column="7"
                         android:layout_weight="1"
@@ -135,9 +135,27 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Primary Mail Recipient"
+                        android:text="End Date"
                         android:textStyle="bold"
                         android:layout_column="8"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contract Signer"
+                        android:textStyle="bold"
+                        android:layout_column="9"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Primary Mail Recipient"
+                        android:textStyle="bold"
+                        android:layout_column="10"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
@@ -147,8 +165,8 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add New Personnel"
-                android:id="@+id/addNewBtn"
+                android:text="submit New Personnel"
+                android:id="@+id/submitNewPersnRecordBtn"
                 />
 
             <TableLayout
@@ -642,8 +660,8 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add New Certification"
-                android:id="@+id/addNewCertBtn"
+                android:text="submit New Certification"
+                android:id="@+id/submitNewCertBtn"
                 />
             <TableLayout
 

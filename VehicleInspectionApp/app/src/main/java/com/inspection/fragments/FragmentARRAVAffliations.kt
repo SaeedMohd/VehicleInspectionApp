@@ -143,7 +143,7 @@ class FragmentARRAVAffliations : Fragment() {
             dpd.show()
         }
 
-        affaddBtn.setOnClickListener({
+        submitNewAffil.setOnClickListener({
             var validAffType = true
             for (fac in facilityAffList) {
                 if (fac.typename.equals(affiliations_textviewVal.selectedItem.toString())){

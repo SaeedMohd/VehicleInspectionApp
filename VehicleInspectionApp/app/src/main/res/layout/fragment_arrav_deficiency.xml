@@ -123,8 +123,8 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add New Deficiency"
-                android:id="@+id/addNewBtn"
+                android:text="submit New Deficiency"
+                android:id="@+id/submitNewDeffNewBtn"
                 />
 
             <TableLayout
@@ -172,19 +172,57 @@
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
                 </TableRow>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Facility Representative's Signature"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+
+                    <Button
+                        android:layout_weight="1"
+                        android:id="@+id/facilityRepresentativeSignatureButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/blue_background_button"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="Add Signature"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+                    <Button
+                        android:layout_weight="1"
+                        android:id="@+id/signatureDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
                 <TableRow>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Entered Date:*"
-                        android:textStyle="bold"
-                        android:layout_column="0"
                         android:layout_margin="5dp"
+                        android:text="Cleared Date:*"
+                        android:layout_column="0"
+                        android:textStyle="bold"
                         />
-
                     <Button
-                        android:id="@+id/newEnteredDateBtn"
+                        android:id="@+id/newClearedDateBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -193,27 +231,8 @@
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Cleared Date:*"
-                        android:layout_column="4"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newClearedDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="5"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
                 </TableRow>
-                <TableRow>
+                <LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -222,15 +241,19 @@
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
-                <Spinner
-                    android:id="@+id/newCommentSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ems="8"
-                    android:layout_column="1"
-                    />
-                </TableRow>
+                    <EditText
+                        android:id="@+id/comments_editTextVal"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/AssignedToll"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/item_solid_border"
+                        android:layout_height="wrap_content"
+                        android:maxEms="250"
+                        android:lines="3"
+                        android:layout_column="1"
+
+                        />
+                </LinearLayout>
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
@@ -280,17 +303,6 @@
                 android:layout_centerHorizontal="true"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/saveButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Save" />
-
-                <Button
-                    android:id="@+id/cancelButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel" />
             </LinearLayout>
         </LinearLayout>
 

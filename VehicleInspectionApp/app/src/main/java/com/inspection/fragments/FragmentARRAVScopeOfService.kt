@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -64,22 +65,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
 
 
-
-        saveBtnId.setOnClickListener {
-
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateScopeofServiceData ,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-
-
-                        })
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading ")
-                context!!.toast("Error loading  Please check your internet connectivity")
-            }))
-
-
-        }
+        saveBtnPressed()
 //        prepareScopePage()
         setFields()
     }
@@ -125,16 +111,42 @@ class FragmentARRAVScopeOfService : Fragment() {
 //            }))
 //    }
 
+    fun saveBtnPressed(){
+
+
+        saveBtnId.setOnClickListener(View.OnClickListener {
+
+            if (validateInputs()){
+
+                var fixedLaborRate=fixedLaborRateEditText.text.toString()
+                var diagnosticLaborRate=diagnosticRateEditText.text.toString()
+                var laborRateMatrixMax=laborRateMatrixMaxEditText.text.toString()
+                var laborRateMatrixMin=laborRateMatrixMinEditText.text.toString()
+                var numberOfBaysEditText=numberOfBaysEditText.text.toString()
+                var numberOfLiftsEditText=numberOfLiftsEditText.text.toString()
+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=2276&clubCode=004&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("RESPONSE",response.toString())
+//
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading personnal record")
+                }))
+            }
+        })
+    }
+
     fun validateInputs() : Boolean {
         var isInputsValid = true
 
         fixedLaborRateEditText.setError(null)
         diagnosticRateEditText.setError(null)
-        //commented out code below cuz i commented out the refrenced view from xml cuz
-        // i cant find the refrenced this view in the pdf > sherif yousry
 
-     //   laborRateMatrixMaxEditText.setError(null)
-      //  laborRateMatrixMinEditText.setError(null)
+        laborRateMatrixMaxEditText.setError(null)
+        laborRateMatrixMinEditText.setError(null)
 
 
         if(fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
@@ -147,18 +159,16 @@ class FragmentARRAVScopeOfService : Fragment() {
             diagnosticRateEditText.setError("Required Field")
         }
 
-        //commented out code below cuz i commented out the refrenced view from xml cuz
-        // i cant find the refrenced this view in the pdf > sherif yousry
 
-//        if(laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
-//            isInputsValid=false
-//            laborRateMatrixMaxEditText.setError("Required Field")
-//        }
+        if(laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            laborRateMatrixMaxEditText.setError("Required Field")
+        }
 
-//        if(laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
-//            isInputsValid=false
-//            laborRateMatrixMinEditText.setError("Required Field")
-//        }
+        if(laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            laborRateMatrixMinEditText.setError("Required Field")
+        }
 
 
         return isInputsValid

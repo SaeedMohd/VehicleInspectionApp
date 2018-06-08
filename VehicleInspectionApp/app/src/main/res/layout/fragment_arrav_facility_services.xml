@@ -70,11 +70,11 @@
             android:layout_marginLeft="20dp"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/addNewserviceButton"
+                android:id="@+id/submitNewserviceButton"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:text="Add service"/>
+                android:text="submit new service"/>
             <Button
                 android:id="@+id/editBtn"
                 android:layout_width="0dp"
