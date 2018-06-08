@@ -20,6 +20,8 @@ import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.R.id.*
 import com.inspection.Utils.*
+import com.inspection.model.CsiSpecialist
+import com.inspection.model.CsiSpecialistSingletonModel
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
@@ -72,9 +74,21 @@ class FragmentARRAVFacility : Fragment() {
     private var termReasonList = ArrayList<TypeTablesModel.terminationCodeType>()
     private var termReasonArray = ArrayList<String>()
 
+//    private var assignedToList = ArrayList<CsiSpecialist>()
+//    private var assignedToArray = ArrayList<String>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Fill Dop Down
+//        assignedToArray.clear()
+//        (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
+//            assignedToArray.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
+//        }
+//        assignedToArray.sort()
+//
+//        var assignToAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, termReasonArray)
+//        assignToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        assignedto_textviewVal.adapter = assignToAdapter
 
         termReasonList = TypeTablesModel.getInstance().TerminationCodeType
         termReasonArray .clear()
@@ -412,14 +426,18 @@ class FragmentARRAVFacility : Fragment() {
         val billingAmount = FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toString()
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode ="004"
-
+        FacilityDataModel.getInstance().tblFacilities[0]
         var urlString = facilityNo+"&clubcode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
         Log.v("Data To Submit", urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         Log.v("RESPONSE",response.toString())
-
+                        FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timezone_textviewVal.selectedItem.toString()
+                        FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount =  facRepairCnt.toString().toInt()
+                        FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability.toInt()
+                        FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
+                        FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading")

@@ -341,17 +341,15 @@
                         android:layout_marginTop="10dp"
                         android:text="Assigned To: "
                         android:textStyle="bold" />
-
                     <TextView
                         android:id="@+id/assignedto_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/officell"
+                        android:layout_below="@id/AssignedToll"
                         android:layout_column="1"
                         android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/assignedto_textview"
-                        android:text="test" />
-
+                        android:layout_toRightOf="@id/dba_textview"
+                        android:text="" />
                 </TableRow>
 
                 <TableRow>

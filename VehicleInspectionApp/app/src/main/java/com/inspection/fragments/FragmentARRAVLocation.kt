@@ -17,6 +17,7 @@ import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.AAALocations
+import com.inspection.model.CsiSpecialist
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
@@ -267,6 +268,11 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
+        if (phoneTbl.childCount>1) {
+            for (i in phoneTbl.childCount - 1 downTo 1) {
+                phoneTbl.removeViewAt(i)
+            }
+        }
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
@@ -302,12 +308,15 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
-
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
-
+        if (emailTbl.childCount>1) {
+            for (i in emailTbl.childCount - 1 downTo 1) {
+                emailTbl.removeViewAt(i)
+            }
+        }
 
         FacilityDataModel.getInstance().tblFacilityEmail.apply {
             (0 until size).forEach {
@@ -337,6 +346,11 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
+        if (locationTbl.childCount>1) {
+            for (i in locationTbl.childCount - 1 downTo 1) {
+                locationTbl.removeViewAt(i)
+            }
+        }
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
@@ -477,19 +491,25 @@ class FragmentARRAVLocation : Fragment() {
     fun submitFacilityEmail(){
         val emailTypeID = TypeTablesModel.getInstance().EmailType.filter { s -> s.EmailName==newEmailTypeSpinner.selectedItem.toString()}[0].EmailID
         val email = if (newEmailAddrText.text.isNullOrEmpty())  "" else newEmailAddrText.text
-        val insertDate = "2017-04-24T13:39:51.700"//Date().toDBFormat()
+        val insertDate = Date().toApiSubmitFormat()
         val insertBy ="sa"
-        val updateDate = "2017-04-24T13:39:51.700"//Date().toDBFormat()
+        val updateDate = Date().toApiSubmitFormat()
         val updateBy ="sa"
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode ="004"
+
+        val newEmail = FacilityDataModel.TblFacilityEmail()
+        newEmail.email = email.toString()
+        newEmail.emailTypeId = emailTypeID
         var urlString = facilityNo+"&clubcode="+clubCode+"&emailTypeId="+emailTypeID+"&email="+email+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
         Log.v("Data To Submit", urlString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityEmail + urlString,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         Log.v("RESPONSE",response.toString())
+                        FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
+                        fillEmailTableView()
                     })
                 }, Response.ErrorListener {
             Log.v("error while submitting", it.message)
@@ -515,16 +535,30 @@ class FragmentARRAVLocation : Fragment() {
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode ="004"
-        var urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locTypeID+"&FAC_Addr1="+address1Text+"&FAC_Addr2="+address2Text+"&CITY="+cityText+"&ST=CA&ZIP="+zipText+"&ZIP4=&Country="+countryText+"&BranchName="+branchNameText+"&BranchNumber="+branchNoText+"&LATITUDE="+latText+"&LONGITUDE="+longText+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
-        Log.v("Data To Submit", urlString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityAddress + urlString,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        Log.v("RESPONSE",response.toString())
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while submitting", it.message)
-        }))
+        val newLocation = FacilityDataModel.TblAddress()
+        newLocation.BranchName = branchNameText.toString()
+        newLocation.BranchNumber = branchNoText.toString()
+        newLocation.CITY = cityText.toString()
+        newLocation.County = countryText.toString()
+        newLocation.FAC_Addr1 = address1Text.toString()
+        newLocation.FAC_Addr2 = address2Text.toString()
+        newLocation.LATITUDE = latText.toString()
+        newLocation.LONGITUDE = longText.toString()
+        newLocation.LocationTypeID = locTypeID
+        newLocation.ST = "CA"
+        newLocation.ZIP = zipText.toString()
+        newLocation.ZIP4 = ""
+        FacilityDataModel.getInstance().tblAddress.add(newLocation)
+//        var urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locTypeID+"&FAC_Addr1="+address1Text+"&FAC_Addr2="+address2Text+"&CITY="+cityText+"&ST=CA&ZIP="+zipText+"&ZIP4=&Country="+countryText+"&BranchName="+branchNameText+"&BranchNumber="+branchNoText+"&LATITUDE="+latText+"&LONGITUDE="+longText+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
+//        Log.v("Data To Submit", urlString)
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityAddress + urlString,
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        Log.v("RESPONSE",response.toString())
+//                    })
+//                }, Response.ErrorListener {
+//            Log.v("error while submitting", it.message)
+//        }))
     }
 
     fun submitFacilityPhone(){
@@ -537,16 +571,20 @@ class FragmentARRAVLocation : Fragment() {
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode ="004"
-        var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId="
-        Log.v("Data To Submit", urlString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityEmail + urlString,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        Log.v("RESPONSE",response.toString())
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while submitting", "Email Details")
-        }))
+        val newPhone = FacilityDataModel.TblPhone()
+        newPhone.PhoneNumber = phoneNo.toString()
+        newPhone.PhoneTypeID= phoneTypeID
+        FacilityDataModel.getInstance().tblPhone.add(newPhone)
+//        var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId="
+//        Log.v("Data To Submit", urlString)
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityEmail + urlString,
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        Log.v("RESPONSE",response.toString())
+//                    })
+//                }, Response.ErrorListener {
+//            Log.v("error while submitting", "Email Details")
+//        }))
     }
 
 
