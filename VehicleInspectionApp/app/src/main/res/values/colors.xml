@@ -8,6 +8,7 @@
     <color name="dark_gray">#606060</color>
     <color name="gray">#A2A2A2</color>
     <color name="light_gray">#D7D7D7</color>
+    <color name="table_row_color">#f5f7fc</color>
     <color name="blue">#1FCECB</color>
     <color name="blue_krayola">#1F75FE</color>
     <color name="green">#49C566</color>

@@ -39,8 +39,9 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -88,7 +89,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -106,6 +108,7 @@
                             android:layout_height="30dp"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/blue_background_button"
+                            android:layout_centerVertical="true"
                             android:clickable="false"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
@@ -122,7 +125,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -139,7 +143,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:entries="@array/visitation_reasons" />
+                            android:tooltipText="Please Select Reason"/>
 
 
                     </RelativeLayout>
@@ -152,7 +156,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
 
@@ -195,7 +200,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -214,7 +220,8 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:background="@drawable/textview_background"
-                            android:ems="20" />
+                            android:ems="20"
+                            android:padding="5dp" />
 
                     </RelativeLayout>
 
@@ -225,7 +232,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -244,7 +252,8 @@
                             android:layout_centerVertical="true"
                             android:background="@drawable/textview_background"
                             android:ems="20"
-                            android:gravity="center"
+                            
+                            android:padding="5dp"
                             android:textColor="@color/black" />
 
                     </RelativeLayout>
@@ -256,7 +265,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -275,6 +285,7 @@
                             android:layout_centerVertical="true"
                             android:background="@drawable/textview_background"
                             android:ems="20"
+                            android:padding="5dp"
                             android:textColor="@color/black" />
 
                     </RelativeLayout>
@@ -286,7 +297,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -314,7 +326,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -346,7 +359,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -363,7 +377,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:gravity="center" />
+                             />
 
                     </RelativeLayout>
 
@@ -375,7 +389,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -426,15 +441,16 @@
                         android:layout_span="3"
                         android:divider="@drawable/divider_table_layout"
                         android:showDividers="middle|beginning|end"
+
                         android:stretchColumns="*">
 
-                        <TableRow android:background="@color/mainColor">
+                        <TableRow android:background="@color/mainColor"
+                            android:padding="5dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
                                 android:layout_column="0"
-                                android:layout_gravity="center"
                                 android:gravity="center_vertical"
                                 android:text="Deficiency"
                                 android:textColor="@color/white"
@@ -444,19 +460,18 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
                                 android:layout_column="1"
-                                android:layout_gravity="center"
                                 android:gravity="center_vertical"
                                 android:text="Inspection Date"
+                                android:textStyle="bold"
                                 android:textColor="@color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
                                 android:layout_column="2"
-                                android:layout_gravity="center"
                                 android:gravity="center_vertical"
                                 android:text="Due Date"
-
+                                android:textStyle="bold"
                                 android:textColor="@color/white" />
                         </TableRow>
 
@@ -469,7 +484,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -483,7 +499,7 @@
                         <Button
                             android:id="@+id/automotiveSpecialistSignature"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="30dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:background="@drawable/blue_background_button"
@@ -511,7 +527,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -530,7 +547,8 @@
                             android:layout_centerVertical="true"
                             android:background="@drawable/textview_background"
                             android:ems="20"
-                            android:gravity="center" />
+                            
+                            android:padding="5dp" />
 
                     </RelativeLayout>
 
@@ -542,7 +560,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -557,11 +576,12 @@
                             android:id="@+id/certificateOfApprovalEditText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
                             android:background="@drawable/textview_background"
                             android:ems="20"
-                            android:gravity="center" />
+                            
+                            android:padding="5dp" />
 
                     </RelativeLayout>
 
@@ -572,7 +592,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -591,7 +612,8 @@
                             android:layout_centerVertical="true"
                             android:background="@drawable/textview_background"
                             android:ems="20"
-                            android:gravity="center" />
+                            
+                            android:padding="5dp" />
 
                     </RelativeLayout>
 
@@ -603,7 +625,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -624,7 +647,8 @@
                             android:ems="20"
                             android:gravity="left|top"
                             android:inputType="textMultiLine"
-                            android:lines="6" />
+                            android:lines="6"
+                            android:padding="5dp" />
 
                     </RelativeLayout>
 
@@ -635,14 +659,13 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_gravity="center_vertical"
                             android:text="Staff Training Process"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -656,7 +679,8 @@
                             android:ems="20"
                             android:gravity="left|top"
                             android:inputType="textMultiLine"
-                            android:lines="6" />
+                            android:lines="6"
+                            android:padding="5dp" />
 
                     </RelativeLayout>
 
@@ -668,7 +692,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <CheckBox
@@ -689,7 +714,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -707,7 +733,8 @@
                             android:layout_alignParentRight="true"
                             android:background="@drawable/textview_background"
                             android:ems="20"
-                            android:gravity="center" />
+                            
+                            android:padding="5dp" />
 
                     </RelativeLayout>
 
@@ -718,7 +745,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <CheckBox
@@ -740,7 +768,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="100dp"
                         android:padding="10dp">
 
                         <TextView
@@ -757,8 +785,8 @@
                             android:layout_alignParentRight="true"
                             android:background="@drawable/textview_background"
                             android:ems="20"
-                            android:gravity="center"
-                            android:lines="4" />
+                            android:lines="4"
+                            android:padding="5dp" />
                     </RelativeLayout>
 
                     <View
@@ -768,7 +796,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
                         android:padding="10dp">
 
                         <TextView
@@ -782,8 +811,9 @@
                         <Button
                             android:id="@+id/waiversSignature"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="30dp"
                             android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
                             android:background="@drawable/blue_background_button"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
@@ -814,7 +844,8 @@
                     <Button
                         android:id="@+id/cancelButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="25dp"
+                        android:textColor="@color/white"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/grey_background_button"
                         android:text="Cancel" />
@@ -823,7 +854,8 @@
                     <Button
                         android:id="@+id/completeButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="25dp"
+                        android:textColor="@color/white"
                         android:background="@drawable/green_background_button"
                         android:text="Save" />
 

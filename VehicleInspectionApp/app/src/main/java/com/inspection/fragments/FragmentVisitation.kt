@@ -1,8 +1,10 @@
 package com.inspection.fragments
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +22,9 @@ import kotlin.collections.ArrayList
 import android.text.Editable
 import android.text.TextUtils
 import android.util.Patterns
+import android.view.Gravity
+import androidx.core.view.setPadding
+import com.inspection.R.id.deficienciesTableLayout
 
 
 /**
@@ -47,15 +52,14 @@ var emailValid=true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//quarterlyVisitationType
-        //adhocVisitationType
+
             annualVisitationType.isClickable=false
 
            quarterlyVisitationType.isClickable=false
 
             adhocVisitationType.isClickable=false
         dataChangedYesRadioButton.isClickable=false
-            adhocVisitationType.isClickable=false
+
 
 
         dateOfVisitationButton.isClickable=false
@@ -67,6 +71,9 @@ var emailValid=true
 
 
         setFieldsValues()
+
+        visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons))
+
 
 //            textWatcherSignature.setText(facilityRepresentativesSpinner.selectedItem.toString())
 
@@ -107,15 +114,15 @@ var emailValid=true
 
         }
 
-        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, representativeSpinners)
+        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, representativeSpinners)
 
 
 
       //  context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
 
-        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map {s -> s.specialistname})
+        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map {s -> s.specialistname})
 
-        adhocVisitationType.isChecked = true
+        annualVisitationType.isChecked = true
 
         dateOfVisitationButton.text = Date().toAppFormat()
 
@@ -283,19 +290,14 @@ var emailValid=true
 
     }
     private fun fillDeficiencyTable(){
-        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.height = 40
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
 
-        val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
-        rowLayoutParam1.column = 1
-
-        val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 2
+        var tableRowColorSwitch = false
 
 
         FacilityDataModel.getInstance().tblDeficiency.apply {
@@ -303,22 +305,33 @@ var emailValid=true
             (0 until size).forEach {
                 var tableRow = TableRow(context)
 
+                if (tableRowColorSwitch){
+                    tableRow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.table_row_color))
+                }else{
+                    tableRow.setBackgroundColor(Color.WHITE)
+                }
+
+                tableRowColorSwitch = !tableRowColorSwitch //Switching smartly :)
+
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView.text = get(it).Comments
+                textView.setPadding(5)
+                textView.gravity = Gravity.CENTER_VERTICAL
                 tableRow.addView(textView)
 
                 textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
+                textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView.text = get(it).VisitationDate
+                textView.gravity = Gravity.CENTER_VERTICAL
                 tableRow.addView(textView)
 
                 textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
+                textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ClearedDate
                 tableRow.addView(textView)
 
