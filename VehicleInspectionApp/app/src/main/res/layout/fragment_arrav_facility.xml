@@ -722,7 +722,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="2"
                         android:layout_gravity="center"
-                        android:text="Inspection Monthn:"
+                        android:text="Inspection Month:"
                         android:textStyle="bold" />
 
                     <Spinner

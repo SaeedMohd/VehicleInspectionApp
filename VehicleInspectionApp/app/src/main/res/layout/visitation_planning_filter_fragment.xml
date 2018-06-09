@@ -89,6 +89,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="20dp"
                     android:layout_weight="5"
+                    android:textSize="12sp"
+                    android:lines="1"
                     android:background="@drawable/textview_background"
                     android:drawableRight="@drawable/downarrow"
                     android:focusable="false"
@@ -111,6 +113,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="5"
+                    android:textSize="12sp"
                     android:background="@drawable/textview_background"
                     android:drawableRight="@drawable/downarrow"
                     android:focusable="false"
@@ -133,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
-            android:paddingLeft="20dp"
+
             android:paddingRight="20dp">
 
             <TextView
@@ -174,19 +177,29 @@
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/visitationYearTextView" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp">
+
             <CheckBox
                 android:id="@+id/annualVisitationCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
                 android:checked="true"
-                android:text="Annual Visitations" />
+                android:text="Annual\nVisitations" />
 
             <CheckBox
                 android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
                 android:checked="true"
                 android:text="Quarterly" />
 
@@ -194,14 +207,16 @@
                 android:id="@+id/adHocVisitationsCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
-                android:text="Ad Hoc Visitations" />
+                android:text="AdHoc\nVisitations" />
 
             <CheckBox
                 android:id="@+id/deficienciesCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
                 android:checked="true"
                 android:text="Deficiences" />
 
@@ -210,6 +225,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
                 android:checked="true"
                 android:text="Pending" />
 
@@ -217,6 +233,7 @@
                 android:id="@+id/completedCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
                 android:text="Completed" />
 

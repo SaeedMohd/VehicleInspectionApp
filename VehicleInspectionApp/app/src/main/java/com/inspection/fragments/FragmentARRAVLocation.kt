@@ -491,9 +491,9 @@ class FragmentARRAVLocation : Fragment() {
     fun submitFacilityEmail(){
         val emailTypeID = TypeTablesModel.getInstance().EmailType.filter { s -> s.EmailName==newEmailTypeSpinner.selectedItem.toString()}[0].EmailID
         val email = if (newEmailAddrText.text.isNullOrEmpty())  "" else newEmailAddrText.text
-        val insertDate = Date().toApiSubmitFormat()
+        val insertDate = Date().toApiSubmitFormat().replace(" ", "T")
         val insertBy ="sa"
-        val updateDate = Date().toApiSubmitFormat()
+        val updateDate = Date().toApiSubmitFormat().replace(" ", "T")
         val updateBy ="sa"
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -502,16 +502,25 @@ class FragmentARRAVLocation : Fragment() {
         val newEmail = FacilityDataModel.TblFacilityEmail()
         newEmail.email = email.toString()
         newEmail.emailTypeId = emailTypeID
+
         var urlString = facilityNo+"&clubcode="+clubCode+"&emailTypeId="+emailTypeID+"&email="+email+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
         Log.v("Data To Submit", urlString)
+        contactInfoLoadingView.visibility = View.VISIBLE
+        addNewEmailDialog.visibility = View.GONE
+        alphaBackgroundForDialogs.visibility = View.GONE
+
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
+                        contactInfoLoadingView.visibility = View.GONE
+                        context!!.toast("Email Submit Successful")
                         Log.v("RESPONSE",response.toString())
                         FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
                         fillEmailTableView()
                     })
                 }, Response.ErrorListener {
+            contactInfoLoadingView.visibility = View.GONE
+            context!!.toast("Failed to add new email")
             Log.v("error while submitting", it.message)
         }))
     }
