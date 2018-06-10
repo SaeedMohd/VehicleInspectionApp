@@ -37,7 +37,8 @@
                     android:layout_gravity="center"
                     android:text="Location"
                     android:textColor="@color/mainColor"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    />
 
                 <Button
                     android:id="@+id/addNewLocationButton"
@@ -45,11 +46,12 @@
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/green_background_button"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
+                    android:background="@drawable/green_background_button"
                     android:text=" +Add New Location"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    />
             </RelativeLayout>
 
 

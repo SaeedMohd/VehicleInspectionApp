@@ -184,47 +184,52 @@ class FragmentARRAVPersonnel : Fragment() {
 
         submitNewCertBtn.setOnClickListener({
 
-            var CertificationTypeId= ""
-            for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
-                if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
+            if (validateCertificationInputs()) {
 
-                    CertificationTypeId =fac.PersonnelCertID
-            }
+                var CertificationTypeId = ""
+                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+                    if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
 
-            var CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
-            var ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
+                        CertificationTypeId = fac.PersonnelCertID
+                }
+
+                var CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
+                var ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
 
 
+                var item = FacilityDataModel.TblPersonnel()
+                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+                    if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
 
-            var urlString=""
-            Log.v("Data To Submit", urlString)
+                        item.CertificationTypeId = fac.PersonnelCertID
+                }
+
+                item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
+                item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
+                FacilityDataModel.getInstance().tblPersonnel.add(item)
+
+                addTheLatestRowOfPortalAdmin()
+
+
+                var urlString = ""
+                Log.v("Data To Submit", urlString)
 //        urlString = URLEncoder.encode(urlString, "UTF-8")
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityGeneralInfo + urlString,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            Log.v("RESPONSE",response.toString())
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityGeneralInfo + urlString,
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("RESPONSE", response.toString())
 
 
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading certificate record")
+                }))
+            }else
+            {
 
-                            var item = FacilityDataModel.TblPersonnel()
-                            for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
-                                if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
+                Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
 
-                                    item.CertificationTypeId =fac.PersonnelCertID
-                            }
-
-                            item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
-                            item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
-                            FacilityDataModel.getInstance().tblPersonnel.add(item)
-
-                            addTheLatestRowOfPortalAdmin()
-
-
-
-                        })
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading certificate record")
-            }))
+            }
 
 
         })
@@ -300,8 +305,6 @@ class FragmentARRAVPersonnel : Fragment() {
         onlyOneContractSignerLogic()
         onlyOneMailRecepientLogic()
         conractSignerCheckedCondition()
-        saveButton.setOnClickListener(View.OnClickListener {
-        })
 
     }
 
@@ -1167,20 +1170,17 @@ class FragmentARRAVPersonnel : Fragment() {
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            try {
-                textView.text = CertificationDate.apiToAppFormat()
-            } catch (e: Exception) {
-            }
+
+                textView.text = CertificationDate
+
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            try {
-                textView.text = ExpirationDate.apiToAppFormat()
-            } catch (e: Exception) {
-            }
+                textView.text = ExpirationDate
+
             tableRow.addView(textView)
 
             textView = TextView(context)
@@ -1400,6 +1400,35 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
         }
+
+    fun validateCertificationInputs() : Boolean{
+
+        certDateTextView.setError(null)
+        certTypeTextView.setError(null)
+
+
+        var iscertInputValid=true
+
+
+        if (newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            iscertInputValid = false
+            certDateTextView.setError("Required Field")
+        }
+        if (newCertTypeSpinner.selectedItem.toString().contains("Not")){
+
+            iscertInputValid=false
+            certTypeTextView.setError("required field")
+
+
+        }
+
+
+
+        return iscertInputValid
+    }
+
+
+
     fun validateInputs() : Boolean{
 
         var isInputValid=true

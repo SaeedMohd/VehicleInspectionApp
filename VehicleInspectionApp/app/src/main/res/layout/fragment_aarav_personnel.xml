@@ -40,15 +40,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Personnel"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
-                android:textColor="#827908"
-                />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Personnel"
+                    android:gravity="center"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp"
+                    />
+
+                <Button
+
+                    android:background="@drawable/green_background_button"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="submit New Personnel"
+                    android:id="@+id/submitNewPersnRecordBtn"
+                    />
+
+            </RelativeLayout>
 
             <TableLayout
                 android:id="@+id/PersonnelResultsTbl"
@@ -57,12 +77,13 @@
                 android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
                 android:stretchColumns="0,1,2,3,4,5,6,7,8,9,10">
-                <TableRow
-                    >
+
+                <TableRow android:background="@color/mainColor">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Type"
+                        android:textColor="@color/white"
                         android:textStyle="bold"
                         android:layout_column="0"
                         android:layout_weight="1"
@@ -70,6 +91,7 @@
                         />
 
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="First Name"
@@ -79,6 +101,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Last Name"
@@ -88,6 +111,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="RSP User ID"
@@ -97,6 +121,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email Address"
@@ -106,6 +131,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Seniority Date"
@@ -115,6 +141,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Cert ID#"
@@ -124,6 +151,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Start Date"
@@ -133,6 +161,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="End Date"
@@ -142,6 +171,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Contract Signer"
@@ -151,6 +181,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Primary Mail Recipient"
@@ -162,12 +193,6 @@
                 </TableRow>
             </TableLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="submit New Personnel"
-                android:id="@+id/submitNewPersnRecordBtn"
-                />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -597,15 +622,36 @@
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
                 </TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Personnel Certification(s)"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_margin="10dp"
-                    android:textColor="#827908"
-                    />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Personnel Certification(s)"
+                        android:gravity="center"
+                        android:textColor="@color/mainColor"
+                        android:textSize="18sp"
+                        />
+
+                    <Button
+                        android:background="@drawable/green_background_button"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="submit New Certification"
+                        android:id="@+id/submitNewCertBtn"
+
+                        />
+
+
+                </RelativeLayout>
             </TableLayout>
             <TableLayout
                 android:id="@+id/certificationsTable"
@@ -616,12 +662,13 @@
                 >
 
 
-            <TableRow>
+                <TableRow android:background="@color/mainColor">
                     <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Certification Type"
-                    android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
                     android:layout_column="0"
                     android:layout_weight="1"
                     android:textAlignment="center"
@@ -631,6 +678,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Certification Date"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_column="1"
                     android:layout_weight="1"
@@ -640,6 +688,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Expiration Date"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_column="2"
                     android:layout_weight="1"
@@ -649,6 +698,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Description"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_column="3"
                     android:layout_weight="1"
@@ -657,12 +707,6 @@
                 </TableRow>
             </TableLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="submit New Certification"
-                android:id="@+id/submitNewCertBtn"
-                />
             <TableLayout
 
                 android:layout_width="wrap_content"
@@ -673,6 +717,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
+                        android:id="@+id/certTypeTextView"
                         android:text="Certification Type:*"
                         android:layout_column="0"
                         android:textStyle="bold"
@@ -693,6 +738,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
+                        android:id="@+id/certDateTextView"
                         android:text="Certification Date:"
                         android:ems="8"
                         android:layout_column="0"
@@ -753,25 +799,6 @@
                         />
                 </TableRow>
             </TableLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/saveButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Save" />
-
-                <Button
-                    android:id="@+id/cancelButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel" />
-            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
