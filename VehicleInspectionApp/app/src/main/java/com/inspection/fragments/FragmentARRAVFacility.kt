@@ -40,10 +40,10 @@ import java.util.*
 class FragmentARRAVFacility : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
-    private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
-    private val appFprmat = SimpleDateFormat("dd MMM yyyy")
-    private var timeZonesArray = arrayOf("")
-    private var facilityTypeArray = arrayOf("")
+//    private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
+//    private val appFprmat = SimpleDateFormat("dd MMM yyyy")
+//    private var timeZonesArray = arrayOf("")
+//    private var facilityTypeArray = arrayOf("")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,7 +117,7 @@ class FragmentARRAVFacility : Fragment() {
             timeZoneArray .add(fac.TimezoneName)
         }
 
-        var tzdataAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, timeZonesArray)
+        var tzdataAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, timeZoneArray)
         tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timezone_textviewVal.adapter = tzdataAdapter
 
@@ -277,7 +277,7 @@ class FragmentARRAVFacility : Fragment() {
                 entity_textviewVal.text = tblFacilities[0].EntityName
                 bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
 
-                timezone_textviewVal.setSelection(timeZonesArray.indexOf(tblTimezoneType[0].TimezoneName))
+                timezone_textviewVal.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
                 website_textviewVal.setText(tblFacilities[0].WebSite)
                 wifi_textview.isChecked = tblFacilities[0].SvcAvailability.toInt() == 1
                 taxno_textviewVal.text = tblFacilities[0].TaxIDNumber
