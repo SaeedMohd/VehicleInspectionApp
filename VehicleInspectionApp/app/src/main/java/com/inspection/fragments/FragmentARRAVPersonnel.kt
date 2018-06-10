@@ -1048,14 +1048,14 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 checkBox = CheckBox(context)
                 checkBox.layoutParams = rowLayoutParam9
-                checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                checkBox.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
                 checkBox.isChecked = (get(it).ContractSigner.equals("true"))
                 checkBox.isEnabled=false
                 tableRow.addView(checkBox)
 
                 checkBox = CheckBox(context)
                 checkBox.layoutParams = rowLayoutParam10
-                checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                checkBox.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
                 checkBox.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
                 checkBox.isEnabled=false
                 tableRow.addView(checkBox)
@@ -1104,14 +1104,20 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).CertificationDate
+                try {
+                    textView.text = get(it).CertificationDate.apiToAppFormat()
+                } catch (e: Exception) {
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = get(it).ExpirationDate
+                try {
+                    textView.text = get(it).ExpirationDate.apiToAppFormat()
+                } catch (e: Exception) {
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1161,14 +1167,20 @@ class FragmentARRAVPersonnel : Fragment() {
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = CertificationDate
+            try {
+                textView.text = CertificationDate.apiToAppFormat()
+            } catch (e: Exception) {
+            }
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            textView.text = ExpirationDate
+            try {
+                textView.text = ExpirationDate.apiToAppFormat()
+            } catch (e: Exception) {
+            }
             tableRow.addView(textView)
 
             textView = TextView(context)
@@ -1265,28 +1277,28 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
             textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
+            textView.layoutParams = rowLayoutParam5
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = SeniorityDate
             tableRow.addView(textView)
 
 
             textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
+            textView.layoutParams = rowLayoutParam6
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = CertificationNum
             tableRow.addView(textView)
 
 
             textView = TextView(context)
-            textView.layoutParams = rowLayoutParam5
+            textView.layoutParams = rowLayoutParam7
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = startDate
             tableRow.addView(textView)
 
 
             textView = TextView(context)
-            textView.layoutParams = rowLayoutParam6
+            textView.layoutParams = rowLayoutParam8
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = ExpirationDate
             tableRow.addView(textView)
@@ -1294,15 +1306,15 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             var checkBox = CheckBox(context)
 
             checkBox = CheckBox(context)
-            checkBox.layoutParams = rowLayoutParam7
-            checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            checkBox.layoutParams = rowLayoutParam9
+            checkBox.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
             checkBox.isChecked = (ContractSigner.equals("true"))
             checkBox.isEnabled=false
             tableRow.addView(checkBox)
 
             checkBox = CheckBox(context)
-            checkBox.layoutParams = rowLayoutParam8
-            checkBox.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            checkBox.layoutParams = rowLayoutParam10
+            checkBox.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
             checkBox.isChecked = (PrimaryMailRecipient.equals("true"))
             checkBox.isEnabled=false
             tableRow.addView(checkBox)

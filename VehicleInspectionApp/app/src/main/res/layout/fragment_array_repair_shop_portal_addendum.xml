@@ -8,7 +8,6 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
         android:background="@color/light_gray"
         android:orientation="vertical"
         android:paddingBottom="10dp"
@@ -32,7 +31,7 @@
                 android:layout_marginBottom="10dp"
                 android:paddingTop="5dp"
                 android:textAllCaps="true"
-                android:text="Repair Shop Portal"
+                android:text="Repair Shop Portal Tracking"
                 android:textColor="@color/mainColor"
                 android:textSize="26dp"
                 android:textStyle="bold" />
@@ -175,7 +174,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AAR Portal Tracking"
+                android:text="Repair Shop Portal Tracking"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginTop="25dp"
@@ -244,7 +243,7 @@
             </TableLayout>
 
             <Button
-                android:id="@+id/addNewAarButton"
+                android:id="@+id/submitNewAarButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -278,7 +277,8 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:text="Select Date"
-                    android:textColor="@color/blue_krayola" />
+                    android:textColor="@color/blue_krayola"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -288,15 +288,23 @@
                 android:layout_below="@id/connumberll"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:weightSum="5">
+                >
 
                 <TextView
                     android:id="@+id/program_name_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Logged Into RSP: "
+                    android:text="Logged Into RSP:                 "
+                    android:textStyle="bold" />
+
+      <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+          android:textColor="@color/blue_krayola"
+          android:text=" No "
                     android:textStyle="bold" />
 
                 <Switch
@@ -305,9 +313,19 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/blue_krayola" />
+
+                <TextView
+                    android:id="@+id/program_name_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/blue_krayola"
+                    android:text=" Yes"
+                    android:textStyle="bold" />
+
+
             </LinearLayout>
 
             <LinearLayout

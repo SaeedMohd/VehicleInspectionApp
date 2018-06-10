@@ -186,6 +186,8 @@ class FragmentARRAVLocation : Fragment() {
         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newPhoneTypeSpinner.adapter = phoneTypeAdapter
     }
+    private fun showEditPhoneDialog() {
+           }
 
     private fun showEmailDialog() {
         alphaBackgroundForDialogs.visibility = View.VISIBLE
@@ -279,23 +281,91 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+   val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
 
         FacilityDataModel.getInstance().tblPhone.apply {
             (0 until size).forEach {
                 var tableRow = TableRow(context)
 
                 var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
+                textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 //getTypeName
                 textView.text = getPhoneTypeName(get(it).PhoneTypeID)
                 tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).PhoneNumber
-                tableRow.addView(textView)
+                val textView2 = TextView(context)
+                textView2.layoutParams = rowLayoutParam2
+                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView2.text = get(it).PhoneNumber
+                tableRow.addView(textView2)
+
+                val textView3 = TextView(context)
+                textView3.layoutParams = rowLayoutParam3
+                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView3.text = "Edit"
+                tableRow.addView(textView3)
+
+
+                textView3.setOnClickListener(View.OnClickListener {
+
+
+                    alphaBackgroundForDialogs.visibility = View.VISIBLE
+                    editPhoneDialog.visibility = View.VISIBLE
+                    phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
+                    phoneTypeArray.clear()
+                    for (fac in phoneTypeList) {
+                        phoneTypeArray.add(fac.LocPhoneName)
+                    }
+
+                    var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray)
+                    phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    newPhoneTypeSpinner.adapter = phoneTypeAdapter
+
+                    phoneSaveChangesButton.setOnClickListener(View.OnClickListener {
+                        val phoneTypeID = textView.text.toString()
+                        val phoneNo = if (newChangesPhoneNoText.text.isNullOrEmpty())  "" else newChangesPhoneNoText.text
+                        val insertDate = Date().toApiSubmitFormat()
+                        val insertBy ="sa"
+                        val updateDate = Date().toApiSubmitFormat()
+                        val updateBy ="sa"
+                        val activeVal = "0"
+                        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                        val clubCode ="004"
+                        val newPhone = FacilityDataModel.TblPhone()
+                        var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
+                        Log.v("Data To Submit", urlString)
+                        contactInfoLoadingView.visibility = View.VISIBLE
+                        editPhoneDialog.visibility = View.GONE
+                        alphaBackgroundForDialogs.visibility = View.GONE
+
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread(Runnable {
+                                        contactInfoLoadingView.visibility = View.GONE
+                                        textView2.setText(newChangesPhoneNoText.text.toString())
+                                        Log.v("RESPONSE",response.toString())
+                                    })
+                                }, Response.ErrorListener {
+                            contactInfoLoadingView.visibility = View.GONE
+                            Log.v("error while submitting", "Phone Details")
+                        }))
+
+
+
+                    })
+
+                })
 
                 phoneTbl.addView(tableRow)
             }
@@ -587,14 +657,20 @@ class FragmentARRAVLocation : Fragment() {
         newPhone.PhoneTypeID= phoneTypeID
         var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
         Log.v("Data To Submit", urlString)
+        contactInfoLoadingView.visibility = View.VISIBLE
+        addNewPhoneDialog.visibility = View.GONE
+        alphaBackgroundForDialogs.visibility = View.GONE
+
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
+                        contactInfoLoadingView.visibility = View.GONE
                         Log.v("RESPONSE",response.toString())
                         FacilityDataModel.getInstance().tblPhone.add(newPhone)
                         fillPhoneTableView()
                     })
                 }, Response.ErrorListener {
+            contactInfoLoadingView.visibility = View.GONE
             Log.v("error while submitting", "Phone Details")
         }))
     }

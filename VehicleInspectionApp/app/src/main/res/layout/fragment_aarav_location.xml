@@ -203,7 +203,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/phoneTbl"
-                android:stretchColumns="0,1">
+                android:stretchColumns="0,1,2,3">
 
                 <TableRow android:background="@color/mainColor">
 
@@ -212,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Phone Type"
-                        android:layout_column="0"
+                        android:layout_column="1"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -221,10 +221,19 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Phone Number"
-                        android:layout_column="1"
+                        android:layout_column="2"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="options"
+                        android:layout_column="3"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -268,7 +277,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emailTbl"
-                android:stretchColumns="0,1">
+                android:stretchColumns="0,1,2">
 
                 <TableRow android:background="@color/mainColor">
 
@@ -1175,6 +1184,102 @@
                     />
                 <EditText
                     android:id="@+id/newPhoneNoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="8"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <!--<TableRow>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+
+                    <!--android:text="Phone Extension:"-->
+                    <!--android:layout_column="0"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/newPhoneExtText"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:text=""-->
+                    <!--android:ems="8"-->
+                    <!--android:layout_column="1"-->
+                    <!--android:background="@drawable/textview_background"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+            <!--</TableRow>-->
+
+        </TableLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/editPhoneDialog"
+        app:cardElevation="10dp">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <TableRow>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Submit Changes"
+                    android:id="@+id/phoneSaveChangesButton"
+                    android:textColor="@color/white"
+                    android:background="@drawable/green_background_button"
+                    android:layout_column="2"
+                    />
+            </TableRow>
+
+            <!--<TableRow>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+
+                    <!--android:text="Description:"-->
+                    <!--android:layout_column="0"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/newPhoneDescText"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:text=""-->
+                    <!--android:ems="8"-->
+                    <!--android:layout_column="1"-->
+                    <!--android:background="@drawable/textview_background"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+            <!--</TableRow>-->
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Phone Number:*"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newChangesPhoneNoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

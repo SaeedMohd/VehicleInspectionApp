@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
@@ -98,24 +99,28 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             dpd.show()
         }
 
-        addNewAarButton.setOnClickListener {
+        submitNewAarButton.setOnClickListener {
+
+            if (validateInputs()) {
                 val date = inspectionDateButton.text
                 val isLoggedInRsp = loggedIntoRspButton.isChecked
                 val numberOfUnacknowledgedRecords = numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
                 val numberOfInProgressTwoInsvalue = numberOfInProgressTwoIns.text.toString().toInt()
                 val numberOfInProgressWalkInsValue = numberOfInProgressWalkIns.text.toString().toInt()
                 var portalTrackingentry = FacilityDataModel.TblAARPortalAdmin()
-                portalTrackingentry.startDate=startDateButton.text.toString()
+                portalTrackingentry.startDate = startDateButton.text.toString()
                 portalTrackingentry.PortalInspectionDate = "" + date
                 portalTrackingentry.LoggedIntoPortal = "" + isLoggedInRsp
                 portalTrackingentry.InProgressTows = "" + numberOfInProgressTwoInsvalue
                 portalTrackingentry.InProgressWalkIns = "" + numberOfInProgressWalkInsValue
                 portalTrackingentry.NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                portalTrackingentry.CardReaders=numberOfCardsReaderEditText.text.toString()
-                portalTrackingentry.AddendumSigned=addendumSignedDateButton.text.toString()
+                portalTrackingentry.CardReaders = numberOfCardsReaderEditText.text.toString()
+                portalTrackingentry.AddendumSigned = addendumSignedDateButton.text.toString()
 
                 FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
                 addTheLatestRowOfPortalAdmin()
+            }else
+                Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
 
 
             
@@ -167,7 +172,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             }
 
 
-            if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
+            if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()||numberOfCardsReaderEditText.text.toString().equals("00")) {
                 isInputsValid = false
                 numberOfCardsReaderEditText.setError("Required Field")
             }
@@ -183,17 +188,17 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             }
 
 
-            if (numberOfUnacknowledgedRecordsEditText.text.toString().isNullOrEmpty()) {
+            if (numberOfUnacknowledgedRecordsEditText.text.toString().isNullOrEmpty()||numberOfUnacknowledgedRecordsEditText.text.toString().equals("0")) {
                 isInputsValid = false
                 numberOfUnacknowledgedRecordsEditText.setError("Required Field")
             }
 
-            if (numberOfInProgressTwoIns.text.toString().isNullOrEmpty()) {
+            if (numberOfInProgressTwoIns.text.toString().isNullOrEmpty()||numberOfInProgressTwoIns.text.toString().equals("0")) {
                 isInputsValid = false
                 numberOfInProgressTwoIns.setError("Required Field")
             }
 
-            if (numberOfInProgressWalkIns.text.toString().isNullOrEmpty()) {
+            if (numberOfInProgressWalkIns.text.toString().isNullOrEmpty()||numberOfInProgressWalkIns.text.toString().equals("0")) {
                 isInputsValid = false
                 numberOfInProgressWalkIns.setError("Required Field")
             }
@@ -236,7 +241,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).PortalInspectionDate
+                textView.text = get(it).PortalInspectionDate.apiToAppFormat()
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -297,7 +302,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = PortalInspectionDate
+                textView.text = PortalInspectionDate.apiToAppFormat()
                 tableRow.addView(textView)
 
                 textView = TextView(context)
