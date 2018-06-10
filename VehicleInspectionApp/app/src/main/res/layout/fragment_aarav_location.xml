@@ -277,7 +277,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emailTbl"
-                android:stretchColumns="0,1,2">
+                android:stretchColumns="0,1,2"
+                >
 
                 <TableRow android:background="@color/mainColor">
 
@@ -312,6 +313,7 @@
             </TableLayout>
 
             <TableLayout
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="30dp">
@@ -325,8 +327,16 @@
                         android:textColor="@color/mainColor"
                         android:textSize="18sp" />
                 </TableRow>
+            </TableLayout>
 
-                <TableRow>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/openHoursTblId"
+                android:stretchColumns="0,1,2,3,4,5,6,7"
+                >
+
+            <TableRow>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -390,155 +400,21 @@
                         android:textStyle="bold" />
                 </TableRow>
 
-                <TableRow>
+            </TableLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/closedHoursTblId"
+                android:stretchColumns="0,1,2,3,4,5,6,7"
+                >
 
-                        android:layout_marginTop="5dp"
-                        android:text="Open:"
-                        android:textStyle="bold" />
+            </TableLayout>
 
-                    <Spinner
-                        android:id="@+id/sunOpenSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/monOpenSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/tueOpenSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/wedOpenSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="4"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/thuOpenSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="5"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/friOpenSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="6"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/satOpenSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="7"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-
-                        android:layout_marginTop="5dp"
-                        android:text="Close:"
-                        android:textStyle="bold" />
-
-                    <Spinner
-                        android:id="@+id/sunCloseSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/monCloseSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/tueCloseSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/wedCloseSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="4"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/thuCloseSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="5"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/friCloseSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="6"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-
-                    <Spinner
-                        android:id="@+id/satCloseSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="7"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/officeTimes" />
-                </TableRow>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
                 <TableRow>
 

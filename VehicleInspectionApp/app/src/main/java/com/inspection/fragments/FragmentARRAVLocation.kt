@@ -50,6 +50,8 @@ class FragmentARRAVLocation : Fragment() {
         fillLocationTableView()
         fillPhoneTableView()
         fillEmailTableView()
+        fillOpenHoursTableView()
+        fillClosedHoursTableView()
 
         alphaBackgroundForDialogs.setOnClickListener({
             addNewLocationDialog.visibility = View.GONE
@@ -342,7 +344,6 @@ class FragmentARRAVLocation : Fragment() {
                         val activeVal = "0"
                         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
                         val clubCode ="004"
-                        val newPhone = FacilityDataModel.TblPhone()
                         var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
                         Log.v("Data To Submit", urlString)
                         contactInfoLoadingView.visibility = View.VISIBLE
@@ -382,6 +383,11 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
         if (emailTbl.childCount>1) {
             for (i in emailTbl.childCount - 1 downTo 1) {
                 emailTbl.removeViewAt(i)
@@ -393,19 +399,229 @@ class FragmentARRAVLocation : Fragment() {
                 var tableRow = TableRow(context)
 
                 var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
+                textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 //getTypeName
                 textView.text = getEmailTypeName(get(it).emailTypeId)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
+                textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView.text = get(it).email
                 tableRow.addView(textView)
 
                 emailTbl.addView(tableRow)
+            }
+        }
+    }
+    fun fillOpenHoursTableView() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        if (emailTbl.childCount>1) {
+            for (i in emailTbl.childCount - 1 downTo 1) {
+                emailTbl.removeViewAt(i)
+            }
+        }
+
+        FacilityDataModel.getInstance().tblHours.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                //getTypeName
+                textView.text = "Open : "
+                tableRow.addView(textView)
+
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                //getTypeName
+                textView.text =if (getEmailTypeName(get(it).SunOpen).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).MonOpen
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).TueOpen
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).WedOpen
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).ThuOpen
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).FriOpen
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text =if (getEmailTypeName(get(it).SatOpen).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
+                tableRow.addView(textView)
+
+                openHoursTblId.addView(tableRow)
+            }
+        }
+    }
+    fun fillClosedHoursTableView() {
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        if (emailTbl.childCount>1) {
+            for (i in emailTbl.childCount - 1 downTo 1) {
+                emailTbl.removeViewAt(i)
+            }
+        }
+
+        FacilityDataModel.getInstance().tblHours.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                //getTypeName
+                textView.text = "Closed : "
+                tableRow.addView(textView)
+
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                //getTypeName
+                textView.text =if (getEmailTypeName(get(it).SunClose).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).MonClose
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).TueClose
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).WedClose
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).ThuClose
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).FriClose
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text =if (getEmailTypeName(get(it).SatClose).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
+                tableRow.addView(textView)
+
+                closedHoursTblId.addView(tableRow)
             }
         }
     }

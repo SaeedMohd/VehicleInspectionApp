@@ -953,19 +953,19 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam8 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-        rowLayoutParam7.column = 8
+        rowLayoutParam8.weight = 1F
+        rowLayoutParam8.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam8.column = 8
 
         val rowLayoutParam9 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-        rowLayoutParam7.column = 9
+        rowLayoutParam9.weight = 1F
+        rowLayoutParam9.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam9.column = 9
 
         val rowLayoutParam10 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-        rowLayoutParam7.column = 10
+        rowLayoutParam10.weight = 1F
+        rowLayoutParam10.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam10.column = 10
         var dateTobeFormated = ""
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
@@ -1226,11 +1226,11 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam8.weight = 1F
         rowLayoutParam8.column = 8
 val rowLayoutParam9 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.column = 9
+        rowLayoutParam9.weight = 1F
+        rowLayoutParam9.column = 9
   val rowLayoutParam10 = TableRow.LayoutParams()
-        rowLayoutParam8.weight = 1F
-        rowLayoutParam8.column = 10
+        rowLayoutParam10.weight = 1F
+        rowLayoutParam10.column = 10
 
         FacilityDataModel.getInstance().tblPersonnel[FacilityDataModel.getInstance().tblPersonnel.size - 1].apply {
 
