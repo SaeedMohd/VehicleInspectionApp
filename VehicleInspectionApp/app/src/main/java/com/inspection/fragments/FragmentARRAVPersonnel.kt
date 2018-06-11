@@ -30,6 +30,7 @@ import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import org.json.JSONObject
@@ -91,7 +92,27 @@ class FragmentARRAVPersonnel : Fragment() {
 
         }
 
+        alphaBackgroundForPersonnelDialogs.setOnClickListener({
 
+            addNewCertificateDialogue.visibility=View.GONE
+            addNewPersonnelDialogue.visibility=View.GONE
+            alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+
+
+        })
+
+        AddNewCertBtn.setOnClickListener(View.OnClickListener {
+            addNewCertificateDialogue.visibility=View.VISIBLE
+            alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
+
+
+        })
+        addNewPersnRecordBtn.setOnClickListener(View.OnClickListener {
+            addNewPersonnelDialogue.visibility=View.VISIBLE
+            alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
+
+
+        })
 
         if (newSignerCheck.isChecked==false) {
             newEmailText.isEnabled = false
@@ -185,6 +206,9 @@ class FragmentARRAVPersonnel : Fragment() {
         submitNewCertBtn.setOnClickListener({
 
             if (validateCertificationInputs()) {
+                addNewCertificateDialogue.visibility=View.GONE
+                alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+
 
                 var CertificationTypeId = ""
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
@@ -236,6 +260,8 @@ class FragmentARRAVPersonnel : Fragment() {
         submitNewPersnRecordBtn.setOnClickListener({
 
             if (validateInputs()){
+                    addNewPersonnelDialogue.visibility=View.GONE
+                alphaBackgroundForPersonnelDialogs.visibility = View.GONE
 
 
             var PersonnelTypeId=""
