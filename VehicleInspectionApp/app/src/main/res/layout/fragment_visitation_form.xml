@@ -401,7 +401,7 @@
                             android:textStyle="bold" />
 
                         <Button
-                            android:id="@+id/automotiveSpecialistSignature"
+                            android:id="@+id/automotiveSpecialistSignatureButton"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_alignParentRight="true"
@@ -497,7 +497,7 @@
                             android:textStyle="bold" />
 
                         <Button
-                            android:id="@+id/automotiveSpecialistSignature"
+                            android:id="@+id/facilityRepresentativeDeficienciesSignatureButton"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_alignParentRight="true"
@@ -809,7 +809,7 @@
                             android:textStyle="bold" />
 
                         <Button
-                            android:id="@+id/waiversSignature"
+                            android:id="@+id/waiversSignatureButton"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_alignParentRight="true"
@@ -867,13 +867,22 @@
         </LinearLayout>
     </ScrollView>
 
+    <View
+        android:id="@+id/visitationFormAlphaBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:background="@color/mainColor"
+        android:visibility="gone"
+        />
     <RelativeLayout
-        android:id="@+id/getSignatureRelativeLayout"
+        android:id="@+id/signatureDialog"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:elevation="15dp"
         android:layout_centerInParent="true"
+        android:visibility="gone"
         android:background="@color/light_gray">
 
         <com.simplify.ink.InkView
@@ -885,7 +894,7 @@
             />
 
         <Button
-            android:id="@+id/signatureOkButton"
+            android:id="@+id/signatureConfirmButton"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
@@ -909,7 +918,7 @@
             android:paddingLeft="10dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@id/signatureOkButton"
+            android:layout_toLeftOf="@id/signatureConfirmButton"
             android:background="@drawable/green_background_button"
             android:text="Cancel"
             android:textColor="@color/white" />

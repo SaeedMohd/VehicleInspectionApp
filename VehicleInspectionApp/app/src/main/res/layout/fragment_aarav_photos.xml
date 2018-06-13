@@ -7,93 +7,183 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 android:background="@color/light_gray"
 tools:context=".fragments.FragmentAARAVPhotos">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:weightSum="10"
-    android:id="@+id/facPhotos"
-    android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="left"
-        android:layout_weight="8"
-        android:text="Photos"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:layout_gravity="left"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        />
-</LinearLayout>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/facPhotos"
     android:paddingRight="10dp"
     android:paddingLeft="10dp"
     android:paddingBottom="10dp"
     android:layout_margin="10dp"
     android:paddingTop="5dp"
-    android:background="@color/white"
+    android:background="@color/light_gray"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:elevation="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Image"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_margin="10dp"
-            android:textColor="#827908"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="10dp"
+            >
+
+        <Button
+            android:background="@drawable/green_background_button"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="Add New Photo"
+            android:id="@+id/addNewPhoto"
             />
+
             <TableLayout
                 android:id="@+id/aarPortalTrackingTableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
+                android:layout_marginBottom="20dp"
                 >
                 <TableRow
+                    android:background="@color/mainColor"
+                    android:padding="5dp"
                     >
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:text="File Name"
                         android:textStyle="bold"
                         android:layout_column="0"
                         android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
                         />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:text="File Description"
                         android:textStyle="bold"
                         android:layout_column="1"
                         android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
                         />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Update By"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Update Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Approval Requested"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Approved"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Approved By"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Apoproved Date"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        />
+
 
                 </TableRow>
             </TableLayout>
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add New Image"
-            android:id="@+id/addImageBtn"
-            />
+    </LinearLayout>
 
+
+
+</LinearLayout>
+
+
+</ScrollView>
+
+    <View
+        android:id="@+id/photosLoadingView"
+        android:alpha="0.8"
+        android:background="@color/mainColor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+
+        />
+    <RelativeLayout
+        android:id="@+id/addNewPhotoDialog"
+        android:layout_width="700dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_centerInParent="true"
+        android:elevation="10dp"
+        android:visibility="gone"
+        android:background="@color/white">
         <TableLayout
-            android:layout_width="match_parent"
+            android:id="@+id/newPhotoInputFieldsTableLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             >
 
@@ -247,66 +337,66 @@ tools:context=".fragments.FragmentAARAVPhotos">
                     />
             </TableRow>
 
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:layout_column="0"
-                    android:text="File Upload:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/fileUploadText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_column="1"
-                    android:text=""
-                    android:layout_weight="2"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-                <Button
-                    android:id="@+id/browseBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_column="3"
-                    android:background="@color/transparent"
-                    android:text="Browse"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-            </TableRow>
         </TableLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save" />
+        <Button
+            android:id="@+id/addNewPhotoConfirmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/green_background_button"
+            android:layout_below="@id/newPhotoInputFieldsTableLayout"
+            android:textColor="@color/white"
+            android:text="confirm"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_alignParentRight="true"
+            />
 
-            <Button
-                android:id="@+id/deleteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete" />
+        <Button
+            android:id="@+id/addNewPhotoCancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/green_background_button"
+            android:layout_below="@id/newPhotoInputFieldsTableLayout"
+            android:textColor="@color/white"
+            android:text="Cancel"
+            android:layout_toLeftOf="@id/addNewPhotoConfirmButton"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_marginRight="10dp"
+            />
 
-            <Button
-                android:id="@+id/cancelButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel" />
-        </LinearLayout>
-    </LinearLayout>
 
-</ScrollView>
+        <Button
+            android:id="@+id/addNewPhotoCapturePhotoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/green_background_button"
+            android:layout_below="@id/newPhotoInputFieldsTableLayout"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/white"
+            android:text="Capture Photo"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_alignParentLeft="true"
+            />
+
+        <Button
+            android:id="@+id/addNewPhotoPickPhotoButton"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_height="30dp"
+            android:background="@drawable/green_background_button"
+            android:layout_below="@id/newPhotoInputFieldsTableLayout"
+            android:textColor="@color/white"
+            android:text="Pick Photo"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_toRightOf="@id/addNewPhotoCapturePhotoButton"
+            android:layout_marginLeft="10dp"
+            />
+
+    </RelativeLayout>
 </RelativeLayout>

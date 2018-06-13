@@ -680,7 +680,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {
                 Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
-                context!!.toast("Connection Error. Please check internet connection")
+                activity!!.runOnUiThread(Runnable {
+                    context!!.toast("Connection Error. Please check internet connection")
+                })
             }
 
             override fun onResponse(call: Call?, response: okhttp3.Response?) {
@@ -693,7 +695,9 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
                 client.newCall(request2).enqueue(object : Callback {
                     override fun onFailure(call: Call?, e: IOException?) {
-                        context!!.toast("Connection Error. Please check internet connection")
+                        activity!!.runOnUiThread(Runnable {
+                            context!!.toast("Connection Error. Please check internet connection")
+                        })
                     }
 
                     override fun onResponse(call: Call?, response: okhttp3.Response?) {

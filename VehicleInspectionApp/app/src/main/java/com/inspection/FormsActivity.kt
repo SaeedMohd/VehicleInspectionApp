@@ -10,10 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
-import com.inspection.fragments.FacilityGroupFragment
-import com.inspection.fragments.FragmentAARAVPhotos
-import com.inspection.fragments.FragmentVisitation
-import com.inspection.fragments.ScopeOfServiceGroupFragment
+import com.inspection.fragments.*
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 
@@ -100,8 +97,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
             R.id.deficiency -> {
-                toolbar.title = "Facility"
-                var fragment = FacilityGroupFragment()
+                toolbar.title = "Deficiency"
+                var fragment = DeficienciesGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)
@@ -110,8 +107,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
             R.id.complaints -> {
-                toolbar.title = "Facility"
-                var fragment = FacilityGroupFragment()
+                toolbar.title = "Complaints"
+                var fragment = ComplaintsGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)
@@ -120,8 +117,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
             R.id.billing -> {
-                toolbar.title = "Facility"
-                var fragment = FacilityGroupFragment()
+                toolbar.title = "Billing"
+                var fragment = BillingGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)
@@ -129,8 +126,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
             R.id.surveys -> {
-                toolbar.title = "Facility"
-                var fragment = FacilityGroupFragment()
+                toolbar.title = "Surveys"
+                var fragment = SurveysGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)
@@ -138,8 +135,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
             R.id.comments -> {
-                toolbar.title = "Facility"
-                var fragment = FacilityGroupFragment()
+                toolbar.title = "Comments"
+                var fragment = CommentsGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)

@@ -1,14 +1,31 @@
 package com.inspection.fragments
 
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import com.inspection.FormsActivity
+import com.inspection.MainActivity
 import com.inspection.R
+import com.inspection.R.id.*;
+
+
+import com.inspection.Utils.toast
+import kotlinx.android.synthetic.main.fragment_aarav_photos.*
+import java.io.File
+import java.io.IOException
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,29 +64,150 @@ class FragmentAARAVPhotos : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        browseBtn.setOnClickListener {
+//            dispatchTakePictureIntent()
+//        }
+
+        addNewPhoto.setOnClickListener {
+            photosLoadingView.visibility = View.VISIBLE
+            addNewPhotoDialog.visibility = View.VISIBLE
+        }
+
+        addNewPhotoPickPhotoButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission((activity as FormsActivity),
+                            Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as FormsActivity),
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                        val intent = Intent()
+                        intent.type = "image/*"
+                        intent.action = Intent.ACTION_GET_CONTENT
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
+
+            }else{
+                context!!.toast("Please make sure camera and storage permissions are granted")
+            }
+        }
+
+        addNewPhotoCapturePhotoButton.setOnClickListener{
+            if (ContextCompat.checkSelfPermission((activity as FormsActivity),
+                            Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as FormsActivity),
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent()
+
+            }else{
+                context!!.toast("Please make sure camera and storage permissions are granted")
+            }
+        }
+
+        addNewPhotoConfirmButton.setOnClickListener{
+            addNewPhotoDialog.visibility = View.GONE
+            photosLoadingView.visibility = View.GONE
+        }
+
+        addNewPhotoCancelButton.setOnClickListener{
+            addNewPhotoDialog.visibility = View.GONE
+            photosLoadingView.visibility = View.GONE
+        }
+    }
 
 
+    fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(context!!.packageManager) != null) {
+            var photoFile: File? = null
+            try {
+                photoFile = createImageFile()
+                // Validate how to get image from handset
+                // Define permission for Storage & File
+            } catch (ex: IOException) {
+                // handle exception
+                ex.printStackTrace()
+            }
+
+            if (photoFile != null) {
+                var photoURI = FileProvider.getUriForFile(context!!, "com.inspection.android.fileprovider", File(photoFile.absolutePath));
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(File(photoFile.absolutePath)))
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, MainActivity.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID)
+            }
+        }
+    }
+
+
+
+    internal var mCurrentPhotoPath = ""
+    internal var mCurrentThumbPath = ""
+    internal var mCurrentFileName = ""
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+
+
+        mCurrentFileName = ""+ Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + Calendar.getInstance().get(Calendar.HOUR) + "-" + Calendar.getInstance().get(Calendar.MINUTE) + "-" + Calendar.getInstance().get(Calendar.SECOND)
+
+
+        val cachePath = File(context!!.cacheDir, "images")
+        cachePath.mkdirs() // don't forget to make the directory
+        val storageDir = File("" + cachePath + "/" + mCurrentFileName)
+
+
+//        val image = File.createTempFile(
+//                mCurrentFileName, /* prefix */
+//                "", /* suffix */
+//                storageDir      /* directory */
+//        )
+//
+//        val thumb = File.createTempFile(
+//                mCurrentFileName, /* prefix */
+//                "", /* suffix */
+//                storageDir      /* directory */
+//        )
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = storageDir.absolutePath
+        mCurrentThumbPath = storageDir.absolutePath
+
+        return storageDir
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == MainActivity.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID && resultCode == Activity.RESULT_OK) {
+            context!!.toast("Photo capturee")
+//            uploadPhotoTask(mCurrentPhotoPath, false).execute()
+//            val thumbBitmap = getThumbnailBitmap(mCurrentPhotoPath)
+//            var out: FileOutputStream? = null
+//            try {
+//                out = FileOutputStream(mCurrentThumbPath)
+//                thumbBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, out) // bmp is your Bitmap instance
+//                uploadPhotoTask(mCurrentThumbPath, true).execute()
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            } finally {
+//                try {
+//                    if (out != null) {
+//                        out.close()
+//                    }
+//                } catch (e: IOException) {
+//                    e.printStackTrace()
+//                }
+//
+//            }
+        }else if (requestCode == 234 && resultCode == Activity.RESULT_OK){
+            context!!.toast("Image picked successfully")
+        }
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-//    fun onButtonPressed(uri: Uri) {
-//        listener?.onFragmentInteraction(uri)
-//    }
-//
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            listener = context
-//        } else {
-//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-//        }
-//    }
-//
-//    override fun onDetach() {
-//        super.onDetach()
-//        listener = null
-//    }
+
+
+
 
     /**
      * This interface must be implemented by activities that contain this
