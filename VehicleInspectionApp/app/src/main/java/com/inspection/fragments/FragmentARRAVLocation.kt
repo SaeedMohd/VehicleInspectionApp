@@ -89,6 +89,7 @@ class FragmentARRAVLocation : Fragment() {
             addNewPhoneDialog.visibility = View.GONE
             addNewEmailDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
+            editPhoneDialog.visibility = View.GONE
         })
 
         addNewLocationButton.setOnClickListener({
@@ -219,8 +220,6 @@ class FragmentARRAVLocation : Fragment() {
         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newPhoneTypeSpinner.adapter = phoneTypeAdapter
     }
-    private fun showEditPhoneDialog() {
-           }
 
     private fun showEmailDialog() {
         alphaBackgroundForDialogs.visibility = View.VISIBLE
