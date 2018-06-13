@@ -350,6 +350,12 @@
                             android:text="Add Signature"
                             android:textColor="@color/white"
                             android:textSize="12dp" />
+
+                        <ImageView
+                            android:id="@+id/facilityRepresentativeSignatureImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="60dp"
+                            android:layout_toLeftOf="@id/facilityRepresentativeSignatureButton"/>
                     </RelativeLayout>
 
                     <View
@@ -412,6 +418,12 @@
                             android:text="Add Signature"
                             android:textColor="@color/white"
                             android:textSize="12dp" />
+
+                        <ImageView
+                            android:id="@+id/automotiveSpecialistSignatureImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="60dp"
+                            android:layout_toLeftOf="@id/automotiveSpecialistSignatureButton"/>
 
                     </RelativeLayout>
 
@@ -508,6 +520,12 @@
                             android:text="Add Signature"
                             android:textColor="@color/white"
                             android:textSize="12dp" />
+
+                        <ImageView
+                            android:id="@+id/facilityRepresentativeDeficienciesSignatureImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="60dp"
+                            android:layout_toLeftOf="@id/facilityRepresentativeDeficienciesSignatureButton"/>
 
                     </RelativeLayout>
 
@@ -820,6 +838,12 @@
                             android:text="Add Signature"
                             android:textColor="@color/white"
                             android:textSize="12dp" />
+
+                        <ImageView
+                            android:id="@+id/waiversSignatureImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="60dp"
+                            android:layout_toLeftOf="@id/waiversSignatureButton"/>
 
                     </RelativeLayout>
                 </LinearLayout>

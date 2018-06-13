@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
@@ -46,8 +47,18 @@ import java.io.IOException
  */
 class FragmentVisitation : Fragment() {
 
+    var facilityRepresentativeSignatureBitmap: Bitmap? = null
+    var automotiveSpecialistSignatureBitmap: Bitmap? = null
+    var facilityRepresentativeDeficienciesSignatureBitmap: Bitmap? = null
+    var waiverSignatureBitmap: Bitmap? = null
 
-var emailValid=true
+    enum class requestedSignature {
+        representative, specialist, representativeDeficiency, waiver
+    }
+
+    var selectedSignature: requestedSignature? = null
+
+    var emailValid = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,18 +73,18 @@ var emailValid=true
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            annualVisitationType.isClickable=false
+        annualVisitationType.isClickable = false
 
-           quarterlyVisitationType.isClickable=false
+        quarterlyVisitationType.isClickable = false
 
-            adhocVisitationType.isClickable=false
-        dataChangedYesRadioButton.isClickable=false
+        adhocVisitationType.isClickable = false
+        dataChangedYesRadioButton.isClickable = false
 
 
 
-        dateOfVisitationButton.isClickable=false
-        dataChangedNoRadioButton.isClickable=false
-        clubCodeEditText.isClickable=false
+        dateOfVisitationButton.isClickable = false
+        dataChangedNoRadioButton.isClickable = false
+        clubCodeEditText.isClickable = false
 
 //              textWatcherSignature.visibility=View.INVISIBLE
 //        textWatcherSignature.visibility=View.GONE
@@ -87,9 +98,9 @@ var emailValid=true
 //            textWatcherSignature.setText(facilityRepresentativesSpinner.selectedItem.toString())
 
         completeButton.setOnClickListener(View.OnClickListener {
-            if (validateInputs()){
-                Toast.makeText(context,"inputs validated",Toast.LENGTH_SHORT).show()
-            }else  Toast.makeText(context,"missing required fields",Toast.LENGTH_SHORT).show()
+            if (validateInputs()) {
+                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
+            } else Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
         })
 
         if (annualVisitationType.isChecked) {
@@ -107,25 +118,42 @@ var emailValid=true
         }
         cancelBtnPressed()
 
-        facilityRepresentativeSignatureButton.setOnClickListener{
+        facilityRepresentativeSignatureButton.setOnClickListener {
+
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
+            selectedSignature = requestedSignature.representative
+            if (facilityRepresentativeSignatureBitmap!=null){
+                signatureInkView.drawBitmap(facilityRepresentativeSignatureBitmap, 0.0f, 0.0f, Paint())
+            }
 
         }
 
         automotiveSpecialistSignatureButton.setOnClickListener {
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
+            selectedSignature = requestedSignature.specialist
+            if (automotiveSpecialistSignatureBitmap!=null){
+                signatureInkView.drawBitmap(automotiveSpecialistSignatureBitmap, 0.0f, 0.0f, Paint())
+            }
         }
 
         facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
+            selectedSignature = requestedSignature.representativeDeficiency
+            if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
+                signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
+            }
         }
 
         waiversSignatureButton.setOnClickListener {
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
+            selectedSignature = requestedSignature.waiver
+            if (waiverSignatureBitmap!=null){
+                signatureInkView.drawBitmap(waiverSignatureBitmap, 0.0f, 0.0f, Paint())
+            }
         }
 
         signatureClearButton.setOnClickListener {
@@ -139,6 +167,58 @@ var emailValid=true
         }
 
         signatureConfirmButton.setOnClickListener {
+
+            var bitmap = signatureInkView.bitmap
+            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+            when (selectedSignature) {
+                requestedSignature.representative -> {
+                    facilityRepresentativeSignatureBitmap = bitmap
+                    if (!isEmpty){
+                        facilityRepresentativeSignatureButton.text ="Edit Signature"
+                        facilityRepresentativeSignatureImageView.setImageBitmap(bitmap)
+                    }else{
+                        facilityRepresentativeSignatureButton.text ="Add Signature"
+                        facilityRepresentativeSignatureImageView.setImageBitmap(null)
+                    }
+                }
+
+                requestedSignature.specialist -> {
+                    automotiveSpecialistSignatureBitmap = bitmap
+                    if (!isEmpty){
+                        automotiveSpecialistSignatureButton.text ="Edit Signature"
+                        automotiveSpecialistSignatureImageView.setImageBitmap(bitmap)
+                    }else{
+                        automotiveSpecialistSignatureButton.text ="Add Signature"
+                        automotiveSpecialistSignatureImageView.setImageBitmap(null)
+                    }
+                }
+
+                requestedSignature.representativeDeficiency -> {
+                    facilityRepresentativeDeficienciesSignatureBitmap = bitmap
+                    if (!isEmpty){
+                        facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
+                        facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
+                    }else{
+                        facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
+                        facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+                    }
+
+                }
+
+                requestedSignature.waiver -> {
+                    waiverSignatureBitmap = bitmap
+                    if (!isEmpty){
+                        waiversSignatureButton.text ="Edit Signature"
+                        waiversSignatureImageView.setImageBitmap(bitmap)
+                    }else{
+                        waiversSignatureButton.text ="Add Signature"
+                        waiversSignatureImageView.setImageBitmap(null)
+                    }
+                }
+
+
+            }
+
             signatureInkView.clear()
             visitationFormAlphaBackground.visibility = View.GONE
             signatureDialog.visibility = View.GONE
@@ -148,12 +228,12 @@ var emailValid=true
     private fun setFieldsValues() {
 
 
-        var representativeSpinners=ArrayList<String>()
+        var representativeSpinners = ArrayList<String>()
         representativeSpinners.add("please select a representative")
 
-        for (fac in FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct()){
+        for (fac in FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName + " " + s.LastName }.distinct()) {
 
-        representativeSpinners.add(fac)
+            representativeSpinners.add(fac)
 
 
         }
@@ -161,10 +241,9 @@ var emailValid=true
         facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, representativeSpinners)
 
 
+        //  context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
 
-      //  context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
-
-        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map {s -> s.specialistname})
+        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
 
         annualVisitationType.isChecked = true
 
@@ -173,11 +252,10 @@ var emailValid=true
         clubCodeEditText.setText("004")
 
 
-       facilityNumberEditText.setText(""+FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+        facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
 
 
-
-     //   facilityNameEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].EntityName)
+        //   facilityNameEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].EntityName)
 
         aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
 
@@ -187,11 +265,11 @@ var emailValid=true
 
         memberBenefitsPosterEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster)
 
-        qualityControlProcessEditText.setText(" "+FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl.replace(".  ", ". ").replace(". ", ".\n"))
+        qualityControlProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl.replace(".  ", ". ").replace(". ", ".\n"))
 
-        staffTrainingProcessEditText.setText(" "+FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
+        staffTrainingProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
 
-        if (FacilityDataModel.getInstance().tblFacilityEmail.count()>0) {
+        if (FacilityDataModel.getInstance().tblFacilityEmail.count() > 0) {
             emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
         }
 
@@ -204,12 +282,12 @@ var emailValid=true
         fillDeficiencyTable()
     }
 
-    fun facilityNameAndNumberRelationForSelection(){
+    fun facilityNameAndNumberRelationForSelection() {
 
         for (fac in FacilityDataModel.getInstance().tblFacilities) {
 
             if (fac.FACNo.toString() == facilityNumberEditText.text.toString()) {
-                facilityNumberEditText.isEnabled=false
+                facilityNumberEditText.isEnabled = false
 
                 facilityNameEditText.setText(fac.EntityName.toString())
 
@@ -217,7 +295,7 @@ var emailValid=true
             }
             if (fac.EntityName == facilityNameEditText.text.toString()) {
 
-                facilityNameEditText.isEnabled=false
+                facilityNameEditText.isEnabled = false
 
                 facilityNumberEditText.setText(fac.FACNo.toString())
             }
@@ -234,16 +312,16 @@ var emailValid=true
             }
 
             override fun afterTextChanged(s: Editable) {
-                if (facilityNumberEditText.text.toString().isNullOrEmpty()){
+                if (facilityNumberEditText.text.toString().isNullOrEmpty()) {
 
-                for (fac in FacilityDataModel.getInstance().tblFacilities) {
+                    for (fac in FacilityDataModel.getInstance().tblFacilities) {
 
 
-                    if (fac.EntityName == facilityNameEditText.text.toString()) {
+                        if (fac.EntityName == facilityNameEditText.text.toString()) {
 
-                        facilityNumberEditText.setText(fac.FACNo.toString())
+                            facilityNumberEditText.setText(fac.FACNo.toString())
+                        }
                     }
-                }
                 }
             }
         }
@@ -258,35 +336,35 @@ var emailValid=true
 
             override fun afterTextChanged(s: Editable) {
 
-                if (facilityNameEditText.text.toString().isNullOrEmpty()){
+                if (facilityNameEditText.text.toString().isNullOrEmpty()) {
 
-                for (fac in FacilityDataModel.getInstance().tblFacilities) {
+                    for (fac in FacilityDataModel.getInstance().tblFacilities) {
 
-                    if (fac.FACNo.toString() == facilityNumberEditText.text.toString()) {
+                        if (fac.FACNo.toString() == facilityNumberEditText.text.toString()) {
 
-                        facilityNameEditText.setText(fac.EntityName.toString())
+                            facilityNameEditText.setText(fac.EntityName.toString())
 
 
+                        }
                     }
-                }
 
 
                 }
             }
         }
-       facilityNameEditText.addTextChangedListener(facNameWatcher)
+        facilityNameEditText.addTextChangedListener(facNameWatcher)
         facilityNumberEditText.addTextChangedListener(facNumberWatcher)
 
         representativeSignatureConditionedEnabling()
 
     }
 
-    fun representativeSignatureConditionedEnabling(){
+    fun representativeSignatureConditionedEnabling() {
 
-        if (facilityRepresentativesSpinner.selectedItem.toString().isNullOrEmpty()||
-                facilityRepresentativesSpinner.selectedItem.toString().contains("please")||
-                visitationReasonDropListId.selectedItem.toString().isNullOrEmpty()||
-                visitationReasonDropListId.selectedItem.toString().contains("please")){
+        if (facilityRepresentativesSpinner.selectedItem.toString().isNullOrEmpty() ||
+                facilityRepresentativesSpinner.selectedItem.toString().contains("please") ||
+                visitationReasonDropListId.selectedItem.toString().isNullOrEmpty() ||
+                visitationReasonDropListId.selectedItem.toString().contains("please")) {
 
             //TODO We should change the background color of the button if the button is NOT enabled
             //facilityRepresentativeSignatureButton.isEnabled=false
@@ -312,29 +390,32 @@ var emailValid=true
 
     }
 
-    fun emailFormatValidation(target : CharSequence) : Boolean{
+    fun emailFormatValidation(target: CharSequence): Boolean {
 
 
-       if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
-           emailValid=true else emailValid=false
+        if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
+            emailValid = true else emailValid = false
 
 
-   return emailValid }
+        return emailValid
+    }
 
-    fun emailValidation(){
-        if (emailPdfCheckBox.isChecked==true){
+    fun emailValidation() {
+        if (emailPdfCheckBox.isChecked == true) {
 
-            emailEditText.isEnabled=true
-        }else emailEditText.isEnabled=false
+            emailEditText.isEnabled = true
+        } else emailEditText.isEnabled = false
 
         emailPdfCheckBox.setOnClickListener(View.OnClickListener {
-            if (emailPdfCheckBox.isChecked==true){
+            if (emailPdfCheckBox.isChecked == true) {
 
-            emailEditText.isEnabled=true
-        }else emailEditText.isEnabled=false })
+                emailEditText.isEnabled = true
+            } else emailEditText.isEnabled = false
+        })
 
     }
-    private fun fillDeficiencyTable(){
+
+    private fun fillDeficiencyTable() {
 
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
@@ -350,9 +431,9 @@ var emailValid=true
             (0 until size).forEach {
                 var tableRow = TableRow(context)
 
-                if (tableRowColorSwitch){
+                if (tableRowColorSwitch) {
                     tableRow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.table_row_color))
-                }else{
+                } else {
                     tableRow.setBackgroundColor(Color.WHITE)
                 }
 
@@ -384,74 +465,84 @@ var emailValid=true
             }
         }
     }
-    fun validateInputs() : Boolean{
 
-        var isInputValid=true
+    fun validateInputs(): Boolean {
+
+        var isInputValid = true
 
         if (adhocVisitationType.isChecked) {
-            if (visitationReasonDropListId.selectedItem.toString()== visitationReasonDropListId.setSelection(0).toString()){
+            if (visitationReasonDropListId.selectedItem.toString() == visitationReasonDropListId.setSelection(0).toString()) {
 
                 isInputValid = false
-                Toast.makeText(context,"please select a visitation reason",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "please select a visitation reason", Toast.LENGTH_LONG).show()
 
             }
 
-        }else if (facilityRepresentativeSignatureButton.text.toString()=="Add Signature"){
+        } else if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature") {
 
             isInputValid = false
             facilityRepresentativeSignatureButton.setError("required field")
 
         }
-        if ( facilityRepresentativesSpinner.selectedItem.toString().contains("please")){
+        if (facilityRepresentativesSpinner.selectedItem.toString().contains("please")) {
             isInputValid = false
-            Toast.makeText(context,"please select a representative",Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "please select a representative", Toast.LENGTH_LONG).show()
         }
 
-        if (automotiveSpecialistSignatureButton.text.toString()=="Add Signature"){
+        if (automotiveSpecialistSignatureButton.text.toString() == "Add Signature") {
 
             isInputValid = false
             automotiveSpecialistSignatureButton.setError("required field")
 
         }
-  if (emailPdfCheckBox.isChecked==true){
+        if (emailPdfCheckBox.isChecked == true) {
 
-      if (emailEditText.text.toString().isNullOrEmpty()){
+            if (emailEditText.text.toString().isNullOrEmpty()) {
 
-            isInputValid = false
-          emailEditText.setError("required field")
-      }
-
-
-  } else {emailEditText.setError(null)}
-
- if (waiveVisitationCheckBox.isChecked==true){
-
-      if (waiverCommentsEditText.text.toString().isNullOrEmpty()||waiversSignatureButton.text.toString().isNullOrEmpty()){
-
-            isInputValid = false
-          waiverCommentsEditText.setError("required field")
-          waiversSignatureButton.setError("required field")
-      }
-
- }else {waiverCommentsEditText.setError(null)
-        waiversSignatureButton.setError(null)}
+                isInputValid = false
+                emailEditText.setError("required field")
+            }
 
 
-        if (emailPdfCheckBox.isChecked==true){
-if (!emailFormatValidation(emailEditText.text.toString())){
-    isInputValid = false
-    emailEditText.setError("please type your email correctly")
+        } else {
+            emailEditText.setError(null)
+        }
+
+        if (waiveVisitationCheckBox.isChecked == true) {
+
+            if (waiverCommentsEditText.text.toString().isNullOrEmpty() || waiversSignatureButton.text.toString().isNullOrEmpty()) {
+
+                isInputValid = false
+                waiverCommentsEditText.setError("required field")
+                waiversSignatureButton.setError("required field")
+            }
+
+        } else {
+            waiverCommentsEditText.setError(null)
+            waiversSignatureButton.setError(null)
+        }
 
 
-}else {emailEditText.setError(null)}
-        }else {emailEditText.setError(null)}
+        if (emailPdfCheckBox.isChecked == true) {
+            if (!emailFormatValidation(emailEditText.text.toString())) {
+                isInputValid = false
+                emailEditText.setError("please type your email correctly")
+
+
+            } else {
+                emailEditText.setError(null)
+            }
+        } else {
+            emailEditText.setError(null)
+        }
 
 
 
 
-        return isInputValid}
+        return isInputValid
+    }
 
-    fun cancelBtnPressed(){
+    fun cancelBtnPressed() {
 
         cancelButton.setOnClickListener(View.OnClickListener {
 
@@ -482,7 +573,7 @@ if (!emailFormatValidation(emailEditText.text.toString())){
 
             // show it
             alertDialog.show()
-                  })
+        })
     }
 
 }

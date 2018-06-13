@@ -3,9 +3,13 @@ package com.inspection.fragments
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,6 +19,8 @@ import android.support.v4.content.FileProvider
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
+import androidx.core.view.toBitmap
 import com.inspection.FormsActivity
 import com.inspection.MainActivity
 import com.inspection.R
@@ -22,6 +28,7 @@ import com.inspection.R.id.*;
 
 
 import com.inspection.Utils.toast
+import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_photos.*
 import java.io.File
 import java.io.IOException
@@ -46,6 +53,9 @@ class FragmentAARAVPhotos : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+
+    var photoBitmap: Bitmap? = null
+    var photoThumbnailBitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,17 +89,17 @@ class FragmentAARAVPhotos : Fragment() {
                     == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as FormsActivity),
                             Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                        val intent = Intent()
-                        intent.type = "image/*"
-                        intent.action = Intent.ACTION_GET_CONTENT
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
 
-            }else{
+            } else {
                 context!!.toast("Please make sure camera and storage permissions are granted")
             }
         }
 
-        addNewPhotoCapturePhotoButton.setOnClickListener{
+        addNewPhotoCapturePhotoButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission((activity as FormsActivity),
                             Manifest.permission.CAMERA)
                     == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission((activity as FormsActivity),
@@ -97,22 +107,65 @@ class FragmentAARAVPhotos : Fragment() {
                     == PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent()
 
-            }else{
+            } else {
                 context!!.toast("Please make sure camera and storage permissions are granted")
             }
         }
 
-        addNewPhotoConfirmButton.setOnClickListener{
+        addNewPhotoConfirmButton.setOnClickListener {
             addNewPhotoDialog.visibility = View.GONE
             photosLoadingView.visibility = View.GONE
         }
 
-        addNewPhotoCancelButton.setOnClickListener{
+        addNewPhotoCancelButton.setOnClickListener {
             addNewPhotoDialog.visibility = View.GONE
+            photosLoadingView.visibility = View.GONE
+        }
+
+
+        photosPreviewDialogCloseButton.setOnClickListener {
+            photosPreviewDialog.visibility = View.GONE
             photosLoadingView.visibility = View.GONE
         }
     }
 
+
+    fun addTableRow() {
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        var tableRow = TableRow(context)
+
+        var imageView = ImageView(context)
+        imageView.setImageBitmap(photoThumbnailBitmap)
+        imageView.setOnClickListener {
+//            photosLoadingView.visibility = View.VISIBLE
+//            photosPreviewDialog.visibility = View.VISIBLE
+//
+//
+//            photosPreviewImageView.setImageBitmap(imageView.toBitmap())
+        }
+        tableRow.setPadding(0,4,0,4)
+        tableRow.addView(imageView)
+
+        var textView = TextView(context)
+        textView.layoutParams = rowLayoutParam
+        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+        textView.setText("Demo")
+
+        tableRow.addView(textView)
+
+        photosTableLayout.addView(tableRow)
+
+        imageView.layoutParams.height = 60
+        imageView.layoutParams.width = 160
+        imageView.requestLayout()
+    }
 
     fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -137,7 +190,6 @@ class FragmentAARAVPhotos : Fragment() {
     }
 
 
-
     internal var mCurrentPhotoPath = ""
     internal var mCurrentThumbPath = ""
     internal var mCurrentFileName = ""
@@ -147,7 +199,7 @@ class FragmentAARAVPhotos : Fragment() {
         // Create an image file name
 
 
-        mCurrentFileName = ""+ Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + Calendar.getInstance().get(Calendar.HOUR) + "-" + Calendar.getInstance().get(Calendar.MINUTE) + "-" + Calendar.getInstance().get(Calendar.SECOND)
+        mCurrentFileName = "" + Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + Calendar.getInstance().get(Calendar.HOUR) + "-" + Calendar.getInstance().get(Calendar.MINUTE) + "-" + Calendar.getInstance().get(Calendar.SECOND)
 
 
         val cachePath = File(context!!.cacheDir, "images")
@@ -179,7 +231,12 @@ class FragmentAARAVPhotos : Fragment() {
         //        super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == MainActivity.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID && resultCode == Activity.RESULT_OK) {
-            context!!.toast("Photo capturee")
+            photoBitmap = getBitmapWithPath(mCurrentPhotoPath, false)
+            photoThumbnailBitmap = getBitmapWithPath(mCurrentThumbPath, true)
+            addNewPhotoDialog.visibility = View.GONE
+            photosPreviewImageView.setImageBitmap(photoBitmap)
+            photosPreviewDialog.visibility = View.VISIBLE
+            addTableRow()
 //            uploadPhotoTask(mCurrentPhotoPath, false).execute()
 //            val thumbBitmap = getThumbnailBitmap(mCurrentPhotoPath)
 //            var out: FileOutputStream? = null
@@ -199,15 +256,42 @@ class FragmentAARAVPhotos : Fragment() {
 //                }
 //
 //            }
-        }else if (requestCode == 234 && resultCode == Activity.RESULT_OK){
+        } else if (requestCode == 234 && resultCode == Activity.RESULT_OK) {
             context!!.toast("Image picked successfully")
+            var uri = data!!.data
+
+        try {
+            var bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, uri);
+            // Log.d(TAG, String.valueOf(bitmap));
+            photoBitmap = bitmap
+            photoThumbnailBitmap = bitmap
+            addNewPhotoDialog.visibility = View.GONE
+            photosPreviewImageView.setImageBitmap(photoBitmap)
+            photosPreviewDialog.visibility = View.VISIBLE
+            addTableRow()
+        } catch (e : IOException) {
+            e.printStackTrace();
+        }
         }
 
     }
 
 
-
-
+    private fun getBitmapWithPath(path: String, isThumb: Boolean): Bitmap? {
+        val bounds = BitmapFactory.Options()
+        bounds.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(path, bounds)
+        if (bounds.outWidth == -1 || bounds.outHeight == -1) {
+            return null
+        }
+        val originalSize = if (bounds.outHeight > bounds.outWidth)
+            bounds.outHeight
+        else
+            bounds.outWidth
+        val opts = BitmapFactory.Options()
+//        opts.inSampleSize = 4
+        return BitmapFactory.decodeFile(path, opts)
+    }
 
     /**
      * This interface must be implemented by activities that contain this

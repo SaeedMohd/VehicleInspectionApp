@@ -49,7 +49,7 @@ tools:context=".fragments.FragmentAARAVPhotos">
             />
 
             <TableLayout
-                android:id="@+id/aarPortalTrackingTableLayout"
+                android:id="@+id/photosTableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:showDividers="middle|beginning|end"
@@ -60,6 +60,18 @@ tools:context=".fragments.FragmentAARAVPhotos">
                     android:background="@color/mainColor"
                     android:padding="5dp"
                     >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Thumbnail"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
@@ -396,6 +408,39 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:paddingLeft="15dp"
             android:layout_toRightOf="@id/addNewPhotoCapturePhotoButton"
             android:layout_marginLeft="10dp"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/photosPreviewDialog"
+        android:layout_width="600dp"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:background="@color/light_gray"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/photosPreviewImageView"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="270dp"
+            android:scaleType="fitXY"/>
+
+        <Button
+            android:id="@+id/photosPreviewDialogCloseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/green_background_button"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:text="close"
+            android:layout_below="@id/photosPreviewImageView"
+
             />
 
     </RelativeLayout>
