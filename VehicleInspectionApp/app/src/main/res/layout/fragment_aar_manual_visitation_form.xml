@@ -267,7 +267,7 @@
             />
 
         <Button
-            android:id="@+id/facilityRepresentativeSignatureButton"
+            android:id="@+id/afacilityRepresentativeSignatureButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CAPTURE SIGNATURE"

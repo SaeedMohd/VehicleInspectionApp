@@ -11,7 +11,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import com.inspection.fragments.FacilityGroupFragment
+import com.inspection.fragments.FragmentAARAVPhotos
 import com.inspection.fragments.FragmentVisitation
+import com.inspection.fragments.ScopeOfServiceGroupFragment
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 
@@ -88,8 +90,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
             R.id.scopeOfService -> {
-                toolbar.title = "Facility"
-                var fragment = FacilityGroupFragment()
+                toolbar.title = "Scope Of Service"
+                var fragment = ScopeOfServiceGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)
@@ -145,8 +147,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
             R.id.photos -> {
-                toolbar.title = "Facility"
-                var fragment = FacilityGroupFragment()
+                toolbar.title = "Photos"
+                var fragment = FragmentAARAVPhotos()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)

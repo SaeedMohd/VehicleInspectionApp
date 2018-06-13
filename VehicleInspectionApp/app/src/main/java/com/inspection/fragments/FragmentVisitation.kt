@@ -1,10 +1,15 @@
 package com.inspection.fragments
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +29,11 @@ import android.text.TextUtils
 import android.util.Patterns
 import android.view.Gravity
 import androidx.core.view.setPadding
-import com.inspection.R.id.deficienciesTableLayout
+import com.inspection.MainActivity
+import com.inspection.Utils.toast
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 /**
@@ -98,8 +107,110 @@ var emailValid=true
         }
         cancelBtnPressed()
 
+        facilityRepresentativeSignatureButton.setOnClickListener{
+            signatureInkView.visibility = View.VISIBLE
+        }
+
+        automotiveSpecialistSignature.setOnClickListener {
+            signatureInkView.visibility = View.VISIBLE
+        }
+
+        signatureClearButton.setOnClickListener {
+            signatureInkView.clear()
+        }
+
+
+
     }
 
+    fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(context!!.packageManager) != null) {
+            var photoFile: File? = null
+            try {
+                photoFile = createImageFile()
+                // Validate how to get image from handset
+                // Define permission for Storage & File
+            } catch (ex: IOException) {
+                // handle exception
+                ex.printStackTrace()
+            }
+
+            if (photoFile != null) {
+                var photoURI = FileProvider.getUriForFile(context!!, "com.matics.android.fileprovider", File(photoFile.absolutePath));
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(File(photoFile.absolutePath)))
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, MainActivity.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID)
+            }
+        }
+    }
+
+
+
+    internal var mCurrentPhotoPath = ""
+    internal var mCurrentThumbPath = ""
+    internal var mCurrentFileName = ""
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+
+
+        mCurrentFileName = ""+ Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + Calendar.getInstance().get(Calendar.HOUR) + "-" + Calendar.getInstance().get(Calendar.MINUTE) + "-" + Calendar.getInstance().get(Calendar.SECOND)
+
+
+        val cachePath = File(context!!.cacheDir, "images")
+        cachePath.mkdirs() // don't forget to make the directory
+        val storageDir = File("" + cachePath + "/" + mCurrentFileName)
+
+
+//        val image = File.createTempFile(
+//                mCurrentFileName, /* prefix */
+//                "", /* suffix */
+//                storageDir      /* directory */
+//        )
+//
+//        val thumb = File.createTempFile(
+//                mCurrentFileName, /* prefix */
+//                "", /* suffix */
+//                storageDir      /* directory */
+//        )
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = storageDir.absolutePath
+        mCurrentThumbPath = storageDir.absolutePath
+
+        return storageDir
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == MainActivity.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID && resultCode == Activity.RESULT_OK) {
+            context!!.toast("Photo captures")
+//            uploadPhotoTask(mCurrentPhotoPath, false).execute()
+//            val thumbBitmap = getThumbnailBitmap(mCurrentPhotoPath)
+//            var out: FileOutputStream? = null
+//            try {
+//                out = FileOutputStream(mCurrentThumbPath)
+//                thumbBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, out) // bmp is your Bitmap instance
+//                uploadPhotoTask(mCurrentThumbPath, true).execute()
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            } finally {
+//                try {
+//                    if (out != null) {
+//                        out.close()
+//                    }
+//                } catch (e: IOException) {
+//                    e.printStackTrace()
+//                }
+//
+//            }
+        }
+
+    }
 
     private fun setFieldsValues() {
 
