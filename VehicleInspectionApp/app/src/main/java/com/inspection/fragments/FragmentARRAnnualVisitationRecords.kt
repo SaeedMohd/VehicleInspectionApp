@@ -184,6 +184,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                             }
                         })
                     }, Response.ErrorListener {
+
                 context!!.toast("Connection Error")
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
