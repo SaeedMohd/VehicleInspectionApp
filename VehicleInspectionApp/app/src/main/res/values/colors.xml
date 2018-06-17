@@ -13,4 +13,7 @@
     <color name="blue_krayola">#1F75FE</color>
     <color name="green">#49C566</color>
     <color name="dark_yellow">#DEBC26</color>
+    <color name="contractSignerFieldsAreDisabledColor">#FAFAFA</color>
 </resources>
+
+

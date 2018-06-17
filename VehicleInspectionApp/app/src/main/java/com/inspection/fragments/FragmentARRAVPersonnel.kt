@@ -92,40 +92,84 @@ class FragmentARRAVPersonnel : Fragment() {
 
         }
 
-        alphaBackgroundForPersonnelDialogs.setOnClickListener({
+        exitDialogeBtnId.setOnClickListener({
+
+            Toast.makeText(context,"pressed", Toast.LENGTH_SHORT).show()
+
+
+            addNewPersonnelDialogue.visibility=View.GONE
+            alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+
+
+        })
+        exitCertificateDialogeBtnId.setOnClickListener({
 
             addNewCertificateDialogue.visibility=View.GONE
-            addNewPersonnelDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
 
 
         })
 
         AddNewCertBtn.setOnClickListener(View.OnClickListener {
+
+            newCertTypeSpinner.setSelection(0)
+            newCertStartDateBtn.setText("SELECT DATE")
+            newCertEndDateBtn.setText("SELECT DATE")
+            newCertDescText.setText("")
+
+
+            newCertStartDateBtn.setError(null)
+            certTypeTextView.setError(null)
             addNewCertificateDialogue.visibility=View.VISIBLE
             alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
 
 
         })
         addNewPersnRecordBtn.setOnClickListener(View.OnClickListener {
+            newFirstNameText.setText("")
+            newLastNameText.setText("")
+            newCertNoText.setText("")
+            newStartDateBtn.setText("SELECT DATE")
+            newEndDateBtn.setText("SELECT DATE")
+            newSeniorityDateBtn.setText("SELECT DATE")
+            newCoStartDateBtn.setText("SELECT DATE")
+            newCoEndDateBtn.setText("SELECT DATE")
+            newPhoneText.setText("")
+            newZipText.setText("")
+            newAdd1Text.setText("")
+            newAdd2Text.setText("")
+            newCityText.setText("")
+            newZipText2.setText("")
+            newEmailText.setText("")
+            newStateSpinner.setSelection(0)
+
+            newZipText.setError(null)
+            newZipText2.setError(null)
+            newPhoneText.setError(null)
+            newCertNoText.setError(null)
+            stateTextView.setError(null)
+            newEmailText.setError(null)
+
+
+
+            if (newSignerCheck.isChecked){
+                Toast.makeText(context,"its checked",Toast.LENGTH_SHORT).show()
+                newSignerCheck.isChecked=false
+
+                contractSignerIsNotCheckedLogic()
+                onlyOneContractSignerLogic()
+
+
+            }
             addNewPersonnelDialogue.visibility=View.VISIBLE
             alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
 
 
         })
 
-        if (newSignerCheck.isChecked==false) {
-            newEmailText.isEnabled = false
-            newCoStartDateBtn.isEnabled = false
-            newPhoneText.isEnabled = false
-            newZipText.isEnabled = false
-            newCityText.isEnabled = false
-            newAdd1Text.isEnabled = false
-            newStateSpinner.isEnabled = false
-            newZipText2.isEnabled = false
-            newAdd2Text.isEnabled = false
-        }
 
+
+        contractSignerIsNotCheckedLogic()
 
         newCertStartDateBtn.setOnClickListener {
 //            if (newCertStartDateBtn.text.equals("SELECT DATE")) {
@@ -259,9 +303,31 @@ class FragmentARRAVPersonnel : Fragment() {
         })
         submitNewPersnRecordBtn.setOnClickListener({
 
+
+//
+//            newPhoneText.isEnabled = false
+//            newZipText.isEnabled = false
+//            newCityText.isEnabled = false
+//            newAdd1Text.isEnabled = false
+//            newStateSpinner.isEnabled = false
+//            newZipText2.isEnabled = false
+//            newAdd2Text.isEnabled = false
+//            stateTextView.isEnabled = false
+//            phoneTextId.isEnabled = false
+//            zipCodeTextId.isEnabled = false
+//            emailAddressTextId.isEnabled = false
+//            contractSignerStartDateTextId.isEnabled = false
+//            contractSignerEndDateTextId.isEnabled = false
+//            newCoEndDateBtn.isEnabled = false
+//            cityTextId.isEnabled = false
+//            address2TextId.isEnabled = false
+//            address1TextId.isEnabled = false
+//
+
             if (validateInputs()){
-                    addNewPersonnelDialogue.visibility=View.GONE
+                addNewPersonnelDialogue.visibility=View.GONE
                 alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+
 
 
             var PersonnelTypeId=""
@@ -317,6 +383,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading personnal record")
             }))
+
             }
             else
             {
@@ -336,6 +403,40 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
     var isFirstRun: Boolean = true
+
+    fun contractSignerIsNotCheckedLogic(){
+
+        if (newSignerCheck.isChecked==false) {
+            newEmailText.isEnabled = false
+            newCoStartDateBtn.isEnabled = false
+            newPhoneText.isEnabled = false
+            newZipText.isEnabled = false
+            newCityText.isEnabled = false
+            newAdd1Text.isEnabled = false
+            newStateSpinner.isEnabled = false
+            newZipText2.isEnabled = false
+            newAdd2Text.isEnabled = false
+            stateTextView.isEnabled = false
+            phoneTextId.isEnabled = false
+            zipCodeTextId.isEnabled = false
+            emailAddressTextId.isEnabled = false
+            contractSignerStartDateTextId.isEnabled = false
+            contractSignerEndDateTextId.isEnabled = false
+            newCoEndDateBtn.isEnabled = false
+            cityTextId.isEnabled = false
+            address2TextId.isEnabled = false
+            address1TextId.isEnabled = false
+            newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
+            newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
+            contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.contractSignerFieldsAreDisabledColor));
+
+
+
+
+
+        }
+
+    }
 
     fun preparePersonnelPage() {
         isFirstRun = false
@@ -1357,7 +1458,6 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (get(it).ContractSigner.equals("true")){
 
-                    newSignerCheck.isChecked=true
                     newSignerCheck.isEnabled=false
                     theContractSigner=true
 
@@ -1401,6 +1501,21 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 newStateSpinner.isEnabled=true
                 newZipText2.isEnabled=true
                 newAdd2Text.isEnabled=true
+                stateTextView.isEnabled = true
+                phoneTextId.isEnabled = true
+                zipCodeTextId.isEnabled = true
+                emailAddressTextId.isEnabled = true
+                contractSignerStartDateTextId.isEnabled = true
+                contractSignerEndDateTextId.isEnabled = true
+                newCoEndDateBtn.isEnabled = true
+                cityTextId.isEnabled = true
+                address2TextId.isEnabled = true
+                address1TextId.isEnabled = true
+                newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.blue));
+                newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.blue));
+                contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.table_row_color));
+
+
 
 
             }
@@ -1417,6 +1532,21 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 newStateSpinner.isEnabled = false
                 newZipText2.isEnabled = false
                 newAdd2Text.isEnabled = false
+                stateTextView.isEnabled = false
+                phoneTextId.isEnabled = false
+                zipCodeTextId.isEnabled = false
+                emailAddressTextId.isEnabled = false
+                contractSignerStartDateTextId.isEnabled = false
+                contractSignerEndDateTextId.isEnabled = false
+                newCoEndDateBtn.isEnabled = false
+                cityTextId.isEnabled = false
+                address2TextId.isEnabled = false
+                address1TextId.isEnabled = false
+                newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
+                newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
+                contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.contractSignerFieldsAreDisabledColor));
+
+
 
             }
 

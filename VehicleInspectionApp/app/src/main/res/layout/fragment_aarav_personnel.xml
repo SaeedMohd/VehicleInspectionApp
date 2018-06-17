@@ -300,12 +300,11 @@
                 app:cardElevation="10dp">
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="20dp"
                     android:layout_margin="5dp"
-                    android:text="Add New Certifiation"
+                    android:text="Add New Certificate"
                     android:layout_gravity="top|left"
                     android:textSize="18dp"
                     />
@@ -315,11 +314,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginLeft="50dp"
                     android:text="Submit"
                     android:id="@+id/submitNewCertBtn"
                     android:textColor="@color/white"
                     android:background="@drawable/green_background_button"
+                    />
+
+
+                <ImageButton
+
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/textview_background"
+                    android:id="@+id/exitCertificateDialogeBtnId"
+                    android:layout_width="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/exit"
                     android:layout_gravity="top|right"
                     />
 
@@ -429,10 +442,12 @@
                 app:cardCornerRadius="5dp"
                 android:id="@+id/addNewPersonnelDialogue"
                 app:cardElevation="10dp">
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="20dp"
                     android:layout_margin="5dp"
                     android:text="Add New Personnel"
                     android:layout_gravity="top|left"
@@ -444,15 +459,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginLeft="50dp"
                     android:text="Submit"
                     android:id="@+id/submitNewPersnRecordBtn"
                     android:textColor="@color/white"
                     android:background="@drawable/green_background_button"
-                    android:layout_gravity="top|right"
                     />
 
 
+                <ImageButton
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/textview_background"
+                    android:id="@+id/exitDialogeBtnId"
+                    android:layout_width="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/exit"
+                    android:layout_gravity="top|right"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -728,12 +754,20 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:id="@+id/contractSignerFieldsLinearLayourId">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Addres 1:*"
+        android:id="@+id/address1TextId"
         android:textStyle="bold"
         android:layout_column="0"
         android:layout_margin="5dp"
@@ -741,7 +775,7 @@
 
     <EditText
         android:id="@+id/newAdd1Text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text=""
@@ -756,12 +790,13 @@
         android:layout_marginTop="5dp"
         android:layout_margin="5dp"
         android:text="Address 2:"
+        android:id="@+id/address2TextId"
         android:layout_column="0"
         android:textStyle="bold"
         />
     <EditText
         android:id="@+id/newAdd2Text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text=""
@@ -776,6 +811,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="City:*"
+        android:id="@+id/cityTextId"
         android:textStyle="bold"
         android:layout_column="0"
         android:layout_margin="5dp"
@@ -792,29 +828,33 @@
         android:ems="8"
         android:textStyle="bold"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_margin="5dp"
-            android:id="@+id/stateTextView"
-            android:text="State:*"
-            android:textStyle="bold"
-            />
-        <Spinner
-            android:layout_weight="1"
-            android:id="@+id/newStateSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textStyle="bold"
-            />
-    </LinearLayout>
+        android:layout_marginTop="5dp"
+        android:layout_margin="5dp"
+        android:id="@+id/stateTextView"
+        android:text="State:*"
+        android:textStyle="bold"
+        />
+    <Spinner
+        android:id="@+id/newStateSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:id="@+id/zipCodeTextId"
+        android:text="Zip Code:*"
+        android:textStyle="bold"
+        android:layout_margin="5dp"
+        />
 
 
     <LinearLayout
@@ -822,15 +862,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Zip Code:*"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                />
 
             <EditText
                 android:layout_weight="1"
@@ -875,6 +906,7 @@
             android:layout_marginTop="5dp"
             android:layout_margin="5dp"
             android:text="Phone:"
+            android:id="@+id/phoneTextId"
             android:layout_column="0"
             android:textStyle="bold"
             />
@@ -884,6 +916,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_margin="5dp"
+            android:id="@+id/emailAddressTextId"
             android:text="Email Address:*"
             android:layout_column="0"
             android:textStyle="bold"
@@ -932,10 +965,12 @@
             android:layout_marginTop="5dp"
             android:layout_margin="5dp"
             android:text="Contract Start Date:"
+            android:id="@+id/contractSignerStartDateTextId"
             android:layout_column="0"
             android:textStyle="bold"
             />
         <TextView
+            android:id="@+id/contractSignerEndDateTextId"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -976,6 +1011,8 @@
             android:textSize="12dp" />
 
     </LinearLayout>
+    </LinearLayout>
+
 
 </LinearLayout>
 
