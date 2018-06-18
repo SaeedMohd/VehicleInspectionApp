@@ -62,6 +62,34 @@ class FragmentARRAVPrograms : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Toast.makeText(context,"annual checked", Toast.LENGTH_LONG).show()
 
+
+        exitProgramDialogeBtnId.setOnClickListener({
+
+            programCard.visibility=View.GONE
+            alphaBackgroundForProgramDialogs.visibility = View.GONE
+
+
+        })
+
+        showNewProgramDialogueButton.setOnClickListener(View.OnClickListener {
+            comments_editTextVal.setText("")
+            effective_date_textviewVal.setText("SELECT DATE")
+            expiration_date_textviewVal.setText("SELECT DATE")
+            program_name_textviewVal.setSelection(0)
+
+
+
+            comments_editTextVal.setError(null)
+            effective_date_textviewVal.setError(null)
+            expiration_date_textviewVal.setError(null)
+            program_name_textviewToCheckSpinner.setError(null)
+            programCard.visibility=View.VISIBLE
+            alphaBackgroundForProgramDialogs.visibility = View.VISIBLE
+
+
+        })
+
+
         effective_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -102,6 +130,7 @@ class FragmentARRAVPrograms : Fragment() {
         submitNewProgramButton.setOnClickListener({
 
             if (validateInputs()){
+
             var validProgram = true
                 var datesTest=0
                 var  effectiveDateToInt= 0
@@ -118,24 +147,18 @@ class FragmentARRAVPrograms : Fragment() {
                         if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
                        //   datesTest = effective_date_textviewVal.text.toString().toInt()
                            // Log.v("date value", effective_date_textviewVal.text.toString())
-                            var dateTime =dateOne.toDate()
 
                           //  Toast.makeText(context,dateOne,Toast.LENGTH_SHORT).show()
 
 
-                            //  Toast.makeText(context,"program type cannot be duplicated",Toast.LENGTH_SHORT).show()
+                              Toast.makeText(context,"program type cannot be duplicated",Toast.LENGTH_SHORT).show()
 
 
 
 
 
                             validProgram = false
-                      }else{
-                  //          Toast.makeText(context,"no duplication in programs",Toast.LENGTH_SHORT).show()
                       }
-
-                    }else{
-                //        Toast.makeText(context,"spinner doesnt match",Toast.LENGTH_SHORT).show()
 
                     }
 
@@ -143,6 +166,10 @@ class FragmentARRAVPrograms : Fragment() {
 
             }
             if (validProgram) {
+
+                programCard.visibility=View.GONE
+                alphaBackgroundForProgramDialogs.visibility = View.GONE
+
                 var item = FacilityDataModel.TblPrograms()
                 for (fac in TypeTablesModel.getInstance().ProgramsType) {
                     if (program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName))
@@ -197,6 +224,9 @@ class FragmentARRAVPrograms : Fragment() {
 
 
     fun prepareProgramTypes() {
+
+
+        programTypesArray.add("select program")
 
         for (fac in TypeTablesModel.getInstance().ProgramsType) {
 
@@ -426,11 +456,17 @@ class FragmentARRAVPrograms : Fragment() {
 
         effective_date_textviewVal.setError(null)
         comments_editTextVal.setError(null)
+        program_name_textviewToCheckSpinner.setError(null)
 
 
         if (effective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid = false
             effective_date_textviewVal.setError("Required Field")
+        }
+
+        if (program_name_textviewVal.selectedItem.toString().contains("select")) {
+            isInputsValid = false
+            program_name_textviewToCheckSpinner.setError("Required Field")
         }
 
         if (comments_editTextVal.text.toString().isNullOrEmpty()) {
