@@ -501,6 +501,7 @@
                         android:padding="10dp"
                         android:orientation="vertical">
                         <TextView
+                            android:id="@+id/personnelTypeTextViewId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -556,9 +557,7 @@
         android:id="@+id/newFirstNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_margin="5dp"
-        android:layout_column="1"
         android:background="@drawable/textview_background"
         android:textStyle="bold"
         />
@@ -567,10 +566,9 @@
         android:id="@+id/newLastNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:ems="8"
         android:background="@drawable/textview_background"
-        android:layout_column="4"
+        android:layout_margin="5dp"
+
         />
 
 </LinearLayout>
@@ -611,7 +609,6 @@
         android:id="@+id/rspUserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_margin="5dp"
         android:background="@drawable/textview_background"
         android:layout_column="1"
@@ -623,7 +620,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/textview_background"
-        android:ems="8"
+        android:layout_margin="5dp"
         android:layout_column="4"
         />
 </LinearLayout>
@@ -939,11 +936,10 @@
             android:id="@+id/newPhoneText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_margin="5dp"
             android:hint="(XXX) XXX-XXXX"
             android:maxLength="10"
             android:inputType="number"
-            android:layout_column="1"
             android:background="@drawable/textview_background"
             />
         <EditText
@@ -951,9 +947,8 @@
             android:id="@+id/newEmailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_margin="5dp"
             android:ems="8"
-            android:layout_column="1"
             android:background="@drawable/textview_background"
             android:textStyle="bold"
             />
@@ -1024,4 +1019,61 @@
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+    <RelativeLayout
+        android:id="@+id/certificateLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:clickable="true"
+        android:background="@color/mainColor"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:layout_centerHorizontal="true"
+            android:text="Loading..."
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/personnelLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:clickable="true"
+        android:background="@color/mainColor"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:layout_centerHorizontal="true"
+            android:text="Loading..."
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
 </RelativeLayout>

@@ -94,7 +94,6 @@ class FragmentARRAVPersonnel : Fragment() {
 
         exitDialogeBtnId.setOnClickListener({
 
-            Toast.makeText(context,"pressed", Toast.LENGTH_SHORT).show()
 
 
             addNewPersonnelDialogue.visibility=View.GONE
@@ -142,6 +141,7 @@ class FragmentARRAVPersonnel : Fragment() {
             newZipText2.setText("")
             newEmailText.setText("")
             newStateSpinner.setSelection(0)
+            newPersonnelTypeSpinner.setSelection(0)
 
             newZipText.setError(null)
             newZipText2.setError(null)
@@ -149,6 +149,7 @@ class FragmentARRAVPersonnel : Fragment() {
             newCertNoText.setError(null)
             stateTextView.setError(null)
             newEmailText.setError(null)
+            personnelTypeTextViewId.setError(null)
 
 
 
@@ -252,6 +253,8 @@ class FragmentARRAVPersonnel : Fragment() {
             if (validateCertificationInputs()) {
                 addNewCertificateDialogue.visibility=View.GONE
                 alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+                personnelLoadingView.visibility = View.VISIBLE
+
 
 
                 var CertificationTypeId = ""
@@ -286,11 +289,15 @@ class FragmentARRAVPersonnel : Fragment() {
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
+                                personnelLoadingView.visibility = View.GONE
+
 
 
                             })
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading certificate record")
+                    personnelLoadingView.visibility = View.GONE
+
                 }))
             }else
             {
@@ -328,6 +335,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 addNewPersonnelDialogue.visibility=View.GONE
                 alphaBackgroundForPersonnelDialogs.visibility = View.GONE
 
+                personnelLoadingView.visibility = View.VISIBLE
 
 
             var PersonnelTypeId=""
@@ -379,9 +387,13 @@ class FragmentARRAVPersonnel : Fragment() {
                             FacilityDataModel.getInstance().tblPersonnel.add(item)
 
                             addTheLatestRowOfPersonnelTable()
+                            personnelLoadingView.visibility = View.GONE
+
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading personnal record")
+                personnelLoadingView.visibility = View.GONE
+
             }))
 
             }
@@ -1607,6 +1619,17 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         }
         else
             newLastNameText.setError(null)
+
+
+        if (newPersonnelTypeSpinner.selectedItem.toString().contains("Selected")){
+
+            isInputValid=false
+            personnelTypeTextViewId.setError("required field")
+
+
+        }
+        else
+            personnelTypeTextViewId.setError(null)
 
 
 

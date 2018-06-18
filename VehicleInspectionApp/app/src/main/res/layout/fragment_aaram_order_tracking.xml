@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/light_gray"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     tools:context="com.inspection.fragments.FragmentARRAVAmOrderTracking">
 
     <TextView
@@ -33,25 +34,45 @@
             android:orientation="vertical"
             android:padding="5dp"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Amendments Orders Tracking"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
-                android:textColor="#827908"
-                />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Showing 1-1 of 1 Results"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_margin="10dp"
-                android:textColor="#800000"
-                />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amendments Orders Tracking"
+                    android:gravity="center"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    />
+
+                <Button
+                    android:background="@drawable/green_background_button"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="500dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/showNewAarCardButton"
+                    android:text="Add New AO Tracking"
+                    />
+                <Button
+                    android:background="@drawable/textview_background"
+                    android:textColor="@color/gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_alignParentRight="true"
+                    android:text="Hide"
+                    android:id="@+id/hideBtnId"
+                    />
+
+            </RelativeLayout>
             <TableLayout
                 android:id="@+id/AmendmentOrdersAndTrackingTableLayout"
                 android:layout_width="match_parent"
@@ -97,60 +118,51 @@
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/addNewAarButton"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Add New AO Tracking"/>
-                <Button
                     android:id="@+id/editBtn"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:text="Amendment Order Form"/>
             </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="5"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Employee:"
-                    android:textStyle="bold"
+                    android:text="EVENTS"
+                    android:gravity="center"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
                     />
-                <Spinner
-                    android:id="@+id/employeeDropDown"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="5"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:text="Reason:"
-                    android:textStyle="bold"
+                <Button
+                    android:background="@drawable/green_background_button"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="520dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Add New Event"
+                    android:id="@+id/showNewEventDialogue"
                     />
-                <Spinner
-                    android:id="@+id/reasonDropDown"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <Button
+                    android:background="@drawable/textview_background"
+                    android:textColor="@color/gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_alignParentRight="true"
+                    android:text="Hide"
+                    android:id="@+id/hideBtnId"
+                    />
+
+            </RelativeLayout>
+
             <TableLayout
                 android:id="@+id/newEventTableLayout"
                 android:layout_width="match_parent"
@@ -200,13 +212,167 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
-                <Button
-                    android:id="@+id/addNewEventButton"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Add New Event"/>
              </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <View
+        android:id="@+id/alphaBackgroundForAOT_Dialogs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mainColor"
+        android:visibility="gone"
+        android:alpha="0.8"/>
+    <android.support.v7.widget.CardView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/AOCardView"
+        app:cardElevation="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_margin="5dp"
+            android:text="Add New AO TRACKING"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/submitNewAOTButton"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:background="@drawable/textview_background"
+            android:id="@+id/exitNewAO_DialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:src="@drawable/exit"
+            android:layout_gravity="top|right"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:orientation="vertical">
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Employee:"
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/employeeDropDown"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Reason:"
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/reasonDropDown"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/addNewEventCard"
+        app:cardElevation="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_margin="5dp"
+            android:text="Add New Event"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/submitNewEventButton"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:background="@drawable/textview_background"
+            android:id="@+id/exitEventDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:src="@drawable/exit"
+            android:layout_gravity="top|right"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:orientation="vertical">
 
             <LinearLayout android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -255,6 +421,10 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
+
+
+
         </LinearLayout>
-    </ScrollView>
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>

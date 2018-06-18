@@ -68,6 +68,43 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 //        var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonArray)
 //        reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        employeeDropDown.adapter = reasonAdapter
+
+
+
+        exitNewAO_DialogeBtnId.setOnClickListener({
+
+            AOCardView.visibility=View.GONE
+            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+
+
+        })
+
+        showNewAarCardButton.setOnClickListener(View.OnClickListener {
+
+            AOCardView.visibility=View.VISIBLE
+            alphaBackgroundForAOT_Dialogs.visibility = View.VISIBLE
+
+
+        })
+
+
+        exitEventDialogeBtnId.setOnClickListener({
+
+            addNewEventCard.visibility=View.GONE
+            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+
+
+        })
+
+        showNewEventDialogue.setOnClickListener(View.OnClickListener {
+
+            addNewEventCard.visibility=View.VISIBLE
+            alphaBackgroundForAOT_Dialogs.visibility = View.VISIBLE
+
+
+        })
+
+
         event_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -87,9 +124,14 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         prepareSpinnerEmployees()
         prepareSpinnerReasonTypes()
         prepareSpinnerEventsTypes()
-        addNewEventButton.setOnClickListener(View.OnClickListener {
+        submitNewEventButton.setOnClickListener(View.OnClickListener {
 
-                var item = FacilityDataModel.TblAmendmentOrderTracking()
+
+            addNewEventCard.visibility=View.GONE
+            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+
+
+            var item = FacilityDataModel.TblAmendmentOrderTracking()
                 for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
                     if (eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
 
@@ -131,9 +173,14 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
 
         })
-        addNewAarButton.setOnClickListener(View.OnClickListener {
+        submitNewAOTButton.setOnClickListener(View.OnClickListener {
 
-                var item = FacilityDataModel.TblAmendmentOrderTracking()
+
+            AOCardView.visibility=View.GONE
+            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+
+
+            var item = FacilityDataModel.TblAmendmentOrderTracking()
                 for (fac in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
                     if (employeeDropDown.getSelectedItem().toString().equals(fac.AOTEmployee))
 
