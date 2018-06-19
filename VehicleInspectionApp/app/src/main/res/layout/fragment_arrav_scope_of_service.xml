@@ -39,7 +39,8 @@
                 android:gravity="center"
                 android:text="General Information"
                 android:textStyle="bold"
-                android:textSize="14dp"
+                android:textColor="@color/mainColor"
+                android:textSize="18sp"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
 
@@ -93,7 +94,13 @@
 
 
                 </RadioGroup>
+
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="3dp"
+                android:background="@color/light_gray" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -146,6 +153,12 @@
                     android:background="@null"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="3dp"
+                android:background="@color/light_gray" />
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -195,6 +208,12 @@
                     android:background="@null"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="3dp"
+                android:background="@color/light_gray" />
+
 
             <!--<LinearLayout-->
                 <!--android:layout_width="fill_parent"-->
@@ -317,6 +336,12 @@
                     android:maxLength="2"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="3dp"
+                android:background="@color/light_gray" />
+
 
 
             <LinearLayout android:layout_width="fill_parent"
@@ -345,10 +370,18 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="3dp"
+                android:background="@color/light_gray" />
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="save"
+                android:textColor="@color/white"
+                android:background="@drawable/green_background_button"
                 android:id="@+id/saveBtnId"/>
 
 

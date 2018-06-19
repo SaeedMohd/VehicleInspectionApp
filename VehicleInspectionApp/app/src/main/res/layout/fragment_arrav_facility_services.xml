@@ -67,16 +67,18 @@
 
 
 
-        <TableRow>
+        <TableRow
+            android:background="@color/mainColor"
+            >
                 <TextView android:text="service"
                     android:layout_width="100dp"
                     android:gravity="center"
-
+                    android:textColor="@color/white"
                     android:layout_column="0"
                     android:layout_weight="1"/>
                 <TextView android:text="Effective Date"
                     android:gravity="center"
-
+                    android:textColor="@color/white"
                     android:layout_width="30dp"
                     android:layout_column="1"
                     android:layout_weight="1">
@@ -84,12 +86,14 @@
                 <TextView android:text="Expiration Date"
                     android:layout_width="30dp"
                     android:layout_column="2"
+                    android:textColor="@color/white"
                     android:gravity="center"
                     android:layout_weight="1">
                 </TextView>
                 <TextView android:text="Comments"
                     android:layout_width="30dp"
                     android:layout_column="3"
+                    android:textColor="@color/white"
                     android:gravity="center"
                     android:layout_weight="1">
                 </TextView>

@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Location"
+
                     android:textColor="@color/mainColor"
                     android:textSize="18sp"
                     />

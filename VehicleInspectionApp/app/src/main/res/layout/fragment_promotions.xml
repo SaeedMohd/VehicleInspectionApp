@@ -10,10 +10,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textStyle="bold"
         android:layout_margin="10dp"
-        android:textSize="17dp"
+
+        android:textStyle="bold"
+        android:textColor="@color/mainColor"
+        android:textSize="18sp"
         android:text="Promotions"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,5 +34,15 @@
         android:text="AAA 2015 Swipe And Win!"
         android:textStyle="bold" />
     </LinearLayout>
+    <Button
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="save"
+        android:textColor="@color/white"
+        android:background="@drawable/green_background_button"
+        android:id="@+id/saveBtnId"/>
+
 
 </LinearLayout>

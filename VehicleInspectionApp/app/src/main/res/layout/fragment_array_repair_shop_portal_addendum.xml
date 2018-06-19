@@ -101,8 +101,10 @@
                 >
 
                 <TableRow
+                    android:background="@color/mainColor"
                     >
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Portal InspectionDate"
@@ -113,6 +115,7 @@
                         />
 
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Logged Into Portal"
@@ -123,6 +126,7 @@
                         />
 
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Unknowledged Tows"
@@ -132,6 +136,7 @@
                         />
 
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="In Progress Tows"
@@ -141,6 +146,7 @@
                         />
 
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="In Progres Walk-ins"
