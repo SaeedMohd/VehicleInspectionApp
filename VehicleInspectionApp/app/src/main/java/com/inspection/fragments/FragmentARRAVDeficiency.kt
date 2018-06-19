@@ -2,6 +2,8 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -27,6 +29,13 @@ import java.util.*
 class FragmentARRAVDeficiency : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
+    var facilityRepresentativeDeficienciesSignatureBitmap: Bitmap? = null
+    enum class requestedSignature {
+        representativeDeficiency
+    }
+    var selectedSignature: requestedSignature? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +51,37 @@ class FragmentARRAVDeficiency : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         prepareDefSpinners()
-        fillDeffTableView();
+        fillDeffTableView()
+
+
+
+        exitDeffeciencyDialogeBtnId.setOnClickListener({
+
+            defeciencyCard.visibility=View.GONE
+            visitationFormAlphaBackground.visibility = View.GONE
+
+
+        })
+
+        showNewDeffDialogueBtn.setOnClickListener(View.OnClickListener {
+            comments_editTextVal.setText("")
+            newVisitationDateBtn.setText("SELECT DATE")
+            signatureDateBtn.setText("SELECT DATE")
+            facilityRepresentativeDeficienciesSignatureButton.setText("ADD SIGNATURE")
+            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+
+
+
+            newVisitationDateBtn.setError(null)
+            signatureDateBtn.setError(null)
+            facilityRepresentativeDeficienciesSignatureButton.setError(null)
+            defeciencyCard.visibility=View.VISIBLE
+            visitationFormAlphaBackground.visibility = View.VISIBLE
+
+
+        })
+
+
 
         newClearedDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
@@ -106,7 +145,12 @@ class FragmentARRAVDeficiency : Fragment() {
         submitNewDeffNewBtn.setOnClickListener({
 
             if (validateInputs()){
-                         var item = FacilityDataModel.TblDeficiency()
+
+                defeciencyCard.visibility=View.GONE
+                visitationFormAlphaBackground.visibility = View.GONE
+
+
+                var item = FacilityDataModel.TblDeficiency()
                 for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
                     if (newDefSpinner.getSelectedItem().toString().equals(fac.DeficiencyName))
 
@@ -117,7 +161,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
                 item.VisitationDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString()
                 item.EnteredDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString()
-                item.ClearedDate=newClearedDateBtn.text.toString()
+                item.ClearedDate = if (newClearedDateBtn.text.equals("SELECT DATE")) "" else newClearedDateBtn.text.toString()
                 item.Comments = if (comments_editTextVal.text.isNullOrEmpty())  "" else comments_editTextVal.text.toString()
 
                 FacilityDataModel.getInstance().tblDeficiency.add(item)
@@ -129,6 +173,54 @@ class FragmentARRAVDeficiency : Fragment() {
 
 
         })
+
+        facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
+            signatureDialog.visibility = View.VISIBLE
+            visitationFormAlphaBackground.visibility = View.VISIBLE
+            selectedSignature = requestedSignature.representativeDeficiency
+            if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
+                signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
+            }
+        }
+
+
+        signatureClearButton.setOnClickListener {
+            signatureInkView.clear()
+        }
+
+        signatureCancelButton.setOnClickListener {
+            signatureInkView.clear()
+            signatureDialog.visibility = View.GONE
+        }
+
+        signatureConfirmButton.setOnClickListener {
+
+            var bitmap = signatureInkView.bitmap
+            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+            when (selectedSignature) {
+
+
+                requestedSignature.representativeDeficiency -> {
+                    facilityRepresentativeDeficienciesSignatureBitmap = bitmap
+                    if (!isEmpty){
+                        facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
+                        facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
+                    }else{
+                        facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
+                        facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+                    }
+
+                }
+
+
+
+            }
+
+            signatureInkView.clear()
+            visitationFormAlphaBackground.visibility = View.GONE
+            signatureDialog.visibility = View.GONE
+        }
+
 
     }
     fun addTheLatestRowOfPortalAdmin() {
@@ -186,7 +278,7 @@ class FragmentARRAVDeficiency : Fragment() {
             tableRow.addView(textView)
 
             textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
+            textView.layoutParams = rowLayoutParam4
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = Comments
             tableRow.addView(textView)
@@ -308,7 +400,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
         newVisitationDateBtn.setError(null)
         signatureDateBtn.setError(null)
-        facilityRepresentativeSignatureButton.setError(null)
+        facilityRepresentativeDeficienciesSignatureButton.setError(null)
 
 
         if(newVisitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
@@ -325,9 +417,9 @@ class FragmentARRAVDeficiency : Fragment() {
                     signatureDateBtn.setError("Required Field")
                 }
 
-                if (facilityRepresentativeSignatureButton.text.toString().toUpperCase().equals("ADD SIGNATURE")) {
+                if (facilityRepresentativeDeficienciesSignatureBitmap==null) {
                     isInputsValid = false
-                    facilityRepresentativeSignatureButton.setError("Required Field")
+                    facilityRepresentativeDeficienciesSignatureButton.setError("Required Field")
                 }
             }
             else{

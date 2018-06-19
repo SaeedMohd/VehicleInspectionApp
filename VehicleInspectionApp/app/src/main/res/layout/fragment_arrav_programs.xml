@@ -71,7 +71,9 @@
                 android:layout_width="fill_parent"
                 android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                >
 
 
                 <TableRow>

@@ -195,6 +195,10 @@ class FragmentARRAVComplaints : Fragment() {
   val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
+
+val rowLayoutParam8 = TableRow.LayoutParams()
+        rowLayoutParam8.weight = 1F
+        rowLayoutParam8.column = 8
         FacilityDataModel.getInstance().tblComplaintFiles[FacilityDataModel.getInstance().tblComplaintFiles.size - 1].apply {
 
 
@@ -242,12 +246,30 @@ class FragmentARRAVComplaints : Fragment() {
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam6
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ""
+           // textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID==ComplaintID}[0].ComplaintReasonName
+            for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
+
+
+                if (ComplaintID.equals(fac.ComplaintReasonID)) {
+
+                    textView.text = fac.ComplaintReasonName
+                    Toast.makeText(context,"match",Toast.LENGTH_SHORT).show()
+
+                }else {   Toast.makeText(context,"doesnt match",Toast.LENGTH_SHORT).show()}
+            }
+
             tableRow.addView(textView)
 
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam7
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = ""
+            tableRow.addView(textView)
+
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam8
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = ""
             tableRow.addView(textView)
@@ -359,6 +381,12 @@ class FragmentARRAVComplaints : Fragment() {
         rowLayoutParam7.column = 7
         rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
 
+
+        val rowLayoutParam8 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam8.column = 8
+        rowLayoutParam8.height = TableLayout.LayoutParams.WRAP_CONTENT
+
 //        val rowLayoutParam8 = TableRow.LayoutParams()
 //        rowLayoutParam7.weight = 1F
 //        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -413,13 +441,37 @@ class FragmentARRAVComplaints : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam6
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = ""
+              //  textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID.toString()==get(it).ComplaintID.toString()}[0].ComplaintReasonName.toString()
+                for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
+
+
+                    if (get(it).ComplaintID.equals(fac.ComplaintReasonID)) {
+
+                        textView.text = fac.ComplaintReasonName
+                        Toast.makeText(context,"match",Toast.LENGTH_SHORT).show()
+
+                    }else {   Toast.makeText(context,"doesnt match",Toast.LENGTH_SHORT).show()}
+                }
+
 
                 tableRow.addView(textView)
+
+
          textView = TextView(context)
                 textView.layoutParams = rowLayoutParam7
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 if (!(get(it).ReceivedDate.isNullOrEmpty())) {
+                    textView.text = get(it).ReceivedDate.apiToAppFormat()
+                } else {
+                    textView.text = ""
+                }
+                tableRow.addView(textView)
+
+
+         textView = TextView(context)
+                textView.layoutParams = rowLayoutParam8
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                if (!(get(it).ComplaintID.isNullOrEmpty())) {
                     textView.text = get(it).ReceivedDate.apiToAppFormat()
                 } else {
                     textView.text = ""

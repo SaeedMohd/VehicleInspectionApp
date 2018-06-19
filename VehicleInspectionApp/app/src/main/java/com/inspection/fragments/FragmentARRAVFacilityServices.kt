@@ -42,6 +42,34 @@ class FragmentARRAVFacilityServices : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+        exitFC_ServicesDialogeBtnId.setOnClickListener({
+
+            facilityServicesCard.visibility=View.GONE
+            alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+
+
+        })
+
+        showNewserviceDialogueButton.setOnClickListener(View.OnClickListener {
+            comments_editTextVal.setText("")
+            fceffective_date_textviewVal.setText("SELECT DATE")
+            fcexpiration_date_textviewVal.setText("SELECT DATE")
+            fc_services_textviewVal.setSelection(0)
+
+
+
+            comments_editTextVal.setError(null)
+            fceffective_date_textviewVal.setError(null)
+            fc_servicestextViewToCheckSpinner.setError(null)
+            facilityServicesCard.visibility=View.VISIBLE
+            alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
+
+
+        })
+
+
         fcexpiration_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -73,6 +101,9 @@ class FragmentARRAVFacilityServices : Fragment() {
         }
 
         var servicesArray= ArrayList<String>()
+
+        servicesArray.add("select service")
+
         for (fac in TypeTablesModel.getInstance().ServicesType) {
 
 
@@ -86,6 +117,12 @@ class FragmentARRAVFacilityServices : Fragment() {
         submitNewserviceButton.setOnClickListener({
 
             if (validateInputs()){
+
+
+                facilityServicesCard.visibility=View.GONE
+                alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+
+
 
                 var item = FacilityDataModel.TblFacilityServices()
                 for (fac in TypeTablesModel.getInstance().ServicesType) {
@@ -233,10 +270,17 @@ class FragmentARRAVFacilityServices : Fragment() {
         var isInputsValid = true
 
         fceffective_date_textviewVal.setError(null)
+        fc_servicestextViewToCheckSpinner.setError(null)
 
         if(fceffective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid=false
             fceffective_date_textviewVal.setError("Required Field")
+        }
+
+
+        if(fc_services_textviewVal.selectedItem.toString().contains("select")) {
+            isInputsValid=false
+            fc_servicestextViewToCheckSpinner.setError("Required Field")
         }
 
 

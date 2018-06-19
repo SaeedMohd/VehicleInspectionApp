@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:text="Entered By"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="2"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
@@ -172,7 +172,7 @@
                         android:layout_height="wrap_content"
                         android:text="Assigned To"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="3"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
@@ -181,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:text="First Name"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="4"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
@@ -190,7 +190,16 @@
                         android:layout_height="wrap_content"
                         android:text="Last Name"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="5"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reason"
+                        android:textStyle="bold"
+                        android:layout_column="6"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
@@ -199,16 +208,16 @@
                         android:layout_height="wrap_content"
                         android:text="Received Date"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="7"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Closed Date"
+                        android:text="Resolution"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="8"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
