@@ -51,11 +51,11 @@ class FragmentARRAVVehicleServices : Fragment() {
     var autoBodyServicesListView: ExpandableHeightGridView? = null
     var MarineServicesListView: ExpandableHeightGridView? = null
     var RecreationalServicesListView: ExpandableHeightGridView? = null
-    internal var arrayAdapter: DatesListAdapter? = null
+        internal var arrayAdapter: DatesListAdapter? = null
     internal var arrayAdapter2: DatesListAdapter? = null
     internal var arrayAdapter3: DatesListAdapter? = null
     internal var arrayAdapter4: DatesListAdapter? = null
-    var vehicleServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+        var vehicleServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
     var autoBodyServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
     var marineServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
     var recreationalServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
@@ -116,11 +116,13 @@ class FragmentARRAVVehicleServices : Fragment() {
 
                         marineServicesListItems.add(model)
                     }
-                    if (model2.VehiclesTypeName.toString().contains("tional")) {
+                    if (model2.VehiclesTypeName.toString().contains("RV")) {
 
                         recreationalServicesListItems.add(model)
                     }
-                }
+
+
+                                    }
             }
 
             }
@@ -153,6 +155,22 @@ class FragmentARRAVVehicleServices : Fragment() {
         RecreationalServicesListView?.isExpanded=true
 
 
+//
+//
+//            arrayAdapter5 = DatesListAdapter(context!!, R.layout.vehicle_services_item, GlassServicesListItems)
+//
+//        GlassServicesListView?.adapter = arrayAdapter5
+//        GlassServicesListView?.isExpanded=true
+//
+//
+//
+//
+//            arrayAdapter6 = DatesListAdapter(context!!, R.layout.vehicle_services_item, OtherServicesListItems)
+//
+//        OtherServicesListView?.adapter = arrayAdapter6
+//        OtherServicesListView?.isExpanded=true
+//
+//
 
         //  vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
 
