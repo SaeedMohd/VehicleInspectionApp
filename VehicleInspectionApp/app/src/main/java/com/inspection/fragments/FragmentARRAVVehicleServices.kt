@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.GridView
 import com.android.volley.Request
 import com.android.volley.Response
@@ -15,13 +17,18 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.ExpandableHeightGridView
 import com.inspection.Utils.toast
+import com.inspection.adapter.DatesListAdapter
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.model.AAAVehicleServicesModel
+import com.inspection.model.TypeTablesModel
 import com.inspection.model.VehicleServiceItem
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
+import java.util.ArrayList
+
 //import kotlinx.android.synthetic.main.temp.view.*
 
 /**
@@ -40,8 +47,19 @@ class FragmentARRAVVehicleServices : Fragment() {
     private var isServicesLoaded = false
 
     //changed from listview to gridview > sherif yousry
-    var vehicleServicesListView: GridView? = null
-    var vehicleServicesListItems = ArrayList<VehicleServicesListItem>()
+    var vehicleServicesListView: ExpandableHeightGridView? = null
+    var autoBodyServicesListView: ExpandableHeightGridView? = null
+    var MarineServicesListView: ExpandableHeightGridView? = null
+    var RecreationalServicesListView: ExpandableHeightGridView? = null
+    internal var arrayAdapter: DatesListAdapter? = null
+    internal var arrayAdapter2: DatesListAdapter? = null
+    internal var arrayAdapter3: DatesListAdapter? = null
+    internal var arrayAdapter4: DatesListAdapter? = null
+    var vehicleServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+    var autoBodyServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+    var marineServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+    var recreationalServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +71,9 @@ class FragmentARRAVVehicleServices : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater!!.inflate(R.layout.fragment_array_vehicle_services, container, false)
         vehicleServicesListView = view.findViewById(R.id.vehicleServicesListView)
+        autoBodyServicesListView = view.findViewById(R.id.autoBodyServicesListView)
+        MarineServicesListView = view.findViewById(R.id.MarineServicesListView)
+        RecreationalServicesListView = view.findViewById(R.id.RecreationalServicesListView)
 
         return view
     }
@@ -60,33 +81,16 @@ class FragmentARRAVVehicleServices : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (progressbarVehicleServices != null) {
-            progressbarVehicleServices.visibility = View.VISIBLE
-        }
+//        if (progressbarVehicleServices != null) {
+//            progressbarVehicleServices.visibility = View.VISIBLE
+//        }
 
-        if (AnnualVisitationSingleton.getInstance().vehicleServicesList == null) {
-            loadServices()
-        } else {
             setServices()
-        }
+
 
     }
 
 
-    private fun loadServices() {
-
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVehicleServicesURL,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        isServicesLoaded = true
-                        AnnualVisitationSingleton.getInstance().vehicleServicesList = Gson().fromJson(response.toString(), Array<AAAVehicleServicesModel>::class.java).toCollection(ArrayList())
-                        setServices()
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading personnel Types")
-            activity!!.toast("Connection Error. Please check the internet connection")
-        }))
-    }
 
     private fun setServices() {
 
@@ -94,38 +98,91 @@ class FragmentARRAVVehicleServices : Fragment() {
         // commented out for testing to adjust gridview> sherif yousry
       //  vehicleServicesListItems.add(VehicleServiceHeader("Automobile"))
 
-        (0 until AnnualVisitationSingleton.getInstance().vehicleServicesList!!.size).forEach {
-            vehicleServicesListItems.add(VehicleServiceItem(AnnualVisitationSingleton.getInstance().vehicleServicesList!![it]))
-            vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
-            vehicleServicesListView!!.adapter = vehiclesArrayAdapter
-        }
-        prepareView()
-        if (progressbarVehicleServices != null) {
+        for (model in TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType) {
 
-            progressbarVehicleServices.visibility = View.INVISIBLE
-        }
-    }
+            for (model2 in TypeTablesModel.getInstance().VehiclesType){
 
+                if (model.VehiclesTypeID==model2.VehiclesTypeID){
 
-    fun prepareView() {
+                    if (model2.VehiclesTypeName.toString().contains("Autom")) {
 
-        (0 until AnnualVisitationSingleton.getInstance().vehicleServices.split(",").size)
-                .forEach {
-                    (1 until vehicleServicesListItems.size)
-                            .forEach { it2 ->
-                                try {
-                                    if (it2 != 0) {
-                                        if (AnnualVisitationSingleton.getInstance().vehicleServices.split(",")[it].toInt() == (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid) {
-                                            (vehicleServicesListItems[it2] as VehicleServiceItem).setServiceSelected(true)
-                                            vehiclesArrayAdapter.notifyDataSetChanged()
-                                        }
-                                    }
-                                } catch (exp: Exception) {
+                        vehicleServicesListItems.add(model)
+                    }
+                    if (model2.VehiclesTypeName.toString().contains("Body")) {
 
-                                }
-                            }
+                        autoBodyServicesListItems.add(model)
+                    }
+                    if (model2.VehiclesTypeName.toString().contains("Marin")) {
+
+                        marineServicesListItems.add(model)
+                    }
+                    if (model2.VehiclesTypeName.toString().contains("tional")) {
+
+                        recreationalServicesListItems.add(model)
+                    }
                 }
+            }
+
+            }
+
+
+
+
+
+
+            arrayAdapter = DatesListAdapter(context!!, R.layout.vehicle_services_item, vehicleServicesListItems)
+
+            vehicleServicesListView?.adapter = arrayAdapter
+        vehicleServicesListView?.isExpanded=true
+
+            arrayAdapter2 = DatesListAdapter(context!!, R.layout.vehicle_services_item, autoBodyServicesListItems)
+
+        autoBodyServicesListView?.adapter = arrayAdapter2
+        autoBodyServicesListView?.isExpanded=true
+
+
+            arrayAdapter3 = DatesListAdapter(context!!, R.layout.vehicle_services_item, marineServicesListItems)
+
+        MarineServicesListView?.adapter = arrayAdapter3
+        MarineServicesListView?.isExpanded=true
+
+
+            arrayAdapter4 = DatesListAdapter(context!!, R.layout.vehicle_services_item, recreationalServicesListItems)
+
+        RecreationalServicesListView?.adapter = arrayAdapter4
+        RecreationalServicesListView?.isExpanded=true
+
+
+
+        //  vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehicleServicesListItems)
+
+        //   prepareView()
+//        if (progressbarVehicleServices != null) {
+//
+//            progressbarVehicleServices.visibility = View.INVISIBLE
+//        }
     }
+
+
+//    fun prepareView() {
+//
+//        (0 until AnnualVisitationSingleton.getInstance().vehicleServices.split(",").size)
+//                .forEach {
+//                    (1 until vehicleServicesListItems.size)
+//                            .forEach { it2 ->
+//                                try {
+//                                    if (it2 != 0) {
+//                                        if (AnnualVisitationSingleton.getInstance().vehicleServices.split(",")[it].toInt() == (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid) {
+//                                            (vehicleServicesListItems[it2] as VehicleServiceItem).setServiceSelected(true)
+//                                            vehiclesArrayAdapter.notifyDataSetChanged()
+//                                        }
+//                                    }
+//                                } catch (exp: Exception) {
+//
+//                                }
+//                            }
+//                }
+//    }
 
 
     override fun onDetach() {

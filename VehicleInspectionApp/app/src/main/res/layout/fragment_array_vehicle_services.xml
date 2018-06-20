@@ -1,29 +1,27 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_below="@+id/titleTextView"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:fillViewport="true"
+    android:paddingBottom="10dp"
+    android:layout_margin="10dp"
+    android:paddingTop="5dp"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.inspection.fragments.FragmentARRAVFacility">
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:textAllCaps="true"
-        android:text="Vehicle Services"
-        android:textSize="18dp"
-        android:textStyle="bold" />
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="3"
         android:background="@color/white"
         >
+
+
         <TextView
             android:id="@+id/subTitleTextView"
             android:layout_width="wrap_content"
@@ -33,141 +31,201 @@
             android:textStyle="bold"
             android:textSize="14dp"
             android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+
+            />
+
+
+        <com.inspection.Utils.ExpandableHeightGridView
+            android:id="@+id/vehicleServicesListView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:horizontalSpacing="2dp"
+            android:isScrollContainer="false"
+            android:numColumns="4"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp" />
+
+
+      <!--<GridView-->
+        <!--android:id="@+id/vehicleServicesListView"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/white"-->
+        <!--android:columnWidth="210dp"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:paddingTop="20dp"-->
+        <!--android:numColumns="auto_fit"-->
+        <!--android:verticalSpacing="0dp"-->
+        <!--android:horizontalSpacing="30dp"-->
+        <!--android:stretchMode="columnWidth"-->
+        <!--android:gravity="center"-->
+        <!--/>-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+        <TextView
+            android:id="@+id/subTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Auto Body"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
             android:paddingTop="5dp"
 
             />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="3"
-        android:id="@+id/gridLinearId">
-
-
-      <GridView
-        android:id="@+id/vehicleServicesListView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
-        android:background="@color/white"
-        android:columnWidth="210dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="20dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="0dp"
-        android:horizontalSpacing="30dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        />
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressbarVehicleServices"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:max="100"
-        android:layout_alignTop="@id/gridLinearId"
-        android:backgroundTint="@color/white"
-        android:indeterminateTint="#1a09d6"
-        android:visibility="invisible"
-        android:layout_marginTop="-10dp"/>
-
-    <RelativeLayout
-        android:layout_below="@+id/gridLinearId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="5dp">
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="20dp"
-            android:weightSum="3"
-            android:layout_below="@id/connumberll"
-            android:orientation="horizontal"
-            android:id="@+id/contypell">
-            <TextView
-                android:id="@+id/effective_date_textview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/connumberll"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="Effective Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/fceffective_date_textviewVal"
-
-                android:layout_below="@id/connumberll"
-                android:layout_width="0dp"
-                android:text="select date"
-                android:textColor="@color/blue_krayola"
-                android:background="@null"
-                android:layout_weight="2"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="20dp"
-            android:weightSum="3"
-            android:layout_below="@id/contypell"
-            android:orientation="horizontal"
-            android:id="@+id/officell">
-            <TextView
-                android:id="@+id/expiration_date_textview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/contypell"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="Expiration Date: "
-                android:textStyle="bold"
-                />
-            <Button
-                android:id="@+id/fcexpiration_date_textviewVal"
-                android:layout_toRightOf="@id/office_textview"
-                android:layout_below="@id/contypell"
-                android:layout_width="0dp"
-                android:text="Select Date"
-                android:textColor="@color/blue_krayola"
-                android:background="@null"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
+        <com.inspection.Utils.ExpandableHeightGridView
+            android:id="@+id/autoBodyServicesListView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/officell"
-            android:orientation="horizontal"
-            android:id="@+id/AssignedToll">
-            <TextView
-                android:id="@+id/comments_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/officell"
-                android:layout_gravity="center_vertical"
-                android:text="Comments: "
-                android:textStyle="bold"
-                />
-        </LinearLayout>
+            android:gravity="center"
+            android:horizontalSpacing="2dp"
+            android:isScrollContainer="false"
+            android:numColumns="4"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp" />
 
-        <EditText
-            android:id="@+id/comments_editTextVal"
-            android:layout_below="@id/AssignedToll"
+
+        <!--<GridView-->
+            <!--android:id="@+id/autoBodyServicesListView"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/white"-->
+            <!--android:columnWidth="210dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:paddingTop="20dp"-->
+            <!--android:numColumns="auto_fit"-->
+            <!--android:verticalSpacing="0dp"-->
+            <!--android:horizontalSpacing="30dp"-->
+            <!--android:stretchMode="columnWidth"-->
+            <!--android:gravity="center"-->
+            <!--/>-->
+
+        <View
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+        <TextView
+            android:id="@+id/subTitleTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxEms="250"
-            android:lines="5"
+            android:gravity="center"
+            android:text="Marine"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+
             />
 
+        <com.inspection.Utils.ExpandableHeightGridView
+            android:id="@+id/MarineServicesListView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:horizontalSpacing="2dp"
+            android:isScrollContainer="false"
+            android:numColumns="4"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp" />
 
-    </RelativeLayout>
+        <!--<GridView-->
+            <!--android:id="@+id/MarineServicesListView"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/white"-->
+            <!--android:columnWidth="210dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:paddingTop="20dp"-->
+            <!--android:numColumns="auto_fit"-->
+            <!--android:verticalSpacing="0dp"-->
+            <!--android:horizontalSpacing="30dp"-->
+            <!--android:stretchMode="columnWidth"-->
+            <!--android:gravity="center"-->
+            <!--/>-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+        <TextView
+            android:id="@+id/subTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Recreational Vehicle"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+
+            />
+
+        <com.inspection.Utils.ExpandableHeightGridView
+            android:id="@+id/RecreationalServicesListView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:horizontalSpacing="2dp"
+            android:isScrollContainer="false"
+            android:numColumns="4"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp" />
+
+
+        <!--<GridView-->
+            <!--android:id="@+id/RecreationalServicesListView"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/white"-->
+            <!--android:columnWidth="210dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:paddingTop="20dp"-->
+            <!--android:numColumns="auto_fit"-->
+            <!--android:verticalSpacing="0dp"-->
+            <!--android:horizontalSpacing="30dp"-->
+            <!--android:stretchMode="columnWidth"-->
+            <!--android:gravity="center"-->
+            <!--/>-->
+
+
+
+        <!--<ProgressBar-->
+        <!--android:id="@+id/progressbarVehicleServices"-->
+        <!--style="?android:attr/progressBarStyleHorizontal"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:indeterminate="true"-->
+        <!--android:max="100"-->
+        <!--android:layout_alignTop="@id/gridLinearId"-->
+        <!--android:backgroundTint="@color/white"-->
+        <!--android:indeterminateTint="#1a09d6"-->
+        <!--android:visibility="invisible"-->
+        <!--android:layout_marginTop="-10dp"/>-->
+
     </LinearLayout>
-</RelativeLayout>
+
+</ScrollView>
