@@ -182,25 +182,25 @@ class FragmentARRAVVehicleServices : Fragment() {
     }
 
 
-//    fun prepareView() {
-//
-//        (0 until AnnualVisitationSingleton.getInstance().vehicleServices.split(",").size)
-//                .forEach {
-//                    (1 until vehicleServicesListItems.size)
-//                            .forEach { it2 ->
-//                                try {
-//                                    if (it2 != 0) {
-//                                        if (AnnualVisitationSingleton.getInstance().vehicleServices.split(",")[it].toInt() == (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid) {
-//                                            (vehicleServicesListItems[it2] as VehicleServiceItem).setServiceSelected(true)
-//                                            vehiclesArrayAdapter.notifyDataSetChanged()
-//                                        }
-//                                    }
-//                                } catch (exp: Exception) {
-//
-//                                }
-//                            }
-//                }
-//    }
+    fun prepareView() {
+
+        (0 until AnnualVisitationSingleton.getInstance().vehicleServices.split(",").size)
+                .forEach {
+                    (1 until vehicleServicesListItems.size)
+                            .forEach { it2 ->
+                                try {
+                                    if (it2 != 0) {
+                                        if (AnnualVisitationSingleton.getInstance().vehicleServices.split(",")[it].toInt() == (vehicleServicesListItems[it2] as VehicleServiceItem).vehicleServiceModel.scopeserviceid) {
+                                            (vehicleServicesListItems[it2] as VehicleServiceItem).setServiceSelected(true)
+                                            vehiclesArrayAdapter.notifyDataSetChanged()
+                                        }
+                                    }
+                                } catch (exp: Exception) {
+
+                                }
+                            }
+                }
+    }
 
 
     override fun onDetach() {
