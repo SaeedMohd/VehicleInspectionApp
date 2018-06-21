@@ -2,6 +2,8 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.get
+import androidx.core.view.size
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -127,17 +131,12 @@ class FragmentARRAVPrograms : Fragment() {
         }
 
 
-
         submitNewProgramButton.setOnClickListener({
 
             if (validateInputs()){
 
             var validProgram = true
-                var datesTest=0
-                var  effectiveDateToInt= 0
-                var  expirationDateToInt= 0
 
-                var item = FacilityDataModel.TblPrograms()
 
                     for (fac in TypeTablesModel.getInstance().ProgramsType) {
                     if (program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName)){
@@ -242,6 +241,8 @@ class FragmentARRAVPrograms : Fragment() {
         prepareProgramTypes()
         fillPortalTrackingTableView();
 
+        altTableRow(2)
+
     }
 
 
@@ -328,7 +329,13 @@ class FragmentARRAVPrograms : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).effDate.apiToAppFormat()
+                try {
+                    textView.text = get(it).effDate.apiToAppFormat()
+                } catch (e: Exception) {
+
+                    textView.text = get(it).effDate
+
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -338,6 +345,9 @@ class FragmentARRAVPrograms : Fragment() {
                 try {
                     textView.text = get(it).expDate.apiToAppFormat()
                 } catch (e: Exception) {
+                    textView.text = get(it).expDate
+
+
                 }
                 tableRow.addView(textView)
 
@@ -347,11 +357,73 @@ class FragmentARRAVPrograms : Fragment() {
                 textView.text = get(it).Comments
                 tableRow.addView(textView)
 
-
                 aarPortalTrackingTableLayout.addView(tableRow)
+
+
+
+
+
+
+            for (i in 1..aarPortalTrackingTableLayout.size) {
+
+           //     aarPortalTrackingTableLayout[2].setBackgroundColor(context!!.getResources().getColor(R.color.gray))
+
+//
+//                var buttonColor : ColorDrawable= aarPortalTrackingTableLayout.getBackground() as ColorDrawable
+//
+//
+//                var color222=buttonColor.color
+//                if (color222==R.color.gray) {
+//
+//                    Toast.makeText(context, "yes", Toast.LENGTH_SHORT).show()
+//
+//                }else
+//                    Toast.makeText(context, "button color = ${color222.toString()} and the other = ${R.color.gray.toString()}", Toast.LENGTH_SHORT).show()
+//
+
             }
+
+
+
+
+
+
+//                if (aarPortalTrackingTableLayout[i].background.equals(R.color.gray)){
+//
+//
+//                    Toast.makeText(context,"yes",Toast.LENGTH_SHORT).show()
+//
+//                }
+
+            }
+
         }
     }
+
+    fun altTableRow(alt_row : Int) {
+        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+
+
+
 
     fun addTheLatestRowOfPortalAdmin() {
         val rowLayoutParam = TableRow.LayoutParams()
@@ -388,15 +460,23 @@ class FragmentARRAVPrograms : Fragment() {
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = effDate
-            tableRow.addView(textView)
+                try {
+                    textView.text = effDate.appToApiFormat()
+                } catch (e: Exception) {
+                    textView.text = effDate
+                }
+                tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            textView.text = expDate
-            tableRow.addView(textView)
+                try {
+                    textView.text = expDate.appToApiFormat()
+                } catch (e: Exception) {
+                    textView.text = expDate
+                }
+                tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam3
@@ -408,6 +488,8 @@ class FragmentARRAVPrograms : Fragment() {
             aarPortalTrackingTableLayout.addView(tableRow)
 
         }
+        altTableRow(2)
+
     }
 
 //    fun drawProgramsTable () {

@@ -220,6 +220,7 @@ class FragmentARRAVDeficiency : Fragment() {
             visitationFormAlphaBackground.visibility = View.GONE
             signatureDialog.visibility = View.GONE
         }
+        altDeffTableRow(2)
 
 
     }
@@ -287,7 +288,31 @@ class FragmentARRAVDeficiency : Fragment() {
             DeffResultsTbl.addView(tableRow)
 
         }
+        altDeffTableRow(2)
     }
+
+    fun altDeffTableRow(alt_row : Int) {
+        var childViewCount = DeffResultsTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= DeffResultsTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+
 
 
     private var defTypeList = ArrayList<TypeTablesModel.aarDeficiencyType>()

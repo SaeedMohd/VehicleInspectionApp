@@ -8,6 +8,12 @@ public class MyObject {
     public MyObject(String objectName,String objAddress){
         this.objectName = objectName;
         this.objAddress = objAddress;
+
+
     }
+
+
+
+
  
 }

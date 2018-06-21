@@ -205,6 +205,9 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
         })
 
+        alt_AOT_TableRow(2)
+        altEventTableRow(2)
+
     }
     fun prepareSpinnerReasonTypes() {
 
@@ -357,8 +360,32 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             AmendmentOrdersAndTrackingTableLayout.addView(tableRow)
 
         }
+        alt_AOT_TableRow(2)
     }
- fun fillNewEventTableLayout() {
+
+    fun alt_AOT_TableRow(alt_row : Int) {
+        var childViewCount = AmendmentOrdersAndTrackingTableLayout.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= AmendmentOrdersAndTrackingTableLayout.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+
+    fun fillNewEventTableLayout() {
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val rowLayoutParam = TableRow.LayoutParams()
@@ -474,7 +501,32 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             newEventTableLayout.addView(tableRow)
 
         }
+
+        altEventTableRow(2)
     }
+
+    fun altEventTableRow(alt_row : Int) {
+        var childViewCount = newEventTableLayout.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= newEventTableLayout.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

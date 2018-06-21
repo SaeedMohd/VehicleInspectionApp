@@ -57,6 +57,7 @@ class FragmentARRAVLocation : Fragment() {
         fillClosedHoursTableView()
 
 
+
         facilityIsOpenEffDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -401,6 +402,9 @@ class FragmentARRAVLocation : Fragment() {
                 phoneTbl.addView(tableRow)
             }
         }
+        altPhoneTableRow(2)
+
+
     }
 
     fun fillEmailTableView() {
@@ -444,6 +448,8 @@ class FragmentARRAVLocation : Fragment() {
                 emailTbl.addView(tableRow)
             }
         }
+        altEmailTableRow(2)
+
     }
     fun fillOpenHoursTableView() {
         val rowLayoutParam = TableRow.LayoutParams()
@@ -802,6 +808,8 @@ class FragmentARRAVLocation : Fragment() {
 
             }
         }
+        altLocationTableRow(2)
+
     }
 
     fun submitFacilityEmail(){
@@ -920,6 +928,70 @@ class FragmentARRAVLocation : Fragment() {
             Log.v("error while submitting", "Phone Details")
         }))
     }
+    fun altEmailTableRow(alt_row : Int) {
+        var childViewCount = emailTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= emailTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+    fun altPhoneTableRow(alt_row : Int) {
+        var childViewCount = phoneTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+    fun altLocationTableRow(alt_row : Int) {
+        var childViewCount = locationTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= locationTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+
 
 
     companion object {
