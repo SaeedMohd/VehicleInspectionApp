@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.billing_group_layout.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
 import java.text.SimpleDateFormat
@@ -52,38 +53,125 @@ class BillingGroupFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.facility_group_layout, container, false)
+        return inflater.inflate(R.layout.billing_group_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var fragment = FragmentARRAVFacility.newInstance(false)
+        var fragment = FragmentAARAVBillingPlans.newInstance("","")
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
+        updateSelectedIndicator(R.id.billingPlanButton)
 
-        generalInformationButton.setOnClickListener {
-            var fragment = FragmentARRAVFacility.newInstance(false)
+        billingPlanButton.setOnClickListener {
+            var fragment = FragmentAARAVBillingPlans.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            updateSelectedIndicator(R.id.billingPlanButton)
         }
 
-        rspButton.setOnClickListener {
-            var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
+        billingButton.setOnClickListener {
+            var fragment = FragmentAARAVBilling.newInstance("", "")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            updateSelectedIndicator(R.id.billingButton)
         }
 
-        personnelButton.setOnClickListener {
-            var fragment = FragmentARRAVPersonnel.newInstance(false)
+        paymentsButton.setOnClickListener {
+            var fragment = FragmentAARAVPayments.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            updateSelectedIndicator(R.id.paymentsButton)
         }
 
+        vendorRevenueButton.setOnClickListener {
+            var fragment = FragmentAARAVVendorRevenue.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+            updateSelectedIndicator(R.id.vendorRevenueButton)
+        }
+
+        billingHistoryButton.setOnClickListener {
+            var fragment = FragmentAARAVBillingHistory.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+            updateSelectedIndicator(R.id.billingHistoryButton)
+        }
+
+        billingAdjustmentButton.setOnClickListener {
+            var fragment = FragmentAARAVBillingAdjustment.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+            updateSelectedIndicator(R.id.billingAdjustmentButton)
+        }
+
+    }
+
+
+    fun updateSelectedIndicator(selectedViewId: Int){
+        when(selectedViewId){
+            R.id.billingPlanButton->{
+                billingPlanSelectedIndicator.visibility = View.VISIBLE
+                billingSelectedIndicator.visibility = View.INVISIBLE
+                paymentsSelectedIndicator.visibility = View.INVISIBLE
+                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+            }
+
+            R.id.billingButton->{
+                billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                billingSelectedIndicator.visibility = View.VISIBLE
+                paymentsSelectedIndicator.visibility = View.INVISIBLE
+                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+            }
+
+            R.id.paymentsButton->{
+                billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                billingSelectedIndicator.visibility = View.INVISIBLE
+                paymentsSelectedIndicator.visibility = View.VISIBLE
+                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+            }
+
+            R.id.vendorRevenueButton->{
+                billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                billingSelectedIndicator.visibility = View.INVISIBLE
+                paymentsSelectedIndicator.visibility = View.INVISIBLE
+                vendorRevenueSelectedIndicator.visibility = View.VISIBLE
+                billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+            }
+
+            R.id.billingHistoryButton->{
+                billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                billingSelectedIndicator.visibility = View.INVISIBLE
+                paymentsSelectedIndicator.visibility = View.INVISIBLE
+                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                billingHistorySelectedIndicator.visibility = View.VISIBLE
+                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+            }
+
+            R.id.billingAdjustmentButton->{
+                billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                billingSelectedIndicator.visibility = View.INVISIBLE
+                paymentsSelectedIndicator.visibility = View.INVISIBLE
+                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                billingAdjustmentSelectedIndicator.visibility = View.VISIBLE
+            }
+        }
     }
 
 

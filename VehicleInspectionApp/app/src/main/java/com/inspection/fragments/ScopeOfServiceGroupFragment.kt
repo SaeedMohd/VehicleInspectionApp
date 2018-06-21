@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.facility_group_layout.*
+import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,39 +52,83 @@ class ScopeOfServiceGroupFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.facility_group_layout, container, false)
+        return inflater.inflate(R.layout.scope_of_service_group_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var fragment = FragmentARRAVFacility.newInstance(false)
+        var fragment = FragmentARRAVScopeOfService.newInstance("","")
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
 
         generalInformationButton.setOnClickListener {
-            var fragment = FragmentARRAVFacility.newInstance(false)
+            var fragment = FragmentARRAVScopeOfService.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
         }
 
-        rspButton.setOnClickListener {
-            var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
+        vehicleServicesButton.setOnClickListener {
+            var fragment = FragmentARRAVVehicleServices.newInstance("", "")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
         }
 
-        personnelButton.setOnClickListener {
-            var fragment = FragmentARRAVPersonnel.newInstance(false)
+        programsButton.setOnClickListener {
+            var fragment = FragmentARRAVPrograms.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
         }
+
+        facilityServicesButton.setOnClickListener {
+            var fragment = FragmentARRAVFacilityServices.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+        }
+
+        vehiclesButton.setOnClickListener {
+            var fragment = FragmentARRAVVehicles.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+        }
+
+        AffiliationsButton.setOnClickListener {
+            var fragment = FragmentARRAVAffliations.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+        }
+
+        promotionsButton.setOnClickListener {
+            var fragment = PromotionsFragment.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+        }
+
+        awardsAndDistinctionsButton.setOnClickListener {
+            var fragment = AwardsAndDistinctionsFragment.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+        }
+
+        otherButton.setOnClickListener {
+            var fragment = OthersFragment.newInstance("","")
+            fragmentManager!!.beginTransaction()
+                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+                    .commit()
+        }
+
 
     }
+
 
 
     /**

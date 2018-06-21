@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".fragments.FragmentAARAVBilling">
+
+    <TableLayout
+        android:id="@+id/facilityGroupButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/billingPlanButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Billing Plan"
+                android:background="@color/transparent"
+                android:layout_marginLeft="10dp"
+                android:layout_column="0"
+                />
+
+            <Button
+                android:id="@+id/billingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Billing"
+                android:layout_marginLeft="10dp"
+                android:layout_column="1"
+                />
+            <Button
+                android:id="@+id/paymentsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Payments"
+                android:layout_marginLeft="10dp"
+                android:layout_column="2"
+                />
+            <Button
+                android:id="@+id/vendorRevenueButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Vendor Revenue"
+                android:layout_marginLeft="10dp"
+                android:layout_column="3"
+                />
+
+            <Button
+                android:id="@+id/billingHistoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Billing History"
+                android:layout_marginLeft="10dp"
+                android:layout_column="4"
+                />
+
+            <Button
+                android:id="@+id/billingAdjustmentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Billing Adjustment"
+                android:layout_column="5"
+                android:layout_marginLeft="10dp"
+                />
+
+        </TableRow>
+        <TableRow>
+            <View
+                android:id="@+id/billingPlanSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="0"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/billingSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="1"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/paymentsSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="2"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/vendorRevenueSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="3"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/billingHistorySelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="4"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/billingAdjustmentSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="5"
+                android:visibility="invisible"
+                />
+
+        </TableRow>
+    </TableLayout>
+
+
+    <FrameLayout
+        android:id="@+id/facilityGroupDetailsFragment"
+        android:layout_below="@id/facilityGroupButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

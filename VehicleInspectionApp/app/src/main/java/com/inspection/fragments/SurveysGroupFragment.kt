@@ -15,6 +15,7 @@ import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
+import kotlinx.android.synthetic.main.surveys_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -52,38 +53,48 @@ class SurveysGroupFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.facility_group_layout, container, false)
+        return inflater.inflate(R.layout.surveys_group_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var fragment = FragmentARRAVFacility.newInstance(false)
+        var fragment = FragmentAARAVSoftware.newInstance("","")
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
+        updateSelectedIndicator(R.id.csiResultsButton)
 
-        generalInformationButton.setOnClickListener {
-            var fragment = FragmentARRAVFacility.newInstance(false)
+        csiResultsButton.setOnClickListener {
+            var fragment = FragmentAARAVSoftware.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            updateSelectedIndicator(R.id.csiResultsButton)
         }
 
-        rspButton.setOnClickListener {
-            var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
+        softwareButton.setOnClickListener {
+            var fragment = FragmentAARAVSoftware.newInstance("", "")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            updateSelectedIndicator(R.id.softwareButton)
         }
 
-        personnelButton.setOnClickListener {
-            var fragment = FragmentARRAVPersonnel.newInstance(false)
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-        }
+    }
 
+    fun updateSelectedIndicator(selectedViewId: Int){
+        when(selectedViewId){
+            R.id.csiResultsButton->{
+                csiResultsSelectedIndicator.visibility = View.VISIBLE
+                softwareSelectedIndicator.visibility = View.INVISIBLE
+            }
+
+            R.id.softwareButton->{
+                csiResultsSelectedIndicator.visibility = View.INVISIBLE
+                softwareSelectedIndicator.visibility = View.VISIBLE
+            }
+        }
     }
 
 

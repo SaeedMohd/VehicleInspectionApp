@@ -98,7 +98,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.deficiency -> {
                 toolbar.title = "Deficiency"
-                var fragment = DeficienciesGroupFragment()
+                var fragment = FragmentARRAVDeficiency()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)
@@ -108,7 +108,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.complaints -> {
                 toolbar.title = "Complaints"
-                var fragment = ComplaintsGroupFragment()
+                var fragment = FragmentARRAVComplaints()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)
@@ -136,7 +136,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.comments -> {
                 toolbar.title = "Comments"
-                var fragment = CommentsGroupFragment()
+                var fragment = FragmentAARAVComments()
                 supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment, fragment)

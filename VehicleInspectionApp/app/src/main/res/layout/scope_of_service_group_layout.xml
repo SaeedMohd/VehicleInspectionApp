@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".fragments.FragmentAARAVBilling">
+
+    <TableLayout
+        android:id="@+id/facilityGroupButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/generalInformationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="General Information"
+                android:background="@color/transparent"
+                android:layout_marginLeft="10dp"
+                android:layout_column="0"
+                />
+
+            <Button
+                android:id="@+id/vehicleServicesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Vehicle Services"
+                android:layout_marginLeft="10dp"
+                android:layout_column="1"
+                />
+            <Button
+                android:id="@+id/programsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Programs"
+                android:layout_marginLeft="10dp"
+                android:layout_column="2"
+                />
+            <Button
+                android:id="@+id/facilityServicesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Facility Services"
+                android:layout_marginLeft="10dp"
+                android:layout_column="3"
+                />
+
+            <Button
+                android:id="@+id/vehiclesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Vehicles"
+                android:layout_marginLeft="10dp"
+                android:layout_column="4"
+                />
+
+            <Button
+                android:id="@+id/AffiliationsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Affiliations"
+                android:layout_column="5"
+                android:layout_marginLeft="10dp"
+                />
+
+            <Button
+                android:id="@+id/promotionsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Promotions"
+                android:layout_column="6"
+                android:layout_marginLeft="10dp"
+                />
+
+            <Button
+                android:id="@+id/awardsAndDistinctionsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Awards And Distinctions"
+                android:layout_column="7"
+                android:layout_marginLeft="10dp"
+                />
+
+            <Button
+                android:id="@+id/otherButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Other"
+                android:layout_column="8"
+                android:layout_marginLeft="10dp"
+                />
+        </TableRow>
+        <TableRow>
+            <View
+                android:id="@+id/generalInformationSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="0"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/vehicleServicesSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="1"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/programsSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="2"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/facilityServicesSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="3"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/vehiclesSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="4"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/affiliationsSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="5"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/promotionsSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="6"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/awardsAndDistinctionsSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="7"
+                android:visibility="invisible"
+                />
+
+            <View
+                android:id="@+id/otherSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="8"
+                android:visibility="invisible"
+                />
+        </TableRow>
+    </TableLayout>
+
+
+    <FrameLayout
+        android:id="@+id/facilityGroupDetailsFragment"
+        android:layout_below="@id/facilityGroupButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>
