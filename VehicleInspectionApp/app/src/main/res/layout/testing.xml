@@ -5,5 +5,188 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <android.support.v7.widget.CardView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/programCard"
+        app:cardElevation="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_margin="5dp"
+            android:id="@+id/addProgramDialogeTitle"
+            android:text="Add New Program"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="test date"
+            android:id="@+id/testDate"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/submitNewProgramButton"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:background="@drawable/textview_background"
+            android:id="@+id/exitProgramDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:src="@drawable/exit"
+            android:layout_gravity="top|right"
+            />
+        <LinearLayout
+            android:padding="40dp"
+            android:layout_below="@+id/addProgramDialogeTitle"
+            android:layout_width="750dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/secondPartOfPAGEiD">
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/connumberll">
+                <TextView
+                    android:id="@+id/program_name_textviewToCheckSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Program Name: "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/program_name_textviewVal"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:text="Select Program"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="2"
+                    android:layout_gravity="left"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_below="@id/connumberll"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/contypell">
+                <TextView
+                    android:id="@+id/effective_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Effective Date:: "
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/effective_date_textviewVal"
+
+                    android:layout_below="@id/connumberll"
+                    android:layout_width="0dp"
+                    android:text="select date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_below="@id/contypell"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/officell">
+                <TextView
+                    android:id="@+id/expiration_date_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contypell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Expiration Date: "
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/expiration_date_textviewVal"
+                    android:layout_toRightOf="@id/office_textview"
+                    android:layout_below="@id/contypell"
+                    android:layout_width="0dp"
+                    android:text="Select Date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/officell"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/AssignedToll">
+                <TextView
+                    android:id="@+id/comments_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/officell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Comments: "
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/comments_editTextVal"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/AssignedToll"
+                android:layout_width="match_parent"
+                android:background="@drawable/item_solid_border"
+                android:layout_height="wrap_content"
+                android:maxEms="250"
+                android:lines="3"
+                />
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

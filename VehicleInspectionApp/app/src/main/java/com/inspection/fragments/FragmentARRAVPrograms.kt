@@ -16,15 +16,15 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
-import com.inspection.Utils.Constants
-import com.inspection.Utils.toDate
-import com.inspection.Utils.toast
+import com.inspection.Utils.*
 import com.inspection.model.AAAFacilityPrograms
 import com.inspection.model.AAAProgramTypes
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
+import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -127,6 +127,12 @@ class FragmentARRAVPrograms : Fragment() {
             dpd.show()
         }
 
+        testDateBtnId.setOnClickListener(View.OnClickListener {
+
+
+
+        })
+
         submitNewProgramButton.setOnClickListener({
 
             if (validateInputs()){
@@ -145,20 +151,40 @@ class FragmentARRAVPrograms : Fragment() {
 
                             for (item1 in FacilityDataModel.getInstance().tblPrograms)
                         if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
-                       //   datesTest = effective_date_textviewVal.text.toString().toInt()
-                           // Log.v("date value", effective_date_textviewVal.text.toString())
 
-                          //  Toast.makeText(context,dateOne,Toast.LENGTH_SHORT).show()
+//
+                                val dateFormat = SimpleDateFormat("dd MMM yyyy")
+                                var newEffDate = Date()
+                                var newExpDate = Date()
+                                var DB_EffDate = Date()
+                                var DB_ExpDate = Date()
+                                try {
+                                    newEffDate = dateFormat.parse(effective_date_textviewVal!!.text.toString())
+                                    newExpDate = dateFormat.parse(expiration_date_textviewVal!!.text.toString())
+                                    DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormat())
+                                    DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormat())
+                                } catch (e: ParseException) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace()
+                                }
+                            if (!item1.expDate.isNullOrEmpty()||!item1.expDate.isNullOrBlank()) {
 
 
-                              Toast.makeText(context,"program type cannot be duplicated",Toast.LENGTH_SHORT).show()
+                                if ((newEffDate <= DB_ExpDate) && (newExpDate >= DB_EffDate)) {
+
+                                    Toast.makeText(context, "no duplication", Toast.LENGTH_SHORT).show()
 
 
+                                }else
+                                    Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
 
-
+                            }else
+                                Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
 
                             validProgram = false
-                      }
+
+
+                        }
 
                     }
 
@@ -184,6 +210,7 @@ class FragmentARRAVPrograms : Fragment() {
                 item.Comments=comments_editTextVal.text.toString()
                 FacilityDataModel.getInstance().tblPrograms.add(item)
               //  BuildProgramsList()
+
 
                 addTheLatestRowOfPortalAdmin()
 
