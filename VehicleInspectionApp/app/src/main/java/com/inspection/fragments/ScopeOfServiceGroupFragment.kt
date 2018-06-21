@@ -92,7 +92,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
         }
 
         vehiclesButton.setOnClickListener {
-            var fragment = FragmentARRAVVehicles.newInstance("","")
+            var fragment = VehiclesFragmentInScopeOfServicesView.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()

@@ -83,23 +83,25 @@
                 >
 
 
-                <TableRow>
+                <TableRow
+                    android:background="@color/mainColor">
                     <TextView android:text="AO ID"
                         android:layout_width="100dp"
                         android:textAlignment="center"
-
+                        android:textColor="@color/white"
                         android:layout_column="0"
                         android:layout_weight="1"/>
 
                     <TextView android:text="Employee"
                         android:textAlignment="center"
-
+                        android:textColor="@color/white"
                         android:layout_width="30dp"
                         android:layout_column="1"
                         android:layout_weight="1">
                     </TextView>
                     <TextView android:text="Reason"
                         android:layout_width="30dp"
+                        android:textColor="@color/white"
                         android:layout_column="2"
                         android:textAlignment="center"
                         android:layout_weight="1">
@@ -173,16 +175,17 @@
                 >
 
 
-                <TableRow>
+                <TableRow
+                    android:background="@color/mainColor">
                     <TextView android:text="AO ID"
                         android:layout_width="100dp"
                         android:textAlignment="center"
-
+                        android:textColor="@color/white"
                         android:layout_column="0"
                         android:layout_weight="1"/>
                     <TextView android:text="Event ID"
                         android:textAlignment="center"
-
+                        android:textColor="@color/white"
                         android:layout_width="30dp"
                         android:layout_column="1"
                         android:layout_weight="1">
@@ -190,12 +193,14 @@
                     <TextView android:text="Event Date"
                         android:layout_width="30dp"
                         android:layout_column="2"
+                        android:textColor="@color/white"
                         android:textAlignment="center"
                         android:layout_weight="1">
                     </TextView>
                     <TextView android:text="Event"
                         android:layout_width="30dp"
                         android:layout_column="3"
+                        android:textColor="@color/white"
                         android:textAlignment="center"
                         android:layout_weight="1">
                     </TextView>
