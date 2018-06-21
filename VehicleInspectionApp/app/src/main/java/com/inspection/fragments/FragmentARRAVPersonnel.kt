@@ -410,6 +410,10 @@ class FragmentARRAVPersonnel : Fragment() {
         onlyOneContractSignerLogic()
         onlyOneMailRecepientLogic()
         conractSignerCheckedCondition()
+        altTableRow(2)
+        altCertTableRow(2)
+
+
 
     }
 
@@ -1332,6 +1336,7 @@ class FragmentARRAVPersonnel : Fragment() {
             certificationsTable.addView(tableRow)
 
         }
+        altCertTableRow(2)
     }
     fun addTheLatestRowOfPersonnelTable() {
         val rowLayoutParam = TableRow.LayoutParams()
@@ -1461,6 +1466,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             PersonnelResultsTbl.addView(tableRow)
 
         }
+        altTableRow(2)
     }
 
     fun onlyOneContractSignerLogic(){
@@ -1493,6 +1499,49 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             }
         }
 
+    }
+
+    fun altTableRow(alt_row : Int) {
+        var childViewCount = PersonnelResultsTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= PersonnelResultsTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+    fun altCertTableRow(alt_row : Int) {
+        var childViewCount = certificationsTable.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= certificationsTable.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
     }
 
     fun conractSignerCheckedCondition(){

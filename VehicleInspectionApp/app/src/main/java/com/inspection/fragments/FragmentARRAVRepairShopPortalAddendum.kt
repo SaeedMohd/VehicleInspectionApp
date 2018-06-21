@@ -176,7 +176,9 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
 
         //  fillData()
-        fillPortalTrackingTableView();
+        fillPortalTrackingTableView()
+        altLocationTableRow(2)
+
     }
 
     fun fillData(){
@@ -376,7 +378,30 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             aarPortalTrackingTableLayout.addView(tableRow)
 
         }
+        altLocationTableRow(2)
     }
+    fun altLocationTableRow(alt_row : Int) {
+        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                if (i % alt_row != 0) {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.alt_row_color));
+                } else {
+                    tv.setBackground(getResources().getDrawable(
+                            R.drawable.row_color));
+                }
+
+            }
+
+        }
+    }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

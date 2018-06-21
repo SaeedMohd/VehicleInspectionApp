@@ -329,7 +329,13 @@ class FragmentARRAVPrograms : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).effDate.apiToAppFormat()
+                try {
+                    textView.text = get(it).effDate.apiToAppFormat()
+                } catch (e: Exception) {
+
+                    textView.text = get(it).effDate
+
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -339,6 +345,9 @@ class FragmentARRAVPrograms : Fragment() {
                 try {
                     textView.text = get(it).expDate.apiToAppFormat()
                 } catch (e: Exception) {
+                    textView.text = get(it).expDate
+
+
                 }
                 tableRow.addView(textView)
 
@@ -451,15 +460,23 @@ class FragmentARRAVPrograms : Fragment() {
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = effDate
-            tableRow.addView(textView)
+                try {
+                    textView.text = effDate.appToApiFormat()
+                } catch (e: Exception) {
+                    textView.text = effDate
+                }
+                tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            textView.text = expDate
-            tableRow.addView(textView)
+                try {
+                    textView.text = expDate.appToApiFormat()
+                } catch (e: Exception) {
+                    textView.text = expDate
+                }
+                tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam3
