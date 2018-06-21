@@ -127,11 +127,7 @@ class FragmentARRAVPrograms : Fragment() {
             dpd.show()
         }
 
-        testDateBtnId.setOnClickListener(View.OnClickListener {
 
-
-
-        })
 
         submitNewProgramButton.setOnClickListener({
 
