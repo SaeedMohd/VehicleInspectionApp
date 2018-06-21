@@ -60,7 +60,6 @@ class FragmentARRAVPrograms : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(context,"annual checked", Toast.LENGTH_LONG).show()
 
 
         exitProgramDialogeBtnId.setOnClickListener({
@@ -329,14 +328,17 @@ class FragmentARRAVPrograms : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).effDate
+                textView.text = get(it).effDate.apiToAppFormat()
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = get(it).expDate
+                try {
+                    textView.text = get(it).expDate.apiToAppFormat()
+                } catch (e: Exception) {
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
