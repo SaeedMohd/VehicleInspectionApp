@@ -1,15 +1,9 @@
 package com.inspection.fragments
 
-import android.Manifest
-import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,15 +15,19 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.inspection.MainActivity
 import com.inspection.R
-import com.inspection.Utils.Constants
-import com.inspection.Utils.toast
-import com.inspection.model.AAAScopeOfServices
 import com.inspection.model.FacilityDataModel
-import com.inspection.singletons.AnnualVisitationSingleton
+import com.inspection.model.SUBMITIONS.ScopeOfService
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
-import java.util.*
+import org.json.JSONException
+import org.json.JSONObject
+import org.json.XML
+import com.google.android.gms.drive.metadata.CustomPropertyKey.fromJson
+import com.google.gson.GsonBuilder
+import com.inspection.MainActivity.Companion.activity
+import com.inspection.R.id.numberOfLiftsEditText
+import kotlin.jvm.java
+
 
 /**
  * A simple [Fragment] subclass.
@@ -42,6 +40,16 @@ import java.util.*
 class FragmentARRAVScopeOfService : Fragment() {
 
     var warrantyArray = emptyArray<String>()
+
+    var saved_fixedLaborRate=""
+    var saved_diagnosticLaborRate=""
+    var saved_laborRateMatrixMax=""
+    var saved_laborRateMatrixMin=""
+    var saved_numberOfBaysEditText=""
+    var saved_numberOfLiftsEditText=""
+
+
+
 
     private var mListener: OnFragmentInteractionListener? = null
 
@@ -58,12 +66,19 @@ class FragmentARRAVScopeOfService : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        scopeOfServicesChangesMade=false
+
         var warrantyArray= arrayOf("12/12/", "24/24", "36/36", "48/48", "60/60", "Lifetime")
         var warrantyAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, warrantyArray)
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
 
+        testBtnId.setOnClickListener(View.OnClickListener {
+            ScopeOfService.getInstance().apply {
+                Toast.makeText(context,LaborMax,Toast.LENGTH_SHORT).show()
+            }
 
+        })
 
         saveBtnPressed()
 //        prepareScopePage()
@@ -129,7 +144,45 @@ class FragmentARRAVScopeOfService : Fragment() {
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE",response.toString())
-//
+                            //    Toast.makeText(context,"changes saved in DB",Toast.LENGTH_SHORT).show()
+
+                               var jsonObj : JSONObject?  = null;
+                               var jsonObj2 : JSONObject?  = null;
+                               var obj : JSONObject?  = null;
+                               var obj2 : JSONObject?  = null;
+try {
+
+    obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+    obj2 = XML.toJSONObject(response.toString())
+    jsonObj = obj.getJSONObject("responseXml")
+    jsonObj2 = obj.getJSONObject("ScopeofService")
+
+
+} catch ( e : JSONException) {
+    Log.e("JSON exception", e.message);
+    e.printStackTrace();
+}
+
+Log.d("oooXMLHERE", response.toString());
+
+Log.d("oooJSONHERE", jsonObj.toString());
+Log.d("oooJSON2HERE", jsonObj2.toString());
+                                Log.d("oooOBJ_WITHOUTKEY", obj.toString())
+                                Log.d("oooOBJ_WITHOUT_SUB", obj2.toString())
+
+
+
+
+                                ScopeOfService.setInstance(Gson().fromJson<ScopeOfService>(jsonObj!!.get("ScopeofService").toString(), ScopeOfService::class.java))
+
+
+
+                                saved_fixedLaborRate=fixedLaborRate
+                                 saved_diagnosticLaborRate=diagnosticLaborRate
+                                 saved_laborRateMatrixMax=laborRateMatrixMax
+                                 saved_laborRateMatrixMin=laborRateMatrixMin
+                                 saved_numberOfBaysEditText=numberOfBaysEditText
+                                 saved_numberOfLiftsEditText=numberOfLiftsEditText
 
                             })
                         }, Response.ErrorListener {
@@ -204,6 +257,7 @@ class FragmentARRAVScopeOfService : Fragment() {
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
         private val ARG_PARAM2 = "param2"
+        var scopeOfServicesChangesMade = false
 
         /**
          * Use this factory method to create a new instance of

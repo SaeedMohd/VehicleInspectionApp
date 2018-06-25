@@ -37,20 +37,13 @@
                 android:textSize="26dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="AAR Addendum"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="#827908"
-                />
 
 
 
 
 
             <RelativeLayout
+                android:id="@+id/mainViewLinearId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -69,22 +62,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginLeft="520dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="Add new AAR Portal Tracking"
                     android:layout_marginBottom="20dp"
-                    android:id="@+id/addNewAarButton"
-                    />
-                <Button
-                    android:background="@drawable/textview_background"
-                    android:textColor="@color/gray"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_alignParentRight="true"
-                    android:text="Hide"
-                    android:id="@+id/hideBtnId"
+                    android:id="@+id/addNewAarButton"
                     />
 
             </RelativeLayout>
@@ -153,6 +136,15 @@
                         android:textStyle="bold"
                         android:layout_weight="1"
                         android:layout_column="4"
+                        />
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:layout_column="5"
                         />
                 </TableRow>
             </TableLayout>
@@ -329,7 +321,7 @@
                         android:maxLength="2"
                         android:layout_gravity="center"
                         android:gravity="center_horizontal"
-                        android:text="00"
+                        android:text=""
                         android:inputType="number"
 
                         android:textStyle="bold" />
@@ -436,7 +428,7 @@
                         android:background="@drawable/textview_background"
                         android:layout_gravity="center"
                         android:gravity="center_horizontal"
-                        android:text="0"
+                        android:text=""
                         android:inputType="number"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -469,7 +461,7 @@
                         android:background="@drawable/textview_background"
                         android:layout_gravity="center"
                         android:gravity="center_horizontal"
-                        android:text="0"
+                        android:text=""
                         android:inputType="number"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -502,7 +494,351 @@
                         android:background="@drawable/textview_background"
                         android:layout_gravity="center"
                         android:gravity="center_horizontal"
-                        android:text="0"
+                        android:text=""
+                        android:inputType="number"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/edit_AAR_PortalTrackingEntryCard"
+        app:cardElevation="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_margin="5dp"
+            android:text="Update New AAR Portal Tracking"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/edit_submitNewAAR_PortalTracking"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:background="@drawable/textview_background"
+            android:id="@+id/edit_exitRSPDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:src="@drawable/exit"
+            android:layout_gravity="top|right"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:weightSum="2"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="15dp"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:id="@+id/edit_program_name_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="Start Date: "
+                        android:textStyle="bold" />
+                <TextView
+                        android:id="@+id/edit_program_name_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                    android:layout_marginLeft="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="End Date: "
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_weight="1"
+                        android:id="@+id/edit_startDateButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                    <Button
+                        android:layout_weight="1"
+                        android:id="@+id/edit_endDateButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginLeft="30dp"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+
+
+                </LinearLayout>
+
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Addendum Signed Date: "
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/edit_addendumSignedDateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:background="@color/transparent"
+                    android:text="Select Date"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/connumberll"
+                        android:layout_gravity="center_vertical"
+                        android:text="Number Of Cards Reader: "
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edit_numberOfCardsReaderEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/textview_background"
+                        android:ems="2"
+                        android:maxLength="2"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:inputType="number"
+
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:padding="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Inspection Date: "
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/edit_inspectionDateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:background="@color/transparent"
+                    android:text="Select Date"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+
+                        android:id="@+id/edit_program_name_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Logged Into RSP:  "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/edit_program_name_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blue_krayola"
+                        android:text=" No "
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/edit_loggedIntoRspButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/contract_number_textview"
+                        android:textColor="@color/blue_krayola" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blue_krayola"
+                        android:text=" Yes"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/edit_contypell"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/affliationdetails"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
+
+                    <TextView
+                        android:id="@+id/edit_effective_date_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/connumberll"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="Number Of Unacknowledged Records: "
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edit_numberOfUnacknowledgedRecordsEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_background"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:inputType="number"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/edit_contypell"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/affliationdetails"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
+
+                    <TextView
+                        android:id="@+id/edit_effective_date_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/connumberll"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="Number Of In-Progress Two-Ins: "
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edit_numberOfInProgressTwoIns"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_background"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:inputType="number"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/edit_contypell"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/affliationdetails"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
+
+                    <TextView
+                        android:id="@+id/edit_effective_date_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/connumberll"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="Number Of In-Progress Walk-Ins: "
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edit_numberOfInProgressWalkIns"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/textview_background"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text=""
                         android:inputType="number"
                         android:textStyle="bold" />
                 </LinearLayout>

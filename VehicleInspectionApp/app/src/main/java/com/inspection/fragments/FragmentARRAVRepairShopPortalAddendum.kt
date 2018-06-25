@@ -13,10 +13,14 @@ import android.widget.*
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.appToApiFormat
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.widget.LinearLayout
+
+
 
 /**
  * A simple [Fragment] subclass.
@@ -56,6 +60,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         exitRSPDialogeBtnId.setOnClickListener({
 
+            fillPortalTrackingTableView()
+            altLocationTableRow(2)
             addNewAAR_PortalTrackingCard.visibility=View.GONE
             alphaBackgroundForRSPDialogs.visibility = View.GONE
 
@@ -84,6 +90,25 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
             addNewAAR_PortalTrackingCard.visibility=View.VISIBLE
             alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
+
+            for (i in 0 until mainViewLinearId.childCount) {
+                val child = mainViewLinearId.getChildAt(i)
+                child.isEnabled = false
+            }
+
+            var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+
+            for ( i in 1..childViewCount-1) {
+                var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+
+                for (j in 0..row.getChildCount()-1) {
+
+                    var tv : TextView= row.getChildAt(j) as TextView
+                    tv.isEnabled=false
+                }
+
+            }
+
 
 
         })
@@ -167,7 +192,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 portalTrackingentry.AddendumSigned = addendumSignedDateButton.text.toString()
 
                 FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
-                addTheLatestRowOfPortalAdmin()
+                fillPortalTrackingTableView()
+                altLocationTableRow(2)
             }else
                 Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
 
@@ -217,7 +243,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             }
 
 
-            if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()||numberOfCardsReaderEditText.text.toString().equals("00")) {
+            if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
                 isInputsValid = false
                 numberOfCardsReaderEditText.setError("Required Field")
             }
@@ -233,17 +259,17 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
 
 
-        if (numberOfUnacknowledgedRecordsEditText.text.toString().isNullOrEmpty()||numberOfUnacknowledgedRecordsEditText.text.toString().equals("0")) {
+        if (numberOfUnacknowledgedRecordsEditText.text.toString().isNullOrEmpty()) {
             isInputsValid = false
             numberOfUnacknowledgedRecordsEditText.setError("Required Field")
         }
 
-        if (numberOfInProgressTwoIns.text.toString().isNullOrEmpty()||numberOfInProgressTwoIns.text.toString().equals("0")) {
+        if (numberOfInProgressTwoIns.text.toString().isNullOrEmpty()) {
             isInputsValid = false
             numberOfInProgressTwoIns.setError("Required Field")
         }
 
-        if (numberOfInProgressWalkIns.text.toString().isNullOrEmpty()||numberOfInProgressWalkIns.text.toString().equals("0")) {
+        if (numberOfInProgressWalkIns.text.toString().isNullOrEmpty()) {
             isInputsValid = false
             numberOfInProgressWalkIns.setError("Required Field")
         }
@@ -257,11 +283,42 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
     }
 
     fun fillPortalTrackingTableView(){
-        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        mainViewLinearId.isEnabled=true
+
+        //val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+
+
+
+        if (aarPortalTrackingTableLayout.childCount>1) {
+            for (i in aarPortalTrackingTableLayout.childCount - 1 downTo 1) {
+                aarPortalTrackingTableLayout.removeViewAt(i)
+            }
+        }
+
+        for (i in 0 until mainViewLinearId.childCount) {
+            val child = mainViewLinearId.getChildAt(i)
+            child.isEnabled = true
+        }
+
+        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                tv.isEnabled=true
+            }
+
+        }
+
+
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
@@ -278,43 +335,104 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
         FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
 
             (0 until size).forEach {
                 var tableRow = TableRow(context)
 
-                var textView = TextView(context)
+                val textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).PortalInspectionDate
+                try {
+                    textView.text = get(it).PortalInspectionDate.apiToAppFormat()
+                } catch (e: Exception) {
+                    textView.text = get(it).PortalInspectionDate
+
+                }
                 tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).LoggedIntoPortal
-                tableRow.addView(textView)
+                val textView1 = TextView(context)
+                textView1.layoutParams = rowLayoutParam1
+                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView1.text = get(it).LoggedIntoPortal
+                tableRow.addView(textView1)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
-                textView.text = get(it).NumberUnacknowledgedTows
-                tableRow.addView(textView)
+               val textView2 = TextView(context)
+                textView2.layoutParams = rowLayoutParam2
+                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView2.text = get(it).NumberUnacknowledgedTows
+                tableRow.addView(textView2)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).InProgressTows
-                tableRow.addView(textView)
+                val textView3 = TextView(context)
+                textView3.layoutParams = rowLayoutParam3
+                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView3.text = get(it).InProgressTows
+                tableRow.addView(textView3)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam4
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).InProgressWalkIns
-                tableRow.addView(textView)
+               val textView4 = TextView(context)
+                textView4.layoutParams = rowLayoutParam4
+                textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView4.text = get(it).InProgressWalkIns
+                tableRow.addView(textView4)
 
+                val updateButton = Button(context)
+                updateButton.layoutParams = rowLayoutParam5
+                updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+                updateButton.text = "update"
+                tableRow.addView(updateButton)
+
+
+                updateButton.setOnClickListener(View.OnClickListener {
+
+
+                    numberOfUnacknowledgedRecordsEditText.setText(textView2.text)
+                    numberOfInProgressTwoIns.setText(textView3.text)
+                    numberOfInProgressWalkIns.setText(textView4.text)
+                    inspectionDateButton.setText(textView.text)
+
+
+
+                    numberOfCardsReaderEditText.setError(null)
+                    numberOfUnacknowledgedRecordsEditText.setError(null)
+                    numberOfInProgressTwoIns.setError(null)
+                    numberOfInProgressWalkIns.setError(null)
+                    startDateButton.setError(null)
+                    addendumSignedDateButton.setError(null)
+                    inspectionDateButton.setError(null)
+
+                    addNewAAR_PortalTrackingCard.visibility=View.VISIBLE
+                    alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
+
+
+                    for (i in 0 until mainViewLinearId.childCount) {
+                        val child = mainViewLinearId.getChildAt(i)
+                        child.isEnabled = false
+                    }
+
+                        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+
+                        for ( i in 1..childViewCount-1) {
+                            var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+
+                            for (j in 0..row.getChildCount()-1) {
+
+                                var tv : TextView= row.getChildAt(j) as TextView
+                                    tv.isEnabled=false
+                            }
+
+                        }
+
+
+
+
+                })
                 aarPortalTrackingTableLayout.addView(tableRow)
+
+
             }
         }
     }
@@ -339,6 +457,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
         FacilityDataModel.getInstance().tblAARPortalAdmin[FacilityDataModel.getInstance().tblAARPortalAdmin.size-1].apply {
 
 
@@ -347,7 +469,12 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = PortalInspectionDate
+            try {
+                textView.text = PortalInspectionDate.appToApiFormat()
+            } catch (e: Exception) {
+                textView.text = PortalInspectionDate
+
+            }
             tableRow.addView(textView)
 
             textView = TextView(context)
@@ -374,6 +501,14 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = InProgressWalkIns
             tableRow.addView(textView)
+
+
+            val updateButton = Button(context)
+            updateButton.layoutParams = rowLayoutParam5
+            updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+            updateButton.text = "update"
+            tableRow.addView(updateButton)
+
 
             aarPortalTrackingTableLayout.addView(tableRow)
 

@@ -10,19 +10,6 @@
         android:layout_width="match_parent"
         android:id="@+id/facComp"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:gravity="left"
-            android:layout_weight="8"
-            android:text="Complaints"
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            />
     </LinearLayout>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -47,89 +34,80 @@
                 android:layout_height="wrap_content"
                 android:text="Complaints"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:layout_margin="10dp"
-                android:textColor="#827908"
+                android:textColor="@color/mainColor"
                 />
 
-            <TableLayout
-                android:id="@+id/searchTbl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-            <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Complaint ID:"
-                android:textStyle="bold"
-                android:layout_column="0"
-                />
+            <!--<TableLayout-->
+                <!--android:id="@+id/searchTbl"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--&gt;-->
+            <!--<TableRow>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Complaint ID:"-->
+                <!--android:textStyle="bold"-->
+                <!--android:layout_column="0"-->
+                <!--/>-->
 
-                <EditText
-                    android:id="@+id/searchCompIDText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="8"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="First Name:"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        />
+                <!--<EditText-->
+                    <!--android:id="@+id/searchCompIDText"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:text=""-->
+                    <!--android:ems="8"-->
+                    <!--android:layout_column="1"-->
+                    <!--android:background="@drawable/textview_background"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+            <!--</TableRow>-->
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="First Name:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:layout_column="0"-->
+                        <!--/>-->
 
-                    <EditText
-                        android:id="@+id/searchFirstNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
+                    <!--<EditText-->
+                        <!--android:id="@+id/searchFirstNameText"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Second Name:"
-                        android:textStyle="bold"
-                        android:layout_column="4"
-                        />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Second Name:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:layout_column="4"-->
+                        <!--/>-->
 
-                    <EditText
-                        android:id="@+id/searchSecondNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="5"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-            </TableLayout>
+                    <!--<EditText-->
+                        <!--android:id="@+id/searchSecondNameText"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="5"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+            <!--</TableLayout>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Showing 1-1 of 1 Results"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_margin="10dp"
-                android:textColor="#800000"
-                />
             <TableLayout
                 android:id="@+id/ComplaintsResultsTbl"
                 android:layout_width="match_parent"
@@ -138,18 +116,20 @@
                 android:divider="@drawable/divider_table_layout"
                 >
                 <TableRow
-                    >
+                    android:background="@color/mainColor">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Complaint ID"
                         android:textStyle="bold"
+                        android:textColor="@color/white"
                         android:layout_column="0"
                         android:layout_weight="1"
                         android:textAlignment="center"
                         />
 
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Contract No"
@@ -159,6 +139,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Entered By"
@@ -168,6 +149,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Assigned To"
@@ -177,6 +159,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="First Name"
@@ -186,6 +169,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Last Name"
@@ -195,6 +179,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Reason"
@@ -204,6 +189,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Received Date"
@@ -213,6 +199,7 @@
                         android:textAlignment="center"
                         />
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Resolution"
@@ -224,390 +211,457 @@
                 </TableRow>
             </TableLayout>
 
+<LinearLayout
+    android:layout_marginTop="40dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add New Complaint"
-                android:id="@+id/addNewBtn"
-                />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="number of complaints during previous 12 months  = "/>
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Initiated By:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newInitiatedBySpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow>
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/newTowCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:layout_column="0"
-                        android:text="Tow In"
-                        android:textStyle="bold"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/newOOStateCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:layout_column="1"
-                        android:text="Out of State"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
+        <TextView
+            android:id="@+id/comNoTextViewId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:ems="2"
+            android:background="@drawable/textview_background"
+            />
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Complaint ID:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newComplaintIDText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text=""
-                        android:background="@drawable/textview_background"
-                        android:layout_column="1"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="CTS/SOSS ID:"
-                        android:layout_column="4"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newCTSIDText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="5"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="First Name:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newFirstNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Last Name:*"
-                        android:layout_column="4"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/newLastNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:ems="8"
-                        android:layout_column="5"
-                        android:background="@drawable/textview_background"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-                <TableRow>
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/newNoCountCheck"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:layout_column="0"
-                    android:text="Don't Count Complaint"
-                    android:textStyle="bold"
-                    />
-                </TableRow>
-                <TableRow>
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/newERSCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:layout_column="0"
-                        android:text="ERS Complaint"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="number of JUSTIFIED complaints during previous 12 months  = "/>
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="Entered By:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newEnteredBySpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="Assigned To:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newAssignedToSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
+        <TextView
+            android:id="@+id/justComNoTextViewId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:ems="2"
+            android:background="@drawable/textview_background"
+            />
 
-                <TableRow>
-                    <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Reason:*"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                    <Spinner
-                        android:id="@+id/newReasonSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Resolution:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newResolutionSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Justified Complaints Ratio= "/>
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Received Date:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newRecDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Date Opened:"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        />
+        <TextView
+            android:id="@+id/justComRatioTextViewId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:ems="8"
+            android:background="@drawable/textview_background"
+            />
 
-                    <Button
-                        android:id="@+id/newOpenDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Closed Date:"
-                        android:layout_column="4"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newClosedDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
+    </LinearLayout>
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="2nd Date Opened:"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        />
 
-                    <Button
-                        android:id="@+id/new2ndOpenDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="2nd Closed Date:"
-                        android:layout_column="4"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/new2ndClosedDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-                <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Work Days Not Counted:"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/newWDNotCountedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="8"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-                </TableRow>
-            </TableLayout>
+</LinearLayout>
+
+
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Add New Complaint"-->
+                <!--android:id="@+id/addNewBtn"-->
+                <!--/>-->
+
+            <!--<TableLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--&gt;-->
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="Initiated By:*"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/newInitiatedBySpinner"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="1"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+                <!--<TableRow>-->
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:id="@+id/newTowCheck"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:text="Tow In"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:id="@+id/newOOStateCheck"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:text="Out of State"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="Complaint ID:*"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/newComplaintIDText"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="CTS/SOSS ID:"-->
+                        <!--android:layout_column="4"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/newCTSIDText"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="5"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="First Name:*"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/newFirstNameText"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="Last Name:*"-->
+                        <!--android:layout_column="4"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/newLastNameText"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text=""-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="5"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+                <!--<TableRow>-->
+                <!--<CheckBox-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:id="@+id/newNoCountCheck"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_margin="5dp"-->
+                    <!--android:layout_column="0"-->
+                    <!--android:text="Don't Count Complaint"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--</TableRow>-->
+                <!--<TableRow>-->
+                    <!--<CheckBox-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:id="@+id/newERSCheck"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:text="ERS Complaint"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="Entered By:*"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/newEnteredBySpinner"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="1"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="Assigned To:*"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/newAssignedToSpinner"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="1"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_margin="5dp"-->
+                    <!--android:text="Reason:*"-->
+                    <!--android:layout_column="0"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/newReasonSpinner"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="1"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="Resolution:*"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Spinner-->
+                        <!--android:id="@+id/newResolutionSpinner"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:ems="8"-->
+                        <!--android:layout_column="1"-->
+                        <!--/>-->
+                <!--</TableRow>-->
+
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="Received Date:*"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Button-->
+                        <!--android:id="@+id/newRecDateBtn"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:background="@color/transparent"-->
+                        <!--android:text="SELECT DATE"-->
+                        <!--android:textColor="@color/blue"-->
+                        <!--android:textSize="12dp" />-->
+                <!--</TableRow>-->
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text="Date Opened:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--/>-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/newOpenDateBtn"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:background="@color/transparent"-->
+                        <!--android:text="SELECT DATE"-->
+                        <!--android:textColor="@color/blue"-->
+                        <!--android:textSize="12dp" />-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="Closed Date:"-->
+                        <!--android:layout_column="4"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Button-->
+                        <!--android:id="@+id/newClosedDateBtn"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:background="@color/transparent"-->
+                        <!--android:text="SELECT DATE"-->
+                        <!--android:textColor="@color/blue"-->
+                        <!--android:textSize="12dp" />-->
+                <!--</TableRow>-->
+
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:text="2nd Date Opened:"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--/>-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/new2ndOpenDateBtn"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:background="@color/transparent"-->
+                        <!--android:text="SELECT DATE"-->
+                        <!--android:textColor="@color/blue"-->
+                        <!--android:textSize="12dp" />-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:text="2nd Closed Date:"-->
+                        <!--android:layout_column="4"-->
+                        <!--android:textStyle="bold"-->
+                        <!--/>-->
+                    <!--<Button-->
+                        <!--android:id="@+id/new2ndClosedDateBtn"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_column="1"-->
+                        <!--android:background="@color/transparent"-->
+                        <!--android:text="SELECT DATE"-->
+                        <!--android:textColor="@color/blue"-->
+                        <!--android:textSize="12dp" />-->
+                <!--</TableRow>-->
+                <!--<TableRow>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_margin="5dp"-->
+                    <!--android:text="Work Days Not Counted:"-->
+                    <!--android:layout_column="0"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/newWDNotCountedText"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:text=""-->
+                    <!--android:ems="8"-->
+                    <!--android:layout_column="1"-->
+                    <!--android:background="@drawable/textview_background"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+                <!--</TableRow>-->
+            <!--</TableLayout>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:orientation="horizontal">
-
                 <Button
-                    android:id="@+id/saveButton"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Save" />
-
-                <Button
-                    android:id="@+id/cancelButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel" />
+                    android:text="save"
+                    android:textColor="@color/white"
+                    android:background="@drawable/green_background_button"
+                    android:id="@+id/saveBtnId"/>
             </LinearLayout>
         </LinearLayout>
 

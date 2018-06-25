@@ -24,6 +24,7 @@ import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aarav_complaints.*
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +41,7 @@ class FragmentARRAVComplaints : Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
     private var facilityComplaintsList = ArrayList<AAAFacilityComplaints>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,6 +54,7 @@ class FragmentARRAVComplaints : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        programsChangesMade=false
         // The no os complaints , justified and ratio need to be clarified when all are showed
 //        compeditBtn.setOnClickListener({
 //            for (fac in facilityComplaintsList) {
@@ -65,103 +68,106 @@ class FragmentARRAVComplaints : Fragment() {
 //            prepareComplaints(true)
 //        })
 //        prepareComplaints(true)
-        prepareComplaintsSpinners()
+      //  prepareComplaintsSpinners()
         fillComplaintsTableView()
-
-        newRecDateBtn.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                newRecDateBtn!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
-        newOpenDateBtn.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                newOpenDateBtn!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
-        new2ndOpenDateBtn.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                new2ndOpenDateBtn!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
-        newClosedDateBtn.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                newClosedDateBtn!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
-        new2ndClosedDateBtn.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                new2ndClosedDateBtn!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
-
-        addNewBtn.setOnClickListener({
-            var validProgram = true
-            if (validProgram) {
-                var item = FacilityDataModel.TblComplaintFiles()
-
-
-                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
-                item.ReceivedDate = if (newRecDateBtn.text.equals("SELECT DATE")) "" else newRecDateBtn.text.toString()
-                item.ComplaintID=newComplaintIDText.text.toString()
-                item.FirstName=searchFirstNameText.text.toString()
-                item.LastName=searchSecondNameText.text.toString()
-                 FacilityDataModel.getInstance().tblComplaintFiles.add(item)
-                //  BuildProgramsList()
-
-                addTheLatestRowOfPortalAdmin()
-
-            }
-        })
+        comNoTextViewId.text=getNoOfComplaintsForPast12M()
+        justComNoTextViewId.text=getNoOfJustComplaintsForPast12M()
+        justComRatioTextViewId.text=getJustComplaintsRatio()
+//
+//        newRecDateBtn.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year, monthOfYear, dayOfMonth)
+//                newRecDateBtn!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//
+//        newOpenDateBtn.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year, monthOfYear, dayOfMonth)
+//                newOpenDateBtn!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//
+//        new2ndOpenDateBtn.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year, monthOfYear, dayOfMonth)
+//                new2ndOpenDateBtn!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//
+//        newClosedDateBtn.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year, monthOfYear, dayOfMonth)
+//                newClosedDateBtn!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//
+//        new2ndClosedDateBtn.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year, monthOfYear, dayOfMonth)
+//                new2ndClosedDateBtn!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//
+//
+//        addNewBtn.setOnClickListener({
+//            var validProgram = true
+//            if (validProgram) {
+//                var item = FacilityDataModel.TblComplaintFiles()
+//
+//
+//                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+//                item.ReceivedDate = if (newRecDateBtn.text.equals("SELECT DATE")) "" else newRecDateBtn.text.toString()
+//                item.ComplaintID=newComplaintIDText.text.toString()
+//                item.FirstName=searchFirstNameText.text.toString()
+//                item.LastName=searchSecondNameText.text.toString()
+//                 FacilityDataModel.getInstance().tblComplaintFiles.add(item)
+//                //  BuildProgramsList()
+//
+//                addTheLatestRowOfPortalAdmin()
+//
+//            }
+//        })
 
         altDeffTableRow(2)
 
@@ -247,7 +253,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam6
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-           // textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID==ComplaintID}[0].ComplaintReasonName
+            textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID==ComplaintID}[0].ComplaintReasonName
             for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
 
 
@@ -313,38 +319,38 @@ val rowLayoutParam8 = TableRow.LayoutParams()
     private var resTypeArray = ArrayList<String>()
 
 
-    fun prepareComplaintsSpinners () {
-
-        initiatedTypeList = TypeTablesModel.getInstance().ComplaintInitiatedType
-        initiatedTypeArray .clear()
-        for (fac in initiatedTypeList ) {
-            initiatedTypeArray.add(fac.ComplaintInitName)
-        }
-        var ComplaintInitAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, initiatedTypeArray)
-        ComplaintInitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newInitiatedBySpinner.adapter = ComplaintInitAdapter
-
-        reasonTypeList= TypeTablesModel.getInstance().ComplaintFilesReasonType
-        reasonTypeArray.clear()
-        for (fac in reasonTypeList) {
-            reasonTypeArray.add(fac.ComplaintReasonName)
-        }
-        var reasonTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonTypeArray)
-        reasonTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newReasonSpinner.adapter = reasonTypeAdapter
-
-        resTypeList= TypeTablesModel.getInstance().ComplaintFilesResolutionType
-        resTypeArray.clear()
-        for (fac in resTypeList) {
-            resTypeArray.add(fac.ComplaintResolutionName)
-        }
-        var resTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, resTypeArray)
-        resTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newResolutionSpinner.adapter = resTypeAdapter
-
-        newAssignedToSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
-        newEnteredBySpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
-    }
+//    fun prepareComplaintsSpinners () {
+//
+//        initiatedTypeList = TypeTablesModel.getInstance().ComplaintInitiatedType
+//        initiatedTypeArray .clear()
+//        for (fac in initiatedTypeList ) {
+//            initiatedTypeArray.add(fac.ComplaintInitName)
+//        }
+//        var ComplaintInitAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, initiatedTypeArray)
+//        ComplaintInitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        newInitiatedBySpinner.adapter = ComplaintInitAdapter
+//
+//        reasonTypeList= TypeTablesModel.getInstance().ComplaintFilesReasonType
+//        reasonTypeArray.clear()
+//        for (fac in reasonTypeList) {
+//            reasonTypeArray.add(fac.ComplaintReasonName)
+//        }
+//        var reasonTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonTypeArray)
+//        reasonTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        newReasonSpinner.adapter = reasonTypeAdapter
+//
+//        resTypeList= TypeTablesModel.getInstance().ComplaintFilesResolutionType
+//        resTypeArray.clear()
+//        for (fac in resTypeList) {
+//            resTypeArray.add(fac.ComplaintResolutionName)
+//        }
+//        var resTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, resTypeArray)
+//        resTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        newResolutionSpinner.adapter = resTypeAdapter
+//
+//        newAssignedToSpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
+//        newEnteredBySpinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
+//    }
 
 
     fun prepareComplaints (boolAll : Boolean) {
@@ -510,6 +516,138 @@ val rowLayoutParam8 = TableRow.LayoutParams()
         }
     }
 
+
+
+    fun getNoOfComplaintsForPast12M() : String{
+
+        var comNo=""
+
+//        for (com in FacilityDataModel.getInstance().tblComplaintFiles){
+//
+//            val dateFormat = SimpleDateFormat("dd MMM yyyy")
+//            var DB_ReceivedDate = Date()
+//            try {
+//                DB_ReceivedDate = dateFormat.parse(com.ReceivedDate.apiToAppFormat())
+//                var date = Date()
+//                var cal = Calendar.getInstance()
+//                cal.setTime(date)
+//                cal.add(Calendar.YEAR,-1)
+//                val pastOneYear = cal.getTimeInMillis()
+//
+//                var cal2 = Calendar.getInstance()
+//                cal2.setTime(DB_ReceivedDate)
+//                val DB_Year = cal2.getTimeInMillis()
+//
+//
+//
+//                if (DB_Year>= pastOneYear){
+//
+//                    comNo++
+//                }
+//
+//
+//            } catch (e: ParseException) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace()
+//            }
+//
+//        }
+        for (com in FacilityDataModel.getInstance().NumberofComplaints){
+
+            comNo=com.NumberofComplaintslast12months
+
+        }
+
+
+   return comNo
+    }
+    fun getNoOfJustComplaintsForPast12M() : String{
+
+        var justComNo=""
+
+//        for (com in FacilityDataModel.getInstance().tblComplaintFiles){
+//
+//            val dateFormat = SimpleDateFormat("dd MMM yyyy")
+//            var DB_ReceivedDate = Date()
+//            try {
+//                DB_ReceivedDate = dateFormat.parse(com.ReceivedDate.apiToAppFormat())
+//                var date = Date()
+//                var cal = Calendar.getInstance()
+//                cal.setTime(date)
+//                cal.add(Calendar.YEAR,-1)
+//                val pastOneYear = cal.getTimeInMillis()
+//
+//                var cal2 = Calendar.getInstance()
+//                cal2.setTime(DB_ReceivedDate)
+//                val DB_Year = cal2.getTimeInMillis()
+//
+//
+//
+//                if (DB_Year>= pastOneYear){
+//
+//                    comNo++
+//                }
+//
+//
+//            } catch (e: ParseException) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace()
+//            }
+//
+//        }
+        for (com in FacilityDataModel.getInstance().NumberofJustifiedComplaints){
+
+            justComNo=com.NumberofJustifiedComplaintslast12months
+
+        }
+
+
+   return justComNo
+    }
+    fun getJustComplaintsRatio() : String{
+
+        var justComRatio=""
+
+//        for (com in FacilityDataModel.getInstance().tblComplaintFiles){
+//
+//            val dateFormat = SimpleDateFormat("dd MMM yyyy")
+//            var DB_ReceivedDate = Date()
+//            try {
+//                DB_ReceivedDate = dateFormat.parse(com.ReceivedDate.apiToAppFormat())
+//                var date = Date()
+//                var cal = Calendar.getInstance()
+//                cal.setTime(date)
+//                cal.add(Calendar.YEAR,-1)
+//                val pastOneYear = cal.getTimeInMillis()
+//
+//                var cal2 = Calendar.getInstance()
+//                cal2.setTime(DB_ReceivedDate)
+//                val DB_Year = cal2.getTimeInMillis()
+//
+//
+//
+//                if (DB_Year>= pastOneYear){
+//
+//                    comNo++
+//                }
+//
+//
+//            } catch (e: ParseException) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace()
+//            }
+//
+//        }
+        for (com in FacilityDataModel.getInstance().JustifiedComplaintRatio){
+
+            justComRatio=com.JustifiedComplaintRatio
+
+        }
+
+
+   return justComRatio
+    }
+
 //    fun BuildComplaintsList() {
 //        val inflater = (activity as ItemListActivity).getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 //        val parentLayout = compListLL
@@ -578,6 +716,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
         private val ARG_PARAM2 = "param2"
+        var programsChangesMade = false
 
         /**
          * Use this factory method to create a new instance of

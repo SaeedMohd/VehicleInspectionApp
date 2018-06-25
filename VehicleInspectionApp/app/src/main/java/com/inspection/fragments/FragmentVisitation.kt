@@ -86,6 +86,11 @@ class FragmentVisitation : Fragment() {
         dataChangedNoRadioButton.isClickable = false
         clubCodeEditText.isClickable = false
 
+        if (FragmentARRAVScopeOfService.scopeOfServicesChangesMade==true){
+
+            dataChangedYesRadioButton.isChecked=true
+        }else dataChangedNoRadioButton.isChecked=true
+
 //              textWatcherSignature.visibility=View.INVISIBLE
 //        textWatcherSignature.visibility=View.GONE
 
@@ -260,8 +265,6 @@ class FragmentVisitation : Fragment() {
         //   facilityNameEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].EntityName)
 
         aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
-
-        dataChangedYesRadioButton.isChecked = true
 
         certificateOfApprovalEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval)
 

@@ -16,6 +16,7 @@ public class AutocompleteAdapter extends BaseAdapter {
     private static LayoutInflater inflater=null;
     View ll;
     String [] item = null;
+
     
     public AutocompleteAdapter(Context a,String[] facilityArray) {
         activity = a;

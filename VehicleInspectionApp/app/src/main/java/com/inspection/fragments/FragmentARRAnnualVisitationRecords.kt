@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
+import com.inspection.model.SUBMITIONS.ScopeOfService
 import com.inspection.singletons.AnnualVisitationSingleton
 
 
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
+import org.json.JSONException
 import org.json.JSONObject
 import org.json.XML
 import java.io.IOException
@@ -91,6 +93,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
         clubCodeEditText.setText("004")
+
 
         if (isVisitationPlanning) {
 
@@ -536,6 +539,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 }
 
                 FacilityDataModel.getInstance().annualVisitationId = visitationList[position].annualvisitationid
+             //   getCopiedData()
                 getFullFacilityDataFromAAA(visitationList[position].facno)
 
 //                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityWithIdUrl + visitationList[position].facilityid,
@@ -669,11 +673,58 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         }
     }
 
+//    fun getCopiedData(){
+//
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getCopyFacilityData,
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        Log.v("RESPONSE",response.toString())
+//                        //    Toast.makeText(context,"changes saved in DB",Toast.LENGTH_SHORT).show()
+//
+//                        try {
+//
+//                            if (!response.toString().contains("FacID not found")) {
+//                                var obj = XML.toJSONObject(response.toString().substring(response.toString().indexOf("&lt;responseXml"), response.toString().indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+//                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+//                                var jsonObj = obj.getJSONObject("responseXml")
+//                                parseCopyFacilityDataJsonToObject(jsonObj)
+////                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
+//////                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+////                                startActivity(intent)
+//
+//
+//                            } else {
+//                                context!!.toast("Copy Facility data not found")
+//                            }
+//
+//
+//                        } catch ( e : JSONException) {
+//                            Log.e("JSON exception", e.message);
+//                            e.printStackTrace();
+//                        }
+//
+//                        Log.d("POPOCopy", response.toString());
+//
+//
+//
+//
+//
+//
+//
+//                    })
+//                }, Response.ErrorListener {
+//            Log.v("error while loading", "error while loading personnal record")
+//        }))
+//
+//    }
+
     fun getFullFacilityDataFromAAA(facilityNumber: Int) {
 
         var client = OkHttpClient()
 
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
+        var request4 = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
+        var request3 = okhttp3.Request.Builder().url(String.format(Constants.getCopyFacilityData, facilityNumber, "004")).build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, "004")).build()
 
 
@@ -689,21 +740,76 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             override fun onResponse(call: Call?, response: okhttp3.Response?) {
 
                 var responseString = response!!.body()!!.string()
+                Log.v("qqqTable", responseString)
                 var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                 var jsonObj = obj.getJSONObject("responseXml")
                 TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
-
-
-                client.newCall(request2).enqueue(object : Callback {
+                client.newCall(request4).enqueue(object : Callback {
                     override fun onFailure(call: Call?, e: IOException?) {
                         activity!!.runOnUiThread(Runnable {
-                            context!!.toast("Connection Error. Please check internet connection")
+                            context!!.toast("Copy222 ERROR Connection Error. Please check internet connection")
                         })
                     }
 
                     override fun onResponse(call: Call?, response: okhttp3.Response?) {
                         var responseString = response!!.body()!!.string()
                         activity!!.runOnUiThread(Runnable {
+
+                            Log.v("qqqCopyTable", responseString)
+
+                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                            var jsonObj = obj.getJSONObject("responseXml")
+                            TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
+
+
+                        })
+                    }
+
+                })
+
+
+//                client.newCall(request3).enqueue(object : Callback {
+//                    override fun onFailure(call: Call?, e: IOException?) {
+//                        activity!!.runOnUiThread(Runnable {
+//                            context!!.toast("Copy ERROR Connection Error. Please check internet connection")
+//                        })
+//                    }
+//
+//                    override fun onResponse(call: Call?, response: okhttp3.Response?) {
+//                        var responseString = response!!.body()!!.string()
+//                        activity!!.runOnUiThread(Runnable {
+//                            Log.v("qqqCopyUrl", responseString)
+//
+//                            if (!responseString.contains("FacID not found")) {
+//                                var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+//                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+//                                var jsonObj = obj.getJSONObject("responseXml")
+//                                parseCopyFacilityDataJsonToObject(jsonObj)
+////                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
+//////                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+////                                startActivity(intent)
+//
+//
+//                            } else {
+//                                context!!.toast("Copy Facility data not found")
+//                            }
+//                        })
+//                    }
+//
+//                })
+
+                client.newCall(request2).enqueue(object : Callback {
+                    override fun onFailure(call: Call?, e: IOException?) {
+                        activity!!.runOnUiThread(Runnable {
+                            context!!.toast("Origin ERROR Connection Error. Please check internet connection")
+                        })
+                    }
+
+                    override fun onResponse(call: Call?, response: okhttp3.Response?) {
+                        var responseString = response!!.body()!!.string()
+                        activity!!.runOnUiThread(Runnable {
+                            Log.v("POPOOriginal", responseString)
+
                             recordsProgressView.visibility = View.GONE
                             if (!responseString.contains("FacID not found")) {
                                 var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
@@ -722,6 +828,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     }
 
                 })
+
 
             }
 
@@ -1053,6 +1160,259 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 FacilityDataModel.getInstance().tblFacilityPhotos = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityPhotos>>(jsonObj.get("tblFacilityPhotos").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityPhotos>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilityPhotos.add(Gson().fromJson<FacilityDataModel.TblFacilityPhotos>(jsonObj.get("tblFacilityPhotos").toString(), FacilityDataModel.TblFacilityPhotos::class.java))
+            }
+        }
+
+    }
+    fun parseCopyFacilityDataJsonToObject(jsonObj: JSONObject) {
+        CopyFacilityDataModel.getInstance().clear()
+        if (jsonObj.has("tblFacilities")) {
+            if (jsonObj.get("tblFacilities").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblFacilities = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblFacilities>>(jsonObj.get("tblFacilities").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblFacilities>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblFacilities.add(Gson().fromJson<CopyFacilityDataModel.TblFacilities>(jsonObj.get("tblFacilities").toString(), CopyFacilityDataModel.TblFacilities::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblBusinessType")) {
+            if (jsonObj.get("tblBusinessType").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblBusinessType = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblBusinessType>>(jsonObj.get("tblBusinessType").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblBusinessType>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblBusinessType.add(Gson().fromJson<CopyFacilityDataModel.TblBusinessType>(jsonObj.get("tblBusinessType").toString(), CopyFacilityDataModel.TblBusinessType::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblContractType")) {
+            if (jsonObj.get("tblContractType").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblContractType = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblContractType>>(jsonObj.get("tblContractType").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblContractType>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblContractType.add(Gson().fromJson<CopyFacilityDataModel.TblContractType>(jsonObj.get("tblContractType").toString(), CopyFacilityDataModel.TblContractType::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblFacilityServiceProvider")) {
+            if (jsonObj.get("tblFacilityServiceProvider").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblFacilityServiceProvider = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblFacilityServiceProvider>>(jsonObj.get("tblFacilityServiceProvider").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblFacilityServiceProvider>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblFacilityServiceProvider.add(Gson().fromJson<CopyFacilityDataModel.TblFacilityServiceProvider>(jsonObj.get("tblFacilityServiceProvider").toString(), CopyFacilityDataModel.TblFacilityServiceProvider::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblTerminationCodeType")) {
+            if (jsonObj.get("tblTerminationCodeType").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblTerminationCodeType = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblTerminationCodeType>>(jsonObj.get("tblTerminationCodeType").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblTerminationCodeType>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblTerminationCodeType.add(Gson().fromJson<CopyFacilityDataModel.TblTerminationCodeType>(jsonObj.get("tblTerminationCodeType").toString(), CopyFacilityDataModel.TblTerminationCodeType::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblOfficeType")) {
+            if (jsonObj.get("tblOfficeType").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblOfficeType = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblOfficeType>>(jsonObj.get("tblOfficeType").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblOfficeType>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblOfficeType.add(Gson().fromJson<CopyFacilityDataModel.TblOfficeType>(jsonObj.get("tblOfficeType").toString(), CopyFacilityDataModel.TblOfficeType::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblFacilityManagers")) {
+            if (jsonObj.get("tblFacilityManagers").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblFacilityManagers = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblFacilityManagers>>(jsonObj.get("tblFacilityManagers").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblFacilityManagers>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblFacilityManagers.add(Gson().fromJson<CopyFacilityDataModel.TblFacilityManagers>(jsonObj.get("tblFacilityManagers").toString(), CopyFacilityDataModel.TblFacilityManagers::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblTimezoneType")) {
+            if (jsonObj.get("tblTimezoneType").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblTimezoneType = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblTimezoneType>>(jsonObj.get("tblTimezoneType").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblTimezoneType>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblTimezoneType.add(Gson().fromJson<CopyFacilityDataModel.TblTimezoneType>(jsonObj.get("tblTimezoneType").toString(), CopyFacilityDataModel.TblTimezoneType::class.java))
+            }
+        }
+
+
+        if (jsonObj.has("tblVisitationTracking")) {
+            if (jsonObj.get("tblVisitationTracking").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblVisitationTracking = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblVisitationTracking>>(jsonObj.get("tblVisitationTracking").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblVisitationTracking>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblVisitationTracking.add(Gson().fromJson<CopyFacilityDataModel.TblVisitationTracking>(jsonObj.get("tblVisitationTracking").toString(), CopyFacilityDataModel.TblVisitationTracking::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblFacilityType")) {
+            if (jsonObj.get("tblFacilityType").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblFacilityType = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblFacilityType>>(jsonObj.get("tblFacilityType").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblFacilityType>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblFacilityType.add(Gson().fromJson<CopyFacilityDataModel.TblFacilityType>(jsonObj.get("tblFacilityType").toString(), CopyFacilityDataModel.TblFacilityType::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblSurveySoftwares")) {
+            if (jsonObj.get("tblSurveySoftwares").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblSurveySoftwares = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblSurveySoftwares>>(jsonObj.get("tblSurveySoftwares").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblSurveySoftwares>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblSurveySoftwares.add(Gson().fromJson<CopyFacilityDataModel.TblSurveySoftwares>(jsonObj.get("tblSurveySoftwares").toString(), CopyFacilityDataModel.TblSurveySoftwares::class.java))
+            }
+        }
+
+
+        if (jsonObj.has("tblPaymentMethods")) {
+            if (jsonObj.get("tblPaymentMethods").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblPaymentMethods = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblPaymentMethods>>(jsonObj.get("tblPaymentMethods").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblPaymentMethods>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblPaymentMethods.add(Gson().fromJson<CopyFacilityDataModel.TblPaymentMethods>(jsonObj.get("tblPaymentMethods").toString(), CopyFacilityDataModel.TblPaymentMethods::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblAddress")) {
+            if (jsonObj.get("tblAddress").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblAddress = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblAddress>>(jsonObj.get("tblAddress").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblAddress>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblAddress.add(Gson().fromJson<CopyFacilityDataModel.TblAddress>(jsonObj.get("tblAddress").toString(), CopyFacilityDataModel.TblAddress::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblPhone")) {
+            if (jsonObj.get("tblPhone").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblPhone = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblPhone>>(jsonObj.get("tblPhone").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblPhone>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblPhone.add(Gson().fromJson<CopyFacilityDataModel.TblPhone>(jsonObj.get("tblPhone").toString(), CopyFacilityDataModel.TblPhone::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblFacilityEmail")) {
+            if (jsonObj.get("tblFacilityEmail").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblFacilityEmail = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblFacilityEmail>>(jsonObj.get("tblFacilityEmail").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblFacilityEmail>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblFacilityEmail.add(Gson().fromJson<CopyFacilityDataModel.TblFacilityEmail>(jsonObj.get("tblFacilityEmail").toString(), CopyFacilityDataModel.TblFacilityEmail::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblHours")) {
+            if (jsonObj.get("tblHours").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblHours = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblHours>>(jsonObj.get("tblHours").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblHours>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblHours.add(Gson().fromJson<CopyFacilityDataModel.TblHours>(jsonObj.get("tblHours").toString(), CopyFacilityDataModel.TblHours::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblFacilityClosure")) {
+            if (jsonObj.get("tblFacilityClosure").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblFacilityClosure = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblFacilityClosure>>(jsonObj.get("tblFacilityClosure").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblFacilityClosure>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblFacilityClosure.add(Gson().fromJson<CopyFacilityDataModel.TblFacilityClosure>(jsonObj.get("tblFacilityClosure").toString(), CopyFacilityDataModel.TblFacilityClosure::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblLanguage")) {
+            if (jsonObj.get("tblLanguage").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblLanguage = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblLanguage>>(jsonObj.get("tblLanguage").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblLanguage>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblLanguage.add(Gson().fromJson<CopyFacilityDataModel.TblLanguage>(jsonObj.get("tblLanguage").toString(), CopyFacilityDataModel.TblLanguage::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblPersonnel")) {
+            if (jsonObj.get("tblPersonnel").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblPersonnel = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblPersonnel>>(jsonObj.get("tblPersonnel").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblPersonnel>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblPersonnel.add(Gson().fromJson<CopyFacilityDataModel.TblPersonnel>(jsonObj.get("tblPersonnel").toString(), CopyFacilityDataModel.TblPersonnel::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblAmendmentOrderTracking")) {
+            if (jsonObj.get("tblAmendmentOrderTracking").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblAmendmentOrderTracking = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblAmendmentOrderTracking>>(jsonObj.get("tblAmendmentOrderTracking").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblAmendmentOrderTracking>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblAmendmentOrderTracking.add(Gson().fromJson<CopyFacilityDataModel.TblAmendmentOrderTracking>(jsonObj.get("tblAmendmentOrderTracking").toString(), CopyFacilityDataModel.TblAmendmentOrderTracking::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblAARPortalAdmin")) {
+            if (jsonObj.get("tblAARPortalAdmin").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblAARPortalAdmin = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblAARPortalAdmin>>(jsonObj.get("tblAARPortalAdmin").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblAARPortalAdmin>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblAARPortalAdmin.add(Gson().fromJson<CopyFacilityDataModel.TblAARPortalAdmin>(jsonObj.get("tblAARPortalAdmin").toString(), CopyFacilityDataModel.TblAARPortalAdmin::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblScopeofService")) {
+            if (jsonObj.get("tblScopeofService").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblScopeofService = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblScopeofService>>(jsonObj.get("tblScopeofService").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblScopeofService>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblScopeofService.add(Gson().fromJson<CopyFacilityDataModel.TblScopeofService>(jsonObj.get("tblScopeofService").toString(), CopyFacilityDataModel.TblScopeofService::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblPrograms")) {
+            if (jsonObj.get("tblPrograms").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblPrograms = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblPrograms>>(jsonObj.get("tblPrograms").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblPrograms>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblPrograms.add(Gson().fromJson<CopyFacilityDataModel.TblPrograms>(jsonObj.get("tblPrograms").toString(), CopyFacilityDataModel.TblPrograms::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblFacilityServices")) {
+            if (jsonObj.get("tblFacilityServices").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblFacilityServices = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblFacilityServices>>(jsonObj.get("tblFacilityServices").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblFacilityServices>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblFacilityServices.add(Gson().fromJson<CopyFacilityDataModel.TblFacilityServices>(jsonObj.get("tblFacilityServices").toString(), CopyFacilityDataModel.TblFacilityServices::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblAffiliations")) {
+            if (jsonObj.get("tblAffiliations").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblAffiliations = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblAffiliations>>(jsonObj.get("tblAffiliations").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblAffiliations>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblAffiliations.add(Gson().fromJson<CopyFacilityDataModel.TblAffiliations>(jsonObj.get("tblAffiliations").toString(), CopyFacilityDataModel.TblAffiliations::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblDeficiency")) {
+            if (jsonObj.get("tblDeficiency").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblDeficiency = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblDeficiency>>(jsonObj.get("tblDeficiency").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblDeficiency>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblDeficiency.add(Gson().fromJson<CopyFacilityDataModel.TblDeficiency>(jsonObj.get("tblDeficiency").toString(), CopyFacilityDataModel.TblDeficiency::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblComplaintFiles")) {
+            if (jsonObj.get("tblComplaintFiles").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblComplaintFiles = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblComplaintFiles>>(jsonObj.get("tblComplaintFiles").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblComplaintFiles>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblComplaintFiles.add(Gson().fromJson<CopyFacilityDataModel.TblComplaintFiles>(jsonObj.get("tblComplaintFiles").toString(), CopyFacilityDataModel.TblComplaintFiles::class.java))
+            }
+        }
+
+        if (jsonObj.has("NumberofComplaints")) {
+            if (jsonObj.get("NumberofComplaints").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().NumberofComplaints = Gson().fromJson<ArrayList<CopyFacilityDataModel.numberofComplaints>>(jsonObj.get("NumberofComplaints").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.numberofComplaints>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().NumberofComplaints.add(Gson().fromJson<CopyFacilityDataModel.numberofComplaints>(jsonObj.get("NumberofComplaints").toString(), CopyFacilityDataModel.numberofComplaints::class.java))
+            }
+        }
+
+        if (jsonObj.has("NumberofJustifiedComplaints")) {
+            if (jsonObj.get("NumberofJustifiedComplaints").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().NumberofJustifiedComplaints = Gson().fromJson<ArrayList<CopyFacilityDataModel.numberofJustifiedComplaints>>(jsonObj.get("NumberofJustifiedComplaints").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.numberofJustifiedComplaints>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().NumberofJustifiedComplaints.add(Gson().fromJson<CopyFacilityDataModel.numberofJustifiedComplaints>(jsonObj.get("NumberofJustifiedComplaints").toString(), CopyFacilityDataModel.numberofJustifiedComplaints::class.java))
+            }
+        }
+
+        if (jsonObj.has("JustifiedComplaintRatio")) {
+            if (jsonObj.get("JustifiedComplaintRatio").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().JustifiedComplaintRatio = Gson().fromJson<ArrayList<CopyFacilityDataModel.justifiedComplaintRatio>>(jsonObj.get("JustifiedComplaintRatio").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.justifiedComplaintRatio>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().JustifiedComplaintRatio.add(Gson().fromJson<CopyFacilityDataModel.justifiedComplaintRatio>(jsonObj.get("JustifiedComplaintRatio").toString(), CopyFacilityDataModel.justifiedComplaintRatio::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblFacilityPhotos")) {
+            if (jsonObj.get("tblFacilityPhotos").toString().startsWith("[")) {
+                CopyFacilityDataModel.getInstance().tblFacilityPhotos = Gson().fromJson<ArrayList<CopyFacilityDataModel.TblFacilityPhotos>>(jsonObj.get("tblFacilityPhotos").toString(), object : TypeToken<ArrayList<CopyFacilityDataModel.TblFacilityPhotos>>() {}.type)
+            } else {
+                CopyFacilityDataModel.getInstance().tblFacilityPhotos.add(Gson().fromJson<CopyFacilityDataModel.TblFacilityPhotos>(jsonObj.get("tblFacilityPhotos").toString(), CopyFacilityDataModel.TblFacilityPhotos::class.java))
             }
         }
 
