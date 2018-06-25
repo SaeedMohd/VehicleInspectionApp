@@ -723,7 +723,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         var client = OkHttpClient()
 
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
-        var request4 = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         var request3 = okhttp3.Request.Builder().url(String.format(Constants.getCopyFacilityData, facilityNumber, "004")).build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, "004")).build()
 
@@ -744,28 +743,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                 var jsonObj = obj.getJSONObject("responseXml")
                 TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
-                client.newCall(request4).enqueue(object : Callback {
-                    override fun onFailure(call: Call?, e: IOException?) {
-                        activity!!.runOnUiThread(Runnable {
-                            context!!.toast("Copy222 ERROR Connection Error. Please check internet connection")
-                        })
-                    }
-
-                    override fun onResponse(call: Call?, response: okhttp3.Response?) {
-                        var responseString = response!!.body()!!.string()
-                        activity!!.runOnUiThread(Runnable {
-
-                            Log.v("qqqCopyTable", responseString)
-
-                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                            var jsonObj = obj.getJSONObject("responseXml")
-                            TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
-
-
-                        })
-                    }
-
-                })
 
 
 //                client.newCall(request3).enqueue(object : Callback {
