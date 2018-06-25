@@ -85,12 +85,21 @@ class FragmentARRAVLocation : Fragment() {
             dpd.show()
         }
 
-        alphaBackgroundForDialogs.setOnClickListener({
-            addNewLocationDialog.visibility = View.GONE
-            addNewPhoneDialog.visibility = View.GONE
-            addNewEmailDialog.visibility = View.GONE
+        exitAddEmailDialogeBtnId.setOnClickListener({
+                      addNewEmailDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
+        })
+        exitAddLocationDialogeBtnId.setOnClickListener({
+            addNewLocationDialog.visibility = View.GONE
+                     alphaBackgroundForDialogs.visibility = View.GONE
+        })
+        exitUpdatePhoneDialogeBtnId.setOnClickListener({
+                   alphaBackgroundForDialogs.visibility = View.GONE
             editPhoneDialog.visibility = View.GONE
+        })
+        exitAddPhoneDialogeBtnId.setOnClickListener({
+            addNewPhoneDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
         })
 
         addNewLocationButton.setOnClickListener({
@@ -301,7 +310,7 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+      //  rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         if (phoneTbl.childCount>1) {
             for (i in phoneTbl.childCount - 1 downTo 1) {
@@ -312,17 +321,12 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+   //     rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-   val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
-        rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+  //      rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
 
 
 
@@ -331,21 +335,21 @@ class FragmentARRAVLocation : Fragment() {
                 var tableRow = TableRow(context)
 
                 var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
+                textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 //getTypeName
                 textView.text = getPhoneTypeName(get(it).PhoneTypeID)
                 tableRow.addView(textView)
 
                 val textView2 = TextView(context)
-                textView2.layoutParams = rowLayoutParam2
+                textView2.layoutParams = rowLayoutParam1
                 textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView2.text = get(it).PhoneNumber
                 tableRow.addView(textView2)
 
-                val textView3 = TextView(context)
-                textView3.layoutParams = rowLayoutParam3
-                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView3 = Button(context)
+                textView3.layoutParams = rowLayoutParam2
+                textView3.textAlignment = Button.TEXT_ALIGNMENT_CENTER
                 textView3.text = "Edit"
                 tableRow.addView(textView3)
 

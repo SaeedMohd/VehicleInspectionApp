@@ -54,22 +54,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginLeft="500dp"
+                    android:layout_alignParentRight="true"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:layout_marginBottom="20dp"
                     android:id="@+id/showNewAarCardButton"
                     android:text="Add New AO Tracking"
-                    />
-                <Button
-                    android:background="@drawable/textview_background"
-                    android:textColor="@color/gray"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_alignParentRight="true"
-                    android:text="Hide"
-                    android:id="@+id/hideBtnId"
                     />
 
             </RelativeLayout>
@@ -145,22 +135,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginLeft="520dp"
+                    android:layout_alignParentRight="true"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:layout_marginBottom="20dp"
                     android:text="Add New Event"
                     android:id="@+id/showNewEventDialogue"
-                    />
-                <Button
-                    android:background="@drawable/textview_background"
-                    android:textColor="@color/gray"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_alignParentRight="true"
-                    android:text="Hide"
-                    android:id="@+id/hideBtnId"
                     />
 
             </RelativeLayout>
@@ -244,7 +224,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:text="Add New AO TRACKING"
             android:layout_gravity="top|left"
             android:textSize="18dp"
@@ -342,7 +322,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:text="Add New Event"
             android:layout_gravity="top|left"
             android:textSize="18dp"

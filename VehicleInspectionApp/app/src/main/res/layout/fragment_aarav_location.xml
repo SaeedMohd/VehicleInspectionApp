@@ -206,44 +206,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/phoneTbl"
-                android:stretchColumns="0,1,2,3">
+                android:showDividers="middle|beginning|end"
+                android:divider="@drawable/divider_table_layout"
+                >
 
                 <TableRow android:background="@color/mainColor">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:textAlignment="center"
                         android:text="Phone Type"
+                        android:layout_column="0"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Phone Number"
+                        android:textAlignment="center"
                         android:layout_column="1"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Phone Number"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:text="options"
                         android:layout_column="2"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="options"
-                        android:layout_column="3"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:background="@null"
-                        android:ems="5"
-                        android:text="" />
                 </TableRow>
 
             </TableLayout>
@@ -716,18 +715,47 @@
             android:id="@+id/addNewLocationDialog"
             app:cardElevation="10dp">
 
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:text="Add New Location"
+                android:layout_gravity="top|left"
+                android:textSize="18dp"
+                />
+
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
                 android:text="Submit"
                 android:id="@+id/locationSubmitButton"
                 android:textColor="@color/white"
                 android:background="@drawable/green_background_button"
-                android:layout_gravity="top|right"/>
+                />
+
+
+            <ImageButton
+                android:layout_marginTop="25dp"
+                android:background="@drawable/textview_background"
+                android:id="@+id/exitAddLocationDialogeBtnId"
+                android:layout_width="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="20dp"
+                android:src="@drawable/exit"
+                android:layout_gravity="top|right"
+                />
+
             <TableLayout
                 android:layout_width="wrap_content"
+                android:layout_marginTop="40dp"
                 android:layout_height="wrap_content"
                 android:padding="40dp">
 
@@ -984,7 +1012,7 @@
 
 
     <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
@@ -992,23 +1020,53 @@
         android:id="@+id/addNewPhoneDialog"
         app:cardElevation="10dp">
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Add Phone Number"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/phoneSubmitButton"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:background="@drawable/textview_background"
+            android:id="@+id/exitAddPhoneDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:src="@drawable/exit"
+            android:layout_gravity="top|right"
+            />
+
+
+
         <TableLayout
+            android:layout_marginTop="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp">
 
             <TableRow>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Submit"
-                    android:id="@+id/phoneSubmitButton"
-                    android:textColor="@color/white"
-                    android:background="@drawable/green_background_button"
-                    android:layout_column="2"
-                    />
-            </TableRow>
-            <TableRow>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -1099,7 +1157,7 @@
         </TableLayout>
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
@@ -1107,22 +1165,50 @@
         android:id="@+id/editPhoneDialog"
         app:cardElevation="10dp">
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Edit Phone Number"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/phoneSaveChangesButton"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:background="@drawable/textview_background"
+            android:id="@+id/exitUpdatePhoneDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:src="@drawable/exit"
+            android:layout_gravity="top|right"
+            />
+
+
         <TableLayout
+            android:layout_marginTop="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp">
 
-            <TableRow>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Submit Changes"
-                    android:id="@+id/phoneSaveChangesButton"
-                    android:textColor="@color/white"
-                    android:background="@drawable/green_background_button"
-                    android:layout_column="2"
-                    />
-            </TableRow>
 
             <!--<TableRow>-->
                 <!--<TextView-->
@@ -1196,7 +1282,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
@@ -1204,22 +1290,51 @@
         android:id="@+id/addNewEmailDialog"
         app:cardElevation="10dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/addDefficienyDialogeTitle"
+            android:text="Add New Email"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/emailSubmitButton"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:background="@drawable/textview_background"
+            android:id="@+id/exitAddEmailDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:src="@drawable/exit"
+            android:layout_gravity="top|right"
+            />
+
+
+
         <TableLayout
+            android:layout_marginTop="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp">
 
-            <TableRow>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:id="@+id/emailSubmitButton"
-                    android:text="Submit"
-                    android:textColor="@color/white"
-                    android:background="@drawable/green_background_button"
-                    android:layout_column="2"
-                    />
-            </TableRow>
 
             <TableRow>
                 <TextView

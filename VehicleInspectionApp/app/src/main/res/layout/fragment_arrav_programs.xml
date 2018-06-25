@@ -6,17 +6,6 @@
     android:background="@color/white"
     tools:context="com.inspection.fragments.FragmentARRAVFacility">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="PROGRAMS"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -151,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:id="@+id/addProgramDialogeTitle"
             android:text="Add New Program"
             android:layout_gravity="top|left"
