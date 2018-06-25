@@ -41,22 +41,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginLeft="580dp"
+                    android:layout_alignParentRight="true"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="Add New Personnel"
                     android:layout_marginBottom="20dp"
                     android:id="@+id/addNewPersnRecordBtn"
-                    />
-                <Button
-                    android:background="@drawable/textview_background"
-                    android:textColor="@color/gray"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_alignParentRight="true"
-                    android:text="Hide"
-                    android:id="@+id/hideBtnId"
                     />
 
             </RelativeLayout>
@@ -208,24 +198,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginLeft="550dp"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="20dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="Add New Certification"
                     android:layout_marginBottom="20dp"
                     android:id="@+id/AddNewCertBtn"
-                    />
-                <Button
-                    android:background="@drawable/textview_background"
-                    android:textColor="@color/gray"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_height="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_alignParentRight="true"
-                    android:text="Hide"
-                    android:id="@+id/hideBtnId"
                     />
 
 
