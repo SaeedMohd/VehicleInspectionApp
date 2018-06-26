@@ -100,6 +100,10 @@ class FragmentAARAVVendorRevenue : Fragment() {
             validateVenRevData()
         })
 
+        exitDialogeBtn.setOnClickListener({
+            addNewVenRevDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+        })
     }
 
     private fun validateVenRevData() {

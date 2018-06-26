@@ -161,7 +161,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     />
             </TableRow>
         </TableLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -172,15 +172,29 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/green_background_button"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/white"
                 android:text="Save" />
-
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
+                android:layout_toLeftOf="@id/saveButton"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/green_background_button"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:enabled="false"
+                android:textColor="@color/white"
                 android:text="Cancel" />
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>
@@ -230,6 +244,16 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_column="1"
                     android:background="@drawable/green_background_button"
                     android:layout_gravity="top|right"/>
+                <ImageButton
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/textview_background"
+                    android:id="@+id/exitDialogeBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/exit"
+                    android:layout_gravity="top|right"
+                    android:layout_column="2"
+                    />
             </TableRow>
             <TableRow android:layout_marginTop="20dp">
                 <View
@@ -241,6 +265,11 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_column="1"
+                    android:background="@android:color/darker_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="2"
                     android:background="@android:color/darker_gray"/>
             </TableRow>
 

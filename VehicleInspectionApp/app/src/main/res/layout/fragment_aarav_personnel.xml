@@ -314,7 +314,6 @@
 
 
                 <ImageButton
-
                     android:layout_marginTop="25dp"
                     android:background="@drawable/textview_background"
                     android:id="@+id/exitCertificateDialogeBtnId"

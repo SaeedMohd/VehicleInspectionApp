@@ -170,6 +170,11 @@ class FragmentAARAVBilling : Fragment() {
         billingSubmitButton.setOnClickListener({
             validateBillingData()
         })
+
+        exitDialogeBtn.setOnClickListener({
+            addNewBillingDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+        })
     }
 
     private fun validateBillingData() {

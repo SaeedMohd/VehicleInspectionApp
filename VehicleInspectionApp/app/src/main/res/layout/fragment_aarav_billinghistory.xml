@@ -45,6 +45,7 @@ tools:context=".fragments.FragmentAARAVBillingHistory">
             android:id="@+id/billHistoryResultsTbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
             android:stretchColumns="*">
             <TableRow android:background="@color/mainColor">

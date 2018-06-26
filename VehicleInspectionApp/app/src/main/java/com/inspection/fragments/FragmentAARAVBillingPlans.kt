@@ -10,10 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TableLayout
-import android.widget.TableRow
+import android.widget.*
 
 
 import com.inspection.R
@@ -106,6 +103,12 @@ class FragmentAARAVBillingPlans : Fragment() {
             validateBillinPlanData()
         })
 
+        fillBillinPlanTableView()
+
+        exitDialogeBtn.setOnClickListener({
+            addNewPlanDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+        })
     }
 
     private fun validateBillinPlanData() {
@@ -270,6 +273,64 @@ class FragmentAARAVBillingPlans : Fragment() {
 //
 //            }
 //        }
+        for (i in 1..2) {
+
+            var tableRow = TableRow(context)
+            if (i % 2 == 0) {
+                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+            }
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).FAC_Addr1
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = "Test" // get(it).FAC_Addr2
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam5
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam6
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam7
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+
+            billingPlansResultsTbl.addView(tableRow)
+        }
 
     }
     fun prepareBillingPlanSpinners() {

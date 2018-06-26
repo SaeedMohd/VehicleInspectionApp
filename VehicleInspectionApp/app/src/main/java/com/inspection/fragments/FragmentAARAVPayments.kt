@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 
 import com.inspection.R
+import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_payments.*
 import java.text.SimpleDateFormat
@@ -112,6 +114,14 @@ class FragmentAARAVPayments : Fragment() {
         paymentSubmitButton.setOnClickListener({
             validateBillinPlanData()
         })
+
+        fillInvoicesTableView()
+        fillPaymentsTableView()
+
+        exitDialogeBtn.setOnClickListener({
+            addNewPaymentDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+        })
     }
 
     private var paymentTypeList = ArrayList<TypeTablesModel.invoicePaymentType>()
@@ -159,7 +169,7 @@ class FragmentAARAVPayments : Fragment() {
         addNewPaymentDialog.visibility = View.VISIBLE
     }
 
-    fun fillPaymentsTableView() {
+    fun fillInvoicesTableView() {
 
         if (InvoiceResultsTbl.childCount > 1) {
             for (i in InvoiceResultsTbl.childCount - 1 downTo 1) {
@@ -211,10 +221,178 @@ class FragmentAARAVPayments : Fragment() {
 
         var dateTobeFormated = ""
 
+
 //        FacilityDataModel.getInstance(). .apply {
 //            (0 until size).forEach {
 //
 //            }
+
+        for (i in 1..2) {
+
+            var tableRow = TableRow(context)
+            if (i % 2 == 0) {
+                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+            }
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).FAC_Addr1
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = "Test" // get(it).FAC_Addr2
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam5
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam6
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam7
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+
+            InvoiceResultsTbl.addView(tableRow)
+        }
+
+    }
+
+    fun fillPaymentsTableView() {
+
+        if (paymentsResultsTbl.childCount > 1) {
+            for (i in paymentsResultsTbl.childCount - 1 downTo 1) {
+                paymentsResultsTbl.removeViewAt(i)
+            }
+        }
+
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+
+        var dateTobeFormated = ""
+
+
+//        FacilityDataModel.getInstance(). .apply {
+//            (0 until size).forEach {
+//
+//            }
+
+        for (i in 1..2) {
+
+            var tableRow = TableRow(context)
+            if (i % 2 == 0) {
+                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+            }
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).FAC_Addr1
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = "Test" // get(it).FAC_Addr2
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam5
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam6
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+            tableRow.addView(textView)
+
+            paymentsResultsTbl.addView(tableRow)
+        }
 
     }
 

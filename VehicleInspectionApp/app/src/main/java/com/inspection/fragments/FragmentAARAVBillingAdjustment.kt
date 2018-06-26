@@ -106,6 +106,11 @@ class FragmentAARAVBillingAdjustment : Fragment() {
         billAdjSubmitButton.setOnClickListener({
             validateBillAdjData()
         })
+
+        exitDialogeBtn.setOnClickListener({
+            addNewBillAdjDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+        })
     }
 
     private var descTypeList = ArrayList<TypeTablesModel.adjustmentDescriptionType>()

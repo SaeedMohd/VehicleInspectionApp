@@ -9,8 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 
 import com.inspection.R
+import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_comments.*
 import java.text.SimpleDateFormat
@@ -53,22 +57,6 @@ class FragmentAARAVComments : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         prepareCommentsSpinners()
 
-        newUpdatedByDateBtn.setOnClickListener {
-//            if (newUpdatedByDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newUpdatedByDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
 
         startDateBtn.setOnClickListener {
 //            if (startDateBtn.text.equals("SELECT DATE")) {
@@ -103,7 +91,123 @@ class FragmentAARAVComments : Fragment() {
                 dpd.show()
 //            }
         }
+
+        exitDialogeBtn.setOnClickListener({
+            addNewCommentsDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+        })
+
+        addNewCommentBtn.setOnClickListener( {
+            showAddNewCommentsDialog()
+        })
+
+        commentSubmitButton.setOnClickListener({
+            validateCommentsData()
+        })
+        fillCommentsTableView()
     }
+
+
+    private fun validateCommentsData() {
+        var isInputsValid = true
+        if (newCommentsText.text.toString().isNullOrEmpty()) {
+            newCommentsText.setError("Required Field")
+        } else {
+            submitCommentsData()
+
+        }
+
+    }
+
+
+
+    private fun submitCommentsData(){
+        addNewCommentsDialog.visibility = View.GONE
+        alphaBackgroundForDialogs.visibility = View.GONE
+    }
+
+    private fun showAddNewCommentsDialog() {
+        alphaBackgroundForDialogs.visibility = View.VISIBLE
+        addNewCommentsDialog.visibility = View.VISIBLE
+    }
+
+    fun fillCommentsTableView() {
+
+        if (commentsResultsTbl.childCount > 1) {
+            for (i in commentsResultsTbl.childCount - 1 downTo 1) {
+                commentsResultsTbl.removeViewAt(i)
+            }
+        }
+
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        var dateTobeFormated = ""
+
+        for (i in 1..2) {
+
+            var tableRow = TableRow(context)
+            if (i % 2 == 0) {
+                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+            }
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).FAC_Addr1
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = "Test" // get(it).FAC_Addr2
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+
+            tableRow.addView(textView)
+
+
+            commentsResultsTbl.addView(tableRow)
+        }
+//        altVenRevTableRow(2)
+//            }
+//        }
+
+//        FacilityDataModel.getInstance(). .apply {
+//            (0 until size).forEach {
+//
+//            }
+
+    }
+
 
 
 

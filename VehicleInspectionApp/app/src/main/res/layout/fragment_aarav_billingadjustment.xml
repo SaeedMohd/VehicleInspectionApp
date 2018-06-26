@@ -50,6 +50,8 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
             android:id="@+id/billAdjResultsTbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="10dp"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
             android:stretchColumns="*">
 
@@ -133,25 +135,25 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
 
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:orientation="horizontal">-->
 
-            <Button
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save" />
+            <!--<Button-->
+                <!--android:id="@+id/saveButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Save" />-->
 
-            <Button
-                android:id="@+id/cancelButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel" />
-        </LinearLayout>
+            <!--<Button-->
+                <!--android:id="@+id/cancelButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Cancel" />-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 
 </ScrollView>
@@ -202,6 +204,16 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
                     android:layout_column="1"
                     android:background="@drawable/green_background_button"
                     android:layout_gravity="top|right"/>
+                <ImageButton
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/textview_background"
+                    android:id="@+id/exitDialogeBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/exit"
+                    android:layout_gravity="top|right"
+                    android:layout_column="2"
+                    />
             </TableRow>
             <TableRow android:layout_marginTop="20dp">
                 <View
@@ -213,6 +225,11 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_column="1"
+                    android:background="@android:color/darker_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="2"
                     android:background="@android:color/darker_gray"/>
             </TableRow>
             <TableRow android:layout_marginTop="10dp">
