@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 
 import com.inspection.R
 import com.inspection.model.TypeTablesModel
@@ -60,36 +63,218 @@ class FragmentAARAVBillingAdjustment : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newEffDateBtn!!.text = sdf.format(c.time)
+//                    if (Calendar.getInstance().get(Calendar.YEAR)> year || Calendar.getInstance().get(Calendar.MONTH) > monthOfYear) {
+//                        newEffDateBtn!!.text == "SELECT DATE"
+//                        newEffDateBtn!!.setError("Must be Future Date")
+//                    } else if ((Calendar.getInstance().get(Calendar.YEAR)== year && Calendar.getInstance().get(Calendar.MONTH)+1 == monthOfYear) && (Calendar.getInstance().get(Calendar.DAY_OF_MONTH)>dayOfMonth)) {
+//                        newEffDateBtn!!.text == "SELECT DATE"
+//                        newEffDateBtn!!.setError("Must be Future Date")
+//                    } else {
+                        val myFormat = "dd MMM yyyy" // mention the format you need
+                        val sdf = SimpleDateFormat(myFormat, Locale.US)
+                        c.set(year, monthOfYear, dayOfMonth)
+                        newEffDateBtn!!.text = sdf.format(c.time)
+                        newEffDateBtn!!.setError(null)
+//                    }
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        newUpdatedByDateBtn.setOnClickListener {
-//            if (newUpdatedByDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newUpdatedByDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
+//        newUpdatedByDateBtn.setOnClickListener {
+////            if (newUpdatedByDateBtn.text.equals("SELECT DATE")) {
+//                val c = Calendar.getInstance()
+//                val year = c.get(Calendar.YEAR)
+//                val month = c.get(Calendar.MONTH)
+//                val day = c.get(Calendar.DAY_OF_MONTH)
+//                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                    // Display Selected date in textbox
+//                    val myFormat = "dd MMM yyyy" // mention the format you need
+//                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                    c.set(year, monthOfYear, dayOfMonth)
+//                    newUpdatedByDateBtn!!.text = sdf.format(c.time)
+//                }, year, month, day)
+//                dpd.show()
+////            }
+//        }
 
+        fillBillAdjTableView ()
+        addNewVenRevBtn.setOnClickListener( {
+            showAddNewBillAdjDialog()
+        })
+
+        billAdjSubmitButton.setOnClickListener({
+            validateBillAdjData()
+        })
     }
 
     private var descTypeList = ArrayList<TypeTablesModel.adjustmentDescriptionType>()
     private var descTypeArray = ArrayList<String>()
+
+    fun fillBillAdjTableView() {
+
+        if (billAdjResultsTbl.childCount>1) {
+            for (i in billAdjResultsTbl.childCount - 1 downTo 1) {
+                billAdjResultsTbl.removeViewAt(i)
+            }
+        }
+
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        var dateTobeFormated = ""
+
+//        FacilityDataModel.getInstance().tbl.apply {
+//            (0 until size).forEach {
+        for (i in 1..2) {
+
+            var tableRow = TableRow(context)
+            if (i % 2 == 0) {
+                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+            }
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).FAC_Addr1
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = "Test" // get(it).FAC_Addr2
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).County
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam5
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).ST
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam6
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).ZIP + "-" + get(it).ZIP4
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam7
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).LATITUDE
+            tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam8
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).LONGITUDE
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam9
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).BranchNumber
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam10
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).BranchName
+//                tableRow.addView(textView)
+//
+            billAdjResultsTbl.addView(tableRow)
+        }
+//        altVenRevTableRow(2)
+//            }
+//        }
+
+    }
+
+    private fun validateBillAdjData() {
+        var isInputsValid = true
+        newAmountText.setError(null)
+        newEffDateBtn.setError(null)
+        newCommentsText.setError(null)
+        if (newAmountText.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            newAmountText.setError("Required Field")
+        } else if (newEffDateBtn.text.toString().equals("SELECT DATE")) {
+            isInputsValid = false
+            newEffDateBtn.setError("Required Field")
+        } else if (newCommentsText.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            newCommentsText.setError("Required Field")
+        } else {
+            submitBillAdjData()
+        }
+    }
+
+    private fun submitBillAdjData(){
+        addNewBillAdjDialog.visibility = View.GONE
+        alphaBackgroundForDialogs.visibility = View.GONE
+    }
+
+    private fun showAddNewBillAdjDialog() {
+        alphaBackgroundForDialogs.visibility = View.VISIBLE
+        addNewBillAdjDialog.visibility = View.VISIBLE
+    }
 
     fun prepareAdjSpinners() {
 

@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
@@ -160,9 +163,52 @@ class FragmentAARAVBilling : Fragment() {
 //            }
         }
 
+        addNewBillingBtn.setOnClickListener( {
+            showAddNewBillingDialog()
+        })
+
+        billingSubmitButton.setOnClickListener({
+            validateBillingData()
+        })
+    }
+
+    private fun validateBillingData() {
+        var isInputsValid = true
+        newBillIDText.setError(null)
+        newBillingAmountText.setError(null)
+        newPayAmountText.setError(null)
+        newBillDueDateBtn.setError(null)
+        newPayRecDateBtn.setError(null)
+        if (newBillIDText.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            newBillIDText.setError("Required Field")
+        } else if (newBillingAmountText.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            newBillingAmountText.setError("Must be the first Day of the month")
+        } else if (newPayAmountText.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            newPayAmountText.setError("Must be the first Day of the month")
+        } else if (newBillDueDateBtn.text.toString().equals("SELECT DATE")) {
+            isInputsValid = false
+            newBillDueDateBtn.setError("Required Field")
+        } else if (newPayRecDateBtn.text.toString().equals("SELECT DATE")) {
+            isInputsValid = false
+            newPayRecDateBtn.setError("Required Field")
+        } else {
+            submitBillingData()
+        }
+    }
+
+    private fun submitBillingData(){
+        addNewBillingDialog.visibility = View.GONE
+        alphaBackgroundForDialogs.visibility = View.GONE
     }
 
 
+    private fun showAddNewBillingDialog() {
+        alphaBackgroundForDialogs.visibility = View.VISIBLE
+        addNewBillingDialog.visibility = View.VISIBLE
+    }
 
     fun prepareBillingSpinners() {
 
@@ -171,11 +217,129 @@ class FragmentAARAVBilling : Fragment() {
         for (fac in revSourceList) {
             revSourceArray.add(fac.RevenueSourceName)
         }
+
         var revSourceAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, revSourceArray)
         revSourceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newRevSourceSpinner.adapter = revSourceAdapter
+        fillBillingTableView()
     }
 
+
+    fun fillBillingTableView() {
+
+        if (billingResultsTbl.childCount>1) {
+            for (i in billingResultsTbl.childCount - 1 downTo 1) {
+                billingResultsTbl.removeViewAt(i)
+            }
+        }
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        var dateTobeFormated = ""
+
+//        FacilityDataModel.getInstance().tbl.apply {
+//            (0 until size).forEach {
+        for (i in 1..2) {
+
+            var tableRow = TableRow(context)
+            if (i % 2 == 0) {
+                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+            }
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).FAC_Addr1
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = "Test" // get(it).FAC_Addr2
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).County
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam5
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).ST
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam6
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).ZIP + "-" + get(it).ZIP4
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam7
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).LATITUDE
+            tableRow.addView(textView)
+            billingResultsTbl.addView(tableRow)
+        }
+//        altVenRevTableRow(2)
+//            }
+//        }
+
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

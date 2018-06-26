@@ -7,28 +7,9 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 android:background="@color/light_gray"
 tools:context=".fragments.FragmentAARAVBillingAdjustment">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:id="@+id/facBillAdj"
-    android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="left"
-        android:layout_weight="8"
-        android:text="Billing Adjustments"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:layout_gravity="left"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        />
-</LinearLayout>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/facBillAdj"
     android:paddingRight="10dp"
     android:paddingLeft="10dp"
     android:paddingBottom="10dp"
@@ -36,301 +17,122 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
     android:paddingTop="5dp"
     android:background="@color/white"
     android:orientation="vertical">
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Billing Adjustments"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_margin="10dp"
-            android:textColor="#827908"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Showing 1-2 of 2 Results"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_margin="10dp"
-            android:textColor="#800000"
-            />
-
-        <TableLayout
-            android:id="@+id/commentsResultsTbl"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:showDividers="middle|beginning|end"
-            android:divider="@drawable/divider_table_layout"
-            >
-            <TableRow
-                >
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Billing Adjustments"
+                android:textColor="@color/mainColor"
+                android:textSize="18sp" />
+            <Button
+                android:id="@+id/addNewVenRevBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/green_background_button"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="+ ADD Billing Adjustment"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+        <TableLayout
+            android:id="@+id/billAdjResultsTbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:stretchColumns="*">
+
+            <TableRow android:background="@color/mainColor">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ID"
-                    android:textStyle="bold"
                     android:layout_column="0"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
                     />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Effective Date"
-                    android:textStyle="bold"
                     android:layout_column="1"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Type"
-                    android:textStyle="bold"
-                    android:layout_column="1"
+                    android:layout_column="2"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Description"
-                    android:textStyle="bold"
-                    android:layout_column="1"
+                    android:layout_column="3"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Amount"
-                    android:textStyle="bold"
-                    android:layout_column="1"
+                    android:layout_column="4"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Comments"
-                    android:textStyle="bold"
-                    android:layout_column="1"
+                    android:layout_column="5"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Last Updated By"
-                    android:textStyle="bold"
-                    android:layout_column="1"
+                    android:layout_column="6"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Last Update Date"
-                    android:textStyle="bold"
-                    android:layout_column="1"
+                    android:layout_column="7"
                     android:layout_weight="1"
-                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
                     />
             </TableRow>
         </TableLayout>
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add New Adjustment"
-            android:id="@+id/addNewBtn"
-            />
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Adjustment ID:"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/newAdjID"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text=""
-                    android:ems="8"
-                    android:layout_column="1"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Amount:*"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/newAmountText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Effective Date:"
-                    android:ems="8"
-                    android:layout_column="3"
-                    android:textStyle="bold"
-                    />
-                <Button
-                    android:id="@+id/newEffDateBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_column="4"
-                    android:background="@color/transparent"
-                    android:text="SELECT DATE"
-                    android:ems="8"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-            </TableRow>
 
 
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Type:"
-                    android:textStyle="bold"
-                    android:layout_column="0"
-                    android:layout_margin="5dp"
-                    />
-                <Spinner
-                    android:id="@+id/newTypeSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ems="8"
-                    android:layout_column="1"
-                    android:entries="@array/debitcredit"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Descritpion:"
-                    android:layout_column="3"
-                    android:textStyle="bold"
-                    />
-                <Spinner
-                    android:id="@+id/newDescSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ems="8"
-                    android:layout_column="4"
-                    android:entries="@array/contractTypesEntries"
-                    />
-            </TableRow>
-
-
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Comments:"
-                    android:textStyle="bold"
-                    android:layout_column="0"
-                    android:layout_margin="5dp"
-                    />
-                <EditText
-                    android:id="@+id/newCommentsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="15"
-                    android:layout_column="1"
-                    android:lines="5"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Effective Date:"
-                    android:ems="8"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <Button
-                    android:id="@+id/newUpdatedByDateBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_column="1"
-                    android:background="@color/transparent"
-                    android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Updated By:"
-                    android:layout_column="3"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/newUpdatedByText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:layout_column="4"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
-        </TableLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -353,4 +155,197 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
     </LinearLayout>
 
 </ScrollView>
+
+    <View
+        android:id="@+id/alphaBackgroundForDialogs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/mainColor"
+        android:visibility="gone"
+        android:alpha="0.8"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/addNewBillAdjDialog"
+        app:cardElevation="10dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            >
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Add New Billing Adjustment"
+                    android:textSize="20sp"
+                    android:textColor="@color/dark_gray"
+                    android:ems="12"
+                    android:layout_column="0"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="5dp"
+                    android:text="SUBMIT"
+                    android:id="@+id/billAdjSubmitButton"
+                    android:textColor="@color/white"
+                    android:ems="12"
+                    android:layout_column="1"
+                    android:background="@drawable/green_background_button"
+                    android:layout_gravity="top|right"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="20dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="0"
+                    android:background="@android:color/darker_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="1"
+                    android:background="@android:color/darker_gray"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Adjustment ID"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <EditText
+                    android:id="@+id/newAdjID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="none"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Amount*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Effective Date*"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <EditText
+                    android:id="@+id/newAmountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="numberDecimal"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+                <Button
+                    android:id="@+id/newEffDateBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="12"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Type*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description*"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <Spinner
+                    android:id="@+id/newTypeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:entries="@array/contractTypesEntries"
+                    />
+                <Spinner
+                    android:id="@+id/newDescSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:entries="@array/contractTypesEntries"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Comments*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+            <EditText
+                android:id="@+id/newCommentsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=""
+                android:ems="12"
+                android:lines="5"
+                android:background="@drawable/textview_background"
+                android:layout_column="0"
+                />
+        </TableLayout>
+
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

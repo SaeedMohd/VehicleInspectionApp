@@ -9,8 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 
 import com.inspection.R
+import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_vendorrevenue.*
 import java.text.SimpleDateFormat
@@ -86,7 +90,176 @@ class FragmentAARAVVendorRevenue : Fragment() {
                 dpd.show()
 //            }
         }
+
+        fillVenRevPlanTableView ()
+        addNewVenRevBtn.setOnClickListener( {
+            showAddNewVenRevDialog()
+        })
+
+        venRevSubmitButton.setOnClickListener({
+            validateVenRevData()
+        })
+
     }
+
+    private fun validateVenRevData() {
+        var isInputsValid = true
+
+        if (newReceiptDateBtn.text.toString().equals("SELECT DATE")) {
+            isInputsValid = false
+            newReceiptDateBtn.setError("Required Field")
+        } else {
+            submitVenRevData()
+        }
+    }
+
+    fun fillVenRevPlanTableView() {
+
+        if (venRevResultsTbl.childCount>1) {
+            for (i in venRevResultsTbl.childCount - 1 downTo 1) {
+                venRevResultsTbl.removeViewAt(i)
+            }
+        }
+
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        var dateTobeFormated = ""
+
+//        FacilityDataModel.getInstance().tbl.apply {
+//            (0 until size).forEach {
+        for (i in 1..2) {
+
+            var tableRow = TableRow(context)
+            if (i % 2 == 0) {
+                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+            }
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).FAC_Addr1
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = "Test" // get(it).FAC_Addr2
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).County
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam5
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).ST
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam6
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).ZIP + "-" + get(it).ZIP4
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam7
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).LATITUDE
+            tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam8
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).LONGITUDE
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam9
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).BranchNumber
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam10
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).BranchName
+//                tableRow.addView(textView)
+//
+            venRevResultsTbl.addView(tableRow)
+        }
+//        altVenRevTableRow(2)
+//            }
+//        }
+
+    }
+
+
+    private fun submitVenRevData(){
+        addNewVenRevDialog.visibility = View.GONE
+        alphaBackgroundForDialogs.visibility = View.GONE
+    }
+
+    private fun showAddNewVenRevDialog() {
+        alphaBackgroundForDialogs.visibility = View.VISIBLE
+        addNewVenRevDialog.visibility = View.VISIBLE
+    }
+
 
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
     private var revSourceArray = ArrayList<String>()

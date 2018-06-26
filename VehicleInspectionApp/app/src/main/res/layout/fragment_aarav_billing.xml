@@ -7,28 +7,10 @@
         android:background="@color/light_gray"
         tools:context=".fragments.FragmentAARAVBilling">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/facBilling"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/titleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="left"
-                android:layout_weight="8"
-                android:text="Billing"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_gravity="left"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                />
-        </LinearLayout>
+
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/facBilling"
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp"
@@ -43,539 +25,127 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Billing"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_margin="10dp"
-                    android:textColor="#827908"
-                    />
+                    android:layout_marginBottom="5dp"
+                    >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Showing 1-1 of 1 Results"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:layout_margin="10dp"
-                    android:textColor="#800000"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Billing"
+                        android:textColor="@color/mainColor"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/addNewBillingBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/green_background_button"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="+ add billing"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
                 <TableLayout
                     android:id="@+id/billingResultsTbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:showDividers="middle|beginning|end"
-                    android:divider="@drawable/divider_table_layout"
-                    >
-                    <TableRow
-                        >
+                    android:scrollbarAlwaysDrawHorizontalTrack="true"
+                    android:stretchColumns="*">
+                    <TableRow android:background="@color/mainColor">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Bill ID"
-                            android:textStyle="bold"
                             android:layout_column="0"
                             android:layout_weight="1"
-                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Status"
-                            android:textStyle="bold"
                             android:layout_column="1"
                             android:layout_weight="1"
-                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Frequency"
-                            android:textStyle="bold"
-                            android:layout_column="1"
+                            android:layout_column="2"
                             android:layout_weight="1"
-                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Revenue Source"
-                            android:textStyle="bold"
-                            android:layout_column="1"
+                            android:layout_column="3"
                             android:layout_weight="1"
-                            android:textAlignment="center"
-                            />
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"                            />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Printed Record"
-                            android:textStyle="bold"
-                            android:layout_column="1"
+                            android:layout_column="4"
                             android:layout_weight="1"
-                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Billing Month"
-                            android:textStyle="bold"
-                            android:layout_column="1"
+                            android:layout_column="5"
                             android:layout_weight="1"
-                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Billing Due Date"
-                            android:textStyle="bold"
-                            android:layout_column="1"
+                            android:layout_column="6"
                             android:layout_weight="1"
-                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Billing Amount"
-                            android:textStyle="bold"
-                            android:layout_column="1"
+                            android:layout_column="7"
                             android:layout_weight="1"
-                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Payment Received Date"
-                            android:textStyle="bold"
-                            android:layout_column="1"
+                            android:layout_column="8"
                             android:layout_weight="1"
-                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             />
                     </TableRow>
                 </TableLayout>
 
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add New Bill"
-                    android:id="@+id/addNewBtn"
-                    />
 
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Bill ID:*"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newBillIDText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Revenue Source:*"
-                            android:textStyle="bold"
-                            android:layout_column="0"
-                            android:layout_margin="5dp"
-                            />
-                        <Spinner
-                            android:id="@+id/newRevSourceSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:ems="8"
-                            android:layout_column="1"
-                            android:entries="@array/contractTypesEntries"
-                            />
-                    </TableRow>
-
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Billing Month:*"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <Spinner
-                            android:id="@+id/newBillMonthSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:ems="8"
-                            android:layout_column="1"
-                            android:entries="@array/inspectionMonths"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Billing Due Date:*"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <Button
-                            android:id="@+id/newBillDueDateBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_column="1"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="2nd Billing Due Date:"
-                            android:textStyle="bold"
-                            android:layout_column="0"
-                            android:layout_margin="5dp"
-                            />
-                        <Button
-                            android:id="@+id/newSecondDueDateText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_column="1"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Final Billing Due Date:"
-                            android:layout_column="4"
-                            android:textStyle="bold"
-                            />
-                        <Button
-                            android:id="@+id/newFinalDueDateText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_column="1"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-
-                    </TableRow>
-
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="BillingAmount:*"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newBillingAmountText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="ACH Discount Amount:"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newACHDiscountText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Date ACH File Sent To Cahier:"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <Button
-                            android:id="@+id/newACHDateBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_column="1"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Payment Received Date:*"
-                            android:textStyle="bold"
-                            android:layout_column="0"
-                            android:layout_margin="5dp"
-                            />
-                        <Button
-                            android:id="@+id/newPayRecDateBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_column="1"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Payment Amount:"
-                            android:layout_column="4"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newPayAmountText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:layout_column="5"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Pending Amount:"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newPendingAmountText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Credit Amount Due:"
-                            android:textStyle="bold"
-                            android:layout_column="0"
-                            android:layout_margin="5dp"
-                            />
-
-                        <EditText
-                            android:id="@+id/newCreditAmtDueText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Credit Applied Date:"
-                            android:layout_column="4"
-                            android:textStyle="bold"
-                            />
-                        <Button
-                            android:id="@+id/newCreditAppliedDateBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_column="1"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Credit Description:"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newCreditDescText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:lines="5"
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="On Payment Plan:"
-                            android:textStyle="bold"
-                            android:layout_column="0"
-                            android:layout_margin="5dp"
-                            />
-
-                        <EditText
-                            android:id="@+id/newOnPaymentPlanText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Number of Payments:"
-                            android:layout_column="4"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newNoOfPaymentText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:layout_column="5"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Payment Plan Amount Remaining:"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newCreditDescText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Comments:*"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newCommentsText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:ems="8"
-                            android:lines="5"
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                </TableLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -598,4 +168,474 @@
             </LinearLayout>
 
         </ScrollView>
+
+    <View
+        android:id="@+id/alphaBackgroundForDialogs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/mainColor"
+        android:visibility="invisible"
+        android:alpha="0.8"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:scrollbars="vertical"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/addNewBillingDialog"
+        app:cardElevation="10dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            >
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Add New Billing"
+                    android:textSize="20sp"
+                    android:textColor="@color/dark_gray"
+                    android:ems="12"
+                    android:layout_column="0"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="5dp"
+                    android:text="SUBMIT"
+                    android:id="@+id/billingSubmitButton"
+                    android:textColor="@color/white"
+                    android:ems="12"
+                    android:layout_column="1"
+                    android:background="@drawable/green_background_button"
+                    android:layout_gravity="top|right"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="20dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="0"
+                    android:background="@android:color/darker_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="1"
+                    android:background="@android:color/darker_gray"/>
+            </TableRow>
+
+            <TableRow android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bill ID"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Revenue Source"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="5dp">
+                <EditText
+                    android:id="@+id/newBillIDText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+                <Spinner
+                    android:id="@+id/newRevSourceSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:entries="@array/contractTypesEntries"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Billing Month*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Billing Due Date*"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <Spinner
+                    android:id="@+id/newBillMonthSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:entries="@array/contractTypesEntries"
+                    />
+                <Button
+                    android:id="@+id/newBillDueDateBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="12"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2nd Billing Due Date"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Final Billing Due Date"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <Button
+                    android:id="@+id/newSecondDueDateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="0"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="12"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+                <Button
+                    android:id="@+id/newFinalDueDateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="12"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="BillingAmount*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ACH Discount Amount"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <EditText
+                    android:id="@+id/newBillingAmountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+                <EditText
+                    android:id="@+id/newACHDiscountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date ACH File Sent To Cahier"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Payment Received Date*"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <Button
+                    android:id="@+id/newACHDateBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="0"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="12"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+                <Button
+                    android:id="@+id/newPayRecDateBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="12"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </TableRow>
+
+
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Payment Amount*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pending Amount"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <EditText
+                    android:id="@+id/newPayAmountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+                <EditText
+                    android:id="@+id/newPendingAmountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Credit Amount Due"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Credit Applied Date"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <EditText
+                    android:id="@+id/newCreditAmtDueText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+                <Button
+                    android:id="@+id/newCreditAppliedDateBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:ems="12"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Credit Description"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+            <EditText
+                android:id="@+id/newCreditDescText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=""
+                android:ems="12"
+                android:lines="3"
+                android:background="@drawable/textview_background"
+                android:layout_column="0"
+                />
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="On Payment Plan"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Number of Payments"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:layout_column="1"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <EditText
+                    android:id="@+id/newOnPaymentPlanText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+                <EditText
+                    android:id="@+id/newNoOfPaymentText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Payment Plan Amount Remaining"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <EditText
+                    android:id="@+id/newPayPlanAmntRem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:background="@drawable/textview_background"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Comments*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+            <EditText
+                android:id="@+id/newComments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=""
+                android:ems="12"
+                android:lines="5"
+                android:background="@drawable/textview_background"
+                android:layout_column="0"
+                />
+        </TableLayout>
+
+    </android.support.v7.widget.CardView>
+
+
     </RelativeLayout>

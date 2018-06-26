@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TableLayout
+import android.widget.TableRow
 
 import com.inspection.R
 import com.inspection.model.TypeTablesModel
@@ -86,22 +88,30 @@ class FragmentAARAVPayments : Fragment() {
                 dpd.show()
 //            }
         }
-        newLastUpdatedBtn.setOnClickListener {
-//            if (newLastUpdatedBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newLastUpdatedBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
+//        newLastUpdatedBtn.setOnClickListener {
+////            if (newLastUpdatedBtn.text.equals("SELECT DATE")) {
+//                val c = Calendar.getInstance()
+//                val year = c.get(Calendar.YEAR)
+//                val month = c.get(Calendar.MONTH)
+//                val day = c.get(Calendar.DAY_OF_MONTH)
+//                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                    // Display Selected date in textbox
+//                    val myFormat = "dd MMM yyyy" // mention the format you need
+//                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                    c.set(year, monthOfYear, dayOfMonth)
+//                    newLastUpdatedBtn!!.text = sdf.format(c.time)
+//                }, year, month, day)
+//                dpd.show()
+////            }
+//        }
+
+        addNewPaymentBtn.setOnClickListener( {
+            showAddNewPaymentDialog()
+        })
+
+        paymentSubmitButton.setOnClickListener({
+            validateBillinPlanData()
+        })
     }
 
     private var paymentTypeList = ArrayList<TypeTablesModel.invoicePaymentType>()
@@ -119,6 +129,94 @@ class FragmentAARAVPayments : Fragment() {
         newPaymentTypeSpinner.adapter = paymentTypeAdapter
     }
 
+
+
+    private fun validateBillinPlanData() {
+        var isInputsValid = true
+        newInvNoText.setError(null)
+        newTrxDateBtn.setError(null)
+        if (newInvNoText.text.toString().isNullOrEmpty()) {
+            newInvNoText.setError("Required Field")
+        } else if (newPaymentIDText.text.toString().isNullOrEmpty()) {
+            newPaymentIDText.setError("Required Field")
+        } else if (newTrxDateBtn.text.toString().equals("SELECT DATE")) {
+            isInputsValid = false
+            newTrxDateBtn.setError("Required Field")
+        } else {
+            submitPaymentData()
+        }
+    }
+
+
+
+    private fun submitPaymentData(){
+        addNewPaymentDialog.visibility = View.GONE
+        alphaBackgroundForDialogs.visibility = View.GONE
+    }
+
+    private fun showAddNewPaymentDialog() {
+        alphaBackgroundForDialogs.visibility = View.VISIBLE
+        addNewPaymentDialog.visibility = View.VISIBLE
+    }
+
+    fun fillPaymentsTableView() {
+
+        if (InvoiceResultsTbl.childCount > 1) {
+            for (i in InvoiceResultsTbl.childCount - 1 downTo 1) {
+                InvoiceResultsTbl.removeViewAt(i)
+            }
+        }
+
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam6 = TableRow.LayoutParams()
+        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.column = 6
+        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        var dateTobeFormated = ""
+
+//        FacilityDataModel.getInstance(). .apply {
+//            (0 until size).forEach {
+//
+//            }
+
+    }
 
     companion object {
         /**
