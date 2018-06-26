@@ -85,7 +85,6 @@ class FragmentARRAVPrograms : Fragment() {
             comments_editTextVal.setError(null)
             effective_date_textviewVal.setError(null)
             expiration_date_textviewVal.setError(null)
-            program_name_textviewToCheckSpinner.setError(null)
             programCard.visibility=View.VISIBLE
             alphaBackgroundForProgramDialogs.visibility = View.VISIBLE
 
@@ -247,13 +246,9 @@ class FragmentARRAVPrograms : Fragment() {
 
 
     fun prepareProgramTypes() {
-
-
-        programTypesArray.add("select program")
+//        programTypesArray.add("select program")
 
         for (fac in TypeTablesModel.getInstance().ProgramsType) {
-
-
             programTypesArray.add(fac.ProgramTypeName)
         }
         var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, programTypesArray)
@@ -359,11 +354,6 @@ class FragmentARRAVPrograms : Fragment() {
 
                 aarPortalTrackingTableLayout.addView(tableRow)
 
-
-
-
-
-
             for (i in 1..aarPortalTrackingTableLayout.size) {
 
            //     aarPortalTrackingTableLayout[2].setBackgroundColor(context!!.getResources().getColor(R.color.gray))
@@ -429,23 +419,30 @@ class FragmentARRAVPrograms : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+        var i=1
             FacilityDataModel.getInstance().tblPrograms[FacilityDataModel.getInstance().tblPrograms.size - 1].apply {
 
-
             var tableRow = TableRow(context)
+                if (i%2==0){
+                    tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                    i++
+                }
 
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
@@ -488,8 +485,7 @@ class FragmentARRAVPrograms : Fragment() {
             aarPortalTrackingTableLayout.addView(tableRow)
 
         }
-        altTableRow(2)
-
+//        altTableRow(2)
     }
 
 //    fun drawProgramsTable () {
@@ -563,7 +559,7 @@ class FragmentARRAVPrograms : Fragment() {
 
         effective_date_textviewVal.setError(null)
         comments_editTextVal.setError(null)
-        program_name_textviewToCheckSpinner.setError(null)
+//        program_name_textviewToCheckSpinner.setError(null)
 
 
         if (effective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
@@ -571,10 +567,10 @@ class FragmentARRAVPrograms : Fragment() {
             effective_date_textviewVal.setError("Required Field")
         }
 
-        if (program_name_textviewVal.selectedItem.toString().contains("select")) {
-            isInputsValid = false
-            program_name_textviewToCheckSpinner.setError("Required Field")
-        }
+//        if (program_name_textviewVal.selectedItem.toString().contains("select")) {
+//            isInputsValid = false
+//            program_name_textviewToCheckSpinner.setError("Required Field")
+//        }
 
         if (comments_editTextVal.text.toString().isNullOrEmpty()) {
             isInputsValid = false

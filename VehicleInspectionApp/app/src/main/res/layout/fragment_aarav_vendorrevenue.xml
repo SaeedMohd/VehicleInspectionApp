@@ -57,6 +57,7 @@ tools:context=".fragments.FragmentAARAVVendorRevenue">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:layout_marginBottom="30dp"
             android:stretchColumns="*">
 
             <TableRow android:background="@color/mainColor">
