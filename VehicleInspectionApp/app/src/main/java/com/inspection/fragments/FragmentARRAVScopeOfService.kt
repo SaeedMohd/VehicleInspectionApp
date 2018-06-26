@@ -73,12 +73,7 @@ class FragmentARRAVScopeOfService : Fragment() {
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
 
-        testBtnId.setOnClickListener(View.OnClickListener {
-            ScopeOfService.getInstance().apply {
-                Toast.makeText(context,LaborMax,Toast.LENGTH_SHORT).show()
-            }
 
-        })
 
         saveBtnPressed()
 //        prepareScopePage()
