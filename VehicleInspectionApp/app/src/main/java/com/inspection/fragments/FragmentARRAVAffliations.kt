@@ -113,6 +113,25 @@ class FragmentARRAVAffliations : Fragment() {
 //            }
 //        }
 
+
+        exitAffDialogeBtnId.setOnClickListener({
+
+            affiliationsCard.visibility=View.GONE
+            alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+
+
+        })
+
+        addNewAffil.setOnClickListener(View.OnClickListener {
+
+                        affiliationsCard.visibility=View.VISIBLE
+            alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
+
+
+        })
+
+
+
         afDtlseffective_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -163,33 +182,33 @@ class FragmentARRAVAffliations : Fragment() {
               //  BuildAffiliationsList()
             }
         })
-
-        affdeleteBtn.setOnClickListener({
-            var itemFound =false
-            var item = AAAFacilityAffiliations()
-            for (fac in facilityAffList) {
-                if (fac.typename.equals(affiliations_textviewVal.getSelectedItem().toString())){
-                    item = fac
-                    itemFound=true
-                }
-            }
-            if (itemFound) {
-                facilityAffList.remove(item)
-                //BuildAffiliationsList()
-            }
-        })
-
-        affeditBtn.setOnClickListener({
-            for (fac in facilityAffList) {
-                if (fac.typename.equals(affiliations_textviewVal.getSelectedItem().toString())){
-                    fac.effdate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE") || afDtlseffective_date_textviewVal.text.isNullOrEmpty() || afDtlseffective_date_textviewVal.text.equals("") || afDtlseffective_date_textviewVal.text.equals("NULL") || afDtlseffective_date_textviewVal.text.toString().toLowerCase().equals("no date provided")) "" else afDtlseffective_date_textviewVal.text.toString()
-                    fac.expdate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE") || afDtlsexpiration_date_textviewVal.text.isNullOrEmpty() || afDtlsexpiration_date_textviewVal.text.equals("") || afDtlsexpiration_date_textviewVal.text.equals("NULL") || afDtlsexpiration_date_textviewVal.text.toString().toLowerCase().equals("no date provided")) "" else afDtlsexpiration_date_textviewVal.text.toString()
-                    fac.comments = affcomments_editTextVal.text.toString()
-                }
-                //BuildAffiliationsList()
-            }
-        })
-
+//
+//        affdeleteBtn.setOnClickListener({
+//            var itemFound =false
+//            var item = AAAFacilityAffiliations()
+//            for (fac in facilityAffList) {
+//                if (fac.typename.equals(affiliations_textviewVal.getSelectedItem().toString())){
+//                    item = fac
+//                    itemFound=true
+//                }
+//            }
+//            if (itemFound) {
+//                facilityAffList.remove(item)
+//                //BuildAffiliationsList()
+//            }
+//        })
+//
+//        affeditBtn.setOnClickListener({
+//            for (fac in facilityAffList) {
+//                if (fac.typename.equals(affiliations_textviewVal.getSelectedItem().toString())){
+//                    fac.effdate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE") || afDtlseffective_date_textviewVal.text.isNullOrEmpty() || afDtlseffective_date_textviewVal.text.equals("") || afDtlseffective_date_textviewVal.text.equals("NULL") || afDtlseffective_date_textviewVal.text.toString().toLowerCase().equals("no date provided")) "" else afDtlseffective_date_textviewVal.text.toString()
+//                    fac.expdate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE") || afDtlsexpiration_date_textviewVal.text.isNullOrEmpty() || afDtlsexpiration_date_textviewVal.text.equals("") || afDtlsexpiration_date_textviewVal.text.equals("NULL") || afDtlsexpiration_date_textviewVal.text.toString().toLowerCase().equals("no date provided")) "" else afDtlsexpiration_date_textviewVal.text.toString()
+//                    fac.comments = affcomments_editTextVal.text.toString()
+//                }
+//                //BuildAffiliationsList()
+//            }
+//        })
+//
         prepareAffiliations()
 
 //        affiliations_textviewVal.onItemSelectedListener = AdapterView.OnItemSelectedListener { adapterView, view, i, l ->

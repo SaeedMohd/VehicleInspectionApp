@@ -56,7 +56,8 @@
 
 
                 <TableRow
-                    android:background="@color/mainColor">
+                    android:background="@color/mainColor"
+                    >
                     <TextView android:text="Program"
                         android:layout_width="100dp"
                         android:gravity="center"
