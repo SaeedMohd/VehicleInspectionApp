@@ -190,11 +190,10 @@ tools:context=".fragments.FragmentAARAVVendorRevenue">
                     android:layout_gravity="top|right"/>
                 <ImageButton
                     android:layout_marginTop="25dp"
-                    android:background="@drawable/textview_background"
                     android:id="@+id/exitDialogeBtn"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/exit"
+                    android:background="@drawable/close"
                     android:layout_gravity="top|right"
                     android:layout_column="2"
                     />

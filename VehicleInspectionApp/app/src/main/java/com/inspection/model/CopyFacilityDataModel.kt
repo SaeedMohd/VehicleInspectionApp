@@ -1,18 +1,18 @@
 package com.inspection.model
 
-class CopyFacilityDataModel {
+class UnchangedFacilityDataModel {
 
     companion object {
 
         @Volatile
-        private var INSTANCE: CopyFacilityDataModel? = null
+        private var INSTANCE: UnchangedFacilityDataModel? = null
 
-        fun getInstance(): CopyFacilityDataModel =
+        fun getInstance(): UnchangedFacilityDataModel=
                 INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: CopyFacilityDataModel().also { INSTANCE = it }
+                    INSTANCE ?: UnchangedFacilityDataModel().also { INSTANCE = it }
                 }
 
-        fun setInstance(copyFacilityDataModel: CopyFacilityDataModel){
+        fun setInstance(copyFacilityDataModel: UnchangedFacilityDataModel){
             INSTANCE = copyFacilityDataModel
         }
     }

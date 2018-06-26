@@ -59,7 +59,8 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/visitationfacilityIdTextView"
                 android:background="@drawable/textview_background"
-                android:ems="5"
+                android:ems="6"
+                android:maxLength="6"
                 android:gravity="center"
                 android:inputType="number"
                 android:text="" />

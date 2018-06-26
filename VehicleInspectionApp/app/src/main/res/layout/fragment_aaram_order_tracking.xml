@@ -247,12 +247,11 @@
 
         <ImageButton
             android:layout_marginTop="25dp"
-            android:background="@drawable/textview_background"
             android:id="@+id/exitNewAO_DialogeBtnId"
             android:layout_width="20dp"
             android:layout_marginRight="10dp"
             android:layout_height="20dp"
-            android:src="@drawable/exit"
+            android:background="@drawable/close"
             android:layout_gravity="top|right"
             />
         <LinearLayout
@@ -345,12 +344,11 @@
 
         <ImageButton
             android:layout_marginTop="25dp"
-            android:background="@drawable/textview_background"
             android:id="@+id/exitEventDialogeBtnId"
             android:layout_width="20dp"
             android:layout_marginRight="10dp"
             android:layout_height="20dp"
-            android:src="@drawable/exit"
+            android:background="@drawable/close"
             android:layout_gravity="top|right"
             />
         <LinearLayout

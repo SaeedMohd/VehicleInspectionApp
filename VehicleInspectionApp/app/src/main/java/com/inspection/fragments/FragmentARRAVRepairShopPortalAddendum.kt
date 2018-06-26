@@ -537,7 +537,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
                     rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
-                    Toast.makeText(context,rowIndex.toString(),Toast.LENGTH_SHORT).show()
 
 
 
