@@ -580,41 +580,40 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 edit_submitNewAAR_PortalTracking.setOnClickListener {
 
                     if (validateInputsForUpdate()) {
-
-                       indexToRemove=rowIndex
-                        if (indexToRemove!=0) {
-                            FacilityDataModel.getInstance().tblAARPortalAdmin.removeAt(indexToRemove-1)
-                            Toast.makeText(context,"supposed to be removed",Toast.LENGTH_SHORT).show()
-
-                        }else
-                        {
-
-                            Toast.makeText(context,"no index to remove",Toast.LENGTH_SHORT).show()
-
-                        }
-                        alphaBackgroundForRSPDialogs.visibility = View.GONE
-                        edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
-
                         val date = edit_inspectionDateButton.text
                         val isLoggedInRsp = edit_loggedIntoRspButton.isChecked
                         val numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
                         val numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
                         val numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
-                        var portalTrackingentry = FacilityDataModel.TblAARPortalAdmin()
-
-                        portalTrackingentry.startDate = edit_startDateButton.text.toString()
-                        portalTrackingentry.PortalInspectionDate = "" + date
-                        portalTrackingentry.LoggedIntoPortal = "" + isLoggedInRsp
-                        portalTrackingentry.InProgressTows = "" + numberOfInProgressTwoInsvalue
-                        portalTrackingentry.InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                        portalTrackingentry.NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                        portalTrackingentry.CardReaders = numberOfCardsReaderEditText.text.toString()
-                        portalTrackingentry.AddendumSigned = addendumSignedDateButton.text.toString()
-
-                        FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
 
 
-                        aarPortalTrackingTableLayout.removeView(tableRow)
+
+                        indexToRemove=rowIndex
+                        if (indexToRemove!=0) {
+
+
+
+                           // FacilityDataModel.getInstance().tblAARPortalAdmin.removeAt(indexToRemove-1)
+
+                        }else
+                        {
+
+
+                        }
+                        alphaBackgroundForRSPDialogs.visibility = View.GONE
+                        edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+
+                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate = edit_startDateButton.text.toString()
+                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate = "" + date
+                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal = "" + isLoggedInRsp
+                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders = numberOfCardsReaderEditText.text.toString()
+                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned = addendumSignedDateButton.text.toString()
+
+
+
 
                         fillPortalTrackingTableView()
                         altLocationTableRow(2)

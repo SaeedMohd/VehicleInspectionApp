@@ -46,7 +46,7 @@
             android:background="@color/white"
             android:padding="5dp">
             <TableLayout
-                android:id="@+id/mainProgramsTableLayout"
+                android:id="@+id/mainAffTableLayout"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:showDividers="middle|beginning|end"
@@ -159,7 +159,7 @@
             android:id="@+id/secondPartOfPAGEiD">
 
             <LinearLayout
-                android:layout_below="@id/mainProgramsTableLayout"
+                android:layout_below="@id/mainAffTableLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="3"

@@ -351,6 +351,8 @@
             android:background="@drawable/close"
             android:layout_gravity="top|right"
             />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

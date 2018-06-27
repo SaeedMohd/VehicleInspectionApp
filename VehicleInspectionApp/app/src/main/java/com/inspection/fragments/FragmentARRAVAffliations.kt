@@ -10,8 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -130,6 +129,7 @@ class FragmentARRAVAffliations : Fragment() {
 
         })
 
+        fillAffTableView()
 
 
         afDtlseffective_date_textviewVal.setOnClickListener {
@@ -164,23 +164,29 @@ class FragmentARRAVAffliations : Fragment() {
 
         submitNewAffil.setOnClickListener({
             var validAffType = true
-            for (fac in facilityAffList) {
-                if (fac.typename.equals(affiliations_textviewVal.selectedItem.toString())){
-                    context!!.toast("Affiliation Type cannot be duplicated")
-                    validAffType=false
-                }
-            }
-            if (validAffType) {
-                var item = AAAFacilityAffiliations()
-                item.affiliationid = -1
-                item.typename = affiliations_textviewVal.getSelectedItem().toString()
-                item.typedetailname= afDetails_textviewVal.getSelectedItem().toString()
-                item.effdate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString()
-                item.expdate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString()
-                item.comments=affcomments_editTextVal.text.toString()
-                facilityAffList.add(facilityAffList.size, item)
-              //  BuildAffiliationsList()
-            }
+
+
+            affiliationsCard.visibility=View.GONE
+            alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+
+
+//            for (fac in facilityAffList) {
+//                if (fac.typename.equals(affiliations_textviewVal.selectedItem.toString())){
+//                    context!!.toast("Affiliation Type cannot be duplicated")
+//                    validAffType=false
+//                }
+//            }
+//            if (validAffType) {
+//                var item = AAAFacilityAffiliations()
+//                item.affiliationid = -1
+//                item.typename = affiliations_textviewVal.getSelectedItem().toString()
+//                item.typedetailname= afDetails_textviewVal.getSelectedItem().toString()
+//                item.effdate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString()
+//                item.expdate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString()
+//                item.comments=affcomments_editTextVal.text.toString()
+//                facilityAffList.add(facilityAffList.size, item)
+//              //  BuildAffiliationsList()
+//            }
         })
 //
 //        affdeleteBtn.setOnClickListener({
@@ -301,6 +307,89 @@ class FragmentARRAVAffliations : Fragment() {
             }))
 
     }
+
+    fun fillAffTableView() {
+
+        if (mainAffTableLayout.childCount>1) {
+            for (i in mainAffTableLayout.childCount - 1 downTo 1) {
+                mainAffTableLayout.removeViewAt(i)
+            }
+        }
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+//        FacilityDataModel.getInstance().tbl.apply {
+//            (0 until size).forEach {
+        for (i in 1..2) {
+
+            var tableRow = TableRow(context)
+            if (i % 2 == 0) {
+                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+            }
+            var textView = TextView(context)
+            textView.layoutParams = rowLayoutParam
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam1
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).FAC_Addr1
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam2
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            TableRow.LayoutParams()
+            textView.text = "Test" // get(it).FAC_Addr2
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam3
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).CITY
+
+            tableRow.addView(textView)
+
+            textView = TextView(context)
+            textView.layoutParams = rowLayoutParam4
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.text = "Test" // get(it).County
+            tableRow.addView(textView)
+
+
+            mainAffTableLayout.addView(tableRow)
+        }
+//        altVenRevTableRow(2)
+//            }
+//        }
+
+    }
+
 
 //    fun BuildAffiliationsList() {
 //        val inflater = activity!!

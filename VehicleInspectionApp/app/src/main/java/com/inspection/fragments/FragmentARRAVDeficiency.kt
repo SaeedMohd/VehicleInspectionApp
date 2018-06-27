@@ -447,9 +447,7 @@ class FragmentARRAVDeficiency : Fragment() {
                     facilityRepresentativeDeficienciesSignatureButton.setError("Required Field")
                 }
             }
-            else{
-                Toast.makeText(context,"all items are cleared",Toast.LENGTH_SHORT).show()
-            }
+
         }
         return isInputsValid
     }

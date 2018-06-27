@@ -2,99 +2,149 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.inspection.fragments.AwardsAndDistinctionsFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="Scope Of Services"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
-        android:background="@color/white"
-        android:padding="5dp">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </LinearLayout>
-        <TextView
-            android:id="@+id/subTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="Awards And Distinctions"
-            android:textStyle="bold"
-            android:textSize="14dp"
-            android:textColor="#8b2323"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Awards And Distinctions"
+                android:textColor="@color/mainColor"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/showAwardsCard"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/green_background_button"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="+ ADD Award And Distinction"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
 
         <TableLayout
-            android:id="@+id/mainProgramsTableLayout"
+            android:id="@+id/mainAwardsTableLayout"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_below="@+id/subTitleTextView"
             android:layout_height="wrap_content">
 
 
-            <TableRow>
+            <TableRow android:background="@color/mainColor">
                 <TextView android:text="Award And Distinction"
                     android:layout_width="100dp"
                     android:gravity="center"
-
+                    android:textColor="@color/white"
                     android:layout_column="0"
                     android:layout_weight="1"/>
                 <TextView android:text="Effective Date"
                     android:layout_width="100dp"
                     android:gravity="center"
-
+                    android:textColor="@color/white"
                     android:layout_column="1"
                     android:layout_weight="1"/>
                 <TextView android:text="Expiration Date"
                     android:gravity="center"
-
+                    android:textColor="@color/white"
                     android:layout_width="30dp"
                     android:layout_column="2"
                     android:layout_weight="1">
                 </TextView>
                 <TextView android:text="Comments"
                     android:layout_width="30dp"
+                    android:textColor="@color/white"
                     android:layout_column="3"
                     android:gravity="center"
                     android:layout_weight="1">
                 </TextView>
                           </TableRow>
 
-            <ScrollView android:layout_height="120dp">
-                <TableLayout android:id="@+id/programsTableLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <LinearLayout
-                        android:id="@+id/awardsListLL"
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:orientation="vertical"
-                        >
-                    </LinearLayout>
-
-                </TableLayout>
-            </ScrollView>
         </TableLayout>
+        </LinearLayout>
+
+
+
+    <View
+        android:id="@+id/alphaBackgroundForAwardsAndDistinctionDialogs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mainColor"
+        android:visibility="gone"
+        android:alpha="0.8"/>
+    <android.support.v7.widget.CardView
+        android:layout_width="700dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/awardsCard"
+        app:cardElevation="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Add New Award And Distinction"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/submitNewAward"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:id="@+id/exitAwardsDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:background="@drawable/close"
+            android:layout_gravity="top|right"
+            />
+
 
         <LinearLayout
-            android:layout_below="@id/mainProgramsTableLayout"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:orientation="vertical">
+
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:weightSum="3"
@@ -209,50 +259,12 @@
             android:maxEms="250"
             android:lines="3"
             />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/affcomments_editTextVal"
-            android:id="@+id/affbtnslayout"
-            android:weightSum="3"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/affaddBtn"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:text="Add"/>
-            <Button
-                android:id="@+id/affeditBtn"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:text="Modify"/>
-            <Button
-                android:id="@+id/affdeleteBtn"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:text="Delete"/>
+
         </LinearLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/affbtnslayout"
-            android:background="@drawable/frame_solid_border"
-            android:scrollbars="none"
-            >
-            <LinearLayout
-                android:id="@+id/affListLL"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:orientation="vertical"
-                >
-            </LinearLayout>
-        </ScrollView>
-    </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
 </RelativeLayout>
 
     <!---->
