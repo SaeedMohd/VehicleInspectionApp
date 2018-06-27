@@ -294,17 +294,12 @@ val rowLayoutParam8 = TableRow.LayoutParams()
         for ( i in 1..childViewCount-1) {
             var row : TableRow= ComplaintsResultsTbl.getChildAt(i) as TableRow;
 
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                if (i % alt_row != 0) {
-                    tv.setBackground(getResources().getDrawable(
-                            R.drawable.alt_row_color));
-                } else {
-                    tv.setBackground(getResources().getDrawable(
-                            R.drawable.row_color));
-                }
-
+            if (i % alt_row != 0) {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.alt_row_color));
+            } else {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.row_color));
             }
 
         }
@@ -479,9 +474,9 @@ val rowLayoutParam8 = TableRow.LayoutParams()
                     if (get(it).ComplaintID.equals(fac.ComplaintReasonID)) {
 
                         textView.text = fac.ComplaintReasonName
-                        Toast.makeText(context,"match",Toast.LENGTH_SHORT).show()
 
-                    }else {   Toast.makeText(context,"doesnt match",Toast.LENGTH_SHORT).show()}
+                    }
+
                 }
 
 
@@ -491,10 +486,11 @@ val rowLayoutParam8 = TableRow.LayoutParams()
          textView = TextView(context)
                 textView.layoutParams = rowLayoutParam7
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                if (!(get(it).ReceivedDate.isNullOrEmpty())) {
+                try {
                     textView.text = get(it).ReceivedDate.apiToAppFormat()
-                } else {
-                    textView.text = ""
+                } catch (e: Exception) {
+
+                    textView.text = get(it).ReceivedDate
                 }
                 tableRow.addView(textView)
 
@@ -502,11 +498,19 @@ val rowLayoutParam8 = TableRow.LayoutParams()
          textView = TextView(context)
                 textView.layoutParams = rowLayoutParam8
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                if (!(get(it).ComplaintID.isNullOrEmpty())) {
+//                if (!(get(it).ComplaintID.isNullOrEmpty())) {
+//                    textView.text = get(it).ReceivedDate.apiToAppFormat()
+//                } else {
+//                    textView.text = ""
+//                }
+                try {
                     textView.text = get(it).ReceivedDate.apiToAppFormat()
-                } else {
-                    textView.text = ""
+                } catch (e: Exception) {
+
+                    textView.text = get(it).ReceivedDate
                 }
+
+
                 tableRow.addView(textView)
 
 

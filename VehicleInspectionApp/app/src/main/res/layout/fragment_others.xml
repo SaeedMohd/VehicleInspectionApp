@@ -3,15 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/light_gray"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.inspection.fragments.OthersFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <RelativeLayout
+        android:background="@color/white"
         android:id="@+id/subTitleId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp">
 
@@ -48,18 +51,18 @@
             <TableRow android:background="@color/mainColor">
                 <TextView android:text="Other Service"
                     android:layout_width="100dp"
-                    android:gravity="center"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:layout_column="0"
                     android:layout_weight="1"/>
                 <TextView android:text="Effective Date"
                     android:layout_width="100dp"
-                    android:gravity="center"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:layout_column="1"
                     android:layout_weight="1"/>
                 <TextView android:text="Expiration Date"
-                    android:gravity="center"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:layout_width="30dp"
                     android:layout_column="2"
@@ -68,7 +71,7 @@
                 <TextView android:text="Comments"
                     android:layout_width="30dp"
                     android:layout_column="3"
-                    android:gravity="center"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:layout_weight="1">
                 </TextView>
@@ -76,14 +79,15 @@
                     android:layout_width="30dp"
                     android:layout_column="4"
          android:textColor="@color/white"
-         android:gravity="center"
+         android:textAlignment="center"
                     android:layout_weight="1">
+
                 </TextView>
      <TextView android:text="Last Updated Date"
                     android:layout_width="30dp"
                     android:layout_column="5"
          android:textColor="@color/white"
-         android:gravity="center"
+         android:textAlignment="center"
                     android:layout_weight="1">
                 </TextView>
             </TableRow>

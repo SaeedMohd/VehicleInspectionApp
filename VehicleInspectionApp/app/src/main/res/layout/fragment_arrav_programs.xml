@@ -52,41 +52,39 @@
 
             <TableLayout
                 android:id="@+id/aarPortalTrackingTableLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scrollbarAlwaysDrawHorizontalTrack="true"
-                android:layout_marginBottom="30dp"
-                android:stretchColumns="*">
-                <TableRow android:background="@color/mainColor">
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:showDividers="middle|beginning|end"
+                android:divider="@drawable/divider_table_layout"
+                android:layout_height="wrap_content">
+
+        <TableRow android:background="@color/mainColor">
+
                     <TextView android:text="Program"
                         android:layout_width="100dp"
-                        android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_column="0"
-                        android:layout_gravity="center_vertical"
+                        android:textAlignment="center"
                         android:layout_weight="1"/>
                     <TextView android:text="Effective Date"
-                        android:gravity="center"
                         android:textColor="@color/white"
                         android:layout_width="30dp"
                         android:layout_column="1"
-                        android:layout_gravity="center_vertical"
+                        android:textAlignment="center"
                         android:layout_weight="1">
                     </TextView>
                     <TextView android:text="Expiration Date"
                         android:layout_width="30dp"
                         android:layout_column="2"
                         android:textColor="@color/white"
-                        android:gravity="center"
-                        android:layout_gravity="center_vertical"
+                        android:textAlignment="center"
                         android:layout_weight="1">
                     </TextView>
                     <TextView android:text="Comments"
                       android:textColor="@color/white"
                       android:layout_width="30dp"
                       android:layout_column="3"
-                        android:layout_gravity="center_vertical"
-                      android:gravity="center"
+                        android:textAlignment="center"
                       android:layout_weight="1">
                     </TextView>
                 </TableRow>

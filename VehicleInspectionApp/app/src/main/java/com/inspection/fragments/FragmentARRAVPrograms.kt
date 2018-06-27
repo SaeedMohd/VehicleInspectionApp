@@ -396,17 +396,12 @@ class FragmentARRAVPrograms : Fragment() {
         for ( i in 1..childViewCount-1) {
             var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
 
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                if (i % alt_row != 0) {
-                    tv.setBackground(getResources().getDrawable(
-                            R.drawable.alt_row_color));
-                } else {
-                    tv.setBackground(getResources().getDrawable(
-                            R.drawable.row_color));
-                }
-
+            if (i % alt_row != 0) {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.alt_row_color));
+            } else {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.row_color));
             }
 
         }

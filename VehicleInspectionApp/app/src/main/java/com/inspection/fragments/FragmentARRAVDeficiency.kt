@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.appToApiFormat
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
@@ -262,20 +264,38 @@ class FragmentARRAVDeficiency : Fragment() {
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = VisitationDate
+
+            try {
+                textView.text = VisitationDate.appToApiFormat()
+            } catch (e: Exception) {
+                textView.text = VisitationDate
+            }
+
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            textView.text = EnteredDate
+
+            try {
+                textView.text = EnteredDate.appToApiFormat()
+            } catch (e: Exception) {
+                textView.text = EnteredDate
+            }
+
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam3
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ClearedDate
+
+            try {
+                textView.text = ClearedDate.appToApiFormat()
+            } catch (e: Exception) {
+                textView.text = ClearedDate
+            }
+
             tableRow.addView(textView)
 
             textView = TextView(context)
@@ -297,17 +317,12 @@ class FragmentARRAVDeficiency : Fragment() {
         for ( i in 1..childViewCount-1) {
             var row : TableRow= DeffResultsTbl.getChildAt(i) as TableRow;
 
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                if (i % alt_row != 0) {
-                    tv.setBackground(getResources().getDrawable(
-                            R.drawable.alt_row_color));
-                } else {
-                    tv.setBackground(getResources().getDrawable(
-                            R.drawable.row_color));
-                }
-
+            if (i % alt_row != 0) {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.alt_row_color));
+            } else {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.row_color));
             }
 
         }
@@ -390,20 +405,41 @@ class FragmentARRAVDeficiency : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).VisitationDate
+
+                try {
+                    textView.text = get(it).VisitationDate.apiToAppFormat()
+                } catch (e: Exception) {
+                    textView.text = get(it).VisitationDate
+
+                }
+
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = get(it).EnteredDate
+
+                try {
+                    textView.text = get(it).EnteredDate.apiToAppFormat()
+                } catch (e: Exception) {
+                    textView.text = get(it).EnteredDate
+
+                }
+
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam3
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).ClearedDate
+
+                try {
+                    textView.text = get(it).ClearedDate.apiToAppFormat()
+                } catch (e: Exception) {
+                    textView.text = get(it).ClearedDate
+
+                }
+
                 tableRow.addView(textView)
 
                 textView = TextView(context)
