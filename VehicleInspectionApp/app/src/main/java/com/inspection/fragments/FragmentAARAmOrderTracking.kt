@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.Constants.UpdateAmendmentOrderTrackingData
 import com.inspection.Utils.toast
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
@@ -176,10 +177,6 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         submitNewAOTButton.setOnClickListener(View.OnClickListener {
 
 
-            AOCardView.visibility=View.GONE
-            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
-
-
             var item = FacilityDataModel.TblAmendmentOrderTracking()
                 for (fac in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
                     if (employeeDropDown.getSelectedItem().toString().equals(fac.AOTEmployee))
@@ -197,10 +194,32 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             }
 
 
-                FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(item)
+
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAmendmentOrderTrackingData + "&facId=540554&aoId=${item.AOID.toString()}&employeeId=E654117&reasonId=${item.ReasonID.toString()}&insertBy=E110997&insertDate=2015-06-15T12:38:01.087-07:00&updateBy=SumA&updateDate=2018-06-29T00:02:15.573-07:00&active=1",
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            Log.v("RESPONSE",response.toString())
+                            amendmentLoadingView.visibility = View.GONE
+
+                            AOCardView.visibility=View.GONE
+                            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+                            FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(item)
+
+
+                            addTheLatestRowOfAmendmentAndTrackingTableView()
+                            alt_AOT_TableRow(2)
+
+
+                        })
+                    }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading personnal record")
+                amendmentLoadingView.visibility = View.GONE
+
+            }))
+
+
                 //  BuildProgramsList()
 
-            addTheLatestRowOfAmendmentAndTrackingTableView()
 
 
         })

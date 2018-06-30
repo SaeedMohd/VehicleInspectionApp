@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.Utils.*
+import com.inspection.Utils.Constants.UpdateProgramsData
 import com.inspection.model.AAAFacilityPrograms
 import com.inspection.model.AAAProgramTypes
 import com.inspection.model.FacilityDataModel
@@ -185,10 +186,6 @@ class FragmentARRAVPrograms : Fragment() {
 
             }
             if (validProgram) {
-
-                programCard.visibility=View.GONE
-                alphaBackgroundForProgramDialogs.visibility = View.GONE
-
                 var item = FacilityDataModel.TblPrograms()
                 for (fac in TypeTablesModel.getInstance().ProgramsType) {
                     if (program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName))
@@ -201,11 +198,30 @@ class FragmentARRAVPrograms : Fragment() {
                 item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString()
                 item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
                 item.Comments=comments_editTextVal.text.toString()
-                FacilityDataModel.getInstance().tblPrograms.add(item)
               //  BuildProgramsList()
 
 
-                addTheLatestRowOfPortalAdmin()
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + "&programId=29385&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=sa&insertDate=2013-04-24T13:40:34.240&updateBy=SumA&updateDate=2013-06-24T15:25:12.513",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("RESPONSE",response.toString())
+                                programsLoadingView.visibility = View.GONE
+                                FacilityDataModel.getInstance().tblPrograms.add(item)
+                                addTheLatestRowOfPortalAdmin()
+
+                                programCard.visibility=View.GONE
+                                alphaBackgroundForProgramDialogs.visibility = View.GONE
+
+
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading personnal record")
+                    programsLoadingView.visibility = View.GONE
+
+                }))
+
+
 
             }}else{
                 Toast.makeText(context,"please fill all required fields",Toast.LENGTH_SHORT).show()

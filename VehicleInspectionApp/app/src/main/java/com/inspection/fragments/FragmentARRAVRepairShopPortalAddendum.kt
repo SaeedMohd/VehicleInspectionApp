@@ -19,7 +19,11 @@ import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum
 import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.LinearLayout
-
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.inspection.Utils.Constants.UpdateAARPortalAdminData
 
 
 /**
@@ -236,8 +240,11 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         submitNewAAR_PortalTracking.setOnClickListener {
 
             if (validateInputs()) {
-                alphaBackgroundForRSPDialogs.visibility = View.GONE
-                addNewAAR_PortalTrackingCard.visibility = View.GONE
+                RSP_LoadingView.visibility = View.VISIBLE
+
+                var startDate = if (startDateButton.text.equals("SELECT DATE")) "" else startDateButton.text.toString()
+                var endDate = if (endDateButton.text.equals("SELECT DATE")) "" else endDateButton.text.toString()
+                var signedDate = if (addendumSignedDateButton.text.equals("SELECT DATE")) "" else addendumSignedDateButton.text.toString()
 
                 val date = inspectionDateButton.text
                 val isLoggedInRsp = loggedIntoRspButton.isChecked
@@ -254,9 +261,28 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 portalTrackingentry.CardReaders = numberOfCardsReaderEditText.text.toString()
                 portalTrackingentry.AddendumSigned = addendumSignedDateButton.text.toString()
 
-                FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
-                fillPortalTrackingTableView()
-                altLocationTableRow(2)
+
+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
+                        "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=2015-07-31T11:53:02.190&updateBy=SumA&updateDate=2015-07-31T11:53:02.190&active=1",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("RESPONSE",response.toString())
+                                RSP_LoadingView.visibility = View.GONE
+
+
+                                alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                addNewAAR_PortalTrackingCard.visibility = View.GONE
+                                FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
+                                fillPortalTrackingTableView()
+                                altLocationTableRow(2)
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading personnal record")
+                    RSP_LoadingView.visibility = View.GONE
+
+                }))
             }else
                 Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
 
@@ -587,36 +613,44 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         val numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
 
 
+                        var startDate = if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString()
+                        var endDate = if (edit_endDateButton.text.equals("SELECT DATE")) "" else edit_endDateButton.text.toString()
+                        var signedDate = if (edit_addendumSignedDateButton.text.equals("SELECT DATE")) "" else edit_addendumSignedDateButton.text.toString()
+
+
 
                         indexToRemove=rowIndex
-                        if (indexToRemove!=0) {
 
 
 
-                           // FacilityDataModel.getInstance().tblAARPortalAdmin.removeAt(indexToRemove-1)
-
-                        }else
-                        {
-
-
-                        }
-                        alphaBackgroundForRSPDialogs.visibility = View.GONE
-                        edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
-
-                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate = edit_startDateButton.text.toString()
-                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate = "" + date
-                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal = "" + isLoggedInRsp
-                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders = numberOfCardsReaderEditText.text.toString()
-                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned = addendumSignedDateButton.text.toString()
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
+                                "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=2015-07-31T11:53:02.190&updateBy=SumA&updateDate=2015-07-31T11:53:02.190&active=1",
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread(Runnable {
+                                        Log.v("RESPONSE",response.toString())
+                                        RSP_LoadingView.visibility = View.GONE
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate = edit_startDateButton.text.toString()
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate = "" + date
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal = "" + isLoggedInRsp
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
 
 
+                                        alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                        addNewAAR_PortalTrackingCard.visibility = View.GONE
+                                        fillPortalTrackingTableView()
+                                        altLocationTableRow(2)
 
+                                    })
+                                }, Response.ErrorListener {
+                            Log.v("error while loading", "error while loading personnal record")
+                            RSP_LoadingView.visibility = View.GONE
 
-                        fillPortalTrackingTableView()
-                        altLocationTableRow(2)
+                        }))
+
                     }else
                         Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
 

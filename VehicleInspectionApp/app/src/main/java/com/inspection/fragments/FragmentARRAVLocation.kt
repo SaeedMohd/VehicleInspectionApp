@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -324,9 +325,9 @@ class FragmentARRAVLocation : Fragment() {
    //     rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
+       // rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-  //      rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+       rowLayoutParam2.width = TableLayout.LayoutParams.WRAP_CONTENT
 
 
 

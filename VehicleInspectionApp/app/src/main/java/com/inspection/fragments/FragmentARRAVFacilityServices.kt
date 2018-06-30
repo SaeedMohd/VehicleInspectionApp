@@ -5,11 +5,17 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.inspection.R
+import com.inspection.Utils.Constants.UpdateFacilityServicesData
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
@@ -118,9 +124,7 @@ class FragmentARRAVFacilityServices : Fragment() {
 
             if (validateInputs()){
 
-
-                facilityServicesCard.visibility=View.GONE
-                alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+                FC_LoadingView.visibility = View.VISIBLE
 
 
 
@@ -137,7 +141,28 @@ class FragmentARRAVFacilityServices : Fragment() {
                 FacilityDataModel.getInstance().tblFacilityServices.add(item)
                 //  BuildProgramsList()
 
-                addTheLatestRowOfPortalAdmin()}else {
+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + "&facilityServicesId=5307&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate=2013-06-18T10:38:53.773&updateBy=SumA&updateDate=2013-06-18T10:38:53.773",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("FC_SUBMIT_RESPONSE",response.toString())
+                                FC_LoadingView.visibility = View.GONE
+
+                                facilityServicesCard.visibility=View.GONE
+                                alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+                                addTheLatestRowOfPortalAdmin()
+
+
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading personnal record")
+                    FC_LoadingView.visibility = View.GONE
+
+                }))
+
+
+            }else {
                 Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
             }
 

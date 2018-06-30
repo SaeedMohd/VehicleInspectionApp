@@ -66,8 +66,11 @@ object Constants {
     val getCopyFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=2518&clubcode=004"
     val getTypeTables = "https://dev.facilityappointment.com/ACEAPI.asmx/GetTypeTables"
     val getVisitations = "https://dev.facilityappointment.com/ACEAPI.asmx/GetVisitations?"
-    val updateScopeofServiceData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=2276&clubCode=004&laborRateId=1&fixedLaborRate=119.72&laborMin=0.00&laborMax=0.00&diagnosticRate=119.72&numOfBays=8&numOfLifts=8&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773"
-
+    val UpdateAARPortalAdminData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAARPortalAdminData?facNum=2276&clubCode=004"
+    val UpdateAmendmentOrderTrackingData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAmendmentOrderTrackingData?facNum=2276&clubCode=004"
+    val UpdateDeficiencyData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateDeficiencyData?facNum=2276&clubCode=004"
+    val UpdateProgramsData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateProgramsData?facNum=2276&clubCode=004"
+    val UpdateFacilityServicesData ="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityServicesData?facNum=2276&clubCode=004"
 
 
 

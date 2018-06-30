@@ -7,11 +7,17 @@ import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.inspection.R
+import com.inspection.Utils.Constants.UpdateDeficiencyData
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.appToApiFormat
 import com.inspection.model.FacilityDataModel
@@ -71,6 +77,7 @@ class FragmentARRAVDeficiency : Fragment() {
             signatureDateBtn.setText("SELECT DATE")
             facilityRepresentativeDeficienciesSignatureButton.setText("ADD SIGNATURE")
             facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+            Toast.makeText(context,"yaay",Toast.LENGTH_SHORT).show()
 
 
 
@@ -79,6 +86,83 @@ class FragmentARRAVDeficiency : Fragment() {
             facilityRepresentativeDeficienciesSignatureButton.setError(null)
             defeciencyCard.visibility=View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
+
+
+            facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
+                signatureDialog.visibility = View.VISIBLE
+                visitationFormAlphaBackground.visibility = View.VISIBLE
+                selectedSignature = requestedSignature.representativeDeficiency
+                if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
+                    signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
+                }
+            }
+
+
+            signatureClearButton.setOnClickListener {
+                signatureInkView.clear()
+            }
+
+            signatureCancelButton.setOnClickListener {
+                signatureInkView.clear()
+                signatureDialog.visibility = View.GONE
+            }
+
+            signatureConfirmButton.setOnClickListener {
+
+                var bitmap = signatureInkView.bitmap
+                var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+                when (selectedSignature) {
+
+
+                    requestedSignature.representativeDeficiency -> {
+                        facilityRepresentativeDeficienciesSignatureBitmap = bitmap
+                        if (!isEmpty){
+                            facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
+                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
+                        }else{
+                            facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
+                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+                        }
+
+                    }
+
+
+
+                }
+
+                signatureInkView.clear()
+                visitationFormAlphaBackground.visibility = View.GONE
+                signatureDialog.visibility = View.GONE
+            }
+
+
+            try {
+                var bitmap = signatureInkView.bitmap
+                var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+                when (selectedSignature) {
+
+
+                    requestedSignature.representativeDeficiency -> {
+                        facilityRepresentativeDeficienciesSignatureBitmap = bitmap
+                        if (!isEmpty){
+                            facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
+                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
+                        }else{
+                            facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
+                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+                        }
+
+                    }
+
+
+
+                }
+
+                signatureInkView.clear()
+                visitationFormAlphaBackground.visibility = View.GONE
+                signatureDialog.visibility = View.GONE
+            } catch (e: Exception) {
+            }
 
 
         })
@@ -148,8 +232,8 @@ class FragmentARRAVDeficiency : Fragment() {
 
             if (validateInputs()){
 
-                defeciencyCard.visibility=View.GONE
-                visitationFormAlphaBackground.visibility = View.GONE
+                DeffLoadingView.visibility = View.VISIBLE
+
 
 
                 var item = FacilityDataModel.TblDeficiency()
@@ -166,62 +250,37 @@ class FragmentARRAVDeficiency : Fragment() {
                 item.ClearedDate = if (newClearedDateBtn.text.equals("SELECT DATE")) "" else newClearedDateBtn.text.toString()
                 item.Comments = if (comments_editTextVal.text.isNullOrEmpty())  "" else comments_editTextVal.text.toString()
 
-                FacilityDataModel.getInstance().tblDeficiency.add(item)
                 //  BuildProgramsList()
 
-                addTheLatestRowOfPortalAdmin()
+
+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + "&defId=13688&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate.toString()}" +
+                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=MoritzM02&insertDate=2014-04-16T15:17:07.143&updateBy=SamA&updateDate=2014-04-30T13:45:28.477",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("RESPONSE",response.toString())
+                                DeffLoadingView.visibility = View.GONE
+
+                                defeciencyCard.visibility=View.GONE
+                                visitationFormAlphaBackground.visibility = View.GONE
+                                FacilityDataModel.getInstance().tblDeficiency.add(item)
+                                addTheLatestRowOfPortalAdmin()
+
+
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading personnal record")
+                    DeffLoadingView.visibility = View.GONE
+
+                }))
+
             }
-           // Toast.makeText(context,"please fill all required fields",Toast.LENGTH_SHORT).show()
+            // Toast.makeText(context,"please fill all required fields",Toast.LENGTH_SHORT).show()
 
 
         })
 
-        facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
-            signatureDialog.visibility = View.VISIBLE
-            visitationFormAlphaBackground.visibility = View.VISIBLE
-            selectedSignature = requestedSignature.representativeDeficiency
-            if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
-                signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
-            }
-        }
-
-
-        signatureClearButton.setOnClickListener {
-            signatureInkView.clear()
-        }
-
-        signatureCancelButton.setOnClickListener {
-            signatureInkView.clear()
-            signatureDialog.visibility = View.GONE
-        }
-
-        signatureConfirmButton.setOnClickListener {
-
-            var bitmap = signatureInkView.bitmap
-            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
-            when (selectedSignature) {
-
-
-                requestedSignature.representativeDeficiency -> {
-                    facilityRepresentativeDeficienciesSignatureBitmap = bitmap
-                    if (!isEmpty){
-                        facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
-                        facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
-                    }else{
-                        facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
-                        facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
-                    }
-
-                }
-
-
-
-            }
-
-            signatureInkView.clear()
-            visitationFormAlphaBackground.visibility = View.GONE
-            signatureDialog.visibility = View.GONE
-        }
         altDeffTableRow(2)
 
 
@@ -369,7 +428,7 @@ class FragmentARRAVDeficiency : Fragment() {
         return typeName
     }
 
-        fun fillDeffTableView() {
+    fun fillDeffTableView() {
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val rowLayoutParam = TableRow.LayoutParams()
@@ -537,3 +596,4 @@ class FragmentARRAVDeficiency : Fragment() {
         }
     }
 }// Required empty public constructor
+
