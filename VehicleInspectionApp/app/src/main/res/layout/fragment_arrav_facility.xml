@@ -94,6 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_column="1"
+                        android:textColor="@color/black"
                         android:textSize="12sp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -112,6 +113,7 @@
 
                     <Spinner
                         android:id="@+id/contractTypeValueSpinner"
+                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="3"
@@ -324,6 +326,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
+                        android:textColor="@color/black"
                         android:layout_marginTop="10dp"
                         android:layout_toRightOf="@id/office_textview"
                         android:text="test" />
@@ -344,6 +347,7 @@
                     <TextView
                         android:id="@+id/assignedto_textviewVal"
                         android:layout_width="wrap_content"
+                        android:textColor="@color/black"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/AssignedToll"
                         android:layout_column="1"
@@ -369,6 +373,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/AssignedToll"
+                        android:textColor="@color/black"
                         android:layout_column="1"
                         android:layout_marginTop="10dp"
                         android:layout_toRightOf="@id/dba_textview"
@@ -391,6 +396,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
+                        android:textColor="@color/black"
                         android:layout_marginTop="10dp"
                         android:layout_toRightOf="@id/entity_textview"
                         android:text="test" />
@@ -410,6 +416,7 @@
                         android:id="@+id/bustype_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:layout_column="1"
                         android:text="test" />
 
@@ -454,6 +461,7 @@
                     <Spinner
                         android:id="@+id/terminationReason_textviewVal"
                         android:layout_width="wrap_content"
+                        android:textColor="@color/black"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:text="test" />
@@ -477,6 +485,7 @@
                         android:layout_column="1"
                         android:paddingRight="5dp"
                         android:paddingLeft="5dp"
+                        android:textColor="@color/black"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/textview_background"
                         android:lines="8"
@@ -708,12 +717,14 @@
                         android:text="Inspection Month:"
                         android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/inspectionMonthsSpinner"
+                    <TextView
+                        android:id="@+id/inspectionMonthsTextViewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/textview_background"
+                        android:textColor="@color/black"
                         android:layout_column="1"
-                        android:entries="@array/inspectionMonths" />
+                        />
 
 
                     <TextView
@@ -725,13 +736,15 @@
                         android:text="Inspection Month:"
                         android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/inspectionCycleSpinner"
+                    <TextView
+                        android:id="@+id/inspectionCycleTextViewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/textview_background"
                         android:layout_column="3"
+                        android:textColor="@color/black"
                         android:layout_gravity="center"
-                        android:entries="@array/inspectionCycle" />
+                        />
                 </TableRow>
 
                 <TableRow>
@@ -796,6 +809,7 @@
                         android:layout_toRightOf="@id/ARDno_textview"
                         android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                         android:hint="Enter ARD Number"
+                        android:textColor="@color/black"
                         android:maxLength="12"
                         android:text=""
                         android:textSize="12dp" />
@@ -826,6 +840,29 @@
                 <TableRow>
 
                     <TextView
+                        android:id="@+id/shopManagmentSystem_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
+                        android:text="shop managment system : "
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/shopManagmentSystem_textviewVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/shopManagmentSystem_textview"
+                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+                        android:hint="shop managment system"
+                        android:maxLength="12"
+                        android:textSize="12dp" />
+                </TableRow>
+                <TableRow>
+
+                    <TextView
                         android:id="@+id/currcodate_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -838,8 +875,10 @@
                         android:id="@+id/currcodate_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:layout_column="1"
                         android:layout_marginTop="10dp"
+                        android:textStyle="bold"
                         android:text="test" />
                 </TableRow>
 
@@ -861,6 +900,8 @@
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
                         android:layout_toRightOf="@id/initcodate_textview"
                         android:text="test" />
                 </TableRow>
@@ -874,13 +915,16 @@
                         android:layout_column="0"
                         android:layout_marginTop="10dp"
                         android:text="Insurance Expiration Date: "
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        />
 
                     <TextView
                         android:id="@+id/InsuranceExpDate_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         android:layout_toRightOf="@id/initcodate_textview"
                         android:text="test" />
