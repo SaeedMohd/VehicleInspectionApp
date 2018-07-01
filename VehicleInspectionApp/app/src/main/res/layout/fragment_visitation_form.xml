@@ -306,6 +306,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Facility Representative"
+                            android:id="@+id/facilityRepresentativeTextView"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -785,6 +786,7 @@
                         android:background="@color/light_gray" />
 
                     <RelativeLayout
+                        android:id="@+id/waiverConditionedEnablingLayout"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:padding="10dp">

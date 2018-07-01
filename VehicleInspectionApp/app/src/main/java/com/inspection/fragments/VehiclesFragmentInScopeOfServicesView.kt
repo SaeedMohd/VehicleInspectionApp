@@ -70,7 +70,7 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
                     if (model2.VehCategoryName.toString().contains("Domest")) {
 
-                        domesticVehiclesListItems.add(model)
+                   //     domesticVehiclesListItems.add(model)
                     }
                     Toast.makeText(context,domesticVehiclesListItems.size.toString(),Toast.LENGTH_SHORT).show()
 
@@ -126,9 +126,10 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
             vehiclesTypesArray.add(fac.VehiclesTypeName)
         }
-        var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, vehiclesTypesArray)
-        programsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        vehicleType_textviewVal.adapter = programsAdapter
+//
+//        var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, vehiclesTypesArray)
+//        programsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        vehicleType_textviewVal.adapter = programsAdapter
 
     }
     companion object {

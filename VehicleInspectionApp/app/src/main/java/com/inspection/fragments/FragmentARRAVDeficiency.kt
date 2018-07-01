@@ -536,10 +536,19 @@ class FragmentARRAVDeficiency : Fragment() {
                     signatureDateBtn.setError("Required Field")
                 }
 
-                if (facilityRepresentativeDeficienciesSignatureBitmap==null) {
+//                if (facilityRepresentativeDeficienciesSignatureBitmap==null) {
+//                    isInputsValid = false
+//                    facilityRepresentativeDeficienciesSignatureButton.setError("Required Field")
+//                }
+
+                if (facilityRepresentativeDeficienciesSignatureButton.text.toString() == "ADD SIGNATURE" ||
+                        facilityRepresentativeDeficienciesSignatureButton.text.toString() =="Add Signature") {
+
                     isInputsValid = false
-                    facilityRepresentativeDeficienciesSignatureButton.setError("Required Field")
+                    facilityRepresentativeDeficienciesSignatureButton.setError("required field")
+
                 }
+
             }
 
         }

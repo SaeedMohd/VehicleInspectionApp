@@ -283,6 +283,7 @@ class FragmentVisitation : Fragment() {
 
 
         emailValidation()
+        waiverValidation()
 
         fillDeficiencyTable()
     }
@@ -419,6 +420,27 @@ class FragmentVisitation : Fragment() {
         })
 
     }
+    fun waiverValidation() {
+        if (waiveVisitationCheckBox.isChecked == true) {
+
+            waiverCommentsEditText.isEnabled = true
+            waiverConditionedEnablingLayout.isEnabled = true
+        }
+        else
+            waiverCommentsEditText.isEnabled = false
+        waiverConditionedEnablingLayout.isEnabled = false
+
+        waiveVisitationCheckBox.setOnClickListener(View.OnClickListener {
+            if (waiveVisitationCheckBox.isChecked == true) {
+
+                waiverCommentsEditText.isEnabled = true
+                waiverConditionedEnablingLayout.isEnabled = true
+            } else
+                waiverCommentsEditText.isEnabled = false
+            waiverConditionedEnablingLayout.isEnabled = false
+        })
+
+    }
 
     private fun fillDeficiencyTable() {
 
@@ -497,6 +519,10 @@ class FragmentVisitation : Fragment() {
     fun validateInputs(): Boolean {
 
         var isInputValid = true
+        automotiveSpecialistSignatureButton.setError(null)
+        facilityRepresentativeSignatureButton.setError(null)
+        facilityRepresentativeTextView.setError(null)
+
 
         if (adhocVisitationType.isChecked) {
             if (visitationReasonDropListId.selectedItem.toString() == visitationReasonDropListId.setSelection(0).toString()) {
@@ -506,15 +532,24 @@ class FragmentVisitation : Fragment() {
 
             }
 
-        } else if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature") {
+        } else
+
+            if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature") {
 
             isInputValid = false
             facilityRepresentativeSignatureButton.setError("required field")
 
         }
+
+//        if (facilityRepresentativeSignatureBitmap==null) {
+//            isInputValid = false
+//            facilityRepresentativeSignatureButton.setError("Required Field")
+//        }
+
         if (facilityRepresentativesSpinner.selectedItem.toString().contains("please")) {
             isInputValid = false
-            Toast.makeText(context, "please select a representative", Toast.LENGTH_LONG).show()
+
+            facilityRepresentativeTextView.setError("Required Field")
         }
 
         if (automotiveSpecialistSignatureButton.text.toString() == "Add Signature") {
@@ -523,6 +558,11 @@ class FragmentVisitation : Fragment() {
             automotiveSpecialistSignatureButton.setError("required field")
 
         }
+
+//        if (automotiveSpecialistSignatureBitmap==null) {
+//            isInputValid = false
+//            automotiveSpecialistSignatureButton.setError("Required Field")
+//        }
         if (emailPdfCheckBox.isChecked == true) {
 
             if (emailEditText.text.toString().isNullOrEmpty()) {

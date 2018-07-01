@@ -1,209 +1,275 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_below="@+id/titleTextView"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:fillViewport="true"
+    android:paddingBottom="10dp"
+    android:layout_margin="10dp"
+    android:paddingTop="5dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.inspection.fragments.FragmentARRAVFacility">
 
 
-    <android.support.v7.widget.CardView
-        android:layout_width="800dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        app:cardCornerRadius="5dp"
-        android:id="@+id/edit_affiliationsCard"
-        app:cardElevation="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/edit_addAfiliationsDialogeTitle"
-            android:text="update Affiliation"
-            android:layout_gravity="top|left"
-            android:textSize="18dp"
-            />
-
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
-            android:text="Submit"
-            android:id="@+id/edit_submitNewAffil"
-            android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
-            />
-
-
-        <ImageButton
-            android:layout_marginTop="25dp"
-            android:id="@+id/edit_exitAffDialogeBtnId"
-            android:layout_width="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="20dp"
-            android:background="@drawable/close"
-            android:layout_gravity="top|right"
-            />
-        <LinearLayout
-            android:padding="40dp"
-            android:layout_below="@+id/edit_addProgramDialogeTitle"
-            android:layout_width="750dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/edit_secondPartOfPAGEiD">
-
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
             <LinearLayout
-                android:layout_below="@id/mainAffTableLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:id="@+id/edit_connumberll">
-                <TextView
-                    android:id="@+id/edit_program_name_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Affliation Type: "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
-                <Spinner
-                    android:id="@+id/edit_affiliations_textviewVal"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_width="0dp"
-                    android:text="Select Affliation"
-                    android:textColor="@color/blue_krayola"
-                    android:layout_weight="2"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/edit_affliationdetails"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:layout_below="@id/edit_connumberll"
-                >
-                <TextView
-                    android:id="@+id/edit_afDetails_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Affliation Details: "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
-                <Spinner
-                    android:id="@+id/edit_afDetails_textviewVal"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_width="0dp"
-                    android:text="Select Affliation"
-                    android:textColor="@color/blue_krayola"
-                    android:layout_weight="2"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/edit_affliationdetails"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:id="@+id/edit_contypell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edit_connumberll"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Effective Date: "
-                    android:textStyle="bold"
-                    />
-                <Button
-                    android:id="@+id/edit_afDtlseffective_date_textviewVal"
-                    android:layout_below="@id/edit_connumberll"
-                    android:layout_width="0dp"
-                    android:text="select date"
-                    android:textColor="@color/blue_krayola"
-                    android:background="@null"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/edit_contypell"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:id="@+id/edit_officell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edit_contypell"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Expiration Date: "
-                    android:textStyle="bold"
-                    />
-                <Button
-                    android:id="@+id/edit_afDtlsexpiration_date_textviewVal"
-                    android:layout_toRightOf="@id/office_textview"
-                    android:layout_below="@id/edit_contypell"
-                    android:layout_width="0dp"
-                    android:text="Select Date"
-                    android:textColor="@color/blue_krayola"
-                    android:background="@null"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/edit_officell"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:id="@+id/edit_AssignedToll">
-                <TextView
-                    android:id="@+id/edit_comments_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edit_officell"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Comments: "
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/edit_affcomments_editTextVal"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/edit_AssignedToll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/item_solid_border"
-                android:maxEms="250"
-                android:lines="3"
-                />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/subTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:text="Domestic"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="20dp"
+
+                    />
 
 
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
 
-</LinearLayout>
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:layout_margin="20dp"
+                    android:id="@+id/DomesticVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/subTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Asian"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+
+                    />
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/AsianVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/subTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="European"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+
+                    />
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/EuropeanVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/subTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Exotic"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+
+                    />
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/ExoticVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/subTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Other Types"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+
+                    />
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/otherTypesVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+        <!--<ProgressBar-->
+        <!--android:id="@+id/progressbarVehicleServices"-->
+        <!--style="?android:attr/progressBarStyleHorizontal"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:indeterminate="true"-->
+        <!--android:max="100"-->
+        <!--android:layout_alignTop="@id/gridLinearId"-->
+        <!--android:backgroundTint="@color/white"-->
+        <!--android:indeterminateTint="#1a09d6"-->
+        <!--android:visibility="invisible"-->
+        <!--android:layout_marginTop="-10dp"/>-->
+
+    </LinearLayout>
+
+</ScrollView>

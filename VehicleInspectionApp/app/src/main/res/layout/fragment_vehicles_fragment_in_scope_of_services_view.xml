@@ -1,1054 +1,275 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_below="@+id/titleTextView"
+    android:layout_height="match_parent"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:fillViewport="true"
+    android:paddingBottom="10dp"
+    android:layout_margin="10dp"
+    android:paddingTop="5dp"
+    android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.inspection.fragments.VehiclesFragmentInScopeOfServicesView">
+    tools:context="com.inspection.fragments.FragmentARRAVFacility">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="3"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:id="@+id/connumberll">
-        <TextView
-            android:id="@+id/program_name_textview"
-            android:layout_width="0dp"
-            android:layout_marginLeft="5dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Vehicle Type : "
-            android:layout_gravity="center_vertical"
-            android:textStyle="bold"
-            />
-        <Spinner
-            android:id="@+id/vehicleType_textviewVal"
-            android:layout_toRightOf="@id/contract_number_textview"
-            android:layout_width="0dp"
-            android:text="Select Program"
-            android:textColor="@color/blue_krayola"
-            android:layout_weight="2"
-            android:layout_gravity="left"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:text="Automobile"/>
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
+
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:text="Domestic"/>
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        app:cardBackgroundColor="@color/gray">
+                <TextView
+                    android:id="@+id/subTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:text="Domestic"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="20dp"
 
-        <com.inspection.Utils.ExpandableHeightGridView
-            android:id="@+id/DomesticVehiclesListView"
-            android:layout_width="wrap_content"
+                    />
+
+
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:layout_margin="20dp"
+                    android:id="@+id/DomesticVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
+
+
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/white"
-            android:horizontalSpacing="2dp"
-            android:isScrollContainer="false"
-            android:numColumns="4"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp" />
-
-
-
-    </android.support.v7.widget.CardView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:text="Asian"/>
-
-            <android.support.v7.widget.CardView
-                android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp"
-                app:cardBackgroundColor="#8b8378">
-                <LinearLayout
-                    android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:gravity="left"
-                        android:background="#eedfcc">
+                    android:gravity="center"
+                    android:text="Asian"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+                    />
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="left"
-                        android:background="#eedfcc">
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:text="European"/>
-
-            <android.support.v7.widget.CardView
-                android:layout_margin="15dp"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp"
-                app:cardBackgroundColor="#8b8378">
-                <LinearLayout
-                    android:layout_gravity="center"
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/AsianVehiclesListView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:gravity="left"
-                        android:background="#eedfcc">
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
 
 
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="left"
-                        android:background="#eedfcc">
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:text="Exotic"/>
-
-            <android.support.v7.widget.CardView
-                android:layout_margin="15dp"
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp"
-                app:cardBackgroundColor="#8b8378">
-                <LinearLayout
-                    android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:gravity="left"
-                        android:background="#eedfcc">
+                    android:gravity="center"
+                    android:text="European"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
 
+                    />
 
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="left"
-                        android:background="#eedfcc">
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
- <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:text="Other Types"/>
-
-            <android.support.v7.widget.CardView
-                android:layout_margin="15dp"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp"
-                app:cardBackgroundColor="#8b8378">
-                <LinearLayout
-                    android:layout_gravity="center"
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/EuropeanVehiclesListView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:gravity="left"
-                        android:background="#eedfcc">
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/subTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Exotic"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+
+                    />
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/ExoticVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
 
 
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="left"
-                        android:background="#eedfcc">
+        <android.support.v7.widget.CardView
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/subTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Other Types"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+                    />
 
-                        <CheckBox
-                            android:id="@+id/wifi_textview1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
-                        <CheckBox
-                            android:id="@+id/wifi_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="AAA"
-                            android:textStyle="bold" />
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/otherTypesVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
 
+            android:layout_margin="3dp"
+            android:background="@color/light_gray" />
 
-                    </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        <!--<ProgressBar-->
+        <!--android:id="@+id/progressbarVehicleServices"-->
+        <!--style="?android:attr/progressBarStyleHorizontal"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:indeterminate="true"-->
+        <!--android:max="100"-->
+        <!--android:layout_alignTop="@id/gridLinearId"-->
+        <!--android:backgroundTint="@color/white"-->
+        <!--android:indeterminateTint="#1a09d6"-->
+        <!--android:visibility="invisible"-->
+        <!--android:layout_marginTop="-10dp"/>-->
+
+    </LinearLayout>
+
+</ScrollView>
