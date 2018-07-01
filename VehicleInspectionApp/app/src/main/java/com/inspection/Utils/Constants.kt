@@ -1,5 +1,6 @@
 package com.inspection.Utils
 
+import com.inspection.model.FacilityDataModel
 import java.text.SimpleDateFormat
 
 /**
@@ -57,7 +58,7 @@ object Constants {
     val getSpecialistNameFromEmail = "http://144.217.24.163:5000/getSpecialistNameFromEmail?specialistEmail="
     val getVisitationPlanningList = "http://144.217.24.163:5000/getVisitationPlanningList?facilityName=%s&month=%s&year=%s"
     val submitContactInfoAddress = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityAddressData?facnum="
-    val submitFacilityGeneralInfo = "https://dev.facilityappointment.com/ACEAPI.asmx/updateFacilityInfo?facnum="
+    val submitFacilityGeneralInfo = "https://dev.facilityappointment.com/ACEAPI.asmx/updateFacilityInfo?facNum="
     val submitFacilityEmail = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityEmailData?facnum="
     val submitFacilityAddress = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityAddressData?facnum="
     val submitFacilityPhone = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPhoneData?facNum="
@@ -66,12 +67,14 @@ object Constants {
     val getCopyFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=2518&clubcode=004"
     val getTypeTables = "https://dev.facilityappointment.com/ACEAPI.asmx/GetTypeTables"
     val getVisitations = "https://dev.facilityappointment.com/ACEAPI.asmx/GetVisitations?"
-    val UpdateAARPortalAdminData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAARPortalAdminData?facNum=2276&clubCode=004"
-    val UpdateAmendmentOrderTrackingData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAmendmentOrderTrackingData?facNum=2276&clubCode=004"
-    val UpdateDeficiencyData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateDeficiencyData?facNum=2276&clubCode=004"
-    val UpdateProgramsData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateProgramsData?facNum=2276&clubCode=004"
-    val UpdateFacilityServicesData ="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityServicesData?facNum=2276&clubCode=004"
 
+    var facNo= if (FacilityDataModel.getInstance().tblFacilities.size>0) FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() else "2518"
+    val UpdateAARPortalAdminData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAARPortalAdminData?facNum=$facNo&clubCode=004"
+    val UpdateAmendmentOrderTrackingData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAmendmentOrderTrackingData?facNum=$facNo&clubCode=004"
+    val UpdateDeficiencyData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateDeficiencyData?facNum=$facNo&clubCode=004"
+    val UpdateProgramsData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateProgramsData?facNum=$facNo&clubCode=004"
+    val UpdateFacilityServicesData ="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityServicesData?facNum=$facNo&clubCode=004"
+    val UpdateAffiliationsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAffiliationsData?facNum=$facNo&clubCode=004"
 
 
 }

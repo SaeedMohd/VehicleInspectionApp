@@ -18,9 +18,11 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.Constants.UpdateAffiliationsData
 import com.inspection.Utils.toast
 import com.inspection.model.AAAAffiliationTypes
 import com.inspection.model.AAAFacilityAffiliations
+import com.inspection.model.FacilityDataModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
 import java.text.SimpleDateFormat
@@ -42,6 +44,8 @@ class FragmentARRAVAffliations : Fragment() {
     private var affTypesList = ArrayList<AAAAffiliationTypes>()
     private var facilityAffList = ArrayList<AAAFacilityAffiliations>()
     private var selectedTypeDetailName = ""
+    var rowIndex = 0
+    var indexToRemove=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +124,16 @@ class FragmentARRAVAffliations : Fragment() {
 
 
         })
+        edit_exitAffDialogeBtnId.setOnClickListener({
+
+            fillAffTableView()
+            altLocationTableRow(2)
+
+            edit_affiliationsCard.visibility=View.GONE
+            alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+
+
+        })
 
         addNewAffil.setOnClickListener(View.OnClickListener {
 
@@ -162,12 +176,75 @@ class FragmentARRAVAffliations : Fragment() {
             dpd.show()
         }
 
+
+        edit_afDtlseffective_date_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                edit_afDtlseffective_date_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        edit_afDtlsexpiration_date_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                edit_afDtlsexpiration_date_textviewVal!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
         submitNewAffil.setOnClickListener({
             var validAffType = true
 
 
-            affiliationsCard.visibility=View.GONE
-            alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+            if (validateInputs()) {
+                affLoadingView.visibility = View.VISIBLE
+
+                var startDate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString()
+                var endDate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString()
+                var comment = affcomments_editTextVal.text.toString()
+//
+//                var affType = affiliations_textviewVal.selectedItem.toString()
+//                var affDetail= afDetails_textviewVal.selectedItem.toString()
+//
+
+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "&affiliationId=4931&affiliationTypeId=19&affiliationTypeDetailsId=63&effDate=1900-01-01T00:00:00&expDate=2013-11-13T00:00:00&comment=per%2011/13/13%20visitation&active=1&insertBy=sa&insertDate=2014-07-23T22:15:44.150&updateBy=SumA&updateDate=2014-07-23T22:15:44.150",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("RESPONSE",response.toString())
+                                affLoadingView.visibility = View.GONE
+
+
+                                affiliationsCard.visibility = View.GONE
+                                alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                           //     FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
+                                fillAffTableView()
+                                altLocationTableRow(2)
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading personnal record")
+                    affLoadingView.visibility = View.GONE
+
+                }))
+            }else
+                Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
+
 
 
 //            for (fac in facilityAffList) {
@@ -177,6 +254,7 @@ class FragmentARRAVAffliations : Fragment() {
 //                }
 //            }
 //            if (validAffType) {
+
 //                var item = AAAFacilityAffiliations()
 //                item.affiliationid = -1
 //                item.typename = affiliations_textviewVal.getSelectedItem().toString()
@@ -308,7 +386,23 @@ class FragmentARRAVAffliations : Fragment() {
 
     }
 
-    fun fillAffTableView() {
+
+    fun fillAffTableView(){
+
+
+
+
+
+
+        mainViewLinearId.isEnabled=true
+
+        //val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+
+
 
         if (mainAffTableLayout.childCount>1) {
             for (i in mainAffTableLayout.childCount - 1 downTo 1) {
@@ -316,79 +410,301 @@ class FragmentARRAVAffliations : Fragment() {
             }
         }
 
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+        for (i in 0 until mainViewLinearId.childCount) {
+            val child = mainViewLinearId.getChildAt(i)
+            child.isEnabled = true
+        }
+
+        var childViewCount = mainAffTableLayout.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= mainAffTableLayout.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                tv.isEnabled=true
+            }
+
+        }
+
+
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
 
-//        FacilityDataModel.getInstance().tbl.apply {
-//            (0 until size).forEach {
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+
+
+      //  FacilityDataModel.getInstance().tblAffiliations.apply {
+
         for (i in 1..2) {
 
-            var tableRow = TableRow(context)
-            if (i % 2 == 0) {
-                tableRow.setBackgroundResource(R.drawable.alt_row_color)
-            }
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
-            tableRow.addView(textView)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).FAC_Addr1
-            tableRow.addView(textView)
+                val tableRow = TableRow(context)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            textView.text = "Test" // get(it).FAC_Addr2
-            tableRow.addView(textView)
+                val textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                try {
+//                    textView.text = get(it).PortalInspectionDate.apiToAppFormat()
+//                } catch (e: Exception) {
+//                    textView.text = get(it).PortalInspectionDate
+//
+//                }
+                textView.text = "Test"
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
+                tableRow.addView(textView)
 
-            tableRow.addView(textView)
+                val textView1 = TextView(context)
+                textView1.layoutParams = rowLayoutParam1
+                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView1.text = get(it).LoggedIntoPortal
+            textView1.text = "Test"
+                tableRow.addView(textView1)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).County
-            tableRow.addView(textView)
+                val textView2 = TextView(context)
+                textView2.layoutParams = rowLayoutParam2
+                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView2.text = get(it).NumberUnacknowledgedTows
+            textView2.text = "Test"
+                tableRow.addView(textView2)
+
+                val textView3 = TextView(context)
+                textView3.layoutParams = rowLayoutParam3
+                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView3.text = get(it).InProgressTows
+            textView3.text = "Test"
+                tableRow.addView(textView3)
+
+                val textView4 = TextView(context)
+                textView4.layoutParams = rowLayoutParam4
+                textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView4.text = get(it).InProgressWalkIns
+            textView4.text = "Test"
+                tableRow.addView(textView4)
+
+                val updateButton = Button(context)
+                updateButton.layoutParams = rowLayoutParam5
+                updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+                updateButton.text = "update"
+                tableRow.addView(updateButton)
 
 
-            mainAffTableLayout.addView(tableRow)
+                updateButton.setOnClickListener(View.OnClickListener {
+
+
+                    edit_afDtlseffective_date_textviewVal.setText(textView2.text)
+                    edit_afDtlsexpiration_date_textviewVal.setText(textView3.text)
+                    edit_affcomments_editTextVal.setText(textView4.text)
+                    edit_affiliations_textviewVal.setSelection(0)
+                    edit_afDetails_textviewVal.setSelection(0)
+
+
+
+
+                    rowIndex = mainAffTableLayout.indexOfChild(tableRow)
+
+
+
+                    edit_afDtlseffective_date_textviewVal.setError(null)
+
+                    edit_affiliationsCard.visibility=View.VISIBLE
+                    alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
+
+
+
+
+                    for (i in 0 until mainViewLinearId.childCount) {
+                        val child = mainViewLinearId.getChildAt(i)
+                        child.isEnabled = false
+                    }
+
+                    var childViewCount = mainAffTableLayout.getChildCount();
+
+                    for ( i in 1..childViewCount-1) {
+                        var row : TableRow= mainAffTableLayout.getChildAt(i) as TableRow;
+
+                        for (j in 0..row.getChildCount()-1) {
+
+                            var tv : TextView= row.getChildAt(j) as TextView
+                            tv.isEnabled=false
+
+                        }
+
+                    }
+
+
+
+
+                })
+                edit_submitNewAffil.setOnClickListener {
+
+                    if (validateInputsForUpdate()) {
+
+                        var startDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString()
+                        var endDate = if (edit_afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlsexpiration_date_textviewVal.text.toString()
+                        var comment = edit_affcomments_editTextVal.text.toString()
+//
+//                        var affType = edit_affiliations_textviewVal.selectedItem.toString()
+//                        var affDetail= edit_afDetails_textviewVal.selectedItem.toString()
+
+
+
+                        indexToRemove=rowIndex
+
+
+
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "&affiliationId=4931&affiliationTypeId=19&affiliationTypeDetailsId=63&effDate=1900-01-01T00:00:00&expDate=2013-11-13T00:00:00&comment=per%2011/13/13%20visitation&active=1&insertBy=sa&insertDate=2014-07-23T22:15:44.150&updateBy=SumA&updateDate=2014-07-23T22:15:44.150",
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread(Runnable {
+                                        Log.v("RESPONSE",response.toString())
+                                        affLoadingView.visibility = View.GONE
+//
+//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].startDate = edit_startDateButton.text.toString()
+//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].PortalInspectionDate = "" + date
+//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].LoggedIntoPortal = "" + isLoggedInRsp
+//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+//
+
+                                        edit_affiliationsCard.visibility=View.GONE
+                                        alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+
+                                        fillAffTableView()
+                                        altLocationTableRow(2)
+
+                                    })
+                                }, Response.ErrorListener {
+                            Log.v("error while loading", "error while loading personnal record")
+                            affLoadingView.visibility = View.GONE
+
+                        }))
+
+                    }else
+                        Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
+
+
+
+                }
+
+                mainAffTableLayout.addView(tableRow)
+                // Toast.makeText(context,indexToRemove.toString(),Toast.LENGTH_SHORT).show()
+
+
+
         }
-//        altVenRevTableRow(2)
-//            }
-//        }
 
     }
+
+
+//    fun fillAffTableView() {
+//
+//        if (mainAffTableLayout.childCount>1) {
+//            for (i in mainAffTableLayout.childCount - 1 downTo 1) {
+//                mainAffTableLayout.removeViewAt(i)
+//            }
+//        }
+//
+//        val rowLayoutParam = TableRow.LayoutParams()
+//        rowLayoutParam.weight = 1F
+//        rowLayoutParam.column = 0
+//        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam1 = TableRow.LayoutParams()
+//        rowLayoutParam1.weight = 1F
+//        rowLayoutParam1.column = 1
+//        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam2 = TableRow.LayoutParams()
+//        rowLayoutParam2.weight = 1F
+//        rowLayoutParam2.column = 2
+//        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam3 = TableRow.LayoutParams()
+//        rowLayoutParam3.weight = 1F
+//        rowLayoutParam3.column = 3
+//        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam4 = TableRow.LayoutParams()
+//        rowLayoutParam4.weight = 1F
+//        rowLayoutParam4.column = 4
+//        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//   val rowLayoutParam5 = TableRow.LayoutParams()
+//        rowLayoutParam5.weight = 1F
+//        rowLayoutParam5.column = 5
+//        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+////        FacilityDataModel.getInstance().tbl.apply {
+////            (0 until size).forEach {
+//        for (i in 1..2) {
+//
+//            var tableRow = TableRow(context)
+//            if (i % 2 == 0) {
+//                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+//            }
+//            var textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam1
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = "Test" // get(it).FAC_Addr1
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam2
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            TableRow.LayoutParams()
+//            textView.text = "Test" // get(it).FAC_Addr2
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam3
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = "Test" // get(it).CITY
+//
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam4
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = "Test" // get(it).County
+//            tableRow.addView(textView)
+//
+//            val updateButton = Button(context)
+//            updateButton.layoutParams = rowLayoutParam5
+//            updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+//            updateButton.text = "update"
+//            tableRow.addView(updateButton)
+//
+//
+//            mainAffTableLayout.addView(tableRow)
+//        }
+////        altVenRevTableRow(2)
+////            }
+////        }
+//
+//    }
 
 
 //    fun BuildAffiliationsList() {
@@ -437,6 +753,37 @@ class FragmentARRAVAffliations : Fragment() {
 
         return isInputsValid
     }
+    fun validateInputsForUpdate() : Boolean {
+        var isInputsValid = true
+
+        edit_afDtlseffective_date_textviewVal.setError(null)
+
+        if(edit_afDtlseffective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            isInputsValid=false
+            edit_afDtlseffective_date_textviewVal.setError("Required Field")
+        }
+
+
+        return isInputsValid
+    }
+    fun altLocationTableRow(alt_row : Int) {
+        var childViewCount = mainAffTableLayout.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= mainAffTableLayout.getChildAt(i) as TableRow;
+
+            if (i % alt_row != 0) {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.alt_row_color));
+            } else {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.row_color));
+            }
+
+
+        }
+    }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

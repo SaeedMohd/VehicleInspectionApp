@@ -15,7 +15,7 @@
         android:background="@color/white"
         android:layout_below="@+id/titleTextView"
         android:orientation="horizontal"
-        android:id="@+id/subTitle">
+        android:id="@+id/mainViewLinearId">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/subTitle"
+            android:layout_below="@+id/mainViewLinearId"
             android:background="@color/white"
             android:padding="5dp">
             <TableLayout
@@ -66,16 +66,19 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:layout_column="0"
+                        android:textStyle="bold"
                         android:layout_weight="1"/>
    <TextView android:text="Affliation Details"
                         android:layout_width="100dp"
        android:textAlignment="center"
        android:textColor="@color/white"
-                        android:layout_column="1"
+       android:textStyle="bold"
+       android:layout_column="1"
                         android:layout_weight="1"/>
                     <TextView android:text="Effective Date"
                         android:textAlignment="center"
                         android:textColor="@color/white"
+                        android:textStyle="bold"
                         android:layout_width="30dp"
                         android:layout_column="2"
                         android:layout_weight="1">
@@ -84,6 +87,7 @@
                         android:layout_width="30dp"
                         android:layout_column="3"
                         android:textColor="@color/white"
+                        android:textStyle="bold"
                         android:textAlignment="center"
                         android:layout_weight="1">
                     </TextView>
@@ -91,9 +95,22 @@
                         android:layout_width="30dp"
                         android:layout_column="4"
                         android:textColor="@color/white"
+                        android:textStyle="bold"
                         android:textAlignment="center"
                         android:layout_weight="1">
                     </TextView>
+
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:layout_column="5"
+                        />
+
                 </TableRow>
 
             </TableLayout>
@@ -308,6 +325,236 @@
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/edit_affiliationsCard"
+        app:cardElevation="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/edit_addAfiliationsDialogeTitle"
+            android:text="update Affiliation"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/edit_submitNewAffil"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:id="@+id/edit_exitAffDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:background="@drawable/close"
+            android:layout_gravity="top|right"
+            />
+        <LinearLayout
+            android:padding="40dp"
+            android:layout_below="@+id/edit_addProgramDialogeTitle"
+            android:layout_width="750dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/edit_secondPartOfPAGEiD">
+
+            <LinearLayout
+                android:layout_below="@id/mainAffTableLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/edit_connumberll">
+                <TextView
+                    android:id="@+id/edit_program_name_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Affliation Type: "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/edit_affiliations_textviewVal"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:text="Select Affliation"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/edit_affliationdetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_below="@id/edit_connumberll"
+                >
+                <TextView
+                    android:id="@+id/edit_afDetails_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Affliation Details: "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <Spinner
+                    android:id="@+id/edit_afDetails_textviewVal"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:text="Select Affliation"
+                    android:textColor="@color/blue_krayola"
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/edit_affliationdetails"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:id="@+id/edit_contypell">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edit_connumberll"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Effective Date: "
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/edit_afDtlseffective_date_textviewVal"
+                    android:layout_below="@id/edit_connumberll"
+                    android:layout_width="0dp"
+                    android:text="select date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/edit_contypell"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:id="@+id/edit_officell">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edit_contypell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Expiration Date: "
+                    android:textStyle="bold"
+                    />
+                <Button
+                    android:id="@+id/edit_afDtlsexpiration_date_textviewVal"
+                    android:layout_toRightOf="@id/office_textview"
+                    android:layout_below="@id/edit_contypell"
+                    android:layout_width="0dp"
+                    android:text="Select Date"
+                    android:textColor="@color/blue_krayola"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@id/edit_officell"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:id="@+id/edit_AssignedToll">
+                <TextView
+                    android:id="@+id/edit_comments_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edit_officell"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Comments: "
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edit_affcomments_editTextVal"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/edit_AssignedToll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_solid_border"
+                android:maxEms="250"
+                android:lines="3"
+                />
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/affLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:clickable="true"
+        android:background="@color/mainColor"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:layout_centerHorizontal="true"
+            android:text="Loading..."
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
 
 </RelativeLayout>
 

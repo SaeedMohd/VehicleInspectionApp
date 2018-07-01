@@ -254,7 +254,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
 
 
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + "&defId=13688&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate.toString()}" +
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + "&defId=13688&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
                         "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=MoritzM02&insertDate=2014-04-16T15:17:07.143&updateBy=SamA&updateDate=2014-04-30T13:45:28.477",
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
@@ -265,7 +265,6 @@ class FragmentARRAVDeficiency : Fragment() {
                                 visitationFormAlphaBackground.visibility = View.GONE
                                 FacilityDataModel.getInstance().tblDeficiency.add(item)
                                 addTheLatestRowOfPortalAdmin()
-
 
 
                             })

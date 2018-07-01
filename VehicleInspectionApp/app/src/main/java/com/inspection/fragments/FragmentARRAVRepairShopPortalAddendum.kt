@@ -267,7 +267,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=2015-07-31T11:53:02.190&updateBy=SumA&updateDate=2015-07-31T11:53:02.190&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE",response.toString())
+                                Log.v("RESPONSE_LOOK",response.toString())
                                 RSP_LoadingView.visibility = View.GONE
 
 
@@ -276,6 +276,11 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
                                 fillPortalTrackingTableView()
                                 altLocationTableRow(2)
+
+                                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+
+                                Toast.makeText(context,facilityNo,Toast.LENGTH_SHORT).show()
+
 
                             })
                         }, Response.ErrorListener {
@@ -606,6 +611,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 edit_submitNewAAR_PortalTracking.setOnClickListener {
 
                     if (validateInputsForUpdate()) {
+                        RSP_LoadingView.visibility = View.VISIBLE
+
                         val date = edit_inspectionDateButton.text
                         val isLoggedInRsp = edit_loggedIntoRspButton.isChecked
                         val numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()

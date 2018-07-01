@@ -373,9 +373,9 @@ class FragmentARRAVLocation : Fragment() {
                     phoneSaveChangesButton.setOnClickListener(View.OnClickListener {
                         val phoneTypeID = textView.text.toString()
                         val phoneNo = if (newChangesPhoneNoText.text.isNullOrEmpty())  "" else newChangesPhoneNoText.text
-                        val insertDate = Date().toApiSubmitFormat()
+                        val insertDate = Date().toAppFormat()
                         val insertBy ="sa"
-                        val updateDate = Date().toApiSubmitFormat()
+                        val updateDate = Date().toAppFormat()
                         val updateBy ="sa"
                         val activeVal = "0"
                         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -392,6 +392,8 @@ class FragmentARRAVLocation : Fragment() {
                                         contactInfoLoadingView.visibility = View.GONE
                                         textView2.setText(newChangesPhoneNoText.text.toString())
                                         Log.v("RESPONSE",response.toString())
+                                        Toast.makeText(context,"update date is : $updateDate  ///, insert date is =  $insertDate ",Toast.LENGTH_LONG).show()
+
                                     })
                                 }, Response.ErrorListener {
                             contactInfoLoadingView.visibility = View.GONE
@@ -820,9 +822,9 @@ class FragmentARRAVLocation : Fragment() {
     fun submitFacilityEmail(){
         val emailTypeID = TypeTablesModel.getInstance().EmailType.filter { s -> s.EmailName==newEmailTypeSpinner.selectedItem.toString()}[0].EmailID
         val email = if (newEmailAddrText.text.isNullOrEmpty())  "" else newEmailAddrText.text
-        val insertDate = Date().toApiSubmitFormat().replace(" ", "T")
+        val insertDate = Date().toAppFormat()
         val insertBy ="sa"
-        val updateDate = Date().toApiSubmitFormat().replace(" ", "T")
+        val updateDate = Date().toAppFormat()
         val updateBy ="sa"
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -866,9 +868,9 @@ class FragmentARRAVLocation : Fragment() {
         val zipText = if (newLocZipText.text.isNullOrEmpty())  "" else newLocZipText.text
         val branchNameText = if (newLocBranchNameText.text.isNullOrEmpty())  "" else newLocBranchNameText.text
         val branchNoText = if (newLocBranchNoText.text.isNullOrEmpty())  "" else newLocBranchNoText.text
-        val insertDate = Date().toApiSubmitFormat()
+        val insertDate = Date().toAppFormat()
         val insertBy ="sa"
-        val updateDate = Date().toApiSubmitFormat()
+        val updateDate = Date().toAppFormat()
         val updateBy ="sa"
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -904,9 +906,9 @@ class FragmentARRAVLocation : Fragment() {
     fun submitFacilityPhone(){
         val phoneTypeID = TypeTablesModel.getInstance().LocationPhoneType.filter { s -> s.LocPhoneName==newPhoneTypeSpinner.selectedItem.toString()}[0].LocPhoneID
         val phoneNo = if (newPhoneNoText.text.isNullOrEmpty())  "" else newPhoneNoText.text
-        val insertDate = Date().toApiSubmitFormat()
+        val insertDate = Date().toAppFormat()
         val insertBy ="sa"
-        val updateDate = Date().toApiSubmitFormat()
+        val updateDate = Date().toAppFormat()
         val updateBy ="sa"
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -927,6 +929,8 @@ class FragmentARRAVLocation : Fragment() {
                         Log.v("RESPONSE",response.toString())
                         FacilityDataModel.getInstance().tblPhone.add(newPhone)
                         fillPhoneTableView()
+                        Toast.makeText(context,"update date is : $updateDate  ///, insert date is =  $insertDate ",Toast.LENGTH_LONG).show()
+
                     })
                 }, Response.ErrorListener {
             contactInfoLoadingView.visibility = View.GONE
