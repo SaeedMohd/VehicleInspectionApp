@@ -21,6 +21,7 @@ import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.R.id.*
 import com.inspection.Utils.*
+import com.inspection.Utils.Constants.UpdatePaymentMethodsData
 import com.inspection.model.CsiSpecialist
 import com.inspection.model.CsiSpecialistSingletonModel
 import com.inspection.model.FacilityDataModel
@@ -156,7 +157,6 @@ class FragmentARRAVFacility : Fragment() {
       //  contractTypesAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         contractTypeValueSpinner.adapter = contractTypesAdapter
 
-
         ARDexp_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -203,6 +203,7 @@ class FragmentARRAVFacility : Fragment() {
 
         setFieldsValues()
         ImplementBusinessRules()
+
 
     }
 
@@ -277,7 +278,6 @@ class FragmentARRAVFacility : Fragment() {
                 dba_textviewVal.text = tblFacilities[0].BusinessName
                 entity_textviewVal.text = tblFacilities[0].EntityName
                 bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
-
                 timezone_textviewVal.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
                 website_textviewVal.setText(tblFacilities[0].WebSite)
                 wifi_textview.isChecked = tblFacilities[0].SvcAvailability.toInt() == 1
@@ -330,6 +330,7 @@ class FragmentARRAVFacility : Fragment() {
         saveButton.setOnClickListener {
             if (validateInputs()){
                 submitFacilityGeneralInfo()
+                submitPaymentMethods()
 
 
             }
@@ -450,6 +451,7 @@ class FragmentARRAVFacility : Fragment() {
 
         for (fac in FacilityDataModel.getInstance().tblPaymentMethods) {
             when (fac.PmtMethodID.toInt()) {
+
                 1 -> visa_checkbox.isChecked = true
                 2 -> mastercard_checkbox.isChecked = true
                 3 -> americanexpress_checkbox.isChecked = true
@@ -459,6 +461,7 @@ class FragmentARRAVFacility : Fragment() {
                 7 -> cash_checkbox.isChecked = true
                 8 -> check_checkbox.isChecked = true
                 9 -> goodyear_checkbox.isChecked = true
+
             }
         }
     }
@@ -512,6 +515,62 @@ class FragmentARRAVFacility : Fragment() {
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading")
         }))
+    }
+    fun submitPaymentMethods(){
+
+
+        var insertDate = Date().toAppFormat()
+
+                //  BuildProgramsList()
+
+      val visa : String=   if (visa_checkbox.isChecked == true) "1" else ""
+      val mastercard: String=   if (mastercard_checkbox.isChecked == true) "2" else ""
+      val americanexpress: String=   if (americanexpress_checkbox.isChecked == true) "3" else ""
+      val discover: String=   if (discover_checkbox.isChecked == true) "4" else ""
+      val paypal: String=   if (paypal_checkbox.isChecked == true) "5" else ""
+      val debit: String=   if (debit_checkbox.isChecked == true) "6" else ""
+      val cash: String=   if (cash_checkbox.isChecked == true) "7" else ""
+      val check: String=   if (check_checkbox.isChecked == true) "8" else ""
+      val goodyear: String=   if (goodyear_checkbox.isChecked == true) "9" else ""
+
+         var paymentMethods= arrayOf(visa,mastercard,americanexpress,discover,paypal,debit,cash,check,goodyear)
+        var paymentMethodArray = ArrayList<String>()
+
+
+        var payments : String? =""
+
+        for (pm in paymentMethods){
+
+            if (!pm.equals("")){
+
+
+                paymentMethodArray.add(pm)
+
+
+
+
+            }
+
+            payments = paymentMethodArray.toString().replace("[","").replace("]","").replace(" ","")
+
+
+        }
+
+
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=$insertDate",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        Log.v("paymentSUBMIT_RESPONSE",response.toString())
+                        Log.v("paymentsTRING",payments.toString())
+
+
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading personnal record")
+
+        }))
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -2,6 +2,7 @@ package com.inspection.Utils
 
 import com.inspection.model.FacilityDataModel
 import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * QuickBlox team
@@ -75,6 +76,7 @@ object Constants {
     val UpdateProgramsData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateProgramsData?facNum=$facNo&clubCode=004"
     val UpdateFacilityServicesData ="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityServicesData?facNum=$facNo&clubCode=004"
     val UpdateAffiliationsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAffiliationsData?facNum=$facNo&clubCode=004"
-
+    val UpdatePaymentMethodsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdatePaymentMethodsData?facnum=$facNo&clubCode=004"
+    val UpdateFacilityLanguageData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityLanguageData?facNum=$facNo&clubCode=004"
 
 }
