@@ -97,13 +97,13 @@ class FacilityGroupFragment : Fragment() {
             updateSelectedIndicator(R.id.personnelButton)
         }
 
-        visitationTrackingButton.setOnClickListener {
-            var fragment = FragmentARRAVVisitationTracking.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            updateSelectedIndicator(R.id.visitationTrackingButton)
-        }
+//        visitationTrackingButton.setOnClickListener {
+//            var fragment = FragmentARRAVVisitationTracking.newInstance("","")
+//            fragmentManager!!.beginTransaction()
+//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+//                    .commit()
+//            updateSelectedIndicator(R.id.visitationTrackingButton)
+//        }
 
         amendmentOrdersTrackingButton.setOnClickListener {
             var fragment = FragmentARRAVAmOrderTracking.newInstance("","")
@@ -121,7 +121,6 @@ class FacilityGroupFragment : Fragment() {
                         rspSelectedIndicator.visibility = View.INVISIBLE
                         contactInfoSelectedIndicator.visibility = View.INVISIBLE
                         personnelSelectedIndicator.visibility = View.INVISIBLE
-                        visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
                         amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
 
@@ -130,7 +129,6 @@ class FacilityGroupFragment : Fragment() {
                 rspSelectedIndicator.visibility = View.VISIBLE
                 contactInfoSelectedIndicator.visibility = View.INVISIBLE
                 personnelSelectedIndicator.visibility = View.INVISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
                 amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
             
@@ -139,7 +137,6 @@ class FacilityGroupFragment : Fragment() {
                 rspSelectedIndicator.visibility = View.INVISIBLE
                 contactInfoSelectedIndicator.visibility = View.VISIBLE
                 personnelSelectedIndicator.visibility = View.INVISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
                 amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
             
@@ -148,25 +145,22 @@ class FacilityGroupFragment : Fragment() {
                 rspSelectedIndicator.visibility = View.INVISIBLE
                 contactInfoSelectedIndicator.visibility = View.INVISIBLE
                 personnelSelectedIndicator.visibility = View.VISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
                 amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
             
-            R.id.visitationTrackingButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                rspSelectedIndicator.visibility = View.INVISIBLE
-                contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                personnelSelectedIndicator.visibility = View.INVISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.VISIBLE
-                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
-            }
+//            R.id.visitationTrackingButton->{
+//                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+//                rspSelectedIndicator.visibility = View.INVISIBLE
+//                contactInfoSelectedIndicator.visibility = View.INVISIBLE
+//                personnelSelectedIndicator.visibility = View.INVISIBLE
+//                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+//            }
             
             R.id.amendmentOrdersTrackingButton->{
                 generalInformationSelectedIndicator.visibility = View.INVISIBLE
                 rspSelectedIndicator.visibility = View.INVISIBLE
                 contactInfoSelectedIndicator.visibility = View.INVISIBLE
                 personnelSelectedIndicator.visibility = View.INVISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
                 amendmentOrdersTrackingSelectedIndicator.visibility = View.VISIBLE
             }
         }

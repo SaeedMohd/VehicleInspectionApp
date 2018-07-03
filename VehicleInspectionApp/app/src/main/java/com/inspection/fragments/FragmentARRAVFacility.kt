@@ -96,7 +96,7 @@ class FragmentARRAVFacility : Fragment() {
             termReasonArray .add(fac.TerminationCodeName)
         }
 
-        var termReasonAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, termReasonArray)
+        var termReasonAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, termReasonArray)
         termReasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         terminationReason_textviewVal.adapter = termReasonAdapter
 
@@ -106,7 +106,7 @@ class FragmentARRAVFacility : Fragment() {
             busTypeArray .add(fac.BusTypeName)
         }
 
-        var busTypeAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, busTypeArray)
+        var busTypeAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, busTypeArray)
         busTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bustype_textviewVal.adapter = busTypeAdapter
 
@@ -117,7 +117,7 @@ class FragmentARRAVFacility : Fragment() {
             timeZoneArray .add(fac.TimezoneName)
         }
 
-        var tzdataAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, timeZoneArray)
+        var tzdataAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, timeZoneArray)
         tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timezone_textviewVal.adapter = tzdataAdapter
 
@@ -126,7 +126,7 @@ class FragmentARRAVFacility : Fragment() {
         for (fac in svcAvailabilityList) {
             svcAvailabilityArray .add(fac.SrvAvaName)
         }
-        var svcAvldataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, svcAvailabilityArray)
+        var svcAvldataAdapter = ArrayAdapter<String>(activity, R.layout.spinner_item, svcAvailabilityArray)
         svcAvldataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         availability_textviewVal.adapter = svcAvldataAdapter
 
@@ -135,7 +135,7 @@ class FragmentARRAVFacility : Fragment() {
         for (fac in facTypeList) {
             facTypeArray .add(fac.FacilityTypeName)
         }
-        var facilityTypedataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, facTypeArray)
+        var facilityTypedataAdapter = ArrayAdapter<String>(activity, R.layout.spinner_item, facTypeArray)
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         facilitytype_textviewVal.adapter = facilityTypedataAdapter
 
@@ -147,7 +147,7 @@ class FragmentARRAVFacility : Fragment() {
             contractTypeArray .add(fac.ContractTypeName)
         }
 
-        var contractTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractTypeArray )
+        var contractTypesAdapter = ArrayAdapter<String>(activity, R.layout.spinner_item, contractTypeArray )
         contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contractTypeValueSpinner.adapter = contractTypesAdapter
 

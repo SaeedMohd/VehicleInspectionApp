@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@color/white"
+        android:background="@color/light_gray"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
@@ -22,27 +22,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/titleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="8"
-                android:gravity="left"
-                android:layout_marginBottom="10dp"
-                android:paddingTop="5dp"
-                android:text="General Information"
-                android:textSize="26dp"
-                android:textColor="@color/mainColor"
-                android:textStyle="bold" />
-
-            <TableLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:stretchColumns="5dp">
+                android:background="@color/white"
+                android:elevation="5dp"
+                android:orientation="vertical">
 
-                <TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/contractStatusTextView"
@@ -55,10 +47,12 @@
 
                     <RadioGroup
                         android:id="@+id/contractStatusRadioGroup"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
+                        android:layout_gravity="right"
                         android:layout_toRightOf="@id/contractStatusTextView"
+                        android:gravity="right"
                         android:orientation="horizontal">
 
                         <RadioButton
@@ -77,15 +71,24 @@
 
 
                     </RadioGroup>
-                </TableRow>
+                </LinearLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/contract_number_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
                         android:text="Contract Number: "
                         android:textStyle="bold" />
 
@@ -93,14 +96,27 @@
                         android:id="@+id/contract_number_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
-                        android:layout_column="1"
-                        android:textSize="12sp"
+                        android:layout_alignParentRight="true"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/textview_background"
                         android:ems="6"
                         android:padding="5dp"
-                        android:text="test" />
+                        android:text="test"
+                        />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/contractTypeTextView"
@@ -114,12 +130,20 @@
                         android:id="@+id/contractTypeValueSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="3"
+                        android:layout_alignParentRight="true"
                         android:text="test" />
+                </RelativeLayout>
 
-                </TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
-                <TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/providertype_textview"
@@ -130,9 +154,10 @@
                         android:textStyle="bold" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
+                        android:layout_gravity="right"
+                        android:gravity="right"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -199,7 +224,7 @@
                             <EditText
                                 android:id="@+id/aarEditText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
@@ -212,7 +237,7 @@
                             <EditText
                                 android:id="@+id/aabEditText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
@@ -225,7 +250,7 @@
                             <EditText
                                 android:id="@+id/aagEditText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginBottom="5dp"
                                 android:layout_marginTop="5dp"
@@ -239,7 +264,7 @@
                             <EditText
                                 android:id="@+id/cogEditText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginBottom="5dp"
                                 android:layout_marginTop="5dp"
@@ -253,7 +278,7 @@
                             <EditText
                                 android:id="@+id/corEditText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
@@ -267,7 +292,7 @@
                             <EditText
                                 android:id="@+id/ersEditText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
@@ -280,7 +305,7 @@
                             <EditText
                                 android:id="@+id/mprEditText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
@@ -293,7 +318,7 @@
                             <EditText
                                 android:id="@+id/pspEditText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
@@ -305,17 +330,26 @@
                         </LinearLayout>
 
                     </LinearLayout>
-                </TableRow>
+                </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/office_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Office: "
                         android:textStyle="bold" />
 
@@ -323,14 +357,22 @@
                         android:id="@+id/office_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/office_textview"
+                        android:layout_alignParentRight="true"
                         android:text="test" />
-                </TableRow>
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
+
 
                     <TextView
                         android:id="@+id/assignedto_textview"
@@ -338,21 +380,30 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/officell"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Assigned To: "
                         android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/assignedto_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/AssignedToll"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/dba_textview"
+                        android:layout_alignParentRight="true"
                         android:text="" />
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
+
 
                     <TextView
                         android:id="@+id/dba_textview"
@@ -360,7 +411,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/AssignedToll"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="DBA: "
                         android:textStyle="bold" />
 
@@ -368,21 +419,30 @@
                         android:id="@+id/dba_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/AssignedToll"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/dba_textview"
-                        android:text="test" />
-                </TableRow>
+                        android:layout_alignParentRight="true"
 
-                <TableRow>
+
+                        android:text="test" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/entity_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Entity Name: "
                         android:textStyle="bold" />
 
@@ -390,40 +450,59 @@
                         android:id="@+id/entity_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/entity_textview"
-                        android:text="test" />
-                </TableRow>
+                        android:layout_alignParentRight="true"
 
-                <TableRow>
+                        android:text="test" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/bustype_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Business Type: "
                         android:textStyle="bold" />
+
                     <Spinner
                         android:id="@+id/bustype_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
+                        android:layout_alignParentRight="true"
                         android:text="test" />
 
-                </TableRow>
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/terminationDateTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Termination Date: "
                         android:textStyle="bold" />
 
@@ -431,23 +510,32 @@
                         android:id="@+id/terminationDateButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="10dp"
+                        android:layout_alignParentRight="true"
+
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/terminationReasonTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Termination Reason: "
                         android:textStyle="bold" />
 
@@ -455,47 +543,64 @@
                         android:id="@+id/terminationReason_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
+                        android:layout_alignParentRight="true"
                         android:text="test" />
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/terminationReasonTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Termination Comment: "
                         android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/terminationCommentEditText"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:paddingRight="5dp"
-                        android:paddingLeft="5dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_alignParentRight="true"
                         android:background="@drawable/textview_background"
+                        android:ems="20"
+                        android:inputType="textMultiLine"
                         android:lines="8"
-                        android:ems="16"
-                        android:inputType=""
-                        android:text=""
+                        android:padding="5dp"
                         android:scrollHorizontally="true"
-                        android:textSize="12dp" />
-                </TableRow>
+                        android:text=""
+                        />
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/timezone_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Time Zone: "
                         android:textStyle="bold" />
 
@@ -503,13 +608,22 @@
                         android:id="@+id/timezone_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/timezone_textview"
-                        android:text="test" />
-                </TableRow>
+                        android:layout_alignParentRight="true"
 
-                <TableRow>
+                        android:text="test" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/payment_methods_textview"
@@ -523,7 +637,7 @@
                     <com.google.android.flexbox.FlexboxLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_span="2"
+                        android:layout_alignParentRight="true"
                         app:flexWrap="wrap">
 
                         <CheckBox
@@ -540,8 +654,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:padding="5dp"
                             android:clickable="true"
+                            android:padding="5dp"
                             android:text="Cash" />
 
                         <CheckBox
@@ -558,10 +672,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            app:layout_wrapBefore="true"
                             android:clickable="true"
                             android:padding="5dp"
-                            android:text="Debit" />
+                            android:text="Debit"
+                            app:layout_wrapBefore="true" />
 
                         <CheckBox
                             android:id="@+id/discover_checkbox"
@@ -586,10 +700,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            app:layout_wrapBefore="true"
-                            android:padding="5dp"
                             android:clickable="true"
-                            android:text="Master Card" />
+                            android:padding="5dp"
+                            android:text="Master Card"
+                            app:layout_wrapBefore="true" />
 
                         <CheckBox
                             android:id="@+id/paypal_checkbox"
@@ -610,55 +724,79 @@
                     </com.google.android.flexbox.FlexboxLayout>
 
 
-                </TableRow>
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/website_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_marginTop="10dp"
                         android:text="Website URL: "
                         android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/website_textviewVal"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/website_textview"
-                        android:hint="Enter website URL"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:background="@drawable/textview_background"
-                        android:text=""
+                        android:hint="Enter website URL"
                         android:padding="5dp"
-                        android:textSize="12dp" />
-                </TableRow>
+                        android:text=""
+                        android:ems="20"
+                        />
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <CheckBox
                         android:id="@+id/wifi_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
                         android:text="Wi-Fi Available"
                         android:textStyle="bold" />
-                </TableRow>
+                </LinearLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/website_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/wifi_textview"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Tax-ID: "
                         android:textStyle="bold" />
 
@@ -666,21 +804,26 @@
                         android:id="@+id/taxno_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/wifi_textview"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/website_textview"
+                        android:layout_alignParentRight="true"
                         android:text="test" />
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/repairorder_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_marginTop="10dp"
                         android:text="Repair Order Count: "
                         android:textStyle="bold" />
 
@@ -688,17 +831,27 @@
                         android:id="@+id/repairorder_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/repairorder_textview"
+                        android:layout_alignParentRight="true"
                         android:hint="Enter repair order count"
                         android:inputType="number"
                         android:maxLength="6"
+                        android:padding="5dp"
+                        android:background="@drawable/textview_background"
                         android:text=""
-                        android:textSize="12dp" />
-                </TableRow>
+                        android:ems="20"/>
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/InspectionMonthTextView"
@@ -712,9 +865,22 @@
                         android:id="@+id/inspectionMonthsSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
+                        android:layout_alignParentRight="true"
                         android:entries="@array/inspectionMonths" />
 
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/InspectionCycleTextView"
@@ -729,19 +895,29 @@
                         android:id="@+id/inspectionCycleSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="3"
+                        android:layout_alignParentRight="true"
                         android:layout_gravity="center"
                         android:entries="@array/inspectionCycle" />
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/availability_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Service Availability:"
                         android:textStyle="bold" />
 
@@ -749,20 +925,30 @@
                         android:id="@+id/availability_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/availability_textview"
-                        android:text="test" />
-                </TableRow>
 
-                <TableRow>
+                        android:text="test" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/facilitytype_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Facility Type: "
                         android:textStyle="bold" />
 
@@ -770,20 +956,29 @@
                         android:id="@+id/facilitytype_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/facilitytype_textview"
-                        android:text="test" />
-                </TableRow>
+                        android:layout_alignParentRight="true"
 
-                <TableRow>
+                        android:text="test" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/ARDno_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="ARD Number: "
                         android:textStyle="bold" />
 
@@ -791,46 +986,67 @@
                         android:id="@+id/ARDno_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/ARDno_textview"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/textview_background"
                         android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                         android:hint="Enter ARD Number"
                         android:maxLength="12"
+                        android:padding="5dp"
                         android:text=""
-                        android:textSize="12dp" />
-                </TableRow>
+                        />
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/ARDexp_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="ARD Expiration Date: "
                         android:textStyle="bold" />
+
                     <Button
                         android:id="@+id/ARDexp_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
+                        android:layout_alignParentRight="true"
                         android:layout_gravity="left"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
-                </TableRow>
+                </RelativeLayout>
 
-                <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/currcodate_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Current Contract Date: "
                         android:textStyle="bold" />
 
@@ -838,20 +1054,29 @@
                         android:id="@+id/currcodate_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="10dp"
+                        android:layout_alignParentRight="true"
+
                         android:text="test" />
-                </TableRow>
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
 
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/initcodate_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Initial Contract Date: "
                         android:textStyle="bold" />
 
@@ -859,20 +1084,30 @@
                         android:id="@+id/initcodate_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/initcodate_textview"
-                        android:text="test" />
-                </TableRow>
 
-                <TableRow>
+                        android:text="test" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/InsuranceExpDate_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="10dp"
+
                         android:text="Insurance Expiration Date: "
                         android:textStyle="bold" />
 
@@ -880,28 +1115,37 @@
                         android:id="@+id/InsuranceExpDate_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:layout_column="1"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/initcodate_textview"
-                        android:text="test" />
-                </TableRow>
-            </TableLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/saveButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Save" />
+                        android:text="test" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:elevation="5dp"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                android:padding="30dp">
 
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
+                    android:background="@drawable/grey_background_button"
                     android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/green_background_button"
+                    android:text="Save" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

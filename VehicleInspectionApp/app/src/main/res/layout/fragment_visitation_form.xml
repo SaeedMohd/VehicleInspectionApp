@@ -302,11 +302,11 @@
                         android:padding="10dp">
 
                         <TextView
+                            android:id="@+id/facilityRepresentativeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Facility Representative"
-                            android:id="@+id/facilityRepresentativeTextView"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -356,7 +356,7 @@
                             android:id="@+id/facilityRepresentativeSignatureImageView"
                             android:layout_width="120dp"
                             android:layout_height="60dp"
-                            android:layout_toLeftOf="@id/facilityRepresentativeSignatureButton"/>
+                            android:layout_toLeftOf="@id/facilityRepresentativeSignatureButton" />
                     </RelativeLayout>
 
                     <View
@@ -424,7 +424,7 @@
                             android:id="@+id/automotiveSpecialistSignatureImageView"
                             android:layout_width="120dp"
                             android:layout_height="60dp"
-                            android:layout_toLeftOf="@id/automotiveSpecialistSignatureButton"/>
+                            android:layout_toLeftOf="@id/automotiveSpecialistSignatureButton" />
 
                     </RelativeLayout>
 
@@ -526,7 +526,7 @@
                             android:id="@+id/facilityRepresentativeDeficienciesSignatureImageView"
                             android:layout_width="120dp"
                             android:layout_height="60dp"
-                            android:layout_toLeftOf="@id/facilityRepresentativeDeficienciesSignatureButton"/>
+                            android:layout_toLeftOf="@id/facilityRepresentativeDeficienciesSignatureButton" />
 
                     </RelativeLayout>
 
@@ -845,7 +845,7 @@
                             android:id="@+id/waiversSignatureImageView"
                             android:layout_width="120dp"
                             android:layout_height="60dp"
-                            android:layout_toLeftOf="@id/waiversSignatureButton"/>
+                            android:layout_toLeftOf="@id/waiversSignatureButton" />
 
                     </RelativeLayout>
                 </LinearLayout>
@@ -863,10 +863,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="right"
-                    android:gravity="center"
                     android:layout_marginBottom="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
 
                     <Button
                         android:id="@+id/cancelButton"
@@ -900,25 +900,24 @@
         android:layout_height="match_parent"
         android:alpha="0.8"
         android:background="@color/mainColor"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/signatureDialog"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:elevation="15dp"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:background="@color/light_gray">
+        android:background="@color/light_gray"
+        android:elevation="15dp"
+        android:padding="10dp"
+        android:visibility="gone">
 
         <com.simplify.ink.InkView
             android:id="@+id/signatureInkView"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_alignParentTop="true"
-            android:background="@color/white"
-            />
+            android:background="@color/white" />
 
         <Button
             android:id="@+id/signatureConfirmButton"
@@ -926,12 +925,12 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_below="@id/signatureInkView"
-            android:layout_marginTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:layout_marginRight="20dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/green_background_button"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="Confirm"
             android:textColor="@color/white" />
 
@@ -940,13 +939,13 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_below="@id/signatureInkView"
-            android:layout_marginRight="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@id/signatureConfirmButton"
             android:background="@drawable/green_background_button"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="Cancel"
             android:textColor="@color/white" />
 
@@ -954,14 +953,14 @@
             android:id="@+id/signatureClearButton"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
             android:layout_below="@id/signatureInkView"
-            android:layout_marginRight="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/green_background_button"
-            android:layout_alignParentLeft="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="CLEAR"
             android:textColor="@color/white" />
     </RelativeLayout>

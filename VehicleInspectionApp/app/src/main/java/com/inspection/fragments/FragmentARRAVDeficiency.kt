@@ -77,7 +77,6 @@ class FragmentARRAVDeficiency : Fragment() {
             signatureDateBtn.setText("SELECT DATE")
             facilityRepresentativeDeficienciesSignatureButton.setText("ADD SIGNATURE")
             facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
-            Toast.makeText(context,"yaay",Toast.LENGTH_SHORT).show()
 
 
 

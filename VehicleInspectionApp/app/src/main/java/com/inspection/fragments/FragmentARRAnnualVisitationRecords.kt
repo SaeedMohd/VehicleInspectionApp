@@ -34,6 +34,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.XML
 import java.io.IOException
+import java.net.URLEncoder
 import java.util.*
 
 
@@ -287,7 +288,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             if (!facilityNameButton.text.contains("Select") && facilityNameButton.text.length > 1) {
                 with(parametersString) {
-                    append(("dba=" + facilityNameButton.text))
+                    append(("dba=" + URLEncoder.encode(facilityNameButton.text.toString(), "UTF-8")))
                     append("&")
                 }
             } else {
