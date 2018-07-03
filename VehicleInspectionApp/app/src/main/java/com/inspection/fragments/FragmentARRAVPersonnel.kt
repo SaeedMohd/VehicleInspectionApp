@@ -1235,45 +1235,53 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
-                var tableRow = TableRow(context)
+                var forCompr=""
+                val tableRow = TableRow(context)
 
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView1 = TextView(context)
+                textView1.layoutParams = rowLayoutParam
+                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
                     if (get(it).CertificationTypeId.equals(fac.PersonnelCertID))
 
-                        textView.text =fac.PersonnelCertName
+                        textView1.text =fac.PersonnelCertName
+                    forCompr=fac.PersonnelCertName
                 }
-                tableRow.addView(textView)
+                tableRow.addView(textView1)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView2 = TextView(context)
+                textView2.layoutParams = rowLayoutParam1
+                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 try {
-                    textView.text = get(it).CertificationDate.apiToAppFormat()
+                    textView2.text = get(it).CertificationDate.apiToAppFormat()
                 } catch (e: Exception) {
                 }
-                tableRow.addView(textView)
+                tableRow.addView(textView2)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+               val textView3 = TextView(context)
+                textView3.layoutParams = rowLayoutParam2
+                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
                 try {
-                    textView.text = get(it).ExpirationDate.apiToAppFormat()
+                    textView3.text = get(it).ExpirationDate.apiToAppFormat()
                 } catch (e: Exception) {
                 }
-                tableRow.addView(textView)
+                tableRow.addView(textView3)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = ""
-                tableRow.addView(textView)
+               val textView4 = TextView(context)
+                textView4.layoutParams = rowLayoutParam3
+                textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView4.text = ""
+                tableRow.addView(textView4)
+
+                if (textView1.text.toString().isNullOrBlank()&&textView2.text.toString().isNullOrBlank()&&textView3.text.toString().isNullOrBlank())
+                {
+
+                }else{
+                    certificationsTable.addView(tableRow) }
 
 
-                certificationsTable.addView(tableRow)
+
 
             }
         }
