@@ -360,7 +360,7 @@ class FragmentARRAVLocation : Fragment() {
    //     rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-       // rowLayoutParam2.weight = 1F
+        rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
        rowLayoutParam2.width = TableLayout.LayoutParams.WRAP_CONTENT
 
@@ -372,20 +372,20 @@ class FragmentARRAVLocation : Fragment() {
 
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
                 //getTypeName
                 textView.text = getPhoneTypeName(get(it).PhoneTypeID)
                 tableRow.addView(textView)
 
                 val textView2 = TextView(context)
                 textView2.layoutParams = rowLayoutParam1
-                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView2.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
                 textView2.text = get(it).PhoneNumber
                 tableRow.addView(textView2)
 
                 val textView3 = Button(context)
                 textView3.layoutParams = rowLayoutParam2
-                textView3.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+                textView3.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
                 textView3.text = "Edit"
                 tableRow.addView(textView3)
 
@@ -753,24 +753,24 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam8 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-        rowLayoutParam7.column = 8
+        rowLayoutParam8.weight = 1F
+        rowLayoutParam8.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam8.column = 8
 
         val rowLayoutParam9 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-        rowLayoutParam7.column = 9
+        rowLayoutParam9.weight = 1F
+        rowLayoutParam9.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam9.column = 9
 
         val rowLayoutParam10 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-        rowLayoutParam7.column = 10
+        rowLayoutParam10.weight = 1F
+        rowLayoutParam10.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam10.column = 10
 
         val rowLayoutParam11 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-        rowLayoutParam7.column = 11
+        rowLayoutParam11.weight = 1F
+        rowLayoutParam11.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam11.column = 11
         var dateTobeFormated = ""
 
         FacilityDataModel.getInstance().tblAddress.apply {
