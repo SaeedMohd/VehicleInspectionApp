@@ -150,7 +150,7 @@ class FragmentARRAVFacility : Fragment() {
             contractTypeArray .add(fac.ContractTypeName)
         }
 
-        var contractTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractTypeArray )
+        var contractTypesAdapter = ArrayAdapter<String>(activity, R.layout.spinner_item, contractTypeArray )
         contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contractTypeValueSpinner.adapter = contractTypesAdapter
 
@@ -202,9 +202,6 @@ class FragmentARRAVFacility : Fragment() {
         setFieldsValues()
         ImplementBusinessRules()
 
-        saveButton.setOnClickListener({
-            submitFacilityGeneralInfo()
-        })
 
     }
 
@@ -297,20 +294,21 @@ class FragmentARRAVFacility : Fragment() {
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormat()
                 InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormat()
 
-//                inspectionMonthsTextViewVal.text=inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth)-1]
-//
-//                if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
-//
-//                    inspectionCycleTextViewVal.text="1"
-//                }
-//                if (inspectionMonthsTextViewVal.text==inspectionMonths[1]||inspectionMonthsTextViewVal.text==inspectionMonths[4]||inspectionMonthsTextViewVal.text==inspectionMonths[7]||inspectionMonthsTextViewVal.text==inspectionMonths[10]){
-//
-//                    inspectionCycleTextViewVal.text="2"
-//                }
-//                if (inspectionMonthsTextViewVal.text==inspectionMonths[2]||inspectionMonthsTextViewVal.text==inspectionMonths[5]||inspectionMonthsTextViewVal.text==inspectionMonths[8]||inspectionMonthsTextViewVal.text==inspectionMonths[11]){
-//
-//                    inspectionCycleTextViewVal.text="3"
-//                }
+
+                inspectionMonthsTextViewVal.text=inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth)-1]
+
+                if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
+
+                    inspectionCycleTextViewVal.text="1"
+                }
+                if (inspectionMonthsTextViewVal.text==inspectionMonths[1]||inspectionMonthsTextViewVal.text==inspectionMonths[4]||inspectionMonthsTextViewVal.text==inspectionMonths[7]||inspectionMonthsTextViewVal.text==inspectionMonths[10]){
+
+                    inspectionCycleTextViewVal.text="2"
+                }
+                if (inspectionMonthsTextViewVal.text==inspectionMonths[2]||inspectionMonthsTextViewVal.text==inspectionMonths[5]||inspectionMonthsTextViewVal.text==inspectionMonths[8]||inspectionMonthsTextViewVal.text==inspectionMonths[11]){
+
+                    inspectionCycleTextViewVal.text="3"
+                }
 
 
                 for(paymentMethod in tblPaymentMethods){
@@ -368,8 +366,8 @@ class FragmentARRAVFacility : Fragment() {
         terminationDateButton.isClickable = false
         terminationReason_textviewVal.isEnabled=false
         terminationCommentEditText.isEnabled=false
-        inspectionMonthsSpinner.isEnabled = false
-        inspectionCycleSpinner.isEnabled=false
+        inspectionMonthsTextViewVal.isEnabled = false
+        inspectionCycleTextViewVal.isEnabled=false
         ARDno_textviewVal.isEnabled=false
         currcodate_textviewVal.isEnabled=false
         initcodate_textviewVal.isEnabled=false
@@ -386,7 +384,7 @@ class FragmentARRAVFacility : Fragment() {
         availability_textview.setError(null)
         facilitytype_textview.setError(null)
         ARDexp_textviewVal.setError(null)
-//        shopManagmentSystem_textviewVal.setError(null)
+        shopManagmentSystem_textviewVal.setError(null)
         payment_methods_textview.setError(null)
 
 
@@ -407,10 +405,11 @@ class FragmentARRAVFacility : Fragment() {
             repairorder_textviewVal.setError("reqiured field")
             isInputsValid = false
         }
-//        if (shopManagmentSystem_textviewVal.text.toString().isNullOrEmpty()){
-//            shopManagmentSystem_textviewVal.setError("reqiured field")
-//            isInputsValid = false
-//        }
+
+        if (shopManagmentSystem_textviewVal.text.toString().isNullOrEmpty()){
+            shopManagmentSystem_textviewVal.setError("reqiured field")
+            isInputsValid = false
+        }
         if (ARDexp_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid = false
             ARDexp_textviewVal.setError("Required Field")
@@ -474,7 +473,7 @@ class FragmentARRAVFacility : Fragment() {
         val taxIDNo = if (taxno_textviewVal.text.isNullOrEmpty())  "" else taxno_textviewVal.text
         val facRepairCnt = if (repairorder_textviewVal.text.isNullOrEmpty())  "" else repairorder_textviewVal.text
         val inspectionMonth = (FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth).toString()
-        val inspectionCycle = inspectionCycleSpinner.selectedItem.toString()
+        val inspectionCycle = inspectionCycleTextViewVal.text.toString()
         val timeZoneID = (timezone_textviewVal.selectedItemPosition+1).toString()
         val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
         val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
