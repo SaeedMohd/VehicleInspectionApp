@@ -1,12 +1,10 @@
 package com.inspection.fragments
 
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +19,10 @@ import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityLanguageData
 import com.inspection.adapter.LanguageListAdapter
 import com.inspection.model.AAALocations
-import com.inspection.model.CsiSpecialist
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
-import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,16 +41,16 @@ class FragmentARRAVLocation : Fragment() {
     private var facLocationsArray = ArrayList<String>()
 
 
-    var autoBodyServicesListView: ExpandableHeightGridView? = null
+    var languagesGridView: ExpandableHeightGridView? = null
     internal var arrayAdapter: LanguageListAdapter? = null
-    var vehicleServicesListItems=ArrayList<TypeTablesModel.languageType>()
+    var langListItems=ArrayList<TypeTablesModel.languageType>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         var view = inflater!!.inflate(R.layout.fragment_aarav_location, container, false)
 
 
-        autoBodyServicesListView = view.findViewById(R.id.autoBodyServicesListView)
+        languagesGridView = view.findViewById(R.id.languagesGridView)
 
         // Inflate the layout for this fragment
         return view
@@ -186,14 +182,14 @@ class FragmentARRAVLocation : Fragment() {
 
         for (model in TypeTablesModel.getInstance().LanguageType) {
 
-            vehicleServicesListItems.add(model)
+            langListItems.add(model)
 
         }
 
-        arrayAdapter = LanguageListAdapter(context!!, R.layout.lang_checkbox_item, vehicleServicesListItems)
+        arrayAdapter = LanguageListAdapter(context!!, R.layout.lang_checkbox_item, langListItems)
 
-        autoBodyServicesListView?.adapter = arrayAdapter
-        autoBodyServicesListView?.isExpanded=true
+        languagesGridView?.adapter = arrayAdapter
+        languagesGridView?.isExpanded=true
 
     }
 

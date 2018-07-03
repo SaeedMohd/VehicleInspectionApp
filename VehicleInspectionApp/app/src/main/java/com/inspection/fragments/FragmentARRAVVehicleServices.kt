@@ -1,32 +1,18 @@
 package com.inspection.fragments
 
-import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.GridView
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
 import com.inspection.R
-import com.inspection.Utils.Constants
 import com.inspection.Utils.ExpandableHeightGridView
-import com.inspection.Utils.toast
 import com.inspection.adapter.DatesListAdapter
 import com.inspection.adapter.VehicleServicesArrayAdapter
-import com.inspection.interfaces.VehicleServicesListItem
-import com.inspection.model.AAAVehicleServicesModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VehicleServiceItem
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
 import java.util.ArrayList
 
 //import kotlinx.android.synthetic.main.temp.view.*
@@ -71,7 +57,7 @@ class FragmentARRAVVehicleServices : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater!!.inflate(R.layout.fragment_array_vehicle_services, container, false)
         vehicleServicesListView = view.findViewById(R.id.vehicleServicesListView)
-        autoBodyServicesListView = view.findViewById(R.id.autoBodyServicesListView)
+        autoBodyServicesListView = view.findViewById(R.id.languagesGridView)
         MarineServicesListView = view.findViewById(R.id.MarineServicesListView)
         RecreationalServicesListView = view.findViewById(R.id.RecreationalServicesListView)
 

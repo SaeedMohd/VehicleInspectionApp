@@ -556,7 +556,7 @@
                 <TableRow>
 
                     <com.inspection.Utils.ExpandableHeightGridView
-                        android:id="@+id/autoBodyServicesListView"
+                        android:id="@+id/languagesGridView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"

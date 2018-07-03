@@ -44,7 +44,6 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         if (namesList.get(position).active=="true"){
 
 
-            checkBoxItem.isChecked=true
 
         }
 
