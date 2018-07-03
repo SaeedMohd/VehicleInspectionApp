@@ -1,12 +1,10 @@
 package com.inspection.fragments
 
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,13 +16,13 @@ import com.android.volley.toolbox.Volley
 
 import com.inspection.R
 import com.inspection.Utils.*
+import com.inspection.Utils.Constants.UpdateFacilityLanguageData
+import com.inspection.adapter.LanguageListAdapter
 import com.inspection.model.AAALocations
-import com.inspection.model.CsiSpecialist
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
-import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,9 +41,19 @@ class FragmentARRAVLocation : Fragment() {
     private var facLocationsArray = ArrayList<String>()
 
 
+    var languagesGridView: ExpandableHeightGridView? = null
+    internal var arrayAdapter: LanguageListAdapter? = null
+    var langListItems=ArrayList<TypeTablesModel.languageType>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        var view = inflater!!.inflate(R.layout.fragment_aarav_location, container, false)
+
+
+        languagesGridView = view.findViewById(R.id.languagesGridView)
+
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_aarav_location, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +65,7 @@ class FragmentARRAVLocation : Fragment() {
         fillOpenHoursTableView()
         fillClosedHoursTableView()
 
+        setServices()
 
 
         facilityIsOpenEffDateBtn.setOnClickListener {
@@ -117,6 +126,8 @@ class FragmentARRAVLocation : Fragment() {
 
         setLocations()
 
+
+
         locationSubmitButton.setOnClickListener({
             // missing validation for states when the lookup is ready
             if (newLocAddr1Text.text.isNullOrEmpty()) {
@@ -156,6 +167,30 @@ class FragmentARRAVLocation : Fragment() {
                 submitFacilityEmail()
             }
         })
+
+        saveButton.setOnClickListener(View.OnClickListener {
+
+
+            submitLanguages()
+
+
+        })
+    }
+
+    private fun setServices() {
+
+
+        for (model in TypeTablesModel.getInstance().LanguageType) {
+
+            langListItems.add(model)
+
+        }
+
+        arrayAdapter = LanguageListAdapter(context!!, R.layout.lang_checkbox_item, langListItems)
+
+        languagesGridView?.adapter = arrayAdapter
+        languagesGridView?.isExpanded=true
+
     }
 
     private var locationTypeList = ArrayList<TypeTablesModel.locationType>()
@@ -853,6 +888,23 @@ class FragmentARRAVLocation : Fragment() {
             contactInfoLoadingView.visibility = View.GONE
             context!!.toast("Failed to add new email")
             Log.v("error while submitting", it.message)
+        }))
+    }
+
+
+    fun submitLanguages(){
+
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "&langTypeId=${LanguageListAdapter.langArray.toString().replace("[","").replace("]","")}&insertBy=SumA&insertDate=2014-03-17T14:06:18.464",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        Log.v("LANG_SUBMIT_RESPONSE",response.toString())
+
+
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading personnal record")
+
         }))
     }
 

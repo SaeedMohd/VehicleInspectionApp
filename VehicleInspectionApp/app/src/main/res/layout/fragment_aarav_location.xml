@@ -551,129 +551,21 @@
                         android:layout_marginTop="5dp"
                         android:text="Language Spoken:"
                         android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/chiCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="5dp"
-                        android:text="Chinese"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/engCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_marginTop="5dp"
-                        android:text="English"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/farCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_marginTop="5dp"
-                        android:text="Farsi"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/freCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="4"
-                        android:layout_marginTop="5dp"
-                        android:text="French"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/hinCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="5"
-                        android:layout_marginTop="5dp"
-                        android:text="Hindi"
-                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
 
-                    <CheckBox
-                        android:id="@+id/signCheck"
+                    <com.inspection.Utils.ExpandableHeightGridView
+                        android:id="@+id/languagesGridView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_marginTop="5dp"
-                        android:text="Sign Language"
-                        android:textStyle="bold" />
+                        android:gravity="center"
+                        android:horizontalSpacing="2dp"
+                        android:isScrollContainer="false"
+                        android:numColumns="4"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="20dp" />
 
-                    <CheckBox
-                        android:id="@+id/spaCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_marginTop="5dp"
-                        android:text="Spanish"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/urdCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="4"
-                        android:layout_marginTop="5dp"
-                        android:text="Urdu"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/VietCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="5"
-                        android:layout_marginTop="5dp"
-                        android:text="Vietnamese"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/japCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="6"
-                        android:layout_marginTop="5dp"
-                        android:text="Japanese"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/KoreanCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="7"
-                        android:layout_marginTop="5dp"
-                        android:text="Korean"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <TableRow>
-
-                    <CheckBox
-                        android:id="@+id/japCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_marginTop="5dp"
-                        android:text="Japanese"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/KoreanCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_marginTop="5dp"
-                        android:text="Korean"
-                        android:textStyle="bold" />
                 </TableRow>
             </TableLayout>
 

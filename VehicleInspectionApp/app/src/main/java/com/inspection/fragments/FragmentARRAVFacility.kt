@@ -20,12 +20,14 @@ import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.R.id.*
 import com.inspection.Utils.*
+import com.inspection.Utils.Constants.UpdatePaymentMethodsData
 import com.inspection.model.CsiSpecialist
 import com.inspection.model.CsiSpecialistSingletonModel
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import kotlinx.android.synthetic.main.fragment_arrav_facility.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -73,6 +75,7 @@ class FragmentARRAVFacility : Fragment() {
 
     private var termReasonList = ArrayList<TypeTablesModel.terminationCodeType>()
     private var termReasonArray = ArrayList<String>()
+    private var inspectionMonths= arrayOf("jan","feb","march","april","may","june","july","aug","sep","oct","nov","dec")
 
 //    private var assignedToList = ArrayList<CsiSpecialist>()
 //    private var assignedToArray = ArrayList<String>()
@@ -147,7 +150,7 @@ class FragmentARRAVFacility : Fragment() {
             contractTypeArray .add(fac.ContractTypeName)
         }
 
-        var contractTypesAdapter = ArrayAdapter<String>(activity, R.layout.spinner_item, contractTypeArray )
+        var contractTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractTypeArray )
         contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contractTypeValueSpinner.adapter = contractTypesAdapter
 
@@ -294,7 +297,21 @@ class FragmentARRAVFacility : Fragment() {
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormat()
                 InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormat()
 
-                inspectionMonthsSpinner.setSelection(tblFacilities[0].FacilityAnnualInspectionMonth-1)
+                inspectionMonthsTextViewVal.text=inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth)-1]
+
+                if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
+
+                    inspectionCycleTextViewVal.text="1"
+                }
+                if (inspectionMonthsTextViewVal.text==inspectionMonths[1]||inspectionMonthsTextViewVal.text==inspectionMonths[4]||inspectionMonthsTextViewVal.text==inspectionMonths[7]||inspectionMonthsTextViewVal.text==inspectionMonths[10]){
+
+                    inspectionCycleTextViewVal.text="2"
+                }
+                if (inspectionMonthsTextViewVal.text==inspectionMonths[2]||inspectionMonthsTextViewVal.text==inspectionMonths[5]||inspectionMonthsTextViewVal.text==inspectionMonths[8]||inspectionMonthsTextViewVal.text==inspectionMonths[11]){
+
+                    inspectionCycleTextViewVal.text="3"
+                }
+
 
                 for(paymentMethod in tblPaymentMethods){
 
@@ -313,6 +330,9 @@ class FragmentARRAVFacility : Fragment() {
 
         saveButton.setOnClickListener {
             if (validateInputs()){
+                submitFacilityGeneralInfo()
+                submitPaymentMethods()
+
 
             }
         }
@@ -355,24 +375,76 @@ class FragmentARRAVFacility : Fragment() {
         initcodate_textviewVal.isEnabled=false
         InsuranceExpDate_textviewVal.isEnabled=false
 
-//
+//                inspectionMonthsTextViewVal.text=inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth)]
+
     }
     fun validateInputs() : Boolean{
 
-        AnnualVisitationSingleton.getInstance().apply {
-            if (ardNumber == -1){
-                ARDno_textviewVal.error = ""
-            }
+        var isInputsValid = true
+        timezone_textview.setError(null)
+        repairorder_textviewVal.setError(null)
+        availability_textview.setError(null)
+        facilitytype_textview.setError(null)
+        ARDexp_textviewVal.setError(null)
+        shopManagmentSystem_textviewVal.setError(null)
+        payment_methods_textview.setError(null)
 
-            if (ardExpirationDate == -1L) {
-                ARDexp_textviewVal.error = ""
-            }
 
-            if (insuranceExpirationDate == -1L) {
-//                InsuranceExpDate_textviewVal.error = ""
-            }
+
+        if (timezone_textviewVal.selectedItem.toString().isNullOrEmpty()){
+            timezone_textview.setError("reqiured field")
+            isInputsValid = false
         }
-        return true
+        if (facilitytype_textviewVal.selectedItem.toString().isNullOrEmpty()){
+            facilitytype_textview.setError("reqiured field")
+            isInputsValid = false
+        }
+        if (availability_textviewVal.selectedItem.toString().isNullOrEmpty()){
+            availability_textview.setError("reqiured field")
+            isInputsValid = false
+        }
+        if (repairorder_textviewVal.text.toString().isNullOrEmpty()){
+            repairorder_textviewVal.setError("reqiured field")
+            isInputsValid = false
+        }
+        if (shopManagmentSystem_textviewVal.text.toString().isNullOrEmpty()){
+            shopManagmentSystem_textviewVal.setError("reqiured field")
+            isInputsValid = false
+        }
+        if (ARDexp_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            isInputsValid = false
+            ARDexp_textviewVal.setError("Required Field")
+        }
+
+        if (americanexpress_checkbox.isChecked==false &&
+                cash_checkbox.isChecked==false &&
+                check_checkbox.isChecked==false &&
+                debit_checkbox.isChecked==false &&
+                discover_checkbox.isChecked==false &&
+                goodyear_checkbox.isChecked==false &&
+                mastercard_checkbox.isChecked==false &&
+                paypal_checkbox.isChecked==false &&
+                visa_checkbox.isChecked==false){
+
+            payment_methods_textview.setError("Required Field")
+            isInputsValid = false
+
+        }
+
+//        AnnualVisitationSingleton.getInstance().apply {
+//            if (ardNumber == -1){
+//                ARDno_textviewVal.error = ""
+//            }
+//
+//            if (ardExpirationDate == -1L) {
+//                ARDexp_textviewVal.error = ""
+//            }
+//
+//            if (insuranceExpirationDate == -1L) {
+////                InsuranceExpDate_textviewVal.error = ""
+//            }
+//        }
+        return isInputsValid
     }
 
 
@@ -401,8 +473,8 @@ class FragmentARRAVFacility : Fragment() {
         val officeID = if (office_textviewVal.text.isNullOrEmpty())  "" else office_textviewVal.text // get The ID
         val taxIDNo = if (taxno_textviewVal.text.isNullOrEmpty())  "" else taxno_textviewVal.text
         val facRepairCnt = if (repairorder_textviewVal.text.isNullOrEmpty())  "" else repairorder_textviewVal.text
-        val inspectionMonth = (inspectionMonthsSpinner.selectedItemPosition + 1).toString()
-        val inspectionCycle = inspectionCycleSpinner.selectedItem.toString()
+        val inspectionMonth = (FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth).toString()
+        val inspectionCycle = inspectionCycleSpinner.text.toString()
         val timeZoneID = (timezone_textviewVal.selectedItemPosition+1).toString()
         val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
         val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
@@ -442,6 +514,62 @@ class FragmentARRAVFacility : Fragment() {
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading")
         }))
+    }
+    fun submitPaymentMethods(){
+
+
+        var insertDate = Date().toAppFormat()
+
+                //  BuildProgramsList()
+
+      val visa : String=   if (visa_checkbox.isChecked == true) "1" else ""
+      val mastercard: String=   if (mastercard_checkbox.isChecked == true) "2" else ""
+      val americanexpress: String=   if (americanexpress_checkbox.isChecked == true) "3" else ""
+      val discover: String=   if (discover_checkbox.isChecked == true) "4" else ""
+      val paypal: String=   if (paypal_checkbox.isChecked == true) "5" else ""
+      val debit: String=   if (debit_checkbox.isChecked == true) "6" else ""
+      val cash: String=   if (cash_checkbox.isChecked == true) "7" else ""
+      val check: String=   if (check_checkbox.isChecked == true) "8" else ""
+      val goodyear: String=   if (goodyear_checkbox.isChecked == true) "9" else ""
+
+         var paymentMethods= arrayOf(visa,mastercard,americanexpress,discover,paypal,debit,cash,check,goodyear)
+        var paymentMethodArray = ArrayList<String>()
+
+
+        var payments : String? =""
+
+        for (pm in paymentMethods){
+
+            if (!pm.equals("")){
+
+
+                paymentMethodArray.add(pm)
+
+
+
+
+            }
+
+            payments = paymentMethodArray.toString().replace("[","").replace("]","").replace(" ","")
+
+
+        }
+
+
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=$insertDate",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        Log.v("paymentSUBMIT_RESPONSE",response.toString())
+                        Log.v("paymentsTRING",payments.toString())
+
+
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading personnal record")
+
+        }))
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
