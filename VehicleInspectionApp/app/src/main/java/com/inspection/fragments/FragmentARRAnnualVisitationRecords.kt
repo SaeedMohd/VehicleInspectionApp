@@ -1,10 +1,12 @@
 package com.inspection.fragments
 
+
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,15 +24,11 @@ import com.google.gson.reflect.TypeToken
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
-import com.inspection.model.SUBMITIONS.ScopeOfService
 import com.inspection.singletons.AnnualVisitationSingleton
-
-
 import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
-import org.json.JSONException
 import org.json.JSONObject
 import org.json.XML
 import java.io.IOException
@@ -59,8 +57,12 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     var itemSelected = false
     var facilityNameInputField: EditText? = null
     var firstLoading = true
+    var visitationLoaded = false
     var isVisitationPlanning = false
     var requiredSpecialistName = ""
+    var visitationsModel : VisitationsModel=VisitationsModel()
+    var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,6 +128,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 reloadVisitationsList()
+                reloadVisitationsActions()
             }
         })
 
@@ -140,6 +143,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 reloadVisitationsList()
+                reloadVisitationsActions()
             }
 
         })
@@ -160,6 +164,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     visitationSpecialistName.setText(searchDialog.selectedString)
                 }
                 reloadVisitationsList()
+                reloadVisitationsActions()
             }
         })
 
@@ -185,6 +190,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                                     facilityNameButton.setText(searchDialog.selectedString)
                                 }
                                 reloadVisitationsList()
+                                reloadVisitationsActions()
                             }
                         })
                     }, Response.ErrorListener {
@@ -198,26 +204,40 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
         annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
+            reloadVisitationsActions()
         }
 
         quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
+            reloadVisitationsActions()
         }
 
         adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
+            reloadVisitationsActions()
         }
+
 
         deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
+            reloadVisitationsActions()
         }
+
+
 
         pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
+            reloadVisitationsActions()
         }
 
+
+
         completedCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+
+
             reloadVisitationsList()
+            reloadVisitationsActions()
+
         }
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
@@ -226,6 +246,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     activity!!.runOnUiThread(Runnable {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                         reloadVisitationsList()
+                        reloadVisitationsActions()
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading",  "error while loading specialists")
@@ -242,11 +263,104 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             reloadVisitationsList()
+            reloadVisitationsActions()
+
         }
 
     }
 
+
+
+    fun reloadVisitationsActions(){
+
+
+        val handler1 = Handler()
+        handler1.postDelayed({
+
+
+            if (visitationLoaded) {
+
+           //     Toast.makeText(context,"visitation loaded",Toast.LENGTH_SHORT).show()
+                recordsProgressView.visibility = View.INVISIBLE
+
+                visitationfacilityListView.visibility = View.VISIBLE
+                visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                visitationfacilityListView.adapter = visitationPlanningAdapter
+
+                visitationPlanningAdapter.notifyDataSetChanged()
+            }else {
+
+                val handler1 = Handler()
+                handler1.postDelayed({
+
+
+
+                    if (visitationLoaded) {
+
+                 //       Toast.makeText(context, "visitation loaded", Toast.LENGTH_SHORT).show()
+                        recordsProgressView.visibility = View.INVISIBLE
+
+                        visitationfacilityListView.visibility = View.VISIBLE
+                        visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                        visitationfacilityListView.adapter = visitationPlanningAdapter
+
+                        visitationPlanningAdapter.notifyDataSetChanged()
+                    } else {
+
+                        val handler1 = Handler()
+                        handler1.postDelayed({
+
+                            if (visitationLoaded) {
+
+                       //         Toast.makeText(context, "visitation loaded", Toast.LENGTH_SHORT).show()
+                                recordsProgressView.visibility = View.INVISIBLE
+
+                                visitationfacilityListView.visibility = View.VISIBLE
+                                visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                visitationfacilityListView.adapter = visitationPlanningAdapter
+
+                                visitationPlanningAdapter.notifyDataSetChanged()
+                            } else {
+
+                                val handler1 = Handler()
+                                handler1.postDelayed({
+
+                                    if (visitationLoaded) {
+
+                              //          Toast.makeText(context, "visitation loaded", Toast.LENGTH_SHORT).show()
+                                        recordsProgressView.visibility = View.INVISIBLE
+
+                                        visitationfacilityListView.visibility = View.VISIBLE
+                                        visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                        visitationfacilityListView.adapter = visitationPlanningAdapter
+
+                                        visitationPlanningAdapter.notifyDataSetChanged()
+                                    } else {
+
+                                    }
+
+
+                                }, 6000)
+
+                            }
+
+
+                        }, 6000)
+
+                    }
+
+
+                }, 6000)
+            }
+
+        }, 6000)
+
+
+    }
     fun reloadVisitationsList() {
+
+        visitationLoaded=false
+
 
         var parametersString = StringBuilder()
         if (true) {
@@ -371,25 +485,85 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 }
             }
             recordsProgressView.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            recordsProgressView.visibility = View.INVISIBLE
 
-                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+//
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
+//                    Response.Listener { response ->
+//                        activity!!.runOnUiThread(Runnable {
+//                            recordsProgressView.visibility = View.INVISIBLE
+//
+//                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+//                            var jsonObj = obj.getJSONObject("responseXml")
+//
+//
+//                            var visitationsModel = parseVisitationsData(jsonObj)
+//
+//                            visitationfacilityListView.visibility = View.VISIBLE
+//                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+//                            visitationfacilityListView.adapter = visitationPlanningAdapter
+//                        })
+//                    }, Response.ErrorListener {
+//                context!!.toast("Error while loading visitations: " + it.message)
+//                Log.v("error while loading", "error while loading visitation records")
+//                recordsProgressView.visibility = View.INVISIBLE
+//
+//            }))
+
+
+
+
+
+            var client = OkHttpClient()
+
+            var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString).build()
+
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call?, e: IOException?) {
+                    Log.v("failure http", "failed with exception : " + e!!.message)
+                    activity!!.runOnUiThread(Runnable {
+                        activity!!.toast("Error while loading large data")
+                                                   recordsProgressView.visibility = View.INVISIBLE
+
+
+
+                    })
+                }
+
+                override fun onResponse(call: Call?, response: okhttp3.Response?) {
+
+                    var responseString = response!!.body()!!.string()
+                  //  activity!!.toast("success!!!")
+              //     recordsProgressView.visibility = View.INVISIBLE
+
+
+                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                             var jsonObj = obj.getJSONObject("responseXml")
 
 
-                            var visitationsModel = parseVisitationsData(jsonObj)
+                             visitationsModel = parseVisitationsData(jsonObj)
 
-                            visitationfacilityListView.visibility = View.VISIBLE
-                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                            visitationfacilityListView.adapter = visitationPlanningAdapter
-                        })
-                    }, Response.ErrorListener {
-                context!!.toast("Error while loading visitations: " + it.message)
-                Log.v("error while loading", "error while loading visitation records")
-            }))
+                            visitationLoaded=true
+
+                    Log.v("qqqmain_http3", "response shown!!!!")
+
+
+                    //    visitationfacilityListView.visibility = View.VISIBLE
+               //     visitationfacilityListView.adapter = visitationPlanningAdapter
+          //          visitationPlanningAdapter.notifyDataSetChanged()
+
+                    //     visitationfacilityListView.visibility = View.VISIBLE
+                        //    var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                     //       visitationfacilityListView.adapter = visitationPlanningAdapter
+
+
+                }
+
+
+            })
+
+
+
         } else {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                     Response.Listener { response ->
