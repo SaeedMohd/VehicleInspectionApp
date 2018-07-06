@@ -714,6 +714,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 }
 
                 FacilityDataModel.getInstance().annualVisitationId = visitationList[position].annualvisitationid
+                // Saeed Original Data
+                FacilityDataModelOrg.getInstance().annualVisitationId = FacilityDataModel.getInstance().annualVisitationId
              //   getCopiedData()
                 getFullFacilityDataFromAAA(visitationList[position].facno)
 
@@ -1065,67 +1067,87 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
         FacilityDataModel.getInstance().clear()
+        FacilityDataModelOrg.getInstance().clear()
         if (jsonObj.has("tblFacilities")) {
             if (jsonObj.get("tblFacilities").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilities = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilities>>(jsonObj.get("tblFacilities").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilities>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilities = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilities>>(jsonObj.get("tblFacilities").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilities>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilities.add(Gson().fromJson<FacilityDataModel.TblFacilities>(jsonObj.get("tblFacilities").toString(), FacilityDataModel.TblFacilities::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilities.add(Gson().fromJson<FacilityDataModelOrg.TblFacilities>(jsonObj.get("tblFacilities").toString(), FacilityDataModelOrg.TblFacilities::class.java))
             }
         }
+
+
 
         if (jsonObj.has("tblBusinessType")) {
             if (jsonObj.get("tblBusinessType").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblBusinessType = Gson().fromJson<ArrayList<FacilityDataModel.TblBusinessType>>(jsonObj.get("tblBusinessType").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblBusinessType>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBusinessType = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblBusinessType>>(jsonObj.get("tblBusinessType").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblBusinessType>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblBusinessType.add(Gson().fromJson<FacilityDataModel.TblBusinessType>(jsonObj.get("tblBusinessType").toString(), FacilityDataModel.TblBusinessType::class.java))
+                FacilityDataModelOrg.getInstance().tblBusinessType.add(Gson().fromJson<FacilityDataModelOrg.TblBusinessType>(jsonObj.get("tblBusinessType").toString(), FacilityDataModelOrg.TblBusinessType::class.java))
             }
         }
+
 
         if (jsonObj.has("tblContractType")) {
             if (jsonObj.get("tblContractType").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblContractType = Gson().fromJson<ArrayList<FacilityDataModel.TblContractType>>(jsonObj.get("tblContractType").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblContractType>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblContractType = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblContractType>>(jsonObj.get("tblContractType").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblContractType>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblContractType.add(Gson().fromJson<FacilityDataModel.TblContractType>(jsonObj.get("tblContractType").toString(), FacilityDataModel.TblContractType::class.java))
+                FacilityDataModelOrg.getInstance().tblContractType.add(Gson().fromJson<FacilityDataModelOrg.TblContractType>(jsonObj.get("tblContractType").toString(), FacilityDataModelOrg.TblContractType::class.java))
             }
         }
 
         if (jsonObj.has("tblFacilityServiceProvider")) {
             if (jsonObj.get("tblFacilityServiceProvider").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilityServiceProvider = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityServiceProvider>>(jsonObj.get("tblFacilityServiceProvider").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityServiceProvider>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityServiceProvider = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilityServiceProvider>>(jsonObj.get("tblFacilityServiceProvider").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilityServiceProvider>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilityServiceProvider.add(Gson().fromJson<FacilityDataModel.TblFacilityServiceProvider>(jsonObj.get("tblFacilityServiceProvider").toString(), FacilityDataModel.TblFacilityServiceProvider::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityServiceProvider.add(Gson().fromJson<FacilityDataModelOrg.TblFacilityServiceProvider>(jsonObj.get("tblFacilityServiceProvider").toString(), FacilityDataModelOrg.TblFacilityServiceProvider::class.java))
             }
         }
 
         if (jsonObj.has("tblTerminationCodeType")) {
             if (jsonObj.get("tblTerminationCodeType").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblTerminationCodeType = Gson().fromJson<ArrayList<FacilityDataModel.TblTerminationCodeType>>(jsonObj.get("tblTerminationCodeType").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblTerminationCodeType>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblTerminationCodeType = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblTerminationCodeType>>(jsonObj.get("tblTerminationCodeType").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblTerminationCodeType>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblTerminationCodeType.add(Gson().fromJson<FacilityDataModel.TblTerminationCodeType>(jsonObj.get("tblTerminationCodeType").toString(), FacilityDataModel.TblTerminationCodeType::class.java))
+                FacilityDataModelOrg.getInstance().tblTerminationCodeType.add(Gson().fromJson<FacilityDataModelOrg.TblTerminationCodeType>(jsonObj.get("tblTerminationCodeType").toString(), FacilityDataModelOrg.TblTerminationCodeType::class.java))
             }
         }
 
         if (jsonObj.has("tblOfficeType")) {
             if (jsonObj.get("tblOfficeType").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblOfficeType = Gson().fromJson<ArrayList<FacilityDataModel.TblOfficeType>>(jsonObj.get("tblOfficeType").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblOfficeType>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblOfficeType = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblOfficeType>>(jsonObj.get("tblOfficeType").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblOfficeType>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblOfficeType.add(Gson().fromJson<FacilityDataModel.TblOfficeType>(jsonObj.get("tblOfficeType").toString(), FacilityDataModel.TblOfficeType::class.java))
+                FacilityDataModelOrg.getInstance().tblOfficeType.add(Gson().fromJson<FacilityDataModelOrg.TblOfficeType>(jsonObj.get("tblOfficeType").toString(), FacilityDataModelOrg.TblOfficeType::class.java))
             }
         }
 
         if (jsonObj.has("tblFacilityManagers")) {
             if (jsonObj.get("tblFacilityManagers").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilityManagers = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityManagers>>(jsonObj.get("tblFacilityManagers").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityManagers>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityManagers = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilityManagers>>(jsonObj.get("tblFacilityManagers").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilityManagers>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilityManagers.add(Gson().fromJson<FacilityDataModel.TblFacilityManagers>(jsonObj.get("tblFacilityManagers").toString(), FacilityDataModel.TblFacilityManagers::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityManagers.add(Gson().fromJson<FacilityDataModelOrg.TblFacilityManagers>(jsonObj.get("tblFacilityManagers").toString(), FacilityDataModelOrg.TblFacilityManagers::class.java))
             }
         }
 
         if (jsonObj.has("tblTimezoneType")) {
             if (jsonObj.get("tblTimezoneType").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblTimezoneType = Gson().fromJson<ArrayList<FacilityDataModel.TblTimezoneType>>(jsonObj.get("tblTimezoneType").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblTimezoneType>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblTimezoneType = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblTimezoneType>>(jsonObj.get("tblTimezoneType").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblTimezoneType>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblTimezoneType.add(Gson().fromJson<FacilityDataModel.TblTimezoneType>(jsonObj.get("tblTimezoneType").toString(), FacilityDataModel.TblTimezoneType::class.java))
+                FacilityDataModelOrg.getInstance().tblTimezoneType.add(Gson().fromJson<FacilityDataModelOrg.TblTimezoneType>(jsonObj.get("tblTimezoneType").toString(), FacilityDataModelOrg.TblTimezoneType::class.java))
             }
         }
 
@@ -1133,24 +1155,30 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         if (jsonObj.has("tblVisitationTracking")) {
             if (jsonObj.get("tblVisitationTracking").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblVisitationTracking = Gson().fromJson<ArrayList<FacilityDataModel.TblVisitationTracking>>(jsonObj.get("tblVisitationTracking").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblVisitationTracking>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblVisitationTracking = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblVisitationTracking>>(jsonObj.get("tblVisitationTracking").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblVisitationTracking>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblVisitationTracking.add(Gson().fromJson<FacilityDataModel.TblVisitationTracking>(jsonObj.get("tblVisitationTracking").toString(), FacilityDataModel.TblVisitationTracking::class.java))
+                FacilityDataModelOrg.getInstance().tblVisitationTracking.add(Gson().fromJson<FacilityDataModelOrg.TblVisitationTracking>(jsonObj.get("tblVisitationTracking").toString(), FacilityDataModelOrg.TblVisitationTracking::class.java))
             }
         }
 
         if (jsonObj.has("tblFacilityType")) {
             if (jsonObj.get("tblFacilityType").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilityType = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityType>>(jsonObj.get("tblFacilityType").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityType>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityType = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilityType>>(jsonObj.get("tblFacilityType").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilityType>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilityType.add(Gson().fromJson<FacilityDataModel.TblFacilityType>(jsonObj.get("tblFacilityType").toString(), FacilityDataModel.TblFacilityType::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityType.add(Gson().fromJson<FacilityDataModelOrg.TblFacilityType>(jsonObj.get("tblFacilityType").toString(), FacilityDataModelOrg.TblFacilityType::class.java))
             }
         }
 
         if (jsonObj.has("tblSurveySoftwares")) {
             if (jsonObj.get("tblSurveySoftwares").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblSurveySoftwares = Gson().fromJson<ArrayList<FacilityDataModel.TblSurveySoftwares>>(jsonObj.get("tblSurveySoftwares").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblSurveySoftwares>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblSurveySoftwares = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblSurveySoftwares>>(jsonObj.get("tblSurveySoftwares").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblSurveySoftwares>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblSurveySoftwares.add(Gson().fromJson<FacilityDataModel.TblSurveySoftwares>(jsonObj.get("tblSurveySoftwares").toString(), FacilityDataModel.TblSurveySoftwares::class.java))
+                FacilityDataModelOrg.getInstance().tblSurveySoftwares.add(Gson().fromJson<FacilityDataModelOrg.TblSurveySoftwares>(jsonObj.get("tblSurveySoftwares").toString(), FacilityDataModelOrg.TblSurveySoftwares::class.java))
             }
         }
 
@@ -1158,160 +1186,200 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         if (jsonObj.has("tblPaymentMethods")) {
             if (jsonObj.get("tblPaymentMethods").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblPaymentMethods = Gson().fromJson<ArrayList<FacilityDataModel.TblPaymentMethods>>(jsonObj.get("tblPaymentMethods").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblPaymentMethods>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblPaymentMethods = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblPaymentMethods>>(jsonObj.get("tblPaymentMethods").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblPaymentMethods>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblPaymentMethods.add(Gson().fromJson<FacilityDataModel.TblPaymentMethods>(jsonObj.get("tblPaymentMethods").toString(), FacilityDataModel.TblPaymentMethods::class.java))
+                FacilityDataModelOrg.getInstance().tblPaymentMethods.add(Gson().fromJson<FacilityDataModelOrg.TblPaymentMethods>(jsonObj.get("tblPaymentMethods").toString(), FacilityDataModelOrg.TblPaymentMethods::class.java))
             }
         }
 
         if (jsonObj.has("tblAddress")) {
             if (jsonObj.get("tblAddress").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblAddress = Gson().fromJson<ArrayList<FacilityDataModel.TblAddress>>(jsonObj.get("tblAddress").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblAddress>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblAddress = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblAddress>>(jsonObj.get("tblAddress").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblAddress>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblAddress.add(Gson().fromJson<FacilityDataModel.TblAddress>(jsonObj.get("tblAddress").toString(), FacilityDataModel.TblAddress::class.java))
+                FacilityDataModelOrg.getInstance().tblAddress.add(Gson().fromJson<FacilityDataModelOrg.TblAddress>(jsonObj.get("tblAddress").toString(), FacilityDataModelOrg.TblAddress::class.java))
             }
         }
 
         if (jsonObj.has("tblPhone")) {
             if (jsonObj.get("tblPhone").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblPhone = Gson().fromJson<ArrayList<FacilityDataModel.TblPhone>>(jsonObj.get("tblPhone").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblPhone>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblPhone = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblPhone>>(jsonObj.get("tblPhone").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblPhone>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblPhone.add(Gson().fromJson<FacilityDataModel.TblPhone>(jsonObj.get("tblPhone").toString(), FacilityDataModel.TblPhone::class.java))
+                FacilityDataModelOrg.getInstance().tblPhone.add(Gson().fromJson<FacilityDataModelOrg.TblPhone>(jsonObj.get("tblPhone").toString(), FacilityDataModelOrg.TblPhone::class.java))
             }
         }
 
         if (jsonObj.has("tblFacilityEmail")) {
             if (jsonObj.get("tblFacilityEmail").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilityEmail = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityEmail>>(jsonObj.get("tblFacilityEmail").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityEmail>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityEmail = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilityEmail>>(jsonObj.get("tblFacilityEmail").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilityEmail>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilityEmail.add(Gson().fromJson<FacilityDataModel.TblFacilityEmail>(jsonObj.get("tblFacilityEmail").toString(), FacilityDataModel.TblFacilityEmail::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityEmail.add(Gson().fromJson<FacilityDataModelOrg.TblFacilityEmail>(jsonObj.get("tblFacilityEmail").toString(), FacilityDataModelOrg.TblFacilityEmail::class.java))
             }
         }
 
         if (jsonObj.has("tblHours")) {
             if (jsonObj.get("tblHours").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblHours = Gson().fromJson<ArrayList<FacilityDataModel.TblHours>>(jsonObj.get("tblHours").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblHours>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblHours = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblHours>>(jsonObj.get("tblHours").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblHours>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblHours.add(Gson().fromJson<FacilityDataModel.TblHours>(jsonObj.get("tblHours").toString(), FacilityDataModel.TblHours::class.java))
+                FacilityDataModelOrg.getInstance().tblHours.add(Gson().fromJson<FacilityDataModelOrg.TblHours>(jsonObj.get("tblHours").toString(), FacilityDataModelOrg.TblHours::class.java))
             }
         }
 
         if (jsonObj.has("tblFacilityClosure")) {
             if (jsonObj.get("tblFacilityClosure").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilityClosure = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityClosure>>(jsonObj.get("tblFacilityClosure").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityClosure>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityClosure = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilityClosure>>(jsonObj.get("tblFacilityClosure").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilityClosure>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilityClosure.add(Gson().fromJson<FacilityDataModel.TblFacilityClosure>(jsonObj.get("tblFacilityClosure").toString(), FacilityDataModel.TblFacilityClosure::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityClosure.add(Gson().fromJson<FacilityDataModelOrg.TblFacilityClosure>(jsonObj.get("tblFacilityClosure").toString(), FacilityDataModelOrg.TblFacilityClosure::class.java))
             }
         }
 
         if (jsonObj.has("tblLanguage")) {
             if (jsonObj.get("tblLanguage").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblLanguage = Gson().fromJson<ArrayList<FacilityDataModel.TblLanguage>>(jsonObj.get("tblLanguage").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblLanguage>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblLanguage = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblLanguage>>(jsonObj.get("tblLanguage").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblLanguage>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblLanguage.add(Gson().fromJson<FacilityDataModel.TblLanguage>(jsonObj.get("tblLanguage").toString(), FacilityDataModel.TblLanguage::class.java))
+                FacilityDataModelOrg.getInstance().tblLanguage.add(Gson().fromJson<FacilityDataModelOrg.TblLanguage>(jsonObj.get("tblLanguage").toString(), FacilityDataModelOrg.TblLanguage::class.java))
             }
         }
 
         if (jsonObj.has("tblPersonnel")) {
             if (jsonObj.get("tblPersonnel").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblPersonnel = Gson().fromJson<ArrayList<FacilityDataModel.TblPersonnel>>(jsonObj.get("tblPersonnel").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblPersonnel>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblPersonnel = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblPersonnel>>(jsonObj.get("tblPersonnel").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblPersonnel>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblPersonnel.add(Gson().fromJson<FacilityDataModel.TblPersonnel>(jsonObj.get("tblPersonnel").toString(), FacilityDataModel.TblPersonnel::class.java))
+                FacilityDataModelOrg.getInstance().tblPersonnel.add(Gson().fromJson<FacilityDataModelOrg.TblPersonnel>(jsonObj.get("tblPersonnel").toString(), FacilityDataModelOrg.TblPersonnel::class.java))
             }
         }
 
         if (jsonObj.has("tblAmendmentOrderTracking")) {
             if (jsonObj.get("tblAmendmentOrderTracking").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking = Gson().fromJson<ArrayList<FacilityDataModel.TblAmendmentOrderTracking>>(jsonObj.get("tblAmendmentOrderTracking").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblAmendmentOrderTracking>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblAmendmentOrderTracking>>(jsonObj.get("tblAmendmentOrderTracking").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblAmendmentOrderTracking>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(Gson().fromJson<FacilityDataModel.TblAmendmentOrderTracking>(jsonObj.get("tblAmendmentOrderTracking").toString(), FacilityDataModel.TblAmendmentOrderTracking::class.java))
+                FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking.add(Gson().fromJson<FacilityDataModelOrg.TblAmendmentOrderTracking>(jsonObj.get("tblAmendmentOrderTracking").toString(), FacilityDataModelOrg.TblAmendmentOrderTracking::class.java))
             }
         }
 
         if (jsonObj.has("tblAARPortalAdmin")) {
             if (jsonObj.get("tblAARPortalAdmin").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblAARPortalAdmin = Gson().fromJson<ArrayList<FacilityDataModel.TblAARPortalAdmin>>(jsonObj.get("tblAARPortalAdmin").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblAARPortalAdmin>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblAARPortalAdmin = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblAARPortalAdmin>>(jsonObj.get("tblAARPortalAdmin").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblAARPortalAdmin>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblAARPortalAdmin.add(Gson().fromJson<FacilityDataModel.TblAARPortalAdmin>(jsonObj.get("tblAARPortalAdmin").toString(), FacilityDataModel.TblAARPortalAdmin::class.java))
+                FacilityDataModelOrg.getInstance().tblAARPortalAdmin.add(Gson().fromJson<FacilityDataModelOrg.TblAARPortalAdmin>(jsonObj.get("tblAARPortalAdmin").toString(), FacilityDataModelOrg.TblAARPortalAdmin::class.java))
             }
         }
 
         if (jsonObj.has("tblScopeofService")) {
             if (jsonObj.get("tblScopeofService").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblScopeofService = Gson().fromJson<ArrayList<FacilityDataModel.TblScopeofService>>(jsonObj.get("tblScopeofService").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblScopeofService>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblScopeofService = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblScopeofService>>(jsonObj.get("tblScopeofService").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblScopeofService>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblScopeofService.add(Gson().fromJson<FacilityDataModel.TblScopeofService>(jsonObj.get("tblScopeofService").toString(), FacilityDataModel.TblScopeofService::class.java))
+                FacilityDataModelOrg.getInstance().tblScopeofService.add(Gson().fromJson<FacilityDataModelOrg.TblScopeofService>(jsonObj.get("tblScopeofService").toString(), FacilityDataModelOrg.TblScopeofService::class.java))
             }
         }
 
         if (jsonObj.has("tblPrograms")) {
             if (jsonObj.get("tblPrograms").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblPrograms = Gson().fromJson<ArrayList<FacilityDataModel.TblPrograms>>(jsonObj.get("tblPrograms").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblPrograms>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblPrograms = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblPrograms>>(jsonObj.get("tblPrograms").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblPrograms>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblPrograms.add(Gson().fromJson<FacilityDataModel.TblPrograms>(jsonObj.get("tblPrograms").toString(), FacilityDataModel.TblPrograms::class.java))
+                FacilityDataModelOrg.getInstance().tblPrograms.add(Gson().fromJson<FacilityDataModelOrg.TblPrograms>(jsonObj.get("tblPrograms").toString(), FacilityDataModelOrg.TblPrograms::class.java))
             }
         }
 
         if (jsonObj.has("tblFacilityServices")) {
             if (jsonObj.get("tblFacilityServices").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilityServices = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityServices>>(jsonObj.get("tblFacilityServices").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityServices>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityServices = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilityServices>>(jsonObj.get("tblFacilityServices").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilityServices>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilityServices.add(Gson().fromJson<FacilityDataModel.TblFacilityServices>(jsonObj.get("tblFacilityServices").toString(), FacilityDataModel.TblFacilityServices::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityServices.add(Gson().fromJson<FacilityDataModelOrg.TblFacilityServices>(jsonObj.get("tblFacilityServices").toString(), FacilityDataModelOrg.TblFacilityServices::class.java))
             }
         }
 
         if (jsonObj.has("tblAffiliations")) {
             if (jsonObj.get("tblAffiliations").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblAffiliations = Gson().fromJson<ArrayList<FacilityDataModel.TblAffiliations>>(jsonObj.get("tblAffiliations").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblAffiliations>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblAffiliations = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblAffiliations>>(jsonObj.get("tblAffiliations").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblAffiliations>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblAffiliations.add(Gson().fromJson<FacilityDataModel.TblAffiliations>(jsonObj.get("tblAffiliations").toString(), FacilityDataModel.TblAffiliations::class.java))
+                FacilityDataModelOrg.getInstance().tblAffiliations.add(Gson().fromJson<FacilityDataModelOrg.TblAffiliations>(jsonObj.get("tblAffiliations").toString(), FacilityDataModelOrg.TblAffiliations::class.java))
             }
         }
 
         if (jsonObj.has("tblDeficiency")) {
             if (jsonObj.get("tblDeficiency").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblDeficiency = Gson().fromJson<ArrayList<FacilityDataModel.TblDeficiency>>(jsonObj.get("tblDeficiency").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblDeficiency>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblDeficiency = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblDeficiency>>(jsonObj.get("tblDeficiency").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblDeficiency>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblDeficiency.add(Gson().fromJson<FacilityDataModel.TblDeficiency>(jsonObj.get("tblDeficiency").toString(), FacilityDataModel.TblDeficiency::class.java))
+                FacilityDataModelOrg.getInstance().tblDeficiency.add(Gson().fromJson<FacilityDataModelOrg.TblDeficiency>(jsonObj.get("tblDeficiency").toString(), FacilityDataModelOrg.TblDeficiency::class.java))
             }
         }
 
         if (jsonObj.has("tblComplaintFiles")) {
             if (jsonObj.get("tblComplaintFiles").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblComplaintFiles = Gson().fromJson<ArrayList<FacilityDataModel.TblComplaintFiles>>(jsonObj.get("tblComplaintFiles").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblComplaintFiles>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblComplaintFiles = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblComplaintFiles>>(jsonObj.get("tblComplaintFiles").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblComplaintFiles>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblComplaintFiles.add(Gson().fromJson<FacilityDataModel.TblComplaintFiles>(jsonObj.get("tblComplaintFiles").toString(), FacilityDataModel.TblComplaintFiles::class.java))
+                FacilityDataModelOrg.getInstance().tblComplaintFiles.add(Gson().fromJson<FacilityDataModelOrg.TblComplaintFiles>(jsonObj.get("tblComplaintFiles").toString(), FacilityDataModelOrg.TblComplaintFiles::class.java))
             }
         }
 
         if (jsonObj.has("NumberofComplaints")) {
             if (jsonObj.get("NumberofComplaints").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().NumberofComplaints = Gson().fromJson<ArrayList<FacilityDataModel.numberofComplaints>>(jsonObj.get("NumberofComplaints").toString(), object : TypeToken<ArrayList<FacilityDataModel.numberofComplaints>>() {}.type)
+                FacilityDataModelOrg.getInstance().NumberofComplaints = Gson().fromJson<ArrayList<FacilityDataModelOrg.numberofComplaints>>(jsonObj.get("NumberofComplaints").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.numberofComplaints>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().NumberofComplaints.add(Gson().fromJson<FacilityDataModel.numberofComplaints>(jsonObj.get("NumberofComplaints").toString(), FacilityDataModel.numberofComplaints::class.java))
+                FacilityDataModelOrg.getInstance().NumberofComplaints.add(Gson().fromJson<FacilityDataModelOrg.numberofComplaints>(jsonObj.get("NumberofComplaints").toString(), FacilityDataModelOrg.numberofComplaints::class.java))
             }
         }
 
         if (jsonObj.has("NumberofJustifiedComplaints")) {
             if (jsonObj.get("NumberofJustifiedComplaints").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().NumberofJustifiedComplaints = Gson().fromJson<ArrayList<FacilityDataModel.numberofJustifiedComplaints>>(jsonObj.get("NumberofJustifiedComplaints").toString(), object : TypeToken<ArrayList<FacilityDataModel.numberofJustifiedComplaints>>() {}.type)
+                FacilityDataModelOrg.getInstance().NumberofJustifiedComplaints = Gson().fromJson<ArrayList<FacilityDataModelOrg.numberofJustifiedComplaints>>(jsonObj.get("NumberofJustifiedComplaints").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.numberofJustifiedComplaints>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().NumberofJustifiedComplaints.add(Gson().fromJson<FacilityDataModel.numberofJustifiedComplaints>(jsonObj.get("NumberofJustifiedComplaints").toString(), FacilityDataModel.numberofJustifiedComplaints::class.java))
+                FacilityDataModelOrg.getInstance().NumberofJustifiedComplaints.add(Gson().fromJson<FacilityDataModelOrg.numberofJustifiedComplaints>(jsonObj.get("NumberofJustifiedComplaints").toString(), FacilityDataModelOrg.numberofJustifiedComplaints::class.java))
             }
         }
 
         if (jsonObj.has("JustifiedComplaintRatio")) {
             if (jsonObj.get("JustifiedComplaintRatio").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().JustifiedComplaintRatio = Gson().fromJson<ArrayList<FacilityDataModel.justifiedComplaintRatio>>(jsonObj.get("JustifiedComplaintRatio").toString(), object : TypeToken<ArrayList<FacilityDataModel.justifiedComplaintRatio>>() {}.type)
+                FacilityDataModelOrg.getInstance().JustifiedComplaintRatio = Gson().fromJson<ArrayList<FacilityDataModelOrg.justifiedComplaintRatio>>(jsonObj.get("JustifiedComplaintRatio").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.justifiedComplaintRatio>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().JustifiedComplaintRatio.add(Gson().fromJson<FacilityDataModel.justifiedComplaintRatio>(jsonObj.get("JustifiedComplaintRatio").toString(), FacilityDataModel.justifiedComplaintRatio::class.java))
+                FacilityDataModelOrg.getInstance().JustifiedComplaintRatio.add(Gson().fromJson<FacilityDataModelOrg.justifiedComplaintRatio>(jsonObj.get("JustifiedComplaintRatio").toString(), FacilityDataModelOrg.justifiedComplaintRatio::class.java))
             }
         }
 
         if (jsonObj.has("tblFacilityPhotos")) {
             if (jsonObj.get("tblFacilityPhotos").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilityPhotos = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityPhotos>>(jsonObj.get("tblFacilityPhotos").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityPhotos>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityPhotos = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilityPhotos>>(jsonObj.get("tblFacilityPhotos").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilityPhotos>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilityPhotos.add(Gson().fromJson<FacilityDataModel.TblFacilityPhotos>(jsonObj.get("tblFacilityPhotos").toString(), FacilityDataModel.TblFacilityPhotos::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityPhotos.add(Gson().fromJson<FacilityDataModelOrg.TblFacilityPhotos>(jsonObj.get("tblFacilityPhotos").toString(), FacilityDataModelOrg.TblFacilityPhotos::class.java))
             }
         }
 

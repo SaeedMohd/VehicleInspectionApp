@@ -14,6 +14,8 @@ import android.widget.*
 
 
 import com.inspection.R
+import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.imageloader.Utils
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_billingplans.*
@@ -46,7 +48,6 @@ class FragmentAARAVBillingPlans : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -109,6 +110,10 @@ class FragmentAARAVBillingPlans : Fragment() {
             addNewPlanDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
         })
+
+        saveButton.setOnClickListener({
+            MarkChangeWasDone()
+        })
     }
 
     private fun validateBillinPlanData() {
@@ -151,7 +156,6 @@ class FragmentAARAVBillingPlans : Fragment() {
                 billingPlansResultsTbl.removeViewAt(i)
             }
         }
-
 
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F

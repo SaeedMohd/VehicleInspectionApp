@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.inspection.model.FacilityDataModel
+import com.inspection.model.FacilityDataModelOrg
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,5 +43,9 @@ fun Date.toDBFormat(): String = dbFormat.format(this)
 
 fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun MarkChangeWasDone(){
+    FacilityDataModelOrg.getInstance().changeWasDone = true
 }
 
