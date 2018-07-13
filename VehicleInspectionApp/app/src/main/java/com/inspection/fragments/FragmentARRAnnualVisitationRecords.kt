@@ -60,9 +60,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     var visitationLoaded = false
     var isVisitationPlanning = false
     var requiredSpecialistName = ""
-    var visitationsModel : VisitationsModel=VisitationsModel()
+    var visitationsModel: VisitationsModel = VisitationsModel()
     var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,7 +127,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 reloadVisitationsList()
-            //    reloadVisitationsActions()
             }
         })
 
@@ -143,7 +141,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 reloadVisitationsList()
-            //    reloadVisitationsActions()
+                
             }
 
         })
@@ -164,7 +162,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     visitationSpecialistName.setText(searchDialog.selectedString)
                 }
                 reloadVisitationsList()
-            //    reloadVisitationsActions()
             }
         })
 
@@ -190,7 +187,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                                     facilityNameButton.setText(searchDialog.selectedString)
                                 }
                                 reloadVisitationsList()
-                      //          reloadVisitationsActions()
                             }
                         })
                     }, Response.ErrorListener {
@@ -204,30 +200,25 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
         annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-         //   reloadVisitationsActions()
         }
 
         quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-        //    reloadVisitationsActions()
         }
 
         adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-       //     reloadVisitationsActions()
         }
 
 
         deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-        //    reloadVisitationsActions()
         }
 
 
 
         pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-         //   reloadVisitationsActions()
         }
 
 
@@ -236,7 +227,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
 
             reloadVisitationsList()
-        //    reloadVisitationsActions()
+            
 
         }
 
@@ -246,10 +237,10 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     activity!!.runOnUiThread(Runnable {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                         reloadVisitationsList()
-                    //    reloadVisitationsActions()
+                        
                     })
                 }, Response.ErrorListener {
-            Log.v("error while loading",  "error while loading specialists")
+            Log.v("error while loading", "error while loading specialists")
             Log.v("Loading error", "" + it.message)
         }))
 
@@ -263,103 +254,13 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             reloadVisitationsList()
-         //   reloadVisitationsActions()
-
         }
 
     }
 
-
-
-    fun reloadVisitationsActions(){
-
-
-        val handler1 = Handler()
-        handler1.postDelayed({
-
-
-            if (visitationLoaded) {
-
-           //     Toast.makeText(context,"visitation loaded",Toast.LENGTH_SHORT).show()
-                recordsProgressView.visibility = View.INVISIBLE
-
-                visitationfacilityListView.visibility = View.VISIBLE
-                visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                visitationfacilityListView.adapter = visitationPlanningAdapter
-
-                visitationPlanningAdapter.notifyDataSetChanged()
-            }else {
-
-                val handler1 = Handler()
-                handler1.postDelayed({
-
-
-
-                    if (visitationLoaded) {
-
-                 //       Toast.makeText(context, "visitation loaded", Toast.LENGTH_SHORT).show()
-                        recordsProgressView.visibility = View.INVISIBLE
-
-                        visitationfacilityListView.visibility = View.VISIBLE
-                        visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                        visitationfacilityListView.adapter = visitationPlanningAdapter
-
-                        visitationPlanningAdapter.notifyDataSetChanged()
-                    } else {
-
-                        val handler1 = Handler()
-                        handler1.postDelayed({
-
-                            if (visitationLoaded) {
-
-                       //         Toast.makeText(context, "visitation loaded", Toast.LENGTH_SHORT).show()
-                                recordsProgressView.visibility = View.INVISIBLE
-
-                                visitationfacilityListView.visibility = View.VISIBLE
-                                visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                visitationfacilityListView.adapter = visitationPlanningAdapter
-
-                                visitationPlanningAdapter.notifyDataSetChanged()
-                            } else {
-
-                                val handler1 = Handler()
-                                handler1.postDelayed({
-
-                                    if (visitationLoaded) {
-
-                              //          Toast.makeText(context, "visitation loaded", Toast.LENGTH_SHORT).show()
-                                        recordsProgressView.visibility = View.INVISIBLE
-
-                                        visitationfacilityListView.visibility = View.VISIBLE
-                                        visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                        visitationfacilityListView.adapter = visitationPlanningAdapter
-
-                                        visitationPlanningAdapter.notifyDataSetChanged()
-                                    } else {
-
-                                    }
-
-
-                                }, 6000)
-
-                            }
-
-
-                        }, 6000)
-
-                    }
-
-
-                }, 6000)
-            }
-
-        }, 6000)
-
-
-    }
     fun reloadVisitationsList() {
 
-        visitationLoaded=false
+        visitationLoaded = false
 
 
         var parametersString = StringBuilder()
@@ -486,35 +387,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             }
             recordsProgressView.visibility = View.VISIBLE
 
-//
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
-//                    Response.Listener { response ->
-//                        activity!!.runOnUiThread(Runnable {
-//                            recordsProgressView.visibility = View.INVISIBLE
-//
-//                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-//                            var jsonObj = obj.getJSONObject("responseXml")
-//
-//
-//                            var visitationsModel = parseVisitationsData(jsonObj)
-//
-//                            visitationfacilityListView.visibility = View.VISIBLE
-//                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-//                            visitationfacilityListView.adapter = visitationPlanningAdapter
-//                        })
-//                    }, Response.ErrorListener {
-//                context!!.toast("Error while loading visitations: " + it.message)
-//                Log.v("error while loading", "error while loading visitation records")
-//                recordsProgressView.visibility = View.INVISIBLE
-//
-//            }))
-
-
-
-
-
             var client = OkHttpClient()
-
             var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString).build()
 
 
@@ -523,8 +396,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     Log.v("failure http", "failed with exception : " + e!!.message)
                     activity!!.runOnUiThread(Runnable {
                         activity!!.toast("Error while loading large data")
-                                                   recordsProgressView.visibility = View.INVISIBLE
-
+                        recordsProgressView.visibility = View.INVISIBLE
 
 
                     })
@@ -532,58 +404,29 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
                 override fun onResponse(call: Call?, response: okhttp3.Response?) {
 
-
                     var responseString = response!!.body()!!.string()
-
-                      Log.v("qqqmain_http3", responseString)
-
-                    if (!responseString.contains("FacID not found")){
-                        Log.v("qqqhttp3_facilityID", "found")
-
-                        recordsProgressView.visibility = View.INVISIBLE
-
-                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                            var jsonObj = obj.getJSONObject("responseXml")
+                    //  activity!!.toast("success!!!")
+                    //     recordsProgressView.visibility = View.INVISIBLE
 
 
-                             visitationsModel = parseVisitationsData(jsonObj)
+                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                    var jsonObj = obj.getJSONObject("responseXml")
 
-                        activity!!.runOnUiThread {
 
-                            visitationfacilityListView.visibility = View.VISIBLE
-                            visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                            visitationfacilityListView.adapter = visitationPlanningAdapter
-                            visitationPlanningAdapter.notifyDataSetChanged()
+                    visitationsModel = parseVisitationsData(jsonObj)
 
-                        }
-                     //   visitationLoaded=true
-                    } else {
-                        Log.v("qqqhttp3_facilityID_NOT", "NOT found")
 
-                       activity!!.runOnUiThread {
-                           Toast.makeText(activity, "Facility data not found", Toast.LENGTH_LONG).show();
-                           recordsProgressView.visibility = View.INVISIBLE
-                       }
-
-//                        context!!.toast("Facility data not found")
+                    activity!!.runOnUiThread {
+                        recordsProgressView.visibility = View.GONE
+                        visitationfacilityListView.visibility = View.VISIBLE
+                        var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                        visitationfacilityListView.adapter = visitationPlanningAdapter
                     }
-
-
-
-                        //    visitationfacilityListView.visibility = View.VISIBLE
-               //     visitationfacilityListView.adapter = visitationPlanningAdapter
-          //          visitationPlanningAdapter.notifyDataSetChanged()
-
-                    //     visitationfacilityListView.visibility = View.VISIBLE
-                        //    var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                     //       visitationfacilityListView.adapter = visitationPlanningAdapter
-
 
                 }
 
 
             })
-
 
 
         } else {
@@ -597,7 +440,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
 
                             var visitationsModel = parseVisitationsData(jsonObj)
-
+                            recordsProgressView.visibility = View.GONE
                             visitationfacilityListView.visibility = View.VISIBLE
                             var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                             visitationfacilityListView.adapter = visitationPlanningAdapter
@@ -676,135 +519,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 //        mListener = null
     }
 
-    inner class VisitationListAdapter : BaseAdapter {
-
-        private var visitationList = ArrayList<AnnualVisitationInspectionFormData>()
-        private var context: Context? = null
-
-        constructor(context: Context?, visitationList: ArrayList<AnnualVisitationInspectionFormData>) : super() {
-            this.visitationList = visitationList
-            this.context = context
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-            val view: View?
-            val vh: ViewHolder
-
-            if (convertView == null) {
-                view = layoutInflater.inflate(R.layout.custom_visitation_list_item, parent, false)
-                vh = ViewHolder(view)
-                view.tag = vh
-            } else {
-                view = convertView
-                vh = view.tag as ViewHolder
-            }
-
-            vh.vrID.text = visitationList[position].annualvisitationid.toString()
-            vh.vrBy.text = visitationList[position].facilityrepresentativename
-            vh.vrDate.text = visitationList[position].dateofinspection
-            vh.vrPlanned.text = visitationList[position].dateofinspection
-            vh.vrPlanned.visibility = if (visitationList[position].dateofinspection.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
-            vh.vrStatus.text = if (visitationList[position].dateofinspection.toTime() > Date().time) "Planned" else "regular"
-            vh.vrType.text = visitationList[position].businessname
-//            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
-//            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
-            vh.vrLoadBtn.setOnClickListener({
-                AnnualVisitationSingleton.getInstance().clear()
-                AnnualVisitationSingleton.getInstance().apply {
-                    facilityId = visitationList[position].facilityid
-                    annualVisitationId = visitationList[position].annualvisitationid
-                    facilityRepresentative = visitationList[position].facilityrepresentativename
-                    automotiveSpecialist = visitationList[position].automotivespecialistname
-                    dateOfVisitation = visitationList[position].dateofinspection.toTime()
-                    inspectionType = visitationList[position].inspectiontypeid
-                    monthDue = visitationList[position].monthdue
-                    changesMade = visitationList[position].changesmade
-                    paymentMethods = visitationList[position].paymentmethods
-
-                    emailModel = AAAEmailModel()
-                    emailModel!!.emailid = visitationList[position].emailaddressid
-
-                    phoneModel = AAAPhoneModel()
-                    phoneModel!!.phoneid = visitationList[position].phonenumberid
-
-                    personnelId = visitationList[position].personnelid
-                    vehicleServices = visitationList[position].vehicleservices
-                    vehicles = visitationList[position].vehicles
-                    affliations = visitationList[position].affiliations
-                    defeciencies = visitationList[position].defeciencies
-                    complaints = visitationList[position].complaints
-                }
-
-                FacilityDataModel.getInstance().annualVisitationId = visitationList[position].annualvisitationid
-                // Saeed Original Data
-                FacilityDataModelOrg.getInstance().annualVisitationId = FacilityDataModel.getInstance().annualVisitationId
-             //   getCopiedData()
-                getFullFacilityDataFromAAA(visitationList[position].facno)
-
-//                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityWithIdUrl + visitationList[position].facilityid,
-//                        Response.Listener { response ->
-//                            activity!!.runOnUiThread(Runnable {
-//                                var facilityComplete = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList()).get(0) as AAAFacilityComplete
-//                                AnnualVisitationSingleton.getInstance().apply {
-//                                    facilityId = facilityComplete.facid
-//                                    facilityName = facilityComplete.businessname
-//                                    facilityType = facilityComplete.facilitytypeid
-//                                    billingMonth = facilityComplete.billingmonth
-//                                    billingAmount = facilityComplete.billingamount
-//                                    contractType = facilityComplete.contracttypeid
-//                                    webSiteUrl = facilityComplete.website
-//                                    facilityType = facilityComplete.facilitytypeid
-//                                    currentContractDate = facilityComplete.contractcurrentdate
-//                                    setInsuranceExpirationDate(facilityComplete.insuranceexpdate)
-//                                    setInitialContractDate(facilityComplete.contractinitialdate)
-//                                    assignedTo = facilityComplete.assignedtoid
-//                                    office = facilityComplete.officeid
-//                                    entityName = facilityComplete.entityname
-//                                    timeZone = facilityComplete.timezoneid
-//                                    taxId = facilityComplete.taxidnumber
-//                                    repairOrderCount = facilityComplete.facilityrepairordercount
-//                                    serviceAvailability = facilityComplete.svcavailability
-//                                    ardNumber = facilityComplete.automotiverepairnumber
-//                                    setArdExpirationDate(facilityComplete.automotiverepairexpdate)
-//                                }
-//
-////                                val fragment: android.support.v4.app.Fragment
-////                                fragment = FragmentAnnualVisitationPager()
-////                                val fragmentManagerSC = fragmentManager
-////                                val ftSC = fragmentManagerSC!!.beginTransaction()
-////                                ftSC.replace(R.id.fragment, fragment)
-////                                ftSC.addToBackStack("")
-////                                ftSC.commit()
-////                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-////                                startActivity(intent)
-//                            })
-//                        }, Response.ErrorListener {
-//                    Log.v("error while loading", "error while loading facilities")
-//                    Log.v("Loading error", "" + it.message)
-//                }))
-
-
-            })
-            return view
-        }
-
-
-        override fun getItem(position: Int): Any {
-            // return item at 'position'
-            return visitationList[position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            // return item Id by Long datatype
-            return position.toLong()
-        }
-
-        override fun getCount(): Int {
-            // return quantity of the list
-            return visitationList.size
-        }
-    }
-
     inner class VisitationPlanningAdapter : BaseAdapter {
 
         private var visitationPlanningModelList = VisitationsModel()
@@ -872,50 +586,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         }
     }
 
-//    fun getCopiedData(){
-//
-//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getCopyFacilityData,
-//                Response.Listener { response ->
-//                    activity!!.runOnUiThread(Runnable {
-//                        Log.v("RESPONSE",response.toString())
-//                        //    Toast.makeText(context,"changes saved in DB",Toast.LENGTH_SHORT).show()
-//
-//                        try {
-//
-//                            if (!response.toString().contains("FacID not found")) {
-//                                var obj = XML.toJSONObject(response.toString().substring(response.toString().indexOf("&lt;responseXml"), response.toString().indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-//                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-//                                var jsonObj = obj.getJSONObject("responseXml")
-//                                parseCopyFacilityDataJsonToObject(jsonObj)
-////                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
-//////                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-////                                startActivity(intent)
-//
-//
-//                            } else {
-//                                context!!.toast("Copy Facility data not found")
-//                            }
-//
-//
-//                        } catch ( e : JSONException) {
-//                            Log.e("JSON exception", e.message);
-//                            e.printStackTrace();
-//                        }
-//
-//                        Log.d("POPOCopy", response.toString());
-//
-//
-//
-//
-//
-//
-//
-//                    })
-//                }, Response.ErrorListener {
-//            Log.v("error while loading", "error while loading personnal record")
-//        }))
-//
-//    }
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int) {
 
@@ -943,37 +613,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 var jsonObj = obj.getJSONObject("responseXml")
                 TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
 
-
-//                client.newCall(request3).enqueue(object : Callback {
-//                    override fun onFailure(call: Call?, e: IOException?) {
-//                        activity!!.runOnUiThread(Runnable {
-//                            context!!.toast("Copy ERROR Connection Error. Please check internet connection")
-//                        })
-//                    }
-//
-//                    override fun onResponse(call: Call?, response: okhttp3.Response?) {
-//                        var responseString = response!!.body()!!.string()
-//                        activity!!.runOnUiThread(Runnable {
-//                            Log.v("qqqCopyUrl", responseString)
-//
-//                            if (!responseString.contains("FacID not found")) {
-//                                var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-//                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-//                                var jsonObj = obj.getJSONObject("responseXml")
-//                                parseCopyFacilityDataJsonToObject(jsonObj)
-////                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
-//////                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-////                                startActivity(intent)
-//
-//
-//                            } else {
-//                                context!!.toast("Copy Facility data not found")
-//                            }
-//                        })
-//                    }
-//
-//                })
-
                 client.newCall(request2).enqueue(object : Callback {
                     override fun onFailure(call: Call?, e: IOException?) {
                         activity!!.runOnUiThread(Runnable {
@@ -987,8 +626,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                             Log.v("POPOOriginal", responseString)
 
                             recordsProgressView.visibility = View.GONE
-                            if (!responseString.contains("FacID not found"))
-                             {
+                            if (!responseString.contains("FacID not found")) {
                                 var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
                                         .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                                 var jsonObj = obj.getJSONObject("responseXml")
@@ -1010,82 +648,6 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
             }
 
         })
-
-
-//
-
-////        if (TypeTablesModel.getInstance().AARDeficiencyType.size == 0) {
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getTypeTables + "",
-//                    Response.Listener { response ->
-//                        activity!!.runOnUiThread(Runnable {
-//                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-//                            var jsonObj = obj.getJSONObject("responseXml")
-//
-//                            TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
-//
-//                            Log.v("*******url", String.format(Constants.getFacilityData, facilityNumber, "004"))
-//                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
-//                                    Response.Listener { response ->
-//                                        Log.v("*****response = ", response)
-//                                        activity!!.runOnUiThread(Runnable {
-//                                            recordsProgressView.visibility = View.GONE
-//                                            if (!response.contains("FacID not found")) {
-//                                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-//                                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-//                                                var jsonObj = obj.getJSONObject("responseXml")
-//                                                parseFacilityDataJsonToObject(jsonObj)
-//
-//
-//
-//                                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
-////                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-//                                                startActivity(intent)
-//                                            } else {
-//                                                context!!.toast("Facility data not found")
-//                                            }
-//                                        })
-//                                    }, Response.ErrorListener {
-//                                recordsProgressView.visibility = View.GONE
-//                                context!!.toast("Connection Error.")
-//                                Log.v("error while loading", "error while loading facilities")
-//                                Log.v("Loading error", "" + it.message)
-//                            }))
-//
-//
-//                        })
-//                    }, Response.ErrorListener {
-//                recordsProgressView.visibility = View.GONE
-//                Log.v("error while loading", "error while loading facilities")
-//                Log.v("Loading error", "" + it.message)
-//            }))
-//        } else {
-//            recordsProgressView.visibility = View.VISIBLE
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
-//                    Response.Listener { response ->
-//                        Log.v("*****response = ", response)
-//                        activity!!.runOnUiThread(Runnable {
-//                            recordsProgressView.visibility = View.GONE
-//                            if (!response.contains("FacID not found")) {
-//                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-//                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-//                                var jsonObj = obj.getJSONObject("responseXml")
-//                                parseFacilityDataJsonToObject(jsonObj)
-//
-//                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-//                                startActivity(intent)
-//                            } else {
-//                                context!!.toast("Facility data not found")
-//                            }
-//                        })
-//                    }, Response.ErrorListener {
-//                recordsProgressView.visibility = View.GONE
-//                context!!.toast("Connection Error.")
-//                Log.v("error while loading", "error while loading facilities")
-//                Log.v("Loading error", "" + it.message)
-//            }))
-//        }
-
-
     }
 
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
