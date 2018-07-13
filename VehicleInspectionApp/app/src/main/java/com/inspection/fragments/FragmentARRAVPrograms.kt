@@ -301,6 +301,7 @@ class FragmentARRAVPrograms : Fragment() {
 //        }
 
     fun fillPortalTrackingTableView() {
+
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val rowLayoutParam = TableRow.LayoutParams()
@@ -370,36 +371,33 @@ class FragmentARRAVPrograms : Fragment() {
 
                 aarPortalTrackingTableLayout.addView(tableRow)
 
-            for (i in 1..aarPortalTrackingTableLayout.size) {
 
-           //     aarPortalTrackingTableLayout[2].setBackgroundColor(context!!.getResources().getColor(R.color.gray))
+                var childViewCount = aarPortalTrackingTableLayout.getChildCount();
 
-//
-//                var buttonColor : ColorDrawable= aarPortalTrackingTableLayout.getBackground() as ColorDrawable
-//
-//
-//                var color222=buttonColor.color
-//                if (color222==R.color.gray) {
-//
-//                    Toast.makeText(context, "yes", Toast.LENGTH_SHORT).show()
-//
-//                }else
-//                    Toast.makeText(context, "button color = ${color222.toString()} and the other = ${R.color.gray.toString()}", Toast.LENGTH_SHORT).show()
-//
-
-            }
+                for ( i in 1..childViewCount-1) {
+                    var noOfEmpty =0
 
 
+                    var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
 
+                    for (j in 0..row.getChildCount()-1) {
 
+                        var tv : TextView= row.getChildAt(j) as TextView
 
+                        if (tv.text.toString().isNullOrEmpty()){
 
-//                if (aarPortalTrackingTableLayout[i].background.equals(R.color.gray)){
-//
-//
-//                    Toast.makeText(context,"yes",Toast.LENGTH_SHORT).show()
-//
-//                }
+                            noOfEmpty++
+
+                        }
+                        if (noOfEmpty==row.getChildCount()-1){
+
+                            aarPortalTrackingTableLayout.removeViewAt(i)
+
+                        }
+                    }
+
+                }
+
 
             }
 

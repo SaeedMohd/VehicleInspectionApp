@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 
 import android.app.DatePickerDialog
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -39,6 +40,8 @@ class FragmentARRAVLocation : Fragment() {
     private var mParam2: String? = null
     private var facLocationsList = ArrayList<AAALocations>()
     private var facLocationsArray = ArrayList<String>()
+    private var states= arrayOf("select state","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
+
 
 
     var languagesGridView: ExpandableHeightGridView? = null
@@ -113,6 +116,39 @@ class FragmentARRAVLocation : Fragment() {
         })
 
         addNewLocationButton.setOnClickListener({
+            for (i in 0 until mainViewLinearId.childCount) {
+                val child = mainViewLinearId.getChildAt(i)
+                child.isEnabled = false
+            }
+
+            for (i in 0 until mainViewLinearId2.childCount) {
+                val child = mainViewLinearId2.getChildAt(i)
+                child.isEnabled = false
+            }
+
+            for (i in 0 until mainViewLinearId3.childCount) {
+                val child = mainViewLinearId3.getChildAt(i)
+                child.isEnabled = false
+            }
+
+
+
+            var childViewCount = phoneTbl.getChildCount();
+
+            for ( i in 1..childViewCount-1) {
+                var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
+
+                for (j in 0..row.getChildCount()-1) {
+
+                    var tv : TextView= row.getChildAt(j) as TextView
+                    tv.isEnabled=false
+
+                }
+
+            }
+
+
+
             showLocationDialog()
         })
 
@@ -130,25 +166,50 @@ class FragmentARRAVLocation : Fragment() {
 
         locationSubmitButton.setOnClickListener({
             // missing validation for states when the lookup is ready
+
+            if (newStateSpinner.selectedItem.toString().contains("select")){
+                stateTextView.setError("required field")
+
+            }    else
+            { stateTextView.setError(null)}
+
+
             if (newLocAddr1Text.text.isNullOrEmpty()) {
                 newLocAddr1Text.setError("please enter address 1")
-            } else if (newLocCityText.text.isNullOrEmpty()) {
-                newLocCityText.setError("please enter city")
-            } else if (newLocCountryText.text.isNullOrEmpty()) {
-                newLocCountryText.setError("please enter country")
-            } else if (newLocZipText.text.isNullOrEmpty()) {
-                newLocZipText.setError("please enter country")
-            } else if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty()) {
-                newLocLongText.setError("please enter longitude")
-            } else if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty()) {
-                newLocLatText.setError("please enter latitude")
-            } else if (newLocBranchNoText.text.isNullOrEmpty()) {
-                newLocBranchNoText.setError("please enter branch number")
-            } else if (newLocBranchNameText.text.isNullOrEmpty()) {
-                newLocLatText.setError("please enter branch name")
-            } else {
-                submitFacilityAddress()
             }
+            if (newLocCityText.text.isNullOrEmpty()) {
+                newLocCityText.setError("please enter city")
+            }
+            if (newLocCountryText.text.isNullOrEmpty()) {
+                newLocCountryText.setError("please enter country")
+            }
+            if (newLocZipText.text.isNullOrEmpty()) {
+                newLocZipText.setError("please enter country")
+            }
+            if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty()) {
+                newLocLongText.setError("please enter longitude")
+            }
+            if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty()) {
+                newLocLatText.setError("please enter latitude")
+            }
+            if (newLocBranchNoText.text.isNullOrEmpty()) {
+                newLocBranchNoText.setError("please enter branch number")
+            }
+            if (newLocBranchNameText.text.isNullOrEmpty()) {
+                newLocBranchNameText.setError("please enter branch name")
+            }
+                if (newLocAddr1Text.text.isNullOrEmpty()||newLocCityText.text.isNullOrEmpty()||newLocCountryText.text.isNullOrEmpty()
+                ||newLocZipText.text.isNullOrEmpty()||(newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty())
+                ||(newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty())
+                ||newLocBranchNoText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()
+                ||newStateSpinner.selectedItem.toString().contains("select")){
+                    Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
+
+                }else {
+                    submitFacilityAddress()
+
+                }
+
         })
 
 
@@ -286,6 +347,12 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     private fun setLocations() {
+
+        var citiesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, states)
+        citiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newStateSpinner.adapter = citiesAdapter
+
+
 //        for (fac in FacilityDataModel.getInstance().tblAddress) {
 //            if (fac.LocationTypeID.toInt() == 1) {
 //                phyloc1addr1branchname.text = if (fac.BranchName.isNullOrEmpty()) "" else fac.BranchName
@@ -310,6 +377,7 @@ class FragmentARRAVLocation : Fragment() {
 //        progressbarLocation.visibility = View.INVISIBLE
     }
 
+
     fun validateInputs(): Boolean {
         var isInputsValid = true
 
@@ -317,10 +385,20 @@ class FragmentARRAVLocation : Fragment() {
 //        phyloc1addr2latitude.setError(null)
 //        phyloc1addr2longitude.setError(null)
         phyloc1addr1longitude.setError(null)
+        stateTextView.setError(null)
+
 
         if (phyloc1addr1latitude.text.toString().isNullOrEmpty()) {
             isInputsValid = false
             phyloc1addr1latitude.setError("Required Field")
+        }
+
+        if (newStateSpinner.selectedItem.toString().contains("select")){
+
+            isInputsValid = false
+            stateTextView.setError("required field")
+
+
         }
 
 //        if(loc1addr2latitude.text.toString().isNullOrEmpty()) {
@@ -383,16 +461,16 @@ class FragmentARRAVLocation : Fragment() {
                 textView2.text = get(it).PhoneNumber
                 tableRow.addView(textView2)
 
-                val textView3 = Button(context)
-                textView3.layoutParams = rowLayoutParam2
-                textView3.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
-                textView3.text = "Edit"
-                tableRow.addView(textView3)
+                val editPhoneBtn = Button(context)
+                editPhoneBtn.layoutParams = rowLayoutParam2
+                editPhoneBtn.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
+                editPhoneBtn.text = "Edit"
+                tableRow.addView(editPhoneBtn)
 
 
-                textView3.setOnClickListener(View.OnClickListener {
+                editPhoneBtn.setOnClickListener(View.OnClickListener {
 
-
+                    newChangesPhoneNoText.text.clear()
                     alphaBackgroundForDialogs.visibility = View.VISIBLE
                     editPhoneDialog.visibility = View.VISIBLE
                     phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
@@ -406,8 +484,15 @@ class FragmentARRAVLocation : Fragment() {
                     newPhoneTypeSpinner.adapter = phoneTypeAdapter
 
                     phoneSaveChangesButton.setOnClickListener(View.OnClickListener {
+
+                         if (newChangesPhoneNoText.text.isNullOrEmpty())  {
+                             newChangesPhoneNoText.setError("please enter required field")
+
+                             Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
+                         }
+                        else {
+                             val phoneNo =  newChangesPhoneNoText.text
                         val phoneTypeID = textView.text.toString()
-                        val phoneNo = if (newChangesPhoneNoText.text.isNullOrEmpty())  "" else newChangesPhoneNoText.text
                         val insertDate = Date().toAppFormat()
                         val insertBy ="sa"
                         val updateDate = Date().toAppFormat()
@@ -427,7 +512,6 @@ class FragmentARRAVLocation : Fragment() {
                                         contactInfoLoadingView.visibility = View.GONE
                                         textView2.setText(newChangesPhoneNoText.text.toString())
                                         Log.v("RESPONSE",response.toString())
-                                        Toast.makeText(context,"update date is : $updateDate  ///, insert date is =  $insertDate ",Toast.LENGTH_LONG).show()
 
                                     })
                                 }, Response.ErrorListener {
@@ -437,6 +521,7 @@ class FragmentARRAVLocation : Fragment() {
 
 
 
+                    }
                     })
 
                 })
@@ -705,6 +790,7 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun fillLocationTableView() {
+
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
@@ -949,6 +1035,8 @@ class FragmentARRAVLocation : Fragment() {
                         Log.v("RESPONSE",response.toString())
                         FacilityDataModel.getInstance().tblAddress.add(newLocation)
                         fillLocationTableView()
+                        addNewLocationDialog.visibility=View.GONE
+                        alphaBackgroundForDialogs.visibility=View.GONE
                     })
                 }, Response.ErrorListener {
             Log.v("error while submitting", it.message)
@@ -981,7 +1069,6 @@ class FragmentARRAVLocation : Fragment() {
                         Log.v("RESPONSE",response.toString())
                         FacilityDataModel.getInstance().tblPhone.add(newPhone)
                         fillPhoneTableView()
-                        Toast.makeText(context,"update date is : $updateDate  ///, insert date is =  $insertDate ",Toast.LENGTH_LONG).show()
 
                     })
                 }, Response.ErrorListener {

@@ -15,261 +15,306 @@
     tools:context="com.inspection.fragments.FragmentARRAVFacility">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white"
-        >
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/addNewLocationDialog"
+        app:cardElevation="10dp">
 
-        <android.support.v7.widget.CardView
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
+
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/firstRowColor"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Add New Location"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/locationSubmitButton"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:id="@+id/exitAddLocationDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:background="@drawable/close"
+            android:layout_gravity="top|right"
+            />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content"
+            android:padding="40dp">
+
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:text="Domestic"
-                    android:textStyle="bold"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_column="0"
+                    android:layout_marginTop="5dp"
+                    android:text="Location Type:*"
+                    android:textStyle="bold" />
 
-                    />
-
-
-
-                <com.inspection.Utils.ExpandableHeightGridView
-                    android:layout_margin="20dp"
-                    android:id="@+id/DomesticVehiclesListView"
+                <Spinner
+                    android:id="@+id/newLocTypeSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:horizontalSpacing="2dp"
-                    android:isScrollContainer="false"
-                    android:numColumns="4"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:ems="8" />
+            </TableRow>
 
+            <TableRow>
 
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_marginTop="5dp"
+                    android:text="Address 1:*"
+                    android:textStyle="bold" />
 
+                <EditText
+                    android:id="@+id/newLocAddr1Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
+            </TableRow>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
+            <TableRow>
 
-            android:layout_margin="3dp"
-            android:background="@color/light_gray" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_marginTop="5dp"
+                    android:text="Address 2:"
+                    android:textStyle="bold" />
 
+                <EditText
+                    android:id="@+id/newLocAddr2Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
+            </TableRow>
 
-        <android.support.v7.widget.CardView
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/firstRowColor"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+
+                    android:layout_marginTop="5dp"
+                    android:text="City:*"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/newLocCityText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_marginTop="5dp"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="3"
+                    android:layout_marginTop="5dp"
+                    android:text="Country:*"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/newLocCountryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_column="4"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_marginTop="5dp"
+                    android:text="State:*"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/newLocStateSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:ems="8" />
 
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Asian"
-                    android:textStyle="bold"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="5dp"
+                    android:layout_column="3"
 
-                    />
+                    android:layout_marginTop="5dp"
+                    android:text="Zip Code:*"
+                    android:textStyle="bold" />
 
-                <com.inspection.Utils.ExpandableHeightGridView
-                    android:id="@+id/AsianVehiclesListView"
+                <EditText
+                    android:id="@+id/newLocZipText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:horizontalSpacing="2dp"
-                    android:isScrollContainer="false"
-                    android:numColumns="4"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
+                    android:layout_height="30dp"
+                    android:layout_column="4"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:text=""
+                    android:textStyle="bold" />
+                <!--<EditText-->
+                <!--android:id="@+id/newLocZip4Text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:text=""-->
+                <!--android:layout_column="5"-->
+                <!--android:background="@drawable/textview_background"-->
+                <!--android:textStyle="bold"-->
+                <!--/>-->
+            </TableRow>
 
-
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-
-            android:layout_margin="3dp"
-            android:background="@color/light_gray" />
-
-        <android.support.v7.widget.CardView
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/firstRowColor"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="European"
-                    android:textStyle="bold"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="5dp"
+                    android:layout_column="0"
+                    android:layout_marginTop="5dp"
+                    android:text="Latitude:*"
+                    android:textStyle="bold" />
 
-                    />
-
-                <com.inspection.Utils.ExpandableHeightGridView
-                    android:id="@+id/EuropeanVehiclesListView"
+                <EditText
+                    android:id="@+id/newLocLatText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:horizontalSpacing="2dp"
-                    android:isScrollContainer="false"
-                    android:numColumns="4"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-
-            android:layout_margin="3dp"
-            android:background="@color/light_gray" />
-
-        <android.support.v7.widget.CardView
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/firstRowColor"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Exotic"
-                    android:textStyle="bold"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="5dp"
+                    android:layout_column="3"
 
-                    />
+                    android:layout_marginTop="5dp"
+                    android:text="Longitude:*"
+                    android:textStyle="bold" />
 
-                <com.inspection.Utils.ExpandableHeightGridView
-                    android:id="@+id/ExoticVehiclesListView"
+                <EditText
+                    android:id="@+id/newLocLongText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:horizontalSpacing="2dp"
-                    android:isScrollContainer="false"
-                    android:numColumns="4"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
+                    android:layout_height="30dp"
+                    android:layout_column="4"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
+            </TableRow>
 
-            android:layout_margin="3dp"
-            android:background="@color/light_gray" />
-
-
-        <android.support.v7.widget.CardView
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/firstRowColor"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Other Types"
-                    android:textStyle="bold"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="5dp"
+                    android:layout_column="0"
 
-                    />
+                    android:layout_marginTop="5dp"
+                    android:text="Branch Number:*"
+                    android:textStyle="bold" />
 
-                <com.inspection.Utils.ExpandableHeightGridView
-                    android:id="@+id/otherTypesVehiclesListView"
+                <EditText
+                    android:id="@+id/newLocBranchNoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:horizontalSpacing="2dp"
-                    android:isScrollContainer="false"
-                    android:numColumns="4"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
+                    android:layout_column="3"
 
-            android:layout_margin="3dp"
-            android:background="@color/light_gray" />
+                    android:layout_marginTop="5dp"
+                    android:text="Branch Name:*"
+                    android:textStyle="bold" />
 
-        <!--<ProgressBar-->
-        <!--android:id="@+id/progressbarVehicleServices"-->
-        <!--style="?android:attr/progressBarStyleHorizontal"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:indeterminate="true"-->
-        <!--android:max="100"-->
-        <!--android:layout_alignTop="@id/gridLinearId"-->
-        <!--android:backgroundTint="@color/white"-->
-        <!--android:indeterminateTint="#1a09d6"-->
-        <!--android:visibility="invisible"-->
-        <!--android:layout_marginTop="-10dp"/>-->
+                <EditText
+                    android:id="@+id/newLocBranchNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_column="4"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textview_background"
+                    android:ems="8"
+                    android:text=""
+                    android:textStyle="bold" />
+            </TableRow>
 
-    </LinearLayout>
+        </TableLayout>
+    </android.support.v7.widget.CardView>
 
 </ScrollView>

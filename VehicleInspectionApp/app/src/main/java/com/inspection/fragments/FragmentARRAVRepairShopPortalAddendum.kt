@@ -54,16 +54,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
-
-
-
-
-
-
-
-
         exitRSPDialogeBtnId.setOnClickListener({
 
             fillPortalTrackingTableView()
@@ -635,7 +625,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE",response.toString())
-                                        RSP_LoadingView.visibility = View.GONE
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate = edit_startDateButton.text.toString()
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate = "" + date
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal = "" + isLoggedInRsp
@@ -645,9 +634,9 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
 
-
+                                        RSP_LoadingView.visibility = View.GONE
                                         alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                        addNewAAR_PortalTrackingCard.visibility = View.GONE
+                                        edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
                                         fillPortalTrackingTableView()
                                         altLocationTableRow(2)
 

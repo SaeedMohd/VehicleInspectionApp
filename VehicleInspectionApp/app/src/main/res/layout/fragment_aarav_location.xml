@@ -26,6 +26,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/mainViewLinearId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp">
@@ -176,6 +177,7 @@
             </TableLayout>
 
             <RelativeLayout
+                android:id="@+id/mainViewLinearId2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -250,6 +252,7 @@
             </TableLayout>
 
             <RelativeLayout
+                android:id="@+id/mainViewLinearId3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -770,6 +773,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:id="@+id/stateTextView"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_marginTop="5dp"
@@ -777,7 +781,7 @@
                         android:textStyle="bold" />
 
                     <Spinner
-                        android:id="@+id/newLocStateSpinner"
+                        android:id="@+id/newStateSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"

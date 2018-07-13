@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -331,7 +332,13 @@ class FragmentARRAVFacility : Fragment() {
                 submitFacilityGeneralInfo()
                 submitPaymentMethods()
 
+                Toast.makeText(context,"inputs validated",Toast.LENGTH_SHORT).show()
 
+
+        }else
+
+            {
+                Toast.makeText(context,"please fill requred fields",Toast.LENGTH_SHORT).show()
             }
         }
 

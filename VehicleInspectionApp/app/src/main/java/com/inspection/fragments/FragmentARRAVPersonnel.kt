@@ -30,7 +30,6 @@ import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import org.json.JSONObject
