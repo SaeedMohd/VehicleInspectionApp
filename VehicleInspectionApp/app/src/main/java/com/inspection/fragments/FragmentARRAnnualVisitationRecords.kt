@@ -128,7 +128,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 reloadVisitationsList()
-                reloadVisitationsActions()
+            //    reloadVisitationsActions()
             }
         })
 
@@ -143,7 +143,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 reloadVisitationsList()
-                reloadVisitationsActions()
+            //    reloadVisitationsActions()
             }
 
         })
@@ -164,7 +164,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     visitationSpecialistName.setText(searchDialog.selectedString)
                 }
                 reloadVisitationsList()
-                reloadVisitationsActions()
+            //    reloadVisitationsActions()
             }
         })
 
@@ -190,7 +190,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                                     facilityNameButton.setText(searchDialog.selectedString)
                                 }
                                 reloadVisitationsList()
-                                reloadVisitationsActions()
+                      //          reloadVisitationsActions()
                             }
                         })
                     }, Response.ErrorListener {
@@ -204,30 +204,30 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
         annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-            reloadVisitationsActions()
+         //   reloadVisitationsActions()
         }
 
         quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-            reloadVisitationsActions()
+        //    reloadVisitationsActions()
         }
 
         adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-            reloadVisitationsActions()
+       //     reloadVisitationsActions()
         }
 
 
         deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-            reloadVisitationsActions()
+        //    reloadVisitationsActions()
         }
 
 
 
         pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             reloadVisitationsList()
-            reloadVisitationsActions()
+         //   reloadVisitationsActions()
         }
 
 
@@ -236,7 +236,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
 
             reloadVisitationsList()
-            reloadVisitationsActions()
+        //    reloadVisitationsActions()
 
         }
 
@@ -246,7 +246,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     activity!!.runOnUiThread(Runnable {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                         reloadVisitationsList()
-                        reloadVisitationsActions()
+                    //    reloadVisitationsActions()
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading",  "error while loading specialists")
@@ -263,7 +263,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             reloadVisitationsList()
-            reloadVisitationsActions()
+         //   reloadVisitationsActions()
 
         }
 
@@ -532,23 +532,45 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
                 override fun onResponse(call: Call?, response: okhttp3.Response?) {
 
+
                     var responseString = response!!.body()!!.string()
-                  //  activity!!.toast("success!!!")
-              //     recordsProgressView.visibility = View.INVISIBLE
 
+                      Log.v("qqqmain_http3", responseString)
 
-                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                    if (!responseString.contains("FacID not found")){
+                        Log.v("qqqhttp3_facilityID", "found")
+
+                        recordsProgressView.visibility = View.INVISIBLE
+
+                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                             var jsonObj = obj.getJSONObject("responseXml")
 
 
                              visitationsModel = parseVisitationsData(jsonObj)
 
-                            visitationLoaded=true
+                        activity!!.runOnUiThread {
 
-                    Log.v("qqqmain_http3", "response shown!!!!")
+                            visitationfacilityListView.visibility = View.VISIBLE
+                            visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                            visitationfacilityListView.adapter = visitationPlanningAdapter
+                            visitationPlanningAdapter.notifyDataSetChanged()
+
+                        }
+                     //   visitationLoaded=true
+                    } else {
+                        Log.v("qqqhttp3_facilityID_NOT", "NOT found")
+
+                       activity!!.runOnUiThread {
+                           Toast.makeText(activity, "Facility data not found", Toast.LENGTH_LONG).show();
+                           recordsProgressView.visibility = View.INVISIBLE
+                       }
+
+//                        context!!.toast("Facility data not found")
+                    }
 
 
-                    //    visitationfacilityListView.visibility = View.VISIBLE
+
+                        //    visitationfacilityListView.visibility = View.VISIBLE
                //     visitationfacilityListView.adapter = visitationPlanningAdapter
           //          visitationPlanningAdapter.notifyDataSetChanged()
 
@@ -965,7 +987,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                             Log.v("POPOOriginal", responseString)
 
                             recordsProgressView.visibility = View.GONE
-                            if (!responseString.contains("FacID not found")) {
+                            if (!responseString.contains("FacID not found"))
+                             {
                                 var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
                                         .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                                 var jsonObj = obj.getJSONObject("responseXml")
