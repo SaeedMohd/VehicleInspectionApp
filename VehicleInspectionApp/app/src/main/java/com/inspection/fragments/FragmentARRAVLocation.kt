@@ -101,62 +101,37 @@ class FragmentARRAVLocation : Fragment() {
         exitAddEmailDialogeBtnId.setOnClickListener({
                       addNewEmailDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
+            enableAllAddButnsAndDialog()
         })
         exitAddLocationDialogeBtnId.setOnClickListener({
             addNewLocationDialog.visibility = View.GONE
                      alphaBackgroundForDialogs.visibility = View.GONE
+            enableAllAddButnsAndDialog()
         })
         exitUpdatePhoneDialogeBtnId.setOnClickListener({
                    alphaBackgroundForDialogs.visibility = View.GONE
             editPhoneDialog.visibility = View.GONE
+            enableAllAddButnsAndDialog()
         })
         exitAddPhoneDialogeBtnId.setOnClickListener({
             addNewPhoneDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
+            enableAllAddButnsAndDialog()
         })
 
         addNewLocationButton.setOnClickListener({
-            for (i in 0 until mainViewLinearId.childCount) {
-                val child = mainViewLinearId.getChildAt(i)
-                child.isEnabled = false
-            }
 
-            for (i in 0 until mainViewLinearId2.childCount) {
-                val child = mainViewLinearId2.getChildAt(i)
-                child.isEnabled = false
-            }
-
-            for (i in 0 until mainViewLinearId3.childCount) {
-                val child = mainViewLinearId3.getChildAt(i)
-                child.isEnabled = false
-            }
-
-
-
-            var childViewCount = phoneTbl.getChildCount();
-
-            for ( i in 1..childViewCount-1) {
-                var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
-
-                for (j in 0..row.getChildCount()-1) {
-
-                    var tv : TextView= row.getChildAt(j) as TextView
-                    tv.isEnabled=false
-
-                }
-
-            }
-
-
-
+            disableAllAddButnsAndDialog()
             showLocationDialog()
         })
 
         addNewPhoneButton.setOnClickListener({
+            disableAllAddButnsAndDialog()
             showPhoneDialog()
         })
 
         addNewEmailButton.setOnClickListener {
+            disableAllAddButnsAndDialog()
             showEmailDialog()
         }
 
@@ -207,8 +182,8 @@ class FragmentARRAVLocation : Fragment() {
 
                 }else {
                     submitFacilityAddress()
-
-                }
+                    enableAllAddButnsAndDialog()
+                        }
 
         })
 
@@ -218,6 +193,7 @@ class FragmentARRAVLocation : Fragment() {
                 newPhoneNoText.setError("please enter phone number")
             } else {
                 submitFacilityPhone()
+                enableAllAddButnsAndDialog()
             }
         })
 
@@ -226,6 +202,7 @@ class FragmentARRAVLocation : Fragment() {
                 newEmailAddrText.setError("please enter email address")
             } else {
                 submitFacilityEmail()
+                enableAllAddButnsAndDialog()
             }
         })
 
@@ -236,6 +213,131 @@ class FragmentARRAVLocation : Fragment() {
 
 
         })
+    }
+
+    fun enableAllAddButnsAndDialog(){
+
+        for (i in 0 until mainViewLinearId.childCount) {
+            val child = mainViewLinearId.getChildAt(i)
+            child.isEnabled = true
+        }
+
+        for (i in 0 until mainViewLinearId2.childCount) {
+            val child = mainViewLinearId2.getChildAt(i)
+            child.isEnabled = true
+        }
+
+        for (i in 0 until mainViewLinearId3.childCount) {
+            val child = mainViewLinearId3.getChildAt(i)
+            child.isEnabled = true
+        }
+
+
+
+        var childViewCount = phoneTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                tv.isEnabled=true
+
+            }
+
+        }
+        var locationChildViewCount = locationTbl.getChildCount();
+
+        for ( i in 1..locationChildViewCount-1) {
+            var row : TableRow= locationTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                tv.isEnabled=true
+
+            }
+
+        }
+        var emailChildViewCount = emailTbl.getChildCount();
+
+        for ( i in 1..emailChildViewCount-1) {
+            var row : TableRow= emailTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                tv.isEnabled=true
+
+            }
+
+        }
+
+
+
+    }
+    fun disableAllAddButnsAndDialog(){
+
+        for (i in 0 until mainViewLinearId.childCount) {
+            val child = mainViewLinearId.getChildAt(i)
+            child.isEnabled = false
+        }
+
+        for (i in 0 until mainViewLinearId2.childCount) {
+            val child = mainViewLinearId2.getChildAt(i)
+            child.isEnabled = false
+        }
+
+        for (i in 0 until mainViewLinearId3.childCount) {
+            val child = mainViewLinearId3.getChildAt(i)
+            child.isEnabled = false
+        }
+
+
+
+        var childViewCount = phoneTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                tv.isEnabled=false
+
+            }
+
+        }
+        var locationChildViewCount = locationTbl.getChildCount();
+
+        for ( i in 1..locationChildViewCount-1) {
+            var row : TableRow= locationTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                tv.isEnabled=false
+
+            }
+
+        }
+        var emailChildViewCount = emailTbl.getChildCount();
+
+        for ( i in 1..emailChildViewCount-1) {
+            var row : TableRow= emailTbl.getChildAt(i) as TableRow;
+
+            for (j in 0..row.getChildCount()-1) {
+
+                var tv : TextView= row.getChildAt(j) as TextView
+                tv.isEnabled=false
+
+            }
+
+        }
+
+
+
     }
 
     private fun setServices() {
@@ -470,6 +572,7 @@ class FragmentARRAVLocation : Fragment() {
 
                 editPhoneBtn.setOnClickListener(View.OnClickListener {
 
+                    disableAllAddButnsAndDialog()
                     newChangesPhoneNoText.text.clear()
                     alphaBackgroundForDialogs.visibility = View.VISIBLE
                     editPhoneDialog.visibility = View.VISIBLE
@@ -484,6 +587,7 @@ class FragmentARRAVLocation : Fragment() {
                     newPhoneTypeSpinner.adapter = phoneTypeAdapter
 
                     phoneSaveChangesButton.setOnClickListener(View.OnClickListener {
+
 
                          if (newChangesPhoneNoText.text.isNullOrEmpty())  {
                              newChangesPhoneNoText.setError("please enter required field")
@@ -512,6 +616,7 @@ class FragmentARRAVLocation : Fragment() {
                                         contactInfoLoadingView.visibility = View.GONE
                                         textView2.setText(newChangesPhoneNoText.text.toString())
                                         Log.v("RESPONSE",response.toString())
+                                        enableAllAddButnsAndDialog()
 
                                     })
                                 }, Response.ErrorListener {
@@ -985,11 +1090,13 @@ class FragmentARRAVLocation : Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         Log.v("LANG_SUBMIT_RESPONSE",response.toString())
+                        Toast.makeText(context,"languages submited",Toast.LENGTH_SHORT).show()
 
 
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnal record")
+            Toast.makeText(context,"error submiting languages",Toast.LENGTH_SHORT).show()
 
         }))
     }
