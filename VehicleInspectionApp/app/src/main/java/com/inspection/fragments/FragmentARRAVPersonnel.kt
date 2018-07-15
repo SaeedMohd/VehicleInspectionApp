@@ -1621,16 +1621,16 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         certTypeTextView.setError(null)
 
 
-        var iscertInputValid=true
+        FacilityDataModel.TblPersonnel.iscertInputValid=true
 
 
         if (newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-            iscertInputValid = false
+            FacilityDataModel.TblPersonnel.iscertInputValid = false
             certDateTextView.setError("Required Field")
         }
         if (newCertTypeSpinner.selectedItem.toString().contains("Not")){
 
-            iscertInputValid=false
+            FacilityDataModel.TblPersonnel.iscertInputValid=false
             certTypeTextView.setError("required field")
 
 
@@ -1638,18 +1638,18 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
 
-        return iscertInputValid
+        return FacilityDataModel.TblPersonnel.iscertInputValid
     }
 
 
 
     fun validateInputs() : Boolean{
 
-        var isInputValid=true
+        FacilityDataModel.TblPersonnel.personnelIsInputsValid=true
 
         if (newFirstNameText.text.toString().isNullOrEmpty()){
 
-            isInputValid=false
+            FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
             newFirstNameText.setError("required field")
 
         }
@@ -1658,7 +1658,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
         if (newLastNameText.text.toString().isNullOrEmpty()){
 
-            isInputValid=false
+            FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
             newLastNameText.setError("required field")
 
 
@@ -1669,7 +1669,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
         if (newPersonnelTypeSpinner.selectedItem.toString().contains("Selected")){
 
-            isInputValid=false
+            FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
             personnelTypeTextViewId.setError("required field")
 
 
@@ -1683,7 +1683,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (newAdd1Text.text.toString().isNullOrEmpty()){
 
-                    isInputValid=false
+                    FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
                     newAdd1Text.setError("required field")
 
                 }
@@ -1692,7 +1692,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (newCityText.text.toString().isNullOrEmpty()){
 
-                    isInputValid=false
+                    FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
                     newCityText.setError("required field")
 
 
@@ -1702,7 +1702,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (newStateSpinner.selectedItem.toString().contains("select")){
 
-                    isInputValid=false
+                    FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
                     stateTextView.setError("required field")
 
 
@@ -1713,7 +1713,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (newZipText.text.toString().isNullOrEmpty()||zipFormat==false){
 
-                    isInputValid=false
+                    FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
                     newZipText.setError("required field")
 
 
@@ -1724,7 +1724,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (newPhoneText.text.toString().isNullOrEmpty()){
 
-                    isInputValid=false
+                    FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
                     newPhoneText.setError("required field")
 
 
@@ -1735,7 +1735,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (newCoStartDateBtn.text.toString().contains("SELECT")){
 
-                    isInputValid=false
+                    FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
                     newCoStartDateBtn.setError("required field")
 
 
@@ -1747,7 +1747,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (newEmailText.text.toString().isNullOrEmpty()||!emailFormatValidation(newEmailText.text.toString())){
 
-                    isInputValid=false
+                    FacilityDataModel.TblPersonnel.personnelIsInputsValid=false
                     newEmailText.setError("required field")
 
 
@@ -1771,7 +1771,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
 
-        return isInputValid
+        return FacilityDataModel.TblPersonnel.personnelIsInputsValid
     }
 
 

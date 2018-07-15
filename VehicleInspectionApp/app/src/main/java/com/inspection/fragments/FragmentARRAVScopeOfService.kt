@@ -188,7 +188,7 @@ Log.d("oooJSON2HERE", jsonObj2.toString());
     }
 
     fun validateInputs() : Boolean {
-        var isInputsValid = true
+        FacilityDataModel.TblScopeofService.isInputsValid = true
 
         fixedLaborRateEditText.setError(null)
         diagnosticRateEditText.setError(null)
@@ -198,28 +198,28 @@ Log.d("oooJSON2HERE", jsonObj2.toString());
 
 
         if(fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+            FacilityDataModel.TblScopeofService.isInputsValid=false
             fixedLaborRateEditText.setError("Required Field")
         }
 
         if(diagnosticRateEditText.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+            FacilityDataModel.TblScopeofService.isInputsValid=false
             diagnosticRateEditText.setError("Required Field")
         }
 
 
         if(laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+            FacilityDataModel.TblScopeofService.isInputsValid=false
             laborRateMatrixMaxEditText.setError("Required Field")
         }
 
         if(laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
-            isInputsValid=false
+            FacilityDataModel.TblScopeofService.isInputsValid=false
             laborRateMatrixMinEditText.setError("Required Field")
         }
 
 
-        return isInputsValid
+        return FacilityDataModel.TblScopeofService.isInputsValid
     }
 
 

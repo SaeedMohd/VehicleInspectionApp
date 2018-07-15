@@ -55,6 +55,13 @@ class FacilityDataModel {
     var tblFacilityPhotos = ArrayList<TblFacilityPhotos>()
 
     class TblFacilities {
+
+        companion object {
+
+            var isInputsValid = false
+
+        }
+
         var FACID = 0
         var FACNo = 0
         var BusinessName = ""
@@ -131,10 +138,17 @@ class FacilityDataModel {
     }
 
     class TblPaymentMethods {
+
+
         var PmtMethodID = ""
     }
 
     class TblAddress {
+        companion object {
+
+            var locIsInputsValid = false
+
+        }
         var LocationTypeID = ""
         var FAC_Addr1 = ""
         var FAC_Addr2 = ""
@@ -150,11 +164,21 @@ class FacilityDataModel {
     }
 
     class TblPhone {
+        companion object {
+
+            var phoneIsInputsValid = false
+
+        }
         var PhoneTypeID = ""
         var PhoneNumber = ""
     }
 
     class TblFacilityEmail {
+        companion object {
+
+            var emailIsInputsValid = false
+
+        }
         var emailTypeId = ""
         var email = ""
     }
@@ -190,6 +214,10 @@ class FacilityDataModel {
     }
 
     class TblPersonnel {
+        companion object {
+            var personnelIsInputsValid = false
+            var iscertInputValid = false
+        }
         var PersonnelTypeID=""
         var FirstName=""
         var LastName=""
@@ -222,6 +250,9 @@ class FacilityDataModel {
     }
 
     class TblAARPortalAdmin {
+        companion object {
+            var isInputsValid = false
+        }
         var startDate = ""
         var AddendumSigned = ""
         var CardReaders = ""
@@ -233,6 +264,9 @@ class FacilityDataModel {
     }
 
     class TblScopeofService {
+        companion object {
+            var isInputsValid = false
+        }
         var FixedLaborRate = ""
         var DiagnosticsRate = ""
         var LaborMin = ""
@@ -243,7 +277,9 @@ class FacilityDataModel {
     }
 
     class TblPrograms {
-
+        companion object {
+            var isInputsValid = false
+        }
         var ProgramTypeID = ""
         var programtypename = ""
         var effDate = ""
@@ -252,6 +288,9 @@ class FacilityDataModel {
     }
 
     class TblFacilityServices {
+        companion object {
+            var isInputsValid = false
+        }
         var ServiceID = ""
         var effDate = ""
         var expDate = ""
@@ -263,6 +302,9 @@ class FacilityDataModel {
     }
 
     class TblDeficiency {
+        companion object {
+            var isInputsValid = false
+        }
         var DefTypeID = ""
         var VisitationDate = ""
         var ClearedDate = ""

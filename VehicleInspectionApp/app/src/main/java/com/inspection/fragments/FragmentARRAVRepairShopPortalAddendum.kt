@@ -307,7 +307,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
     fun validateInputs() : Boolean {
-        var isInputsValid = true
+        FacilityDataModel.TblAARPortalAdmin.isInputsValid = true
 
         startDateButton.setError(null)
         endDateButton.setError(null)
@@ -322,13 +322,13 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         if (!startDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
 
             if (addendumSignedDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-                isInputsValid = false
+                FacilityDataModel.TblAARPortalAdmin.isInputsValid = false
                 addendumSignedDateButton.setError("Required Field")
             }
 
 
             if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
-                isInputsValid = false
+                FacilityDataModel.TblAARPortalAdmin.isInputsValid = false
                 numberOfCardsReaderEditText.setError("Required Field")
             }
 
@@ -338,23 +338,23 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
         if (inspectionDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-            isInputsValid = false
+            FacilityDataModel.TblAARPortalAdmin.isInputsValid = false
             inspectionDateButton.setError("Required Field")
         }
 
 
         if (numberOfUnacknowledgedRecordsEditText.text.toString().isNullOrEmpty()) {
-            isInputsValid = false
+            FacilityDataModel.TblAARPortalAdmin.isInputsValid = false
             numberOfUnacknowledgedRecordsEditText.setError("Required Field")
         }
 
         if (numberOfInProgressTwoIns.text.toString().isNullOrEmpty()) {
-            isInputsValid = false
+            FacilityDataModel.TblAARPortalAdmin.isInputsValid = false
             numberOfInProgressTwoIns.setError("Required Field")
         }
 
         if (numberOfInProgressWalkIns.text.toString().isNullOrEmpty()) {
-            isInputsValid = false
+            FacilityDataModel.TblAARPortalAdmin.isInputsValid = false
             numberOfInProgressWalkIns.setError("Required Field")
         }
 
@@ -363,7 +363,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
 
-        return isInputsValid
+        return FacilityDataModel.TblAARPortalAdmin.isInputsValid
     }
     fun validateInputsForUpdate() : Boolean {
         var isInputsValid = true

@@ -143,6 +143,7 @@ class FragmentARRAVLocation : Fragment() {
             // missing validation for states when the lookup is ready
 
             if (newStateSpinner.selectedItem.toString().contains("select")){
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 stateTextView.setError("required field")
 
             }    else
@@ -150,27 +151,35 @@ class FragmentARRAVLocation : Fragment() {
 
 
             if (newLocAddr1Text.text.isNullOrEmpty()) {
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 newLocAddr1Text.setError("please enter address 1")
             }
             if (newLocCityText.text.isNullOrEmpty()) {
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 newLocCityText.setError("please enter city")
             }
             if (newLocCountryText.text.isNullOrEmpty()) {
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 newLocCountryText.setError("please enter country")
             }
             if (newLocZipText.text.isNullOrEmpty()) {
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 newLocZipText.setError("please enter country")
             }
             if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty()) {
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 newLocLongText.setError("please enter longitude")
             }
             if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty()) {
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 newLocLatText.setError("please enter latitude")
             }
             if (newLocBranchNoText.text.isNullOrEmpty()) {
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 newLocBranchNoText.setError("please enter branch number")
             }
             if (newLocBranchNameText.text.isNullOrEmpty()) {
+                FacilityDataModel.TblAddress.locIsInputsValid=false
                 newLocBranchNameText.setError("please enter branch name")
             }
                 if (newLocAddr1Text.text.isNullOrEmpty()||newLocCityText.text.isNullOrEmpty()||newLocCountryText.text.isNullOrEmpty()
@@ -178,9 +187,11 @@ class FragmentARRAVLocation : Fragment() {
                 ||(newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty())
                 ||newLocBranchNoText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()
                 ||newStateSpinner.selectedItem.toString().contains("select")){
+                    FacilityDataModel.TblAddress.locIsInputsValid=false
                     Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
 
                 }else {
+                    FacilityDataModel.TblAddress.locIsInputsValid=true
                     submitFacilityAddress()
                     enableAllAddButnsAndDialog()
                         }
@@ -191,7 +202,9 @@ class FragmentARRAVLocation : Fragment() {
         phoneSubmitButton.setOnClickListener({
             if (newPhoneNoText.text.isNullOrEmpty()) {
                 newPhoneNoText.setError("please enter phone number")
+                FacilityDataModel.TblPhone.phoneIsInputsValid=false
             } else {
+                FacilityDataModel.TblPhone.phoneIsInputsValid=true
                 submitFacilityPhone()
                 enableAllAddButnsAndDialog()
             }
@@ -199,8 +212,10 @@ class FragmentARRAVLocation : Fragment() {
 
         emailSubmitButton.setOnClickListener({
             if (newEmailAddrText.text.isNullOrEmpty()) {
+                FacilityDataModel.TblFacilityEmail.emailIsInputsValid=false
                 newEmailAddrText.setError("please enter email address")
             } else {
+                FacilityDataModel.TblFacilityEmail.emailIsInputsValid=true
                 submitFacilityEmail()
                 enableAllAddButnsAndDialog()
             }
@@ -1096,7 +1111,7 @@ class FragmentARRAVLocation : Fragment() {
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnal record")
-            Toast.makeText(context,"error submiting languages",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,"error submitting languages",Toast.LENGTH_SHORT).show()
 
         }))
     }
