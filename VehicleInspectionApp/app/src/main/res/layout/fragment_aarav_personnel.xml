@@ -23,6 +23,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/mainViewLinearId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -177,6 +178,7 @@
             </TableLayout>
 
             <RelativeLayout
+                android:id="@+id/mainViewLinearId2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

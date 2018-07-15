@@ -87,6 +87,17 @@ class FragmentARRAVPersonnel : Fragment() {
         exitDialogeBtnId.setOnClickListener({
 
 
+            for (i in 0 until mainViewLinearId.childCount) {
+                val child = mainViewLinearId.getChildAt(i)
+                child.isEnabled = true
+            }
+
+            for (i in 0 until mainViewLinearId2.childCount) {
+                val child = mainViewLinearId2.getChildAt(i)
+                child.isEnabled = true
+            }
+
+
 
             addNewPersonnelDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
@@ -95,6 +106,17 @@ class FragmentARRAVPersonnel : Fragment() {
         })
         exitCertificateDialogeBtnId.setOnClickListener({
 
+            for (i in 0 until mainViewLinearId.childCount) {
+                val child = mainViewLinearId.getChildAt(i)
+                child.isEnabled = true
+            }
+
+            for (i in 0 until mainViewLinearId2.childCount) {
+                val child = mainViewLinearId2.getChildAt(i)
+                child.isEnabled = true
+            }
+
+
             addNewCertificateDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
 
@@ -102,6 +124,16 @@ class FragmentARRAVPersonnel : Fragment() {
         })
 
         AddNewCertBtn.setOnClickListener(View.OnClickListener {
+
+            for (i in 0 until mainViewLinearId.childCount) {
+                val child = mainViewLinearId.getChildAt(i)
+                child.isEnabled = false
+            }
+
+            for (i in 0 until mainViewLinearId2.childCount) {
+                val child = mainViewLinearId2.getChildAt(i)
+                child.isEnabled = false
+            }
 
             newCertTypeSpinner.setSelection(0)
             newCertStartDateBtn.setText("SELECT DATE")
@@ -117,6 +149,18 @@ class FragmentARRAVPersonnel : Fragment() {
 
         })
         addNewPersnRecordBtn.setOnClickListener(View.OnClickListener {
+
+            for (i in 0 until mainViewLinearId.childCount) {
+                val child = mainViewLinearId.getChildAt(i)
+                child.isEnabled = false
+            }
+
+            for (i in 0 until mainViewLinearId2.childCount) {
+                val child = mainViewLinearId2.getChildAt(i)
+                child.isEnabled = false
+            }
+
+
             newFirstNameText.setText("")
             newLastNameText.setText("")
             newCertNoText.setText("")
@@ -273,6 +317,17 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 addTheLatestRowOfPortalAdmin()
 
+                for (i in 0 until mainViewLinearId.childCount) {
+                    val child = mainViewLinearId.getChildAt(i)
+                    child.isEnabled = true
+                }
+
+                for (i in 0 until mainViewLinearId2.childCount) {
+                    val child = mainViewLinearId2.getChildAt(i)
+                    child.isEnabled = true
+                }
+
+
 
                 var urlString = ""
                 Log.v("Data To Submit", urlString)
@@ -301,27 +356,6 @@ class FragmentARRAVPersonnel : Fragment() {
 
         })
         submitNewPersnRecordBtn.setOnClickListener({
-
-
-//
-//            newPhoneText.isEnabled = false
-//            newZipText.isEnabled = false
-//            newCityText.isEnabled = false
-//            newAdd1Text.isEnabled = false
-//            newStateSpinner.isEnabled = false
-//            newZipText2.isEnabled = false
-//            newAdd2Text.isEnabled = false
-//            stateTextView.isEnabled = false
-//            phoneTextId.isEnabled = false
-//            zipCodeTextId.isEnabled = false
-//            emailAddressTextId.isEnabled = false
-//            contractSignerStartDateTextId.isEnabled = false
-//            contractSignerEndDateTextId.isEnabled = false
-//            newCoEndDateBtn.isEnabled = false
-//            cityTextId.isEnabled = false
-//            address2TextId.isEnabled = false
-//            address1TextId.isEnabled = false
-//
 
             if (validateInputs()){
                 addNewPersonnelDialogue.visibility=View.GONE
@@ -380,6 +414,17 @@ class FragmentARRAVPersonnel : Fragment() {
 
                             addTheLatestRowOfPersonnelTable()
                             personnelLoadingView.visibility = View.GONE
+
+                            for (i in 0 until mainViewLinearId.childCount) {
+                                val child = mainViewLinearId.getChildAt(i)
+                                child.isEnabled = true
+                            }
+
+                            for (i in 0 until mainViewLinearId2.childCount) {
+                                val child = mainViewLinearId2.getChildAt(i)
+                                child.isEnabled = true
+                            }
+
 
                         })
                     }, Response.ErrorListener {
