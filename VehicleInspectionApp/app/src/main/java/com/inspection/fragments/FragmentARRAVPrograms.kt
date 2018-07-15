@@ -564,7 +564,9 @@ class FragmentARRAVPrograms : Fragment() {
 //    }
 
     fun validateInputs(): Boolean {
-        FacilityDataModel.TblPrograms.isInputsValid = true
+
+        var programValide= FacilityDataModel.TblPrograms().isInputsValid
+        programValide = true
 
         effective_date_textviewVal.setError(null)
         comments_editTextVal.setError(null)
@@ -572,7 +574,7 @@ class FragmentARRAVPrograms : Fragment() {
 
 
         if (effective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
-            FacilityDataModel.TblPrograms.isInputsValid = false
+            programValide = false
             effective_date_textviewVal.setError("Required Field")
         }
 
@@ -582,11 +584,11 @@ class FragmentARRAVPrograms : Fragment() {
 //        }
 
         if (comments_editTextVal.text.toString().isNullOrEmpty()) {
-            FacilityDataModel.TblPrograms.isInputsValid = false
+            programValide = false
             comments_editTextVal.setError("Required Field")
         }
 
-        return FacilityDataModel.TblPrograms.isInputsValid
+        return  programValide
     }
 
 

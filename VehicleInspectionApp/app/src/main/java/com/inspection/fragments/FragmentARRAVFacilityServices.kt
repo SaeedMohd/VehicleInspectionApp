@@ -313,24 +313,26 @@ class FragmentARRAVFacilityServices : Fragment() {
 
 
     fun validateInputs() : Boolean {
-        FacilityDataModel.TblFacilityServices.isInputsValid = true
+
+        var facServicesValide=FacilityDataModel.TblFacilityServices().isInputsValid
+        facServicesValide = true
 
         fceffective_date_textviewVal.setError(null)
         fc_servicestextViewToCheckSpinner.setError(null)
 
         if(fceffective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
-            FacilityDataModel.TblFacilityServices.isInputsValid=false
+            facServicesValide = false
             fceffective_date_textviewVal.setError("Required Field")
         }
 
 
         if(fc_services_textviewVal.selectedItem.toString().contains("select")) {
-            FacilityDataModel.TblFacilityServices.isInputsValid=false
+            facServicesValide = false
             fc_servicestextViewToCheckSpinner.setError("Required Field")
         }
 
 
-        return FacilityDataModel.TblFacilityServices.isInputsValid
+        return facServicesValide
     }
 
 

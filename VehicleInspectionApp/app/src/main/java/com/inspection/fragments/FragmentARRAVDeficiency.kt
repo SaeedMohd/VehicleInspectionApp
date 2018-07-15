@@ -514,7 +514,9 @@ class FragmentARRAVDeficiency : Fragment() {
 
 
     fun validateInputs() : Boolean {
-        FacilityDataModel.TblDeficiency.isInputsValid = true
+
+        var defValide=FacilityDataModel.TblDeficiency().isInputsValid
+        defValide = true
 
         newVisitationDateBtn.setError(null)
         signatureDateBtn.setError(null)
@@ -522,7 +524,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
 
         if(newVisitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-            FacilityDataModel.TblDeficiency.isInputsValid=false
+            defValide = false
             newVisitationDateBtn.setError("Required Field")
         }
 
@@ -531,7 +533,7 @@ class FragmentARRAVDeficiency : Fragment() {
             if (!fac.ClearedDate.isNullOrEmpty()) {
 
                 if (signatureDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-                    FacilityDataModel.TblDeficiency.isInputsValid=false
+                    defValide = false
                     signatureDateBtn.setError("Required Field")
                 }
 
@@ -543,7 +545,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 if (facilityRepresentativeDeficienciesSignatureButton.text.toString() == "ADD SIGNATURE" ||
                         facilityRepresentativeDeficienciesSignatureButton.text.toString() =="Add Signature") {
 
-                    FacilityDataModel.TblDeficiency.isInputsValid=false
+                    defValide = false
                     facilityRepresentativeDeficienciesSignatureButton.setError("required field")
 
                 }
@@ -551,7 +553,7 @@ class FragmentARRAVDeficiency : Fragment() {
             }
 
         }
-        return  FacilityDataModel.TblDeficiency.isInputsValid
+        return  defValide
 
     }
 

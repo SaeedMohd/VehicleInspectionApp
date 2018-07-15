@@ -647,22 +647,6 @@
                     <!--/>-->
                 <!--</TableRow>-->
             <!--</TableLayout>-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal">
-                <Button
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="save"
-                    android:textColor="@color/white"
-                    android:background="@drawable/green_background_button"
-                    android:id="@+id/saveBtnId"/>
-            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

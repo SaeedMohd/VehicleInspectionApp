@@ -385,7 +385,9 @@ class FragmentARRAVFacility : Fragment() {
     }
     fun validateInputs() : Boolean{
 
-        FacilityDataModel.TblFacilities.isInputsValid=true
+        var facValide=FacilityDataModel.TblFacilities().isInputsValid
+
+        facValide=true
 
         timezone_textview.setError(null)
         repairorder_textviewVal.setError(null)
@@ -399,29 +401,29 @@ class FragmentARRAVFacility : Fragment() {
 
         if (timezone_textviewVal.selectedItem.toString().isNullOrEmpty()){
             timezone_textview.setError("reqiured field")
-            FacilityDataModel.TblFacilities.isInputsValid=false
+            facValide=false
 
         }
         if (facilitytype_textviewVal.selectedItem.toString().isNullOrEmpty()){
             facilitytype_textview.setError("reqiured field")
-            FacilityDataModel.TblFacilities.isInputsValid=false
+            facValide=false
         }
         if (availability_textviewVal.selectedItem.toString().isNullOrEmpty()){
             availability_textview.setError("reqiured field")
-            FacilityDataModel.TblFacilities.isInputsValid=false
+            facValide=false
         }
         if (repairorder_textviewVal.text.toString().isNullOrEmpty()){
             repairorder_textviewVal.setError("reqiured field")
-            FacilityDataModel.TblFacilities.isInputsValid=false
+            facValide=false
         }
 
         if (shopManagmentSystem_textviewVal.text.toString().isNullOrEmpty()){
             shopManagmentSystem_textviewVal.setError("reqiured field")
-            FacilityDataModel.TblFacilities.isInputsValid=false
+            facValide=false
         }
         if (ARDexp_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             ARDexp_textviewVal.setError("Required Field")
-            FacilityDataModel.TblFacilities.isInputsValid=false
+            facValide=false
         }
 
         if (americanexpress_checkbox.isChecked==false &&
@@ -435,7 +437,7 @@ class FragmentARRAVFacility : Fragment() {
                 visa_checkbox.isChecked==false){
 
             payment_methods_textview.setError("Required Field")
-            FacilityDataModel.TblFacilities.isInputsValid=false
+            facValide=false
 
         }
 
@@ -452,7 +454,7 @@ class FragmentARRAVFacility : Fragment() {
 ////                InsuranceExpDate_textviewVal.error = ""
 //            }
 //        }
-        return FacilityDataModel.TblFacilities.isInputsValid
+        return facValide
     }
 
 

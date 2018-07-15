@@ -142,8 +142,10 @@ class FragmentARRAVLocation : Fragment() {
         locationSubmitButton.setOnClickListener({
             // missing validation for states when the lookup is ready
 
+            var location =FacilityDataModel.TblAddress().locIsInputsValid
+
             if (newStateSpinner.selectedItem.toString().contains("select")){
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 stateTextView.setError("required field")
 
             }    else
@@ -151,35 +153,35 @@ class FragmentARRAVLocation : Fragment() {
 
 
             if (newLocAddr1Text.text.isNullOrEmpty()) {
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 newLocAddr1Text.setError("please enter address 1")
             }
             if (newLocCityText.text.isNullOrEmpty()) {
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 newLocCityText.setError("please enter city")
             }
             if (newLocCountryText.text.isNullOrEmpty()) {
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 newLocCountryText.setError("please enter country")
             }
             if (newLocZipText.text.isNullOrEmpty()) {
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 newLocZipText.setError("please enter country")
             }
             if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty()) {
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 newLocLongText.setError("please enter longitude")
             }
             if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty()) {
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 newLocLatText.setError("please enter latitude")
             }
             if (newLocBranchNoText.text.isNullOrEmpty()) {
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 newLocBranchNoText.setError("please enter branch number")
             }
             if (newLocBranchNameText.text.isNullOrEmpty()) {
-                FacilityDataModel.TblAddress.locIsInputsValid=false
+                location=false
                 newLocBranchNameText.setError("please enter branch name")
             }
                 if (newLocAddr1Text.text.isNullOrEmpty()||newLocCityText.text.isNullOrEmpty()||newLocCountryText.text.isNullOrEmpty()
@@ -187,11 +189,11 @@ class FragmentARRAVLocation : Fragment() {
                 ||(newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty())
                 ||newLocBranchNoText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()
                 ||newStateSpinner.selectedItem.toString().contains("select")){
-                    FacilityDataModel.TblAddress.locIsInputsValid=false
+                    location=false
                     Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
 
                 }else {
-                    FacilityDataModel.TblAddress.locIsInputsValid=true
+                    location=true
                     submitFacilityAddress()
                     enableAllAddButnsAndDialog()
                         }
@@ -200,22 +202,26 @@ class FragmentARRAVLocation : Fragment() {
 
 
         phoneSubmitButton.setOnClickListener({
+
+            var phoneValide=FacilityDataModel.TblPhone().phoneIsInputsValid
             if (newPhoneNoText.text.isNullOrEmpty()) {
                 newPhoneNoText.setError("please enter phone number")
-                FacilityDataModel.TblPhone.phoneIsInputsValid=false
+                phoneValide=false
             } else {
-                FacilityDataModel.TblPhone.phoneIsInputsValid=true
+                phoneValide=true
                 submitFacilityPhone()
                 enableAllAddButnsAndDialog()
             }
         })
 
         emailSubmitButton.setOnClickListener({
+
+            var emailValid=FacilityDataModel.TblFacilityEmail().emailIsInputsValid
             if (newEmailAddrText.text.isNullOrEmpty()) {
-                FacilityDataModel.TblFacilityEmail.emailIsInputsValid=false
+                emailValid=false
                 newEmailAddrText.setError("please enter email address")
             } else {
-                FacilityDataModel.TblFacilityEmail.emailIsInputsValid=true
+                emailValid=true
                 submitFacilityEmail()
                 enableAllAddButnsAndDialog()
             }
