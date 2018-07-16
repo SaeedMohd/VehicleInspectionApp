@@ -64,6 +64,7 @@ object Constants {
     val submitFacilityAddress = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityAddressData?facnum="
     val submitFacilityPhone = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPhoneData?facNum="
     //AAA APIs WebServices
+    val getClubCodes = "http://144.217.24.163:5000/getClubCodes?clubCode="
     val getFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=%d&clubcode=%s"
     val getCopyFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=2518&clubcode=004"
     val getTypeTables = "https://dev.facilityappointment.com/ACEAPI.asmx/GetTypeTables"

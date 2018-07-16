@@ -17,7 +17,6 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
-import com.inspection.model.SUBMITIONS.ScopeOfService
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -41,14 +40,6 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     var warrantyArray = emptyArray<String>()
 
-    var saved_fixedLaborRate=""
-    var saved_diagnosticLaborRate=""
-    var saved_laborRateMatrixMax=""
-    var saved_laborRateMatrixMin=""
-    var saved_numberOfBaysEditText=""
-    var saved_numberOfLiftsEditText=""
-
-
 
 
     private var mListener: OnFragmentInteractionListener? = null
@@ -60,15 +51,15 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_arrav_scope_of_service   , container, false)
+        return inflater!!.inflate(R.layout.fragment_arrav_scope_of_service, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        scopeOfServicesChangesMade=false
+        scopeOfServicesChangesMade = false
 
-        var warrantyArray= arrayOf("12/12/", "24/24", "36/36", "48/48", "60/60", "Lifetime")
+        var warrantyArray = arrayOf("12/12/", "24/24", "36/36", "48/48", "60/60", "Lifetime")
         var warrantyAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, warrantyArray)
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
@@ -80,8 +71,8 @@ class FragmentARRAVScopeOfService : Fragment() {
         setFields()
     }
 
-    fun setFields(){
-        if (FacilityDataModel.getInstance().tblScopeofService.size > 0){
+    fun setFields() {
+        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
             FacilityDataModel.getInstance().tblScopeofService[0].apply {
                 fixedLaborRateEditText.setText(FixedLaborRate)
                 diagnosticRateEditText.setText(DiagnosticsRate)
@@ -121,63 +112,42 @@ class FragmentARRAVScopeOfService : Fragment() {
 //            }))
 //    }
 
-    fun saveBtnPressed(){
+    fun saveBtnPressed() {
 
 
         saveBtnId.setOnClickListener(View.OnClickListener {
 
-            if (validateInputs()){
+            if (validateInputs()) {
 
-                var fixedLaborRate=fixedLaborRateEditText.text.toString()
-                var diagnosticLaborRate=diagnosticRateEditText.text.toString()
-                var laborRateMatrixMax=laborRateMatrixMaxEditText.text.toString()
-                var laborRateMatrixMin=laborRateMatrixMinEditText.text.toString()
-                var numberOfBaysEditText=numberOfBaysEditText.text.toString()
-                var numberOfLiftsEditText=numberOfLiftsEditText.text.toString()
+                var fixedLaborRate = fixedLaborRateEditText.text.toString()
+                var diagnosticLaborRate = diagnosticRateEditText.text.toString()
+                var laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
+                var laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
+                var numberOfBaysEditText = numberOfBaysEditText.text.toString()
+                var numberOfLiftsEditText = numberOfLiftsEditText.text.toString()
 
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE",response.toString())
-                            //    Toast.makeText(context,"changes saved in DB",Toast.LENGTH_SHORT).show()
+                                Log.v("RESPONSE", response.toString())
+                                //    Toast.makeText(context,"changes saved in DB",Toast.LENGTH_SHORT).show()
 
-                               var jsonObj : JSONObject?  = null;
-                               var jsonObj2 : JSONObject?  = null;
-                               var obj : JSONObject?  = null;
-                               var obj2 : JSONObject?  = null;
-try {
+                                var jsonObj: JSONObject? = null;
+                                var jsonObj2: JSONObject? = null;
+                                var obj: JSONObject? = null;
+                                var obj2: JSONObject? = null;
+                                try {
 
-    obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-    obj2 = XML.toJSONObject(response.toString())
-    jsonObj = obj.getJSONObject("responseXml")
-    jsonObj2 = obj.getJSONObject("ScopeofService")
-
-
-} catch ( e : JSONException) {
-    Log.e("JSON exception", e.message);
-    e.printStackTrace();
-}
-
-Log.d("oooXMLHERE", response.toString());
-
-Log.d("oooJSONHERE", jsonObj.toString());
-Log.d("oooJSON2HERE", jsonObj2.toString());
-                                Log.d("oooOBJ_WITHOUTKEY", obj.toString())
-                                Log.d("oooOBJ_WITHOUT_SUB", obj2.toString())
+                                    obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                                    obj2 = XML.toJSONObject(response.toString())
+                                    jsonObj = obj.getJSONObject("responseXml")
+                                    jsonObj2 = obj.getJSONObject("ScopeofService")
 
 
-
-
-                                ScopeOfService.setInstance(Gson().fromJson<ScopeOfService>(jsonObj!!.get("ScopeofService").toString(), ScopeOfService::class.java))
-
-
-
-                                saved_fixedLaborRate=fixedLaborRate
-                                 saved_diagnosticLaborRate=diagnosticLaborRate
-                                 saved_laborRateMatrixMax=laborRateMatrixMax
-                                 saved_laborRateMatrixMin=laborRateMatrixMin
-                                 saved_numberOfBaysEditText=numberOfBaysEditText
-                                 saved_numberOfLiftsEditText=numberOfLiftsEditText
+                                } catch (e: JSONException) {
+                                    Log.e("JSON exception", e.message);
+                                    e.printStackTrace();
+                                }
 
                             })
                         }, Response.ErrorListener {
@@ -187,9 +157,9 @@ Log.d("oooJSON2HERE", jsonObj2.toString());
         })
     }
 
-    fun validateInputs() : Boolean {
+    fun validateInputs(): Boolean {
 
-        var scopeOfServiceValide=FacilityDataModel.TblScopeofService().isInputsValid
+        var scopeOfServiceValide = FacilityDataModel.TblScopeofService().isInputsValid
         scopeOfServiceValide = true
 
         fixedLaborRateEditText.setError(null)
@@ -199,23 +169,23 @@ Log.d("oooJSON2HERE", jsonObj2.toString());
         laborRateMatrixMinEditText.setError(null)
 
 
-        if(fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
+        if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             fixedLaborRateEditText.setError("Required Field")
         }
 
-        if(diagnosticRateEditText.text.toString().isNullOrEmpty()) {
+        if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             diagnosticRateEditText.setError("Required Field")
         }
 
 
-        if(laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+        if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             laborRateMatrixMaxEditText.setError("Required Field")
         }
 
-        if(laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+        if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             laborRateMatrixMinEditText.setError("Required Field")
         }

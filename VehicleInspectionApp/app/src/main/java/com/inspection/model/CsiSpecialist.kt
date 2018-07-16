@@ -8,4 +8,5 @@ class CsiSpecialist {
     var id = -1
     var accspecid = ""
     var specialistname = ""
+    var clubcode = ""
 }

@@ -62,7 +62,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     var requiredSpecialistName = ""
     var visitationsModel: VisitationsModel = VisitationsModel()
     var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-
+    var allClubCodes = ArrayList<String>()
+    var specialistClubCodes = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +84,60 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         visitationfacilityListView.visibility = View.GONE
 
 
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
+                Response.Listener { response ->
+                    Log.v("****response", response)
+                    activity!!.runOnUiThread(Runnable {
+                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+
+                        Log.v("loading user"," request: "+Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail)
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread(Runnable {
+
+                                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+                                        if (specialistName != null && specialistName.size > 0) {
+                                            requiredSpecialistName = specialistName[0].specialistname
+
+                                            for (sn in specialistName){
+                                                specialistClubCodes.add(sn.clubcode)
+                                            }
+
+                                            visitationSpecialistName.setText(requiredSpecialistName)
+                                        }
+
+                                        firstLoadingCompleted()
+                                    })
+
+
+                                }, Response.ErrorListener {
+                            Log.v("error while loading", "error while loading facilities")
+                            Log.v("Loading error", "" + it.message)
+                        }))
+
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading specialists")
+            Log.v("Loading error", "" + it.message)
+        }))
+
+
+    }
+
+    val spinnersOnItemSelectListener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            reloadVisitationsList()
+        }
+
+    }
+
+    fun firstLoadingCompleted(){
+
+
         var visitationYearFilterSpinnerEntries = mutableListOf<String>()
         var currentYear = Calendar.getInstance().get(Calendar.YEAR)
 //        visitationYearFilterSpinnerEntries.add    ("Any")
@@ -94,25 +149,11 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
         visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
-        clubCodeEditText.setText("004")
+        visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
+        visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
-
-        if (isVisitationPlanning) {
-
-            loadSpecialistName()
-            visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
-            visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-
-            visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
-            visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-        } else {
-
-            visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
-            visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-
-            visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
-            visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-        }
+        visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
+        visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
         progressBarRecords.indeterminateDrawable.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
 
@@ -141,7 +182,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 reloadVisitationsList()
-                
+
             }
 
         })
@@ -227,35 +268,12 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
 
             reloadVisitationsList()
-            
+
 
         }
 
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
-                Response.Listener { response ->
-                    Log.v("****response", response)
-                    activity!!.runOnUiThread(Runnable {
-                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                        reloadVisitationsList()
-                        
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading specialists")
-            Log.v("Loading error", "" + it.message)
-        }))
 
-        firstLoading = false
-    }
-
-    val spinnersOnItemSelectListener = object : AdapterView.OnItemSelectedListener {
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-        }
-
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            reloadVisitationsList()
-        }
-
+        reloadVisitationsList()
     }
 
     fun reloadVisitationsList() {
@@ -396,6 +414,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                     Log.v("failure http", "failed with exception : " + e!!.message)
                     activity!!.runOnUiThread(Runnable {
                         activity!!.toast("Error while loading large data")
+
                         recordsProgressView.visibility = View.INVISIBLE
 
 
@@ -479,6 +498,19 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         }
 
         return visitationsModel
+    }
+
+    fun loadClubCodes() {
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
+                Response.Listener { response ->
+                    var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
+                    allClubCodes.clear()
+                    for (cc in clubCodeModels) {
+                        allClubCodes.add(cc.clubCode)
+                    }
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading club codes")
+        }))
     }
 
     fun loadSpecialistName() {
