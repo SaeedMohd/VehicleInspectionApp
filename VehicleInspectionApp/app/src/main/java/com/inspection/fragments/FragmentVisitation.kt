@@ -97,7 +97,7 @@ class FragmentVisitation : Fragment() {
 
         setFieldsValues()
 
-        visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons))
+        visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons).sorted())
 
 
 //            textWatcherSignature.setText(facilityRepresentativesSpinner.selectedItem.toString())
@@ -118,9 +118,18 @@ class FragmentVisitation : Fragment() {
         }
         if (adhocVisitationType.isChecked) {
             visitationReasonDropListId.setSelection(0)
-
-
         }
+
+        if (adhocVisitationType.isChecked){
+            visitationReasonDropListId.isEnabled = true
+            visitationReasonDropListId.isClickable= true
+        }else{
+            visitationReasonDropListId.isEnabled = false
+            visitationReasonDropListId.isClickable= false
+        }
+
+
+
         cancelBtnPressed()
 
         facilityRepresentativeSignatureButton.setOnClickListener {
