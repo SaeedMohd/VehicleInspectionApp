@@ -24,6 +24,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.Utils.Constants.UpdateAARPortalAdminData
+import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.model.FacilityDataModelOrg
 
 
 /**
@@ -267,9 +269,25 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 fillPortalTrackingTableView()
                                 altLocationTableRow(2)
 
-                                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
 
-                                Toast.makeText(context,facilityNo,Toast.LENGTH_SHORT).show()
+                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
+                                var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
+                                for (itemAr in itemArray){
+                                    for (itemOrgAr in itemOrgArray){
+
+                                        if (itemAr.startDate!=itemOrgAr.startDate||itemAr.PortalInspectionDate!=itemOrgAr.PortalInspectionDate||
+                                                itemAr.LoggedIntoPortal!=itemOrgAr.LoggedIntoPortal||
+                                                itemAr.InProgressTows!=itemOrgAr.InProgressTows||
+                                                itemAr.InProgressWalkIns!=itemOrgAr.InProgressWalkIns||
+                                                itemAr.NumberUnacknowledgedTows!=itemOrgAr.NumberUnacknowledgedTows||
+                                                itemAr.CardReaders!=itemOrgAr.CardReaders||
+                                                itemAr.AddendumSigned!=itemOrgAr.AddendumSigned){
+                                            MarkChangeWasDone()
+                                            Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
+                                        }
+
+                                    }
+                                }
 
 
                             })
@@ -623,6 +641,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE",response.toString())
+
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate = edit_startDateButton.text.toString()
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate = "" + date
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal = "" + isLoggedInRsp
@@ -632,11 +651,37 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
 
+
+                                    if (
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate !=FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate ||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressTows||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressWalkIns != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressWalkIns||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].NumberUnacknowledgedTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].NumberUnacknowledgedTows||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned
+
+                                    ) {
+
+                                        MarkChangeWasDone()
+                                        Toast.makeText(context,"changes was done",Toast.LENGTH_SHORT).show()
+                                    }else{
+                                        Toast.makeText(context,"No changes made",Toast.LENGTH_SHORT).show()
+
+                                    }
+
+
+
+
                                         RSP_LoadingView.visibility = View.GONE
                                         alphaBackgroundForRSPDialogs.visibility = View.GONE
                                         edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
                                         fillPortalTrackingTableView()
                                         altLocationTableRow(2)
+
+
+
 
                                     })
                                 }, Response.ErrorListener {

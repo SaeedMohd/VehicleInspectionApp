@@ -22,10 +22,7 @@ import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateProgramsData
-import com.inspection.model.AAAFacilityPrograms
-import com.inspection.model.AAAProgramTypes
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.text.DateFormat
@@ -209,9 +206,24 @@ class FragmentARRAVPrograms : Fragment() {
                                 FacilityDataModel.getInstance().tblPrograms.add(item)
                                 addTheLatestRowOfPortalAdmin()
 
+
                                 programCard.visibility=View.GONE
                                 alphaBackgroundForProgramDialogs.visibility = View.GONE
 
+                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblPrograms
+                                var itemArray = FacilityDataModel.getInstance().tblPrograms
+                                for (itemAr in itemArray){
+                                    for (itemOrgAr in itemOrgArray){
+
+                                        if (itemAr.Comments!=itemOrgAr.Comments||itemAr.expDate!=itemOrgAr.expDate||
+                                                itemAr.effDate!=itemOrgAr.effDate||
+                                                itemAr.ProgramTypeID!=itemOrgAr.ProgramTypeID){
+                                            MarkChangeWasDone()
+                                            Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
+                                        }
+
+                                    }
+                                }
 
 
                             })
@@ -276,6 +288,8 @@ class FragmentARRAVPrograms : Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         facilityProgramsList = Gson().fromJson(response.toString(), Array<AAAFacilityPrograms>::class.java).toCollection(ArrayList())
+
+
 //                            drawProgramsTable()
                         //          BuildProgramsList()
                     })
