@@ -1,16 +1,12 @@
 package com.inspection.fragments
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.FileProvider
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -30,11 +26,6 @@ import android.text.TextUtils
 import android.util.Patterns
 import android.view.Gravity
 import androidx.core.view.setPadding
-import com.inspection.MainActivity
-import com.inspection.Utils.toast
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 
 
 /**
@@ -47,10 +38,12 @@ import java.io.IOException
  */
 class FragmentVisitation : Fragment() {
 
-    var facilityRepresentativeSignatureBitmap: Bitmap? = null
-    var automotiveSpecialistSignatureBitmap: Bitmap? = null
-    var facilityRepresentativeDeficienciesSignatureBitmap: Bitmap? = null
-    var waiverSignatureBitmap: Bitmap? = null
+    var isFacilityRepresentativeSignatureInitialized = false
+    var isAutomotiveSpecialistSignatureInitialized = false
+    var isWaiverSignatureInitialized = false
+    var isFacilityRepresentativeDeficiencySignatureInitialized = false
+
+    var facilityRepresentativeNames = ArrayList<String>()
 
     enum class requestedSignature {
         representative, specialist, representativeDeficiency, waiver
@@ -73,40 +66,42 @@ class FragmentVisitation : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initializeFields()
+        setFieldsValues()
+        setFieldsListeners()
+
+
+    }
+
+    private fun initializeFields() {
         annualVisitationType.isClickable = false
+        annualVisitationType.isEnabled = false
 
         quarterlyVisitationType.isClickable = false
+        quarterlyVisitationType.isEnabled = false
 
         adhocVisitationType.isClickable = false
         dataChangedYesRadioButton.isClickable = false
 
+        adhocVisitationType.isEnabled = false
 
 
         dateOfVisitationButton.isClickable = false
         dataChangedNoRadioButton.isClickable = false
         clubCodeEditText.isClickable = false
 
-        if (FragmentARRAVScopeOfService.scopeOfServicesChangesMade==true){
+        if (FragmentARRAVScopeOfService.scopeOfServicesChangesMade) {
 
-            dataChangedYesRadioButton.isChecked=true
-        }else dataChangedNoRadioButton.isChecked=true
-
-//              textWatcherSignature.visibility=View.INVISIBLE
-//        textWatcherSignature.visibility=View.GONE
-
-
-        setFieldsValues()
+            dataChangedYesRadioButton.isChecked = true
+        } else {
+            dataChangedNoRadioButton.isChecked = true
+        }
 
         visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons).sorted())
 
+        clubCodeEditText.isEnabled = false
+        facilityNumberEditText.isEnabled = false
 
-//            textWatcherSignature.setText(facilityRepresentativesSpinner.selectedItem.toString())
-
-        completeButton.setOnClickListener(View.OnClickListener {
-            if (validateInputs()) {
-                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
-            } else Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
-        })
 
         if (annualVisitationType.isChecked) {
             visitationReasonDropListId.setSelection(6)
@@ -120,25 +115,153 @@ class FragmentVisitation : Fragment() {
             visitationReasonDropListId.setSelection(0)
         }
 
-        if (adhocVisitationType.isChecked){
+        if (adhocVisitationType.isChecked) {
             visitationReasonDropListId.isEnabled = true
-            visitationReasonDropListId.isClickable= true
-        }else{
+            visitationReasonDropListId.isClickable = true
+        } else {
             visitationReasonDropListId.isEnabled = false
-            visitationReasonDropListId.isClickable= false
+            visitationReasonDropListId.isClickable = false
+        }
+
+        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
+        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
+        facilityNameAndNumberRelationForSelection()
+
+        handleCancelButtonClick()
+
+        altDeffVisitationTableRow(2)
+
+    }
+
+    private fun setFieldsValues() {
+
+
+        facilityRepresentativeNames.clear()
+        facilityRepresentativeNames.add("please select a representative")
+
+        for (fac in FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName + " " + s.LastName }.distinct()) {
+            facilityRepresentativeNames.add(fac)
+        }
+
+        annualVisitationType.isChecked = true
+
+        dateOfVisitationButton.text = Date().toAppFormat()
+
+        clubCodeEditText.setText("004")
+
+
+        facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+
+
+        aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
+
+        certificateOfApprovalEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval)
+
+        memberBenefitsPosterEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster)
+
+        qualityControlProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl.replace(".  ", ". ").replace(". ", ".\n"))
+
+        staffTrainingProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
+
+        if (FacilityDataModel.getInstance().tblFacilityEmail.count() > 0) {
+            emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
         }
 
 
 
-        cancelBtnPressed()
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature!=null){
+            isFacilityRepresentativeSignatureInitialized = true
+            facilityRepresentativeSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature)
+        }
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature!=null){
+            isAutomotiveSpecialistSignatureInitialized = true
+            automotiveSpecialistSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature)
+        }
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature!=null){
+            facilityRepresentativeSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature)
+        }
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature!=null){
+            waiversSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature)
+        }
+
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNotEmpty()){
+            facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+        }
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNotEmpty()){
+            facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+        }
+
+
+
+
+        emailValidation()
+        waiverValidation()
+
+        fillDeficiencyTable()
+    }
+
+    private fun setFieldsListeners() {
+
+        completeButton.setOnClickListener(View.OnClickListener {
+            if (validateInputs()) {
+                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
+            } else Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
+        })
+
+        emailPdfCheckBox.setOnCheckedChangeListener { compoundButton, b ->
+            FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility = b
+        }
+
+        facilityRepresentativesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
+                if (p2 > 0) {
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilityRepresentativeNames.get(p2)
+                    facilityRepresentativeSignatureImageView.setImageBitmap(null)
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
+                }else if (!isFacilityRepresentativeSignatureInitialized){
+                    facilityRepresentativeSignatureImageView.setImageBitmap(null)
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
+                }else if(isFacilityRepresentativeSignatureInitialized){
+                    isFacilityRepresentativeSignatureInitialized = false
+                }
+            }
+
+        }
+
+        automotiveSpecialistSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
+                if (p2>0) {
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }[p2]
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
+                    automotiveSpecialistSignatureImageView.setImageBitmap(null)
+                }
+            }
+
+        }
+
 
         facilityRepresentativeSignatureButton.setOnClickListener {
 
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
             selectedSignature = requestedSignature.representative
-            if (facilityRepresentativeSignatureBitmap!=null){
-                signatureInkView.drawBitmap(facilityRepresentativeSignatureBitmap, 0.0f, 0.0f, Paint())
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature  != null) {
+                signatureInkView.drawBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature, 0.0f, 0.0f, Paint())
             }
 
         }
@@ -147,8 +270,8 @@ class FragmentVisitation : Fragment() {
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
             selectedSignature = requestedSignature.specialist
-            if (automotiveSpecialistSignatureBitmap!=null){
-                signatureInkView.drawBitmap(automotiveSpecialistSignatureBitmap, 0.0f, 0.0f, Paint())
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature != null) {
+                signatureInkView.drawBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature, 0.0f, 0.0f, Paint())
             }
         }
 
@@ -156,8 +279,8 @@ class FragmentVisitation : Fragment() {
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
             selectedSignature = requestedSignature.representativeDeficiency
-            if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
-                signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature != null) {
+                signatureInkView.drawBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature, 0.0f, 0.0f, Paint())
             }
         }
 
@@ -165,8 +288,8 @@ class FragmentVisitation : Fragment() {
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
             selectedSignature = requestedSignature.waiver
-            if (waiverSignatureBitmap!=null){
-                signatureInkView.drawBitmap(waiverSignatureBitmap, 0.0f, 0.0f, Paint())
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature != null) {
+                signatureInkView.drawBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature , 0.0f, 0.0f, Paint())
             }
         }
 
@@ -186,46 +309,46 @@ class FragmentVisitation : Fragment() {
             var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
             when (selectedSignature) {
                 requestedSignature.representative -> {
-                    facilityRepresentativeSignatureBitmap = bitmap
-                    if (!isEmpty){
-                        facilityRepresentativeSignatureButton.text ="Edit Signature"
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = bitmap
+                    if (!isEmpty) {
+                        facilityRepresentativeSignatureButton.text = "Edit Signature"
                         facilityRepresentativeSignatureImageView.setImageBitmap(bitmap)
-                    }else{
-                        facilityRepresentativeSignatureButton.text ="Add Signature"
+                    } else {
+                        facilityRepresentativeSignatureButton.text = "Add Signature"
                         facilityRepresentativeSignatureImageView.setImageBitmap(null)
                     }
                 }
 
                 requestedSignature.specialist -> {
-                    automotiveSpecialistSignatureBitmap = bitmap
-                    if (!isEmpty){
-                        automotiveSpecialistSignatureButton.text ="Edit Signature"
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = bitmap
+                    if (!isEmpty) {
+                        automotiveSpecialistSignatureButton.text = "Edit Signature"
                         automotiveSpecialistSignatureImageView.setImageBitmap(bitmap)
-                    }else{
-                        automotiveSpecialistSignatureButton.text ="Add Signature"
+                    } else {
+                        automotiveSpecialistSignatureButton.text = "Add Signature"
                         automotiveSpecialistSignatureImageView.setImageBitmap(null)
                     }
                 }
 
                 requestedSignature.representativeDeficiency -> {
-                    facilityRepresentativeDeficienciesSignatureBitmap = bitmap
-                    if (!isEmpty){
-                        facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature = bitmap
+                    if (!isEmpty) {
+                        facilityRepresentativeDeficienciesSignatureButton.text = "Edit Signature"
                         facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
-                    }else{
-                        facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
+                    } else {
+                        facilityRepresentativeDeficienciesSignatureButton.text = "Add Signature"
                         facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
                     }
 
                 }
 
                 requestedSignature.waiver -> {
-                    waiverSignatureBitmap = bitmap
-                    if (!isEmpty){
-                        waiversSignatureButton.text ="Edit Signature"
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature = bitmap
+                    if (!isEmpty) {
+                        waiversSignatureButton.text = "Edit Signature"
                         waiversSignatureImageView.setImageBitmap(bitmap)
-                    }else{
-                        waiversSignatureButton.text ="Add Signature"
+                    } else {
+                        waiversSignatureButton.text = "Add Signature"
                         waiversSignatureImageView.setImageBitmap(null)
                     }
                 }
@@ -238,63 +361,13 @@ class FragmentVisitation : Fragment() {
             signatureDialog.visibility = View.GONE
         }
 
-        altDeffVisitationTableRow(2)
-    }
-
-    private fun setFieldsValues() {
-
-
-        var representativeSpinners = ArrayList<String>()
-        representativeSpinners.add("please select a representative")
-
-        for (fac in FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName + " " + s.LastName }.distinct()) {
-
-            representativeSpinners.add(fac)
-
-
-        }
-
-        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, representativeSpinners)
-
-
-        //  context!!.toast("Specialist size: "+ CsiSpecialistSingletonModel.getInstance().csiSpecialists.size)
-
-        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
-
-        annualVisitationType.isChecked = true
-
-        dateOfVisitationButton.text = Date().toAppFormat()
-
-        clubCodeEditText.setText("004")
-
-
-        facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-
-
-        //   facilityNameEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].EntityName)
-
-        aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
-
-        certificateOfApprovalEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval)
-
-        memberBenefitsPosterEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster)
-
-        qualityControlProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl.replace(".  ", ". ").replace(". ", ".\n"))
-
-        staffTrainingProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
-
-        if (FacilityDataModel.getInstance().tblFacilityEmail.count() > 0) {
-            emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+        waiveVisitationCheckBox.setOnCheckedChangeListener { compoundButton, b ->
+            FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations = b
         }
 
 
-        facilityNameAndNumberRelationForSelection()
 
 
-        emailValidation()
-        waiverValidation()
-
-        fillDeficiencyTable()
     }
 
     fun facilityNameAndNumberRelationForSelection() {
@@ -394,19 +467,12 @@ class FragmentVisitation : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable) {
-
                 facilityRepresentativeSignatureButton.setText("Add Signature")
-
-
             }
         }
-//        textWatcherSignature.addTextChangedListener(representativeNameWatcher)
-
-
     }
 
     fun emailFormatValidation(target: CharSequence): Boolean {
-
 
         if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
             emailValid = true else emailValid = false
@@ -429,13 +495,13 @@ class FragmentVisitation : Fragment() {
         })
 
     }
+
     fun waiverValidation() {
         if (waiveVisitationCheckBox.isChecked == true) {
 
             waiverCommentsEditText.isEnabled = true
             waiverConditionedEnablingLayout.isEnabled = true
-        }
-        else
+        } else
             waiverCommentsEditText.isEnabled = false
         waiverConditionedEnablingLayout.isEnabled = false
 
@@ -502,15 +568,15 @@ class FragmentVisitation : Fragment() {
         }
     }
 
-    fun altDeffVisitationTableRow(alt_row : Int) {
+    fun altDeffVisitationTableRow(alt_row: Int) {
         var childViewCount = deficienciesTableLayout.getChildCount();
 
-        for ( i in 1..childViewCount-1) {
-            var row : TableRow= deficienciesTableLayout.getChildAt(i) as TableRow;
+        for (i in 1..childViewCount - 1) {
+            var row: TableRow = deficienciesTableLayout.getChildAt(i) as TableRow;
 
-            for (j in 0..row.getChildCount()-1) {
+            for (j in 0..row.getChildCount() - 1) {
 
-                var tv : TextView= row.getChildAt(j) as TextView
+                var tv: TextView = row.getChildAt(j) as TextView
                 if (i % alt_row != 0) {
                     tv.setBackground(getResources().getDrawable(
                             R.drawable.alt_row_color));
@@ -545,10 +611,10 @@ class FragmentVisitation : Fragment() {
 
             if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature") {
 
-            isInputValid = false
-            facilityRepresentativeSignatureButton.setError("required field")
+                isInputValid = false
+                facilityRepresentativeSignatureButton.setError("required field")
 
-        }
+            }
 
 //        if (facilityRepresentativeSignatureBitmap==null) {
 //            isInputValid = false
@@ -619,7 +685,7 @@ class FragmentVisitation : Fragment() {
         return isInputValid
     }
 
-    fun cancelBtnPressed() {
+    fun handleCancelButtonClick() {
 
         cancelButton.setOnClickListener(View.OnClickListener {
 

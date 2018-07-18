@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FragmentARRAVFacility">
 
@@ -28,18 +28,14 @@
                 android:id="@+id/titleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:gravity="center"
                 android:layout_marginBottom="10dp"
+                android:gravity="center"
                 android:paddingTop="5dp"
-                android:textAllCaps="true"
                 android:text="Repair Shop Portal Tracking"
+                android:textAllCaps="true"
                 android:textColor="@color/mainColor"
                 android:textSize="26dp"
                 android:textStyle="bold" />
-
-
-
-
 
 
             <RelativeLayout
@@ -47,31 +43,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Repair Shop Portal Tracking"
                     android:gravity="center"
+                    android:text="Repair Shop Portal Tracking"
                     android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    />
+                    android:textSize="22sp" />
 
                 <Button
-                    android:background="@drawable/green_background_button"
-                    android:textColor="@color/white"
+                    android:id="@+id/addNewAarButton"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginRight="20dp"
+                    android:background="@drawable/green_background_button"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="Add new AAR Portal Tracking"
-                    android:layout_marginBottom="20dp"
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/addNewAarButton"
-                    />
+                    android:textColor="@color/white" />
 
             </RelativeLayout>
-
 
 
             <TableLayout
@@ -79,80 +73,72 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
-                >
+                android:showDividers="middle|beginning|end">
 
-                <TableRow
-                    android:background="@color/mainColor"
-                    >
+                <TableRow android:background="@color/mainColor">
+
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Portal InspectionDate"
-                        android:textStyle="bold"
                         android:layout_column="0"
                         android:layout_weight="1"
+                        android:text="Portal InspectionDate"
                         android:textAlignment="center"
-                        />
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Logged Into Portal"
-                        android:textStyle="bold"
                         android:layout_column="1"
                         android:layout_weight="1"
+                        android:text="Logged Into Portal"
                         android:textAlignment="center"
-                        />
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Unknowledged Tows"
-                        android:textStyle="bold"
                         android:layout_column="2"
-                        android:textAlignment="center"
                         android:layout_weight="1"
-                        />
+                        android:text="Unknowledged Tows"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="In Progress Tows"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
                         android:layout_column="3"
                         android:layout_weight="1"
-                        />
+                        android:text="In Progress Tows"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="In Progres Walk-ins"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:layout_weight="1"
                         android:layout_column="4"
-                        />
-                    <TextView
+                        android:layout_weight="1"
+                        android:text="In Progres Walk-ins"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Update"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:layout_weight="1"
                         android:layout_column="5"
-                        />
+                        android:layout_weight="1"
+                        android:text="Update"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
                 </TableRow>
             </TableLayout>
-
 
 
         </LinearLayout>
@@ -162,74 +148,78 @@
         android:id="@+id/alphaBackgroundForRSPDialogs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:alpha="0.8"
         android:background="@color/mainColor"
-        android:visibility="gone"
-        android:alpha="0.8"/>
-    <android.support.v7.widget.CardView
-        android:layout_width="800dp"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/addNewAAR_PortalTrackingCard"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
+        android:clickable="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+    <android.support.v7.widget.CardView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
-        android:id="@+id/addNewAAR_PortalTrackingCard"
         app:cardElevation="10dp">
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:text="Add New AAR Portal Tracking"
             android:layout_gravity="top|left"
-            android:textSize="18dp"
-            />
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Add New AAR Portal Tracking"
+            android:textSize="18dp" />
 
 
         <Button
+            android:id="@+id/submitNewAAR_PortalTracking"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_marginTop="20dp"
             android:layout_gravity="right"
-            android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
-            android:text="Submit"
-            android:id="@+id/submitNewAAR_PortalTracking"
-            android:textColor="@color/white"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/green_background_button"
-            />
+            android:text="Submit"
+            android:textColor="@color/white" />
 
 
         <ImageButton
-            android:layout_marginTop="25dp"
             android:id="@+id/exitRSPDialogeBtnId"
             android:layout_width="20dp"
-            android:layout_marginRight="10dp"
             android:layout_height="20dp"
-            android:background="@drawable/close"
             android:layout_gravity="top|right"
-            />
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/close" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="40dp"
-            android:weightSum="2"
-            >
+            android:weightSum="2">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="15dp"
-                android:padding="10dp"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                <TextView
+                    <TextView
                         android:id="@+id/program_name_textview"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -237,39 +227,42 @@
                         android:layout_weight="1"
                         android:text="Start Date: "
                         android:textStyle="bold" />
-                <TextView
+
+                    <TextView
                         android:id="@+id/program_name_textview"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                    android:layout_marginLeft="35dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="35dp"
                         android:layout_weight="1"
                         android:text="End Date: "
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <Button
-                        android:layout_weight="1"
                         android:id="@+id/startDateButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
+                        android:layout_weight="1"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
+
                     <Button
-                        android:layout_weight="1"
                         android:id="@+id/endDateButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_marginLeft="30dp"
+                        android:layout_weight="1"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
@@ -279,17 +272,14 @@
                 </LinearLayout>
 
 
-
-
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_column="0"
                     android:layout_marginTop="20dp"
                     android:text="Addendum Signed Date: "
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/addendumSignedDateButton"
                     android:layout_width="wrap_content"
@@ -319,13 +309,13 @@
                         android:id="@+id/numberOfCardsReaderEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:background="@drawable/textview_background"
                         android:ems="2"
-                        android:maxLength="2"
-                        android:layout_gravity="center"
                         android:gravity="center_horizontal"
-                        android:text=""
                         android:inputType="number"
+                        android:maxLength="2"
+                        android:text=""
 
                         android:textStyle="bold" />
 
@@ -335,24 +325,21 @@
             </LinearLayout>
 
             <LinearLayout
-                android:padding="10dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_weight="1">
-
-
-
+                android:padding="10dp">
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_column="0"
                     android:layout_marginTop="20dp"
                     android:text="Inspection Date: "
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/inspectionDateButton"
                     android:layout_width="wrap_content"
@@ -368,8 +355,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
 
@@ -383,8 +369,8 @@
                         android:id="@+id/program_name_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/blue_krayola"
                         android:text=" No "
+                        android:textColor="@color/blue_krayola"
                         android:textStyle="bold" />
 
                     <Switch
@@ -397,8 +383,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/blue_krayola"
                         android:text=" Yes"
+                        android:textColor="@color/blue_krayola"
                         android:textStyle="bold" />
 
 
@@ -427,12 +413,12 @@
                         android:id="@+id/numberOfUnacknowledgedRecordsEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@drawable/textview_background"
-                        android:layout_gravity="center"
                         android:gravity="center_horizontal"
-                        android:text=""
                         android:inputType="number"
+                        android:text=""
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -460,12 +446,12 @@
                         android:id="@+id/numberOfInProgressTwoIns"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@drawable/textview_background"
-                        android:layout_gravity="center"
                         android:gravity="center_horizontal"
-                        android:text=""
                         android:inputType="number"
+                        android:text=""
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -474,8 +460,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/affliationdetails"
-                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     android:weightSum="5">
 
@@ -493,12 +479,12 @@
                         android:id="@+id/numberOfInProgressWalkIns"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@drawable/textview_background"
-                        android:layout_gravity="center"
                         android:gravity="center_horizontal"
-                        android:text=""
                         android:inputType="number"
+                        android:text=""
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -508,357 +494,355 @@
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-        android:layout_width="800dp"
+</ScrollView>
+    <ScrollView
+        android:id="@+id/edit_AAR_PortalTrackingEntryCard"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        app:cardCornerRadius="5dp"
-        android:id="@+id/edit_AAR_PortalTrackingEntryCard"
-        app:cardElevation="10dp">
+        android:clickable="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:layout_width="800dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:text="Update New AAR Portal Tracking"
-            android:layout_gravity="top|left"
-            android:textSize="18dp"
-            />
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
-            android:text="Submit"
-            android:id="@+id/edit_submitNewAAR_PortalTracking"
-            android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Update New AAR Portal Tracking"
+                android:textSize="18dp" />
 
 
-        <ImageButton
-            android:layout_marginTop="25dp"
-            android:id="@+id/edit_exitRSPDialogeBtnId"
-            android:layout_width="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="20dp"
-            android:background="@drawable/close"
-            android:layout_gravity="top|right"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="40dp"
-            android:weightSum="2"
-            >
+            <Button
+                android:id="@+id/edit_submitNewAAR_PortalTracking"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/green_background_button"
+                android:text="Submit"
+                android:textColor="@color/white" />
+
+
+            <ImageButton
+                android:id="@+id/edit_exitRSPDialogeBtnId"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/close" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="15dp"
-                android:padding="10dp"
-                android:orientation="vertical">
+                android:padding="40dp"
+                android:weightSum="2">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                <TextView
-                        android:id="@+id/edit_program_name_textview"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="Start Date: "
-                        android:textStyle="bold" />
-                <TextView
-                        android:id="@+id/edit_program_name_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                    android:layout_marginLeft="35dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="End Date: "
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/edit_program_name_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="Start Date: "
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_program_name_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="35dp"
+                            android:layout_weight="1"
+                            android:text="End Date: "
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/edit_startDateButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+                        <Button
+                            android:id="@+id/edit_endDateButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="20dp"
+                        android:text="Addendum Signed Date: "
+                        android:textStyle="bold" />
 
                     <Button
-                        android:layout_weight="1"
-                        android:id="@+id/edit_startDateButton"
+                        android:id="@+id/edit_addendumSignedDateButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:background="@color/transparent"
-                        android:text="SELECT DATE"
+                        android:text="Select Date"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/connumberll"
+                            android:layout_gravity="center_vertical"
+                            android:text="Number Of Cards Reader: "
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_numberOfCardsReaderEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/textview_background"
+                            android:ems="2"
+                            android:gravity="center_horizontal"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:text=""
+
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="20dp"
+                        android:text="Inspection Date: "
+                        android:textStyle="bold" />
+
                     <Button
-                        android:layout_weight="1"
-                        android:id="@+id/edit_endDateButton"
+                        android:id="@+id/edit_inspectionDateButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_marginLeft="30dp"
                         android:background="@color/transparent"
-                        android:text="SELECT DATE"
+                        android:text="Select Date"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
 
 
-                </LinearLayout>
-
-
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Addendum Signed Date: "
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <Button
-                    android:id="@+id/edit_addendumSignedDateButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:background="@color/transparent"
-                    android:text="Select Date"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/connumberll"
-                        android:layout_gravity="center_vertical"
-                        android:text="Number Of Cards Reader: "
-                        android:textStyle="bold" />
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/edit_numberOfCardsReaderEditText"
-                        android:layout_width="wrap_content"
+                        <TextView
+
+                            android:id="@+id/edit_program_name_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Logged Into RSP:  "
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_program_name_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" No "
+                            android:textColor="@color/blue_krayola"
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/edit_loggedIntoRspButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/contract_number_textview"
+                            android:textColor="@color/blue_krayola" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" Yes"
+                            android:textColor="@color/blue_krayola"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/edit_contypell"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/textview_background"
-                        android:ems="2"
-                        android:maxLength="2"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        android:text=""
-                        android:inputType="number"
+                        android:layout_below="@id/affliationdetails"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
 
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/edit_effective_date_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/connumberll"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="Number Of Unacknowledged Records: "
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_numberOfUnacknowledgedRecordsEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+                            android:gravity="center_horizontal"
+                            android:inputType="number"
+                            android:text=""
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
 
+                    <LinearLayout
+                        android:id="@+id/edit_contypell"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/affliationdetails"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:id="@+id/edit_effective_date_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/connumberll"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="Number Of In-Progress Two-Ins: "
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_numberOfInProgressTwoIns"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+                            android:gravity="center_horizontal"
+                            android:inputType="number"
+                            android:text=""
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/edit_contypell"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/affliationdetails"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:id="@+id/edit_effective_date_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/connumberll"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="Number Of In-Progress Walk-Ins: "
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_numberOfInProgressWalkIns"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+                            android:gravity="center_horizontal"
+                            android:inputType="number"
+                            android:text=""
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
-
-            <LinearLayout
-                android:padding="10dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Inspection Date: "
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <Button
-                    android:id="@+id/edit_inspectionDateButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:background="@color/transparent"
-                    android:text="Select Date"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <TextView
-
-                        android:id="@+id/edit_program_name_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Logged Into RSP:  "
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/edit_program_name_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/blue_krayola"
-                        android:text=" No "
-                        android:textStyle="bold" />
-
-                    <Switch
-                        android:id="@+id/edit_loggedIntoRspButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/contract_number_textview"
-                        android:textColor="@color/blue_krayola" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/blue_krayola"
-                        android:text=" Yes"
-                        android:textStyle="bold" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/edit_contypell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/affliationdetails"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:id="@+id/edit_effective_date_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/connumberll"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="Number Of Unacknowledged Records: "
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edit_numberOfUnacknowledgedRecordsEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_background"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        android:text=""
-                        android:inputType="number"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/edit_contypell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/affliationdetails"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:id="@+id/edit_effective_date_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/connumberll"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="Number Of In-Progress Two-Ins: "
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edit_numberOfInProgressTwoIns"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_background"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        android:text=""
-                        android:inputType="number"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/edit_contypell"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/affliationdetails"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
-
-                    <TextView
-                        android:id="@+id/edit_effective_date_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/connumberll"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="Number Of In-Progress Walk-Ins: "
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edit_numberOfInProgressWalkIns"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_background"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        android:text=""
-                        android:inputType="number"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/RSP_LoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:clickable="true"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar

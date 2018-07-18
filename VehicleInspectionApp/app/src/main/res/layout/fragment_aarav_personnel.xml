@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_gray"
     tools:context=".fragments.FragmentARRAVPersonnel">
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
         android:layout_margin="10dp"
-        android:paddingTop="5dp"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,28 +28,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Personnel"
                     android:gravity="center"
+                    android:text="Personnel"
                     android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    />
+                    android:textSize="22sp" />
 
                 <Button
-                    android:background="@drawable/green_background_button"
-                    android:textColor="@color/white"
+                    android:id="@+id/addNewPersnRecordBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/green_background_button"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="Add New Personnel"
-                    android:layout_marginBottom="20dp"
-                    android:id="@+id/addNewPersnRecordBtn"
-                    />
+                    android:textColor="@color/white" />
 
             </RelativeLayout>
 
@@ -56,124 +56,121 @@
                 android:id="@+id/PersonnelResultsTbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
+                android:showDividers="middle|beginning|end"
                 android:stretchColumns="0,1,2,3,4,5,6,7,8,9,10">
 
-                <TableRow
-                    android:background="@color/mainColor"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Type"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
+                <TableRow android:background="@color/mainColor">
 
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="First Name"
-                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_weight="1"
+                        android:text="Type"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_weight="1"
+                        android:text="First Name"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Last Name"
-                        android:textStyle="bold"
                         android:layout_column="2"
                         android:layout_weight="1"
+                        android:text="Last Name"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="RSP User ID"
-                        android:textStyle="bold"
                         android:layout_column="3"
                         android:layout_weight="1"
+                        android:text="RSP User ID"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Email Address"
-                        android:textStyle="bold"
                         android:layout_column="4"
                         android:layout_weight="1"
+                        android:text="Email Address"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Seniority Date"
-                        android:textStyle="bold"
                         android:layout_column="5"
                         android:layout_weight="1"
+                        android:text="Seniority Date"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cert ID#"
-                        android:textStyle="bold"
                         android:layout_column="6"
                         android:layout_weight="1"
+                        android:text="Cert ID#"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Start Date"
-                        android:textStyle="bold"
                         android:layout_column="7"
                         android:layout_weight="1"
+                        android:text="Start Date"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="End Date"
-                        android:textStyle="bold"
                         android:layout_column="8"
                         android:layout_weight="1"
+                        android:text="End Date"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Contract Signer"
-                        android:textStyle="bold"
                         android:layout_column="9"
                         android:layout_weight="1"
+                        android:text="Contract Signer"
                         android:textAlignment="center"
-                        />
-                    <TextView
                         android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Primary Mail Recipient"
-                        android:textStyle="bold"
                         android:layout_column="10"
                         android:layout_weight="1"
+                        android:text="Primary Mail Recipient"
                         android:textAlignment="center"
-                        />
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
                 </TableRow>
             </TableLayout>
 
@@ -182,33 +179,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Personnel Certification(s)"
-                    android:gravity="center"
                     android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="Personnel Certification(s)"
                     android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    />
-
+                    android:textSize="22sp" />
 
 
                 <Button
-                    android:background="@drawable/green_background_button"
-                    android:textColor="@color/white"
+                    android:id="@+id/AddNewCertBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
+                    android:background="@drawable/green_background_button"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="Add New Certification"
-                    android:layout_marginBottom="20dp"
-                    android:id="@+id/AddNewCertBtn"
-                    />
-
+                    android:textColor="@color/white" />
 
 
             </RelativeLayout>
@@ -217,53 +211,51 @@
                 android:id="@+id/certificationsTable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
-                >
+                android:showDividers="middle|beginning|end">
 
 
                 <TableRow android:background="@color/mainColor">
-                    <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Certification Type"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                    android:layout_column="0"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Certification Date"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_column="1"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Expiration Date"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_column="2"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Description"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_column="3"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_weight="1"
+                        android:text="Certification Type"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:text="Certification Date"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:layout_weight="1"
+                        android:text="Expiration Date"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+                        android:layout_weight="1"
+                        android:text="Description"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
                 </TableRow>
             </TableLayout>
 
@@ -273,739 +265,743 @@
     </ScrollView>
 
     <View
-                android:id="@+id/alphaBackgroundForPersonnelDialogs"
+        android:id="@+id/alphaBackgroundForPersonnelDialogs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:background="@color/mainColor"
+        android:visibility="gone" />
+
+
+    <ScrollView
+        android:id="@+id/addNewCertificateDialogue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Add New Certificate"
+                android:textSize="18dp" />
+
+
+            <Button
+                android:id="@+id/submitNewCertBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/green_background_button"
+                android:text="Submit"
+                android:textColor="@color/white" />
+
+
+            <ImageButton
+                android:id="@+id/exitCertificateDialogeBtnId"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/close" />
+
+            <TableLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="40dp">
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/certTypeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Certification Type:*"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/newCertTypeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:entries="@array/contractTypesEntries" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/certDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:ems="8"
+                        android:text="Certification Date:"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/newCertStartDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/transparent"
+                        android:ems="8"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Expiration Date:"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/newCertEndDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="4"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Description:"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newCertDescText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="16"
+                        android:lines="5"
+                        android:text=""
+                        android:textStyle="bold" />
+                </TableRow>
+
+            </TableLayout>
+        </android.support.v7.widget.CardView>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/addNewPersonnelDialogue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Add New Personnel"
+                android:textSize="18dp" />
+
+
+            <Button
+                android:id="@+id/submitNewPersnRecordBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/green_background_button"
+                android:text="Submit"
+                android:textColor="@color/white" />
+
+
+            <ImageButton
+                android:id="@+id/exitDialogeBtnId"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/close" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/mainColor"
-                android:visibility="gone"
-                android:alpha="0.8"/>
-
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-                app:cardCornerRadius="5dp"
-                android:id="@+id/addNewCertificateDialogue"
-                app:cardElevation="10dp">
+                android:padding="40dp"
+                android:weightSum="2">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:text="Add New Certificate"
-                    android:layout_gravity="top|left"
-                    android:textSize="18dp"
-                    />
-
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginLeft="50dp"
-                    android:text="Submit"
-                    android:id="@+id/submitNewCertBtn"
-                    android:textColor="@color/white"
-                    android:background="@drawable/green_background_button"
-                    />
-
-
-                <ImageButton
-                    android:layout_marginTop="25dp"
-                    android:id="@+id/exitCertificateDialogeBtnId"
-                    android:layout_width="20dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/close"
-                    android:layout_gravity="top|right"
-                    />
-
-                <TableLayout
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="40dp"
-                    >
-
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:id="@+id/certTypeTextView"
-                            android:text="Certification Type:*"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <Spinner
-                            android:id="@+id/newCertTypeSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:ems="8"
-                            android:layout_column="1"
-                            android:entries="@array/contractTypesEntries"
-                            />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:id="@+id/certDateTextView"
-                            android:text="Certification Date:"
-                            android:ems="8"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <Button
-                            android:id="@+id/newCertStartDateBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_column="1"
-                            android:ems="8"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Expiration Date:"
-                            android:layout_column="3"
-                            android:textStyle="bold"
-                            />
-                        <Button
-                            android:id="@+id/newCertEndDateBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_column="4"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-                    </TableRow>
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
-                            android:text="Description:"
-                            android:layout_column="0"
-                            android:textStyle="bold"
-                            />
-                        <EditText
-                            android:id="@+id/newCertDescText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:lines="5"
-                            android:ems="16"
-                            android:layout_column="1"
-                            android:background="@drawable/textview_background"
-                            android:textStyle="bold"
-                            />
-                    </TableRow>
-                    <TableRow>
-                    </TableRow>
-                </TableLayout>
-            </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-                app:cardCornerRadius="5dp"
-                android:id="@+id/addNewPersonnelDialogue"
-                app:cardElevation="10dp">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:text="Add New Personnel"
-                    android:layout_gravity="top|left"
-                    android:textSize="18dp"
-                    />
-
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginLeft="50dp"
-                    android:text="Submit"
-                    android:id="@+id/submitNewPersnRecordBtn"
-                    android:textColor="@color/white"
-                    android:background="@drawable/green_background_button"
-                    />
-
-
-                <ImageButton
-                    android:layout_marginTop="25dp"
-                    android:id="@+id/exitDialogeBtnId"
-                    android:layout_width="20dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/close"
-                    android:layout_gravity="top|right"
-                    />
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="40dp"
-                    android:weightSum="2"
-                    >
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/personnelTypeTextViewId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Personnel Type:"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/newPersonnelTypeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:ems="8"
+                        android:entries="@array/contractTypesEntries" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="10dp"
-                        android:orientation="vertical">
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:id="@+id/personnelTypeTextViewId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Personnel Type:"
-                            android:textStyle="bold"
                             android:layout_column="0"
                             android:layout_margin="5dp"
-                            />
-                        <Spinner
-                            android:id="@+id/newPersonnelTypeSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ems="8"
-                            android:layout_column="1"
-                            android:entries="@array/contractTypesEntries"
-                            />
-
-<LinearLayout
-    android:layout_marginTop="15dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_margin="5dp"
-        android:text="First Name:*"
-        android:layout_column="0"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Last Name:*"
-        android:textStyle="bold"
-        android:layout_column="3"
-        android:layout_margin="5dp"
-        />
-
-</LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-    <EditText
-        android:layout_weight="1"
-        android:id="@+id/newFirstNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/textview_background"
-        android:textStyle="bold"
-        />
-    <EditText
-        android:layout_weight="1"
-        android:id="@+id/newLastNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/textview_background"
-        android:layout_margin="5dp"
-
-        />
-
-</LinearLayout>
-<LinearLayout
-    android:layout_marginTop="15dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-    <TextView
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_margin="5dp"
-        android:text="RSP USER ID:"
-        android:layout_column="0"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="RSP Email Address:"
-        android:textStyle="bold"
-        android:layout_column="3"
-        android:layout_margin="5dp"
-        />
-
-</LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <TextView
-        android:layout_weight="1"
-        android:id="@+id/rspUserId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/textview_background"
-        android:layout_column="1"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:layout_weight="1"
-        android:id="@+id/rspEmailId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/textview_background"
-        android:layout_margin="5dp"
-        android:layout_column="4"
-        />
-</LinearLayout>
-
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:text="First Name:*"
+                            android:textStyle="bold" />
 
                         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Seniority Date:"
-        android:layout_column="0"
-        android:textStyle="bold"
-        />
-    <Button
-        android:id="@+id/newSeniorityDateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:background="@color/transparent"
-        android:text="SELECT DATE"
-        android:textColor="@color/blue"
-        android:textSize="12dp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_margin="5dp"
-        android:text="Certification ID #:"
-        android:layout_column="0"
-        android:textStyle="bold"
-        />
-    <EditText
-        android:id="@+id/newCertNoText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/textview_background"
-        android:maxLength="16"
-        android:hint="Enter certificate ID"
-        android:layout_column="1"
-        />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="3"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:text="Last Name:*"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/newFirstNameText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/newLastNameText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:text="RSP USER ID:"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="3"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:text="RSP Email Address:"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/rspUserId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/rspEmailId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="4"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background" />
+                    </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="20dp"
+                        android:text="Seniority Date:"
+                        android:textStyle="bold" />
 
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Start Date:"
-            android:layout_column="0"
-            android:textStyle="bold"
-            />
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="35dp"
-            android:text="End Date:"
-            android:layout_column="0"
-            android:textStyle="bold"
-            />
-    </LinearLayout>
+                    <Button
+                        android:id="@+id/newSeniorityDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Certification ID #:"
+                        android:textStyle="bold" />
 
-        <Button
-            android:layout_weight="1"
-            android:id="@+id/newStartDateBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:background="@color/transparent"
-            android:text="SELECT DATE"
-            android:textColor="@color/blue"
-            android:textSize="12dp" />
-        <Button
-            android:layout_weight="1"
-            android:id="@+id/newEndDateBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_marginLeft="30dp"
-            android:background="@color/transparent"
-            android:text="SELECT DATE"
-            android:textColor="@color/blue"
-            android:textSize="12dp" />
+                    <EditText
+                        android:id="@+id/newCertNoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:hint="Enter certificate ID"
+                        android:maxLength="16" />
 
 
-    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:text="Start Date:"
+                            android:textStyle="bold" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_marginLeft="35dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:text="End Date:"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/newStartDateBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+                        <Button
+                            android:id="@+id/newEndDateBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
 
 
                     </LinearLayout>
 
-<LinearLayout
-    android:padding="10dp"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                </LinearLayout>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:id="@+id/newSignerCheck"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_margin="5dp"
-            android:layout_column="0"
-            android:text="Contract Signer"
-            android:textStyle="bold"
-            />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:id="@+id/newACSCheck"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_margin="5dp"
-            android:layout_column="1"
-            android:text="Primary Mail Recipients"
-            android:textStyle="bold"
-            />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:id="@+id/contractSignerFieldsLinearLayourId">
+                        <CheckBox
+                            android:id="@+id/newSignerCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Contract Signer"
+                            android:textStyle="bold" />
 
+                        <CheckBox
+                            android:id="@+id/newACSCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Primary Mail Recipients"
+                            android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Addres 1:*"
-        android:id="@+id/address1TextId"
-        android:textStyle="bold"
-        android:layout_column="0"
-        android:layout_margin="5dp"
-        />
+                    </LinearLayout>
 
-    <EditText
-        android:id="@+id/newAdd1Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text=""
-        android:ems="8"
-        android:layout_column="1"
-        android:background="@drawable/textview_background"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_margin="5dp"
-        android:text="Address 2:"
-        android:id="@+id/address2TextId"
-        android:layout_column="0"
-        android:textStyle="bold"
-        />
-    <EditText
-        android:id="@+id/newAdd2Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text=""
-        android:ems="8"
-        android:layout_column="1"
-        android:background="@drawable/textview_background"
-        android:textStyle="bold"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="City:*"
-        android:id="@+id/cityTextId"
-        android:textStyle="bold"
-        android:layout_column="0"
-        />
-
-    <EditText
-        android:id="@+id/newCityText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_column="1"
-        android:background="@drawable/textview_background"
-        android:text=""
-        android:ems="8"
-        android:textStyle="bold"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:id="@+id/stateTextView"
-        android:text="State:*"
-        android:textStyle="bold"
-        />
-    <Spinner
-        android:id="@+id/newStateSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:id="@+id/zipCodeTextId"
-        android:text="Zip Code:*"
-        android:textStyle="bold"
-        />
+                    <LinearLayout
+                        android:id="@+id/contractSignerFieldsLinearLayourId"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="20dp">
 
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/address1TextId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Addres 1:*"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/newAdd1Text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/textview_background"
+                            android:ems="8"
+                            android:text=""
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/address2TextId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Address 2:"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/newAdd2Text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/textview_background"
+                            android:ems="8"
+                            android:text=""
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/cityTextId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_marginTop="15dp"
+                            android:text="City:*"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/newCityText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/textview_background"
+                            android:ems="8"
+                            android:text=""
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/stateTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="State:*"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/newStateSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/zipCodeTextId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="Zip Code:*"
+                            android:textStyle="bold" />
 
 
-            <EditText
-                android:layout_weight="1"
-                android:id="@+id/newZipText"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:inputType="number"
-                android:ems="8"
-                android:maxLength="5"
-                android:background="@drawable/textview_background"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  -  "
-
-                />
-            <EditText
-                android:layout_weight="1"
-                android:id="@+id/newZipText2"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:inputType="number"
-                android:ems="8"
-                android:maxLength="4"
-                android:background="@drawable/textview_background"
-                />
-
-        </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp">
-
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_margin="5dp"
-            android:text="Phone:"
-            android:id="@+id/phoneTextId"
-            android:layout_column="0"
-            android:textStyle="bold"
-            />
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_margin="5dp"
-            android:id="@+id/emailAddressTextId"
-            android:text="Email Address:*"
-            android:layout_column="0"
-            android:textStyle="bold"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/newPhoneText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:hint="(XXX) XXX-XXXX"
-            android:maxLength="10"
-            android:inputType="number"
-            android:background="@drawable/textview_background"
-            />
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/newEmailText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:ems="8"
-            android:background="@drawable/textview_background"
-            android:textStyle="bold"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Contract Start Date:"
-            android:id="@+id/contractSignerStartDateTextId"
-            android:layout_column="0"
-            android:textStyle="bold"
-            />
-        <TextView
-            android:id="@+id/contractSignerEndDateTextId"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:text="Contract End Date:"
-            android:layout_column="3"
-            android:textStyle="bold"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_weight="1"
-            android:id="@+id/newCoStartDateBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:background="@color/transparent"
-            android:text="SELECT DATE"
-            android:textColor="@color/blue"
-            android:textSize="12dp" />
-        <Button
-            android:layout_weight="1"
-            android:layout_marginLeft="30dp"
-            android:id="@+id/newCoEndDateBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="4"
-            android:background="@color/transparent"
-            android:text="SELECT DATE"
-            android:textColor="@color/blue"
-            android:textSize="12dp" />
-
-    </LinearLayout>
-    </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
 
-</LinearLayout>
+                            <EditText
+                                android:id="@+id/newZipText"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="8"
+                                android:inputType="number"
+                                android:maxLength="5" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="  -  "
+
+                                />
+
+                            <EditText
+                                android:id="@+id/newZipText2"
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="8"
+                                android:inputType="number"
+                                android:maxLength="4" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/phoneTextId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:text="Phone:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/emailAddressTextId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:text="Email Address:*"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/newPhoneText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:hint="(XXX) XXX-XXXX"
+                                android:inputType="number"
+                                android:maxLength="10" />
+
+                            <EditText
+                                android:id="@+id/newEmailText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="8"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/contractSignerStartDateTextId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_marginTop="20dp"
+                                android:layout_weight="1"
+                                android:text="Contract Start Date:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/contractSignerEndDateTextId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_marginLeft="30dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_weight="1"
+                                android:text="Contract End Date:"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/newCoStartDateBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_weight="1"
+                                android:background="@color/transparent"
+                                android:text="SELECT DATE"
+                                android:textColor="@color/blue"
+                                android:textSize="12dp" />
+
+                            <Button
+                                android:id="@+id/newCoEndDateBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="4"
+                                android:layout_marginLeft="30dp"
+                                android:layout_weight="1"
+                                android:background="@color/transparent"
+                                android:text="SELECT DATE"
+                                android:textColor="@color/blue"
+                                android:textSize="12dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
 
 
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </ScrollView>
+
     <RelativeLayout
         android:id="@+id/certificateLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:clickable="true"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar
@@ -1027,13 +1023,14 @@
 
 
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/personnelLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:clickable="true"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar

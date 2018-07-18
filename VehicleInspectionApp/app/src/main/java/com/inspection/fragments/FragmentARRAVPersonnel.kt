@@ -78,11 +78,7 @@ class FragmentARRAVPersonnel : Fragment() {
         rspUserId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName.toString())
         rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
 
-        for (rspMan in FacilityDataModel.getInstance().tblPersonnel){
 
-            Toast.makeText(context,rspMan.RSP_Email.toString(),Toast.LENGTH_SHORT).show()
-
-        }
 
         exitDialogeBtnId.setOnClickListener({
 
@@ -190,7 +186,6 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
             if (newSignerCheck.isChecked){
-                Toast.makeText(context,"its checked",Toast.LENGTH_SHORT).show()
                 newSignerCheck.isChecked=false
 
                 contractSignerIsNotCheckedLogic()
@@ -346,13 +341,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     personnelLoadingView.visibility = View.GONE
 
                 }))
-            }else
-            {
-
-                Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
-
             }
-
 
         })
         submitNewPersnRecordBtn.setOnClickListener({

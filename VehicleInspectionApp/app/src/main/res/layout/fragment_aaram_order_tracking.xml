@@ -197,6 +197,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone"
         android:alpha="0.8"/>
     <android.support.v7.widget.CardView
@@ -407,7 +408,8 @@
         android:alpha="0.8"
         android:clickable="true"
         android:background="@color/mainColor"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:focusable="true">
 
         <ProgressBar
             android:id="@+id/progressBarRecords"

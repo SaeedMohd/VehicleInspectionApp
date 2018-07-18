@@ -1,5 +1,7 @@
 package com.inspection.model
 
+import android.graphics.Bitmap
+
 class FacilityDataModel {
 
     companion object {
@@ -21,7 +23,9 @@ class FacilityDataModel {
         INSTANCE = null
     }
 
+    //Visitation Fragment Related fields
     var annualVisitationId = -1
+
     var tblFacilities = ArrayList<TblFacilities>()
     var tblPaymentMethods = ArrayList<TblPaymentMethods>()
     var tblBusinessType = ArrayList<TblBusinessType>()
@@ -126,6 +130,16 @@ class FacilityDataModel {
         var MemberBenefitPoster = ""
         var QualityControl = ""
         var StaffTraining = ""
+        var facilityRepresentativeName = ""
+        var automotiveSpecialistName = ""
+        var facilityRepresentativeSignature: Bitmap? = null
+        var automotiveSpecialistSignature: Bitmap? = null
+        var facilityRepresentativeDeficienciesSignature: Bitmap? = null
+        var emailVisitationPdfToFacility = false
+        var waiveVisitations = false
+        var waiverComments = ""
+        var waiverSignature : Bitmap? = null
+
     }
 
     class TblFacilityType {

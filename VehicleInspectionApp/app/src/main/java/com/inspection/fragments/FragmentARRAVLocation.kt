@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -103,9 +104,17 @@ class FragmentARRAVLocation : Fragment() {
             alphaBackgroundForDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
         })
-        exitAddLocationDialogeBtnId.setOnClickListener({
-            addNewLocationDialog.visibility = View.GONE
-                     alphaBackgroundForDialogs.visibility = View.GONE
+//        exitAddLocationDialogeBtnId.setOnClickListener({
+//            addNewLocationDialog.visibility = View.GONE
+//                     alphaBackgroundForDialogs.visibility = View.GONE
+//            enableAllAddButnsAndDialog()
+//        })
+
+        exitEditLocationDialogeBtnId.setOnClickListener({
+            print("yeassssssssss herererererer")
+            Log.v("yesssss", "obbbbaaaaaaa herererererere")
+            editLocationDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
         })
         exitUpdatePhoneDialogeBtnId.setOnClickListener({
@@ -119,11 +128,11 @@ class FragmentARRAVLocation : Fragment() {
             enableAllAddButnsAndDialog()
         })
 
-        addNewLocationButton.setOnClickListener({
-
-            disableAllAddButnsAndDialog()
-            showLocationDialog()
-        })
+//        addNewLocationButton.setOnClickListener({
+//
+//            disableAllAddButnsAndDialog()
+//            showLocationDialog()
+//        })
 
         addNewPhoneButton.setOnClickListener({
             disableAllAddButnsAndDialog()
@@ -144,59 +153,59 @@ class FragmentARRAVLocation : Fragment() {
 
             var location =FacilityDataModel.TblAddress().locIsInputsValid
 
-            if (newStateSpinner.selectedItem.toString().contains("select")){
-                location=false
-                stateTextView.setError("required field")
-
-            }    else
-            { stateTextView.setError(null)}
-
-
-            if (newLocAddr1Text.text.isNullOrEmpty()) {
-                location=false
-                newLocAddr1Text.setError("please enter address 1")
-            }
-            if (newLocCityText.text.isNullOrEmpty()) {
-                location=false
-                newLocCityText.setError("please enter city")
-            }
-            if (newLocCountryText.text.isNullOrEmpty()) {
-                location=false
-                newLocCountryText.setError("please enter country")
-            }
-            if (newLocZipText.text.isNullOrEmpty()) {
-                location=false
-                newLocZipText.setError("please enter country")
-            }
-            if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty()) {
-                location=false
-                newLocLongText.setError("please enter longitude")
-            }
-            if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty()) {
-                location=false
-                newLocLatText.setError("please enter latitude")
-            }
-            if (newLocBranchNoText.text.isNullOrEmpty()) {
-                location=false
-                newLocBranchNoText.setError("please enter branch number")
-            }
-            if (newLocBranchNameText.text.isNullOrEmpty()) {
-                location=false
-                newLocBranchNameText.setError("please enter branch name")
-            }
-                if (newLocAddr1Text.text.isNullOrEmpty()||newLocCityText.text.isNullOrEmpty()||newLocCountryText.text.isNullOrEmpty()
-                ||newLocZipText.text.isNullOrEmpty()||(newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty())
-                ||(newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty())
-                ||newLocBranchNoText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()
-                ||newStateSpinner.selectedItem.toString().contains("select")){
-                    location=false
-                    Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
-
-                }else {
-                    location=true
-                    submitFacilityAddress()
-                    enableAllAddButnsAndDialog()
-                        }
+//            if (newStateSpinner.selectedItem.toString().contains("select")){
+//                location=false
+//                stateTextView.setError("required field")
+//
+//            }    else
+//            { stateTextView.setError(null)}
+//
+//
+//            if (newLocAddr1Text.text.isNullOrEmpty()) {
+//                location=false
+//                newLocAddr1Text.setError("please enter address 1")
+//            }
+//            if (newLocCityText.text.isNullOrEmpty()) {
+//                location=false
+//                newLocCityText.setError("please enter city")
+//            }
+//            if (newLocCountryText.text.isNullOrEmpty()) {
+//                location=false
+//                newLocCountryText.setError("please enter country")
+//            }
+//            if (newLocZipText.text.isNullOrEmpty()) {
+//                location=false
+//                newLocZipText.setError("please enter country")
+//            }
+//            if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty()) {
+//                location=false
+//                newLocLongText.setError("please enter longitude")
+//            }
+//            if (newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty()) {
+//                location=false
+//                newLocLatText.setError("please enter latitude")
+//            }
+//            if (newLocBranchNoText.text.isNullOrEmpty()) {
+//                location=false
+//                newLocBranchNoText.setError("please enter branch number")
+//            }
+//            if (newLocBranchNameText.text.isNullOrEmpty()) {
+//                location=false
+//                newLocBranchNameText.setError("please enter branch name")
+//            }
+//                if (newLocAddr1Text.text.isNullOrEmpty()||newLocCityText.text.isNullOrEmpty()||newLocCountryText.text.isNullOrEmpty()
+//                ||newLocZipText.text.isNullOrEmpty()||(newLocTypeSpinner.selectedItem.equals("Physical") && newLocLongText.text.isNullOrEmpty())
+//                ||(newLocTypeSpinner.selectedItem.equals("Physical") && newLocLatText.text.isNullOrEmpty())
+//                ||newLocBranchNoText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()||newLocBranchNameText.text.isNullOrEmpty()
+//                ||newStateSpinner.selectedItem.toString().contains("select")){
+//                    location=false
+//                    Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
+//
+//                }else {
+//                    location=true
+//                    submitFacilityAddress()
+//                    enableAllAddButnsAndDialog()
+//                        }
 
         })
 
@@ -388,21 +397,41 @@ class FragmentARRAVLocation : Fragment() {
 
 
 
-    private fun showLocationDialog() {
+//    private fun showLocationDialog() {
+//
+//        alphaBackgroundForDialogs.visibility = View.VISIBLE
+//        addNewLocationDialog.visibility = View.VISIBLE
+//
+//        locationTypeList = TypeTablesModel.getInstance().LocationType
+//        locationypeArray.clear()
+//        for (fac in locationTypeList) {
+//            locationypeArray.add(fac.LocTypeName)
+//        }
+//
+//        var locTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, locationypeArray)
+//        locTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        newLocTypeSpinner.adapter = locTypeAdapter
+////        locationDialogView.newLoc2TypeSpinner.adapter = locTypeAdapter
+//
+//
+//    }
+
+    private fun showLocationDialog(index: Int) {
 
         alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewLocationDialog.visibility = View.VISIBLE
+        editLocationDialog.visibility = View.VISIBLE
 
-        locationTypeList = TypeTablesModel.getInstance().LocationType
-        locationypeArray.clear()
-        for (fac in locationTypeList) {
-            locationypeArray.add(fac.LocTypeName)
+        newLocLatText.setText(FacilityDataModel.getInstance().tblAddress[index].LATITUDE)
+        newLocLongText.setText(FacilityDataModel.getInstance().tblAddress[index].LONGITUDE)
+
+        locationSubmitButton.setOnClickListener {
+            FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
+            FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+            editLocationDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+            enableAllAddButnsAndDialog()
+            fillLocationTableView()
         }
-
-        var locTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, locationypeArray)
-        locTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newLocTypeSpinner.adapter = locTypeAdapter
-//        locationDialogView.newLoc2TypeSpinner.adapter = locTypeAdapter
 
 
     }
@@ -473,7 +502,7 @@ class FragmentARRAVLocation : Fragment() {
 
         var citiesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, states)
         citiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newStateSpinner.adapter = citiesAdapter
+//        newStateSpinner.adapter = citiesAdapter
 
 
 //        for (fac in FacilityDataModel.getInstance().tblAddress) {
@@ -508,7 +537,7 @@ class FragmentARRAVLocation : Fragment() {
 //        phyloc1addr2latitude.setError(null)
 //        phyloc1addr2longitude.setError(null)
         phyloc1addr1longitude.setError(null)
-        stateTextView.setError(null)
+//        stateTextView.setError(null)
 
 
         if (phyloc1addr1latitude.text.toString().isNullOrEmpty()) {
@@ -516,13 +545,13 @@ class FragmentARRAVLocation : Fragment() {
             phyloc1addr1latitude.setError("Required Field")
         }
 
-        if (newStateSpinner.selectedItem.toString().contains("select")){
-
-            isInputsValid = false
-            stateTextView.setError("required field")
-
-
-        }
+//        if (newStateSpinner.selectedItem.toString().contains("select")){
+//
+//            isInputsValid = false
+//            stateTextView.setError("required field")
+//
+//
+//        }
 
 //        if(loc1addr2latitude.text.toString().isNullOrEmpty()) {
 //            isInputsValid=false
@@ -588,6 +617,8 @@ class FragmentARRAVLocation : Fragment() {
                 editPhoneBtn.layoutParams = rowLayoutParam2
                 editPhoneBtn.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
                 editPhoneBtn.text = "Edit"
+                editPhoneBtn.setTextColor(Color.WHITE)
+//                editPhoneBtn.setBackgroundResource(R.drawable.green_background_button)
                 tableRow.addView(editPhoneBtn)
 
 
@@ -1058,6 +1089,22 @@ class FragmentARRAVLocation : Fragment() {
                 textView.text = get(it).BranchName
                 tableRow.addView(textView)
 
+                var editButton = Button(context)
+                editButton.layoutParams = rowLayoutParam11
+                editButton.text = "EDIT"
+                editButton.tag = it
+//                editButton.setBackgroundResource(R.drawable.green_background_button)
+                editButton.setTextColor(Color.WHITE)
+                tableRow.addView(editButton)
+                if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")){
+                    editButton.visibility = View.INVISIBLE
+                }
+
+                editButton.setOnClickListener { s ->
+                    disableAllAddButnsAndDialog()
+                    showLocationDialog(it)
+                }
+
                 locationTbl.addView(tableRow)
 
             }
@@ -1124,16 +1171,16 @@ class FragmentARRAVLocation : Fragment() {
 
 
     fun submitFacilityAddress(){
-        val locTypeID = TypeTablesModel.getInstance().LocationType.filter { s -> s.LocTypeName==newLocTypeSpinner.selectedItem.toString()}[0].LocTypeID
-        val address1Text = if (newLocAddr1Text.text.isNullOrEmpty())  "" else newLocAddr1Text.text
-        val address2Text = if (newLocAddr2Text.text.isNullOrEmpty())  "" else newLocAddr2Text.text
-        val cityText= if (newLocCityText.text.isNullOrEmpty())  "" else newLocCityText.text
-        val countryText = if (newLocCountryText.text.isNullOrEmpty())  "" else newLocCountryText.text
-        val longText = if (newLocLongText.text.isNullOrEmpty())  "" else newLocLongText.text
-        val latText = if (newLocLatText.text.isNullOrEmpty())  "" else newLocLatText.text
-        val zipText = if (newLocZipText.text.isNullOrEmpty())  "" else newLocZipText.text
-        val branchNameText = if (newLocBranchNameText.text.isNullOrEmpty())  "" else newLocBranchNameText.text
-        val branchNoText = if (newLocBranchNoText.text.isNullOrEmpty())  "" else newLocBranchNoText.text
+//        val locTypeID = TypeTablesModel.getInstance().LocationType.filter { s -> s.LocTypeName==newLocTypeSpinner.selectedItem.toString()}[0].LocTypeID
+//        val address1Text = if (newLocAddr1Text.text.isNullOrEmpty())  "" else newLocAddr1Text.text
+//        val address2Text = if (newLocAddr2Text.text.isNullOrEmpty())  "" else newLocAddr2Text.text
+//        val cityText= if (newLocCityText.text.isNullOrEmpty())  "" else newLocCityText.text
+//        val countryText = if (newLocCountryText.text.isNullOrEmpty())  "" else newLocCountryText.text
+//        val longText = if (newLocLongText.text.isNullOrEmpty())  "" else newLocLongText.text
+//        val latText = if (newLocLatText.text.isNullOrEmpty())  "" else newLocLatText.text
+//        val zipText = if (newLocZipText.text.isNullOrEmpty())  "" else newLocZipText.text
+//        val branchNameText = if (newLocBranchNameText.text.isNullOrEmpty())  "" else newLocBranchNameText.text
+//        val branchNoText = if (newLocBranchNoText.text.isNullOrEmpty())  "" else newLocBranchNoText.text
         val insertDate = Date().toAppFormat()
         val insertBy ="sa"
         val updateDate = Date().toAppFormat()
@@ -1142,33 +1189,33 @@ class FragmentARRAVLocation : Fragment() {
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode ="004"
         val newLocation = FacilityDataModel.TblAddress()
-        newLocation.BranchName = branchNameText.toString()
-        newLocation.BranchNumber = branchNoText.toString()
-        newLocation.CITY = cityText.toString()
-        newLocation.County = countryText.toString()
-        newLocation.FAC_Addr1 = address1Text.toString()
-        newLocation.FAC_Addr2 = address2Text.toString()
-        newLocation.LATITUDE = latText.toString()
-        newLocation.LONGITUDE = longText.toString()
-        newLocation.LocationTypeID = locTypeID
-        newLocation.ST = "CA"
-        newLocation.ZIP = zipText.toString()
-        newLocation.ZIP4 = ""
+//        newLocation.BranchName = branchNameText.toString()
+//        newLocation.BranchNumber = branchNoText.toString()
+//        newLocation.CITY = cityText.toString()
+//        newLocation.County = countryText.toString()
+//        newLocation.FAC_Addr1 = address1Text.toString()
+//        newLocation.FAC_Addr2 = address2Text.toString()
+//        newLocation.LATITUDE = latText.toString()
+//        newLocation.LONGITUDE = longText.toString()
+//        newLocation.LocationTypeID = locTypeID
+//        newLocation.ST = "CA"
+//        newLocation.ZIP = zipText.toString()
+//        newLocation.ZIP4 = ""
 
-        var urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locTypeID+"&FAC_Addr1="+address1Text+"&FAC_Addr2="+address2Text+"&CITY="+cityText+"&ST=CA&ZIP="+zipText+"&ZIP4=&Country="+countryText+"&BranchName="+branchNameText+"&BranchNumber="+branchNoText+"&LATITUDE="+latText+"&LONGITUDE="+longText+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId=&active=1"
-        Log.v("Data To Submit", urlString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityAddress + urlString,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        Log.v("RESPONSE",response.toString())
-                        FacilityDataModel.getInstance().tblAddress.add(newLocation)
-                        fillLocationTableView()
-                        addNewLocationDialog.visibility=View.GONE
-                        alphaBackgroundForDialogs.visibility=View.GONE
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while submitting", it.message)
-        }))
+//        var urlString = facilityNo+"&clubcode="+clubCode+"&LocationTypeID="+locTypeID+"&FAC_Addr1="+address1Text+"&FAC_Addr2="+address2Text+"&CITY="+cityText+"&ST=CA&ZIP="+zipText+"&ZIP4=&Country="+countryText+"&BranchName="+branchNameText+"&BranchNumber="+branchNoText+"&LATITUDE="+latText+"&LONGITUDE="+longText+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId=&active=1"
+//        Log.v("Data To Submit", urlString)
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityAddress + urlString,
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        Log.v("RESPONSE",response.toString())
+//                        FacilityDataModel.getInstance().tblAddress.add(newLocation)
+//                        fillLocationTableView()
+////                        addNewLocationDialog.visibility=View.GONE
+//                        alphaBackgroundForDialogs.visibility=View.GONE
+//                    })
+//                }, Response.ErrorListener {
+//            Log.v("error while submitting", it.message)
+//        }))
     }
 
     fun submitFacilityPhone(){
