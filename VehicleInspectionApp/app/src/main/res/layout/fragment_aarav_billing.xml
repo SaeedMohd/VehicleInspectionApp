@@ -178,14 +178,20 @@
         android:visibility="invisible"
         android:alpha="0.8"/>
 
-    <android.support.v7.widget.CardView
+    <ScrollView
+        android:id="@+id/addNewBillingDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+        <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:scrollbars="vertical"
         app:cardCornerRadius="5dp"
-        android:id="@+id/addNewBillingDialog"
         app:cardElevation="10dp">
 
         <TableLayout
@@ -650,6 +656,7 @@
         </TableLayout>
 
     </android.support.v7.widget.CardView>
+    </ScrollView>
 
 
     </RelativeLayout>

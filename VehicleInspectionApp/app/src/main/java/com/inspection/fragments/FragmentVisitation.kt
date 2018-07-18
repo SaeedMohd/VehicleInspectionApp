@@ -538,7 +538,7 @@ class FragmentVisitation : Fragment() {
 
     fun representativeSignatureConditionedEnabling() {
 
-        if (facilityRepresentativesSpinner.selectedItem.toString().isNullOrEmpty() ||
+        if ( facilityRepresentativesSpinner.selectedItem.toString().isNullOrEmpty() ||
                 facilityRepresentativesSpinner.selectedItem.toString().contains("please") ||
                 visitationReasonDropListId.selectedItem.toString().isNullOrEmpty() ||
                 visitationReasonDropListId.selectedItem.toString().contains("please")) {

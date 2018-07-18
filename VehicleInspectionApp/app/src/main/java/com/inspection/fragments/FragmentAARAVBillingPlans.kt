@@ -2,6 +2,8 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Paint
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
@@ -114,6 +116,15 @@ class FragmentAARAVBillingPlans : Fragment() {
         saveButton.setOnClickListener({
             MarkChangeWasDone()
         })
+    }
+
+
+    private fun setFieldsListeners() {
+        achCheck.setOnCheckedChangeListener { compoundButton, b ->
+//            FacilityDataModel.getInstance().tblBi[0].emailVisitationPdfToFacility = b
+        }
+
+
     }
 
     private fun validateBillinPlanData() {
