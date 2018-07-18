@@ -197,6 +197,14 @@ class FragmentVisitation : Fragment() {
             facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
         }
 
+        waiveVisitationCheckBox.isChecked =  FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
+        emailPdfCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility
+
+        emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+
+        waiverCommentsEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+
+
 
 
         emailValidation()
@@ -457,6 +465,20 @@ class FragmentVisitation : Fragment() {
 
         })
 
+
+        emailEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+        })
+
     }
 
     fun facilityNameAndNumberRelationForSelection() {
@@ -529,6 +551,10 @@ class FragmentVisitation : Fragment() {
                 }
             }
         }
+
+
+
+
         facilityNameEditText.addTextChangedListener(facNameWatcher)
         facilityNumberEditText.addTextChangedListener(facNumberWatcher)
 

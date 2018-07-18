@@ -136,6 +136,7 @@ class FacilityDataModel {
         var automotiveSpecialistSignature: Bitmap? = null
         var facilityRepresentativeDeficienciesSignature: Bitmap? = null
         var emailVisitationPdfToFacility = false
+        var email = ""
         var waiveVisitations = false
         var waiverComments = ""
         var waiverSignature : Bitmap? = null
