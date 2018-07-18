@@ -124,13 +124,19 @@
         android:background="@color/mainColor"
         android:visibility="gone"
         android:alpha="0.8"/>
-    <android.support.v7.widget.CardView
+    <ScrollView
+        android:id="@+id/affiliationsCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+        <android.support.v7.widget.CardView
         android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
         app:cardCornerRadius="5dp"
-        android:id="@+id/affiliationsCard"
         app:cardElevation="10dp">
 
 
@@ -325,13 +331,21 @@
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/edit_affiliationsCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
     <android.support.v7.widget.CardView
         android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
         app:cardCornerRadius="5dp"
-        android:id="@+id/edit_affiliationsCard"
         app:cardElevation="10dp">
 
 
@@ -526,6 +540,7 @@
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/affLoadingView"
