@@ -123,9 +123,7 @@ class FragmentVisitation : Fragment() {
             visitationReasonDropListId.isClickable = false
         }
 
-        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
-        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
-        facilityNameAndNumberRelationForSelection()
+
 
         handleCancelButtonClick()
 
@@ -197,6 +195,9 @@ class FragmentVisitation : Fragment() {
         }
 
 
+        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
+        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
+        facilityNameAndNumberRelationForSelection()
 
 
         emailValidation()
