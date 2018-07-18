@@ -165,6 +165,9 @@ class FragmentVisitation : Fragment() {
             emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
         }
 
+        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
+        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
+        facilityNameAndNumberRelationForSelection()
 
 
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature!=null){
@@ -178,7 +181,7 @@ class FragmentVisitation : Fragment() {
         }
 
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature!=null){
-            facilityRepresentativeSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature)
+            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature)
         }
 
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature!=null){
@@ -194,10 +197,6 @@ class FragmentVisitation : Fragment() {
             facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
         }
 
-
-        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
-        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
-        facilityNameAndNumberRelationForSelection()
 
 
         emailValidation()
@@ -225,15 +224,16 @@ class FragmentVisitation : Fragment() {
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
-                if (p2 > 0) {
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilityRepresentativeNames.get(p2)
-                    facilityRepresentativeSignatureImageView.setImageBitmap(null)
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
-                }else if (!isFacilityRepresentativeSignatureInitialized){
-                    facilityRepresentativeSignatureImageView.setImageBitmap(null)
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
-                }else if(isFacilityRepresentativeSignatureInitialized){
-                    isFacilityRepresentativeSignatureInitialized = false
+                if (p2 == 0){
+
+                }else if (p2 > 0) {
+                    if(isFacilityRepresentativeSignatureInitialized){
+                        isFacilityRepresentativeSignatureInitialized = false
+                    }else {
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilityRepresentativeNames.get(p2)
+                        facilityRepresentativeSignatureImageView.setImageBitmap(null)
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
+                    }
                 }
             }
 
@@ -366,8 +366,96 @@ class FragmentVisitation : Fragment() {
             FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations = b
         }
 
+        aarSignEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        certificateOfApprovalEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
 
 
+        qualityControlProcessEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        staffTrainingProcessEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        memberBenefitsPosterEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        waiverCommentsEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
 
     }
 

@@ -154,8 +154,8 @@ class ItemListActivity : AppCompatActivity() {
                     if (true) {
                         when (position) {
                             1 -> fragment = FragmentVisitation()
-                            3 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
-                            300 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
+                            3 -> fragment = FacilityGeneralInformationFragment.newInstance(mParentActivity.isValidating)
+                            300 -> fragment = FacilityGeneralInformationFragment.newInstance(mParentActivity.isValidating)
                             5 -> fragment = FragmentARRAVFacilityContinued.newInstance(mParentActivity.isValidating)
                             100 -> fragment = FragmentARRAVLocation.newInstance(mParentActivity.isValidating)
                             6 -> fragment = FragmentARRAVPersonnel.newInstance(mParentActivity.isValidating)
@@ -192,8 +192,8 @@ class ItemListActivity : AppCompatActivity() {
 
                     } else {
                         when (position) {
-                            1 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
-                            300 -> fragment = FragmentARRAVFacility.newInstance(mParentActivity.isValidating)
+                            1 -> fragment = FacilityGeneralInformationFragment.newInstance(mParentActivity.isValidating)
+                            300 -> fragment = FacilityGeneralInformationFragment.newInstance(mParentActivity.isValidating)
                             3 -> fragment = FragmentARRAVFacilityContinued.newInstance(mParentActivity.isValidating)
                             100 -> fragment = FragmentARRAVLocation.newInstance(mParentActivity.isValidating)
                             4 -> fragment = FragmentARRAVPersonnel.newInstance(mParentActivity.isValidating)

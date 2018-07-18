@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@color/light_gray"
-    tools:context="com.inspection.fragments.FragmentARRAVFacility">
+    tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
     <TextView
         android:id="@+id/titleTextView"

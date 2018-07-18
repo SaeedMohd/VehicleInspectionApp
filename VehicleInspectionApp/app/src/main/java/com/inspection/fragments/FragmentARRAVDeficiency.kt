@@ -612,7 +612,7 @@ class FragmentARRAVDeficiency : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentARRAVFacility.
+         * @return A new instance of fragment FacilityGeneralInformationFragment.
          */
         // TODO: Rename and change types and number of parameters
         fun newInstance(param1: String, param2: String): FragmentARRAVDeficiency {

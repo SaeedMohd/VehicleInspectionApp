@@ -10,16 +10,13 @@ import android.view.ViewGroup
 
 
 import com.inspection.R
-import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import android.widget.Toast
 import com.inspection.MainActivity
 
 import kotlinx.android.synthetic.main.fragment_main_visitation.*
 import android.app.AlertDialog
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.Log
-import com.inspection.Utils.toast
 import kotlinx.android.synthetic.*
 
 
@@ -116,7 +113,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                     val fragmentProgramType = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11") as? FragmentARRAVPrograms
                     fragmentProgramType?.prepareProgramTypes()
                 } else if (position == 1) {
-                    val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as? FragmentARRAVFacility
+                    val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as? FacilityGeneralInformationFragment
 
                 } else if (position == 9) {
                     val fragmentFac = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":9") as? FragmentARRAVVehicleServices
@@ -156,7 +153,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         var errorText: String = ""
 
         val fragmentVisitation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":0") as FragmentARRAnualVisitation
-        val fragmentFacility = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as FragmentARRAVFacility
+        val fragmentFacility = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as FacilityGeneralInformationFragment
         val fragmentFacilityContinued = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued
         val fragmentFacilityLocation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3") as FragmentARRAVLocation
         val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel
@@ -233,7 +230,7 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
             var ft: android.support.v4.app.Fragment? = null
             when (position) {
 //                 0 -> ft = FragmentARRAnualVisitation.newInstance("Test", "Test")
-                 1 -> ft = FragmentARRAVFacility.newInstance(false)
+                 1 -> ft = FacilityGeneralInformationFragment.newInstance(false)
                  2 -> ft = FragmentARRAVFacilityContinued.newInstance(false)
                  3 -> ft = FragmentARRAVLocation.newInstance(false)
                  4 -> ft = FragmentARRAVPersonnel.newInstance(false)

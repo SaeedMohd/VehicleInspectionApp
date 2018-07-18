@@ -1,21 +1,15 @@
 package com.inspection.fragments
 
-import android.app.DatePickerDialog
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 
 import com.inspection.R
-import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.facility_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_billing.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -58,13 +52,13 @@ class ComplaintsGroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var fragment = FragmentARRAVFacility.newInstance(false)
+        var fragment = FacilityGeneralInformationFragment.newInstance(false)
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
 
         generalInformationButton.setOnClickListener {
-            var fragment = FragmentARRAVFacility.newInstance(false)
+            var fragment = FacilityGeneralInformationFragment.newInstance(false)
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
