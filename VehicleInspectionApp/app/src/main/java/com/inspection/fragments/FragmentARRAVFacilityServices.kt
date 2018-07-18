@@ -17,6 +17,8 @@ import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.Constants.UpdateFacilityServicesData
 import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.appToApiFormat
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
@@ -230,14 +232,14 @@ class FragmentARRAVFacilityServices : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).effDate
+                textView.text = if (get(it).effDate.isNullOrEmpty()) "" else  get(it).effDate.apiToAppFormat()
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = get(it).expDate
+                textView.text = if (get(it).expDate.isNullOrEmpty()) "" else  get(it).expDate.apiToAppFormat()
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -290,14 +292,14 @@ class FragmentARRAVFacilityServices : Fragment() {
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = effDate
+            textView.text = effDate.apiToAppFormat()
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            textView.text = expDate
+            textView.text = expDate.apiToAppFormat()
             tableRow.addView(textView)
 
             textView = TextView(context)
