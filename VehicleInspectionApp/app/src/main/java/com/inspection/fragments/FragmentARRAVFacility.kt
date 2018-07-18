@@ -520,6 +520,8 @@ class FragmentARRAVFacility : Fragment() {
                         FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability.toInt()
                         FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
                         FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
+
+
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading")

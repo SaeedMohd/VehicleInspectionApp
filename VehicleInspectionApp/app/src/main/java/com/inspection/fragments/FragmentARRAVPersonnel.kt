@@ -20,9 +20,11 @@ import com.android.volley.toolbox.Volley
 
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
@@ -412,6 +414,28 @@ class FragmentARRAVPersonnel : Fragment() {
                             for (i in 0 until mainViewLinearId2.childCount) {
                                 val child = mainViewLinearId2.getChildAt(i)
                                 child.isEnabled = true
+                            }
+
+
+                            var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
+                            var itemArray = FacilityDataModel.getInstance().tblPersonnel
+                            for (itemAr in itemArray){
+                                for (itemOrgAr in itemOrgArray){
+
+                                    if (itemAr.FirstName!=itemOrgAr.FirstName||itemAr.LastName!=itemOrgAr.LastName||
+                                            itemAr.RSP_UserName!=itemOrgAr.RSP_UserName||
+                                            itemAr.RSP_Email!=itemOrgAr.RSP_Email||
+                                            itemAr.CertificationNum!=itemOrgAr.CertificationNum||
+                                            itemAr.ContractSigner!=itemOrgAr.ContractSigner||
+                                            itemAr.PrimaryMailRecipient!=itemOrgAr.PrimaryMailRecipient||
+                                            itemAr.startDate!=itemOrgAr.startDate||
+                                            itemAr.ExpirationDate!=itemOrgAr.ExpirationDate||
+                                            itemAr.SeniorityDate!=itemOrgAr.SeniorityDate){
+                                        MarkChangeWasDone()
+                                        Toast.makeText(context,"changes submitted",Toast.LENGTH_SHORT).show()
+                                    }
+
+                                }
                             }
 
 

@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,7 @@ import com.google.android.gms.drive.metadata.CustomPropertyKey.fromJson
 import com.google.gson.GsonBuilder
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.R.id.numberOfLiftsEditText
+import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import kotlin.jvm.java
 
 
@@ -69,7 +72,121 @@ class FragmentARRAVScopeOfService : Fragment() {
         saveBtnPressed()
 //        prepareScopePage()
         setFields()
+        setFieldsListener()
     }
+
+    fun setFieldsListener (){
+
+        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                fixedLaborRateEditText.setText(FixedLaborRate)
+                diagnosticRateEditText.setText(DiagnosticsRate)
+                numberOfBaysEditText.setText(NumOfBays)
+                numberOfLiftsEditText.setText(NumOfLifts)
+
+                var laborMaxWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
+                LaborMax=s.toString()
+            }
+        }
+        var laborMinWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
+                LaborMin=s.toString()
+            }
+        }
+        var fixedLaborWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
+                FixedLaborRate=s.toString()
+            }
+        }
+        var diagnosticWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
+                DiagnosticsRate=s.toString()
+            }
+        }
+        var noOfBaysWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
+                NumOfBays=s.toString()
+            }
+        }
+        var noOfLiftsWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
+                NumOfLifts=s.toString()
+            }
+        }
+
+        laborRateMatrixMaxEditText.addTextChangedListener(laborMaxWatcher)
+        laborRateMatrixMinEditText.addTextChangedListener(laborMinWatcher)
+                fixedLaborRateEditText.addTextChangedListener(fixedLaborWatcher)
+                diagnosticRateEditText.addTextChangedListener(diagnosticWatcher)
+                numberOfBaysEditText.addTextChangedListener(noOfBaysWatcher)
+                numberOfLiftsEditText.addTextChangedListener(noOfLiftsWatcher)
+
+
+            }
+        }
+    }
+
 
     fun setFields() {
         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
@@ -78,9 +195,13 @@ class FragmentARRAVScopeOfService : Fragment() {
                 diagnosticRateEditText.setText(DiagnosticsRate)
                 numberOfBaysEditText.setText(NumOfBays)
                 numberOfLiftsEditText.setText(NumOfLifts)
+                laborRateMatrixMaxEditText.setText(LaborMax)
+                laborRateMatrixMinEditText.setText(LaborMin)
             }
         }
     }
+
+
 
     var isFirstRun = true
 

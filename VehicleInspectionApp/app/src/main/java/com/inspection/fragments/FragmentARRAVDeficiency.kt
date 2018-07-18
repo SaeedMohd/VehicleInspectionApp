@@ -18,9 +18,11 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.Constants.UpdateDeficiencyData
+import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.appToApiFormat
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import java.text.SimpleDateFormat
@@ -234,8 +236,8 @@ class FragmentARRAVDeficiency : Fragment() {
                 DeffLoadingView.visibility = View.VISIBLE
 
 
-
                 var item = FacilityDataModel.TblDeficiency()
+
                 for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
                     if (newDefSpinner.getSelectedItem().toString().equals(fac.DeficiencyName))
 
@@ -264,6 +266,23 @@ class FragmentARRAVDeficiency : Fragment() {
                                 visitationFormAlphaBackground.visibility = View.GONE
                                 FacilityDataModel.getInstance().tblDeficiency.add(item)
                                 addTheLatestRowOfPortalAdmin()
+
+
+                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblDeficiency
+                                var itemArray = FacilityDataModel.getInstance().tblDeficiency
+                                for (itemAr in itemArray){
+                                    for (itemOrgAr in itemOrgArray){
+
+                                        if (itemAr.Comments!=itemOrgAr.Comments||itemAr.VisitationDate!=itemOrgAr.VisitationDate||
+                                                itemAr.EnteredDate!=itemOrgAr.EnteredDate||
+                                                itemAr.ClearedDate!=itemOrgAr.ClearedDate){
+                                            MarkChangeWasDone()
+                                            Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
+                                        }
+
+                                    }
+                                }
+
 
 
                             })

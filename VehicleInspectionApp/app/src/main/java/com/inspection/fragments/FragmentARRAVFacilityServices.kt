@@ -16,7 +16,9 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.Constants.UpdateFacilityServicesData
+import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
 import java.text.SimpleDateFormat
@@ -152,6 +154,24 @@ class FragmentARRAVFacilityServices : Fragment() {
                                 alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                                 addTheLatestRowOfPortalAdmin()
 
+
+                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityServices
+                                var itemArray = FacilityDataModel.getInstance().tblFacilityServices
+                                for (itemAr in itemArray){
+                                    for (itemOrgAr in itemOrgArray){
+
+                                        if (itemAr.Comments!=itemOrgAr.Comments||itemAr.effDate!=itemOrgAr.effDate||
+                                                itemAr.expDate!=itemOrgAr.expDate||
+                                                itemAr.ServiceID!=itemOrgAr.ServiceID){
+                                            MarkChangeWasDone()
+                                            Toast.makeText(context,"changes found",Toast.LENGTH_SHORT).show()
+                                        }else{
+                                            Toast.makeText(context,"no changes was found",Toast.LENGTH_SHORT).show()
+
+                                        }
+
+                                    }
+                                }
 
 
                             })
