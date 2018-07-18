@@ -353,11 +353,21 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                     append("inspectionYear=" + visitationYearFilterSpinner.selectedItem)
                     append("&")
                 }
+            }else{
+                with(parametersString) {
+                    append("inspectionYear=")
+                    append("&")
+                }
             }
 
             if (visitationMonthsSpinner.selectedItem != "Any") {
                 with(parametersString) {
                     append("inspectionMonth=" + visitationMonthsSpinner.selectedItemPosition)
+                    append("&")
+                }
+            }else{
+                with(parametersString) {
+                    append("inspectionMonth=")
                     append("&")
                 }
             }
@@ -425,6 +435,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             var client = OkHttpClient()
             var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString).build()
 
+            Log.v("******get visitation", Constants.getVisitations+parametersString)
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call?, e: IOException?) {
@@ -599,21 +610,21 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
 
             if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].AutomotiveRepairExpDate
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].AutomotiveRepairExpDate.apiToAppFormat()
                 vh.visitationTypeValueTextView.text = "Pending"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt())
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].AutomotiveRepairExpDate
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].AutomotiveRepairExpDate.apiToAppFormat()
                 vh.visitationTypeValueTextView.text = "Completed"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt())
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].AutomotiveRepairExpDate
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].AutomotiveRepairExpDate.apiToAppFormat()
                 vh.visitationTypeValueTextView.text = "Deficiency"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt())
