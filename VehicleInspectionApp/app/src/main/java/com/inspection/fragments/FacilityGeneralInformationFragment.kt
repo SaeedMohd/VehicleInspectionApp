@@ -280,6 +280,14 @@ class FacilityGeneralInformationFragment : Fragment() {
             validateInputs()
         }
 
+        if (FacilityDataModel.getInstance().tblSurveySoftwares!= null && FacilityDataModel.getInstance().tblSurveySoftwares[0] != null) {
+            shopManagmentSystem_textviewVal.setText(FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName)
+        }
+
+        if (FacilityDataModel.getInstance().tblSurveySoftwares!= null && FacilityDataModel.getInstance().tblSurveySoftwares[0] != null) {
+            shopManagmentSystem_textviewVal.setText(FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName)
+        }
+
         setPaymentMethods()
 
         saveButton.setOnClickListener {
@@ -408,7 +416,9 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         repairorder_textviewVal.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
-                FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = p0.toString().toInt()
+                if (p0.toString().length > 0) {
+                    FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = p0.toString().toInt()
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -445,7 +455,19 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         shopManagmentSystem_textviewVal.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
-                FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName = p0.toString()
+                if (FacilityDataModel.getInstance().tblSurveySoftwares == null){
+                    FacilityDataModel.getInstance().tblSurveySoftwares = ArrayList<FacilityDataModel.TblSurveySoftwares>()
+                }
+                if (FacilityDataModel.getInstance().tblSurveySoftwares.count() > 0 ) {
+                    if (FacilityDataModel.getInstance().tblSurveySoftwares[0] == null){
+                        FacilityDataModel.getInstance().tblSurveySoftwares[0] = FacilityDataModel.TblSurveySoftwares()
+                    }
+                    FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName = p0.toString()
+                }else{
+                    var survey = FacilityDataModel.TblSurveySoftwares()
+                    survey.shopMgmtSoftwareName = p0.toString()
+                    FacilityDataModel.getInstance().tblSurveySoftwares.add(survey)
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
