@@ -238,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_margin="5dp"
-                    android:text="Logitude:"
+                    android:text="Longitude:"
                     android:layout_column="3"
                     android:textStyle="bold"
                     />
@@ -473,7 +473,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_margin="5dp"
-                    android:text="Logitude:"
+                    android:text="Longitude:"
                     android:layout_column="3"
                     android:textStyle="bold"
                     />

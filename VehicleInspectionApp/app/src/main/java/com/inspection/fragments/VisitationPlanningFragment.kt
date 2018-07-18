@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,7 +23,7 @@ import com.google.gson.reflect.TypeToken
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
-import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.dialog_forgot_password.view.*
 import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
 import okhttp3.Call
 import okhttp3.Callback
@@ -44,7 +43,7 @@ import java.util.*
  * Use the [FrgmentARRAnnualVisitationRecords.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
+class VisitationPlanningFragment : android.support.v4.app.Fragment() {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -64,6 +63,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
     var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
     var allClubCodes = ArrayList<String>()
     var specialistClubCodes = ArrayList<String>()
+    var specialistArrayModel = ArrayList<CsiSpecialist>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,7 +106,7 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                                             visitationSpecialistName.setText(requiredSpecialistName)
                                         }
 
-                                        firstLoadingCompleted()
+                                        loadSpecialistName()
                                     })
 
 
@@ -135,8 +135,16 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
 
     }
 
+    fun prepareInitialStateForFilters(){
+        clubCodeEditText.setText(specialistArrayModel.sortedWith(compareBy { it.clubcode })[0].clubcode)
+
+
+    }
+
+
     fun firstLoadingCompleted(){
 
+        prepareInitialStateForFilters()
 
         var visitationYearFilterSpinnerEntries = mutableListOf<String>()
         var currentYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -202,6 +210,15 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
                 } else {
                     visitationSpecialistName.setText(searchDialog.selectedString)
                 }
+                reloadVisitationsList()
+            }
+        })
+
+        clubCodeEditText.setOnClickListener(View.OnClickListener {
+            var searchDialog = SearchDialog(context, allClubCodes)
+            searchDialog.show()
+            searchDialog.setOnDismissListener {
+                clubCodeEditText.setText(searchDialog.selectedString)
                 reloadVisitationsList()
             }
         })
@@ -500,29 +517,33 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
         return visitationsModel
     }
 
-    fun loadClubCodes() {
+    private fun loadClubCodes() {
+        Log.v("url*******", ""+ Constants.getClubCodes)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
                 Response.Listener { response ->
                     var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
                     allClubCodes.clear()
                     for (cc in clubCodeModels) {
-                        allClubCodes.add(cc.clubCode)
+                        allClubCodes.add(cc.clubcode)
                     }
+
+                    firstLoadingCompleted()
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading club codes")
         }))
     }
 
-    fun loadSpecialistName() {
+    private fun loadSpecialistName() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
 
-                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                        if (specialistName != null && specialistName.size > 0) {
-                            requiredSpecialistName = specialistName[0].specialistname
+                        specialistArrayModel = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+                        if (specialistArrayModel != null && specialistArrayModel.size > 0) {
+                            requiredSpecialistName = specialistArrayModel[0].specialistname
                             visitationSpecialistName.setText(requiredSpecialistName)
                         }
+                        loadClubCodes()
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading facilities")
@@ -1074,8 +1095,8 @@ class FragmentARRAnnualVisitationRecords : android.support.v4.app.Fragment() {
          * @return A new instance of fragment FrgmentARRAnnualVisitationRecords.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): FragmentARRAnnualVisitationRecords {
-            val fragment = FragmentARRAnnualVisitationRecords()
+        fun newInstance(param1: String, param2: String): VisitationPlanningFragment {
+            val fragment = VisitationPlanningFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)

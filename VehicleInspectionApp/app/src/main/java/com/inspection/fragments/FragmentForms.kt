@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import com.inspection.MainActivity
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_forms.*
-import kotlinx.android.synthetic.main.toolbar.*
 
 class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 
@@ -35,7 +34,7 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 
         visitationPlanningButton.setOnClickListener {
             (activity as MainActivity).supportActionBar!!.title = "Visitation Planning"
-            var fragment = FragmentARRAnnualVisitationRecords()
+            var fragment = VisitationPlanningFragment()
             fragment!!.isVisitationPlanning = true
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()
@@ -82,7 +81,7 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 ////                ftSC.commit()
 ////                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
 //
-//                fragment = FragmentARRAnnualVisitationRecords()
+//                fragment = VisitationPlanningFragment()
 //                val fragmentManagerSC = fragmentManager
 //                val ftSC = fragmentManagerSC!!.beginTransaction()
 //                ftSC.replace(R.id.fragment,fragment)

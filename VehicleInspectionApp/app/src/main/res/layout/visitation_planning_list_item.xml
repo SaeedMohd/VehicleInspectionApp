@@ -50,7 +50,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_row="0"
                 android:layout_alignParentRight="true"
-                android:text="tesst" />
+                android:text="test" />
 
 
             <TextView

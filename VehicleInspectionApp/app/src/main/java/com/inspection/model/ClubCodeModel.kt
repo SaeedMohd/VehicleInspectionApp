@@ -5,5 +5,5 @@ package com.inspection.model
  */
 
 class ClubCodeModel {
-    var clubCode = ""
+    var clubcode = ""
 }

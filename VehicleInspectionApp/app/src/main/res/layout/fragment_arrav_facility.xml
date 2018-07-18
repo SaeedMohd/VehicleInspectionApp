@@ -1064,7 +1064,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:text="Shop Managment System: "
+                        android:text="Shop Management System: "
                         android:textStyle="bold" />
 
                     <EditText
