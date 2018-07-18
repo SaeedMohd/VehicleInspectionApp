@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.android.volley.Request
@@ -27,6 +28,7 @@ import com.google.android.gms.drive.metadata.CustomPropertyKey.fromJson
 import com.google.gson.GsonBuilder
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.R.id.numberOfLiftsEditText
+import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import kotlin.jvm.java
 
@@ -41,7 +43,7 @@ import kotlin.jvm.java
  */
 class FragmentARRAVScopeOfService : Fragment() {
 
-    var warrantyArray = emptyArray<String>()
+    var warrantyArray = ArrayList<String>()
 
 
 
@@ -62,12 +64,20 @@ class FragmentARRAVScopeOfService : Fragment() {
 
         scopeOfServicesChangesMade = false
 
-        var warrantyArray = arrayOf("12/12/", "24/24", "36/36", "48/48", "60/60", "Lifetime")
+
+
+
+
+        for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
+
+
+                warrantyArray.add(typeWarranty.WarrantyTypeName)
+
+
+        }
         var warrantyAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, warrantyArray)
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
-
-
 
         saveBtnPressed()
 //        prepareScopePage()
@@ -77,13 +87,10 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     fun setFieldsListener (){
 
+
+
         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
             FacilityDataModel.getInstance().tblScopeofService[0].apply {
-                fixedLaborRateEditText.setText(FixedLaborRate)
-                diagnosticRateEditText.setText(DiagnosticsRate)
-                numberOfBaysEditText.setText(NumOfBays)
-                numberOfLiftsEditText.setText(NumOfLifts)
-
                 var laborMaxWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
@@ -110,7 +117,6 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 LaborMin=s.toString()
             }
         }
@@ -125,7 +131,6 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 FixedLaborRate=s.toString()
             }
         }
@@ -140,7 +145,6 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 DiagnosticsRate=s.toString()
             }
         }
@@ -155,10 +159,10 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 NumOfBays=s.toString()
             }
         }
+
         var noOfLiftsWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
@@ -170,8 +174,8 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 NumOfLifts=s.toString()
+
             }
         }
 
@@ -184,6 +188,43 @@ class FragmentARRAVScopeOfService : Fragment() {
 
 
             }
+
+
+        }
+
+        warrantyPeriodVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
+
+                    // for (warSpinner in warrantyArray ){
+
+                    if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
+
+                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID=typeWarranty.WarrantyTypeID
+                        //   for (facWarranty in FacilityDataModel.getInstance().tblScopeofService){
+
+                        //     if (facWarranty.WarrantyTypeID==typeWarranty.WarrantyTypeID){
+
+
+
+                    }
+                    //     }
+                    //  }
+                    //    }
+
+
+                }
+
+
+
+            }
+
         }
     }
 
@@ -197,8 +238,37 @@ class FragmentARRAVScopeOfService : Fragment() {
                 numberOfLiftsEditText.setText(NumOfLifts)
                 laborRateMatrixMaxEditText.setText(LaborMax)
                 laborRateMatrixMinEditText.setText(LaborMin)
-            }
+                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
+
+                    for (facWarranty in FacilityDataModel.getInstance().tblScopeofService){
+
+                        if (facWarranty.WarrantyTypeID==typeWarranty.WarrantyTypeID){
+
+                            for (warSpinner in warrantyArray ){
+
+                               if(typeWarranty.WarrantyTypeName==warSpinner){
+
+                                  var i= warrantyArray.indexOf(warSpinner)
+
+                                   warrantyPeriodVal.setSelection(i)
+
+
+
+                               }
+                            }
+                        }
+                    }
+
+
+                }
+                           }
         }
+
+
+         //   for (facWarranty in FacilityDataModel.getInstance().tblScopeofService){
+
+           //     if (facWarranty.WarrantyTypeID==typeWarranty.WarrantyTypeID){
+
     }
 
 
@@ -239,6 +309,27 @@ class FragmentARRAVScopeOfService : Fragment() {
         saveBtnId.setOnClickListener(View.OnClickListener {
 
             if (validateInputs()) {
+
+                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
+
+                    // for (warSpinner in warrantyArray ){
+
+                    if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
+
+                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID=typeWarranty.WarrantyTypeID
+                        //   for (facWarranty in FacilityDataModel.getInstance().tblScopeofService){
+
+                        //     if (facWarranty.WarrantyTypeID==typeWarranty.WarrantyTypeID){
+
+
+
+                    }
+                    //     }
+                    //  }
+                    //    }
+
+
+                }
 
                 var fixedLaborRate = fixedLaborRateEditText.text.toString()
                 var diagnosticLaborRate = diagnosticRateEditText.text.toString()
