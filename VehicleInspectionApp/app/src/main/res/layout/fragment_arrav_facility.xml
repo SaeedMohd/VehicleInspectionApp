@@ -233,13 +233,11 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/textview_background"
                                 android:ems="10"
-                                android:textColor="@color/black"
                                 android:padding="5dp"
                                 android:textSize="12sp" />
 
 
                             <EditText
-                                android:textColor="@color/black"
                                 android:id="@+id/aabEditText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -253,7 +251,6 @@
                                 android:textSize="12sp" />
 
                             <EditText
-                                android:textColor="@color/black"
                                 android:id="@+id/aagEditText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -268,7 +265,6 @@
                                 android:textSize="12sp" />
 
                             <EditText
-                                android:textColor="@color/black"
                                 android:id="@+id/cogEditText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -298,7 +294,6 @@
                                 android:textSize="12sp" />
 
                             <EditText
-                                android:textColor="@color/black"
                                 android:id="@+id/ersEditText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -312,7 +307,6 @@
                                 android:textSize="12sp" />
 
                             <EditText
-                                android:textColor="@color/black"
                                 android:id="@+id/mprEditText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -326,7 +320,6 @@
                                 android:textSize="12sp" />
 
                             <EditText
-                                android:textColor="@color/black"
                                 android:id="@+id/pspEditText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -593,7 +586,6 @@
                         android:ems="20"
                         android:inputType="textMultiLine"
                         android:lines="8"
-                        android:textColor="@color/black"
                         android:padding="5dp"
                         android:scrollHorizontally="true"
                         android:text=""
@@ -622,7 +614,7 @@
                         android:textStyle="bold" />
 
                     <Spinner
-                        android:id="@+id/timezone_textviewVal"
+                        android:id="@+id/timeZoneSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -788,7 +780,7 @@
                     android:padding="10dp">
 
                     <CheckBox
-                        android:id="@+id/wifi_textview"
+                        android:id="@+id/wifiAvailableCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -1016,7 +1008,6 @@
                         android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                         android:hint="Enter ARD Number"
                         android:maxLength="12"
-                        android:textColor="@color/black"
                         android:padding="5dp"
                         android:text=""
                         />
@@ -1083,7 +1074,6 @@
                         android:layout_alignParentRight="true"
                         android:background="@drawable/textview_background"
                         android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
-                        android:textColor="@color/black"
                         android:padding="5dp"
                         android:ems="15"
                         android:text=""

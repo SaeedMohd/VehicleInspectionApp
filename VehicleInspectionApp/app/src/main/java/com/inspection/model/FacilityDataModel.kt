@@ -82,7 +82,7 @@ class FacilityDataModel {
         var InternetAccess = true
         var TaxIDNumber = ""
         var FacilityRepairOrderCount = 0
-        var SvcAvailability = 0
+        var SvcAvailability = ""
         var AutomotiveRepairNumber = ""
         var AutomotiveRepairExpDate = ""
         var ContractCurrentDate = ""
@@ -147,6 +147,7 @@ class FacilityDataModel {
     }
 
     class TblSurveySoftwares {
+        var shopMgmtSoftwareName = ""
     }
 
     class TblPaymentMethods {

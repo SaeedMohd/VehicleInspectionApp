@@ -27,7 +27,7 @@
         android:text="AAA 2015 Swipe And Win"
         android:textStyle="bold" />
   <CheckBox
-        android:id="@+id/wifi_textview"
+        android:id="@+id/wifiAvailableCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

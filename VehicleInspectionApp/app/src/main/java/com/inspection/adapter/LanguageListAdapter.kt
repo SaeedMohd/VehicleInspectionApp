@@ -34,57 +34,56 @@ class LanguageListAdapter(internal var context: Context, internal var recource: 
 
         for (model in TypeTablesModel.getInstance().LanguageType) {
 
-            for (model2 in FacilityDataModel.getInstance().tblLanguage){
+            for (model2 in FacilityDataModel.getInstance().tblLanguage) {
 
-                if (namesList.get(position).LangTypeID==model2.LangTypeID){
+                if (namesList.get(position).LangTypeID == model2.LangTypeID) {
 
-                    checkBoxItem.isChecked=true
+                    checkBoxItem.isChecked = true
 
 
                 }
             }
 
         }
-        if (checkBoxItem.isChecked==true){
-
-            checkBoxItemnum++
-            langArray.add(namesList.get(position).LangTypeID)
-
-
-
-        }
+//        if (checkBoxItem.isChecked) {
+//            checkBoxItemnum++
+//            langArray.add(namesList.get(position).LangTypeID)
+//
+//        }
 
 
 
-checkBoxItem.setOnClickListener(View.OnClickListener {
+        checkBoxItem.setOnClickListener(View.OnClickListener {
 
 
-    if (checkBoxItem.isChecked==true){
+            if (checkBoxItem.isChecked == true) {
 
-        checkBoxItemnum++
-        langArray.add(namesList.get(position).LangTypeID)
-        Toast.makeText(context,langArray.toString(),Toast.LENGTH_SHORT).show()
+                checkBoxItemnum++
+                var lang = FacilityDataModel.TblLanguage()
+                lang.LangTypeID = namesList.get(position).LangTypeID
+                langArray.add(lang)
+                FacilityDataModel.getInstance().tblLanguage = langArray
+
+            } else
+                langArray.removeIf { s -> s.LangTypeID == namesList.get(position).LangTypeID }
+            checkBoxItemnum--
+            // langArray.remove(namesList.get(position).LangTypeID)
+            FacilityDataModel.getInstance().tblLanguage = langArray
 
 
-    }else
-        langArray.remove(namesList.get(position).LangTypeID)
-    checkBoxItemnum--
-   // langArray.remove(namesList.get(position).LangTypeID)
-
-
-
-})
+        })
 
 
 
         return view
     }
-companion object {
 
-    var checkBoxItemnum=0
-    val langArray= ArrayList<String>()
+    companion object {
+
+        var checkBoxItemnum = 0
+        val langArray = ArrayList<FacilityDataModel.TblLanguage>()
 
 
-}
+    }
 }
 

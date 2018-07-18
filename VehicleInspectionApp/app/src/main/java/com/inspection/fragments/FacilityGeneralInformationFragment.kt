@@ -6,10 +6,13 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.android.volley.Request
@@ -23,6 +26,7 @@ import com.inspection.Utils.Constants.UpdatePaymentMethodsData
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -117,7 +121,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         var tzdataAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, timeZoneArray)
         tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timezone_textviewVal.adapter = tzdataAdapter
+        timeZoneSpinner.adapter = tzdataAdapter
 
         svcAvailabilityList = TypeTablesModel.getInstance().ServiceAvailabilityType
         svcAvailabilityArray .clear()
@@ -150,52 +154,9 @@ class FacilityGeneralInformationFragment : Fragment() {
         contractTypeValueSpinner.adapter = contractTypesAdapter
 
 
-        ARDexp_textviewVal.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                ARDexp_textviewVal!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
-        ARDexp_textviewVal.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                ARDexp_textviewVal!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-//
-        InsuranceExpDate_textviewVal.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                InsuranceExpDate_textviewVal!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
         setFieldsValues()
         ImplementBusinessRules()
+        setFieldsListeners()
 
 
     }
@@ -272,12 +233,12 @@ class FacilityGeneralInformationFragment : Fragment() {
                 entity_textviewVal.text = tblFacilities[0].EntityName
                 bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
 
-                timezone_textviewVal.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
+                timeZoneSpinner.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
                 website_textviewVal.setText(tblFacilities[0].WebSite)
-                wifi_textview.isChecked = tblFacilities[0].SvcAvailability.toInt() == 1
+                wifiAvailableCheckBox.isChecked = tblFacilities[0].InternetAccess
                 taxno_textviewVal.text = tblFacilities[0].TaxIDNumber
                 repairorder_textviewVal.setText("" + tblFacilities[0].FacilityRepairOrderCount)
-                availability_textviewVal.setSelection(tblFacilities[0].SvcAvailability)
+                availability_textviewVal.setSelection(svcAvailabilityArray.indexOf(tblFacilities[0].SvcAvailability))
                 facilitytype_textviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
                 ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormat()
@@ -342,6 +303,8 @@ class FacilityGeneralInformationFragment : Fragment() {
     fun ImplementBusinessRules() {
         activeRadioButton.isClickable = false
         inActiveRadioButton.isClickable = false
+        activeRadioButton.isEnabled = false
+        inActiveRadioButton.isEnabled = false
         contractTypeValueSpinner.isEnabled = false
         aarCheckBox.isClickable = false
         aarEditText.isEnabled=false
@@ -365,6 +328,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         entity_textviewVal.isEnabled = false
         bustype_textviewVal.isEnabled = false
         terminationDateButton.isClickable = false
+        terminationDateButton.isEnabled = false
         terminationReason_textviewVal.isEnabled=false
         terminationCommentEditText.isEnabled=false
         inspectionMonthsTextViewVal.isEnabled = false
@@ -374,9 +338,164 @@ class FacilityGeneralInformationFragment : Fragment() {
         initcodate_textviewVal.isEnabled=false
         InsuranceExpDate_textviewVal.isEnabled=false
 
+
 //                inspectionMonthsTextViewVal.text=inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth)]
 
     }
+
+
+    private fun setFieldsListeners(){
+        ARDexp_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                ARDexp_textviewVal!!.text = sdf.format(c.time)
+                FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate= sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+//
+        InsuranceExpDate_textviewVal.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "dd MMM yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                InsuranceExpDate_textviewVal!!.text = sdf.format(c.time)
+                FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        timeZoneSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timeZoneArray[p2]
+            }
+
+        }
+
+        website_textviewVal.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblFacilities[0].WebSite = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        wifiAvailableCheckBox.setOnCheckedChangeListener { compoundButton, b ->
+            FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = b
+        }
+
+        repairorder_textviewVal.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = p0.toString().toInt()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        availability_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailabilityArray[p2]
+            }
+
+        }
+
+        facilitytype_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facTypeArray[p2]
+            }
+
+        }
+
+        shopManagmentSystem_textviewVal.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
+
+        visa_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(1, b)
+        }
+
+        mastercard_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(2, b)
+        }
+
+        americanexpress_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(3, b)
+        }
+
+        discover_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(4, b)
+        }
+
+        paypal_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(5, b)
+        }
+
+        debit_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(6, b)
+        }
+
+        cash_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(7, b)
+        }
+
+        check_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(8, b)
+        }
+
+        goodyear_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(9, b)
+        }
+
+
+    }
+
     fun validateInputs() : Boolean{
 
         var facValide=FacilityDataModel.TblFacilities().isInputsValid
@@ -393,7 +512,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
 
 
-        if (timezone_textviewVal.selectedItem.toString().isNullOrEmpty()){
+        if (timeZoneSpinner.selectedItem.toString().isNullOrEmpty()){
             timezone_textview.setError("reqiured field")
             facValide=false
 
@@ -451,6 +570,17 @@ class FacilityGeneralInformationFragment : Fragment() {
         return facValide
     }
 
+    fun handlePaymentMethodsSelection(paymentMethodId: Int, isSelected: Boolean){
+        if (isSelected){
+            if (FacilityDataModel.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == paymentMethodId }.isEmpty()){
+                var pmethod = FacilityDataModel.TblPaymentMethods()
+                pmethod.PmtMethodID = ""+paymentMethodId
+                FacilityDataModel.getInstance().tblPaymentMethods.add(pmethod)
+            }
+        }else {
+            FacilityDataModel.getInstance().tblPaymentMethods.removeIf { i -> i.PmtMethodID.toInt() == paymentMethodId }
+        }
+    }
 
     fun setPaymentMethods() {
 
@@ -479,14 +609,14 @@ class FacilityGeneralInformationFragment : Fragment() {
         val facRepairCnt = if (repairorder_textviewVal.text.isNullOrEmpty())  "" else repairorder_textviewVal.text
         val inspectionMonth = (FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth).toString()
         val inspectionCycle = inspectionCycleTextViewVal.text.toString()
-        val timeZoneID = (timezone_textviewVal.selectedItemPosition+1).toString()
+        val timeZoneID = (timeZoneSpinner.selectedItemPosition+1).toString()
         val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
         val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
         val automtiveRepairNo = if (ARDno_textviewVal.text.isNullOrEmpty())  "" else ARDno_textviewVal.text
         val automtiveRepairExpDate = ARDexp_textviewVal.text.toString().appToApiSubmitFormat()
         val contractCurrDate = currcodate_textviewVal.text.toString().appToApiSubmitFormat()
         val contractInitDate = initcodate_textviewVal.text.toString().appToApiSubmitFormat()
-        val internetAccess = if (wifi_textview.isChecked) "1" else "0"
+        val internetAccess = if (wifiAvailableCheckBox.isChecked) "1" else "0"
         val webSite = if (website_textviewVal.text.isNullOrEmpty())  "" else website_textviewVal.text
         val terminationDate = terminationDateButton.text.toString().appToApiSubmitFormat()
         val terminationReasonID = TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID
@@ -509,9 +639,9 @@ class FacilityGeneralInformationFragment : Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         Log.v("RESPONSE",response.toString())
-                        FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timezone_textviewVal.selectedItem.toString()
+                        FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timeZoneSpinner.selectedItem.toString()
                         FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount =  facRepairCnt.toString().toInt()
-                        FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability.toInt()
+                        FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
                         FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
                         FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
 

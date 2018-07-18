@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -72,6 +74,12 @@ class FragmentARRAVLocation : Fragment() {
         setServices()
 
 
+        setFieldsListeners()
+
+    }
+
+
+    fun setFieldsListeners(){
         facilityIsOpenEffDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -100,7 +108,7 @@ class FragmentARRAVLocation : Fragment() {
         }
 
         exitAddEmailDialogeBtnId.setOnClickListener({
-                      addNewEmailDialog.visibility = View.GONE
+            addNewEmailDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
         })
@@ -111,14 +119,12 @@ class FragmentARRAVLocation : Fragment() {
 //        })
 
         exitEditLocationDialogeBtnId.setOnClickListener({
-            print("yeassssssssss herererererer")
-            Log.v("yesssss", "obbbbaaaaaaa herererererere")
             editLocationDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
         })
         exitUpdatePhoneDialogeBtnId.setOnClickListener({
-                   alphaBackgroundForDialogs.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
             editPhoneDialog.visibility = View.GONE
             enableAllAddButnsAndDialog()
         })
@@ -243,6 +249,28 @@ class FragmentARRAVLocation : Fragment() {
 
 
         })
+
+
+        nightDropCheck.setOnCheckedChangeListener { compoundButton, b ->
+            FacilityDataModel.getInstance().tblHours[0].NightDrop = b
+        }
+
+        nightDropInstText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblHours[0].NightDropInstr = p0.toString()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+
     }
 
     fun enableAllAddButnsAndDialog(){
