@@ -232,7 +232,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = if (get(it).effDate.isNullOrEmpty()) "" else  get(it).effDate.apiToAppFormat()
+                textView.text = if (get(it).effDate.isNullOrEmpty()) "" else get(it).effDate.apiToAppFormat()
                 tableRow.addView(textView)
 
                 textView = TextView(context)
