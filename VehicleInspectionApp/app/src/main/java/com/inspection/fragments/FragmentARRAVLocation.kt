@@ -24,6 +24,7 @@ import com.inspection.Utils.Constants.UpdateFacilityLanguageData
 import com.inspection.adapter.LanguageListAdapter
 import com.inspection.model.AAALocations
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
@@ -67,14 +68,16 @@ class FragmentARRAVLocation : Fragment() {
 
         fillLocationTableView()
         fillPhoneTableView()
-        fillEmailTableView()
         fillOpenHoursTableView()
         fillClosedHoursTableView()
+        fillEmailTableView()
+
 
         setServices()
 
 
         setFieldsListeners()
+
 
     }
 
@@ -455,6 +458,11 @@ class FragmentARRAVLocation : Fragment() {
         locationSubmitButton.setOnClickListener {
             FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
             FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+            if (FacilityDataModel.getInstance().tblAddress[index].LATITUDE!=FacilityDataModelOrg.getInstance().tblAddress[index].LATITUDE||
+                    FacilityDataModel.getInstance().tblAddress[index].LONGITUDE!=FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE){
+                MarkChangeWasDone()
+
+            }
             editLocationDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
@@ -651,6 +659,10 @@ class FragmentARRAVLocation : Fragment() {
 
 
                 editPhoneBtn.setOnClickListener(View.OnClickListener {
+                    var rowIndex=phoneTbl.indexOfChild(tableRow)
+                    var phoneFacilityChangedIndex= rowIndex-1
+             //       Toast.makeText(context,rowIndex.toString(),Toast.LENGTH_SHORT).show()
+
 
                     disableAllAddButnsAndDialog()
                     newChangesPhoneNoText.text.clear()
@@ -668,15 +680,21 @@ class FragmentARRAVLocation : Fragment() {
 
                     phoneSaveChangesButton.setOnClickListener(View.OnClickListener {
 
-
+                        var phoneTypeID=""
                          if (newChangesPhoneNoText.text.isNullOrEmpty())  {
                              newChangesPhoneNoText.setError("please enter required field")
 
                              Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
                          }
                         else {
-                             val phoneNo =  newChangesPhoneNoText.text
-                        val phoneTypeID = textView.text.toString()
+                             val phoneNo =  newChangesPhoneNoText.text.toString()
+                             for (phoneTypeTableId in TypeTablesModel.getInstance().LocationPhoneType){
+                                     if (phoneTypeTableId.LocPhoneName==textView.text.toString()){
+
+                                         phoneTypeID = phoneTypeTableId.LocPhoneID.toString()
+
+                                 }
+                             }
                         val insertDate = Date().toAppFormat()
                         val insertBy ="sa"
                         val updateDate = Date().toAppFormat()
@@ -694,9 +712,24 @@ class FragmentARRAVLocation : Fragment() {
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         contactInfoLoadingView.visibility = View.GONE
-                                        textView2.setText(newChangesPhoneNoText.text.toString())
-                                        Log.v("RESPONSE",response.toString())
+                                        FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber=newChangesPhoneNoText.text.toString()
+                                        Log.v("PHONE_RESPONSE",response.toString())
+                                        fillPhoneTableView()
+
                                         enableAllAddButnsAndDialog()
+
+
+                                        if (FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneTypeID!=phoneTypeID
+                                        ||FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber!=phoneNo.toString()){
+
+
+                                            MarkChangeWasDone()
+                                            Toast.makeText(context,"changed Done" + " modelValue is = " + FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber + " tableValue is = " + phoneNo,Toast.LENGTH_SHORT).show()
+                                        }else
+                                        {
+                                            Toast.makeText(context,"No changes found" + " modelValue is = " + FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber + " tableValue is = " + phoneNo,Toast.LENGTH_SHORT).show()
+
+                                        }
 
                                     })
                                 }, Response.ErrorListener {
@@ -720,6 +753,12 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun fillEmailTableView() {
+        if (emailTbl.childCount>1) {
+            for (i in emailTbl.childCount - 1 downTo 1) {
+                emailTbl.removeViewAt(i)
+            }
+        }
+
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
@@ -734,11 +773,6 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
-        if (emailTbl.childCount>1) {
-            for (i in emailTbl.childCount - 1 downTo 1) {
-                emailTbl.removeViewAt(i)
-            }
-        }
 
         FacilityDataModel.getInstance().tblFacilityEmail.apply {
             (0 until size).forEach {
@@ -759,6 +793,7 @@ class FragmentARRAVLocation : Fragment() {
 
                 emailTbl.addView(tableRow)
             }
+
         }
         altEmailTableRow(2)
 
@@ -1170,6 +1205,20 @@ class FragmentARRAVLocation : Fragment() {
                         Log.v("RESPONSE",response.toString())
                         FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
                         fillEmailTableView()
+
+                        var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityEmail
+                        var itemArray = FacilityDataModel.getInstance().tblFacilityEmail
+                        for (itemAr in itemArray){
+                            for (itemOrgAr in itemOrgArray){
+
+                                if (itemAr.email!=itemOrgAr.email||itemAr.emailTypeId!=itemOrgAr.emailTypeId){
+                                    MarkChangeWasDone()
+                                    Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
+                                }
+
+                            }
+                        }
+
                     })
                 }, Response.ErrorListener {
             contactInfoLoadingView.visibility = View.GONE
@@ -1272,6 +1321,20 @@ class FragmentARRAVLocation : Fragment() {
                         Log.v("RESPONSE",response.toString())
                         FacilityDataModel.getInstance().tblPhone.add(newPhone)
                         fillPhoneTableView()
+
+                        var itemOrgArray = FacilityDataModelOrg.getInstance().tblPhone
+                        var itemArray = FacilityDataModel.getInstance().tblPhone
+                        for (itemAr in itemArray){
+                            for (itemOrgAr in itemOrgArray){
+
+                                if (itemAr.PhoneNumber!=itemOrgAr.PhoneNumber||itemAr.PhoneTypeID!=itemOrgAr.PhoneTypeID){
+                                    MarkChangeWasDone()
+                                    Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
+                                }
+
+                            }
+                        }
+
 
                     })
                 }, Response.ErrorListener {

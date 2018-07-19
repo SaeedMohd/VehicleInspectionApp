@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -19,8 +16,10 @@ import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.Constants.UpdateAmendmentOrderTrackingData
+import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.toast
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aaram_order_tracking.*
@@ -76,6 +75,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
             AOCardView.visibility=View.GONE
             alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+
 
 
         })
@@ -208,6 +208,26 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
                             addTheLatestRowOfAmendmentAndTrackingTableView()
                             alt_AOT_TableRow(2)
+
+
+                            var itemOrgArray = FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking
+                            var itemArray = FacilityDataModel.getInstance().tblAmendmentOrderTracking
+                            for (itemAr in itemArray){
+                                for (itemOrgAr in itemOrgArray){
+
+                                    if (itemAr.AOID!=itemOrgAr.AOID||itemAr.EventTypeID!=itemOrgAr.EventTypeID
+                                            ||itemAr.EventID!=itemOrgAr.EventID||itemAr.ReasonID!=itemOrgAr.ReasonID){
+                                        MarkChangeWasDone()
+                                        Toast.makeText(context,"data submitted", Toast.LENGTH_SHORT).show()
+                                    }else {
+
+                                        Toast.makeText(context,"no changes found", Toast.LENGTH_SHORT).show()
+
+                                    }
+
+                                }
+                            }
+
 
 
                         })

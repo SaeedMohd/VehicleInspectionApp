@@ -443,11 +443,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     fun fillPortalTrackingTableView(){
 
-
-
-
-
-
         mainViewLinearId.isEnabled=true
 
         //val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -665,10 +660,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     ) {
 
                                         MarkChangeWasDone()
-                                        Toast.makeText(context,"changes was done",Toast.LENGTH_SHORT).show()
-                                    }else{
-                                        Toast.makeText(context,"No changes made",Toast.LENGTH_SHORT).show()
-
                                     }
 
 

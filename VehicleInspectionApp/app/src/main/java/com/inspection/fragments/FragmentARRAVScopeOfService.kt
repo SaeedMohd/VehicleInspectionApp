@@ -207,17 +207,9 @@ class FragmentARRAVScopeOfService : Fragment() {
                     if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
 
                         FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID=typeWarranty.WarrantyTypeID
-                        //   for (facWarranty in FacilityDataModel.getInstance().tblScopeofService){
-
-                        //     if (facWarranty.WarrantyTypeID==typeWarranty.WarrantyTypeID){
-
 
 
                     }
-                    //     }
-                    //  }
-                    //    }
-
 
                 }
 
