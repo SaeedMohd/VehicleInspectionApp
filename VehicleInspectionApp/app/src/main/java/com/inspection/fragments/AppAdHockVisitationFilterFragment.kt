@@ -45,8 +45,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
     var fragment: android.support.v4.app.Fragment? = null
     private var mListener: OnFragmentInteractionListener? = null
     var facilityNames = ArrayList<String>()
-    var facilitiesList = ArrayList<AAAFacilityComplete>()
-    var visitationList = ArrayList<AnnualVisitationInspectionFormData>()
+    var facilitiesList = ArrayList<CsiFacility>()
     var itemSelected = false
     var facilityNameInputField: EditText? = null
     var firstLoading = true
@@ -73,10 +72,25 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
 
         clubCodeEditText.setText("004")
-//            loadSpecialistName()
 
+        setFieldsListeners()
 
-        newVisitationBtn.setOnClickListener({
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+                        reloadFacilitiesList()
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading facilities")
+            Log.v("Loading error", "" + it.message)
+        }))
+
+        firstLoading = false
+    }
+
+    fun setFieldsListeners(){
+        newVisitationBtn.setOnClickListener {
             shouldShowVisitation = true
             recordsProgressView.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
@@ -105,16 +119,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
             }))
-
-
-
-
-
-
-
-//            var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-//            startActivity(intent)
-        })
+        }
 
 
         clubCodeEditText.addTextChangedListener(object : TextWatcher {
@@ -207,61 +212,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 Log.v("Loading error", "" + it.message)
             }))
         })
-
-
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                        reloadFacilitiesList()
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading facilities")
-            Log.v("Loading error", "" + it.message)
-        }))
-
-        firstLoading = false
-    }
-
-    val spinnersOnItemSelectListener = object : AdapterView.OnItemSelectedListener {
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-        }
-
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            reloadFacilitiesList()
-        }
-
-    }
-
-    fun parseVisitationsData(jsonObject: JSONObject): VisitationsModel {
-        var visitationsModel = VisitationsModel()
-
-        if (jsonObject.has("PendingVisitations")){
-            if (jsonObject.get("PendingVisitations").toString().startsWith("[")) {
-                visitationsModel.pendingVisitationsArray = Gson().fromJson(jsonObject.get("PendingVisitations").toString(), Array<VisitationsModel.PendingVisitationModel>::class.java).toCollection(ArrayList())
-            }else{
-                visitationsModel.pendingVisitationsArray.add(Gson().fromJson(jsonObject.get("PendingVisitations").toString(), VisitationsModel.PendingVisitationModel::class.java))
-            }
-        }
-
-        if (jsonObject.has("CompletedVisitations")) {
-            if (jsonObject.get("CompletedVisitations").toString().startsWith("[")) {
-                visitationsModel.completedVisitationsArray = Gson().fromJson(jsonObject.get("CompletedVisitations").toString(), Array<VisitationsModel.CompletedVisitationModel>::class.java).toCollection(ArrayList())
-            }else{
-                visitationsModel.completedVisitationsArray.add(Gson().fromJson(jsonObject.get("CompletedVisitations").toString(), VisitationsModel.CompletedVisitationModel::class.java))
-            }
-        }
-
-        if (jsonObject.has("Deficiencies")) {
-            if (jsonObject.get("Deficiencies").toString().startsWith("[")) {
-                visitationsModel.deficienciesArray = Gson().fromJson(jsonObject.get("Deficiencies").toString(), Array<VisitationsModel.DeficiencyModel>::class.java).toCollection(ArrayList())
-            }else{
-                visitationsModel.deficienciesArray.add(Gson().fromJson(jsonObject.get("Deficiencies").toString(), VisitationsModel.DeficiencyModel::class.java))
-            }
-        }
-
-        return visitationsModel
     }
 
     fun reloadFacilitiesList(){
@@ -316,8 +266,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
 
 
-//                recordsProgressView.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityWithIdUrl + parametersString,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             recordsProgressView.visibility = View.INVISIBLE
@@ -326,10 +275,10 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                             var jsonObj = obj.getJSONObject("responseXml")
 
 
-                            var visitationsModel = parseVisitationsData(jsonObj)
+//                            var visitationsModel = parseVisitationsData(jsonObj)
 
                             facilitiesListView.visibility = View.VISIBLE
-                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                            var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
                             facilitiesListView.adapter = visitationPlanningAdapter
                         })
                     }, Response.ErrorListener {
@@ -345,10 +294,10 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                             var jsonObj = obj.getJSONObject("responseXml")
 
 
-                            var visitationsModel = parseVisitationsData(jsonObj)
+//                            var visitationsModel = parseVisitationsData(jsonObj)
 
                             facilitiesListView.visibility = View.VISIBLE
-                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                            var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
                             facilitiesListView.adapter = visitationPlanningAdapter
                         })
                     }, Response.ErrorListener {
@@ -395,119 +344,43 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 //        mListener = null
     }
 
-    inner class VisitationListAdapter : BaseAdapter {
+    inner class AdhocAdapter : BaseAdapter {
 
-        private var visitationList = ArrayList<AnnualVisitationInspectionFormData>()
+        private var facilitiesArrayList = ArrayList<CsiFacility>()
         private var context: Context? = null
 
-        constructor(context: Context?, visitationList: ArrayList<AnnualVisitationInspectionFormData>) : super() {
-            this.visitationList = visitationList
+        constructor(context: Context?, facilitiesArrayList : ArrayList<CsiFacility>) : super() {
+            this.facilitiesArrayList = facilitiesArrayList
             this.context = context
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
             val view: View?
-            val vh: ViewHolder
+            val vh: AdHocVisitationViewHolder
 
             if (convertView == null) {
-                view = layoutInflater.inflate(R.layout.custom_visitation_list_item, parent, false)
-                vh = ViewHolder(view)
+                view = layoutInflater.inflate(R.layout.adhoc_visitation_facility_list_item, parent, false)
+                vh = AdHocVisitationViewHolder(view)
                 view.tag = vh
             } else {
                 view = convertView
-                vh = view.tag as ViewHolder
+                vh = view.tag as AdHocVisitationViewHolder
             }
 
-            vh.vrID.text = visitationList[position].annualvisitationid.toString()
-            vh.vrBy.text = visitationList[position].facilityrepresentativename
-            vh.vrDate.text = visitationList[position].dateofinspection
-            vh.vrPlanned.text = visitationList[position].dateofinspection
-            vh.vrPlanned.visibility = if (visitationList[position].dateofinspection.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
-            vh.vrStatus.text = if (visitationList[position].dateofinspection.toTime() > Date().time) "Planned" else "regular"
-            vh.vrType.text = visitationList[position].businessname
-//            if (position%2!=0) vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg_rtol)
-//            else vh.vrLL.setBackgroundResource(R.drawable.visitation_listitem_bkg)
-            vh.vrLoadBtn.setOnClickListener({
-                AnnualVisitationSingleton.getInstance().clear()
-                AnnualVisitationSingleton.getInstance().apply {
-                    facilityId = visitationList[position].facilityid
-                    annualVisitationId = visitationList[position].annualvisitationid
-                    facilityRepresentative = visitationList[position].facilityrepresentativename
-                    automotiveSpecialist = visitationList[position].automotivespecialistname
-                    dateOfVisitation = visitationList[position].dateofinspection.toTime()
-                    inspectionType = visitationList[position].inspectiontypeid
-                    monthDue = visitationList[position].monthdue
-                    changesMade = visitationList[position].changesmade
-                    paymentMethods = visitationList[position].paymentmethods
-
-                    emailModel = AAAEmailModel()
-                    emailModel!!.emailid = visitationList[position].emailaddressid
-
-                    phoneModel = AAAPhoneModel()
-                    phoneModel!!.phoneid = visitationList[position].phonenumberid
-
-                    personnelId = visitationList[position].personnelid
-                    vehicleServices = visitationList[position].vehicleservices
-                    vehicles = visitationList[position].vehicles
-                    affliations = visitationList[position].affiliations
-                    defeciencies = visitationList[position].defeciencies
-                    complaints = visitationList[position].complaints
-                }
-
-                FacilityDataModel.getInstance().annualVisitationId = visitationList[position].annualvisitationid
-                getFullFacilityDataFromAAA(visitationList[position].facno)
-
-//                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityWithIdUrl + visitationList[position].facilityid,
-//                        Response.Listener { response ->
-//                            activity!!.runOnUiThread(Runnable {
-//                                var facilityComplete = Gson().fromJson(response.toString(), Array<AAAFacilityComplete>::class.java).toCollection(ArrayList()).get(0) as AAAFacilityComplete
-//                                AnnualVisitationSingleton.getInstance().apply {
-//                                    facilityId = facilityComplete.facid
-//                                    facilityName = facilityComplete.businessname
-//                                    facilityType = facilityComplete.facilitytypeid
-//                                    billingMonth = facilityComplete.billingmonth
-//                                    billingAmount = facilityComplete.billingamount
-//                                    contractType = facilityComplete.contracttypeid
-//                                    webSiteUrl = facilityComplete.website
-//                                    facilityType = facilityComplete.facilitytypeid
-//                                    currentContractDate = facilityComplete.contractcurrentdate
-//                                    setInsuranceExpirationDate(facilityComplete.insuranceexpdate)
-//                                    setInitialContractDate(facilityComplete.contractinitialdate)
-//                                    assignedTo = facilityComplete.assignedtoid
-//                                    office = facilityComplete.officeid
-//                                    entityName = facilityComplete.entityname
-//                                    timeZone = facilityComplete.timezoneid
-//                                    taxId = facilityComplete.taxidnumber
-//                                    repairOrderCount = facilityComplete.facilityrepairordercount
-//                                    serviceAvailability = facilityComplete.svcavailability
-//                                    ardNumber = facilityComplete.automotiverepairnumber
-//                                    setArdExpirationDate(facilityComplete.automotiverepairexpdate)
-//                                }
-//
-////                                val fragment: android.support.v4.app.Fragment
-////                                fragment = FragmentAnnualVisitationPager()
-////                                val fragmentManagerSC = fragmentManager
-////                                val ftSC = fragmentManagerSC!!.beginTransaction()
-////                                ftSC.replace(R.id.fragment, fragment)
-////                                ftSC.addToBackStack("")
-////                                ftSC.commit()
-////                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-////                                startActivity(intent)
-//                            })
-//                        }, Response.ErrorListener {
-//                    Log.v("error while loading", "error while loading facilities")
-//                    Log.v("Loading error", "" + it.message)
-//                }))
+            vh.facilityNameValueTextView?.text = facilitiesArrayList[position].facname
+            vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].facnum
+            vh.loadFacilityButton!!.setOnClickListener{
+                getFullFacilityDataFromAAA(facilitiesArrayList.get(position).facnum.toInt())
+            }
 
 
-            })
             return view
         }
 
 
         override fun getItem(position: Int): Any {
             // return item at 'position'
-            return visitationList[position]
+            return facilitiesArrayList[position]
         }
 
         override fun getItemId(position: Int): Long {
@@ -517,74 +390,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
         override fun getCount(): Int {
             // return quantity of the list
-            return visitationList.size
-        }
-    }
-
-    inner class VisitationPlanningAdapter : BaseAdapter {
-
-        private var visitationPlanningModelList = VisitationsModel()
-        private var context: Context? = null
-
-        constructor(context: Context?, visitationsModel: VisitationsModel) : super() {
-            this.visitationPlanningModelList = visitationsModel
-            this.context = context
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-            val view: View?
-            val vh: VisitationPlanningViewHolder
-
-            if (convertView == null) {
-                view = layoutInflater.inflate(R.layout.visitation_planning_list_item, parent, false)
-                vh = VisitationPlanningViewHolder(view)
-                view.tag = vh
-            } else {
-                view = convertView
-                vh = view.tag as VisitationPlanningViewHolder
-            }
-
-
-
-            if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
-                vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].AutomotiveRepairExpDate
-                vh.visitationTypeValueTextView.text = "Pending"
-                vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt())
-                })
-            } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
-                vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].AutomotiveRepairExpDate
-                vh.visitationTypeValueTextView.text = "Completed"
-                vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt())
-                })
-            } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
-                vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].AutomotiveRepairExpDate
-                vh.visitationTypeValueTextView.text = "Deficiency"
-                vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt())
-                })
-            }
-            return view
-        }
-
-
-        override fun getItem(position: Int): Any {
-            // return item at 'position'
-            return visitationPlanningModelList
-        }
-
-        override fun getItemId(position: Int): Long {
-            // return item Id by Long datatype
-            return position.toLong()
-        }
-
-        override fun getCount(): Int {
-            // return quantity of the list
-            return visitationPlanningModelList.completedVisitationsArray.size + visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.deficienciesArray.size
+            return facilitiesArrayList.size
         }
     }
 
@@ -918,44 +724,19 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
     }
 
-    private class VisitationPlanningViewHolder(view: View?) {
-        val facilityNameValueTextView: TextView
-        val initialContractDateValueTextView: TextView
-        val visitationTypeValueTextView : TextView
-        val loadBtn: Button
+    private class AdHocVisitationViewHolder(view: View?) {
+        var facilityNameValueTextView: TextView? = null
+        var facilityNumberValueTextView: TextView? = null
+        var loadFacilityButton: TextView? = null
 
         init {
             this.facilityNameValueTextView = view?.findViewById(R.id.facilityNameValueTextView) as TextView
-            this.initialContractDateValueTextView = view?.findViewById(R.id.initialContractDateValueTextView) as TextView
-            this.visitationTypeValueTextView = view?.findViewById(R.id.visitationTypeValueTextView) as TextView
-            this.loadBtn = view?.findViewById(R.id.loadBtn) as Button
-
+            this.facilityNumberValueTextView = view?.findViewById(R.id.facilityNumberValueTextView) as TextView
+            this.loadFacilityButton = view?.findViewById(R.id.visitationItemStatus) as TextView
         }
 
     }
 
-    private class ViewHolder(view: View?) {
-        val vrID: TextView
-        val vrBy: TextView
-        val vrType: TextView
-        val vrStatus: TextView
-        val vrPlanned: TextView
-        val vrDate: TextView
-        val vrLoadBtn: TextView
-        val vrLL: RelativeLayout
-
-        init {
-            this.vrID = view?.findViewById(R.id.visitationItemId) as TextView
-            this.vrBy = view?.findViewById(R.id.visitationItemPerformedBy) as TextView
-            this.vrStatus = view?.findViewById(R.id.visitationItemStatus) as TextView
-            this.vrType = view?.findViewById(R.id.visitationItemType) as TextView
-            this.vrDate = view?.findViewById(R.id.visitationItemPerformedDate) as TextView
-            this.vrPlanned = view?.findViewById(R.id.visitationItemPlanned) as TextView
-            this.vrLL = view?.findViewById(R.id.list_item_ll) as RelativeLayout
-            this.vrLoadBtn = view?.findViewById(R.id.loadBtn) as TextView
-        }
-
-    }
 
 
     /**

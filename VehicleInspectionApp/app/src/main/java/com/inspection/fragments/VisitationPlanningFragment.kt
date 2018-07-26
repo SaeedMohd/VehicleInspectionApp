@@ -469,10 +469,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                         var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                         visitationfacilityListView.adapter = visitationPlanningAdapter
                     }
-
                 }
-
-
             })
 
 

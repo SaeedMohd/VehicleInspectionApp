@@ -150,18 +150,27 @@ class FragmentVisitation : Fragment() {
 
         facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
 
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
+        }
 
-        aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            certificateOfApprovalEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval)
+        }
 
-        certificateOfApprovalEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval)
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            memberBenefitsPosterEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster)
+        }
 
-        memberBenefitsPosterEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster)
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            qualityControlProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl.replace(".  ", ". ").replace(". ", ".\n"))
+        }
 
-        qualityControlProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl.replace(".  ", ". ").replace(". ", ".\n"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            staffTrainingProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
+        }
 
-        staffTrainingProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
-
-        if (FacilityDataModel.getInstance().tblFacilityEmail.count() > 0) {
+        if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
             emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
         }
 
@@ -169,40 +178,55 @@ class FragmentVisitation : Fragment() {
         automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
         facilityNameAndNumberRelationForSelection()
 
-
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature!=null){
-            isFacilityRepresentativeSignatureInitialized = true
-            facilityRepresentativeSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature)
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature != null) {
+                isFacilityRepresentativeSignatureInitialized = true
+                facilityRepresentativeSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature)
+            }
         }
 
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature!=null){
-            isAutomotiveSpecialistSignatureInitialized = true
-            automotiveSpecialistSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature)
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature != null) {
+                isAutomotiveSpecialistSignatureInitialized = true
+                automotiveSpecialistSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature)
+            }
         }
 
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature!=null){
-            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature)
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature != null) {
+                facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature)
+            }
         }
 
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature!=null){
-            waiversSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature)
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature != null) {
+                waiversSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature)
+            }
         }
 
 
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNotEmpty()){
-            facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNotEmpty()) {
+                facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+            }
         }
 
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNotEmpty()){
-            facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNotEmpty()) {
+                facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+            }
         }
 
-        waiveVisitationCheckBox.isChecked =  FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
-        emailPdfCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            waiveVisitationCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
+            emailPdfCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility
+            waiverCommentsEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+        }
 
-        emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+        if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
+            emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+        }
 
-        waiverCommentsEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
 
 
 
