@@ -69,7 +69,7 @@ object Constants {
     val getCopyFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=2518&clubcode=004"
     val getTypeTables = "https://dev.facilityappointment.com/ACEAPI.asmx/GetTypeTables"
     val getVisitations = "https://dev.facilityappointment.com/ACEAPI.asmx/GetVisitations?"
-    val getFacilities = ""
+    val getFacilitiesWithFilters = "https://dev.facilityappointment.com/ACEAPI.asmx/getFacilitiesWithFilters?"
 
     var facNo= if (FacilityDataModel.getInstance().tblFacilities.size>0) FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() else "2518"
     val UpdateAARPortalAdminData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAARPortalAdminData?facNum=$facNo&clubCode=004"

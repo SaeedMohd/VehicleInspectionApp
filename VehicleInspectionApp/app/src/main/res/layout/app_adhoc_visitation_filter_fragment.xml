@@ -147,7 +147,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/activeRadioButton"
+                    android:id="@+id/contractStatusActiveRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Active"
@@ -155,7 +155,7 @@
                     />
 
                 <RadioButton
-                    android:id="@+id/inActiveRadioButton"
+                    android:id="@+id/contractStatusinActiveRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="InActive"

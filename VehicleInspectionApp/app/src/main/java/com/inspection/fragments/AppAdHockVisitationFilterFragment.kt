@@ -23,6 +23,7 @@ import com.inspection.Utils.*
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
+import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 
 import org.json.JSONObject
 import org.json.XML
@@ -89,7 +90,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         firstLoading = false
     }
 
-    fun setFieldsListeners(){
+    fun setFieldsListeners() {
         newVisitationBtn.setOnClickListener {
             shouldShowVisitation = true
             recordsProgressView.visibility = View.VISIBLE
@@ -214,7 +215,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         })
     }
 
-    fun reloadFacilitiesList(){
+    fun reloadFacilitiesList() {
         var parametersString = StringBuilder()
         if (true) {
             if (clubCodeEditText.text.trim().isNotEmpty()) {
@@ -222,7 +223,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                     append("clubCode=" + clubCodeEditText.text.trim())
                     append("&")
                 }
-            }else {
+            } else {
                 with(parametersString) {
                     append("clubCode=004")
                     append("&")
@@ -230,7 +231,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
 
             with(parametersString) {
-                append("facNum=" + visitationfacilityIdVal.text.trim())
+                append("facilityNumber=" + visitationfacilityIdVal.text.trim())
                 append("&")
             }
 
@@ -242,13 +243,13 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 //                        append("&")
                     //**********************
 
-                    append("specialist=")
+                    append("assignedSpecialist=")
                     append("&")
 
                 }
-            }else{
+            } else {
                 with(parametersString) {
-                    append("specialist=")
+                    append("assignedSpecialist=")
                     append("&")
                 }
             }
@@ -257,16 +258,31 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 with(parametersString) {
                     append(("dba=" + entityNameButton.text))
                     append("&")
+                    append(("entityName=" + entityNameButton.text))
+                    append("&")
                 }
-            }else{
+            } else {
                 with(parametersString) {
                     append("dba=")
+                    append("&")
+                    append(("entityName=" + entityNameButton.text))
                     append("&")
                 }
             }
 
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityWithIdUrl + parametersString,
+            with(parametersString) {
+                if (contractStatusActiveRadioButton.isSelected) {
+                    append("contracStatus=1&")
+                } else {
+                    append("contracStatus=0&")
+                }
+            }
+
+
+
+            Log.v("*********getFacilitiesWithFilters", Constants.getFacilitiesWithFilters + parametersString)
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             recordsProgressView.visibility = View.INVISIBLE
@@ -282,7 +298,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                             facilitiesListView.adapter = visitationPlanningAdapter
                         })
                     }, Response.ErrorListener {
-                context!!.toast("Error while loading visitations: "+it.message)
+                context!!.toast("Error while loading visitations: " + it.message)
                 Log.v("error while loading", "error while loading visitation records")
             }))
         } else {
@@ -349,7 +365,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         private var facilitiesArrayList = ArrayList<CsiFacility>()
         private var context: Context? = null
 
-        constructor(context: Context?, facilitiesArrayList : ArrayList<CsiFacility>) : super() {
+        constructor(context: Context?, facilitiesArrayList: ArrayList<CsiFacility>) : super() {
             this.facilitiesArrayList = facilitiesArrayList
             this.context = context
         }
@@ -369,7 +385,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
             vh.facilityNameValueTextView?.text = facilitiesArrayList[position].facname
             vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].facnum
-            vh.loadFacilityButton!!.setOnClickListener{
+            vh.loadFacilityButton!!.setOnClickListener {
                 getFullFacilityDataFromAAA(facilitiesArrayList.get(position).facnum.toInt())
             }
 
@@ -416,7 +432,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                                                         .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                                                 var jsonObj = obj.getJSONObject("responseXml")
                                                 parseFacilityDataJsonToObject(jsonObj)
-
 
 
                                                 var intent = Intent(context, com.inspection.FormsActivity::class.java)
@@ -736,7 +751,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         }
 
     }
-
 
 
     /**
