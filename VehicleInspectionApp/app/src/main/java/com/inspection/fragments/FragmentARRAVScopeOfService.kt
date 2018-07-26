@@ -28,6 +28,8 @@ import com.google.android.gms.drive.metadata.CustomPropertyKey.fromJson
 import com.google.gson.GsonBuilder
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.R.id.numberOfLiftsEditText
+import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import kotlin.jvm.java
@@ -104,6 +106,10 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 LaborMax=s.toString()
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax!=LaborMax){
+
+                    MarkChangeWasDone()
+                }
             }
         }
         var laborMinWatcher = object : TextWatcher {
@@ -118,6 +124,13 @@ class FragmentARRAVScopeOfService : Fragment() {
             override fun afterTextChanged(s: Editable) {
 
                 LaborMin=s.toString()
+
+
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin!=LaborMin){
+
+                    MarkChangeWasDone()
+                }
+
             }
         }
         var fixedLaborWatcher = object : TextWatcher {
@@ -132,6 +145,11 @@ class FragmentARRAVScopeOfService : Fragment() {
             override fun afterTextChanged(s: Editable) {
 
                 FixedLaborRate=s.toString()
+
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate!=FixedLaborRate){
+
+                    MarkChangeWasDone()
+                }
             }
         }
         var diagnosticWatcher = object : TextWatcher {
@@ -146,6 +164,11 @@ class FragmentARRAVScopeOfService : Fragment() {
             override fun afterTextChanged(s: Editable) {
 
                 DiagnosticsRate=s.toString()
+
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate!=DiagnosticsRate){
+
+                    MarkChangeWasDone()
+                }
             }
         }
         var noOfBaysWatcher = object : TextWatcher {
@@ -160,6 +183,11 @@ class FragmentARRAVScopeOfService : Fragment() {
             override fun afterTextChanged(s: Editable) {
 
                 NumOfBays=s.toString()
+
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays!=NumOfBays){
+
+                    MarkChangeWasDone()
+                }
             }
         }
 
@@ -175,6 +203,12 @@ class FragmentARRAVScopeOfService : Fragment() {
             override fun afterTextChanged(s: Editable) {
 
                 NumOfLifts=s.toString()
+
+
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts!=NumOfLifts){
+
+                    MarkChangeWasDone()
+                }
 
             }
         }
@@ -202,11 +236,16 @@ class FragmentARRAVScopeOfService : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
 
-                    // for (warSpinner in warrantyArray ){
 
                     if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
 
                         FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID=typeWarranty.WarrantyTypeID
+
+                        if (FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID!=
+                                FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID){
+
+                            MarkChangeWasDone()
+                        }
                     }
 
                 }
@@ -241,6 +280,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                                   var i= warrantyArray.indexOf(warSpinner)
 
                                    warrantyPeriodVal.setSelection(i)
+
 
 
 
@@ -302,21 +342,14 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
 
-                    // for (warSpinner in warrantyArray ){
 
                     if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
 
                         FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID=typeWarranty.WarrantyTypeID
-                        //   for (facWarranty in FacilityDataModel.getInstance().tblScopeofService){
-
-                        //     if (facWarranty.WarrantyTypeID==typeWarranty.WarrantyTypeID){
 
 
 
                     }
-                    //     }
-                    //  }
-                    //    }
 
 
                 }

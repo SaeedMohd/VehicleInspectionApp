@@ -26,6 +26,8 @@ import android.text.TextUtils
 import android.util.Patterns
 import android.view.Gravity
 import androidx.core.view.setPadding
+import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.model.FacilityDataModelOrg
 
 
 /**
@@ -90,12 +92,7 @@ class FragmentVisitation : Fragment() {
         dataChangedNoRadioButton.isClickable = false
         clubCodeEditText.isClickable = false
 
-        if (FragmentARRAVScopeOfService.scopeOfServicesChangesMade) {
 
-            dataChangedYesRadioButton.isChecked = true
-        } else {
-            dataChangedNoRadioButton.isChecked = true
-        }
 
         visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons).sorted())
 
@@ -174,9 +171,22 @@ class FragmentVisitation : Fragment() {
             emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
         }
 
-        facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
-        automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
-        facilityNameAndNumberRelationForSelection()
+        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+
+            facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
+            automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
+            facilityNameAndNumberRelationForSelection()
+            if (automotiveSpecialistSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName) {
+
+                MarkChangeWasDone()
+
+                Toast.makeText(context, "Yes changes made", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "No changes found", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
 
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
             if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature != null) {
@@ -204,30 +214,43 @@ class FragmentVisitation : Fragment() {
             }
         }
 
-
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+
+
             if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNotEmpty()) {
                 facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+                if (facilityRepresentativesSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName) {
+                    MarkChangeWasDone()
+
+                    Toast.makeText(context, "Yes changes made", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "No changes found", Toast.LENGTH_SHORT).show()
+
+                }
             }
-        }
-
-        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
-            if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNotEmpty()) {
-                facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+            if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+                if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNotEmpty()) {
+                    facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+                }
             }
+
+            if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+                if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNotEmpty()) {
+                    facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+                }
+            }
+
+            if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+                waiveVisitationCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
+                emailPdfCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility
+                waiverCommentsEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+            }
+
+            if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
+                emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+            }
+
         }
-
-        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
-            waiveVisitationCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
-            emailPdfCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility
-            waiverCommentsEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
-        }
-
-        if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
-            emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
-        }
-
-
 
 
 
@@ -401,6 +424,15 @@ class FragmentVisitation : Fragment() {
         aarSignEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
+                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
+
+                    MarkChangeWasDone()
+
+                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
+
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -416,6 +448,15 @@ class FragmentVisitation : Fragment() {
         certificateOfApprovalEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
+                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
+
+                    MarkChangeWasDone()
+
+                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
+
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -432,6 +473,15 @@ class FragmentVisitation : Fragment() {
         qualityControlProcessEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
+                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl){
+
+                    MarkChangeWasDone()
+
+                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
+
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -447,6 +497,15 @@ class FragmentVisitation : Fragment() {
         staffTrainingProcessEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining = p0.toString()
+                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining){
+
+                    MarkChangeWasDone()
+
+                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
+
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -462,6 +521,15 @@ class FragmentVisitation : Fragment() {
         memberBenefitsPosterEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster = p0.toString()
+                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
+
+                    MarkChangeWasDone()
+
+                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
+
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -477,6 +545,14 @@ class FragmentVisitation : Fragment() {
         waiverCommentsEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments = p0.toString()
+                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
+
+                    MarkChangeWasDone()
+                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
+
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -493,6 +569,15 @@ class FragmentVisitation : Fragment() {
         emailEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
+                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].email){
+
+                    MarkChangeWasDone()
+
+                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
+
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

@@ -56,7 +56,6 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
     var itemSelected = false
     var facilityNameInputField: EditText? = null
     var firstLoading = true
-    var visitationLoaded = false
     var isVisitationPlanning = false
     var requiredSpecialistName = ""
     var visitationsModel: VisitationsModel = VisitationsModel()
@@ -295,7 +294,6 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
 
     fun reloadVisitationsList() {
 
-        visitationLoaded = false
 
 
         var parametersString = StringBuilder()
@@ -454,6 +452,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                     var responseString = response!!.body()!!.string()
                     //  activity!!.toast("success!!!")
                     //     recordsProgressView.visibility = View.INVISIBLE
+                    Log.v("*****u got a  response", Constants.getVisitations+parametersString)
 
 
                     var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))

@@ -1,5 +1,7 @@
 package com.inspection.model
 
+import android.graphics.Bitmap
+
 class FacilityDataModelOrg {
 
     companion object {
@@ -122,6 +124,17 @@ class FacilityDataModelOrg {
         var MemberBenefitPoster = ""
         var QualityControl = ""
         var StaffTraining = ""
+        var facilityRepresentativeName = ""
+        var automotiveSpecialistName = ""
+        var facilityRepresentativeSignature: Bitmap? = null
+        var automotiveSpecialistSignature: Bitmap? = null
+        var facilityRepresentativeDeficienciesSignature: Bitmap? = null
+        var emailVisitationPdfToFacility = false
+        var email = ""
+        var waiveVisitations = false
+        var waiverComments = ""
+        var waiverSignature : Bitmap? = null
+
     }
 
     class TblFacilityType {
