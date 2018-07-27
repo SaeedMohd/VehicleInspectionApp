@@ -182,144 +182,86 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 Log.v("Loading error", "" + it.message)
             }))
         })
-
-        entityNameButton.setOnClickListener(View.OnClickListener {
-            recordsProgressView.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            recordsProgressView.visibility = View.INVISIBLE
-                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                            var facilityNames = ArrayList<String>()
-                            (0 until facilities.size).forEach {
-                                facilityNames.add(facilities[it].facname)
-                            }
-                            facilityNames.sort()
-                            facilityNames.add(0, "Any")
-                            var searchDialog = SearchDialog(context, facilityNames)
-                            searchDialog.show()
-                            searchDialog.setOnDismissListener {
-                                if (searchDialog.selectedString == "Any") {
-                                    entityNameButton.setText("")
-                                } else {
-                                    entityNameButton.setText(searchDialog.selectedString)
-                                }
-                                reloadFacilitiesList()
-                            }
-                        })
-                    }, Response.ErrorListener {
-                context!!.toast("Connection Error")
-                Log.v("error while loading", "error while loading facilities")
-                Log.v("Loading error", "" + it.message)
-            }))
-        })
     }
 
     fun reloadFacilitiesList() {
         var parametersString = StringBuilder()
-        if (true) {
-            if (clubCodeEditText.text.trim().isNotEmpty()) {
-                with(parametersString) {
-                    append("clubCode=" + clubCodeEditText.text.trim())
-                    append("&")
-                }
-            } else {
-                with(parametersString) {
-                    append("clubCode=004")
-                    append("&")
-                }
-            }
-
+        if (clubCodeEditText.text.trim().isNotEmpty()) {
             with(parametersString) {
-                append("facilityNumber=" + visitationfacilityIdVal.text.trim())
+                append("clubCode=" + clubCodeEditText.text.trim())
                 append("&")
             }
+        } else {
+            with(parametersString) {
+                append("clubCode=")
+                append("&")
+            }
+        }
 
-            if (!facilityDbaButton.text.contains("Select") && facilityDbaButton.text.length > 1) {
-                with(parametersString) {
-                    //TODO added to void specialist value until they let us know how we will use it
-                    //**********************
+        with(parametersString) {
+            append("facilityNumber=" + visitationfacilityIdVal.text.trim())
+            append("&")
+        }
+
+        if (!facilityDbaButton.text.contains("Select") && facilityDbaButton.text.length > 1) {
+            with(parametersString) {
+                //TODO added to void specialist value until they let us know how we will use it
+                //**********************
 //                        append("specialist=" + visitationSpecialistName.text)
 //                        append("&")
-                    //**********************
+                //**********************
 
-                    append("assignedSpecialist=")
-                    append("&")
+                append("assignedSpecialist=")
+                append("&")
 
-                }
-            } else {
-                with(parametersString) {
-                    append("assignedSpecialist=")
-                    append("&")
-                }
             }
-
-            if (!entityNameButton.text.contains("Select") && entityNameButton.text.length > 1) {
-                with(parametersString) {
-                    append(("dba=" + entityNameButton.text))
-                    append("&")
-                    append(("entityName=" + entityNameButton.text))
-                    append("&")
-                }
-            } else {
-                with(parametersString) {
-                    append("dba=")
-                    append("&")
-                    append(("entityName=" + entityNameButton.text))
-                    append("&")
-                }
-            }
-
-
-            with(parametersString) {
-                if (contractStatusActiveRadioButton.isSelected) {
-                    append("contracStatus=1&")
-                } else {
-                    append("contracStatus=0&")
-                }
-            }
-
-
-
-            Log.v("*********getFacilitiesWithFilters", Constants.getFacilitiesWithFilters + parametersString)
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            recordsProgressView.visibility = View.INVISIBLE
-
-                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                            var jsonObj = obj.getJSONObject("responseXml")
-
-
-//                            var visitationsModel = parseVisitationsData(jsonObj)
-
-                            facilitiesListView.visibility = View.VISIBLE
-                            var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
-                            facilitiesListView.adapter = visitationPlanningAdapter
-                        })
-                    }, Response.ErrorListener {
-                context!!.toast("Error while loading visitations: " + it.message)
-                Log.v("error while loading", "error while loading visitation records")
-            }))
         } else {
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-
-                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                            var jsonObj = obj.getJSONObject("responseXml")
-
-
-//                            var visitationsModel = parseVisitationsData(jsonObj)
-
-                            facilitiesListView.visibility = View.VISIBLE
-                            var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
-                            facilitiesListView.adapter = visitationPlanningAdapter
-                        })
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading visitation records")
-            }))
+            with(parametersString) {
+                append("assignedSpecialist=")
+                append("&")
+            }
         }
+
+        if (!entityNameButton.text.contains("Select") && entityNameButton.text.length > 1) {
+            with(parametersString) {
+                append(("dba=" + entityNameButton.text))
+                append("&")
+            }
+        } else {
+            with(parametersString) {
+                append("dba=")
+                append("&")
+            }
+        }
+
+
+        with(parametersString) {
+            if (contractStatusActiveRadioButton.isChecked) {
+                append("contractStatus=1&")
+            } else {
+                append("contractStatus=0&")
+            }
+        }
+
+
+
+        Log.v("*********getFacilitiesWithFilters", Constants.getFacilitiesWithFilters + parametersString)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        recordsProgressView.visibility = View.INVISIBLE
+
+                        facilitiesList = Gson().fromJson(response, Array<CsiFacility>::class.java).toCollection(ArrayList())
+
+                        facilitiesListView.visibility = View.VISIBLE
+                        var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
+                        facilitiesListView.adapter = visitationPlanningAdapter
+                    })
+                }, Response.ErrorListener {
+            context!!.toast("Error while loading visitations: " + it.message)
+            Log.v("error while loading", "error while loading visitation records")
+        }))
+
     }
 
 //    fun loadSpecialistName() {
@@ -742,12 +684,12 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
     private class AdHocVisitationViewHolder(view: View?) {
         var facilityNameValueTextView: TextView? = null
         var facilityNumberValueTextView: TextView? = null
-        var loadFacilityButton: TextView? = null
+        var loadFacilityButton: Button? = null
 
         init {
             this.facilityNameValueTextView = view?.findViewById(R.id.facilityNameValueTextView) as TextView
             this.facilityNumberValueTextView = view?.findViewById(R.id.facilityNumberValueTextView) as TextView
-            this.loadFacilityButton = view?.findViewById(R.id.visitationItemStatus) as TextView
+            this.loadFacilityButton = view?.findViewById(R.id.loadFacilityButton) as Button
         }
 
     }

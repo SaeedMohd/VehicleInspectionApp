@@ -152,6 +152,7 @@
                     android:layout_height="wrap_content"
                     android:text="Active"
                     android:textColor="@color/black"
+                    android:checked="true"
                     />
 
                 <RadioButton
