@@ -33,6 +33,7 @@ import org.json.XML
 import java.io.IOException
 import java.net.URLEncoder
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -609,21 +610,21 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].AutomotiveRepairExpDate.apiToAppFormat()
                 vh.visitationTypeValueTextView.text = "Pending"
                 vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt())
+                    getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt())
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].EntityName
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].AutomotiveRepairExpDate.apiToAppFormat()
                 vh.visitationTypeValueTextView.text = "Completed"
                 vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt())
+                    getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode.toInt())
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].EntityName
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].AutomotiveRepairExpDate.apiToAppFormat()
                 vh.visitationTypeValueTextView.text = "Deficiency"
                 vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt())
+                    getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode.toInt())
                 })
             }
             return view
@@ -647,13 +648,14 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
     }
 
 
-    fun getFullFacilityDataFromAAA(facilityNumber: Int) {
+    fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: Int) {
 
-        var client = OkHttpClient()
-
+        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
+        var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         var request3 = okhttp3.Request.Builder().url(String.format(Constants.getCopyFacilityData, facilityNumber, "004")).build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, "004")).build()
+
 
 
         recordsProgressView.visibility = View.VISIBLE
@@ -668,19 +670,25 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             override fun onResponse(call: Call?, response: okhttp3.Response?) {
 
                 var responseString = response!!.body()!!.string()
-                Log.v("qqqTable", responseString)
+                Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
                 var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                 var jsonObj = obj.getJSONObject("responseXml")
                 TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
 
+                Log.v("requesting=========>", request2.url().toString());
+                Log.v("time out valueeeeee", ""+client.connectTimeoutMillis()/1000)
+                Log.v("read time out valuee", ""+client.readTimeoutMillis()/1000)
+
                 client.newCall(request2).enqueue(object : Callback {
                     override fun onFailure(call: Call?, e: IOException?) {
                         activity!!.runOnUiThread(Runnable {
+                            Log.v("******eerrrrrror", ""+e!!.message)
                             context!!.toast("Origin ERROR Connection Error. Please check internet connection")
                         })
                     }
 
                     override fun onResponse(call: Call?, response: okhttp3.Response?) {
+                        Log.v("GetFacilityData replied", "GetFacilityData replied")
                         var responseString = response!!.body()!!.string()
                         activity!!.runOnUiThread(Runnable {
                             Log.v("POPOOriginal", responseString)
