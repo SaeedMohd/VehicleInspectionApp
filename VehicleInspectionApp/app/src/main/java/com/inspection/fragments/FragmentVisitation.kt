@@ -176,7 +176,7 @@ class FragmentVisitation : Fragment() {
             facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
             automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
             facilityNameAndNumberRelationForSelection()
-            if (automotiveSpecialistSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName) {
+            if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && automotiveSpecialistSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName) {
 
                 MarkChangeWasDone()
 

@@ -24,10 +24,16 @@ import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
 
 import org.json.JSONObject
 import org.json.XML
+import java.io.IOException
+import java.net.URLEncoder
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -107,7 +113,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
                                 if (searchDialog.selectedString.isNotEmpty()) {
-                                    getFullFacilityDataFromAAA(facilities.filter { it.facname == searchDialog.selectedString }[0].facnum.toInt())
+                                    getFullFacilityDataFromAAA(facilities.filter { it.facname == searchDialog.selectedString }[0].facnum.toInt(), facilities.filter { it.facname == searchDialog.selectedString }[0].clubcode)
                                 }
                             }
                         })
@@ -237,7 +243,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
         if (!adHocFacilityNameButton.text.contains("Select") && adHocFacilityNameButton.text.length > 1) {
             with(parametersString) {
-                append(("dba=" + adHocFacilityNameButton.text))
+                append("dba=" + URLEncoder.encode(adHocFacilityNameButton.text.toString(), "UTF-8"))
                 append("&")
             }
         } else {
@@ -257,7 +263,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         }
 
 
-        Log.v("requesting....", Constants.getFacilitiesWithFilters+parametersString)
+        Log.v("requesting....", Constants.getFacilitiesWithFilters + parametersString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
@@ -273,7 +279,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             context!!.toast("Error while loading visitations: " + it.message)
             Log.v("error while loading", "error while loading visitation records")
         }))
-
     }
 
 //    fun loadSpecialistName() {
@@ -340,7 +345,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             vh.facilityNameValueTextView?.text = facilitiesArrayList[position].facname
             vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].facnum
             vh.loadFacilityButton!!.setOnClickListener {
-                getFullFacilityDataFromAAA(facilitiesArrayList.get(position).facnum.toInt())
+                Log.v("required facility number", facilitiesArrayList[position].facnum + " " + facilitiesArrayList[position].clubcode)
+                getFullFacilityDataFromAAA(facilitiesArrayList[position].facnum.toInt(), facilitiesArrayList[position].clubcode)
             }
 
 
@@ -364,7 +370,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         }
     }
 
-    fun getFullFacilityDataFromAAA(facilityNumber: Int) {
+    fun getFullFacilityDataFromAAA2(facilityNumber: Int, clubCode: String) {
         recordsProgressView.visibility = View.VISIBLE
         if (TypeTablesModel.getInstance().AARDeficiencyType.size == 0) {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getTypeTables + "",
@@ -375,8 +381,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
                             TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
 
-
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
+                            Log.v("requesting.......", String.format(Constants.getFacilityData, facilityNumber, clubCode))
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, clubCode),
                                     Response.Listener { response ->
                                         Log.v("*****response = ", response)
                                         activity!!.runOnUiThread(Runnable {
@@ -434,9 +440,78 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 Log.v("Loading error", "" + it.message)
             }))
         }
-
-
     }
+
+
+    fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String) {
+
+        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(40, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
+        var client = clientBuilder.build()
+        var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
+        var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, clubCode)).build()
+
+
+
+        recordsProgressView.visibility = View.VISIBLE
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call?, e: IOException?) {
+                Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
+                activity!!.runOnUiThread(Runnable {
+                    context!!.toast("Connection Error. Please check internet connection")
+                })
+            }
+
+            override fun onResponse(call: Call?, response: okhttp3.Response?) {
+
+                var responseString = response!!.body()!!.string()
+                Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
+                var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                var jsonObj = obj.getJSONObject("responseXml")
+                TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
+
+                Log.v("requesting=========>", request2.url().toString());
+                Log.v("time out valueeeeee", ""+client.connectTimeoutMillis()/1000)
+                Log.v("read time out valuee", ""+client.readTimeoutMillis()/1000)
+
+                client.newCall(request2).enqueue(object : Callback {
+                    override fun onFailure(call: Call?, e: IOException?) {
+                        activity!!.runOnUiThread(Runnable {
+                            Log.v("******eerrrrrror", ""+e!!.message)
+                            context!!.toast("Origin ERROR Connection Error. Please check internet connection")
+                        })
+                    }
+
+                    override fun onResponse(call: Call?, response: okhttp3.Response?) {
+                        Log.v("GetFacilityData replied", "GetFacilityData replied")
+                        var responseString = response!!.body()!!.string()
+                        activity!!.runOnUiThread(Runnable {
+                            Log.v("POPOOriginal", responseString)
+
+                            recordsProgressView.visibility = View.GONE
+                            if (!responseString.contains("FacID not found")) {
+                                var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+                                var jsonObj = obj.getJSONObject("responseXml")
+                                parseFacilityDataJsonToObject(jsonObj)
+
+
+                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
+//                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
+                                startActivity(intent)
+                            } else {
+                                context!!.toast("Facility data not found")
+                            }
+                        })
+                    }
+
+                })
+
+
+            }
+
+        })
+    }
+
 
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
         FacilityDataModel.getInstance().clear()
