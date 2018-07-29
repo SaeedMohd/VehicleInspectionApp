@@ -1328,10 +1328,8 @@ class FragmentARRAVPersonnel : Fragment() {
                 {
 
                 }else{
-                    certificationsTable.addView(tableRow) }
-
-
-
+                    certificationsTable.addView(tableRow)
+                }
 
             }
         }
