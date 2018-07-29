@@ -25,6 +25,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/mainViewLinearId"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="10dp">
 
@@ -45,7 +46,7 @@
                 android:background="@drawable/green_background_button"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="+ ADD Program"
+                android:text=" ADD New Program"
                 android:textColor="@color/white" />
 
         </RelativeLayout>
@@ -87,7 +88,17 @@
                         android:textAlignment="center"
                       android:layout_weight="1">
                     </TextView>
-                </TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_weight="1"
+                android:text="Update"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+        </TableRow>
             </TableLayout>
 
 
@@ -267,7 +278,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Comments"
+                    android:text="Comments*"
                     android:layout_marginRight="10dp"
                     android:ems="12"
                     android:layout_gravity="center_vertical"
@@ -276,6 +287,164 @@
             </TableRow>
             <EditText
                 android:id="@+id/comments_editTextVal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:ems="12"
+                android:lines="5"
+                android:background="@drawable/textview_background"
+                android:layout_column="1"
+                />
+
+        </TableLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/edit_programCard"
+        app:cardElevation="10dp">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            >
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Update Program"
+                    android:textSize="20sp"
+                    android:textColor="@color/dark_gray"
+                    android:ems="12"
+                    android:layout_column="0"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="5dp"
+                    android:text="SUBMIT"
+                    android:id="@+id/edit_submitNewProgramButton"
+                    android:textColor="@color/white"
+                    android:ems="12"
+                    android:layout_column="1"
+                    android:background="@drawable/green_background_button"
+                    android:layout_gravity="top|right"/>
+                <ImageButton
+                    android:layout_marginTop="25dp"
+                    android:id="@+id/edit_exitProgramDialogeBtnId"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/close"
+                    android:layout_gravity="top|right"
+                    android:layout_column="2"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="20dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="0"
+                    android:background="@android:color/darker_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="1"
+                    android:background="@android:color/darker_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="2"
+                    android:background="@android:color/darker_gray"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Program Name*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+                <Spinner
+                    android:id="@+id/edit_program_name_textviewVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:entries="@array/contractTypesEntries"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Effective Date*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Expiration Date"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+                <Button
+                    android:id="@+id/edit_effective_date_textviewVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="0"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/transparent"
+                    android:ems="12"
+                    android:text="SELECT DATE"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+                <Button
+                    android:id="@+id/edit_expiration_date_textviewVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/transparent"
+                    android:ems="12"
+                    android:text="SELECT DATE"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Comments*"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+            <EditText
+                android:id="@+id/edit_comments_editTextVal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

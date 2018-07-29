@@ -223,10 +223,11 @@ class FacilityGeneralInformationFragment : Fragment() {
 
                 contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
 
-                if (tblOfficeType[0].OfficeName.isNotEmpty()) {
-                    office_textviewVal.text = "" + tblOfficeType[0].OfficeName
-                }else{
+                if (tblOfficeType[0].OfficeName.isNullOrEmpty()) {
                     office_textviewVal.text = ""
+                }else{
+                    office_textviewVal.text = "" + tblOfficeType[0].OfficeName
+
                 }
                 assignedto_textviewVal.text = tblFacilities[0].AssignedTo
                 dba_textviewVal.text = tblFacilities[0].BusinessName
@@ -279,14 +280,14 @@ class FacilityGeneralInformationFragment : Fragment() {
         if (arguments!!.getBoolean(isValidating)) {
             validateInputs()
         }
-
-        if (FacilityDataModel.getInstance().tblSurveySoftwares!= null && FacilityDataModel.getInstance().tblSurveySoftwares[0] != null) {
-            shopManagmentSystem_textviewVal.setText(FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName)
-        }
-
-        if (FacilityDataModel.getInstance().tblSurveySoftwares!= null && FacilityDataModel.getInstance().tblSurveySoftwares[0] != null) {
-            shopManagmentSystem_textviewVal.setText(FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName)
-        }
+// Removed as per feedback
+//        if (FacilityDataModel.getInstance().tblSurveySoftwares!= null && FacilityDataModel.getInstance().tblSurveySoftwares[0] != null) {
+//            shopManagmentSystem_textviewVal.setText(FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName)
+//        }
+//
+//        if (FacilityDataModel.getInstance().tblSurveySoftwares!= null && FacilityDataModel.getInstance().tblSurveySoftwares[0] != null) {
+//            shopManagmentSystem_textviewVal.setText(FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName)
+//        }
 
         setPaymentMethods()
 
@@ -453,31 +454,31 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         }
 
-        shopManagmentSystem_textviewVal.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
-                if (FacilityDataModel.getInstance().tblSurveySoftwares == null){
-                    FacilityDataModel.getInstance().tblSurveySoftwares = ArrayList<FacilityDataModel.TblSurveySoftwares>()
-                }
-                if (FacilityDataModel.getInstance().tblSurveySoftwares.count() > 0 ) {
-                    if (FacilityDataModel.getInstance().tblSurveySoftwares[0] == null){
-                        FacilityDataModel.getInstance().tblSurveySoftwares[0] = FacilityDataModel.TblSurveySoftwares()
-                    }
-                    FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName = p0.toString()
-                }else{
-                    var survey = FacilityDataModel.TblSurveySoftwares()
-                    survey.shopMgmtSoftwareName = p0.toString()
-                    FacilityDataModel.getInstance().tblSurveySoftwares.add(survey)
-                }
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-        })
+//        shopManagmentSystem_textviewVal.addTextChangedListener(object : TextWatcher{
+//            override fun afterTextChanged(p0: Editable?) {
+//                if (FacilityDataModel.getInstance().tblSurveySoftwares == null){
+//                    FacilityDataModel.getInstance().tblSurveySoftwares = ArrayList<FacilityDataModel.TblSurveySoftwares>()
+//                }
+//                if (FacilityDataModel.getInstance().tblSurveySoftwares.count() > 0 ) {
+//                    if (FacilityDataModel.getInstance().tblSurveySoftwares[0] == null){
+//                        FacilityDataModel.getInstance().tblSurveySoftwares[0] = FacilityDataModel.TblSurveySoftwares()
+//                    }
+//                    FacilityDataModel.getInstance().tblSurveySoftwares[0].shopMgmtSoftwareName = p0.toString()
+//                }else{
+//                    var survey = FacilityDataModel.TblSurveySoftwares()
+//                    survey.shopMgmtSoftwareName = p0.toString()
+//                    FacilityDataModel.getInstance().tblSurveySoftwares.add(survey)
+//                }
+//            }
+//
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//        })
 
         visa_checkbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(1, b)
@@ -529,7 +530,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         availability_textview.setError(null)
         facilitytype_textview.setError(null)
         ARDexp_textviewVal.setError(null)
-        shopManagmentSystem_textviewVal.setError(null)
+//        shopManagmentSystem_textviewVal.setError(null)
         payment_methods_textview.setError(null)
 
 
@@ -552,10 +553,10 @@ class FacilityGeneralInformationFragment : Fragment() {
             facValide=false
         }
 
-        if (shopManagmentSystem_textviewVal.text.toString().isNullOrEmpty()){
-            shopManagmentSystem_textviewVal.setError("reqiured field")
-            facValide=false
-        }
+//        if (shopManagmentSystem_textviewVal.text.toString().isNullOrEmpty()){
+//            shopManagmentSystem_textviewVal.setError("reqiured field")
+//            facValide=false
+//        }
         if (ARDexp_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             ARDexp_textviewVal.setError("Required Field")
             facValide=false

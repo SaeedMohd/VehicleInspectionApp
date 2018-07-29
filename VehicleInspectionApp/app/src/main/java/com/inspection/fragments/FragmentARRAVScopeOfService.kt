@@ -353,6 +353,8 @@ class FragmentARRAVScopeOfService : Fragment() {
 
 
                 }
+                scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
+
 
                 var fixedLaborRate = fixedLaborRateEditText.text.toString()
                 var diagnosticLaborRate = diagnosticRateEditText.text.toString()
@@ -365,28 +367,17 @@ class FragmentARRAVScopeOfService : Fragment() {
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
-                                //    Toast.makeText(context,"changes saved in DB",Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context,"changes saved",Toast.LENGTH_SHORT).show()
+                                scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
 
-                                var jsonObj: JSONObject? = null;
-                                var jsonObj2: JSONObject? = null;
-                                var obj: JSONObject? = null;
-                                var obj2: JSONObject? = null;
-                                try {
-
-                                    obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                                    obj2 = XML.toJSONObject(response.toString())
-                                    jsonObj = obj.getJSONObject("responseXml")
-                                    jsonObj2 = obj.getJSONObject("ScopeofService")
-
-
-                                } catch (e: JSONException) {
-                                    Log.e("JSON exception", e.message);
-                                    e.printStackTrace();
-                                }
 
                             })
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading personnal record")
+                    scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                    Toast.makeText(context,"error while saving page",Toast.LENGTH_SHORT).show()
+
+
                 }))
             }
         })
@@ -453,6 +444,12 @@ class FragmentARRAVScopeOfService : Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Toast.makeText(context!!,"distroyed",Toast.LENGTH_SHORT).show()
     }
 
     companion object {

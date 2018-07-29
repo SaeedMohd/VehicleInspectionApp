@@ -1047,38 +1047,38 @@
                 </RelativeLayout>
 
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+                <!--<View-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:background="@color/light_gray" />-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minHeight="60dp"
-                    android:padding="10dp">
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:minHeight="60dp"-->
+                    <!--android:padding="10dp">-->
 
-                    <TextView
-                        android:id="@+id/ARDno_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:text="Shop Management System: "
-                        android:textStyle="bold" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/ARDno_textview"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_column="0"-->
+                        <!--android:text="Shop Management System: "-->
+                        <!--android:textStyle="bold" />-->
 
-                    <EditText
-                        android:id="@+id/shopManagmentSystem_textviewVal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:background="@drawable/textview_background"
-                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
-                        android:padding="5dp"
-                        android:ems="15"
-                        android:text=""
-                        />
-                </RelativeLayout>
+                    <!--<EditText-->
+                        <!--android:id="@+id/shopManagmentSystem_textviewVal"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:background="@drawable/textview_background"-->
+                        <!--android:digits="abcdefghijklmnopqrstuvwxyz1234567890"-->
+                        <!--android:padding="5dp"-->
+                        <!--android:ems="15"-->
+                        <!--android:text=""-->
+                        <!--/>-->
+                <!--</RelativeLayout>-->
 
 
                 <View

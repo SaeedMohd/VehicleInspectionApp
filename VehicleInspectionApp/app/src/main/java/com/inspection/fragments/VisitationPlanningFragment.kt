@@ -103,7 +103,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                                                 specialistClubCodes.add(sn.clubcode)
                                             }
 
-                                            visitationSpecialistName.setText(requiredSpecialistName)
+                                                visitationSpecialistName.setText(requiredSpecialistName)
+
                                         }
 
                                         loadSpecialistName()
