@@ -740,7 +740,7 @@ class FragmentARRAVPersonnel : Fragment() {
     fun fillData(){
 
         //1-
-        newCertNoText.addTextChangedListener(certificateIdNoLengthWatcher)
+        //newCertNoText.addTextChangedListener(certificateIdNoLengthWatcher)
         //2-
         endDateMustBeAfterStartDateLogic()
         //3-
@@ -1711,6 +1711,15 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         }
         else
             newFirstNameText.setError(null)
+
+        if (newCertNoText.text.toString().isNullOrEmpty()){
+
+            persn.personnelIsInputsValid=false
+            newCertNoText.setError("required field")
+
+        }
+        else
+            newCertNoText.setError(null)
 
         if (newLastNameText.text.toString().isNullOrEmpty()){
 
