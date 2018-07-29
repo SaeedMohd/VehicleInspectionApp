@@ -53,7 +53,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/visitationfacilityIdVal"
+                android:id="@+id/adHocFacilityIdVal"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/visitationfacilityIdVal"
+                android:layout_toRightOf="@id/adHocFacilityIdVal"
                 android:orientation="horizontal"
                 android:weightSum="10">
 
@@ -79,11 +79,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:text="DBA:"
+                    android:text="Specialist:"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/facilityDbaButton"
+                    android:id="@+id/adHocFacilitySpecialistButton"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
@@ -93,7 +93,7 @@
                     android:drawableRight="@drawable/downarrow"
                     android:focusable="false"
                     android:gravity="center"
-                    android:hint="Select DBA"
+                    android:hint="Select Specialist"
                     android:paddingRight="10dp" />
 
 
@@ -102,11 +102,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:text="Entity Name:"
+                    android:text="Facility Name:"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/entityNameButton"
+                    android:id="@+id/adHocFacilityNameButton"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"

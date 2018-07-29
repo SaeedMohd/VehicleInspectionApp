@@ -71,9 +71,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        clubCodeEditText.setText("004")
-
         setFieldsListeners()
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
@@ -90,7 +87,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         firstLoading = false
     }
 
-    fun setFieldsListeners() {
+    private fun setFieldsListeners() {
         newVisitationBtn.setOnClickListener {
             shouldShowVisitation = true
             recordsProgressView.visibility = View.VISIBLE
@@ -137,7 +134,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         })
 
-        visitationfacilityIdVal.addTextChangedListener(object : TextWatcher {
+        adHocFacilityIdVal.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
             }
@@ -152,7 +149,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
         })
 
-        facilityDbaButton.setOnClickListener(View.OnClickListener {
+        adHocFacilityNameButton.setOnClickListener(View.OnClickListener {
             recordsProgressView.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                     Response.Listener { response ->
@@ -169,9 +166,9 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
                                 if (searchDialog.selectedString == "Any") {
-                                    facilityDbaButton.setText("")
+                                    adHocFacilityNameButton.setText("")
                                 } else {
-                                    facilityDbaButton.setText(searchDialog.selectedString)
+                                    adHocFacilityNameButton.setText(searchDialog.selectedString)
                                 }
                                 reloadFacilitiesList()
                             }
@@ -182,7 +179,28 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 Log.v("Loading error", "" + it.message)
             }))
         })
+
+
+        adHocFacilitySpecialistButton.setOnClickListener(View.OnClickListener {
+            var personnelNames = ArrayList<String>()
+            (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
+                personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
+            }
+            personnelNames.sort()
+            personnelNames.add(0, "Any")
+            var searchDialog = SearchDialog(context, personnelNames)
+            searchDialog.show()
+            searchDialog.setOnDismissListener {
+                if (searchDialog.selectedString == "Any") {
+                    adHocFacilitySpecialistButton.setText("")
+                } else {
+                    adHocFacilitySpecialistButton.setText(searchDialog.selectedString)
+                }
+                reloadFacilitiesList()
+            }
+        })
     }
+
 
     fun reloadFacilitiesList() {
         var parametersString = StringBuilder()
@@ -199,17 +217,12 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         }
 
         with(parametersString) {
-            append("facilityNumber=" + visitationfacilityIdVal.text.trim())
+            append("facilityNumber=" + adHocFacilityIdVal.text.trim())
             append("&")
         }
 
-        if (!facilityDbaButton.text.contains("Select") && facilityDbaButton.text.length > 1) {
+        if (!adHocFacilitySpecialistButton.text.contains("Select") && adHocFacilitySpecialistButton.text.length > 1) {
             with(parametersString) {
-                //TODO added to void specialist value until they let us know how we will use it
-                //**********************
-//                        append("specialist=" + visitationSpecialistName.text)
-//                        append("&")
-                //**********************
 
                 append("assignedSpecialist=")
                 append("&")
@@ -222,9 +235,9 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         }
 
-        if (!entityNameButton.text.contains("Select") && entityNameButton.text.length > 1) {
+        if (!adHocFacilityNameButton.text.contains("Select") && adHocFacilityNameButton.text.length > 1) {
             with(parametersString) {
-                append(("dba=" + entityNameButton.text))
+                append(("dba=" + adHocFacilityNameButton.text))
                 append("&")
             }
         } else {
@@ -244,8 +257,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         }
 
 
-
-        Log.v("*********getFacilitiesWithFilters", Constants.getFacilitiesWithFilters + parametersString)
+        Log.v("requesting....", Constants.getFacilitiesWithFilters+parametersString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
@@ -353,7 +365,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
     }
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int) {
-//        recordsProgressView.visibility = View.VISIBLE
+        recordsProgressView.visibility = View.VISIBLE
         if (TypeTablesModel.getInstance().AARDeficiencyType.size == 0) {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getTypeTables + "",
                     Response.Listener { response ->
@@ -363,7 +375,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
                             TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
 
-                            Log.v("*******url", String.format(Constants.getFacilityData, facilityNumber, "004"))
+
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, String.format(Constants.getFacilityData, facilityNumber, "004"),
                                     Response.Listener { response ->
                                         Log.v("*****response = ", response)
@@ -377,7 +389,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
 
                                                 var intent = Intent(context, com.inspection.FormsActivity::class.java)
-//                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
                                                 startActivity(intent)
                                             } else {
                                                 context!!.toast("Facility data not found")
