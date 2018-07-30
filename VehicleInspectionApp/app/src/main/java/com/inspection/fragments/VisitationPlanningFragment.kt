@@ -131,7 +131,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            reloadVisitationsList()
+            //reloadVisitationsList()
         }
 
     }
@@ -166,6 +166,11 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
 
         progressBarRecords.indeterminateDrawable.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
 
+        searchVisitaionsButton.setOnClickListener({
+            reloadVisitationsList()
+            it.hideKeyboard()
+        })
+
         clubCodeEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
@@ -176,7 +181,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                reloadVisitationsList()
+                //reloadVisitationsList()
             }
         })
 
@@ -190,7 +195,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                reloadVisitationsList()
+                //reloadVisitationsList()
 
             }
 
@@ -211,7 +216,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 } else {
                     visitationSpecialistName.setText(searchDialog.selectedString)
                 }
-                reloadVisitationsList()
+                //reloadVisitationsList()
             }
         })
 
@@ -220,7 +225,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             searchDialog.show()
             searchDialog.setOnDismissListener {
                 clubCodeEditText.setText(searchDialog.selectedString)
-                reloadVisitationsList()
+                //reloadVisitationsList()
             }
         })
 
@@ -245,7 +250,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                                 } else {
                                     facilityNameButton.setText(searchDialog.selectedString)
                                 }
-                                reloadVisitationsList()
+                                //reloadVisitationsList()
                             }
                         })
                     }, Response.ErrorListener {
@@ -258,26 +263,26 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         })
 
         annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            reloadVisitationsList()
+           // reloadVisitationsList()
         }
 
         quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            reloadVisitationsList()
+           // reloadVisitationsList()
         }
 
         adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            reloadVisitationsList()
+           // reloadVisitationsList()
         }
 
 
         deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            reloadVisitationsList()
+           // reloadVisitationsList()
         }
 
 
 
         pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            reloadVisitationsList()
+           // reloadVisitationsList()
         }
 
 
@@ -285,7 +290,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         completedCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
 
 
-            reloadVisitationsList()
+           // reloadVisitationsList()
 
 
         }
@@ -608,21 +613,24 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
 
             if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].AutomotiveRepairExpDate.apiToAppFormat()
+                vh.facilityNoValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].FACNo
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 vh.visitationTypeValueTextView.text = "Pending"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].AutomotiveRepairExpDate.apiToAppFormat()
+                vh.facilityNoValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 vh.visitationTypeValueTextView.text = "Completed"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].EntityName
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].AutomotiveRepairExpDate.apiToAppFormat()
+                vh.facilityNoValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 vh.visitationTypeValueTextView.text = "Deficiency"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode)
@@ -1041,12 +1049,14 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
 
     private class VisitationPlanningViewHolder(view: View?) {
         val facilityNameValueTextView: TextView
+        val facilityNoValueTextView: TextView
         val initialContractDateValueTextView: TextView
         val visitationTypeValueTextView: TextView
         val loadBtn: Button
 
         init {
             this.facilityNameValueTextView = view?.findViewById(R.id.facilityNameValueTextView) as TextView
+            this.facilityNoValueTextView = view?.findViewById(R.id.facilityNoValueTextView) as TextView
             this.initialContractDateValueTextView = view?.findViewById(R.id.initialContractDateValueTextView) as TextView
             this.visitationTypeValueTextView = view?.findViewById(R.id.visitationTypeValueTextView) as TextView
             this.loadBtn = view?.findViewById(R.id.loadBtn) as Button

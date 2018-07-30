@@ -19,6 +19,7 @@ private val apiFormat = SimpleDateFormat("yyyy-MM-dd")
 private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
 private val appFormat = SimpleDateFormat("dd MMM yyyy")
+private val appFormatMMDDYYYY = SimpleDateFormat("MM/dd/yyyy")
 private val apiSubmitFormat = SimpleDateFormat("yyyy-mm-dd HH:mm:ss")
 
 fun String.toDate(): Date = dbFormat.parse(this)
@@ -29,6 +30,10 @@ fun String.appToDBFormat(): String = apiFormat.format(appFormat.parse(this))
 
 fun String.apiToAppFormat(): String {
     return appFormat.format(apiFormat.parse(this.split("T")[0]))
+}
+
+fun String.apiToAppFormatMMDDYYYY(): String {
+    return appFormatMMDDYYYY.format(apiFormat.parse(this.split("T")[0]))
 }
 
 fun String.appToApiFormat(): String = apiFormat.format(appFormat.parse(this))
