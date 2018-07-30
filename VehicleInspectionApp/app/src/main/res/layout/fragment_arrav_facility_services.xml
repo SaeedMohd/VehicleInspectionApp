@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Services"
+            android:text="Facility Services"
             android:gravity="center"
             android:textColor="@color/mainColor"
             android:textSize="22sp"
@@ -33,7 +33,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:layout_marginBottom="20dp"
-            android:text="add new service"
+            android:text="add new Facility service"
             android:id="@+id/showNewserviceDialogueButton"
             />
 
@@ -61,7 +61,7 @@
         <TableRow
             android:background="@color/mainColor"
             >
-                <TextView android:text="service"
+                <TextView android:text="Service"
                     android:layout_width="100dp"
                     android:textAlignment="center"
                     android:textColor="@color/white"
@@ -159,7 +159,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:id="@+id/addFacilityServicesDialogeTitle"
-            android:text="Add New Service"
+            android:text="add new Facility service"
             android:layout_gravity="top|left"
             android:textSize="18dp"
             />
@@ -206,7 +206,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="service Name: "
+                    android:text="Service Name: "
                     android:layout_gravity="center_vertical"
                     android:textStyle="bold"
                     />
@@ -235,7 +235,7 @@
                     android:layout_below="@id/connumberll"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="Effective Date:: "
+                    android:text="Effective Date: "
                     android:textStyle="bold"
                     />
                 <Button
