@@ -424,14 +424,8 @@ class FragmentVisitation : Fragment() {
         aarSignEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
-                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
-
+                if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
                     MarkChangeWasDone()
-
-                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
-
                 }
             }
 
@@ -449,13 +443,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
-
                     MarkChangeWasDone()
-
-                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
-
                 }
             }
 
@@ -474,13 +462,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl){
-
                     MarkChangeWasDone()
-
-                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
-
                 }
             }
 

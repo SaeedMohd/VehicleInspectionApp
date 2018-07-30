@@ -10,8 +10,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/titleTextView"
         android:background="@color/white"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -121,74 +120,86 @@
             </LinearLayout>
 
 
-
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
+
             <TextView
                 android:id="@+id/contractStatusTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="25dp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
                 android:layout_centerVertical="true"
-                android:text="Contract Status " />
+                android:layout_marginLeft="25dp"
+                android:gravity="center_vertical"
+                android:text="Contract Status "
+                android:textStyle="bold" />
 
             <RadioGroup
+                android:id="@+id/contractStatusRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/contractStatusTextView"
                 android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/contractStatusTextView"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/contractStatusActiveRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Active"
-                    android:textColor="@color/black"
                     android:checked="true"
-                    />
+                    android:text="Active"
+                    android:textColor="@color/black" />
 
                 <RadioButton
                     android:id="@+id/contractStatusinActiveRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="InActive"
-                    android:textColor="@color/black"
-                    />
+                    android:textColor="@color/black" />
 
             </RadioGroup>
 
+            <Button
+                android:id="@+id/adHocSearchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/green_background_button"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:textColor="@color/white"
+                android:text="Search"
+                />
 
-        <Button
-            android:id="@+id/newVisitationBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="25dp"
-            android:layout_centerVertical="true"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
-            android:text="New Visitation Form" />
         </RelativeLayout>
+
 
         <ListView
             android:id="@+id/facilitiesListView"
-            android:divider="@null"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp"
+            android:layout_marginTop="10dp"
             android:background="@color/light_gray"
-            android:layout_marginTop="10dp" />
+            android:divider="@null"
+            android:paddingTop="10dp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/noRecordsFoundTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="28sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="No Records Found"
+        />
 
     <RelativeLayout
         android:id="@+id/recordsProgressView"
@@ -217,5 +228,7 @@
 
 
     </RelativeLayout>
+
+
 
 </RelativeLayout>

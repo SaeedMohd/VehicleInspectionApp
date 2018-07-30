@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_forms.*
 
 class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
 
-    var formsStringsArray = arrayOf("Visitation Planning", "APP / AdHoc Visitation", "My Performance")
+    var formsStringsArray = arrayOf("Visitation Planning", "APP / Ad Hoc Visitation", "My Performance")
 
     //another added code for frag testing > sherif yousry
    // var fragment2: VehiclesFragmentInScopeOfServicesView? = null
@@ -44,7 +44,7 @@ class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
         }
 
         adHocVisitationButton.setOnClickListener {
-            (activity as MainActivity).supportActionBar!!.title = "App / AdHoc Visitation"
+            (activity as MainActivity).supportActionBar!!.title = "APP / Ad Hoc Visitation"
             var fragment = AppAdHockVisitationFilterFragment()
             fragment!!.isVisitationPlanning = false
                 val fragmentManagerSC = fragmentManager

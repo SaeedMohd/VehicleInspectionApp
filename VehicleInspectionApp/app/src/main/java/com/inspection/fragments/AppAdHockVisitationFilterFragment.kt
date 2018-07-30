@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
@@ -94,67 +95,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
     }
 
     private fun setFieldsListeners() {
-        newVisitationBtn.setOnClickListener {
-            shouldShowVisitation = true
-            recordsProgressView.visibility = View.VISIBLE
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            recordsProgressView.visibility = View.INVISIBLE
-                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                            var facilityNames = ArrayList<String>()
-
-                            (0 until facilities.size).forEach {
-                                facilityNames.add(facilities[it].facname)
-                            }
-
-                            facilityNames.sort()
-                            var searchDialog = SearchDialog(context, facilityNames)
-                            searchDialog.show()
-                            searchDialog.setOnDismissListener {
-                                if (searchDialog.selectedString.isNotEmpty()) {
-                                    getFullFacilityDataFromAAA(facilities.filter { it.facname == searchDialog.selectedString }[0].facnum.toInt(), facilities.filter { it.facname == searchDialog.selectedString }[0].clubcode)
-                                }
-                            }
-                        })
-                    }, Response.ErrorListener {
-                recordsProgressView.visibility = View.INVISIBLE
-                context!!.toast("Connection Error")
-                Log.v("error while loading", "error while loading facilities")
-                Log.v("Loading error", "" + it.message)
-            }))
-        }
-
-
-        clubCodeEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                reloadFacilitiesList()
-            }
-        })
-
-        adHocFacilityIdVal.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                reloadFacilitiesList()
-            }
-
-        })
-
         adHocFacilityNameButton.setOnClickListener(View.OnClickListener {
             recordsProgressView.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
@@ -176,11 +116,11 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                                 } else {
                                     adHocFacilityNameButton.setText(searchDialog.selectedString)
                                 }
-                                reloadFacilitiesList()
                             }
                         })
                     }, Response.ErrorListener {
                 context!!.toast("Connection Error")
+                recordsProgressView.visibility = View.INVISIBLE
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
             }))
@@ -202,13 +142,20 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 } else {
                     adHocFacilitySpecialistButton.setText(searchDialog.selectedString)
                 }
-                reloadFacilitiesList()
             }
         })
+
+
+        adHocSearchButton.setOnClickListener {
+            adHocSearchButton.hideKeyboard()
+            reloadFacilitiesList()
+        }
     }
 
 
     fun reloadFacilitiesList() {
+        recordsProgressView.visibility = View.VISIBLE
+        noRecordsFoundTextView.visibility = View.GONE
         var parametersString = StringBuilder()
         if (clubCodeEditText.text.trim().isNotEmpty()) {
             with(parametersString) {
@@ -230,7 +177,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         if (!adHocFacilitySpecialistButton.text.contains("Select") && adHocFacilitySpecialistButton.text.length > 1) {
             with(parametersString) {
 
-                append("assignedSpecialist=")
+                append("assignedSpecialist="+CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == adHocFacilitySpecialistButton.text.toString() }[0].id)
                 append("&")
 
             }
@@ -271,12 +218,19 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
                         facilitiesList = Gson().fromJson(response, Array<CsiFacility>::class.java).toCollection(ArrayList())
 
+                        if (facilitiesList.size == 0){
+                            noRecordsFoundTextView.visibility = View.VISIBLE
+                        }else{
+                            noRecordsFoundTextView.visibility = View.GONE
+                        }
+
                         facilitiesListView.visibility = View.VISIBLE
                         var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
                         facilitiesListView.adapter = visitationPlanningAdapter
                     })
                 }, Response.ErrorListener {
-            context!!.toast("Error while loading visitations: " + it.message)
+            recordsProgressView.visibility = View.INVISIBLE
+            context!!.toast("Error while loading facilities")
             Log.v("error while loading", "error while loading visitation records")
         }))
     }
@@ -344,6 +298,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
             vh.facilityNameValueTextView?.text = facilitiesArrayList[position].facname
             vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].facnum
+            vh.adHocClubCodeValueTextView?.text = facilitiesArrayList[position].clubcode
             vh.loadFacilityButton!!.setOnClickListener {
                 Log.v("required facility number", facilitiesArrayList[position].facnum + " " + facilitiesArrayList[position].clubcode)
                 getFullFacilityDataFromAAA(facilitiesArrayList[position].facnum.toInt(), facilitiesArrayList[position].clubcode)
@@ -770,11 +725,13 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
     private class AdHocVisitationViewHolder(view: View?) {
         var facilityNameValueTextView: TextView? = null
         var facilityNumberValueTextView: TextView? = null
+        var adHocClubCodeValueTextView: TextView? = null
         var loadFacilityButton: Button? = null
 
         init {
             this.facilityNameValueTextView = view?.findViewById(R.id.facilityNameValueTextView) as TextView
             this.facilityNumberValueTextView = view?.findViewById(R.id.facilityNumberValueTextView) as TextView
+            this.adHocClubCodeValueTextView = view?.findViewById(R.id.adHocClubCodeValueTextView)
             this.loadFacilityButton = view?.findViewById(R.id.loadFacilityButton) as Button
         }
 

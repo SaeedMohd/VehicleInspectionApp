@@ -10,7 +10,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_margin="10dp"
         tools:cardElevation="5dp">
 
@@ -36,10 +36,28 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/adHocClubCode"
+                android:text="Club Code"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/adHocClubCodeValueTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/loadFacilityButton"
+                android:layout_toRightOf="@id/adHocClubCode" />
+
+            <TextView
                 android:id="@+id/facilityNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_below="@id/adHocClubCode"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:text="Facility Name: "
@@ -50,7 +68,10 @@
                 android:id="@id/facilityNameValueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/facilityNameTextView" />
+                android:layout_toLeftOf="@id/loadFacilityButton"
+                android:layout_toRightOf="@id/facilityNameTextView"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/adHocClubCodeValueTextView"/>
 
 
             <TextView
@@ -71,7 +92,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/facilityNameValueTextView"
                 android:layout_marginTop="10dp"
-                android:layout_toRightOf="@id/facilityNumberTextView" />
+                android:layout_toLeftOf="@id/loadFacilityButton"
+                android:layout_toRightOf="@id/facilityNumberTextView"
+                />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
