@@ -1593,12 +1593,12 @@ class FragmentARRAVPersonnel : Fragment() {
                             if (edit_newSignerCheck.isChecked ) {
 
                                 edit_enableContractSignerIsChecked()
-                                Toast.makeText(context, "suppose to enable", Toast.LENGTH_SHORT).show()
+                       //         Toast.makeText(context, "suppose to enable", Toast.LENGTH_SHORT).show()
 
                             } else {
 
                                 edit_disableContractSignerIsChecked()
-                                Toast.makeText(context, "close this thing", Toast.LENGTH_SHORT).show()
+                             //   Toast.makeText(context, "close this thing", Toast.LENGTH_SHORT).show()
 
                             }
 
