@@ -171,6 +171,15 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="11"
+                        android:layout_weight="1"
+                        android:text="Update"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
                 </TableRow>
             </TableLayout>
 
@@ -994,6 +1003,579 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </ScrollView>
+    <ScrollView
+        android:id="@+id/edit_addNewPersonnelDialogue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Update Personnel"
+                android:textSize="18dp" />
+
+
+            <Button
+                android:id="@+id/edit_submitNewPersnRecordBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/green_background_button"
+                android:text="Submit"
+                android:textColor="@color/white" />
+
+
+            <ImageButton
+                android:id="@+id/edit_exitDialogeBtnId"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/close" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="40dp"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/edit_personnelTypeTextViewId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Personnel Type:"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/edit_newPersonnelTypeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:ems="8"
+                        android:entries="@array/contractTypesEntries" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:text="First Name:*"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="3"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:text="Last Name:*"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edit_newFirstNameText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_newLastNameText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:text="RSP USER ID:"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="3"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:text="RSP Email Address:"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/edit_rspUserId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_rspEmailId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="4"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_background" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="20dp"
+                        android:text="Seniority Date:"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/edit_newSeniorityDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Certification ID #:"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edit_newCertNoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:hint="Enter certificate ID"
+                        android:maxLength="16" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:text="Start Date:"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_marginLeft="35dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:text="End Date:"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/edit_newStartDateBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+                        <Button
+                            android:id="@+id/edit_newEndDateBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/edit_newSignerCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Contract Signer"
+                            android:textStyle="bold" />
+
+                        <CheckBox
+                            android:id="@+id/edit_newACSCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Primary Mail Recipients"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/edit_contractSignerFieldsLinearLayourId"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+
+                        <TextView
+                            android:id="@+id/edit_address1TextId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Address 1:*"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_newAdd1Text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/textview_background"
+                            android:ems="8"
+                            android:text=""
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_address2TextId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Address 2:"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_newAdd2Text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/textview_background"
+                            android:ems="8"
+                            android:text=""
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_cityTextId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_marginTop="15dp"
+                            android:text="City:*"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_newCityText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/textview_background"
+                            android:ems="8"
+                            android:text=""
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_stateTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="State:*"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/edit_newStateSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_zipCodeTextId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="Zip Code:*"
+                            android:textStyle="bold" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+
+                            <EditText
+                                android:id="@+id/edit_newZipText"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="8"
+                                android:inputType="number"
+                                android:maxLength="5" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="  -  "
+
+                                />
+
+                            <EditText
+                                android:id="@+id/edit_newZipText2"
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="8"
+                                android:inputType="number"
+                                android:maxLength="4" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/edit_phoneTextId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:text="Phone:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/edit_emailAddressTextId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:text="Email Address:*"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/edit_newPhoneText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:hint="(XXX) XXX-XXXX"
+                                android:inputType="number"
+                                android:maxLength="10" />
+
+                            <EditText
+                                android:id="@+id/edit_newEmailText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/textview_background"
+                                android:ems="8"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/edit_contractSignerStartDateTextId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_marginTop="20dp"
+                                android:layout_weight="1"
+                                android:text="Contract Start Date:"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/edit_contractSignerEndDateTextId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_marginLeft="30dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_weight="1"
+                                android:text="Contract End Date:"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/edit_newCoStartDateBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_weight="1"
+                                android:background="@color/transparent"
+                                android:text="SELECT DATE"
+                                android:textColor="@color/blue"
+                                android:textSize="12dp" />
+
+                            <Button
+                                android:id="@+id/edit_newCoEndDateBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="4"
+                                android:layout_marginLeft="30dp"
+                                android:layout_weight="1"
+                                android:background="@color/transparent"
+                                android:text="SELECT DATE"
+                                android:textColor="@color/blue"
+                                android:textSize="12dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/certificateLoadingView"
@@ -1026,6 +1608,34 @@
 
     <RelativeLayout
         android:id="@+id/personnelLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:background="@color/mainColor"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:layout_centerHorizontal="true"
+            android:text="Loading..."
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/edit_personnelLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"

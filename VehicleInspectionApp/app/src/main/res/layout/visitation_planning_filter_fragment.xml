@@ -182,17 +182,17 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:orientation="horizontal"
             android:layout_marginLeft="20dp">
 
             <CheckBox
                 android:id="@+id/annualVisitationCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
                 android:checked="true"
                 android:text="Annual\nVisitations" />
@@ -201,8 +201,8 @@
                 android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/annualVisitationCheckBox"
                 android:layout_marginRight="10dp"
-                android:layout_gravity="center_vertical"
                 android:checked="true"
                 android:text="Quarterly" />
 
@@ -210,8 +210,8 @@
                 android:id="@+id/adHocVisitationsCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/quarterlyOrOtherVisistationsCheckBox"
                 android:text="AdHoc\nVisitations" />
 
             <CheckBox
@@ -219,6 +219,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/adHocVisitationsCheckBox"
                 android:layout_gravity="center_vertical"
                 android:checked="true"
                 android:text="Deficiencies" />
@@ -228,7 +229,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@id/deficienciesCheckBox"
                 android:checked="true"
                 android:text="Pending" />
 
@@ -236,11 +237,23 @@
                 android:id="@+id/completedCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@id/pendingCheckBox"
                 android:layout_marginRight="10dp"
                 android:text="Completed" />
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/searchVisitaionsButton"
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:background="@drawable/green_background_button"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginRight="30dp"
+                android:text="Search"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
 
 
         <ListView

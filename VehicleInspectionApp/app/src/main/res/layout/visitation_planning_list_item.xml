@@ -24,58 +24,78 @@
         android:columnCount="5"
         android:padding="15dp">
 
+        <TextView
+            android:id="@+id/facilityNoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facility Number:"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:textColor="@color/black" />
+
+
+
+        <TextView
+            android:id="@+id/facilityNoValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_column="1"
+            android:layout_margin="5dp"
+            android:layout_row="0"
+            android:text="test" />
+
             <TextView
                 android:id="@+id/facilityNameTextView"
-                android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facility Name:"
-                android:layout_column="0"
+                android:layout_column="3"
                 android:layout_row="0"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
                 android:textColor="@color/black" />
 
-
-
             <TextView
                 android:id="@+id/facilityNameValueTextView"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@id/facilityNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:layout_column="1"
+                android:layout_column="4"
                 android:layout_margin="5dp"
-                android:layout_marginRight="15dp"
                 android:layout_row="0"
-                android:layout_alignParentRight="true"
                 android:text="test" />
 
 
             <TextView
                 android:id="@+id/initialContractDateTextView"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="0"
+                android:layout_column="3"
+                android:layout_row="1"
                 android:layout_margin="5dp"
                 android:text="Initial Contract Date:"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="1"
+            android:layout_margin="5dp"
+            android:ems="8"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/initialContractDateValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/initialContractDateTextView"
-                android:layout_alignParentRight="true"
-                android:layout_column="3"
-                android:layout_row="0"
+                android:layout_column="4"
+                android:layout_row="1"
                 android:textAlignment="center"
                 android:layout_margin="5dp"
                 android:text="" />
@@ -83,28 +103,23 @@
 
             <TextView
                 android:id="@+id/visitationTypeTextView"
-                android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status:"
+                android:text="Status / Type:"
                 android:layout_column="0"
                 android:layout_row="1"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
                 android:textColor="@color/black" />
 
-
-
             <TextView
                 android:id="@+id/visitationTypeValueTextView"
-                android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
                 android:layout_column="1"
                 android:layout_row="1"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:layout_alignParentRight="true"
                 android:text="" />
 
 

@@ -177,6 +177,7 @@ class FragmentARRAVPrograms : Fragment() {
             if (validateInputs()) {
 
                 var validProgram = true
+                var valid_validProgram = false
 
 
                 for (fac in TypeTablesModel.getInstance().ProgramsType) {
@@ -207,11 +208,15 @@ class FragmentARRAVPrograms : Fragment() {
 
                                     if ((newEffDate <= DB_ExpDate) && (newExpDate >= DB_EffDate)) {
 
-                                        Toast.makeText(context, "no duplication", Toast.LENGTH_SHORT).show()
+                                        validProgram = true
+                                        valid_validProgram=true
+
 
 
                                     } else
                                         Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                    validProgram = false
+
 
                                 } else
                                     Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
@@ -225,7 +230,7 @@ class FragmentARRAVPrograms : Fragment() {
 
 
                 }
-                if (validProgram) {
+                if (validProgram||valid_validProgram) {
 
                     var item = FacilityDataModel.TblPrograms()
                     for (fac in TypeTablesModel.getInstance().ProgramsType) {
@@ -248,9 +253,9 @@ class FragmentARRAVPrograms : Fragment() {
                                     Log.v("RESPONSE", response.toString())
                                     programsLoadingView.visibility = View.GONE
                                     FacilityDataModel.getInstance().tblPrograms.add(item)
-                                    addTheLatestRowOfPortalAdmin()
-
-
+                                    fillPortalTrackingTableView()
+                                    altTableRow(2)
+                                    enableAllAddButnsAndDialog()
                                     programCard.visibility = View.GONE
                                     alphaBackgroundForProgramDialogs.visibility = View.GONE
 
@@ -449,6 +454,7 @@ class FragmentARRAVPrograms : Fragment() {
                 tableRow.addView(updateButton)
 
                 updateButton.setOnClickListener(View.OnClickListener {
+
                     var currentTableRowIndex=aarPortalTrackingTableLayout.indexOfChild(tableRow)
                     var currentfacilityDataModelIndex=currentTableRowIndex-1
                     disableAllAddButnsAndDialog()
@@ -468,6 +474,7 @@ class FragmentARRAVPrograms : Fragment() {
 
                         val selectemProgramName=edit_program_name_textviewVal.getSelectedItem().toString()
                             var validProgram = true
+                            var valid_validProgram = false
 
 
                             for (fac in TypeTablesModel.getInstance().ProgramsType) {
@@ -494,16 +501,17 @@ class FragmentARRAVPrograms : Fragment() {
                                                 // TODO Auto-generated catch block
                                                 e.printStackTrace()
                                             }
-                                            if (!item1.effDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
+                                            if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
 
 
                                                 if ((newEffDate <= DB_ExpDate) && (newExpDate >= DB_EffDate)) {
 
 
-                                                    var validProgram = true
+                                                   valid_validProgram=true
 
                                                 } else
                                                     Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                                validProgram = false
 
                                             } else
                                                 Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
@@ -518,7 +526,7 @@ class FragmentARRAVPrograms : Fragment() {
 
                             }
 
-                            if (validProgram) {
+                            if (validProgram||valid_validProgram) {
 
                                 edit_programsLoadingView.visibility = View.VISIBLE
 
@@ -664,25 +672,32 @@ class FragmentARRAVPrograms : Fragment() {
 
 
     fun addTheLatestRowOfPortalAdmin() {
+
+
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.column = 5
+
         var i = 1
         FacilityDataModel.getInstance().tblPrograms[FacilityDataModel.getInstance().tblPrograms.size - 1].apply {
 
@@ -728,6 +743,12 @@ class FragmentARRAVPrograms : Fragment() {
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = Comments
             tableRow.addView(textView)
+
+            val updateButton = Button(context)
+            updateButton.layoutParams = rowLayoutParam4
+            updateButton.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            updateButton.text = "Update"
+            tableRow.addView(updateButton)
 
 
             aarPortalTrackingTableLayout.addView(tableRow)

@@ -22,6 +22,7 @@ import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.appToApiFormat
 import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
@@ -102,6 +103,27 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
         })
+        edit_exitDialogeBtnId.setOnClickListener({
+
+
+            for (i in 0 until mainViewLinearId.childCount) {
+                val child = mainViewLinearId.getChildAt(i)
+                child.isEnabled = true
+            }
+
+            for (i in 0 until mainViewLinearId2.childCount) {
+                val child = mainViewLinearId2.getChildAt(i)
+                child.isEnabled = true
+            }
+
+
+
+            edit_addNewPersonnelDialogue.visibility=View.GONE
+            alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+
+
+        })
+
         exitCertificateDialogeBtnId.setOnClickListener({
 
             for (i in 0 until mainViewLinearId.childCount) {
@@ -243,6 +265,54 @@ class FragmentARRAVPersonnel : Fragment() {
                 dpd.show()
 //            }
         }
+        newCoEndDateBtn.setOnClickListener {
+//            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    newCoEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+        edit_newCoEndDateBtn.setOnClickListener {
+//            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    edit_newCoEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+        edit_newCoStartDateBtn.setOnClickListener {
+//            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    edit_newCoStartDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
 
         newSeniorityDateBtn.setOnClickListener {
 //            if (newSeniorityDateBtn.text.equals("SELECT DATE")) {
@@ -260,6 +330,22 @@ class FragmentARRAVPersonnel : Fragment() {
                 dpd.show()
 //            }
         }
+        edit_newSeniorityDateBtn.setOnClickListener {
+//            if (newSeniorityDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    edit_newSeniorityDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
 
         newStartDateBtn.setOnClickListener {
 //            if (newStartDateBtn.text.equals("SELECT DATE")) {
@@ -273,6 +359,22 @@ class FragmentARRAVPersonnel : Fragment() {
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newStartDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
+        edit_newStartDateBtn.setOnClickListener {
+//            if (newStartDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    edit_newStartDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
@@ -346,6 +448,7 @@ class FragmentARRAVPersonnel : Fragment() {
             }
 
         })
+
         submitNewPersnRecordBtn.setOnClickListener({
 
             if (validateInputs()){
@@ -403,7 +506,8 @@ class FragmentARRAVPersonnel : Fragment() {
                             item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
                             FacilityDataModel.getInstance().tblPersonnel.add(item)
 
-                            addTheLatestRowOfPersonnelTable()
+                            fillPersonnelTableView()
+                            altTableRow(2)
                             personnelLoadingView.visibility = View.GONE
 
                             for (i in 0 until mainViewLinearId.childCount) {
@@ -503,6 +607,70 @@ class FragmentARRAVPersonnel : Fragment() {
         }
 
     }
+    fun edit_disableContractSignerIsChecked(){
+
+            edit_newEmailText.isEnabled = false
+            edit_newCoStartDateBtn.isEnabled = false
+            edit_newPhoneText.isEnabled = false
+            edit_newZipText.isEnabled = false
+            edit_newCityText.isEnabled = false
+            edit_newAdd1Text.isEnabled = false
+            edit_newStateSpinner.isEnabled = false
+            edit_newZipText2.isEnabled = false
+            edit_newAdd2Text.isEnabled = false
+            edit_stateTextView.isEnabled = false
+            edit_phoneTextId.isEnabled = false
+            edit_zipCodeTextId.isEnabled = false
+            edit_emailAddressTextId.isEnabled = false
+            edit_contractSignerStartDateTextId.isEnabled = false
+            edit_contractSignerEndDateTextId.isEnabled = false
+            edit_newCoEndDateBtn.isEnabled = false
+            edit_cityTextId.isEnabled = false
+            edit_address2TextId.isEnabled = false
+            edit_address1TextId.isEnabled = false
+            edit_newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
+            edit_newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
+            edit_contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.contractSignerFieldsAreDisabledColor));
+
+
+
+
+
+
+
+    }
+    fun edit_enableContractSignerIsChecked(){
+
+            edit_newEmailText.isEnabled = true
+            edit_newCoStartDateBtn.isEnabled = true
+            edit_newPhoneText.isEnabled = true
+            edit_newZipText.isEnabled = true
+            edit_newCityText.isEnabled = true
+            edit_newAdd1Text.isEnabled = true
+            edit_newStateSpinner.isEnabled = true
+            edit_newZipText2.isEnabled = true
+            edit_newAdd2Text.isEnabled = true
+            edit_stateTextView.isEnabled = true
+            edit_phoneTextId.isEnabled = true
+            edit_zipCodeTextId.isEnabled = true
+            edit_emailAddressTextId.isEnabled = true
+            edit_contractSignerStartDateTextId.isEnabled = true
+            edit_contractSignerEndDateTextId.isEnabled = true
+            edit_newCoEndDateBtn.isEnabled = false
+            edit_cityTextId.isEnabled = true
+            edit_address2TextId.isEnabled = true
+            edit_address1TextId.isEnabled = true
+            edit_newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.green));
+            edit_newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.green));
+            edit_contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.white));
+
+
+
+
+
+
+
+    }
 
     fun preparePersonnelPage() {
         isFirstRun = false
@@ -523,6 +691,7 @@ class FragmentARRAVPersonnel : Fragment() {
          var personTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, personTypeArray)
         personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newPersonnelTypeSpinner.adapter = personTypeAdapter
+        edit_newPersonnelTypeSpinner.adapter = personTypeAdapter
 
         certificationTypeList=TypeTablesModel.getInstance().PersonnelCertificationType
         certTypeArray.clear()
@@ -629,6 +798,7 @@ class FragmentARRAVPersonnel : Fragment() {
         var citiesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, states)
         citiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newStateSpinner.adapter = citiesAdapter
+        edit_newStateSpinner.adapter = citiesAdapter
 
     }
 
@@ -1108,6 +1278,11 @@ class FragmentARRAVPersonnel : Fragment() {
     fun fillPersonnelTableView() {
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
+        if (PersonnelResultsTbl.childCount>1) {
+            for (i in PersonnelResultsTbl.childCount - 1 downTo 1) {
+                PersonnelResultsTbl.removeViewAt(i)
+            }
+        }
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
@@ -1163,100 +1338,448 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam10.height = TableLayout.LayoutParams.WRAP_CONTENT
         rowLayoutParam10.column = 10
         var dateTobeFormated = ""
+
+        val rowLayoutParam11 = TableRow.LayoutParams()
+        rowLayoutParam11.weight = 1F
+        rowLayoutParam11.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam11.column = 11
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
                 var tableRow = TableRow(context)
 
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = getTypeName(get(it).PersonnelTypeID)
-                tableRow.addView(textView)
+                val textView1 = TextView(context)
+                textView1.layoutParams = rowLayoutParam
+                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView1.text = getTypeName(get(it).PersonnelTypeID)
+                tableRow.addView(textView1)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).FirstName
-                tableRow.addView(textView)
+                val textView2 = TextView(context)
+                textView2.layoutParams = rowLayoutParam1
+                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView2.text = get(it).FirstName
+                tableRow.addView(textView2)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView3 = TextView(context)
+                textView3.layoutParams = rowLayoutParam2
+                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = get(it).LastName
-                tableRow.addView(textView)
+                textView3.text = get(it).LastName
+                tableRow.addView(textView3)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView4 = TextView(context)
+                textView4.layoutParams = rowLayoutParam3
+                textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = get(it).RSP_UserName
-                tableRow.addView(textView)
+                textView4.text = get(it).RSP_UserName
+                tableRow.addView(textView4)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam4
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView5 = TextView(context)
+                textView5.layoutParams = rowLayoutParam4
+                textView5.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = get(it).RSP_Email
-                tableRow.addView(textView)
+                textView5.text = get(it).RSP_Email
+                tableRow.addView(textView5)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam5
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView6 = TextView(context)
+                textView6.layoutParams = rowLayoutParam5
+                TableRow.LayoutParams()
+                textView6.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 if (!(get(it).SeniorityDate.isNullOrEmpty())) {
-                    textView.text = get(it).SeniorityDate.apiToAppFormat()
+                    textView6.text = get(it).SeniorityDate.apiToAppFormat()
                 } else {
-                    textView.text = ""
+                    textView6.text = ""
                 }
 
-                tableRow.addView(textView)
+                tableRow.addView(textView6)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam6
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).CertificationNum
-                tableRow.addView(textView)
+                val textView7 = TextView(context)
+                textView7.layoutParams = rowLayoutParam6
+                textView7.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView7.text = get(it).CertificationNum
+                tableRow.addView(textView7)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam7
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView8 = TextView(context)
+                textView8.layoutParams = rowLayoutParam7
+                textView8.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
                 if (!(get(it).startDate.isNullOrEmpty())) {
-                    textView.text  = get(it).startDate.apiToAppFormat()
+                    try {
+                        textView8.text  = get(it).startDate.apiToAppFormat()
+                    } catch (e: Exception) {
+                        textView8.text  = get(it).startDate.appToApiFormat()
+
+                    }
                 } else {
-                    textView.text  = ""
+                    textView8.text  = ""
                 }
 
-                tableRow.addView(textView)
+                tableRow.addView(textView8)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam8
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                val textView9 = TextView(context)
+                textView9.layoutParams = rowLayoutParam8
+                textView9.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
                 if (!(get(it).ExpirationDate.isNullOrEmpty())) {
-                    textView.text = get(it).ExpirationDate.apiToAppFormat()
+                    try {
+                        textView9.text = get(it).ExpirationDate.apiToAppFormat()
+                    } catch (e: Exception) {
+                        textView9.text = get(it).ExpirationDate.appToApiFormat()
+
+                    }
                 } else {
-                    textView.text = ""
+                    textView9.text = ""
                 }
 
 
-                tableRow.addView(textView)
+                tableRow.addView(textView9)
 
-                var checkBox = CheckBox(context)
 
-                checkBox = CheckBox(context)
-                checkBox.layoutParams = rowLayoutParam9
-                checkBox.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
-                checkBox.isChecked = (get(it).ContractSigner.equals("true"))
-                checkBox.isEnabled=false
-                tableRow.addView(checkBox)
+                val checkBox10 = CheckBox(context)
+                checkBox10.layoutParams = rowLayoutParam9
+                checkBox10.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
+                checkBox10.isChecked = (get(it).ContractSigner.equals("true"))
+                TableRow.LayoutParams()
+                checkBox10.isEnabled=false
+                tableRow.addView(checkBox10)
 
-                checkBox = CheckBox(context)
-                checkBox.layoutParams = rowLayoutParam10
-                checkBox.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
-                checkBox.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
-                checkBox.isEnabled=false
-                tableRow.addView(checkBox)
+                val checkBox11 = CheckBox(context)
+                checkBox11.layoutParams = rowLayoutParam10
+                checkBox11.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
+                checkBox11.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
+                TableRow.LayoutParams()
+                checkBox11.isEnabled=false
+                tableRow.addView(checkBox11)
+
+                val updateBtn = Button(context)
+                updateBtn.layoutParams = rowLayoutParam11
+                updateBtn.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                updateBtn.text = "Update"
+
+                tableRow.addView(updateBtn)
 
                 PersonnelResultsTbl.addView(tableRow)
+
+                updateBtn.setOnClickListener(View.OnClickListener {
+                    var contractSignerFound = 0
+                    var emailPrimaryFound = 0
+
+                    if (checkBox10.isChecked){
+
+
+
+
+                        edit_enableContractSignerIsChecked()
+                        edit_newSignerCheck.isChecked=true
+
+                        edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+
+
+                            if (edit_newSignerCheck.isChecked ) {
+
+                                edit_enableContractSignerIsChecked()
+                                Toast.makeText(context, "open this maaaan", Toast.LENGTH_SHORT).show()
+
+                            } else {
+
+                                edit_disableContractSignerIsChecked()
+                                Toast.makeText(context, "close this thing", Toast.LENGTH_SHORT).show()
+
+                            }
+
+                        }
+
+
+                    }else{
+                        edit_disableContractSignerIsChecked()
+                        edit_newSignerCheck.isChecked=false
+
+
+                    }
+
+
+
+
+                    FacilityDataModel.getInstance().tblPersonnel.apply {
+                        (0 until size).forEach {
+
+
+                            if (get(it).ContractSigner.equals("true")) {
+                                contractSignerFound++
+
+
+                            }
+                            if (get(it).PrimaryMailRecipient.equals("true")) {
+                                emailPrimaryFound++
+
+
+                            }
+
+
+                    if (contractSignerFound>0&&!checkBox10.isChecked){
+                        edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+
+
+                            if (edit_newSignerCheck.isChecked ) {
+
+                                Toast.makeText(context, "there's already contract signer for this contract", Toast.LENGTH_SHORT).show()
+                                edit_newSignerCheck.isChecked=false
+
+                            } else {
+
+                                edit_disableContractSignerIsChecked()
+
+                            }
+
+                        }
+
+
+                    }
+                    if (emailPrimaryFound>0&&!checkBox11.isChecked){
+                        edit_newACSCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+
+
+                            if (edit_newACSCheck.isChecked ) {
+
+                                Toast.makeText(context, "there's already primary email assigned for this contract", Toast.LENGTH_SHORT).show()
+                                edit_newACSCheck.isChecked=false
+
+                            }
+
+                        }
+
+
+                    }
+                    if (emailPrimaryFound>0&&checkBox11.isChecked){
+                        edit_newACSCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+
+
+                            if (edit_newACSCheck.isChecked ) {
+
+                                edit_newACSCheck.isChecked=true
+
+                            }
+
+                        }
+
+
+                    }
+                            if (contractSignerFound==0){
+                                edit_newSignerCheck.setOnClickListener(View.OnClickListener {
+                                    if (edit_newSignerCheck.isChecked) {
+                                        edit_enableContractSignerIsChecked()
+                                    }
+
+
+                                })
+
+
+
+
+
+
+
+
+                            }
+
+
+                        }
+                    }
+                    if (contractSignerFound==0) {
+                        edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+
+
+                            if (edit_newSignerCheck.isChecked ) {
+
+                                edit_enableContractSignerIsChecked()
+                                Toast.makeText(context, "suppose to enable", Toast.LENGTH_SHORT).show()
+
+                            } else {
+
+                                edit_disableContractSignerIsChecked()
+                                Toast.makeText(context, "close this thing", Toast.LENGTH_SHORT).show()
+
+                            }
+
+                        }
+                    }
+
+
+
+                    var currentTableRowIndex=PersonnelResultsTbl.indexOfChild(tableRow)
+                    var currentfacilityDataModelIndex=currentTableRowIndex-1
+
+
+                    for (i in 0 until mainViewLinearId.childCount) {
+                        val child = mainViewLinearId.getChildAt(i)
+                        child.isEnabled = false
+                    }
+
+                    for (i in 0 until mainViewLinearId2.childCount) {
+                        val child = mainViewLinearId2.getChildAt(i)
+                        child.isEnabled = false
+                    }
+
+
+                    edit_newFirstNameText.setText(textView2.text)
+                    edit_newLastNameText.setText(textView3.text)
+                    edit_newCertNoText.setText(textView7.text)
+                    edit_newStartDateBtn.setText(textView8.text)
+                    edit_newEndDateBtn.setText(textView9.text)
+                    edit_newSeniorityDateBtn.setText(textView6.text)
+                    edit_newCoStartDateBtn.setText("SELECT DATE")
+                    edit_newCoEndDateBtn.setText("SELECT DATE")
+                    edit_newPhoneText.setText("")
+                    edit_newZipText.setText("")
+                    edit_newAdd1Text.setText("")
+                    edit_newAdd2Text.setText("")
+                    edit_newCityText.setText("")
+                    edit_newZipText2.setText("")
+                    edit_newEmailText.setText(textView5.text)
+                    edit_newStateSpinner.setSelection(0)
+                    var i = personTypeArray.indexOf(textView1.text.toString())
+                    edit_newPersonnelTypeSpinner.setSelection(i)
+
+
+                    edit_newZipText.setError(null)
+                    edit_newZipText2.setError(null)
+                    edit_newPhoneText.setError(null)
+                    edit_newCertNoText.setError(null)
+                    edit_stateTextView.setError(null)
+                    edit_newEmailText.setError(null)
+                    edit_personnelTypeTextViewId.setError(null)
+
+
+
+
+
+                    if (checkBox11.isChecked){
+
+                        edit_newACSCheck.isChecked=true
+
+
+
+                    }else{
+                        edit_newACSCheck.isChecked=false
+
+
+
+                    }
+                    edit_addNewPersonnelDialogue.visibility=View.VISIBLE
+                    alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
+                    edit_submitNewPersnRecordBtn.setOnClickListener({
+
+                        if (edit_validateInputs()){
+                            edit_addNewPersonnelDialogue.visibility=View.GONE
+                            alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+
+                            edit_personnelLoadingView.visibility = View.VISIBLE
+
+
+                            var PersonnelTypeId=""
+
+                            for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                                if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+
+                                    PersonnelTypeId =fac.PersonnelTypeID
+                            }
+
+                            var FirstName=if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
+                            var LastName=if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                            var RSP_UserName=FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName
+                            var RSP_Email=FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email
+                            var facNo=FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                            var CertificationNum=if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
+                            var ContractSigner=if (edit_newSignerCheck.isChecked==true) "true" else "false"
+                            var PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "true" else "false"
+                            var startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
+                            var ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
+                            var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
+
+
+
+
+//        urlString = URLEncoder.encode(urlString, "UTF-8")
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate=2013-04-24T13:39:56.490&updateBy=SumA&updateDate=2017-03-23T11:11:08.997&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
+                                    Response.Listener { response ->
+                                        activity!!.runOnUiThread(Runnable {
+                                            Log.v("RESPONSE",response.toString())
+//
+                                            var item = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
+                                            for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                                                if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+
+                                                    item.PersonnelTypeID =fac.PersonnelTypeID
+                                            }
+
+                                            item.FirstName=if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
+                                            item.LastName=if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                            item.RSP_UserName=if (edit_rspUserId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                            item.RSP_Email=if (edit_rspEmailId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                            item.CertificationNum=if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
+                                            item.ContractSigner=if (edit_newSignerCheck.isChecked==true) "true" else "false"
+                                            item.PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "true" else "false"
+                                            item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
+                                            item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
+                                            item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
+
+                                            fillPersonnelTableView()
+                                            altTableRow(2)
+                                            edit_personnelLoadingView.visibility = View.GONE
+
+                                            for (i in 0 until mainViewLinearId.childCount) {
+                                                val child = mainViewLinearId.getChildAt(i)
+                                                child.isEnabled = true
+                                            }
+
+                                            for (i in 0 until mainViewLinearId2.childCount) {
+                                                val child = mainViewLinearId2.getChildAt(i)
+                                                child.isEnabled = true
+                                            }
+
+
+                                            var itemOrgAr = FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex]
+                                            var itemAr = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
+
+                                                    if (itemAr.FirstName!=itemOrgAr.FirstName||itemAr.LastName!=itemOrgAr.LastName||
+                                                            itemAr.RSP_UserName!=itemOrgAr.RSP_UserName||
+                                                            itemAr.RSP_Email!=itemOrgAr.RSP_Email||
+                                                            itemAr.CertificationNum!=itemOrgAr.CertificationNum||
+                                                            itemAr.ContractSigner!=itemOrgAr.ContractSigner||
+                                                            itemAr.PrimaryMailRecipient!=itemOrgAr.PrimaryMailRecipient||
+                                                            itemAr.startDate!=itemOrgAr.startDate||
+                                                            itemAr.ExpirationDate!=itemOrgAr.ExpirationDate||
+                                                            itemAr.SeniorityDate!=itemOrgAr.SeniorityDate){
+                                                        MarkChangeWasDone()
+                                                        Toast.makeText(context,"changes submitted",Toast.LENGTH_SHORT).show()
+                                                    }
+
+
+
+
+
+                                        })
+                                    }, Response.ErrorListener {
+                                Log.v("error while loading", "error while loading personnal record")
+                                personnelLoadingView.visibility = View.GONE
+
+                            }))
+
+                        }
+                        else
+                        {
+
+                            Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
+
+                        }
+
+
+                    })
+
+
+                })
+
 
             }
         }
@@ -1827,6 +2350,140 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 stateTextView.setError(null)
                 newCityText.setError(null)
                 newAdd1Text.setError(null)
+
+
+            }
+
+
+
+
+        return persn.personnelIsInputsValid
+    }
+    fun edit_validateInputs() : Boolean{
+
+        var persn = FacilityDataModel.TblPersonnel()
+
+
+        persn.personnelIsInputsValid=true
+
+        if (edit_newFirstNameText.text.toString().isNullOrEmpty()){
+
+            persn.personnelIsInputsValid=false
+            edit_newFirstNameText.setError("required field")
+
+        }
+        else
+            edit_newFirstNameText.setError(null)
+
+
+        if (edit_newLastNameText.text.toString().isNullOrEmpty()){
+
+            persn.personnelIsInputsValid=false
+            edit_newLastNameText.setError("required field")
+
+
+        }
+        else
+            edit_newLastNameText.setError(null)
+
+
+        if (edit_newPersonnelTypeSpinner.selectedItem.toString().contains("Selected")){
+
+            persn.personnelIsInputsValid=false
+            edit_personnelTypeTextViewId.setError("required field")
+
+
+        }
+        else
+            edit_personnelTypeTextViewId.setError(null)
+
+
+
+        if (contractSignatureIsChecked){
+
+                if (edit_newAdd1Text.text.toString().isNullOrEmpty()){
+
+                    persn.personnelIsInputsValid=false
+                    edit_newAdd1Text.setError("required field")
+
+                }
+                else
+                    edit_newAdd1Text.setError(null)
+
+                if (edit_newCityText.text.toString().isNullOrEmpty()){
+
+                    persn.personnelIsInputsValid=false
+                    edit_newCityText.setError("required field")
+
+
+                }
+                else
+                    edit_newCityText.setError(null)
+
+                if (edit_newStateSpinner.selectedItem.toString().contains("select")){
+
+                    persn.personnelIsInputsValid=false
+                    edit_stateTextView.setError("required field")
+
+
+                }
+                else
+                    edit_stateTextView.setError(null)
+
+
+                if (edit_newZipText.text.toString().isNullOrEmpty()||zipFormat==false){
+
+                    persn.personnelIsInputsValid=false
+                    edit_newZipText.setError("required field")
+
+
+                }
+                else
+                    edit_newZipText.setError(null)
+
+
+                if (edit_newPhoneText.text.toString().isNullOrEmpty()){
+
+                    persn.personnelIsInputsValid=false
+                    edit_newPhoneText.setError("required field")
+
+
+                }
+                else
+                    edit_newPhoneText.setError(null)
+
+
+                if (edit_newCoStartDateBtn.text.toString().contains("SELECT")){
+
+                    persn.personnelIsInputsValid=false
+                    edit_newCoStartDateBtn.setError("required field")
+
+
+                }  else
+                    edit_newCoStartDateBtn.setError(null)
+
+
+
+
+                if (edit_newEmailText.text.toString().isNullOrEmpty()||!emailFormatValidation(edit_newEmailText.text.toString())){
+
+                    persn.personnelIsInputsValid=false
+                    edit_newEmailText.setError("required field")
+
+
+                }  else
+                    edit_newEmailText.setError(null)
+
+
+
+            }else {
+            edit_newEmailText.setError(null)
+            edit_newCoStartDateBtn.setError(null)
+            edit_newPhoneText.setError(null)
+            edit_newZipText.setError(null)
+            edit_stateTextView.setError(null)
+            edit_newCityText.setError(null)
+            edit_newAdd1Text.setError(null)
 
 
             }
