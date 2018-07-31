@@ -265,6 +265,22 @@ class FragmentARRAVPersonnel : Fragment() {
                 dpd.show()
 //            }
         }
+        edit_newEndDateBtn.setOnClickListener {
+//            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    edit_newEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+//            }
+        }
         newCoEndDateBtn.setOnClickListener {
 //            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
@@ -1407,7 +1423,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     try {
                         textView8.text  = get(it).startDate.apiToAppFormat()
                     } catch (e: Exception) {
-                        textView8.text  = get(it).startDate.appToApiFormat()
+                        textView8.text  = get(it).startDate
 
                     }
                 } else {
@@ -1479,12 +1495,10 @@ class FragmentARRAVPersonnel : Fragment() {
                             if (edit_newSignerCheck.isChecked ) {
 
                                 edit_enableContractSignerIsChecked()
-                                Toast.makeText(context, "open this maaaan", Toast.LENGTH_SHORT).show()
 
                             } else {
 
                                 edit_disableContractSignerIsChecked()
-                                Toast.makeText(context, "close this thing", Toast.LENGTH_SHORT).show()
 
                             }
 
@@ -1574,13 +1588,6 @@ class FragmentARRAVPersonnel : Fragment() {
 
                                 })
 
-
-
-
-
-
-
-
                             }
 
 
@@ -1593,16 +1600,19 @@ class FragmentARRAVPersonnel : Fragment() {
                             if (edit_newSignerCheck.isChecked ) {
 
                                 edit_enableContractSignerIsChecked()
-                       //         Toast.makeText(context, "suppose to enable", Toast.LENGTH_SHORT).show()
 
                             } else {
 
                                 edit_disableContractSignerIsChecked()
-                             //   Toast.makeText(context, "close this thing", Toast.LENGTH_SHORT).show()
 
                             }
 
                         }
+                    }
+                    if (contractSignerFound>0&&checkBox10.isChecked){
+                        edit_newSignerCheck.isChecked=true
+
+
                     }
 
 
@@ -1626,8 +1636,18 @@ class FragmentARRAVPersonnel : Fragment() {
                     edit_newLastNameText.setText(textView3.text)
                     edit_newCertNoText.setText(textView7.text)
                     edit_newStartDateBtn.setText(textView8.text)
-                    edit_newEndDateBtn.setText(textView9.text)
-                    edit_newSeniorityDateBtn.setText(textView6.text)
+                    if (textView9.text.isNullOrEmpty()){
+                    edit_newEndDateBtn.setText("SELECT DATE")
+                    }else{
+                        edit_newEndDateBtn.setText(textView9.text)
+
+                    }
+                    if (textView6.text.isNullOrEmpty()){
+                        edit_newSeniorityDateBtn.setText("SELECT DATE")
+                    }else{
+                        edit_newSeniorityDateBtn.setText(textView6.text)
+
+                    }
                     edit_newCoStartDateBtn.setText("SELECT DATE")
                     edit_newCoEndDateBtn.setText("SELECT DATE")
                     edit_newPhoneText.setText("")
@@ -1719,7 +1739,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                             item.RSP_Email=if (edit_rspEmailId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
                                             item.CertificationNum=if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
                                             item.ContractSigner=if (edit_newSignerCheck.isChecked==true) "true" else "false"
-                                            item.PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "true" else "false"
+                                            item.PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "true" else ""
                                             item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
                                             item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
                                             item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
@@ -1742,17 +1762,28 @@ class FragmentARRAVPersonnel : Fragment() {
                                             var itemOrgAr = FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex]
                                             var itemAr = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
 
+                                          var expirDateOrg=if (itemOrgAr.ExpirationDate.isNullOrBlank()) "" else itemOrgAr.ExpirationDate.apiToAppFormat()
+                                          var seniorityDateOrg=if (itemOrgAr.SeniorityDate.isNullOrBlank()) "" else itemOrgAr.SeniorityDate.apiToAppFormat()
+                                          var startDateOrg=if (itemOrgAr.startDate.isNullOrBlank()) "" else itemOrgAr.startDate.apiToAppFormat()
                                                     if (itemAr.FirstName!=itemOrgAr.FirstName||itemAr.LastName!=itemOrgAr.LastName||
                                                             itemAr.RSP_UserName!=itemOrgAr.RSP_UserName||
                                                             itemAr.RSP_Email!=itemOrgAr.RSP_Email||
                                                             itemAr.CertificationNum!=itemOrgAr.CertificationNum||
-                                                            itemAr.ContractSigner!=itemOrgAr.ContractSigner||
-                                                            itemAr.PrimaryMailRecipient!=itemOrgAr.PrimaryMailRecipient||
-                                                            itemAr.startDate!=itemOrgAr.startDate||
-                                                            itemAr.ExpirationDate!=itemOrgAr.ExpirationDate||
-                                                            itemAr.SeniorityDate!=itemOrgAr.SeniorityDate){
+                                                            itemAr.ContractSigner!=itemOrgAr.ContractSigner
+                                                           || itemAr.PrimaryMailRecipient!=itemOrgAr.PrimaryMailRecipient
+                                                          ||  itemAr.startDate!=startDateOrg
+                                                          || itemAr.ExpirationDate!=expirDateOrg||
+                                                           itemAr.SeniorityDate!=seniorityDateOrg
+                                                    ){
                                                         MarkChangeWasDone()
-                                                        Toast.makeText(context,"changes submitted",Toast.LENGTH_SHORT).show()
+                                                     //   Toast.makeText(context,"found changes current is ${itemAr.startDate} org is $startDateOrg ",Toast.LENGTH_SHORT).show()
+                                                        Toast.makeText(context,"changes done",Toast.LENGTH_SHORT).show()
+
+                                                    }else{
+                                                       Toast.makeText(context,"no changes found",Toast.LENGTH_SHORT).show()
+                                               //         Toast.makeText(context,"no changes current is ${itemAr.startDate} org is $startDateOrg ",Toast.LENGTH_SHORT).show()
+
+
                                                     }
 
 
