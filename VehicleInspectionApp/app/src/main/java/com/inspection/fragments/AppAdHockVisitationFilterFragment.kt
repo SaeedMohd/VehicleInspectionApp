@@ -133,20 +133,39 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         adHocFacilitySpecialistButton.setOnClickListener(View.OnClickListener {
             var personnelNames = ArrayList<String>()
 
-            if (clubCodeEditText.text.isNotEmpty()){
+            if (clubCodeEditText.text.isNotEmpty() && false) {
+                var specialistIds = StringBuilder()
                 (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
-                    if (CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].clubcode == "4") {
-                        personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
-                    }
-
+                    specialistIds.append("" + CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].id + ", ")
                 }
-            }else{
+
+                var specialistIdsString = specialistIds.trim().removeSuffix(",").toString()
+
+                Log.v("requesting........****", Constants.getSpecialistIdsForClubCode + "specialistIds=" + specialistIdsString + "&clubCode=" + clubCodeEditText.text.toString())
+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistIdsForClubCode + "specialistIds=" + URLEncoder.encode(specialistIdsString, "UTF-8") + "&clubCode=" + clubCodeEditText.text.toString(),
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("responsingg******.....", response)
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading facilities")
+                    Log.v("Loading error", "" + it.message)
+                }))
+
+//                if (CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].clubcode == clubCodeEditText.text.toString()) {
+//
+//                    personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
+//                }
+
+            } else {
                 (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
                     personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
                 }
             }
 
-            Log.v("peronnel Names size......", ""+personnelNames.size)
+            Log.v("peronnel Names size......", "" + personnelNames.size)
             personnelNames.sort()
             personnelNames.add(0, "Any")
             var searchDialog = SearchDialog(context, personnelNames)
@@ -160,7 +179,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         })
 
-        clubCodeEditText.setOnClickListener {
+        clubCodeEditText.setOnClickListener{
             var searchDialog = SearchDialog(context, allClubCodes)
             searchDialog.show()
             searchDialog.setOnDismissListener {
@@ -168,22 +187,22 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         }
 
-        adHocSearchButton.setOnClickListener {
+        adHocSearchButton.setOnClickListener{
             adHocSearchButton.hideKeyboard()
             reloadFacilitiesList()
         }
     }
 
     private fun loadClubCodes() {
-        Log.v("url*******", ""+ Constants.getClubCodes)
+        Log.v("url*******", "" + Constants.getClubCodes)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
-                    var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
-                    allClubCodes.clear()
-                    for (cc in clubCodeModels) {
-                        allClubCodes.add(cc.clubcode)
-                    }
+                        var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
+                        allClubCodes.clear()
+                        for (cc in clubCodeModels) {
+                            allClubCodes.add(cc.clubcode)
+                        }
                         recordsProgressView.visibility = View.GONE
                     }
                     reloadFacilitiesList()

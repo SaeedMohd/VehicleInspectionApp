@@ -180,9 +180,9 @@ class FragmentVisitation : Fragment() {
 
                 MarkChangeWasDone()
 
-                Toast.makeText(context, "Yes changes made", Toast.LENGTH_SHORT).show()
+
             } else {
-                Toast.makeText(context, "No changes found", Toast.LENGTH_SHORT).show()
+
 
             }
         }
@@ -222,9 +222,9 @@ class FragmentVisitation : Fragment() {
                 if (facilityRepresentativesSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName) {
                     MarkChangeWasDone()
 
-                    Toast.makeText(context, "Yes changes made", Toast.LENGTH_SHORT).show()
+
                 } else {
-                    Toast.makeText(context, "No changes found", Toast.LENGTH_SHORT).show()
+
 
                 }
             }
@@ -483,9 +483,9 @@ class FragmentVisitation : Fragment() {
 
                     MarkChangeWasDone()
 
-                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
+
                 }else{
-                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
+
 
                 }
             }
@@ -507,9 +507,6 @@ class FragmentVisitation : Fragment() {
 
                     MarkChangeWasDone()
 
-                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
 
                 }
             }
@@ -530,9 +527,6 @@ class FragmentVisitation : Fragment() {
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
 
                     MarkChangeWasDone()
-                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
 
                 }
             }
@@ -555,9 +549,6 @@ class FragmentVisitation : Fragment() {
 
                     MarkChangeWasDone()
 
-                    Toast.makeText(context,"Yes changes made",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(context,"No changes found",Toast.LENGTH_SHORT).show()
 
                 }
             }
