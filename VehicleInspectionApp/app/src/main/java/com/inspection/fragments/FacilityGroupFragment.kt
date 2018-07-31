@@ -9,6 +9,7 @@ import android.view.ViewGroup
 
 import com.inspection.R
 import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import java.util.*
 

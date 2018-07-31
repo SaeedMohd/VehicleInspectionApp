@@ -25,6 +25,7 @@ import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdatePaymentMethodsData
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import org.w3c.dom.Text
 import java.text.SimpleDateFormat

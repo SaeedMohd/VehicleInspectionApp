@@ -7,10 +7,12 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import com.inspection.fragments.*
+import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 
@@ -28,16 +30,28 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         nav_view.setNavigationItemSelectedListener(this)
 
-
-        var fragment = FragmentVisitation()
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment, fragment)
-                .commit()
-
         drawer_layout.openDrawer(GravityCompat.START)
 
-        toolbar.title = "Visitation"
+        val navigationMenu = nav_view.menu
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == FacilityDataModel.VisitationTypes.AdHoc) {
+            navigationMenu.findItem(R.id.visitation).isEnabled = false
+            navigationMenu.findItem(R.id.visitation).isVisible = false
+
+            this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
+            toolbar.title = "Facility"
+        }else{
+            navigationMenu.findItem(R.id.visitation).isEnabled = true
+            Log.v("visitationtype is******", "Annual")
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment, FragmentVisitation())
+                    .commit()
+            toolbar.title = "Visitation"
+        }
+
+
+
 
     }
 
@@ -64,6 +78,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             else -> return super.onOptionsItemSelected(item)
         }
     }
+
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.

@@ -122,6 +122,10 @@ class FacilityDataModel {
         var TimezoneName = ""
     }
 
+    enum class VisitationTypes {
+        Annual, Quarterly, AdHoc
+    }
+
     class TblVisitationTracking {
         var DatePerformed = ""
         var performedBy = ""
@@ -137,6 +141,7 @@ class FacilityDataModel {
         var facilityRepresentativeDeficienciesSignature: Bitmap? = null
         var emailVisitationPdfToFacility = false
         var email = ""
+        var visitationType : VisitationTypes? = null
         var waiveVisitations = false
         var waiverComments = ""
         var waiverSignature : Bitmap? = null
