@@ -281,38 +281,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 dpd.show()
 //            }
         }
-        newCoEndDateBtn.setOnClickListener {
-//            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newCoEndDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
-        edit_newCoEndDateBtn.setOnClickListener {
-//            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    edit_newCoEndDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
-        }
+
         edit_newCoStartDateBtn.setOnClickListener {
 //            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
@@ -672,7 +641,7 @@ class FragmentARRAVPersonnel : Fragment() {
             edit_emailAddressTextId.isEnabled = true
             edit_contractSignerStartDateTextId.isEnabled = true
             edit_contractSignerEndDateTextId.isEnabled = true
-            edit_newCoEndDateBtn.isEnabled = false
+            edit_newCoEndDateBtn.isEnabled = true
             edit_cityTextId.isEnabled = true
             edit_address2TextId.isEnabled = true
             edit_address1TextId.isEnabled = true
@@ -929,6 +898,7 @@ class FragmentARRAVPersonnel : Fragment() {
         //newCertNoText.addTextChangedListener(certificateIdNoLengthWatcher)
         //2-
         endDateMustBeAfterStartDateLogic()
+        edit_endDateMustBeAfterStartDateLogic()
         //3-
         newZipText.addTextChangedListener(zipOfFiveDigitsWatcher)
         newZipText2.addTextChangedListener(zipOfFourDigitsWatcher)
@@ -1131,6 +1101,60 @@ class FragmentARRAVPersonnel : Fragment() {
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newCertEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+
+            }
+
+        })
+    }
+    fun edit_endDateMustBeAfterStartDateLogic(){
+
+        edit_newCoEndDateBtn.setOnClickListener(View.OnClickListener {
+            if (edit_newCoStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
+
+                edit_newCoEndDateBtn.setError("please enter a start date first")
+
+                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+            }
+            else {
+                edit_newCoEndDateBtn.setError(null)
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    edit_newCoEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+
+            }
+
+        })
+        edit_newEndDateBtn.setOnClickListener(View.OnClickListener {
+            if (edit_newStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
+
+                edit_newEndDateBtn.setError("please enter a start date first")
+                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+
+            }
+            else {
+                edit_newEndDateBtn.setError(null)
+
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    edit_newEndDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 
