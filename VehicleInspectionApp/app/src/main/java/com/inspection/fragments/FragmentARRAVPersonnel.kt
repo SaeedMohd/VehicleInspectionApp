@@ -208,15 +208,14 @@ class FragmentARRAVPersonnel : Fragment() {
             personnelTypeTextViewId.setError(null)
 
 
+            onlyOneContractSignerLogic()
 
-            if (newSignerCheck.isChecked){
-                newSignerCheck.isChecked=false
-
-                contractSignerIsNotCheckedLogic()
-                onlyOneContractSignerLogic()
-
-
-            }
+//            if (newSignerCheck.isChecked){
+//                newSignerCheck.isChecked=false
+//
+//
+//
+//            }
             addNewPersonnelDialogue.visibility=View.VISIBLE
             alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
 
@@ -225,7 +224,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
 
-        contractSignerIsNotCheckedLogic()
+       // contractSignerIsNotCheckedLogic()
 
         newCertStartDateBtn.setOnClickListener {
 //            if (newCertStartDateBtn.text.equals("SELECT DATE")) {
@@ -559,9 +558,34 @@ class FragmentARRAVPersonnel : Fragment() {
 
     var isFirstRun: Boolean = true
 
-    fun contractSignerIsNotCheckedLogic(){
+    fun enable_contractSignerFeilds(){
 
-        if (newSignerCheck.isChecked==false) {
+            newEmailText.isEnabled = true
+            newCoStartDateBtn.isEnabled = true
+            newPhoneText.isEnabled = true
+            newZipText.isEnabled = true
+            newCityText.isEnabled = true
+            newAdd1Text.isEnabled = true
+            newStateSpinner.isEnabled = true
+            newZipText2.isEnabled = true
+            newAdd2Text.isEnabled = true
+            stateTextView.isEnabled = true
+            phoneTextId.isEnabled = true
+            zipCodeTextId.isEnabled = true
+            emailAddressTextId.isEnabled = true
+            contractSignerStartDateTextId.isEnabled = true
+            contractSignerEndDateTextId.isEnabled = true
+            newCoEndDateBtn.isEnabled = true
+            cityTextId.isEnabled = true
+            address2TextId.isEnabled = true
+            address1TextId.isEnabled = true
+            newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.blue));
+            newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.blue));
+            contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.white));
+
+    }
+    fun disablecontractSignerFeilds(){
+
             newEmailText.isEnabled = false
             newCoStartDateBtn.isEnabled = false
             newPhoneText.isEnabled = false
@@ -584,12 +608,6 @@ class FragmentARRAVPersonnel : Fragment() {
             newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
             newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
             contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.contractSignerFieldsAreDisabledColor));
-
-
-
-
-
-        }
 
     }
     fun edit_disableContractSignerIsChecked(){
@@ -2110,10 +2128,18 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                 if (get(it).ContractSigner.equals("true")){
 
+
+
                     newSignerCheck.isEnabled=false
                     theContractSigner=true
+                    disablecontractSignerFeilds()
 
-                }
+
+                }else
+
+                    newSignerCheck.isEnabled=true
+                theContractSigner=false
+                conractSignerCheckedCondition()
 
             }
         }
@@ -2124,6 +2150,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
+
 
                 if (get(it).PrimaryMailRecipient.equals("true")){
 
