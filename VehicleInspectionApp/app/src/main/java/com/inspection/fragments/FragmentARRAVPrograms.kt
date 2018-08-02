@@ -197,16 +197,17 @@ class FragmentARRAVPrograms : Fragment() {
                                 try {
                                     newEffDate = dateFormat.parse(effective_date_textviewVal!!.text.toString())
                                     newExpDate = dateFormat.parse(expiration_date_textviewVal!!.text.toString())
-                                    DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormat())
-                                    DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormat())
+                                    DB_EffDate = dateFormat.parse(item1.effDate)
+                                    DB_ExpDate = dateFormat.parse(item1.expDate)
                                 } catch (e: ParseException) {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace()
                                 }
+
                                 if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
 
 
-                                    if ((newEffDate <= DB_ExpDate) && (newExpDate >= DB_EffDate)) {
+                                    if ((DB_ExpDate <= newEffDate) && (newExpDate >= DB_EffDate) ) {
 
                                         validProgram = true
                                         valid_validProgram=true
@@ -268,7 +269,7 @@ class FragmentARRAVPrograms : Fragment() {
                                                     itemAr.effDate != itemOrgAr.effDate ||
                                                     itemAr.ProgramTypeID != itemOrgAr.ProgramTypeID) {
                                                 MarkChangeWasDone()
-                                                Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                                      //          Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
                                             }
 
                                         }
@@ -420,12 +421,16 @@ class FragmentARRAVPrograms : Fragment() {
                 val textView2 = TextView(context)
                 textView2.layoutParams = rowLayoutParam1
                 textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                try {
-                    textView2.text = get(it).effDate.apiToAppFormat()
-                } catch (e: Exception) {
+                if (get(it).effDate.isNullOrBlank()){
+                    textView2.text =""
+                }else {
+                    try {
+                        textView2.text = get(it).effDate.apiToAppFormat()
+                    } catch (e: Exception) {
 
-                    textView2.text = get(it).effDate
+                        textView2.text = get(it).effDate.appToApiFormat()
 
+                    }
                 }
                 tableRow.addView(textView2)
 
@@ -433,11 +438,16 @@ class FragmentARRAVPrograms : Fragment() {
                 textView3.layoutParams = rowLayoutParam2
                 textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                try {
-                    textView3.text = get(it).expDate.apiToAppFormat()
-                } catch (e: Exception) {
-                    textView3.text = get(it).expDate
+                if (get(it).expDate.isNullOrBlank()){
+                    textView3.text =""
+                }else {
 
+                    try {
+                        textView3.text = get(it).expDate.apiToAppFormat()
+                    } catch (e: Exception) {
+                        textView3.text = get(it).expDate.appToApiFormat()
+
+                    }
                 }
                 tableRow.addView(textView3)
 
