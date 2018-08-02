@@ -373,6 +373,7 @@ class FragmentARRAVPrograms : Fragment() {
             for (i in aarPortalTrackingTableLayout.childCount - 1 downTo 1) {
                 aarPortalTrackingTableLayout.removeViewAt(i)
             }
+
         }
 
 
@@ -437,7 +438,6 @@ class FragmentARRAVPrograms : Fragment() {
                 } catch (e: Exception) {
                     textView3.text = get(it).expDate
 
-
                 }
                 tableRow.addView(textView3)
 
@@ -459,8 +459,8 @@ class FragmentARRAVPrograms : Fragment() {
                     var currentfacilityDataModelIndex=currentTableRowIndex-1
                     disableAllAddButnsAndDialog()
                     edit_comments_editTextVal.setText(textView4.text)
-                    edit_effective_date_textviewVal.setText(textView2.text)
-                    edit_expiration_date_textviewVal.setText(textView3.text)
+                    edit_effective_date_textviewVal.setText( if (textView2.text.equals("")) "SELECT DATE" else textView2.text.toString())
+                    edit_expiration_date_textviewVal.setText( if (textView3.text.equals("")) "SELECT DATE" else textView3.text.toString())
                     var i = programTypesArray.indexOf(textView1.text)
                     edit_program_name_textviewVal.setSelection(i)
 
@@ -486,7 +486,7 @@ class FragmentARRAVPrograms : Fragment() {
                                     for (item1 in FacilityDataModel.getInstance().tblPrograms)
                                         if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
 
-//
+
                                             val dateFormat = SimpleDateFormat("dd MMM yyyy")
                                             var newEffDate = Date()
                                             var newExpDate = Date()
@@ -524,9 +524,9 @@ class FragmentARRAVPrograms : Fragment() {
                                 }
 
 
+                                if (validProgram||valid_validProgram) {
                             }
 
-                            if (validProgram||valid_validProgram) {
 
                                 edit_programsLoadingView.visibility = View.VISIBLE
 
@@ -536,12 +536,8 @@ class FragmentARRAVPrograms : Fragment() {
 
                                 currentRowDataModel.Comments = edit_comments_editTextVal.text.toString()
 
-
-                                    currentRowDataModel.expDate = edit_expiration_date_textviewVal.text.toString()
-
-
-
-                                        currentRowDataModel.effDate = edit_effective_date_textviewVal.text.toString()
+                                currentRowDataModel.effDate = if (edit_effective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_effective_date_textviewVal.text.toString()
+                                currentRowDataModel.expDate = if (edit_expiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_expiration_date_textviewVal.text.toString()
 
 
                                 var effdateForSubmit=edit_effective_date_textviewVal.text.toString()
@@ -574,7 +570,7 @@ class FragmentARRAVPrograms : Fragment() {
                                                     if (currentRowDataModel.Comments != originalDataModel.Comments ||
                                                             currentRowDataModel.effDate != originalDataModel.effDate.apiToAppFormat() || currentRowDataModel.ProgramTypeID != originalDataModel.ProgramTypeID) {
                                                         MarkChangeWasDone()
-                                                        Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
+                                               //         Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
 
                                                     } else {
                                                         Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
@@ -584,7 +580,7 @@ class FragmentARRAVPrograms : Fragment() {
                                                     if (currentRowDataModel.Comments != originalDataModel.Comments ||
                                                             currentRowDataModel.effDate != originalDataModel.effDate.apiToAppFormat() ||currentRowDataModel.expDate != originalDataModel.expDate.apiToAppFormat() || currentRowDataModel.ProgramTypeID != originalDataModel.ProgramTypeID) {
                                                         MarkChangeWasDone()
-                                                        Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
+                                       //                 Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
 
                                                     } else {
                                                         Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
@@ -619,29 +615,29 @@ class FragmentARRAVPrograms : Fragment() {
 
                 var childViewCount = aarPortalTrackingTableLayout.getChildCount();
 
-                for (i in 1..childViewCount - 1) {
-                    var noOfEmpty = 0
-
-
-                    var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
-
-                    for (j in 0..row.getChildCount() - 1) {
-
-                        var tv: TextView = row.getChildAt(j) as TextView
-
-                        if (tv.text.toString().isNullOrEmpty()) {
-
-                            noOfEmpty++
-
-                        }
-                        if (noOfEmpty == row.getChildCount() - 1) {
-
-                            aarPortalTrackingTableLayout.removeViewAt(i)
-
-                        }
-                    }
-
-                }
+//                for (i in 1..childViewCount - 1) {
+//                    var noOfEmpty = 0
+//
+//
+//                    var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+//
+//                    for (j in 0..row.getChildCount() - 1) {
+//
+//                        var tv: TextView = row.getChildAt(j) as TextView
+//
+//                        if (tv.text.toString().isNullOrEmpty()) {
+//
+//                            noOfEmpty++
+//
+//                        }
+//                        if (noOfEmpty == row.getChildCount() - 1) {
+//
+//                            aarPortalTrackingTableLayout.removeViewAt(i)
+//
+//                        }
+//                    }
+//
+//                }
 
                 if (textView1.text.toString().isNullOrBlank() && textView2.text.toString().isNullOrBlank() && textView3.text.toString().isNullOrBlank() && textView4.text.toString().isNullOrBlank()) {
 
@@ -651,6 +647,7 @@ class FragmentARRAVPrograms : Fragment() {
             }
 
         }
+        altTableRow(2)
     }
 
     fun altTableRow(alt_row: Int) {
@@ -906,7 +903,12 @@ class FragmentARRAVPrograms : Fragment() {
         programValide = true
 
         edit_comments_editTextVal.setError(null)
+        edit_effective_date_textviewVal.setError(null)
 
+        if (edit_effective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            programValide = false
+            edit_effective_date_textviewVal.setError("Required Field")
+        }
 
 
         if (edit_comments_editTextVal.text.toString().isNullOrEmpty()) {

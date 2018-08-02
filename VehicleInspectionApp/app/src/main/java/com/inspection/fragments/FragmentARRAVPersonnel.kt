@@ -28,6 +28,8 @@ import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
+import kotlinx.android.synthetic.main.activity_item_detail.*
+import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
 
 import java.text.SimpleDateFormat
@@ -49,7 +51,6 @@ class FragmentARRAVPersonnel : Fragment() {
        var contractSignatureIsChecked=false
     private var mParam1: String? = null
     var countIfContractSignedBefore=0
-    var theContractSigner=false
     private var mParam2: String? = null
     private var personnelTypeList = ArrayList<TypeTablesModel.personnelType>()
     private var certificationTypeList= ArrayList<TypeTablesModel.personnelCertificationType>()
@@ -545,9 +546,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
         })
 
-        onlyOneContractSignerLogic()
         onlyOneMailRecepientLogic()
-        conractSignerCheckedCondition()
         altTableRow(2)
         altCertTableRow(2)
 
@@ -1443,10 +1442,16 @@ class FragmentARRAVPersonnel : Fragment() {
                 TableRow.LayoutParams()
                 textView6.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 if (!(get(it).SeniorityDate.isNullOrEmpty())) {
-                    textView6.text = get(it).SeniorityDate.apiToAppFormat()
+                    try {
+                        textView6.text  = get(it).SeniorityDate.apiToAppFormat()
+                    } catch (e: Exception) {
+                        textView6.text  = get(it).SeniorityDate
+
+                    }
                 } else {
-                    textView6.text = ""
+                    textView6.text  = ""
                 }
+
 
                 tableRow.addView(textView6)
 
@@ -2122,27 +2127,69 @@ val rowLayoutParam9 = TableRow.LayoutParams()
     }
 
     fun onlyOneContractSignerLogic(){
+        var alreadyContractSignerFound=false
+
 
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
+
+
 
                 if (get(it).ContractSigner.equals("true")){
 
 
 
                     newSignerCheck.isEnabled=false
-                    theContractSigner=true
+                    alreadyContractSignerFound=true
                     disablecontractSignerFeilds()
 
 
-                }else
 
-                    newSignerCheck.isEnabled=true
-                theContractSigner=false
-                conractSignerCheckedCondition()
+
+                    }
+
 
             }
+            if (!alreadyContractSignerFound){
+                newSignerCheck.isEnabled=true
+
+
+            }
+            newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+
+                if (newSignerCheck.isChecked) {
+
+                    if (alreadyContractSignerFound) {
+
+                        newSignerCheck.isChecked=false
+                        disablecontractSignerFeilds()
+                        Toast.makeText(context,"there's already a contract signer for this contract",Toast.LENGTH_SHORT).show()
+
+
+                    }else
+                    {
+
+                        Toast.makeText(context,"no contract signer for the contract",Toast.LENGTH_SHORT).show()
+
+                        newSignerCheck.isChecked=true
+                        enable_contractSignerFeilds()
+
+
+                    }
+                }
+                if (!newSignerCheck.isChecked){
+
+                    newSignerCheck.isChecked=false
+                    disablecontractSignerFeilds()
+
+
+                }
+
+
+            }
+
         }
+
 
 
     }
@@ -2195,79 +2242,79 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         }
     }
 
-    fun conractSignerCheckedCondition(){
-
-        newSignerCheck.setOnClickListener(View.OnClickListener {
-
-            if (newSignerCheck.isChecked==true){
-
-
-                contractSignatureIsChecked=true
-
-                newEmailText.isEnabled=true
-                newCoStartDateBtn.isEnabled=true
-                newPhoneText.isEnabled=true
-                newZipText.isEnabled=true
-                newCityText.isEnabled=true
-                newAdd1Text.isEnabled=true
-                newStateSpinner.isEnabled=true
-                newZipText2.isEnabled=true
-                newAdd2Text.isEnabled=true
-                stateTextView.isEnabled = true
-                phoneTextId.isEnabled = true
-                zipCodeTextId.isEnabled = true
-                emailAddressTextId.isEnabled = true
-                contractSignerStartDateTextId.isEnabled = true
-                contractSignerEndDateTextId.isEnabled = true
-                newCoEndDateBtn.isEnabled = true
-                cityTextId.isEnabled = true
-                address2TextId.isEnabled = true
-                address1TextId.isEnabled = true
-                newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.blue));
-                newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.blue));
-                contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.table_row_color));
-
-
-
-
-            }
-            if (newSignerCheck.isChecked==false) {
-                contractSignatureIsChecked = false
-
-
-                newEmailText.isEnabled = false
-                newCoStartDateBtn.isEnabled = false
-                newPhoneText.isEnabled = false
-                newZipText.isEnabled = false
-                newCityText.isEnabled = false
-                newAdd1Text.isEnabled = false
-                newStateSpinner.isEnabled = false
-                newZipText2.isEnabled = false
-                newAdd2Text.isEnabled = false
-                stateTextView.isEnabled = false
-                phoneTextId.isEnabled = false
-                zipCodeTextId.isEnabled = false
-                emailAddressTextId.isEnabled = false
-                contractSignerStartDateTextId.isEnabled = false
-                contractSignerEndDateTextId.isEnabled = false
-                newCoEndDateBtn.isEnabled = false
-                cityTextId.isEnabled = false
-                address2TextId.isEnabled = false
-                address1TextId.isEnabled = false
-                newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
-                newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
-                contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.contractSignerFieldsAreDisabledColor));
-
-
-
-            }
-
-
-
-        })
-
-
-        }
+//    fun conractSignerCheckedCondition(){
+//
+//        newSignerCheck.setOnClickListener(View.OnClickListener {
+//
+//            if (newSignerCheck.isChecked==true){
+//
+//
+//                contractSignatureIsChecked=true
+//
+//                newEmailText.isEnabled=true
+//                newCoStartDateBtn.isEnabled=true
+//                newPhoneText.isEnabled=true
+//                newZipText.isEnabled=true
+//                newCityText.isEnabled=true
+//                newAdd1Text.isEnabled=true
+//                newStateSpinner.isEnabled=true
+//                newZipText2.isEnabled=true
+//                newAdd2Text.isEnabled=true
+//                stateTextView.isEnabled = true
+//                phoneTextId.isEnabled = true
+//                zipCodeTextId.isEnabled = true
+//                emailAddressTextId.isEnabled = true
+//                contractSignerStartDateTextId.isEnabled = true
+//                contractSignerEndDateTextId.isEnabled = true
+//                newCoEndDateBtn.isEnabled = true
+//                cityTextId.isEnabled = true
+//                address2TextId.isEnabled = true
+//                address1TextId.isEnabled = true
+//                newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.blue));
+//                newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.blue));
+//                contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.table_row_color));
+//
+//
+//
+//
+//            }
+//            if (newSignerCheck.isChecked==false) {
+//                contractSignatureIsChecked = false
+//
+//
+//                newEmailText.isEnabled = false
+//                newCoStartDateBtn.isEnabled = false
+//                newPhoneText.isEnabled = false
+//                newZipText.isEnabled = false
+//                newCityText.isEnabled = false
+//                newAdd1Text.isEnabled = false
+//                newStateSpinner.isEnabled = false
+//                newZipText2.isEnabled = false
+//                newAdd2Text.isEnabled = false
+//                stateTextView.isEnabled = false
+//                phoneTextId.isEnabled = false
+//                zipCodeTextId.isEnabled = false
+//                emailAddressTextId.isEnabled = false
+//                contractSignerStartDateTextId.isEnabled = false
+//                contractSignerEndDateTextId.isEnabled = false
+//                newCoEndDateBtn.isEnabled = false
+//                cityTextId.isEnabled = false
+//                address2TextId.isEnabled = false
+//                address1TextId.isEnabled = false
+//                newCoStartDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
+//                newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
+//                contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.contractSignerFieldsAreDisabledColor));
+//
+//
+//
+//            }
+//
+//
+//
+//        })
+//
+//
+//        }
 
     fun validateCertificationInputs() : Boolean{
 

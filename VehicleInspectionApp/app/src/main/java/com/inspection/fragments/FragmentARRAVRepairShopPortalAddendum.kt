@@ -39,8 +39,6 @@ import com.inspection.model.FacilityDataModelOrg
 class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
-    var rowIndex = 0
-    var indexToRemove=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -568,7 +566,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     }
 
 
-                    rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
 
 
 
@@ -610,6 +607,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                 })
                 edit_submitNewAAR_PortalTracking.setOnClickListener {
+                    var rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
+
 
                     if (validateInputsForUpdate()) {
                         RSP_LoadingView.visibility = View.VISIBLE
@@ -627,7 +626,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
 
-                        indexToRemove=rowIndex
 
 
 
@@ -636,26 +634,29 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE",response.toString())
+                                        Log.v("RowIndex",rowIndex.toString())
 
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate = edit_startDateButton.text.toString()
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate = "" + date
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal = "" + isLoggedInRsp
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].startDate = edit_startDateButton.text.toString()
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].PortalInspectionDate = "" + date
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].LoggedIntoPortal = "" + isLoggedInRsp
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
+
+
 
 
                                     if (
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate !=FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].startDate ||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].PortalInspectionDate||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].LoggedIntoPortal||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressTows||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressWalkIns != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].InProgressWalkIns||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].NumberUnacknowledgedTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].NumberUnacknowledgedTows||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].CardReaders||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[indexToRemove-1].AddendumSigned
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].startDate !=FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].startDate ||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].PortalInspectionDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].PortalInspectionDate||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].LoggedIntoPortal != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].LoggedIntoPortal||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressTows||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressWalkIns != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressWalkIns||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].NumberUnacknowledgedTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].NumberUnacknowledgedTows||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].CardReaders||
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].AddendumSigned
 
                                     ) {
 
