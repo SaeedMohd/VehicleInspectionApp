@@ -159,22 +159,27 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                                 var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityServices
                                 var itemArray = FacilityDataModel.getInstance().tblFacilityServices
-                                for (itemAr in itemArray){
-                                    for (itemOrgAr in itemOrgArray){
+                                if (itemOrgArray.size!=itemArray.size){
 
-                                        if (itemAr.Comments!=itemOrgAr.Comments||itemAr.effDate!=itemOrgAr.effDate||
-                                                itemAr.expDate!=itemOrgAr.expDate||
-                                                itemAr.ServiceID!=itemOrgAr.ServiceID){
-                                            MarkChangeWasDone()
-                                            Toast.makeText(context,"changes found",Toast.LENGTH_SHORT).show()
-                                        }else{
-                                            Toast.makeText(context,"no changes was found",Toast.LENGTH_SHORT).show()
+                                    MarkChangeWasDone()
+                                }else {
+
+                                    for (itemAr in itemArray) {
+                                        for (itemOrgAr in itemOrgArray) {
+
+                                            if (itemAr.Comments != itemOrgAr.Comments || itemAr.effDate != itemOrgAr.effDate ||
+                                                    itemAr.expDate != itemOrgAr.expDate ||
+                                                    itemAr.ServiceID != itemOrgAr.ServiceID) {
+                                                MarkChangeWasDone()
+                                                Toast.makeText(context, "changes found", Toast.LENGTH_SHORT).show()
+                                            } else {
+                                                Toast.makeText(context, "no changes was found", Toast.LENGTH_SHORT).show()
+
+                                            }
 
                                         }
-
                                     }
                                 }
-
 
                             })
                         }, Response.ErrorListener {

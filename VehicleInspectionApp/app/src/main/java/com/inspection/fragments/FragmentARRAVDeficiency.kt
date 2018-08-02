@@ -268,21 +268,27 @@ class FragmentARRAVDeficiency : Fragment() {
                                 addTheLatestRowOfPortalAdmin()
 
 
+
                                 var itemOrgArray = FacilityDataModelOrg.getInstance().tblDeficiency
                                 var itemArray = FacilityDataModel.getInstance().tblDeficiency
-                                for (itemAr in itemArray){
-                                    for (itemOrgAr in itemOrgArray){
+                                if (itemOrgArray.size!=itemArray.size){
 
-                                        if (itemAr.Comments!=itemOrgAr.Comments||itemAr.VisitationDate!=itemOrgAr.VisitationDate||
-                                                itemAr.EnteredDate!=itemOrgAr.EnteredDate||
-                                                itemAr.ClearedDate!=itemOrgAr.ClearedDate){
-                                            MarkChangeWasDone()
-                                            Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
+                                    MarkChangeWasDone()
+                                }else {
+
+                                    for (itemAr in itemArray) {
+                                        for (itemOrgAr in itemOrgArray) {
+
+                                            if (itemAr.Comments != itemOrgAr.Comments || itemAr.VisitationDate != itemOrgAr.VisitationDate ||
+                                                    itemAr.EnteredDate != itemOrgAr.EnteredDate ||
+                                                    itemAr.ClearedDate != itemOrgAr.ClearedDate) {
+                                                MarkChangeWasDone()
+                                                Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                                            }
+
                                         }
-
                                     }
                                 }
-
 
 
                             })

@@ -270,23 +270,28 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                                 var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
                                 var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
-                                for (itemAr in itemArray){
-                                    for (itemOrgAr in itemOrgArray){
+                                if (itemOrgArray.size!=itemArray.size){
 
-                                        if (itemAr.startDate!=itemOrgAr.startDate||itemAr.PortalInspectionDate!=itemOrgAr.PortalInspectionDate||
-                                                itemAr.LoggedIntoPortal!=itemOrgAr.LoggedIntoPortal||
-                                                itemAr.InProgressTows!=itemOrgAr.InProgressTows||
-                                                itemAr.InProgressWalkIns!=itemOrgAr.InProgressWalkIns||
-                                                itemAr.NumberUnacknowledgedTows!=itemOrgAr.NumberUnacknowledgedTows||
-                                                itemAr.CardReaders!=itemOrgAr.CardReaders||
-                                                itemAr.AddendumSigned!=itemOrgAr.AddendumSigned){
-                                            MarkChangeWasDone()
-                                            Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
+                                    MarkChangeWasDone()
+                                }else {
+
+                                    for (itemAr in itemArray) {
+                                        for (itemOrgAr in itemOrgArray) {
+
+                                            if (itemAr.startDate != itemOrgAr.startDate || itemAr.PortalInspectionDate != itemOrgAr.PortalInspectionDate ||
+                                                    itemAr.LoggedIntoPortal != itemOrgAr.LoggedIntoPortal ||
+                                                    itemAr.InProgressTows != itemOrgAr.InProgressTows ||
+                                                    itemAr.InProgressWalkIns != itemOrgAr.InProgressWalkIns ||
+                                                    itemAr.NumberUnacknowledgedTows != itemOrgAr.NumberUnacknowledgedTows ||
+                                                    itemAr.CardReaders != itemOrgAr.CardReaders ||
+                                                    itemAr.AddendumSigned != itemOrgAr.AddendumSigned) {
+                                                MarkChangeWasDone()
+                                                Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                                            }
+
                                         }
-
                                     }
                                 }
-
 
                             })
                         }, Response.ErrorListener {
@@ -646,31 +651,37 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
 
 
+                                        var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
+                                        var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
+                                        if (itemOrgArray.size!=itemArray.size){
+
+                                            MarkChangeWasDone()
+                                        }else {
 
 
-                                    if (
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].startDate !=FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].startDate ||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].PortalInspectionDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].PortalInspectionDate||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].LoggedIntoPortal != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].LoggedIntoPortal||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressTows||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressWalkIns != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressWalkIns||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].NumberUnacknowledgedTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].NumberUnacknowledgedTows||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].CardReaders||
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex-1].AddendumSigned
+                                            if (
+                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].startDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].startDate ||
+                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].PortalInspectionDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].PortalInspectionDate ||
+                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].LoggedIntoPortal != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].LoggedIntoPortal ||
+                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressTows ||
+                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressWalkIns != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressWalkIns ||
+                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows ||
+                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders ||
+                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned
 
-                                    ) {
+                                            ) {
 
-                                        MarkChangeWasDone()
-                                    }
+                                                MarkChangeWasDone()
+                                            }
+
+                                        }
 
 
-
-
-                                        RSP_LoadingView.visibility = View.GONE
-                                        alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                        edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
-                                        fillPortalTrackingTableView()
-                                        altLocationTableRow(2)
+                                            RSP_LoadingView.visibility = View.GONE
+                                            alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                            edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                            fillPortalTrackingTableView()
+                                            altLocationTableRow(2)
 
 
 

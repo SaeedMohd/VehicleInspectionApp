@@ -505,25 +505,31 @@ class FragmentARRAVPersonnel : Fragment() {
                                 child.isEnabled = true
                             }
 
-
                             var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
                             var itemArray = FacilityDataModel.getInstance().tblPersonnel
-                            for (itemAr in itemArray){
-                                for (itemOrgAr in itemOrgArray){
 
-                                    if (itemAr.FirstName!=itemOrgAr.FirstName||itemAr.LastName!=itemOrgAr.LastName||
-                                            itemAr.RSP_UserName!=itemOrgAr.RSP_UserName||
-                                            itemAr.RSP_Email!=itemOrgAr.RSP_Email||
-                                            itemAr.CertificationNum!=itemOrgAr.CertificationNum||
-                                            itemAr.ContractSigner!=itemOrgAr.ContractSigner||
-                                            itemAr.PrimaryMailRecipient!=itemOrgAr.PrimaryMailRecipient||
-                                            itemAr.startDate!=itemOrgAr.startDate||
-                                            itemAr.ExpirationDate!=itemOrgAr.ExpirationDate||
-                                            itemAr.SeniorityDate!=itemOrgAr.SeniorityDate){
-                                        MarkChangeWasDone()
-                                        Toast.makeText(context,"changes submitted",Toast.LENGTH_SHORT).show()
+                            if (itemOrgArray.size!=itemArray.size){
+
+                                MarkChangeWasDone()
+                            }else {
+
+                                for (itemAr in itemArray) {
+                                    for (itemOrgAr in itemOrgArray) {
+
+                                        if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
+                                                itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
+                                                itemAr.RSP_Email != itemOrgAr.RSP_Email ||
+                                                itemAr.CertificationNum != itemOrgAr.CertificationNum ||
+                                                itemAr.ContractSigner != itemOrgAr.ContractSigner ||
+                                                itemAr.PrimaryMailRecipient != itemOrgAr.PrimaryMailRecipient ||
+                                                itemAr.startDate != itemOrgAr.startDate ||
+                                                itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
+                                                itemAr.SeniorityDate != itemOrgAr.SeniorityDate) {
+                                            MarkChangeWasDone()
+                                            Toast.makeText(context, "changes submitted", Toast.LENGTH_SHORT).show()
+                                        }
+
                                     }
-
                                 }
                             }
 
@@ -1771,22 +1777,22 @@ class FragmentARRAVPersonnel : Fragment() {
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate=2013-04-24T13:39:56.490&updateBy=SumA&updateDate=2017-03-23T11:11:08.997&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread(Runnable {
-                                            Log.v("RESPONSE",response.toString())
+                                            Log.v("RESPONSE", response.toString())
 //
                                             var item = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
                                             for (fac in TypeTablesModel.getInstance().PersonnelType) {
                                                 if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
 
-                                                    item.PersonnelTypeID =fac.PersonnelTypeID
+                                                    item.PersonnelTypeID = fac.PersonnelTypeID
                                             }
 
-                                            item.FirstName=if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
-                                            item.LastName=if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
-                                            item.RSP_UserName=if (edit_rspUserId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
-                                            item.RSP_Email=if (edit_rspEmailId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
-                                            item.CertificationNum=if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
-                                            item.ContractSigner=if (edit_newSignerCheck.isChecked==true) "true" else "false"
-                                            item.PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "true" else ""
+                                            item.FirstName = if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
+                                            item.LastName = if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                            item.RSP_UserName = if (edit_rspUserId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                            item.RSP_Email = if (edit_rspEmailId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                            item.CertificationNum = if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
+                                            item.ContractSigner = if (edit_newSignerCheck.isChecked == true) "true" else "false"
+                                            item.PrimaryMailRecipient = if (edit_newACSCheck.isChecked == true) "true" else ""
                                             item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
                                             item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
                                             item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
@@ -1806,36 +1812,43 @@ class FragmentARRAVPersonnel : Fragment() {
                                             }
 
 
+                                            var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
+                                            var itemArray = FacilityDataModel.getInstance().tblPersonnel
+                                            if (itemOrgArray.size != itemArray.size) {
+
+                                                MarkChangeWasDone()
+                                            } else
+
+                                            {
                                             var itemOrgAr = FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex]
                                             var itemAr = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
 
-                                          var expirDateOrg=if (itemOrgAr.ExpirationDate.isNullOrBlank()) "" else itemOrgAr.ExpirationDate.apiToAppFormat()
-                                          var seniorityDateOrg=if (itemOrgAr.SeniorityDate.isNullOrBlank()) "" else itemOrgAr.SeniorityDate.apiToAppFormat()
-                                          var startDateOrg=if (itemOrgAr.startDate.isNullOrBlank()) "" else itemOrgAr.startDate.apiToAppFormat()
-                                                    if (itemAr.FirstName!=itemOrgAr.FirstName||itemAr.LastName!=itemOrgAr.LastName||
-                                                            itemAr.RSP_UserName!=itemOrgAr.RSP_UserName||
-                                                            itemAr.RSP_Email!=itemOrgAr.RSP_Email||
-                                                            itemAr.CertificationNum!=itemOrgAr.CertificationNum||
-                                                            itemAr.ContractSigner!=itemOrgAr.ContractSigner
-                                                           || itemAr.PrimaryMailRecipient!=itemOrgAr.PrimaryMailRecipient
-                                                          ||  itemAr.startDate!=startDateOrg
-                                                          || itemAr.ExpirationDate!=expirDateOrg||
-                                                           itemAr.SeniorityDate!=seniorityDateOrg
-                                                    ){
-                                                        MarkChangeWasDone()
-                                                     //   Toast.makeText(context,"found changes current is ${itemAr.startDate} org is $startDateOrg ",Toast.LENGTH_SHORT).show()
-                                                        Toast.makeText(context,"changes done",Toast.LENGTH_SHORT).show()
+                                            var expirDateOrg = if (itemOrgAr.ExpirationDate.isNullOrBlank()) "" else itemOrgAr.ExpirationDate.apiToAppFormat()
+                                            var seniorityDateOrg = if (itemOrgAr.SeniorityDate.isNullOrBlank()) "" else itemOrgAr.SeniorityDate.apiToAppFormat()
+                                            var startDateOrg = if (itemOrgAr.startDate.isNullOrBlank()) "" else itemOrgAr.startDate.apiToAppFormat()
+                                            if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
+                                                    itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
+                                                    itemAr.RSP_Email != itemOrgAr.RSP_Email ||
+                                                    itemAr.CertificationNum != itemOrgAr.CertificationNum ||
+                                                    itemAr.ContractSigner != itemOrgAr.ContractSigner
+                                                    || itemAr.PrimaryMailRecipient != itemOrgAr.PrimaryMailRecipient
+                                                    || itemAr.startDate != startDateOrg
+                                                    || itemAr.ExpirationDate != expirDateOrg ||
+                                                    itemAr.SeniorityDate != seniorityDateOrg
+                                            ) {
+                                                MarkChangeWasDone()
+                                                //   Toast.makeText(context,"found changes current is ${itemAr.startDate} org is $startDateOrg ",Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
 
-                                                    }else{
-                                                       Toast.makeText(context,"no changes found",Toast.LENGTH_SHORT).show()
-                                               //         Toast.makeText(context,"no changes current is ${itemAr.startDate} org is $startDateOrg ",Toast.LENGTH_SHORT).show()
-
-
-                                                    }
+                                            } else {
+                                                Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
+                                                //         Toast.makeText(context,"no changes current is ${itemAr.startDate} org is $startDateOrg ",Toast.LENGTH_SHORT).show()
 
 
+                                            }
 
 
+                                        }
 
                                         })
                                     }, Response.ErrorListener {
@@ -2193,6 +2206,8 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
     }
+
+
     fun onlyOneMailRecepientLogic(){
 
         FacilityDataModel.getInstance().tblPersonnel.apply {

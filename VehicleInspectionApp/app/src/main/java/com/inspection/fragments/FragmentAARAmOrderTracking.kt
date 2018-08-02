@@ -212,22 +212,27 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
                             var itemOrgArray = FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking
                             var itemArray = FacilityDataModel.getInstance().tblAmendmentOrderTracking
-                            for (itemAr in itemArray){
-                                for (itemOrgAr in itemOrgArray){
+                            if (itemOrgArray.size!=itemArray.size){
 
-                                    if (itemAr.AOID!=itemOrgAr.AOID||itemAr.EventTypeID!=itemOrgAr.EventTypeID
-                                            ||itemAr.EventID!=itemOrgAr.EventID||itemAr.ReasonID!=itemOrgAr.ReasonID){
-                                        MarkChangeWasDone()
-                                        Toast.makeText(context,"data submitted", Toast.LENGTH_SHORT).show()
-                                    }else {
+                                MarkChangeWasDone()
+                            }else {
 
-                                        Toast.makeText(context,"no changes found", Toast.LENGTH_SHORT).show()
+                                for (itemAr in itemArray) {
+                                    for (itemOrgAr in itemOrgArray) {
+
+                                        if (itemAr.AOID != itemOrgAr.AOID || itemAr.EventTypeID != itemOrgAr.EventTypeID
+                                                || itemAr.EventID != itemOrgAr.EventID || itemAr.ReasonID != itemOrgAr.ReasonID) {
+                                            MarkChangeWasDone()
+                                            Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                                        } else {
+
+                                            Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
+
+                                        }
 
                                     }
-
                                 }
                             }
-
 
 
                         })
