@@ -457,6 +457,7 @@ class FragmentARRAVPrograms : Fragment() {
 
                     var currentTableRowIndex=aarPortalTrackingTableLayout.indexOfChild(tableRow)
                     var currentfacilityDataModelIndex=currentTableRowIndex-1
+
                     disableAllAddButnsAndDialog()
                     edit_comments_editTextVal.setText(textView4.text)
                     edit_effective_date_textviewVal.setText( if (textView2.text.equals("")) "SELECT DATE" else textView2.text.toString())
@@ -561,35 +562,46 @@ class FragmentARRAVPrograms : Fragment() {
                                                 edit_programsLoadingView.visibility = View.GONE
                                                 alphaBackgroundForProgramDialogs.visibility = View.GONE
                                                 enableAllAddButnsAndDialog()
-                                                if (!edit_expiration_date_textviewVal.text.toString().isNullOrEmpty()&&originalDataModel.expDate.isNullOrEmpty()){
+
+
+                                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblPrograms
+                                                var itemArray = FacilityDataModel.getInstance().tblPrograms
+
+                                                if (itemOrgArray.size!=itemArray.size){
+
                                                     MarkChangeWasDone()
-                                                    Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
+                                                }else {
 
-                                                }else
-                                                if (edit_expiration_date_textviewVal.text.toString().isNullOrEmpty()){
-                                                    if (currentRowDataModel.Comments != originalDataModel.Comments ||
-                                                            currentRowDataModel.effDate != originalDataModel.effDate.apiToAppFormat() || currentRowDataModel.ProgramTypeID != originalDataModel.ProgramTypeID) {
+
+                                                    if (!edit_expiration_date_textviewVal.text.toString().isNullOrEmpty() && originalDataModel.expDate.isNullOrEmpty()) {
                                                         MarkChangeWasDone()
-                                               //         Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
+                                                        Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
 
-                                                    } else {
-                                                        Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
+                                                    } else
+                                                        if (edit_expiration_date_textviewVal.text.toString().isNullOrEmpty()) {
+                                                            if (currentRowDataModel.Comments != originalDataModel.Comments ||
+                                                                    currentRowDataModel.effDate != originalDataModel.effDate.apiToAppFormat() || currentRowDataModel.ProgramTypeID != originalDataModel.ProgramTypeID) {
+                                                                MarkChangeWasDone()
+                                                                Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
 
-                                                    }
-                                                }else{
-                                                    if (currentRowDataModel.Comments != originalDataModel.Comments ||
-                                                            currentRowDataModel.effDate != originalDataModel.effDate.apiToAppFormat() ||currentRowDataModel.expDate != originalDataModel.expDate.apiToAppFormat() || currentRowDataModel.ProgramTypeID != originalDataModel.ProgramTypeID) {
-                                                        MarkChangeWasDone()
-                                       //                 Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
+                                                            } else {
+                                                                Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
 
-                                                    } else {
-                                                        Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
+                                                            }
+                                                        } else {
+                                                            if (currentRowDataModel.Comments != originalDataModel.Comments ||
+                                                                    currentRowDataModel.effDate != originalDataModel.effDate.apiToAppFormat() || currentRowDataModel.expDate != originalDataModel.expDate.apiToAppFormat() || currentRowDataModel.ProgramTypeID != originalDataModel.ProgramTypeID) {
+                                                                MarkChangeWasDone()
+                                                                //                 Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
 
-                                                    }
+                                                            } else {
+                                                                Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
+
+                                                            }
+
+                                                        }
 
                                                 }
-
-
                                             })
                                         }, Response.ErrorListener {
                                     Log.v("error while loading", "error while loading program record")
