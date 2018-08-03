@@ -481,104 +481,88 @@ class FragmentARRAVPrograms : Fragment() {
                     edit_submitNewProgramButton.setOnClickListener(View.OnClickListener {
 
 
+                        var currentRowDataModel = FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex]
+                        var originalDataModel = FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex]
+
+
                         if (edit_validateInputs()) {
 
 
-                            val dateFormat = SimpleDateFormat("dd MMM yyyy")
-                            var newEffDate = Date()
-                            var newExpDate = Date()
-                            var DB_EffDate = Date()
-                            var DB_ExpDate = Date()
-
-
-                            val selectemProgramName=edit_program_name_textviewVal.getSelectedItem().toString()
                             var validProgram = true
                             var valid_validProgram = false
-                            var programDateIdentical =0
+
 
                             for (fac in TypeTablesModel.getInstance().ProgramsType) {
+                                if (edit_program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName)) {
+                                    //   Toast.makeText(context,"spinner match",Toast.LENGTH_SHORT).show()
 
-                                if (textView1.text==selectemProgramName) {
 
-
-                                    for (item1 in FacilityDataModel.getInstance().tblPrograms){
+                                    for (item1 in FacilityDataModel.getInstance().tblPrograms)
                                         if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
 
-                                            try {
-                                                newEffDate = dateFormat.parse(edit_effective_date_textviewVal!!.text.toString())
-                                                newExpDate = dateFormat.parse(edit_expiration_date_textviewVal!!.text.toString())
-                                                DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormat())
-                                                DB_ExpDate = dateFormat.parse(item1.expDate)
-                                            } catch (e: ParseException) {
-                                                // TODO Auto-generated catch block
-                                                e.printStackTrace()
-                                            }
-                                            if ((newEffDate == DB_EffDate)) {
-                                                programDateIdentical++
+                            val selectemProgramName=edit_program_name_textviewVal.getSelectedItem().toString()
+                                            var numToCopare=FacilityDataModel.getInstance().tblPrograms.indexOf(item1)
+
+
+                                            if (textView1.text.toString() == selectemProgramName&&numToCopare==currentfacilityDataModelIndex) {
+                                                validProgram = true
+                                                valid_validProgram = true
+
 
 
                                             }
-                                            if (programDateIdentical>0){
+
+                            else {
+
+//
+                                                val dateFormat = SimpleDateFormat("dd MMM yyyy")
+                                                var newEffDate = Date()
+                                                var newExpDate = Date()
+                                                var DB_EffDate = Date()
+                                                var DB_ExpDate = Date()
+                                                try {
+                                                    newEffDate = dateFormat.parse(edit_effective_date_textviewVal!!.text.toString())
+                                                    newExpDate = dateFormat.parse(edit_expiration_date_textviewVal!!.text.toString())
+                                                    DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormat())
+                                                    DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormat())
+                                                } catch (e: ParseException) {
+                                                    // TODO Auto-generated catch block
+                                                    e.printStackTrace()
+                                                }
+
+                                                    if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
 
 
-                                                Toast.makeText(context, "first  $newEffDate      and      $DB_EffDate", Toast.LENGTH_LONG).show()
+                                                        if ((DB_ExpDate <= newEffDate) && (newExpDate >= DB_EffDate)) {
 
-                                            }else
-                                            {
-                                                Toast.makeText(context, "second $newEffDate      and      $DB_EffDate", Toast.LENGTH_LONG).show()
+                                                            validProgram = true
+                                                            valid_validProgram = true
 
+
+
+                                                        } else
+                                                            Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                                        validProgram = false
+
+
+                                                    }else
+                                                        Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+
+                                                    validProgram = false
+
+                                                }
 
                                             }
-//                                            else
-//
-//                                            if (edit_program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName)
-//                                                    &&textView1.text!=selectemProgramName) {
-//                                                //   Toast.makeText(context,"spinner match",Toast.LENGTH_SHORT).show()
-//
-//                                                if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
-//
-//
-//                                                    if ((newEffDate <= DB_ExpDate) && (newExpDate >= DB_EffDate)) {
-//
-//
-//                                                        valid_validProgram=true
-//
-//                                                    } else
-//                                                        Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
-//                                                    validProgram = false
-//
-//                                                } else
-//                                                    Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
-//
-//                                                validProgram = false
-//
-//
-//                                            }
-
-
-                                        }
-                                }
-                                    if (programDateIdentical>1){
-
-                                  //      Toast.makeText(context, "duplication found   --> ${programDateIdentical.toString()}", Toast.LENGTH_LONG).show()
-
-                                    }else {
-                                   //     Toast.makeText(context, "no duplication  $newEffDate   and   $DB_EffDate", Toast.LENGTH_LONG).show()
-
 
                                     }
 
-                                }
+                            }
 
                                 if (validProgram||valid_validProgram) {
-                            }
+
 
 
                                 edit_programsLoadingView.visibility = View.VISIBLE
-
-
-                                var currentRowDataModel = FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex]
-                                var originalDataModel = FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex]
 
                                 currentRowDataModel.Comments = edit_comments_editTextVal.text.toString()
 
@@ -658,6 +642,7 @@ class FragmentARRAVPrograms : Fragment() {
 
 
                             }
+
                         }else{
                             Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
 
