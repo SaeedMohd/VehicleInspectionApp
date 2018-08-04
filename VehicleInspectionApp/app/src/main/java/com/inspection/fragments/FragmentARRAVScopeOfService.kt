@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -47,6 +48,14 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     var warrantyArray = ArrayList<String>()
 
+    var watcher_LaborMax=""
+    var watcher_LaborMin=""
+    var watcher_FixedLaborRate=""
+    var watcher_DiagnosticsRate=""
+    var watcher_NumOfBays=""
+    var watcher_NumOfLifts=""
+    var typeIdCompare=""
+    var dataChanged=false
 
 
     private var mListener: OnFragmentInteractionListener? = null
@@ -60,6 +69,8 @@ class FragmentARRAVScopeOfService : Fragment() {
         // Inflate the layout for this fragment
         return inflater!!.inflate(R.layout.fragment_arrav_scope_of_service, container, false)
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -105,10 +116,10 @@ class FragmentARRAVScopeOfService : Fragment() {
             override fun afterTextChanged(s: Editable) {
 
                 Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
-                LaborMax=s.toString()
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax!=LaborMax){
+                watcher_LaborMax=s.toString()
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax!=watcher_LaborMax){
 
-                    MarkChangeWasDone()
+                    dataChanged=true
                 }
             }
         }
@@ -123,12 +134,13 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                LaborMin=s.toString()
+                watcher_LaborMin=s.toString()
 
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin!=LaborMin){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin!=watcher_LaborMin){
 
-                    MarkChangeWasDone()
+                    dataChanged=true
+
                 }
 
             }
@@ -144,11 +156,12 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                FixedLaborRate=s.toString()
+                watcher_FixedLaborRate=s.toString()
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate!=FixedLaborRate){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate!=watcher_FixedLaborRate){
 
-                    MarkChangeWasDone()
+                    dataChanged=true
+
                 }
             }
         }
@@ -163,11 +176,12 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                DiagnosticsRate=s.toString()
+                watcher_DiagnosticsRate=s.toString()
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate!=DiagnosticsRate){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate!=watcher_DiagnosticsRate){
 
-                    MarkChangeWasDone()
+                    dataChanged=true
+
                 }
             }
         }
@@ -182,11 +196,12 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                NumOfBays=s.toString()
+                watcher_NumOfBays=s.toString()
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays!=NumOfBays){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays!=watcher_NumOfBays){
 
-                    MarkChangeWasDone()
+                    dataChanged=true
+
                 }
             }
         }
@@ -202,12 +217,13 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
 
-                NumOfLifts=s.toString()
+                watcher_NumOfLifts=s.toString()
 
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts!=NumOfLifts){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts!=watcher_NumOfLifts){
 
-                    MarkChangeWasDone()
+                    dataChanged=true
+
                 }
 
             }
@@ -239,12 +255,13 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                     if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
 
-                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID=typeWarranty.WarrantyTypeID
+                       typeIdCompare=typeWarranty.WarrantyTypeID
 
-                        if (FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID!=
-                                FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID){
+                        if (typeIdCompare!= FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID){
 
                             MarkChangeWasDone()
+                            dataChanged=true
+
                         }
                     }
 
@@ -340,19 +357,6 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             if (validateInputs()) {
 
-                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
-
-
-                    if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
-
-                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID=typeWarranty.WarrantyTypeID
-
-
-
-                    }
-
-
-                }
                 scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
 
 
@@ -367,9 +371,83 @@ class FragmentARRAVScopeOfService : Fragment() {
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
-                                    Toast.makeText(context,"changes saved",Toast.LENGTH_SHORT).show()
                                 scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
 
+
+                                if (dataChanged) {
+
+                                    Toast.makeText(context,"changes saved",Toast.LENGTH_SHORT).show()
+
+
+                                    if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                        FacilityDataModel.getInstance().tblScopeofService[0].apply {
+
+                                            LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
+                                            LaborMin = if (watcher_LaborMin.isNullOrBlank())LaborMin else watcher_LaborMin
+                                            FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank())FixedLaborRate else watcher_FixedLaborRate
+                                            DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank())DiagnosticsRate else watcher_DiagnosticsRate
+                                            NumOfBays = if (watcher_NumOfBays.isNullOrBlank())NumOfBays else watcher_NumOfBays
+                                            NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank())NumOfLifts else watcher_NumOfLifts
+
+
+                                            for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
+
+
+                                                if (typeWarranty.WarrantyTypeName == warrantyPeriodVal.selectedItem) {
+
+                                                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
+
+
+                                                }
+
+
+                                            }
+                                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != watcher_LaborMax) {
+
+                                                MarkChangeWasDone()
+                                            }
+
+
+                                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != watcher_LaborMin) {
+
+                                                MarkChangeWasDone()
+
+                                            }
+
+
+                                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != watcher_FixedLaborRate) {
+
+                                                MarkChangeWasDone()
+
+
+
+                                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != watcher_DiagnosticsRate) {
+
+                                                    MarkChangeWasDone()
+
+                                                }
+
+
+                                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != watcher_NumOfBays) {
+
+                                                    MarkChangeWasDone()
+
+                                                }
+
+
+                                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != watcher_NumOfLifts) {
+
+                                                    MarkChangeWasDone()
+
+                                                }
+
+
+                                            }
+
+
+                                        }
+                                    }
+                                }
 
                             })
                         }, Response.ErrorListener {
@@ -427,9 +505,116 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     }
 
+
+    override fun onPause() {
+        if (dataChanged) {
+
+            val builder = AlertDialog.Builder(context)
+            super.onPause()
+
+            // Set the alert dialog title
+            builder.setTitle("Changes made confirmation")
+
+            // Display a message on alert dialog
+            builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+
+            // Set a positive button and its click listener on alert dialog
+            builder.setPositiveButton("YES") { dialog, which ->
+
+
+                    if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                        FacilityDataModel.getInstance().tblScopeofService[0].apply {
+
+                            LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
+                            LaborMin = if (watcher_LaborMin.isNullOrBlank())LaborMin else watcher_LaborMin
+                            FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank())FixedLaborRate else watcher_FixedLaborRate
+                            DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank())DiagnosticsRate else watcher_DiagnosticsRate
+                            NumOfBays = if (watcher_NumOfBays.isNullOrBlank())NumOfBays else watcher_NumOfBays
+                            NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank())NumOfLifts else watcher_NumOfLifts
+
+
+                           FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeIdCompare
+
+
+                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != watcher_LaborMax) {
+
+                                MarkChangeWasDone()
+                            }
+
+
+                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != watcher_LaborMin) {
+
+                                MarkChangeWasDone()
+
+                            }
+
+
+                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != watcher_FixedLaborRate) {
+
+                                MarkChangeWasDone()
+
+
+
+                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != watcher_DiagnosticsRate) {
+
+                                    MarkChangeWasDone()
+
+                                }
+
+
+                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != watcher_NumOfBays) {
+
+                                    MarkChangeWasDone()
+
+                                }
+
+
+                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != watcher_NumOfLifts) {
+
+                                    MarkChangeWasDone()
+
+                                }
+
+
+                            }
+
+
+                        }
+
+                    }
+                }
+
+
+
+
+
+            // Display a negative button on alert dialog
+            builder.setNegativeButton("No") { dialog, which ->
+            }
+
+
+
+
+            // Finally, make the alert dialog using builder
+            val dialog: AlertDialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+            // Display the alert dialog on app interface
+            dialog.show()
+
+        }else{
+
+            super.onPause()
+
+        }
+
+    }
+
     override fun onDetach() {
-        super.onDetach()
         mListener = null
+        super.onDetach()
+
+
+
     }
 
     /**
@@ -447,9 +632,10 @@ class FragmentARRAVScopeOfService : Fragment() {
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
 
-        Toast.makeText(context!!,"distroyed",Toast.LENGTH_SHORT).show()
+
     }
 
     companion object {
