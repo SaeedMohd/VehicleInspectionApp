@@ -117,7 +117,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 watcher_LaborMax=s.toString()
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax!=watcher_LaborMax){
+                if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!=watcher_LaborMax){
 
                     dataChanged=true
                 }
@@ -137,7 +137,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 watcher_LaborMin=s.toString()
 
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin!=watcher_LaborMin){
+                if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!=watcher_LaborMin){
 
                     dataChanged=true
 
@@ -158,7 +158,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 watcher_FixedLaborRate=s.toString()
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate!=watcher_FixedLaborRate){
+                if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!=watcher_FixedLaborRate){
 
                     dataChanged=true
 
@@ -178,7 +178,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 watcher_DiagnosticsRate=s.toString()
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate!=watcher_DiagnosticsRate){
+                if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!=watcher_DiagnosticsRate){
 
                     dataChanged=true
 
@@ -198,7 +198,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 watcher_NumOfBays=s.toString()
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays!=watcher_NumOfBays){
+                if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!=watcher_NumOfBays){
 
                     dataChanged=true
 
@@ -220,7 +220,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 watcher_NumOfLifts=s.toString()
 
 
-                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts!=watcher_NumOfLifts){
+                if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!=watcher_NumOfLifts){
 
                     dataChanged=true
 
@@ -260,6 +260,10 @@ class FragmentARRAVScopeOfService : Fragment() {
                         if (typeIdCompare!= FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID){
 
                             MarkChangeWasDone()
+
+                        }
+                        if (typeIdCompare!= FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID){
+
                             dataChanged=true
 
                         }
