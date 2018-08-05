@@ -57,6 +57,14 @@ class FragmentARRAVScopeOfService : Fragment() {
     var typeIdCompare=""
     var dataChanged=false
 
+    var fixedLaborRate = ""
+    var diagnosticLaborRate = ""
+    var laborRateMatrixMax = ""
+    var laborRateMatrixMin = ""
+    var numberOfBaysEditText_ = ""
+    var numberOfLiftsEditText_ = ""
+
+
 
     private var mListener: OnFragmentInteractionListener? = null
 
@@ -98,6 +106,58 @@ class FragmentARRAVScopeOfService : Fragment() {
         setFieldsListener()
     }
 
+    fun fillFieldsIntoVariables(){
+
+
+         fixedLaborRate = fixedLaborRateEditText.text.toString()
+         diagnosticLaborRate = diagnosticRateEditText.text.toString()
+         laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
+         laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
+         numberOfBaysEditText_ = numberOfBaysEditText.text.toString()
+         numberOfLiftsEditText_ = numberOfLiftsEditText.text.toString()
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!=laborRateMatrixMax){
+
+            Toast.makeText(context,watcher_LaborMax + "    and    " + FacilityDataModel.getInstance().tblScopeofService[0].LaborMax ,Toast.LENGTH_SHORT).show()
+
+dataChanged=true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!=laborRateMatrixMin){
+
+            dataChanged=true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!=fixedLaborRate){
+
+
+            dataChanged=true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!=diagnosticLaborRate){
+
+
+            dataChanged=true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!=numberOfBaysEditText_){
+
+
+            dataChanged=true
+        }
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!=numberOfLiftsEditText_){
+
+
+            dataChanged=true
+        }
+
+
+    }
     fun setFieldsListener (){
 
 
@@ -119,7 +179,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 watcher_LaborMax=s.toString()
                 if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!=watcher_LaborMax){
 
-                    dataChanged=true
+                 //   dataChanged=true
                 }
             }
         }
@@ -139,7 +199,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!=watcher_LaborMin){
 
-                    dataChanged=true
+            //        dataChanged=true
 
                 }
 
@@ -160,7 +220,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!=watcher_FixedLaborRate){
 
-                    dataChanged=true
+            //        dataChanged=true
 
                 }
             }
@@ -180,7 +240,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!=watcher_DiagnosticsRate){
 
-                    dataChanged=true
+           //         dataChanged=true
 
                 }
             }
@@ -200,7 +260,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!=watcher_NumOfBays){
 
-                    dataChanged=true
+           //         dataChanged=true
 
                 }
             }
@@ -222,7 +282,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
                 if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!=watcher_NumOfLifts){
 
-                    dataChanged=true
+            //        dataChanged=true
 
                 }
 
@@ -361,7 +421,6 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             if (validateInputs()) {
 
-                scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
 
 
                 var fixedLaborRate = fixedLaborRateEditText.text.toString()
@@ -370,6 +429,9 @@ class FragmentARRAVScopeOfService : Fragment() {
                 var laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
                 var numberOfBaysEditText = numberOfBaysEditText.text.toString()
                 var numberOfLiftsEditText = numberOfLiftsEditText.text.toString()
+
+
+                scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
 
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
                         Response.Listener { response ->
@@ -511,6 +573,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
 
     override fun onPause() {
+        fillFieldsIntoVariables()
         if (dataChanged) {
 
             val builder = AlertDialog.Builder(context)
@@ -524,6 +587,8 @@ class FragmentARRAVScopeOfService : Fragment() {
 
             // Set a positive button and its click listener on alert dialog
             builder.setPositiveButton("YES") { dialog, which ->
+
+
 
 
                     if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
