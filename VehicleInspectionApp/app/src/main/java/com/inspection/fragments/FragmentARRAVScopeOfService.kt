@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,13 +28,15 @@ import org.json.JSONObject
 import org.json.XML
 import com.google.android.gms.drive.metadata.CustomPropertyKey.fromJson
 import com.google.gson.GsonBuilder
+import com.inspection.FormsActivity
+import com.inspection.MainActivity
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.R.id.numberOfLiftsEditText
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import kotlin.jvm.java
+import kotlin.properties.Delegates
 
 
 /**
@@ -48,21 +51,13 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     var warrantyArray = ArrayList<String>()
 
-    var watcher_LaborMax=""
-    var watcher_LaborMin=""
-    var watcher_FixedLaborRate=""
-    var watcher_DiagnosticsRate=""
-    var watcher_NumOfBays=""
-    var watcher_NumOfLifts=""
-    var typeIdCompare=""
-    var dataChanged=false
 
-    var fixedLaborRate = ""
-    var diagnosticLaborRate = ""
-    var laborRateMatrixMax = ""
-    var laborRateMatrixMin = ""
-    var numberOfBaysEditText_ = ""
-    var numberOfLiftsEditText_ = ""
+    var temp_fixedLaborRate = ""
+    var temp_diagnosticLaborRate = ""
+    var temp_laborRateMatrixMax = ""
+    var temp_laborRateMatrixMin = ""
+    var temp_numberOfBaysEditText_ = ""
+    var temp_numberOfLiftsEditText_ = ""
 
 
 
@@ -83,11 +78,13 @@ class FragmentARRAVScopeOfService : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        scopeOfServicesChangesMade = false
+
+        implementOnAnyFragment=false
 
 
+        cancelButton.setOnClickListener(View.OnClickListener {
 
-
+        })
 
         for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
 
@@ -104,7 +101,9 @@ class FragmentARRAVScopeOfService : Fragment() {
 //        prepareScopePage()
         setFields()
         setFieldsListener()
+
     }
+
 
     fun fillFieldsIntoVariables(){
 
@@ -342,12 +341,12 @@ dataChanged=true
     fun setFields() {
         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
             FacilityDataModel.getInstance().tblScopeofService[0].apply {
-                fixedLaborRateEditText.setText(FixedLaborRate)
-                diagnosticRateEditText.setText(DiagnosticsRate)
-                numberOfBaysEditText.setText(NumOfBays)
-                numberOfLiftsEditText.setText(NumOfLifts)
-                laborRateMatrixMaxEditText.setText(LaborMax)
-                laborRateMatrixMinEditText.setText(LaborMin)
+                fixedLaborRateEditText.setText(if (temp_fixedLaborRate.isNullOrBlank())FixedLaborRate else temp_fixedLaborRate)
+                diagnosticRateEditText.setText(if (temp_diagnosticLaborRate.isNullOrBlank())DiagnosticsRate else temp_diagnosticLaborRate)
+                numberOfBaysEditText.setText(if (temp_numberOfBaysEditText_.isNullOrBlank())NumOfBays else temp_numberOfBaysEditText_)
+                numberOfLiftsEditText.setText(if (temp_numberOfLiftsEditText_.isNullOrBlank())NumOfLifts else temp_numberOfLiftsEditText_)
+                laborRateMatrixMaxEditText.setText(if (temp_laborRateMatrixMax.isNullOrBlank())LaborMax else temp_laborRateMatrixMax)
+                laborRateMatrixMinEditText.setText(if (temp_laborRateMatrixMin.isNullOrBlank())LaborMin else temp_laborRateMatrixMin)
                 for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
 
                     for (facWarranty in FacilityDataModel.getInstance().tblScopeofService){
@@ -574,107 +573,7 @@ dataChanged=true
 
     override fun onPause() {
         fillFieldsIntoVariables()
-        if (dataChanged) {
-
-            val builder = AlertDialog.Builder(context)
-            super.onPause()
-
-            // Set the alert dialog title
-            builder.setTitle("Changes made confirmation")
-
-            // Display a message on alert dialog
-            builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-
-            // Set a positive button and its click listener on alert dialog
-            builder.setPositiveButton("YES") { dialog, which ->
-
-
-
-
-                    if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                        FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
-                            LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
-                            LaborMin = if (watcher_LaborMin.isNullOrBlank())LaborMin else watcher_LaborMin
-                            FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank())FixedLaborRate else watcher_FixedLaborRate
-                            DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank())DiagnosticsRate else watcher_DiagnosticsRate
-                            NumOfBays = if (watcher_NumOfBays.isNullOrBlank())NumOfBays else watcher_NumOfBays
-                            NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank())NumOfLifts else watcher_NumOfLifts
-
-
-                           FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeIdCompare
-
-
-                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != watcher_LaborMax) {
-
-                                MarkChangeWasDone()
-                            }
-
-
-                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != watcher_LaborMin) {
-
-                                MarkChangeWasDone()
-
-                            }
-
-
-                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != watcher_FixedLaborRate) {
-
-                                MarkChangeWasDone()
-
-
-
-                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != watcher_DiagnosticsRate) {
-
-                                    MarkChangeWasDone()
-
-                                }
-
-
-                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != watcher_NumOfBays) {
-
-                                    MarkChangeWasDone()
-
-                                }
-
-
-                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != watcher_NumOfLifts) {
-
-                                    MarkChangeWasDone()
-
-                                }
-
-
-                            }
-
-
-                        }
-
-                    }
-                }
-
-
-
-
-
-            // Display a negative button on alert dialog
-            builder.setNegativeButton("No") { dialog, which ->
-            }
-
-
-
-
-            // Finally, make the alert dialog using builder
-            val dialog: AlertDialog = builder.create()
-            dialog.setCanceledOnTouchOutside(false)
-            // Display the alert dialog on app interface
-            dialog.show()
-
-        }else{
-
-            super.onPause()
-
-        }
+        super.onPause()
 
     }
 
@@ -708,11 +607,31 @@ dataChanged=true
     }
 
     companion object {
+
+        var implementOnAnyFragment=false
+        var fixedLaborRate = ""
+        var diagnosticLaborRate = ""
+        var laborRateMatrixMax = ""
+        var laborRateMatrixMin = ""
+        var numberOfBaysEditText_ = ""
+        var numberOfLiftsEditText_ = ""
+        var dataChanged=false
+
+        var watcher_LaborMax=""
+        var watcher_LaborMin=""
+        var watcher_FixedLaborRate=""
+        var watcher_DiagnosticsRate=""
+        var watcher_NumOfBays=""
+        var watcher_NumOfLifts=""
+        var typeIdCompare=""
+
+
+
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
         private val ARG_PARAM2 = "param2"
-        var scopeOfServicesChangesMade = false
+
 
         /**
          * Use this factory method to create a new instance of

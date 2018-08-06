@@ -1,12 +1,15 @@
 package com.inspection.fragments
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,19 +21,37 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.drive.events.ChangeListener
 import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateProgramsData
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.dataChanged
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.diagnosticLaborRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.implementOnAnyFragment
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMax
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMin
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfBaysEditText_
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfLiftsEditText_
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_DiagnosticsRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_FixedLaborRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMax
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMin
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
+import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.properties.Delegates
 
 /**
  * A simple [Fragment] subclass.
@@ -50,6 +71,8 @@ class FragmentARRAVPrograms : Fragment() {
     var dateOne = ""
     var dateTwo = ""
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,6 +87,7 @@ class FragmentARRAVPrograms : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        scopeOfServiceChangesWatcher()
         exitProgramDialogeBtnId.setOnClickListener({
 
             programCard.visibility = View.GONE
@@ -136,6 +160,7 @@ class FragmentARRAVPrograms : Fragment() {
             dpd.show()
         }
 
+
         expiration_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -170,6 +195,7 @@ class FragmentARRAVPrograms : Fragment() {
             }, year, month, day)
             dpd.show()
         }
+
 
 
         submitNewProgramButton.setOnClickListener({
@@ -320,7 +346,16 @@ class FragmentARRAVPrograms : Fragment() {
 
         altTableRow(2)
 
+
+
+
+
     }
+
+
+
+
+
 
 
     fun prepareProgramTypes() {
@@ -960,10 +995,92 @@ class FragmentARRAVPrograms : Fragment() {
 
         return  programValide
     }
+    fun scopeOfServiceChangesWatcher(){
+
+        if (FragmentARRAVScopeOfService.dataChanged) {
+
+            val builder = AlertDialog.Builder(context)
+
+            // Set the alert dialog title
+            builder.setTitle("Changes made confirmation")
+
+            // Display a message on alert dialog
+            builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+
+            // Set a positive button and its click listener on alert dialog
+            builder.setPositiveButton("YES") { dialog, which ->
+
+
+
+
+                Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=$numberOfLiftsEditText_&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("RESPONSE", response.toString())
+
+                                Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+                                if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                    FacilityDataModel.getInstance().tblScopeofService[0].apply {
+
+                                        LaborMax = if (laborRateMatrixMax.isNullOrBlank()) LaborMax else laborRateMatrixMax
+                                        LaborMin = if (laborRateMatrixMin.isNullOrBlank())LaborMin else laborRateMatrixMin
+                                        FixedLaborRate = if (fixedLaborRate.isNullOrBlank())FixedLaborRate else fixedLaborRate
+                                        DiagnosticsRate = if (diagnosticLaborRate.isNullOrBlank())DiagnosticsRate else diagnosticLaborRate
+                                        NumOfBays = if (numberOfBaysEditText_.isNullOrBlank())NumOfBays else numberOfBaysEditText_
+                                        NumOfLifts = if (numberOfLiftsEditText_.isNullOrBlank())NumOfLifts else numberOfLiftsEditText_
+
+                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeIdCompare
+
+                                        dataChanged=false
+
+                                    }
+
+                                }
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading personnal record")
+                    Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+
+
+                }))
+
+
+            }
+
+
+
+
+
+            // Display a negative button on alert dialog
+            builder.setNegativeButton("No") { dialog, which ->
+                FragmentARRAVScopeOfService.dataChanged =false
+
+            }
+
+
+
+
+            // Finally, make the alert dialog using builder
+            val dialog: AlertDialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+            // Display the alert dialog on app interface
+            dialog.show()
+
+        }
+
+    }
 
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+
 
     }
 
@@ -987,6 +1104,7 @@ class FragmentARRAVPrograms : Fragment() {
     }
 
     companion object {
+
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
