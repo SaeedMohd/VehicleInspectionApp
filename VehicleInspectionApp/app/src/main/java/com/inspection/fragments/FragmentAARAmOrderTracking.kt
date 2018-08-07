@@ -374,6 +374,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             builder.setPositiveButton("YES") { dialog, which ->
 
 
+                amendmentLoadingView.visibility = View.VISIBLE
 
 
                 Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
@@ -384,6 +385,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                                 Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                 if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                     FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                                        amendmentLoadingView.visibility = View.GONE
 
                                         LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
                                         LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank())LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
@@ -405,6 +407,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                     Log.v("error while loading", "error while loading personnal record")
                     Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
 
+                    amendmentLoadingView.visibility = View.GONE
 
                 }))
 
@@ -418,6 +421,8 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             // Display a negative button on alert dialog
             builder.setNegativeButton("No") { dialog, which ->
                 FragmentARRAVScopeOfService.dataChanged =false
+                amendmentLoadingView.visibility = View.GONE
+
 
             }
 

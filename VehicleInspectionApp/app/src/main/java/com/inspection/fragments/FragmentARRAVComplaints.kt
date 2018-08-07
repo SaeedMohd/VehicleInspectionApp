@@ -582,6 +582,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
             // Set a positive button and its click listener on alert dialog
             builder.setPositiveButton("YES") { dialog, which ->
 
+                scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
 
 
 
@@ -589,6 +590,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
+                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 
                                 Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                 if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
@@ -613,6 +615,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading personnal record")
                     Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+                    scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 
 
                 }))
@@ -627,6 +630,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
             // Display a negative button on alert dialog
             builder.setNegativeButton("No") { dialog, which ->
                 FragmentARRAVScopeOfService.dataChanged =false
+                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 
             }
 

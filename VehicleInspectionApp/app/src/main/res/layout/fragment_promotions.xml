@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,8 +15,11 @@
         android:textStyle="bold"
         android:textColor="@color/mainColor"
         android:textSize="18sp"
-        android:text="Promotions"/>
+        android:text="Promotions"
+        android:id="@+id/title"/>
     <LinearLayout
+        android:layout_below="@+id/title"
+        android:id="@+id/secondLevel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <CheckBox
@@ -35,6 +38,7 @@
         android:textStyle="bold" />
     </LinearLayout>
     <Button
+        android:layout_below="@+id/secondLevel"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
@@ -44,5 +48,33 @@
         android:background="@drawable/green_background_button"
         android:id="@+id/saveBtnId"/>
 
+    <RelativeLayout
+        android:id="@+id/scopeOfServicesChangesDialogueLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:clickable="true"
+        android:background="@color/mainColor"
+        android:visibility="gone">
 
-</LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:layout_centerHorizontal="true"
+            android:text="Loading..."
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -999,6 +999,7 @@ class FragmentARRAVPrograms : Fragment() {
 
         if (FragmentARRAVScopeOfService.dataChanged) {
 
+
             val builder = AlertDialog.Builder(context)
 
             // Set the alert dialog title
@@ -1010,6 +1011,7 @@ class FragmentARRAVPrograms : Fragment() {
             // Set a positive button and its click listener on alert dialog
             builder.setPositiveButton("YES") { dialog, which ->
 
+                programsLoadingView.visibility = View.VISIBLE
 
 
 
@@ -1017,6 +1019,8 @@ class FragmentARRAVPrograms : Fragment() {
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
+
+                                programsLoadingView.visibility = View.GONE
 
                                 Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                 if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
@@ -1041,6 +1045,7 @@ class FragmentARRAVPrograms : Fragment() {
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading personnal record")
                     Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+                    programsLoadingView.visibility = View.GONE
 
 
                 }))
@@ -1055,6 +1060,7 @@ class FragmentARRAVPrograms : Fragment() {
             // Display a negative button on alert dialog
             builder.setNegativeButton("No") { dialog, which ->
                 FragmentARRAVScopeOfService.dataChanged =false
+                programsLoadingView.visibility = View.GONE
 
             }
 

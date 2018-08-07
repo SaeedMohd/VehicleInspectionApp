@@ -820,6 +820,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             // Set a positive button and its click listener on alert dialog
             builder.setPositiveButton("YES") { dialog, which ->
 
+                RSP_LoadingView.visibility = View.VISIBLE
 
 
 
@@ -827,6 +828,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
+                                RSP_LoadingView.visibility = View.GONE
 
                                 Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                 if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
@@ -851,6 +853,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading personnal record")
                     Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+                    RSP_LoadingView.visibility = View.GONE
 
 
                 }))
@@ -865,6 +868,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             // Display a negative button on alert dialog
             builder.setNegativeButton("No") { dialog, which ->
                 FragmentARRAVScopeOfService.dataChanged =false
+                RSP_LoadingView.visibility = View.GONE
 
             }
 

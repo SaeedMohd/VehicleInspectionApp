@@ -783,6 +783,7 @@ class FragmentARRAVAffliations : Fragment() {
             // Set a positive button and its click listener on alert dialog
             builder.setPositiveButton("YES") { dialog, which ->
 
+                affLoadingView.visibility = View.VISIBLE
 
 
 
@@ -790,6 +791,7 @@ class FragmentARRAVAffliations : Fragment() {
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
+                                affLoadingView.visibility = View.GONE
 
                                 Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                 if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
@@ -815,6 +817,7 @@ class FragmentARRAVAffliations : Fragment() {
                     Log.v("error while loading", "error while loading personnal record")
                     Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
 
+                    affLoadingView.visibility = View.GONE
 
                 }))
 
@@ -828,6 +831,7 @@ class FragmentARRAVAffliations : Fragment() {
             // Display a negative button on alert dialog
             builder.setNegativeButton("No") { dialog, which ->
                 FragmentARRAVScopeOfService.dataChanged =false
+                affLoadingView.visibility = View.GONE
 
             }
 
