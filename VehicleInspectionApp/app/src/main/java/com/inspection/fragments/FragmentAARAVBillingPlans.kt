@@ -17,8 +17,10 @@ import android.widget.*
 
 import com.inspection.R
 import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.imageloader.Utils
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_billingplans.*
 import java.text.SimpleDateFormat
@@ -288,66 +290,70 @@ class FragmentAARAVBillingPlans : Fragment() {
 //
 //            }
 //        }
-        for (i in 1..2) {
 
-            var tableRow = TableRow(context)
-            if (i % 2 == 0) {
-                tableRow.setBackgroundResource(R.drawable.alt_row_color)
-            }
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
-            tableRow.addView(textView)
+                FacilityDataModel.getInstance().tblBillingPlan.apply {
+                    (0 until size).forEach {
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).FAC_Addr1
-            tableRow.addView(textView)
+                        var tableRow = TableRow(context)
+                        if (it % 2 == 0) {
+                            tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                        }
+                        var textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam
+                        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView.text = TypeTablesModel.getInstance().BillingPlanCategoryType.filter { s -> s.BillingPlanCatgTypeID.toInt() == get(it).BillingPlanCatgID}[0].BillingPlanCatgName
+                        tableRow.addView(textView)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            textView.text = "Test" // get(it).FAC_Addr2
-            tableRow.addView(textView)
+                        textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam1
+                        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView.text = "Test" // get(it).FAC_Addr1
+                        tableRow.addView(textView)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
-            tableRow.addView(textView)
+                        textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam2
+                        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        TableRow.LayoutParams()
+                        textView.text = TypeTablesModel.getInstance().BillingPlanFrequencyType.filter { s -> s.BillingPlanFrequencyTypeID.toInt() == get(it).FrequencyTypeID}[0].BillingPlanFrequencyTypeName
+                        tableRow.addView(textView)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
-            tableRow.addView(textView)
+                        textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam3
+                        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView.text = if(get(it).EffectiveDate.equals("")) "" else get(it).EffectiveDate.apiToAppFormat()
+                        tableRow.addView(textView)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam5
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
-            tableRow.addView(textView)
+                        textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam4
+                        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView.text = if(get(it).ExpirationDate.equals("")) "" else get(it).ExpirationDate.apiToAppFormat()
+                        tableRow.addView(textView)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam6
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
-            tableRow.addView(textView)
+                        textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam5
+                        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView.text = "Test" // get(it).CITY
+                        tableRow.addView(textView)
 
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam7
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
-            tableRow.addView(textView)
+                        textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam6
+                        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView.text = get(it).updateDate.apiToAppFormat()
+                        tableRow.addView(textView)
+
+                        textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam7
+                        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView.text = get(it).updateBy
+                        tableRow.addView(textView)
 
 
-            billingPlansResultsTbl.addView(tableRow)
-        }
+                        billingPlansResultsTbl.addView(tableRow)
+                    }
+                }
 
     }
+
     fun prepareBillingPlanSpinners() {
 
         categoryTypeList = TypeTablesModel.getInstance().BillingPlanCategoryType

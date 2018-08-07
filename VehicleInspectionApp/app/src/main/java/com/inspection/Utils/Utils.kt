@@ -36,11 +36,11 @@ fun String.apiToAppFormatMMDDYYYY(): String {
     return appFormatMMDDYYYY.format(apiFormat.parse(this.split("T")[0]))
 }
 
-fun String.appToApiFormat(): String = apiFormat.format(appFormat.parse(this))
+fun String.appToApiFormat(): String = if (this.equals("")) "" else apiFormat.format(appFormat.parse(this))
 
 fun String.appToApiSubmitFormat(): String = apiSubmitFormat.format(appFormat.parse(this))
 
-fun Date.toAppFormat(): String = appFormat.format(this)
+fun Date.toAppFormat(): String = if (this.equals("")) "" else appFormat.format(this)
 
 fun Date.toApiFormat(): String = apiFormat.format(this)
 
@@ -61,3 +61,23 @@ fun MarkChangeWasDone(){
     FacilityDataModelOrg.getInstance().changeWasDone = true
 }
 
+fun Int.monthNoToName(): String {
+    var monthName=""
+    when (this) {
+        0->monthName=""
+        1->monthName="January"
+        2->monthName="February"
+        3->monthName="March"
+        4->monthName="April"
+        5->monthName="May"
+        6->monthName="June"
+        7->monthName="July"
+        8->monthName="August"
+        9->monthName="September"
+        10->monthName="October"
+        11->monthName="November"
+        12->monthName="December"
+        else-> monthName=""
+    }
+    return monthName
+}

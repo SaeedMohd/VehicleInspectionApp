@@ -1,6 +1,8 @@
 package com.inspection
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -9,14 +11,17 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import com.inspection.R.drawable.circle
 import com.inspection.fragments.*
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 
 class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +69,9 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         menuInflater.inflate(R.menu.forms, menu)
+
         return true
     }
 
@@ -171,5 +177,11 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun validateFacilityDataDetails (){
+        // Method to validate Facility Data Model data against the business rules
+
+
     }
 }

@@ -8,6 +8,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/visitation"
+            android:icon="@drawable/red_button_background"
             android:title="Visitation" />
     </group>
     <group

@@ -706,6 +706,9 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                                 var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
                                         .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                                 var jsonObj = obj.getJSONObject("responseXml")
+
+                                jsonObj = removeEmptyJsonTags(jsonObj)
+
                                 parseFacilityDataJsonToObject(jsonObj)
 
 
@@ -924,7 +927,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             }
         }
 
-        if (jsonObj.has("tblAmendmentOrderTracking")) {
+        if (jsonObj.has("tblAmendmentOrderTracking") && !jsonObj.has("tblAmendmentOrderTracking /")) {
             if (jsonObj.get("tblAmendmentOrderTracking").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking = Gson().fromJson<ArrayList<FacilityDataModel.TblAmendmentOrderTracking>>(jsonObj.get("tblAmendmentOrderTracking").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblAmendmentOrderTracking>>() {}.type)
                 FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblAmendmentOrderTracking>>(jsonObj.get("tblAmendmentOrderTracking").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblAmendmentOrderTracking>>() {}.type)
@@ -932,6 +935,14 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(Gson().fromJson<FacilityDataModel.TblAmendmentOrderTracking>(jsonObj.get("tblAmendmentOrderTracking").toString(), FacilityDataModel.TblAmendmentOrderTracking::class.java))
                 FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking.add(Gson().fromJson<FacilityDataModelOrg.TblAmendmentOrderTracking>(jsonObj.get("tblAmendmentOrderTracking").toString(), FacilityDataModelOrg.TblAmendmentOrderTracking::class.java))
             }
+        } else {
+            var oneArray = FacilityDataModel.TblAmendmentOrderTracking();
+            oneArray.AOID="";
+            oneArray.AOTEmployee = "";
+            oneArray.EventID="";
+            oneArray.EventTypeID="";
+            oneArray.ReasonID="";
+            FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(oneArray);
         }
 
         if (jsonObj.has("tblAARPortalAdmin")) {
@@ -1044,7 +1055,629 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             }
         }
 
+        if (jsonObj.has("tblBilling")) {
+            if (jsonObj.get("tblBilling").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblBilling = Gson().fromJson<ArrayList<FacilityDataModel.TblBilling>>(jsonObj.get("tblBilling").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblBilling>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBilling = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblBilling>>(jsonObj.get("tblBilling").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblBilling>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblBilling.add(Gson().fromJson<FacilityDataModel.TblBilling>(jsonObj.get("tblBilling").toString(), FacilityDataModel.TblBilling::class.java))
+                FacilityDataModelOrg.getInstance().tblBilling.add(Gson().fromJson<FacilityDataModelOrg.TblBilling>(jsonObj.get("tblBilling").toString(), FacilityDataModelOrg.TblBilling::class.java))
+            }
+        }
 
+        if (jsonObj.has("tblBillingPlan")) {
+            if (jsonObj.get("tblBillingPlan").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblBillingPlan = Gson().fromJson<ArrayList<FacilityDataModel.TblBillingPlan>>(jsonObj.get("tblBillingPlan").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblBillingPlan>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBillingPlan = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblBillingPlan>>(jsonObj.get("tblBillingPlan").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblBillingPlan>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblBillingPlan.add(Gson().fromJson<FacilityDataModel.TblBillingPlan>(jsonObj.get("tblBillingPlan").toString(), FacilityDataModel.TblBillingPlan::class.java))
+                FacilityDataModelOrg.getInstance().tblBillingPlan.add(Gson().fromJson<FacilityDataModelOrg.TblBillingPlan>(jsonObj.get("tblBillingPlan").toString(), FacilityDataModelOrg.TblBillingPlan::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblFacilityBillingDetail")) {
+            if (jsonObj.get("tblFacilityBillingDetail").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblFacilityBillingDetail = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilityBillingDetail>>(jsonObj.get("tblFacilityBillingDetail").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilityBillingDetail>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityBillingDetail = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilityBillingDetail>>(jsonObj.get("tblFacilityBillingDetail").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilityBillingDetail>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblFacilityBillingDetail.add(Gson().fromJson<FacilityDataModel.TblFacilityBillingDetail>(jsonObj.get("tblFacilityBillingDetail").toString(), FacilityDataModel.TblFacilityBillingDetail::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityBillingDetail.add(Gson().fromJson<FacilityDataModelOrg.TblFacilityBillingDetail>(jsonObj.get("tblFacilityBillingDetail").toString(), FacilityDataModelOrg.TblFacilityBillingDetail::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblInvoiceInfo")) {
+            if (jsonObj.get("tblInvoiceInfo").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblInvoiceInfo = Gson().fromJson<ArrayList<FacilityDataModel.TblInvoiceInfo>>(jsonObj.get("tblInvoiceInfo").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblInvoiceInfo>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblInvoiceInfo = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblInvoiceInfo>>(jsonObj.get("tblInvoiceInfo").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblInvoiceInfo>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblInvoiceInfo.add(Gson().fromJson<FacilityDataModel.TblInvoiceInfo>(jsonObj.get("tblInvoiceInfo").toString(), FacilityDataModel.TblInvoiceInfo::class.java))
+                FacilityDataModelOrg.getInstance().tblInvoiceInfo.add(Gson().fromJson<FacilityDataModelOrg.TblInvoiceInfo>(jsonObj.get("tblInvoiceInfo").toString(), FacilityDataModelOrg.TblInvoiceInfo::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblVendorRevenue")) {
+            if (jsonObj.get("tblVendorRevenue").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblVendorRevenue = Gson().fromJson<ArrayList<FacilityDataModel.TblVendorRevenue>>(jsonObj.get("tblVendorRevenue").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblVendorRevenue>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblVendorRevenue = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblVendorRevenue>>(jsonObj.get("tblVendorRevenue").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblVendorRevenue>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblVendorRevenue.add(Gson().fromJson<FacilityDataModel.TblVendorRevenue>(jsonObj.get("tblVendorRevenue").toString(), FacilityDataModel.TblVendorRevenue::class.java))
+                FacilityDataModelOrg.getInstance().tblVendorRevenue.add(Gson().fromJson<FacilityDataModelOrg.TblVendorRevenue>(jsonObj.get("tblVendorRevenue").toString(), FacilityDataModelOrg.TblVendorRevenue::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblBillingHistoryReport")) {
+            if (jsonObj.get("tblBillingHistoryReport").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblBillingHistoryReport = Gson().fromJson<ArrayList<FacilityDataModel.TblBillingHistoryReport>>(jsonObj.get("tblBillingHistoryReport").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblBillingHistoryReport>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBillingHistoryReport = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblBillingHistoryReport>>(jsonObj.get("tblBillingHistoryReport").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblBillingHistoryReport>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblBillingHistoryReport.add(Gson().fromJson<FacilityDataModel.TblBillingHistoryReport>(jsonObj.get("tblBillingHistoryReport").toString(), FacilityDataModel.TblBillingHistoryReport::class.java))
+                FacilityDataModelOrg.getInstance().tblBillingHistoryReport.add(Gson().fromJson<FacilityDataModelOrg.TblBillingHistoryReport>(jsonObj.get("tblBillingHistoryReport").toString(), FacilityDataModelOrg.TblBillingHistoryReport::class.java))
+            }
+        }
+
+    }
+
+    fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {
+        var jsonObj = jsonObjOrg;
+
+        if (jsonObj.has("tblSurveySoftwares")) {
+            if (!jsonObj.get("tblSurveySoftwares").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblSurveySoftwares")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblSurveySoftwares"))
+                    jsonObj.put("tblSurveySoftwares", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblSurveySoftwares")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblSurveySoftwares")
+        }
+
+        if (jsonObj.has("tblAddress")) {
+            if (!jsonObj.get("tblAddress").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblAddress")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblAddress"))
+                    jsonObj.put("tblAddress", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblAddress")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblAddress")
+        }
+
+        if (jsonObj.has("tblPhone")) {
+            if (!jsonObj.get("tblPhone").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblPhone")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblPhone"))
+                    jsonObj.put("tblPhone", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblPhone")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblPhone")
+        }
+
+        var result = jsonObj.getJSONArray("tblPersonnel")
+        for (i in result.length()-1 downTo 0){
+            if (result[i].toString().equals("")) result.remove(i);
+        }
+        jsonObj.remove(("tblPersonnel"))
+        jsonObj.put("tblPersonnel",result)
+
+        if (jsonObj.has("tblAmendmentOrderTracking")) {
+            if (!jsonObj.get("tblAmendmentOrderTracking").toString().equals("")) {
+                try {
+                    result = jsonObj.getJSONArray("tblAmendmentOrderTracking")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblAmendmentOrderTracking"))
+                    jsonObj.put("tblAmendmentOrderTracking", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblAmendmentOrderTracking")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblAmendmentOrderTracking")
+        }
+
+        if (jsonObj.has("tblAARPortalAdmin")) {
+            if (!jsonObj.get("tblAARPortalAdmin").toString().equals("")) {
+                try {
+                    result = jsonObj.getJSONArray("tblAARPortalAdmin")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblAARPortalAdmin"))
+                    jsonObj.put("tblAARPortalAdmin", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalAdmin")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblAARPortalAdmin")
+        }
+
+
+        if (jsonObj.has("tblScopeofService")) {
+            if (!jsonObj.get("tblScopeofService").toString().equals("")) {
+                try {
+                    result = jsonObj.getJSONArray("tblScopeofService")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblScopeofService"))
+                    jsonObj.put("tblScopeofService", result)
+                } catch (e:Exception){
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblScopeofService")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblScopeofService")
+        }
+
+        if (jsonObj.has("tblPrograms")) {
+            if (!jsonObj.get("tblPrograms").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblPrograms")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblPrograms"))
+                    jsonObj.put("tblPrograms", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblPrograms")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblPrograms")
+        }
+
+        // check if the tag exists
+        if (jsonObj.has("tblFacilityServices")) {
+            if (!jsonObj.get("tblFacilityServices").toString().equals("")) {
+                try {
+                    result = jsonObj.getJSONArray("tblFacilityServices")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityServices"))
+                    jsonObj.put("tblFacilityServices", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj,"tblFacilityServices")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblFacilityServices")
+        }
+
+        if (jsonObj.has("tblAffiliations")) {
+            if (!jsonObj.get("tblAffiliations").toString().equals("")) {
+                try {
+                    result = jsonObj.getJSONArray("tblAffiliations")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblAffiliations"))
+                    jsonObj.put("tblAffiliations", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblAffiliations")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblAffiliations")
+        }
+
+        if (jsonObj.has("tblDeficiency")) {
+            if (!jsonObj.get("tblDeficiency").toString().equals("")) {
+                try {
+                    result = jsonObj.getJSONArray("tblDeficiency")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblDeficiency"))
+                    jsonObj.put("tblDeficiency",result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblDeficiency")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblDeficiency")
+        }
+
+        if (jsonObj.has("tblComplaintFiles")) {
+            if (!jsonObj.get("tblComplaintFiles").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblComplaintFiles")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblComplaintFiles"))
+                    jsonObj.put("tblComplaintFiles", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblComplaintFiles")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblComplaintFiles")
+        }
+
+        if (jsonObj.has("tblFacilityPhotos")) {
+            if (!jsonObj.get("tblFacilityPhotos").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityPhotos")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityPhotos"))
+                    jsonObj.put("tblFacilityPhotos", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityPhotos")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityPhotos")
+        }
+
+        if (jsonObj.has("tblBilling")) {
+            if (!jsonObj.get("tblBilling").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblBilling")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblBilling"))
+                    jsonObj.put("tblBilling", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
+        }
+
+        if (jsonObj.has("tblBillingPlan")) {
+            if (!jsonObj.get("tblBillingPlan").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblBillingPlan")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblBillingPlan"))
+                    jsonObj.put("tblBillingPlan", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblBillingPlan")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblBillingPlan")
+        }
+
+        if (jsonObj.has("tblFacilityBillingDetail")) {
+            if (!jsonObj.get("tblFacilityBillingDetail").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityBillingDetail")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityBillingDetail"))
+                    jsonObj.put("tblFacilityBillingDetail", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingDetail")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingDetail")
+        }
+
+        if (jsonObj.has("tblInvoiceInfo")) {
+            if (!jsonObj.get("tblInvoiceInfo").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblInvoiceInfo")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblInvoiceInfo"))
+                    jsonObj.put("tblInvoiceInfo", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblInvoiceInfo")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblInvoiceInfo")
+        }
+
+        if (jsonObj.has("tblVendorRevenue")) {
+            if (!jsonObj.get("tblVendorRevenue").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblVendorRevenue")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblVendorRevenue"))
+                    jsonObj.put("tblVendorRevenue", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblVendorRevenue")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblVendorRevenue")
+        }
+
+        if (jsonObj.has("tblBillingHistoryReport")) {
+            if (!jsonObj.get("tblBillingHistoryReport").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblBillingHistoryReport")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblBillingHistoryReport"))
+                    jsonObj.put("tblBillingHistoryReport", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblBillingHistoryReport")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblBillingHistoryReport")
+        }
+
+        return jsonObj
+    }
+
+    fun addOneElementtoKey (jsonObj: JSONObject, key: String) : JSONObject {
+        if (key.equals("tblFacilityServices")) {
+            var oneArray = FacilityDataModel.TblFacilityServices();
+            oneArray.Comments = "";
+            oneArray.ServiceID = "";
+            oneArray.effDate = "";
+            oneArray.expDate = "";
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblAffiliations")) {
+            var oneArray = FacilityDataModel.TblAffiliations()
+            oneArray.AffiliationTypeDetailID = 0
+            oneArray.AffiliationTypeID = 0
+            oneArray.effDate = "";
+            oneArray.comment = ""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblDeficiency")) {
+            var oneArray = FacilityDataModel.TblDeficiency()
+            oneArray.ClearedDate = ""
+            oneArray.Comments = ""
+            oneArray.DefTypeID = ""
+            oneArray.EnteredDate = ""
+            oneArray.VisitationDate = ""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblComplaintFiles")) {
+            var oneArray = FacilityDataModel.TblComplaintFiles()
+            oneArray.ComplaintID = ""
+            oneArray.FirstName = ""
+            oneArray.LastName = ""
+            oneArray.ReceivedDate = ""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblAmendmentOrderTracking")) {
+            var oneArray = FacilityDataModel.TblAmendmentOrderTracking()
+            oneArray.AOID = ""
+            oneArray.ReasonID = ""
+            oneArray.EventTypeID = ""
+            oneArray.EventID = ""
+            oneArray.AOTEmployee = ""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblScopeofService")) {
+            var oneArray = FacilityDataModel.TblScopeofService()
+            oneArray.WarrantyTypeID=""
+            oneArray.NumOfLifts=""
+            oneArray.DiagnosticsRate=""
+            oneArray.FixedLaborRate=""
+            oneArray.LaborMax=""
+            oneArray.LaborMin=""
+            oneArray.NumOfBays=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblSurveySoftwares")) {
+            var oneArray = FacilityDataModel.TblSurveySoftwares()
+            oneArray.FACID=0
+            oneArray.SoftwareSurveyNum=0
+            oneArray.insertBy=""
+            oneArray.insertDate=""
+            oneArray.updateBy=""
+            oneArray.updateDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblAddress")) {
+            var oneArray = FacilityDataModel.TblAddress()
+            oneArray.BranchName=""
+            oneArray.BranchNumber=""
+            oneArray.CITY=""
+            oneArray.County=""
+            oneArray.FAC_Addr1=""
+            oneArray.FAC_Addr2=""
+            oneArray.LATITUDE=""
+            oneArray.LONGITUDE=""
+            oneArray.LocationTypeID=""
+            oneArray.ST=""
+            oneArray.ZIP=""
+            oneArray.ZIP4=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblPhone")) {
+            var oneArray = FacilityDataModel.TblPhone()
+            oneArray.PhoneNumber=""
+            oneArray.PhoneTypeID=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblAARPortalAdmin")) {
+            var oneArray = FacilityDataModel.TblAARPortalAdmin()
+            oneArray.AddendumSigned=""
+            oneArray.CardReaders=""
+            oneArray.InProgressTows=""
+            oneArray.InProgressWalkIns=""
+            oneArray.LoggedIntoPortal=""
+            oneArray.NumberUnacknowledgedTows=""
+            oneArray.PortalInspectionDate=""
+            oneArray.startDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblPrograms")) {
+            var oneArray = FacilityDataModel.TblPrograms()
+            oneArray.Comments=""
+            oneArray.ProgramTypeID=""
+            oneArray.effDate=""
+            oneArray.expDate=""
+            oneArray.programtypename=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityPhotos")) {
+            var oneArray = FacilityDataModel.TblFacilityPhotos()
+            oneArray.ApprovalRequested=""
+            oneArray.Approved=""
+            oneArray.ApprovedBy=""
+            oneArray.ApprovedDate=""
+            oneArray.FileDescription=""
+            oneArray.FileName=""
+            oneArray.LastUpdateBy=""
+            oneArray.LastUpdateDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblBilling")) {
+            var oneArray = FacilityDataModel.TblBilling()
+            oneArray.ACHParticipant=0
+            oneArray.BillingAmount=0.0
+            oneArray.BillingDate=""
+            oneArray.BillingID=-1
+            oneArray.BillingMonthNumber=0
+            oneArray.BillingPlanID=0
+            oneArray.CreditAmountDue=""
+            oneArray.FACID=0
+            oneArray.PaymentAmount=0.0
+            oneArray.PendingAmount=0.0
+            oneArray.PaymentDate=""
+            oneArray.ResubmitFlag=0
+            oneArray.RevenueSourceID=0
+            oneArray.SecondBillDate=""
+            oneArray.insertBy=""
+            oneArray.insertDate=""
+            oneArray.updateBy=""
+            oneArray.updateDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblBillingPlan")) {
+            var oneArray = FacilityDataModel.TblBillingPlan()
+            oneArray.BillingPlanCatgID=0
+            oneArray.BillingPlanID=-1
+            oneArray.BillingPlanTypeID=0
+            oneArray.EffectiveDate=""
+            oneArray.ExpirationDate=""
+            oneArray.FACID=0
+            oneArray.FrequencyTypeID=0
+            oneArray.insertBy=""
+            oneArray.insertDate=""
+            oneArray.updateBy=""
+            oneArray.updateDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityBillingDetail")) {
+            var oneArray = FacilityDataModel.TblFacilityBillingDetail()
+            oneArray.FacBillId=-1
+            oneArray.BillingPlanID=-1
+            oneArray.BillingPlanTypeID=0
+            oneArray.BillAmount=0.0
+            oneArray.BillDueDate=""
+            oneArray.FACID=0
+            oneArray.BillSeqInCycle=0
+            oneArray.insertBy=""
+            oneArray.insertDate=""
+            oneArray.BillingInvoiceDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblInvoiceInfo")) {
+            var oneArray = FacilityDataModel.TblInvoiceInfo()
+            oneArray.ACHParticipant=false
+            oneArray.BillingDueDate=""
+            oneArray.CreditAmount=0.0
+            oneArray.InvoiceAmount=0.0
+            oneArray.InvoiceFileName=""
+            oneArray.FACID=0
+            oneArray.InvoiceId=-1
+            oneArray.insertBy=""
+            oneArray.insertDate=""
+            oneArray.updateBy=""
+            oneArray.updateDate=""
+            oneArray.InvoicePrintDate=""
+            oneArray.InvoiceStatusId=0
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblVendorRevenue")) {
+            var oneArray = FacilityDataModel.TblVendorRevenue()
+            oneArray.Amount=0.0
+            oneArray.Comments=""
+            oneArray.DateofCheck=""
+            oneArray.FACID=0
+            oneArray.ReceiptDate=""
+            oneArray.FACID=0
+            oneArray.ReceiptNumber=""
+            oneArray.insertBy=""
+            oneArray.insertDate=""
+            oneArray.updateBy=""
+            oneArray.updateDate=""
+            oneArray.RevenueSourceID=0
+            oneArray.StateRevenueAcct=""
+            oneArray.VendorRevenueID=-1
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblBillingHistoryReport")) {
+            var oneArray = FacilityDataModel.TblBillingHistoryReport()
+            oneArray.Amount=0.0
+            oneArray.BillingHistoryReportID=-1
+            oneArray.FacID=0
+            oneArray.FacName=""
+            oneArray.FacNo=0
+            oneArray.ReferenceNo=""
+            oneArray.TransactionDate=""
+            oneArray.TransactionDesc=""
+            oneArray.insertDate=""
+            oneArray.TransactionType=""
+            oneArray.updateDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        }
+        return jsonObj;
     }
 
     private class VisitationPlanningViewHolder(view: View?) {

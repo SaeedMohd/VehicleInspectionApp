@@ -14,6 +14,7 @@ import android.widget.TableRow
 import android.widget.TextView
 
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_vendorrevenue.*
@@ -169,90 +170,65 @@ class FragmentAARAVVendorRevenue : Fragment() {
 
         var dateTobeFormated = ""
 
-//        FacilityDataModel.getInstance().tbl.apply {
-//            (0 until size).forEach {
-        for (i in 1..2) {
+        FacilityDataModel.getInstance().tblVendorRevenue.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+                if (it % 2 == 0) {
+                    tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                }
+                if (get(it).VendorRevenueID!=-1) {
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).VendorRevenueID.toString();
+                    tableRow.addView(textView)
 
-            var tableRow = TableRow(context)
-            if (i % 2 == 0) {
-                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = ""
+                    try {
+                        textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
+                    } catch (e: Exception) {
+
+                    }
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam2
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    TableRow.LayoutParams()
+                    textView.text = if (get(it).DateofCheck.equals("")) "" else get(it).DateofCheck.apiToAppFormat();
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam3
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).Amount.toString()
+
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam4
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).ReceiptDate.apiToAppFormat()
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam5
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).ReceiptNumber
+                    tableRow.addView(textView)
+
+                    venRevResultsTbl.addView(tableRow)
+                }
             }
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).FAC_Addr1
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            textView.text = "Test" // get(it).FAC_Addr2
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
-
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).County
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam5
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).ST
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam6
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).ZIP + "-" + get(it).ZIP4
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam7
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).LATITUDE
-            tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam8
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).LONGITUDE
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam9
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).BranchNumber
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam10
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).BranchName
-//                tableRow.addView(textView)
-//
-            venRevResultsTbl.addView(tableRow)
         }
 //        altVenRevTableRow(2)
 //            }
 //        }
 
     }
-
 
     private fun submitVenRevData(){
         addNewVenRevDialog.visibility = View.GONE
@@ -264,8 +240,8 @@ class FragmentAARAVVendorRevenue : Fragment() {
         addNewVenRevDialog.visibility = View.VISIBLE
     }
 
-
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
+
     private var revSourceArray = ArrayList<String>()
 
     fun prepareVendorRevSpinners() {

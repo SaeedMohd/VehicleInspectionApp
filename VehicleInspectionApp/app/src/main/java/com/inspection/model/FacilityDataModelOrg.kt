@@ -56,8 +56,20 @@ class FacilityDataModelOrg {
     var NumberofJustifiedComplaints = ArrayList<numberofJustifiedComplaints>()
     var JustifiedComplaintRatio = ArrayList<justifiedComplaintRatio>()
     var tblFacilityPhotos = ArrayList<TblFacilityPhotos>()
+    var tblBilling = ArrayList<TblBilling>()
+    var tblBillingPlan = ArrayList<TblBillingPlan>()
+    var tblFacilityBillingDetail = ArrayList<TblFacilityBillingDetail>()
+    var tblInvoiceInfo = ArrayList<TblInvoiceInfo>()
+    var tblVendorRevenue = ArrayList<TblVendorRevenue>()
+    var tblBillingHistoryReport = ArrayList<TblBillingHistoryReport>()
+
 
     class TblFacilities {
+
+
+        var isInputsValid = false
+
+
         var FACID = 0
         var FACNo = 0
         var BusinessName = ""
@@ -76,7 +88,7 @@ class FacilityDataModelOrg {
         var InternetAccess = true
         var TaxIDNumber = ""
         var FacilityRepairOrderCount = 0
-        var SvcAvailability = 0
+        var SvcAvailability = ""
         var AutomotiveRepairNumber = ""
         var AutomotiveRepairExpDate = ""
         var ContractCurrentDate = ""
@@ -116,6 +128,10 @@ class FacilityDataModelOrg {
         var TimezoneName = ""
     }
 
+    enum class VisitationTypes {
+        Annual, Quarterly, AdHoc
+    }
+
     class TblVisitationTracking {
         var DatePerformed = ""
         var performedBy = ""
@@ -131,6 +147,7 @@ class FacilityDataModelOrg {
         var facilityRepresentativeDeficienciesSignature: Bitmap? = null
         var emailVisitationPdfToFacility = false
         var email = ""
+        var visitationType : VisitationTypes? = null
         var waiveVisitations = false
         var waiverComments = ""
         var waiverSignature : Bitmap? = null
@@ -142,6 +159,12 @@ class FacilityDataModelOrg {
     }
 
     class TblSurveySoftwares {
+        var FACID=0
+        var SoftwareSurveyNum = 0
+        var insertBy = ""
+        var insertDate=""
+        var updateBy = ""
+        var updateDate = ""
     }
 
     class TblPaymentMethods {
@@ -149,6 +172,7 @@ class FacilityDataModelOrg {
     }
 
     class TblAddress {
+        var locIsInputsValid = false
         var LocationTypeID = ""
         var FAC_Addr1 = ""
         var FAC_Addr2 = ""
@@ -164,11 +188,13 @@ class FacilityDataModelOrg {
     }
 
     class TblPhone {
+        var phoneIsInputsValid = false
         var PhoneTypeID = ""
         var PhoneNumber = ""
     }
 
     class TblFacilityEmail {
+        var emailIsInputsValid = false
         var emailTypeId = ""
         var email = ""
     }
@@ -204,6 +230,8 @@ class FacilityDataModelOrg {
     }
 
     class TblPersonnel {
+        var personnelIsInputsValid = false
+        var iscertInputValid = false
         var PersonnelTypeID=""
         var FirstName=""
         var LastName=""
@@ -236,6 +264,8 @@ class FacilityDataModelOrg {
     }
 
     class TblAARPortalAdmin {
+        var isInputsValid = false
+
         var startDate = ""
         var AddendumSigned = ""
         var CardReaders = ""
@@ -247,6 +277,8 @@ class FacilityDataModelOrg {
     }
 
     class TblScopeofService {
+        var isInputsValid = false
+
         var FixedLaborRate = ""
         var DiagnosticsRate = ""
         var LaborMin = ""
@@ -257,6 +289,7 @@ class FacilityDataModelOrg {
     }
 
     class TblPrograms {
+        var isInputsValid = false
 
         var ProgramTypeID = ""
         var programtypename = ""
@@ -266,6 +299,8 @@ class FacilityDataModelOrg {
     }
 
     class TblFacilityServices {
+        var isInputsValid = false
+
         var ServiceID = ""
         var effDate = ""
         var expDate = ""
@@ -273,10 +308,15 @@ class FacilityDataModelOrg {
     }
 
     class TblAffiliations {
-
+        var AffiliationTypeID = 0
+        var AffiliationTypeDetailID = 0
+        var effDate = ""
+        var comment = ""
     }
 
     class TblDeficiency {
+        var isInputsValid = false
+
         var DefTypeID = ""
         var VisitationDate = ""
         var ClearedDate = ""
@@ -312,5 +352,100 @@ class FacilityDataModelOrg {
         var LastUpdateDate = ""
         var ApprovedBy = ""
         var ApprovedDate = ""
+    }
+
+    class TblBilling {
+        var FACID = 0
+        var BillingID = 0
+        var ACHParticipant = 0
+        var RevenueSourceID = 0
+        var BillingMonthNumber = 1
+        var BillingDate = ""
+        var SecondBillDate = ""
+        var BillingAmount = 0.0
+        var PaymentDate = ""
+        var PaymentAmount = 0.0
+        var PendingAmount = 0.0
+        var CreditAmountDue = ""
+        var insertBy = ""
+        var insertDate = ""
+        var updateBy = ""
+        var updateDate = ""
+        var BillingPlanID = 0
+        var ResubmitFlag = 0
+    }
+
+    class TblBillingPlan {
+        var FACID = 0
+        var BillingPlanID = 0
+        var BillingPlanTypeID = 0
+        var BillingPlanCatgID = 0
+        var FrequencyTypeID = 1
+        var EffectiveDate = ""
+        var ExpirationDate = ""
+        var insertBy = ""
+        var insertDate = ""
+        var updateBy = ""
+        var updateDate = ""
+    }
+
+    class TblFacilityBillingDetail {
+        var FACID = 0
+        var FacBillId = 0
+        var BillingPlanID = 0
+        var BillingPlanTypeID = 0
+        var BillDueDate = ""
+        var BillingInvoiceDate = ""
+        var BillAmount = 0.0
+        var BillSeqInCycle = 0
+        var insertBy = ""
+        var insertDate = ""
+    }
+
+    class TblInvoiceInfo {
+        var FACID = 0
+        var InvoiceId = 0
+        var InvoiceNumber = ""
+        var InvoiceAmount = 0.0
+        var CreditAmount = 0.0
+        var BillingDueDate = ""
+        var InvoicePrintDate = ""
+        var InvoiceStatusId = 0
+        var ACHParticipant = false
+        var InvoiceFileName = ""
+        var insertBy = ""
+        var insertDate = ""
+        var updateBy = ""
+        var updateDate = ""
+    }
+
+    class TblVendorRevenue {
+        var FACID = 0
+        var VendorRevenueID = 0
+        var DateofCheck = ""
+        var Amount = 0.0
+        var ReceiptDate = ""
+        var ReceiptNumber = ""
+        var RevenueSourceID = 0
+        var StateRevenueAcct = ""
+        var Comments = ""
+        var insertBy = ""
+        var insertDate = ""
+        var updateBy = ""
+        var updateDate = ""
+    }
+
+    class TblBillingHistoryReport {
+        var FacID = 0
+        var BillingHistoryReportID = 0
+        var FacNo = 0
+        var FacName = ""
+        var TransactionDate = ""
+        var TransactionType = ""
+        var TransactionDesc = ""
+        var ReferenceNo = ""
+        var Amount = 0.0
+        var insertDate = ""
+        var updateDate = ""
     }
 }

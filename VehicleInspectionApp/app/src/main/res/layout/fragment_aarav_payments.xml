@@ -91,15 +91,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Billing Month"
-                            android:layout_column="5"
-                            android:layout_weight="1"
-                            android:textColor="@color/white"
-                            android:layout_gravity="center_vertical"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="Payment Amount"
                             android:layout_column="6"
                             android:layout_weight="1"

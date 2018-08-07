@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.*
 
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.monthNoToName
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
@@ -284,64 +286,70 @@ class FragmentAARAVBilling : Fragment() {
 
         var dateTobeFormated = ""
 
-//        FacilityDataModel.getInstance().tbl.apply {
-//            (0 until size).forEach {
-        for (i in 1..2) {
+        FacilityDataModel.getInstance().tblBilling.apply {
+            (0 until size).forEach {
+                //        for (i in 1..2) {
 
-            var tableRow = TableRow(context)
-            if (i % 2 == 0) {
-                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                var tableRow = TableRow(context)
+                if (it % 2 == 0) {
+                    tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                }
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).BillingID.toString()
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = "Test" // get(it).FAC_Addr1
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                TableRow.LayoutParams()
+                textView.text = ""
+                try {
+                    textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
+                } catch (e: Exception) {
+
+                }
+
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = ""
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).BillingMonthNumber.monthNoToName()
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam5
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).BillingDate.apiToAppFormat()
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam6
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).BillingAmount.toString()
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam7
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).PaymentDate.apiToAppFormat()
+                tableRow.addView(textView)
+                billingResultsTbl.addView(tableRow)
             }
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).FAC_Addr1
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            textView.text = "Test" // get(it).FAC_Addr2
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
-
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).County
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam5
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).ST
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam6
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).ZIP + "-" + get(it).ZIP4
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam7
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).LATITUDE
-            tableRow.addView(textView)
-            billingResultsTbl.addView(tableRow)
         }
 //        altVenRevTableRow(2)
 //            }
