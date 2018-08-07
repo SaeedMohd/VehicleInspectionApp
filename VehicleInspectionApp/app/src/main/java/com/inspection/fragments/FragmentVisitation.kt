@@ -72,6 +72,7 @@ class FragmentVisitation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
         initializeFields()
         setFieldsValues()
@@ -649,85 +650,6 @@ class FragmentVisitation : Fragment() {
 
     }
 
-    fun scopeOfServiceChangesWatcher(){
-
-        if (FragmentARRAVScopeOfService.dataChanged) {
-
-            val builder = AlertDialog.Builder(context)
-
-            // Set the alert dialog title
-            builder.setTitle("Changes made confirmation")
-
-            // Display a message on alert dialog
-            builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-
-            // Set a positive button and its click listener on alert dialog
-            builder.setPositiveButton("YES") { dialog, which ->
-
-                scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-
-
-
-                Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE", response.toString())
-                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-                                Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-                                if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                    FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
-                                        LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-                                        LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank())LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-                                        FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank())FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-                                        DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank())DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-                                        NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank())NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-                                        NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank())NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-
-                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-
-                                        FragmentARRAVScopeOfService.dataChanged =false
-
-                                    }
-
-                                }
-
-                            })
-                        }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
-                    Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
-                    scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-
-                }))
-
-
-            }
-
-
-
-
-
-            // Display a negative button on alert dialog
-            builder.setNegativeButton("No") { dialog, which ->
-                FragmentARRAVScopeOfService.dataChanged =false
-                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-            }
-
-
-
-
-            // Finally, make the alert dialog using builder
-            val dialog: AlertDialog = builder.create()
-            dialog.setCanceledOnTouchOutside(false)
-            // Display the alert dialog on app interface
-            dialog.show()
-
-        }
-
-    }
 
 
     fun representativeSignatureConditionedEnabling() {
@@ -1001,5 +923,137 @@ class FragmentVisitation : Fragment() {
             alertDialog.show()
         })
     }
+    fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService(){
+
+
+        FragmentARRAVScopeOfService.fixedLaborRate = if (FragmentARRAVScopeOfService.watcher_FixedLaborRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate else FragmentARRAVScopeOfService.watcher_FixedLaborRate
+        FragmentARRAVScopeOfService.diagnosticLaborRate =  if (FragmentARRAVScopeOfService.watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else FragmentARRAVScopeOfService.watcher_DiagnosticsRate
+        FragmentARRAVScopeOfService.laborRateMatrixMax =  if (FragmentARRAVScopeOfService.watcher_LaborMax.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMax else FragmentARRAVScopeOfService.watcher_LaborMax
+        FragmentARRAVScopeOfService.laborRateMatrixMin =  if (FragmentARRAVScopeOfService.watcher_LaborMin.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMin else FragmentARRAVScopeOfService.watcher_LaborMin
+        FragmentARRAVScopeOfService.numberOfBaysEditText_ =  if (FragmentARRAVScopeOfService.watcher_NumOfBays.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays else FragmentARRAVScopeOfService.watcher_NumOfBays
+        FragmentARRAVScopeOfService.numberOfLiftsEditText_ =  if (FragmentARRAVScopeOfService.watcher_NumOfLifts.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts else FragmentARRAVScopeOfService.watcher_NumOfLifts
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!= FragmentARRAVScopeOfService.laborRateMatrixMax){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!= FragmentARRAVScopeOfService.laborRateMatrixMin){
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!= FragmentARRAVScopeOfService.fixedLaborRate){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!= FragmentARRAVScopeOfService.diagnosticLaborRate){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!= FragmentARRAVScopeOfService.numberOfBaysEditText_){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!= FragmentARRAVScopeOfService.numberOfLiftsEditText_){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+    }
+
+    fun scopeOfServiceChangesWatcher(){
+
+        if (FragmentARRAVScopeOfService.dataChanged) {
+
+            val builder = AlertDialog.Builder(context)
+
+            // Set the alert dialog title
+            builder.setTitle("Changes made confirmation")
+
+            // Display a message on alert dialog
+            builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+
+            // Set a positive button and its click listener on alert dialog
+            builder.setPositiveButton("YES") { dialog, which ->
+
+                scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+
+
+
+                Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("RESPONSE", response.toString())
+                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+
+                                Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+                                if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                    FacilityDataModel.getInstance().tblScopeofService[0].apply {
+
+                                        LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
+                                        LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank())LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
+                                        FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank())FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
+                                        DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank())DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
+                                        NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank())NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
+                                        NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank())NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
+
+                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
+
+                                        FragmentARRAVScopeOfService.dataChanged =false
+
+                                    }
+
+                                }
+
+                            })
+                        }, Response.ErrorListener {
+                    Log.v("error while loading", "error while loading personnal record")
+                    Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+                    scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+
+
+                }))
+
+
+            }
+
+
+
+
+
+            // Display a negative button on alert dialog
+            builder.setNegativeButton("No") { dialog, which ->
+                FragmentARRAVScopeOfService.dataChanged =false
+                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+
+            }
+
+
+
+
+            // Finally, make the alert dialog using builder
+            val dialog: AlertDialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+            // Display the alert dialog on app interface
+            dialog.show()
+
+        }
+
+    }
+
 
 }

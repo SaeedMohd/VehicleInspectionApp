@@ -31,6 +31,7 @@ import com.google.gson.GsonBuilder
 import com.inspection.FormsActivity
 import com.inspection.MainActivity
 import com.inspection.MainActivity.Companion.activity
+import com.inspection.MainActivity.Companion.handler
 import com.inspection.R.id.numberOfLiftsEditText
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.model.FacilityDataModelOrg
@@ -51,7 +52,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     var warrantyArray = ArrayList<String>()
 
-
+    var fillMethodCalled = false
     var temp_fixedLaborRate = ""
     var temp_diagnosticLaborRate = ""
     var temp_laborRateMatrixMax = ""
@@ -107,6 +108,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     fun fillFieldsIntoVariables(){
 
+        Toast.makeText(context,"called",Toast.LENGTH_SHORT).show()
 
          fixedLaborRate = fixedLaborRateEditText.text.toString()
          diagnosticLaborRate = diagnosticRateEditText.text.toString()
@@ -115,9 +117,9 @@ class FragmentARRAVScopeOfService : Fragment() {
          numberOfBaysEditText_ = numberOfBaysEditText.text.toString()
          numberOfLiftsEditText_ = numberOfLiftsEditText.text.toString()
 
+
         if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!=laborRateMatrixMax){
 
-            Toast.makeText(context,watcher_LaborMax + "    and    " + FacilityDataModel.getInstance().tblScopeofService[0].LaborMax ,Toast.LENGTH_SHORT).show()
 
 dataChanged=true
         }
@@ -154,7 +156,7 @@ dataChanged=true
 
             dataChanged=true
         }
-
+        fillMethodCalled = true
 
     }
     fun setFieldsListener (){
@@ -571,8 +573,11 @@ dataChanged=true
     }
 
 
+
     override fun onPause() {
+
         fillFieldsIntoVariables()
+
         super.onPause()
 
     }

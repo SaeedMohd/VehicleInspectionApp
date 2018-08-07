@@ -22,6 +22,19 @@ import com.inspection.Utils.Constants.UpdateDeficiencyData
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.appToApiFormat
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.dataChanged
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.diagnosticLaborRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMax
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMin
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfBaysEditText_
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfLiftsEditText_
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_DiagnosticsRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_FixedLaborRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMax
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMin
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
@@ -62,6 +75,7 @@ class FragmentARRAVDeficiency : Fragment() {
         super.onViewCreated(view, savedInstanceState)
        prepareDefSpinners()
         fillDeffTableView()
+        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
 
 
@@ -538,7 +552,107 @@ class FragmentARRAVDeficiency : Fragment() {
         }
     }
 
+
+
+    fun validateInputs() : Boolean {
+
+        var defValide=FacilityDataModel.TblDeficiency().isInputsValid
+        defValide = true
+
+        newVisitationDateBtn.setError(null)
+        signatureDateBtn.setError(null)
+        facilityRepresentativeDeficienciesSignatureButton.setError(null)
+
+
+        if(newVisitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            defValide = false
+            newVisitationDateBtn.setError("Required Field")
+        }
+
+        for (fac in FacilityDataModel.getInstance().tblDeficiency) {
+
+            if (!fac.ClearedDate.isNullOrEmpty()) {
+
+                if (signatureDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+                    defValide = false
+                    signatureDateBtn.setError("Required Field")
+                }
+
+//                if (facilityRepresentativeDeficienciesSignatureBitmap==null) {
+//                    isInputsValid = false
+//                    facilityRepresentativeDeficienciesSignatureButton.setError("Required Field")
+//                }
+
+                if (facilityRepresentativeDeficienciesSignatureButton.text.toString() == "ADD SIGNATURE" ||
+                        facilityRepresentativeDeficienciesSignatureButton.text.toString() =="Add Signature") {
+
+                    defValide = false
+                    facilityRepresentativeDeficienciesSignatureButton.setError("required field")
+
+                }
+
+            }
+
+        }
+        return  defValide
+
+    }
+    fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService(){
+
+
+        fixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate else watcher_FixedLaborRate
+        diagnosticLaborRate =  if (watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else watcher_DiagnosticsRate
+        laborRateMatrixMax =  if (watcher_LaborMax.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMax else watcher_LaborMax
+        laborRateMatrixMin =  if (watcher_LaborMin.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMin else watcher_LaborMin
+        numberOfBaysEditText_ =  if (watcher_NumOfBays.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays else watcher_NumOfBays
+        numberOfLiftsEditText_ =  if (watcher_NumOfLifts.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts else watcher_NumOfLifts
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!=laborRateMatrixMax){
+
+
+            dataChanged=true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!=laborRateMatrixMin){
+
+            dataChanged=true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!=fixedLaborRate){
+
+
+            dataChanged=true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!=diagnosticLaborRate){
+
+
+            dataChanged=true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!=numberOfBaysEditText_){
+
+
+            dataChanged=true
+        }
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!=numberOfLiftsEditText_){
+
+
+            dataChanged=true
+        }
+
+    }
+
+
+
     fun scopeOfServiceChangesWatcher(){
+
 
         if (FragmentARRAVScopeOfService.dataChanged) {
 
@@ -618,50 +732,6 @@ class FragmentARRAVDeficiency : Fragment() {
 
     }
 
-
-    fun validateInputs() : Boolean {
-
-        var defValide=FacilityDataModel.TblDeficiency().isInputsValid
-        defValide = true
-
-        newVisitationDateBtn.setError(null)
-        signatureDateBtn.setError(null)
-        facilityRepresentativeDeficienciesSignatureButton.setError(null)
-
-
-        if(newVisitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-            defValide = false
-            newVisitationDateBtn.setError("Required Field")
-        }
-
-        for (fac in FacilityDataModel.getInstance().tblDeficiency) {
-
-            if (!fac.ClearedDate.isNullOrEmpty()) {
-
-                if (signatureDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-                    defValide = false
-                    signatureDateBtn.setError("Required Field")
-                }
-
-//                if (facilityRepresentativeDeficienciesSignatureBitmap==null) {
-//                    isInputsValid = false
-//                    facilityRepresentativeDeficienciesSignatureButton.setError("Required Field")
-//                }
-
-                if (facilityRepresentativeDeficienciesSignatureButton.text.toString() == "ADD SIGNATURE" ||
-                        facilityRepresentativeDeficienciesSignatureButton.text.toString() =="Add Signature") {
-
-                    defValide = false
-                    facilityRepresentativeDeficienciesSignatureButton.setError("required field")
-
-                }
-
-            }
-
-        }
-        return  defValide
-
-    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
