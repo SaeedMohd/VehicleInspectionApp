@@ -78,6 +78,9 @@ class FragmentVisitation : Fragment() {
         setFieldsValues()
         setFieldsListeners()
 
+        if (FacilityDataModelOrg.getInstance().changeWasDone==true ){
+            dataChangedYesRadioButton.isChecked=true
+        }
 
     }
 
@@ -184,7 +187,7 @@ class FragmentVisitation : Fragment() {
             facilityNameAndNumberRelationForSelection()
             if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && automotiveSpecialistSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName) {
 
-                MarkChangeWasDone()
+             //   MarkChangeWasDone()
 
 
             } else {
@@ -226,7 +229,7 @@ class FragmentVisitation : Fragment() {
             if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNotEmpty()) {
                 facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
                 if (facilityRepresentativesSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName) {
-                    MarkChangeWasDone()
+                //    MarkChangeWasDone()
 
 
                 } else {
@@ -431,7 +434,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
                 if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
-                    MarkChangeWasDone()
+                //    MarkChangeWasDone()
                 }
             }
 
@@ -449,7 +452,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
-                    MarkChangeWasDone()
+              //      MarkChangeWasDone()
                 }
             }
 
@@ -468,7 +471,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl){
-                    MarkChangeWasDone()
+                //    MarkChangeWasDone()
                 }
             }
 
@@ -487,7 +490,7 @@ class FragmentVisitation : Fragment() {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining){
 
-                    MarkChangeWasDone()
+               //     MarkChangeWasDone()
 
 
                 }else{
@@ -511,7 +514,7 @@ class FragmentVisitation : Fragment() {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
 
-                    MarkChangeWasDone()
+                 //   MarkChangeWasDone()
 
 
                 }
@@ -532,7 +535,7 @@ class FragmentVisitation : Fragment() {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
 
-                    MarkChangeWasDone()
+                //    MarkChangeWasDone()
 
                 }
             }
@@ -553,7 +556,7 @@ class FragmentVisitation : Fragment() {
                 FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].email){
 
-                    MarkChangeWasDone()
+                //    MarkChangeWasDone()
 
 
                 }

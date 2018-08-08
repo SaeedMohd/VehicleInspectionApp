@@ -276,24 +276,27 @@ class ScopeOfServiceGroupFragment : Fragment() {
         super.onPause()
 
 
-        FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = true
+        try {
+            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = true
 
 
-        if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
-            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
-        }
+            if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
+                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+            }
 
-        if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
-            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
-        }
+            if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
+                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+            }
 
 
-        if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
-            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
-        }
+            if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+            }
 
-        if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
-            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+            if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+            }
+        } catch (e: Exception) {
         }
 
 
