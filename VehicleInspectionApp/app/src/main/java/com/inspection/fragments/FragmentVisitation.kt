@@ -32,6 +32,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMax
 import com.inspection.model.FacilityDataModelOrg
 
 
@@ -74,6 +76,7 @@ class FragmentVisitation : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
+        FragmentARRAVScopeOfService().checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
         initializeFields()
         setFieldsValues()
         setFieldsListeners()
@@ -928,6 +931,7 @@ class FragmentVisitation : Fragment() {
     }
     fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService(){
 
+        FragmentARRAVScopeOfService.dataChanged =false
 
         FragmentARRAVScopeOfService.fixedLaborRate = if (FragmentARRAVScopeOfService.watcher_FixedLaborRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate else FragmentARRAVScopeOfService.watcher_FixedLaborRate
         FragmentARRAVScopeOfService.diagnosticLaborRate =  if (FragmentARRAVScopeOfService.watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else FragmentARRAVScopeOfService.watcher_DiagnosticsRate
@@ -939,6 +943,7 @@ class FragmentVisitation : Fragment() {
 
         if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!= FragmentARRAVScopeOfService.laborRateMatrixMax){
 
+            Log.v("compare111", laborRateMatrixMax  +  "  ===>"  +  FacilityDataModel.getInstance().tblScopeofService[0].LaborMax)
 
             FragmentARRAVScopeOfService.dataChanged =true
         }
@@ -952,6 +957,7 @@ class FragmentVisitation : Fragment() {
 
         if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!= FragmentARRAVScopeOfService.fixedLaborRate){
 
+            Log.v("compare222", fixedLaborRate  +  "  ===>"  +  FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate)
 
             FragmentARRAVScopeOfService.dataChanged =true
         }

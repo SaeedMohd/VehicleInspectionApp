@@ -574,6 +574,7 @@ class FragmentARRAVComplaints : Fragment() {
 
     fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService() {
 
+        FragmentARRAVScopeOfService.dataChanged =false
 
         FragmentARRAVScopeOfService.fixedLaborRate = if (FragmentARRAVScopeOfService.watcher_FixedLaborRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate else FragmentARRAVScopeOfService.watcher_FixedLaborRate
         FragmentARRAVScopeOfService.diagnosticLaborRate = if (FragmentARRAVScopeOfService.watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else FragmentARRAVScopeOfService.watcher_DiagnosticsRate

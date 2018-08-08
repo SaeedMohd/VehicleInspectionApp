@@ -275,7 +275,6 @@ class ScopeOfServiceGroupFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-
         try {
             FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = true
 

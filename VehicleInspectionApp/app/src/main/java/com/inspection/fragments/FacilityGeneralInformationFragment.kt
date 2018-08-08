@@ -372,6 +372,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             dpd.show()
         }
 //
+
         InsuranceExpDate_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -605,6 +606,12 @@ class FacilityGeneralInformationFragment : Fragment() {
         }else {
             FacilityDataModel.getInstance().tblPaymentMethods.removeIf { i -> i.PmtMethodID.toInt() == paymentMethodId }
         }
+    }
+
+    fun checkMarkChangesWasDoneForFacilityGeneralInfo(){
+
+
+
     }
 
     fun setPaymentMethods() {

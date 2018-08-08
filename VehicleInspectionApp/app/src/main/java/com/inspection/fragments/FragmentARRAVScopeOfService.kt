@@ -59,7 +59,7 @@ class FragmentARRAVScopeOfService : Fragment() {
     var temp_laborRateMatrixMin = ""
     var temp_numberOfBaysEditText_ = ""
     var temp_numberOfLiftsEditText_ = ""
-
+    var testString=""
 
 
     private var mListener: OnFragmentInteractionListener? = null
@@ -177,9 +177,8 @@ dataChanged=true
 
                 Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 watcher_LaborMax=s.toString()
-                if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!=watcher_LaborMax){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax!=watcher_LaborMax){
 
-                 //   dataChanged=true
                 }
             }
         }
@@ -197,9 +196,8 @@ dataChanged=true
                 watcher_LaborMin=s.toString()
 
 
-                if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!=watcher_LaborMin){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin!=watcher_LaborMin){
 
-            //        dataChanged=true
 
                 }
 
@@ -217,10 +215,10 @@ dataChanged=true
             override fun afterTextChanged(s: Editable) {
 
                 watcher_FixedLaborRate=s.toString()
+                testString=s.toString()
 
-                if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!=watcher_FixedLaborRate){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate!=watcher_FixedLaborRate){
 
-            //        dataChanged=true
 
                 }
             }
@@ -238,9 +236,8 @@ dataChanged=true
 
                 watcher_DiagnosticsRate=s.toString()
 
-                if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!=watcher_DiagnosticsRate){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate!=watcher_DiagnosticsRate){
 
-           //         dataChanged=true
 
                 }
             }
@@ -258,9 +255,8 @@ dataChanged=true
 
                 watcher_NumOfBays=s.toString()
 
-                if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!=watcher_NumOfBays){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays!=watcher_NumOfBays){
 
-           //         dataChanged=true
 
                 }
             }
@@ -280,9 +276,8 @@ dataChanged=true
                 watcher_NumOfLifts=s.toString()
 
 
-                if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!=watcher_NumOfLifts){
+                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts!=watcher_NumOfLifts){
 
-            //        dataChanged=true
 
                 }
 
@@ -468,47 +463,8 @@ dataChanged=true
 
 
                                             }
-                                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != watcher_LaborMax) {
+                                            checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
 
-                                                MarkChangeWasDone()
-                                            }
-
-
-                                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != watcher_LaborMin) {
-
-                                                MarkChangeWasDone()
-
-                                            }
-
-
-                                            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != watcher_FixedLaborRate) {
-
-                                                MarkChangeWasDone()
-
-
-
-                                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != watcher_DiagnosticsRate) {
-
-                                                    MarkChangeWasDone()
-
-                                                }
-
-
-                                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != watcher_NumOfBays) {
-
-                                                    MarkChangeWasDone()
-
-                                                }
-
-
-                                                if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != watcher_NumOfLifts) {
-
-                                                    MarkChangeWasDone()
-
-                                                }
-
-
-                                            }
 
 
                                         }
@@ -527,6 +483,51 @@ dataChanged=true
         })
     }
 
+    fun checkMarkChangeWasDoneForScopeOfServiceGeneralInfo(){
+
+        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != FacilityDataModel.getInstance().tblScopeofService[0].LaborMax) {
+
+            MarkChangeWasDone()
+        }
+
+
+        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != FacilityDataModel.getInstance().tblScopeofService[0].LaborMin) {
+
+            MarkChangeWasDone()
+
+        }
+
+
+        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate) {
+
+            MarkChangeWasDone()
+
+
+        }
+            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate) {
+
+                MarkChangeWasDone()
+
+            }
+
+
+            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays) {
+
+                MarkChangeWasDone()
+
+            }
+
+
+            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts) {
+
+                MarkChangeWasDone()
+
+            }
+
+
+
+
+    }
     fun validateInputs(): Boolean {
 
         scopeOfServiceValide = true

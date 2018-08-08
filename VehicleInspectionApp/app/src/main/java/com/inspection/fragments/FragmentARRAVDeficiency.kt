@@ -604,6 +604,7 @@ class FragmentARRAVDeficiency : Fragment() {
     }
     fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService(){
 
+        FragmentARRAVScopeOfService.dataChanged =false
 
         fixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate else watcher_FixedLaborRate
         diagnosticLaborRate =  if (watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else watcher_DiagnosticsRate

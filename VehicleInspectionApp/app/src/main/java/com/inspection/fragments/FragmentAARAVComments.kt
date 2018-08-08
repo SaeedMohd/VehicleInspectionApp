@@ -58,6 +58,7 @@ class FragmentAARAVComments : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
         prepareCommentsSpinners()
 
@@ -211,6 +212,60 @@ class FragmentAARAVComments : Fragment() {
 //            }
 
     }
+
+    fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService(){
+
+        FragmentARRAVScopeOfService.dataChanged =false
+
+        FragmentARRAVScopeOfService.fixedLaborRate = if (FragmentARRAVScopeOfService.watcher_FixedLaborRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate else FragmentARRAVScopeOfService.watcher_FixedLaborRate
+        FragmentARRAVScopeOfService.diagnosticLaborRate =  if (FragmentARRAVScopeOfService.watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else FragmentARRAVScopeOfService.watcher_DiagnosticsRate
+        FragmentARRAVScopeOfService.laborRateMatrixMax =  if (FragmentARRAVScopeOfService.watcher_LaborMax.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMax else FragmentARRAVScopeOfService.watcher_LaborMax
+        FragmentARRAVScopeOfService.laborRateMatrixMin =  if (FragmentARRAVScopeOfService.watcher_LaborMin.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMin else FragmentARRAVScopeOfService.watcher_LaborMin
+        FragmentARRAVScopeOfService.numberOfBaysEditText_ =  if (FragmentARRAVScopeOfService.watcher_NumOfBays.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays else FragmentARRAVScopeOfService.watcher_NumOfBays
+        FragmentARRAVScopeOfService.numberOfLiftsEditText_ =  if (FragmentARRAVScopeOfService.watcher_NumOfLifts.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts else FragmentARRAVScopeOfService.watcher_NumOfLifts
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!= FragmentARRAVScopeOfService.laborRateMatrixMax){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!= FragmentARRAVScopeOfService.laborRateMatrixMin){
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!= FragmentARRAVScopeOfService.fixedLaborRate){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!= FragmentARRAVScopeOfService.diagnosticLaborRate){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!= FragmentARRAVScopeOfService.numberOfBaysEditText_){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!= FragmentARRAVScopeOfService.numberOfLiftsEditText_){
+
+
+            FragmentARRAVScopeOfService.dataChanged =true
+        }
+
+    }
+
 
     fun scopeOfServiceChangesWatcher() {
         if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
