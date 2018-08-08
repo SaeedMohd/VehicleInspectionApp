@@ -16,6 +16,7 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import com.inspection.R.drawable.circle
 import com.inspection.fragments.*
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
@@ -23,10 +24,12 @@ import kotlinx.android.synthetic.main.app_bar_forms.*
 class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forms)
         setSupportActionBar(toolbar)
+        validationProblemFoundForOtherFragments=true
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -119,6 +122,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
             R.id.deficiency -> {
+                Log.v("POSITION:  ","BRAAAAAAAAAA")
                 toolbar.title = "Deficiency"
                 var fragment = FragmentARRAVDeficiency()
                 supportFragmentManager

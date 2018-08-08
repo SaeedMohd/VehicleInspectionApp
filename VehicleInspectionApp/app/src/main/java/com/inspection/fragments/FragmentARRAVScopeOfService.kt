@@ -82,7 +82,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
         implementOnAnyFragment=false
 
-
+        validationProblemFoundForOtherFragments=false
         cancelButton.setOnClickListener(View.OnClickListener {
 
         })
@@ -108,7 +108,6 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     fun fillFieldsIntoVariables(){
 
-        Toast.makeText(context,"called",Toast.LENGTH_SHORT).show()
 
          fixedLaborRate = fixedLaborRateEditText.text.toString()
          diagnosticLaborRate = diagnosticRateEditText.text.toString()
@@ -530,7 +529,6 @@ dataChanged=true
 
     fun validateInputs(): Boolean {
 
-        var scopeOfServiceValide = FacilityDataModel.TblScopeofService().isInputsValid
         scopeOfServiceValide = true
 
         fixedLaborRateEditText.setError(null)
@@ -565,6 +563,34 @@ dataChanged=true
         return scopeOfServiceValide
 
     }
+    fun validateInputsForOtherFragmentAloneNotInGroups(): Boolean {
+
+
+
+        scopeOfServiceValideForOtherFragmentToTest = true
+
+
+        if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
+            scopeOfServiceValideForOtherFragmentToTest = false
+        }
+
+        if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
+            scopeOfServiceValideForOtherFragmentToTest = false
+        }
+
+
+        if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+            scopeOfServiceValideForOtherFragmentToTest = false
+        }
+
+        if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+            scopeOfServiceValideForOtherFragmentToTest = false
+        }
+
+
+        return scopeOfServiceValideForOtherFragmentToTest
+
+    }
 
 
     override fun onAttach(context: Context?) {
@@ -575,14 +601,28 @@ dataChanged=true
 
 
     override fun onPause() {
-
+        validateInputsForOtherFragmentAloneNotInGroups()
         fillFieldsIntoVariables()
 
         super.onPause()
 
     }
 
+    override fun onStop() {
+    //    Toast.makeText(context!!,"stop",Toast.LENGTH_SHORT).show()
+
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+
+        super.onDestroyView()
+    }
+
+
     override fun onDetach() {
+
+
         mListener = null
         super.onDetach()
 
@@ -604,7 +644,9 @@ dataChanged=true
         fun onFragmentInteraction(uri: Uri)
     }
 
+
     override fun onDestroy() {
+     //   Toast.makeText(context!!,"destroy",Toast.LENGTH_SHORT).show()
 
         super.onDestroy()
 
@@ -621,6 +663,7 @@ dataChanged=true
         var numberOfBaysEditText_ = ""
         var numberOfLiftsEditText_ = ""
         var dataChanged=false
+        var validationProblemFoundForOtherFragments=false
 
         var watcher_LaborMax=""
         var watcher_LaborMin=""
@@ -630,6 +673,8 @@ dataChanged=true
         var watcher_NumOfLifts=""
         var typeIdCompare=""
 
+        var scopeOfServiceValide = FacilityDataModel.TblScopeofService().isInputsValid
+        var scopeOfServiceValideForOtherFragmentToTest = false
 
 
         // TODO: Rename parameter arguments, choose names that match

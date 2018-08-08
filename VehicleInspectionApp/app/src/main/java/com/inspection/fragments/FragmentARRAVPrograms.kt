@@ -995,83 +995,111 @@ class FragmentARRAVPrograms : Fragment() {
 
         return  programValide
     }
-    fun scopeOfServiceChangesWatcher(){
-
-        if (FragmentARRAVScopeOfService.dataChanged) {
-
-
-            val builder = AlertDialog.Builder(context)
-
-            // Set the alert dialog title
-            builder.setTitle("Changes made confirmation")
-
-            // Display a message on alert dialog
-            builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-
-            // Set a positive button and its click listener on alert dialog
-            builder.setPositiveButton("YES") { dialog, which ->
-
-                programsLoadingView.visibility = View.VISIBLE
+    fun scopeOfServiceChangesWatcher() {
+        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
 
 
+            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
 
-                Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=$numberOfLiftsEditText_&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE", response.toString())
-
-                                programsLoadingView.visibility = View.GONE
-
-                                Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-                                if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                    FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
-                                        LaborMax = if (laborRateMatrixMax.isNullOrBlank()) LaborMax else laborRateMatrixMax
-                                        LaborMin = if (laborRateMatrixMin.isNullOrBlank())LaborMin else laborRateMatrixMin
-                                        FixedLaborRate = if (fixedLaborRate.isNullOrBlank())FixedLaborRate else fixedLaborRate
-                                        DiagnosticsRate = if (diagnosticLaborRate.isNullOrBlank())DiagnosticsRate else diagnosticLaborRate
-                                        NumOfBays = if (numberOfBaysEditText_.isNullOrBlank())NumOfBays else numberOfBaysEditText_
-                                        NumOfLifts = if (numberOfLiftsEditText_.isNullOrBlank())NumOfLifts else numberOfLiftsEditText_
-
-                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeIdCompare
-
-                                        dataChanged=false
-
-                                    }
-
-                                }
-
-                            })
-                        }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
-                    Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
-                    programsLoadingView.visibility = View.GONE
+                if (FragmentARRAVScopeOfService.dataChanged) {
 
 
-                }))
+                    val builder = AlertDialog.Builder(context)
 
+                    // Set the alert dialog title
+                    builder.setTitle("Changes made confirmation")
+
+                    // Display a message on alert dialog
+                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+
+                    // Set a positive button and its click listener on alert dialog
+                    builder.setPositiveButton("YES") { dialog, which ->
+
+                        programsLoadingView.visibility = View.VISIBLE
+
+
+
+                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=$numberOfLiftsEditText_&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread(Runnable {
+                                        Log.v("RESPONSE", response.toString())
+
+                                        programsLoadingView.visibility = View.GONE
+
+                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+
+                                                LaborMax = if (laborRateMatrixMax.isNullOrBlank()) LaborMax else laborRateMatrixMax
+                                                LaborMin = if (laborRateMatrixMin.isNullOrBlank()) LaborMin else laborRateMatrixMin
+                                                FixedLaborRate = if (fixedLaborRate.isNullOrBlank()) FixedLaborRate else fixedLaborRate
+                                                DiagnosticsRate = if (diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else diagnosticLaborRate
+                                                NumOfBays = if (numberOfBaysEditText_.isNullOrBlank()) NumOfBays else numberOfBaysEditText_
+                                                NumOfLifts = if (numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else numberOfLiftsEditText_
+
+                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeIdCompare
+
+                                                dataChanged = false
+
+                                            }
+
+                                        }
+
+                                    })
+                                }, Response.ErrorListener {
+                            Log.v("error while loading", "error while loading personnal record")
+                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+                            programsLoadingView.visibility = View.GONE
+
+
+                        }))
+
+
+                    }
+
+
+                    // Display a negative button on alert dialog
+                    builder.setNegativeButton("No") { dialog, which ->
+                        FragmentARRAVScopeOfService.dataChanged = false
+                        programsLoadingView.visibility = View.GONE
+
+                    }
+
+
+                    // Finally, make the alert dialog using builder
+                    val dialog: AlertDialog = builder.create()
+                    dialog.setCanceledOnTouchOutside(false)
+                    // Display the alert dialog on app interface
+                    dialog.show()
+
+                }
+
+            } else {
+
+
+                val builder = AlertDialog.Builder(context)
+
+                // Set the alert dialog title
+                builder.setTitle("Changes made Warning")
+
+                // Display a message on alert dialog
+                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
+
+                // Set a positive button and its click listener on alert dialog
+                builder.setPositiveButton("Ok") { dialog, which ->
+
+                    FragmentARRAVScopeOfService.dataChanged = false
+                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
+
+
+                }
+
+
+                val dialog: AlertDialog = builder.create()
+                dialog.setCanceledOnTouchOutside(false)
+                dialog.show()
 
             }
-
-
-
-
-
-            // Display a negative button on alert dialog
-            builder.setNegativeButton("No") { dialog, which ->
-                FragmentARRAVScopeOfService.dataChanged =false
-                programsLoadingView.visibility = View.GONE
-
-            }
-
-
-
-
-            // Finally, make the alert dialog using builder
-            val dialog: AlertDialog = builder.create()
-            dialog.setCanceledOnTouchOutside(false)
-            // Display the alert dialog on app interface
-            dialog.show()
 
         }
 

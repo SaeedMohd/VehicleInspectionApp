@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_main_visitation.*
 import android.app.AlertDialog
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.Log
+import android.widget.Toast
 import kotlinx.android.synthetic.*
 
 
@@ -246,8 +247,11 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
                 14 -> ft = FragmentARRAVDeficiency.newInstance("Test", "Test")
                 15 -> ft = FragmentARRAVComplaints.newInstance("Test", "Test")
             }
+
             return ft
+
         }
+
 
         override fun getCount(): Int {
             return 16

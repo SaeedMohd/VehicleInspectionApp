@@ -9,12 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
+import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -268,6 +270,33 @@ class ScopeOfServiceGroupFragment : Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+
+        FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = true
+
+
+        if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
+            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+        }
+
+        if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
+            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+        }
+
+
+        if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+        }
+
+        if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+        }
+
+
     }
 
     companion object {

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.get
 import com.inspection.R
 import com.inspection.singletons.AnnualVisitationSingleton
@@ -168,7 +169,7 @@ class ItemListActivity : AppCompatActivity() {
                             12 -> fragment = FragmentARRAVPrograms.newInstance("test", "test")
                             13 -> fragment = FragmentARRAVFacilityServices.newInstance("test", "test")
                             15 -> fragment = FragmentARRAVAffliations.newInstance("test", "test")
-                            20 -> fragment = FragmentARRAVDeficiency.newInstance("test", "test")
+                            20 ->  fragment = FragmentARRAVDeficiency.newInstance("test", "test")
                             22 -> fragment = FragmentARRAVComplaints.newInstance("test", "test")
                             24 -> fragment = FragmentAARAVBillingPlans.newInstance("test", "test")
                             25 -> fragment = FragmentAARAVBilling.newInstance("test", "test")
@@ -227,6 +228,7 @@ class ItemListActivity : AppCompatActivity() {
                         }
                     }
                     if (shouldNavigate) {
+
                         mParentActivity.supportFragmentManager
                                 .beginTransaction()
                                 .replace(R.id.item_detail_container, fragment)

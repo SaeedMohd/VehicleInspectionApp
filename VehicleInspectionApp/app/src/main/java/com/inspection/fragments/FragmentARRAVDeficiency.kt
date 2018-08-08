@@ -29,6 +29,7 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateM
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMin
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfBaysEditText_
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfLiftsEditText_
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_DiagnosticsRate
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_FixedLaborRate
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMax
@@ -60,6 +61,10 @@ class FragmentARRAVDeficiency : Fragment() {
     var selectedSignature: requestedSignature? = null
 
 
+    override fun onStart() {
+        super.onStart()
+      //  Toast.makeText(context,"start deffff",Toast.LENGTH_SHORT).show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -653,88 +658,119 @@ class FragmentARRAVDeficiency : Fragment() {
 
     fun scopeOfServiceChangesWatcher(){
 
+        if (!validationProblemFoundForOtherFragments){
 
-        if (FragmentARRAVScopeOfService.dataChanged) {
+
+        if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
+            if (FragmentARRAVScopeOfService.dataChanged) {
+
+                val builder = AlertDialog.Builder(context)
+
+                // Set the alert dialog title
+                builder.setTitle("Changes made confirmation")
+
+                // Display a message on alert dialog
+                builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+
+                // Set a positive button and its click listener on alert dialog
+                builder.setPositiveButton("YES") { dialog, which ->
+
+
+                    DeffLoadingView.visibility = View.VISIBLE
+
+
+                    Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                            Response.Listener { response ->
+                                activity!!.runOnUiThread(Runnable {
+                                    Log.v("RESPONSE", response.toString())
+                                    DeffLoadingView.visibility = View.GONE
+
+                                    Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+                                    if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                        FacilityDataModel.getInstance().tblScopeofService[0].apply {
+
+                                            LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
+                                            LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
+                                            FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
+                                            DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
+                                            NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
+                                            NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
+
+                                            FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
+
+                                            FragmentARRAVScopeOfService.dataChanged = false
+
+                                        }
+
+                                    }
+
+                                })
+                            }, Response.ErrorListener {
+                        Log.v("error while loading", "error while loading personnal record")
+                        Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+
+                        DeffLoadingView.visibility = View.GONE
+
+                    }))
+
+
+                }
+
+
+                // Display a negative button on alert dialog
+                builder.setNegativeButton("No") { dialog, which ->
+                    FragmentARRAVScopeOfService.dataChanged = false
+                    DeffLoadingView.visibility = View.GONE
+
+                }
+
+
+                // Finally, make the alert dialog using builder
+                val dialog: AlertDialog = builder.create()
+                dialog.setCanceledOnTouchOutside(false)
+                // Display the alert dialog on app interface
+                dialog.show()
+
+            }
+
+        }
+        else{
+
 
             val builder = AlertDialog.Builder(context)
 
             // Set the alert dialog title
-            builder.setTitle("Changes made confirmation")
+            builder.setTitle("Changes made Warning")
 
             // Display a message on alert dialog
-            builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+            builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
 
             // Set a positive button and its click listener on alert dialog
-            builder.setPositiveButton("YES") { dialog, which ->
+            builder.setPositiveButton("Ok") { dialog, which ->
 
-
-                DeffLoadingView.visibility = View.VISIBLE
-
-
-                Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE", response.toString())
-                                DeffLoadingView.visibility = View.GONE
-
-                                Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-                                if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                    FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
-                                        LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-                                        LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank())LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-                                        FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank())FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-                                        DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank())DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-                                        NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank())NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-                                        NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank())NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-
-                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-
-                                        FragmentARRAVScopeOfService.dataChanged =false
-
-                                    }
-
-                                }
-
-                            })
-                        }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
-                    Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
-
-                    DeffLoadingView.visibility = View.GONE
-
-                }))
+                FragmentARRAVScopeOfService.dataChanged = false
+                FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
 
 
             }
 
 
-
-
-
-            // Display a negative button on alert dialog
-            builder.setNegativeButton("No") { dialog, which ->
-                FragmentARRAVScopeOfService.dataChanged =false
-                DeffLoadingView.visibility = View.GONE
-
-            }
-
-
-
-
-            // Finally, make the alert dialog using builder
             val dialog: AlertDialog = builder.create()
             dialog.setCanceledOnTouchOutside(false)
-            // Display the alert dialog on app interface
             dialog.show()
 
         }
 
     }
+    }
+
 
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+
+         //    Toast.makeText(context,"attach",Toast.LENGTH_SHORT).show()
+
 
     }
 

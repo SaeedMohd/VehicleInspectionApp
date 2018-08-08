@@ -20,6 +20,7 @@ import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.toast
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
 import com.inspection.model.AAAFacilityComplaints
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
@@ -57,7 +58,7 @@ class FragmentARRAVComplaints : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
-        programsChangesMade=false
+        programsChangesMade = false
         // The no os complaints , justified and ratio need to be clarified when all are showed
 //        compeditBtn.setOnClickListener({
 //            for (fac in facilityComplaintsList) {
@@ -71,11 +72,11 @@ class FragmentARRAVComplaints : Fragment() {
 //            prepareComplaints(true)
 //        })
 //        prepareComplaints(true)
-      //  prepareComplaintsSpinners()
+        //  prepareComplaintsSpinners()
         fillComplaintsTableView()
-        comNoTextViewId.text=getNoOfComplaintsForPast12M()
-        justComNoTextViewId.text=getNoOfJustComplaintsForPast12M()
-        justComRatioTextViewId.text=getJustComplaintsRatio()
+        comNoTextViewId.text = getNoOfComplaintsForPast12M()
+        justComNoTextViewId.text = getNoOfJustComplaintsForPast12M()
+        justComRatioTextViewId.text = getJustComplaintsRatio()
 //
 //        newRecDateBtn.setOnClickListener {
 //            val c = Calendar.getInstance()
@@ -176,6 +177,7 @@ class FragmentARRAVComplaints : Fragment() {
 
 
     }
+
     fun addTheLatestRowOfPortalAdmin() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
@@ -196,17 +198,17 @@ class FragmentARRAVComplaints : Fragment() {
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
-  val rowLayoutParam5 = TableRow.LayoutParams()
+        val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
-  val rowLayoutParam6 = TableRow.LayoutParams()
+        val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
-  val rowLayoutParam7 = TableRow.LayoutParams()
+        val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
 
-val rowLayoutParam8 = TableRow.LayoutParams()
+        val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam8.weight = 1F
         rowLayoutParam8.column = 8
         FacilityDataModel.getInstance().tblComplaintFiles[FacilityDataModel.getInstance().tblComplaintFiles.size - 1].apply {
@@ -217,7 +219,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text =ComplaintID
+            textView.text = ComplaintID
             tableRow.addView(textView)
 
             textView = TextView(context)
@@ -256,16 +258,18 @@ val rowLayoutParam8 = TableRow.LayoutParams()
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam6
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID==ComplaintID}[0].ComplaintReasonName
+            textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID == ComplaintID }[0].ComplaintReasonName
             for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
 
 
                 if (ComplaintID.equals(fac.ComplaintReasonID)) {
 
                     textView.text = fac.ComplaintReasonName
-                    Toast.makeText(context,"match",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "match", Toast.LENGTH_SHORT).show()
 
-                }else {   Toast.makeText(context,"doesnt match",Toast.LENGTH_SHORT).show()}
+                } else {
+                    Toast.makeText(context, "doesnt match", Toast.LENGTH_SHORT).show()
+                }
             }
 
             tableRow.addView(textView)
@@ -291,11 +295,11 @@ val rowLayoutParam8 = TableRow.LayoutParams()
         altDeffTableRow(2)
     }
 
-    fun altDeffTableRow(alt_row : Int) {
+    fun altDeffTableRow(alt_row: Int) {
         var childViewCount = ComplaintsResultsTbl.getChildCount();
 
-        for ( i in 1..childViewCount-1) {
-            var row : TableRow= ComplaintsResultsTbl.getChildAt(i) as TableRow;
+        for (i in 1..childViewCount - 1) {
+            var row: TableRow = ComplaintsResultsTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.setBackground(getResources().getDrawable(
@@ -351,19 +355,19 @@ val rowLayoutParam8 = TableRow.LayoutParams()
 //    }
 
 
-    fun prepareComplaints (boolAll : Boolean) {
+    fun prepareComplaints(boolAll: Boolean) {
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityComplaintsURL+ AnnualVisitationSingleton.getInstance().facilityId+"&all="+boolAll.toString(),
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            facilityComplaintsList= Gson().fromJson(response.toString(), Array<AAAFacilityComplaints>::class.java).toCollection(ArrayList())
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityComplaintsURL + AnnualVisitationSingleton.getInstance().facilityId + "&all=" + boolAll.toString(),
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        facilityComplaintsList = Gson().fromJson(response.toString(), Array<AAAFacilityComplaints>::class.java).toCollection(ArrayList())
 //                            drawProgramsTable()
-                         //   BuildComplaintsList()
-                        })
-                    }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading facility complaints")
-                context!!.toast("Connection Error. Please check the internet connection")
-            }))
+                        //   BuildComplaintsList()
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading facility complaints")
+            context!!.toast("Connection Error. Please check the internet connection")
+        }))
     }
 
 
@@ -464,13 +468,13 @@ val rowLayoutParam8 = TableRow.LayoutParams()
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam5
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text  = get(it).LastName
+                textView.text = get(it).LastName
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam6
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-              //  textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID.toString()==get(it).ComplaintID.toString()}[0].ComplaintReasonName.toString()
+                //  textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID.toString()==get(it).ComplaintID.toString()}[0].ComplaintReasonName.toString()
                 for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
 
 
@@ -486,7 +490,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
                 tableRow.addView(textView)
 
 
-         textView = TextView(context)
+                textView = TextView(context)
                 textView.layoutParams = rowLayoutParam7
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 try {
@@ -498,7 +502,7 @@ val rowLayoutParam8 = TableRow.LayoutParams()
                 tableRow.addView(textView)
 
 
-         textView = TextView(context)
+                textView = TextView(context)
                 textView.layoutParams = rowLayoutParam8
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 //                if (!(get(it).ComplaintID.isNullOrEmpty())) {
@@ -524,10 +528,9 @@ val rowLayoutParam8 = TableRow.LayoutParams()
     }
 
 
+    fun getNoOfComplaintsForPast12M(): String {
 
-    fun getNoOfComplaintsForPast12M() : String{
-
-        var comNo=""
+        var comNo = ""
 
 //        for (com in FacilityDataModel.getInstance().tblComplaintFiles){
 //
@@ -559,148 +562,176 @@ val rowLayoutParam8 = TableRow.LayoutParams()
 //            }
 //
 //        }
-        for (com in FacilityDataModel.getInstance().NumberofComplaints){
+        for (com in FacilityDataModel.getInstance().NumberofComplaints) {
 
-            comNo=com.NumberofComplaintslast12months
+            comNo = com.NumberofComplaintslast12months
 
         }
 
 
-   return comNo
+        return comNo
     }
-    fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService(){
+
+    fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService() {
 
 
         FragmentARRAVScopeOfService.fixedLaborRate = if (FragmentARRAVScopeOfService.watcher_FixedLaborRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate else FragmentARRAVScopeOfService.watcher_FixedLaborRate
-        FragmentARRAVScopeOfService.diagnosticLaborRate =  if (FragmentARRAVScopeOfService.watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else FragmentARRAVScopeOfService.watcher_DiagnosticsRate
-        FragmentARRAVScopeOfService.laborRateMatrixMax =  if (FragmentARRAVScopeOfService.watcher_LaborMax.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMax else FragmentARRAVScopeOfService.watcher_LaborMax
-        FragmentARRAVScopeOfService.laborRateMatrixMin =  if (FragmentARRAVScopeOfService.watcher_LaborMin.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMin else FragmentARRAVScopeOfService.watcher_LaborMin
-        FragmentARRAVScopeOfService.numberOfBaysEditText_ =  if (FragmentARRAVScopeOfService.watcher_NumOfBays.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays else FragmentARRAVScopeOfService.watcher_NumOfBays
-        FragmentARRAVScopeOfService.numberOfLiftsEditText_ =  if (FragmentARRAVScopeOfService.watcher_NumOfLifts.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts else FragmentARRAVScopeOfService.watcher_NumOfLifts
+        FragmentARRAVScopeOfService.diagnosticLaborRate = if (FragmentARRAVScopeOfService.watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else FragmentARRAVScopeOfService.watcher_DiagnosticsRate
+        FragmentARRAVScopeOfService.laborRateMatrixMax = if (FragmentARRAVScopeOfService.watcher_LaborMax.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMax else FragmentARRAVScopeOfService.watcher_LaborMax
+        FragmentARRAVScopeOfService.laborRateMatrixMin = if (FragmentARRAVScopeOfService.watcher_LaborMin.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMin else FragmentARRAVScopeOfService.watcher_LaborMin
+        FragmentARRAVScopeOfService.numberOfBaysEditText_ = if (FragmentARRAVScopeOfService.watcher_NumOfBays.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays else FragmentARRAVScopeOfService.watcher_NumOfBays
+        FragmentARRAVScopeOfService.numberOfLiftsEditText_ = if (FragmentARRAVScopeOfService.watcher_NumOfLifts.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts else FragmentARRAVScopeOfService.watcher_NumOfLifts
 
 
-        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!= FragmentARRAVScopeOfService.laborRateMatrixMax){
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax != FragmentARRAVScopeOfService.laborRateMatrixMax) {
 
 
-            FragmentARRAVScopeOfService.dataChanged =true
+            FragmentARRAVScopeOfService.dataChanged = true
         }
 
 
-        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!= FragmentARRAVScopeOfService.laborRateMatrixMin){
+        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin != FragmentARRAVScopeOfService.laborRateMatrixMin) {
 
-            FragmentARRAVScopeOfService.dataChanged =true
+            FragmentARRAVScopeOfService.dataChanged = true
         }
 
 
-        if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!= FragmentARRAVScopeOfService.fixedLaborRate){
+        if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate != FragmentARRAVScopeOfService.fixedLaborRate) {
 
 
-            FragmentARRAVScopeOfService.dataChanged =true
+            FragmentARRAVScopeOfService.dataChanged = true
         }
 
 
-        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!= FragmentARRAVScopeOfService.diagnosticLaborRate){
+        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate != FragmentARRAVScopeOfService.diagnosticLaborRate) {
 
 
-            FragmentARRAVScopeOfService.dataChanged =true
+            FragmentARRAVScopeOfService.dataChanged = true
         }
 
 
-        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!= FragmentARRAVScopeOfService.numberOfBaysEditText_){
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays != FragmentARRAVScopeOfService.numberOfBaysEditText_) {
 
 
-            FragmentARRAVScopeOfService.dataChanged =true
+            FragmentARRAVScopeOfService.dataChanged = true
         }
 
-        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!= FragmentARRAVScopeOfService.numberOfLiftsEditText_){
+        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts != FragmentARRAVScopeOfService.numberOfLiftsEditText_) {
 
 
-            FragmentARRAVScopeOfService.dataChanged =true
-        }
-
-    }
-
-    fun scopeOfServiceChangesWatcher(){
-
-        if (FragmentARRAVScopeOfService.dataChanged) {
-
-            val builder = AlertDialog.Builder(context)
-
-            // Set the alert dialog title
-            builder.setTitle("Changes made confirmation")
-
-            // Display a message on alert dialog
-            builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-
-            // Set a positive button and its click listener on alert dialog
-            builder.setPositiveButton("YES") { dialog, which ->
-
-                scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-
-
-
-                Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE", response.toString())
-                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-                                Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-                                if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                    FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
-                                        LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-                                        LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank())LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-                                        FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank())FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-                                        DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank())DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-                                        NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank())NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-                                        NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank())NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-
-                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-
-                                        FragmentARRAVScopeOfService.dataChanged =false
-
-                                    }
-
-                                }
-
-                            })
-                        }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
-                    Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
-                    scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-
-                }))
-
-
-            }
-
-
-
-
-
-            // Display a negative button on alert dialog
-            builder.setNegativeButton("No") { dialog, which ->
-                FragmentARRAVScopeOfService.dataChanged =false
-                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-            }
-
-
-
-
-            // Finally, make the alert dialog using builder
-            val dialog: AlertDialog = builder.create()
-            dialog.setCanceledOnTouchOutside(false)
-            // Display the alert dialog on app interface
-            dialog.show()
-
+            FragmentARRAVScopeOfService.dataChanged = true
         }
 
     }
 
-    fun getNoOfJustComplaintsForPast12M() : String{
+    fun scopeOfServiceChangesWatcher() {
+
+        if (!validationProblemFoundForOtherFragments) {
+            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
+
+                if (FragmentARRAVScopeOfService.dataChanged) {
+
+                    val builder = AlertDialog.Builder(context)
+
+                    // Set the alert dialog title
+                    builder.setTitle("Changes made confirmation")
+
+                    // Display a message on alert dialog
+                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+
+                    // Set a positive button and its click listener on alert dialog
+                    builder.setPositiveButton("YES") { dialog, which ->
+
+                        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+
+
+
+                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread(Runnable {
+                                        Log.v("RESPONSE", response.toString())
+                                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+
+                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+
+                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
+                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
+                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
+                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
+                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
+                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
+
+                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
+
+                                                FragmentARRAVScopeOfService.dataChanged = false
+
+                                            }
+
+                                        }
+
+                                    })
+                                }, Response.ErrorListener {
+                            Log.v("error while loading", "error while loading personnal record")
+                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+
+
+                        }))
+
+
+                    }
+
+
+                    // Display a negative button on alert dialog
+                    builder.setNegativeButton("No") { dialog, which ->
+                        FragmentARRAVScopeOfService.dataChanged = false
+                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+
+                    }
+
+
+                    // Finally, make the alert dialog using builder
+                    val dialog: AlertDialog = builder.create()
+                    dialog.setCanceledOnTouchOutside(false)
+                    // Display the alert dialog on app interface
+                    dialog.show()
+
+                }
+
+
+            } else {
+
+
+                val builder = AlertDialog.Builder(context)
+
+                // Set the alert dialog title
+                builder.setTitle("Changes made Warning")
+
+                // Display a message on alert dialog
+                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
+
+                // Set a positive button and its click listener on alert dialog
+                builder.setPositiveButton("Ok") { dialog, which ->
+
+                    FragmentARRAVScopeOfService.dataChanged = false
+                    validationProblemFoundForOtherFragments = true
+
+
+                }
+
+
+                val dialog: AlertDialog = builder.create()
+                dialog.setCanceledOnTouchOutside(false)
+                dialog.show()
+
+            }
+        }
+    }
+
+
+            fun getNoOfJustComplaintsForPast12M() : String{
 
         var justComNo=""
 
