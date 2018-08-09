@@ -29,11 +29,11 @@ fun String.appToDBFormat(): String = apiFormat.format(appFormat.parse(this))
 
 
 fun String.apiToAppFormat(): String {
-    return appFormat.format(apiFormat.parse(this.split("T")[0]))
+    return if (this.equals("")) "" else appFormat.format(apiFormat.parse(this.split("T")[0]))
 }
 
 fun String.apiToAppFormatMMDDYYYY(): String {
-    return appFormatMMDDYYYY.format(apiFormat.parse(this.split("T")[0]))
+    return if (this.equals("")) "" else appFormatMMDDYYYY.format(apiFormat.parse(this.split("T")[0]))
 }
 
 fun String.appToApiFormat(): String = if (this.equals("")) "" else apiFormat.format(appFormat.parse(this))

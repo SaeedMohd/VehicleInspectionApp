@@ -935,14 +935,6 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(Gson().fromJson<FacilityDataModel.TblAmendmentOrderTracking>(jsonObj.get("tblAmendmentOrderTracking").toString(), FacilityDataModel.TblAmendmentOrderTracking::class.java))
                 FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking.add(Gson().fromJson<FacilityDataModelOrg.TblAmendmentOrderTracking>(jsonObj.get("tblAmendmentOrderTracking").toString(), FacilityDataModelOrg.TblAmendmentOrderTracking::class.java))
             }
-        } else {
-            var oneArray = FacilityDataModel.TblAmendmentOrderTracking();
-            oneArray.AOID="";
-            oneArray.AOTEmployee = "";
-            oneArray.EventID="";
-            oneArray.EventTypeID="";
-            oneArray.ReasonID="";
-            FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(oneArray);
         }
 
         if (jsonObj.has("tblAARPortalAdmin")) {
