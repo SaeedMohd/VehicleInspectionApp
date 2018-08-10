@@ -427,102 +427,80 @@ class FragmentARRAVComplaints : Fragment() {
         var dateTobeFormated = ""
         FacilityDataModel.getInstance().tblComplaintFiles.apply {
             (0 until size).forEach {
-                var tableRow = TableRow(context)
 
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                if (!get(it).ComplaintID.equals("")) {
+                    var tableRow = TableRow(context)
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 //                textView.text = getTypeName(get(it).PersonnelTypeID)
-                textView.text = get(it).ComplaintID
-                tableRow.addView(textView)
+                    textView.text = get(it).ComplaintID
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 //                textView.text = get(it).
-                tableRow.addView(textView)
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam2
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    TableRow.LayoutParams()
 //                textView.text = get(it).LastName
-                tableRow.addView(textView)
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam3
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 //                if (!(get(it).SeniorityDate.isNullOrEmpty())) {
 //                    textView.text = get(it).SeniorityDate.apiToAppFormat()
 //                } else {
 //                    textView.text = ""
 //                }
-                tableRow.addView(textView)
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam4
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).FirstName
-                tableRow.addView(textView)
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam4
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).FirstName
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam5
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).LastName
-                tableRow.addView(textView)
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam5
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).LastName
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam6
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                //  textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID.toString()==get(it).ComplaintID.toString()}[0].ComplaintReasonName.toString()
-                for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
-
-
-                    if (get(it).ComplaintID.equals(fac.ComplaintReasonID)) {
-
-                        textView.text = fac.ComplaintReasonName
-
-                    }
-
-                }
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam6
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                    //  textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID.toString()==get(it).ComplaintID.toString()}[0].ComplaintReasonName.toString()
+//                    for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
+//                        if (get(it).ComplaintID.equals(fac.ComplaintReasonID)) {
+//                            textView.text = fac.ComplaintReasonName
+//                        }
+//                    }
+                    textView.text = get(it).ComplaintReasonName
+                    tableRow.addView(textView)
 
 
-                tableRow.addView(textView)
-
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam7
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                try {
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam7
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                     textView.text = get(it).ReceivedDate.apiToAppFormat()
-                } catch (e: Exception) {
+                    tableRow.addView(textView)
 
-                    textView.text = get(it).ReceivedDate
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam8
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+
+                    textView.text = get(it).ComplaintResolutionName
+
+                    tableRow.addView(textView)
+                    ComplaintsResultsTbl.addView(tableRow)
                 }
-                tableRow.addView(textView)
-
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam8
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                if (!(get(it).ComplaintID.isNullOrEmpty())) {
-//                    textView.text = get(it).ReceivedDate.apiToAppFormat()
-//                } else {
-//                    textView.text = ""
-//                }
-                try {
-                    textView.text = get(it).ReceivedDate.apiToAppFormat()
-                } catch (e: Exception) {
-
-                    textView.text = get(it).ReceivedDate
-                }
-
-
-                tableRow.addView(textView)
-
-
-                ComplaintsResultsTbl.addView(tableRow)
-
             }
         }
     }

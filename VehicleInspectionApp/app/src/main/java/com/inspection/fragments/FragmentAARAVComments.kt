@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_comments.*
@@ -167,40 +168,45 @@ class FragmentAARAVComments : Fragment() {
 
         var dateTobeFormated = ""
 
-        for (i in 1..2) {
+        FacilityDataModel.getInstance().tblComments.apply {
+            (0 until size).forEach {
 
-            var tableRow = TableRow(context)
-            if (i % 2 == 0) {
-                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                if (get(it).FACID > 0) {
+
+                    var tableRow = TableRow(context)
+                    if (it % 2 == 0) {
+                        tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                    }
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = if (get(it).CommentTypeID == 0) "" else TypeTablesModel.getInstance().CommentsType.filter { s -> s.CommentTypeID.toInt() == get(it).CommentTypeID }[0].CommentTypeName
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = "Test" // get(it).FAC_Addr1
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam2
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    TableRow.LayoutParams()
+                    textView.text = get(it).insertDate.apiToAppFormat()
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam3
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).Comment
+
+                    tableRow.addView(textView)
+
+
+                    commentsResultsTbl.addView(tableRow)
+                }
             }
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).FAC_Addr1
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            textView.text = "Test" // get(it).FAC_Addr2
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = "Test" // get(it).CITY
-
-            tableRow.addView(textView)
-
-
-            commentsResultsTbl.addView(tableRow)
         }
 //        altVenRevTableRow(2)
 //            }

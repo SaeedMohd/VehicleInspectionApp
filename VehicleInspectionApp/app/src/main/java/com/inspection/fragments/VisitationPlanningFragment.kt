@@ -1107,6 +1107,16 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             }
         }
 
+        if (jsonObj.has("tblComments")) {
+            if (jsonObj.get("tblComments").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblComments = Gson().fromJson<ArrayList<FacilityDataModel.TblComments>>(jsonObj.get("tblComments").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblComments>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblComments = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblComments>>(jsonObj.get("tblComments").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblComments>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblComments.add(Gson().fromJson<FacilityDataModel.TblComments>(jsonObj.get("tblComments").toString(), FacilityDataModel.TblComments::class.java))
+                FacilityDataModelOrg.getInstance().tblComments.add(Gson().fromJson<FacilityDataModelOrg.TblComments>(jsonObj.get("tblComments").toString(), FacilityDataModelOrg.TblComments::class.java))
+            }
+        }
+
     }
 
     fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {
@@ -1463,6 +1473,25 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblBillingHistoryReport")
         }
 
+        if (jsonObj.has("tblComments")) {
+            if (!jsonObj.get("tblComments").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblComments")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblComments"))
+                    jsonObj.put("tblComments", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblComments")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblComments")
+        }
+
         return jsonObj
     }
 
@@ -1667,6 +1696,14 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             oneArray.insertDate=""
             oneArray.TransactionType=""
             oneArray.updateDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblComments")) {
+            var oneArray = FacilityDataModel.TblComments()
+            oneArray.FACID=0
+            oneArray.Comment=""
+            oneArray.insertDate=""
+            oneArray.CommentTypeID=0
+            oneArray.SeqNum=0
             jsonObj.put(key, Gson().toJson(oneArray))
         }
         return jsonObj;

@@ -558,41 +558,42 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.apply {
 
             (0 until size).forEach {
-                var tableRow = TableRow(context)
 
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).AOID
-                tableRow.addView(textView)
+                if (get(it).AOID.equals("")) {
+                    var tableRow = TableRow(context)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).EventID
-                tableRow.addView(textView)
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).AOID
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
-               textView.text = ""
-                tableRow.addView(textView)
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).EventID
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
-                for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
-                    if (get(it).EventTypeID.equals(fac.AmendmentEventID))
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam2
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    TableRow.LayoutParams()
+                    textView.text = ""
+                    tableRow.addView(textView)
 
-                        textView.text =fac.AmendmentEventName
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam3
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    TableRow.LayoutParams()
+                    for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
+                        if (get(it).EventTypeID.equals(fac.AmendmentEventID))
+
+                            textView.text = fac.AmendmentEventName
+                    }
+                    tableRow.addView(textView)
+
+                    newEventTableLayout.addView(tableRow)
                 }
-                tableRow.addView(textView)
-
-
-
-                newEventTableLayout.addView(tableRow)
             }
         }
     }

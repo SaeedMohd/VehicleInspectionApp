@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -14,6 +15,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import com.inspection.R.drawable.circle
 import com.inspection.fragments.*
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
@@ -21,12 +23,15 @@ import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 
+
 class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContentView(R.layout.activity_forms)
         setSupportActionBar(toolbar)
         validationProblemFoundForOtherFragments=true
@@ -41,7 +46,10 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         drawer_layout.openDrawer(GravityCompat.START)
 
         val navigationMenu = nav_view.menu
-
+//        var indicatorImage:ImageView;
+//        indicatorImage = navigationMenu.findItem(R.id.visitation).actionView as ImageView
+//        indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+//        navigationMenu.findItem(R.id.visitation).actionView.setBackgroundResource(R.drawable.red_button_background)
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == FacilityDataModel.VisitationTypes.AdHoc) {
             navigationMenu.findItem(R.id.visitation).isEnabled = false
             navigationMenu.findItem(R.id.visitation).isVisible = false

@@ -225,11 +225,12 @@ class FragmentAARAVPayments : Fragment() {
 
         FacilityDataModel.getInstance().tblInvoiceInfo.apply {
             (0 until size).forEach {
+
                 var tableRow = TableRow(context)
                 if (it % 2 == 0) {
                     tableRow.setBackgroundResource(R.drawable.alt_row_color)
                 }
-                if (get((it)).InvoiceNumber!="") {
+                if (get((it)).InvoiceId>0) {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
                     textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
@@ -273,8 +274,8 @@ class FragmentAARAVPayments : Fragment() {
                     textView.text = "Test"
                     tableRow.addView(textView)
 
-
                     InvoiceResultsTbl.addView(tableRow)
+
                 }
             }
         }

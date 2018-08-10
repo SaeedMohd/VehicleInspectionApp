@@ -176,7 +176,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
                 if (it % 2 == 0) {
                     tableRow.setBackgroundResource(R.drawable.alt_row_color)
                 }
-                if (get(it).VendorRevenueID!=-1) {
+                if (get(it).VendorRevenueID>0) {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
                     textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER

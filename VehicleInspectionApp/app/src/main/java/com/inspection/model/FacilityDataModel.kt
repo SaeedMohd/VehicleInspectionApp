@@ -63,6 +63,7 @@ class FacilityDataModel {
     var tblInvoiceInfo = ArrayList<TblInvoiceInfo>()
     var tblVendorRevenue = ArrayList<TblVendorRevenue>()
     var tblBillingHistoryReport = ArrayList<TblBillingHistoryReport>()
+    var tblComments = ArrayList<TblComments>()
 
 
     class TblFacilities {
@@ -312,6 +313,7 @@ class FacilityDataModel {
         var AffiliationTypeID = 0
         var AffiliationTypeDetailID = 0
         var effDate = ""
+        var expDate = ""
         var comment = ""
     }
 
@@ -330,6 +332,8 @@ class FacilityDataModel {
         var FirstName = ""
         var LastName = ""
         var ReceivedDate = ""
+        var ComplaintReasonName = ""
+        var ComplaintResolutionName = ""
     }
 
     class numberofComplaints {
@@ -448,5 +452,13 @@ class FacilityDataModel {
         var Amount = 0.0
         var insertDate = ""
         var updateDate = ""
+    }
+
+    class TblComments {
+        var FACID = 0
+        var SeqNum = 0
+        var CommentTypeID = 0
+        var Comment = ""
+        var insertDate = ""
     }
 }
