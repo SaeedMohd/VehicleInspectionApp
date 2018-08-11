@@ -716,18 +716,6 @@ class FragmentARRAVLocation : Fragment() {
                                         enableAllAddButnsAndDialog()
 
 
-                                        if (FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneTypeID!=phoneTypeID
-                                        ||FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber!=phoneNo.toString()){
-
-
-                                            MarkChangeWasDone()
-                                            Toast.makeText(context,"changed Done" + " modelValue is = " + FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber + " tableValue is = " + phoneNo,Toast.LENGTH_SHORT).show()
-                                        }else
-                                        {
-                                            Toast.makeText(context,"No changes found" + " modelValue is = " + FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber + " tableValue is = " + phoneNo,Toast.LENGTH_SHORT).show()
-
-                                        }
-
                                     })
                                 }, Response.ErrorListener {
                             contactInfoLoadingView.visibility = View.GONE
@@ -1312,18 +1300,7 @@ class FragmentARRAVLocation : Fragment() {
                         FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
                         fillEmailTableView()
 
-                        var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityEmail
-                        var itemArray = FacilityDataModel.getInstance().tblFacilityEmail
-                        for (itemAr in itemArray){
-                            for (itemOrgAr in itemOrgArray){
 
-                                if (itemAr.email!=itemOrgAr.email||itemAr.emailTypeId!=itemOrgAr.emailTypeId){
-                                    MarkChangeWasDone()
-                                    Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
-                                }
-
-                            }
-                        }
 
                     })
                 }, Response.ErrorListener {
@@ -1428,18 +1405,7 @@ class FragmentARRAVLocation : Fragment() {
                         FacilityDataModel.getInstance().tblPhone.add(newPhone)
                         fillPhoneTableView()
 
-                        var itemOrgArray = FacilityDataModelOrg.getInstance().tblPhone
-                        var itemArray = FacilityDataModel.getInstance().tblPhone
-                        for (itemAr in itemArray){
-                            for (itemOrgAr in itemOrgArray){
 
-                                if (itemAr.PhoneNumber!=itemOrgAr.PhoneNumber||itemAr.PhoneTypeID!=itemOrgAr.PhoneTypeID){
-                                    MarkChangeWasDone()
-                                    Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
-                                }
-
-                            }
-                        }
 
 
                     })
