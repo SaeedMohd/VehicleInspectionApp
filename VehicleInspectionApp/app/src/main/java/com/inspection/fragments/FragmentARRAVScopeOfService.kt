@@ -485,6 +485,7 @@ dataChanged=true
 
     fun checkMarkChangeWasDoneForScopeOfServiceGeneralInfo(){
 
+
         if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != FacilityDataModel.getInstance().tblScopeofService[0].LaborMax) {
 
             MarkChangeWasDone()
@@ -494,6 +495,7 @@ dataChanged=true
         if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != FacilityDataModel.getInstance().tblScopeofService[0].LaborMin) {
 
             MarkChangeWasDone()
+
 
         }
 
@@ -523,7 +525,6 @@ dataChanged=true
                 MarkChangeWasDone()
 
             }
-
 
 
 

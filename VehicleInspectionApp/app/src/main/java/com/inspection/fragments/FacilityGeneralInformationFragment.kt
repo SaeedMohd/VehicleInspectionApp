@@ -25,6 +25,7 @@ import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdatePaymentMethodsData
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
@@ -241,7 +242,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                 wifiAvailableCheckBox.isChecked = tblFacilities[0].InternetAccess
                 taxno_textviewVal.text = tblFacilities[0].TaxIDNumber
                 repairorder_textviewVal.setText("" + tblFacilities[0].FacilityRepairOrderCount)
-                availability_textviewVal.setSelection(svcAvailabilityArray.indexOf(tblFacilities[0].SvcAvailability))
+                availability_textviewVal.setSelection(svcAvailabilityArray.indexOf(TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID==tblFacilities[0].SvcAvailability}[0].SrvAvaName))
                 facilitytype_textviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
                 ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormat()
@@ -441,7 +442,8 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailabilityArray[p2]
+         //       FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailabilityArray[p2]
+                FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==svcAvailabilityArray[p2]}[0].SrvAvaID
             }
 
         }
@@ -610,7 +612,102 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     fun checkMarkChangesWasDoneForFacilityGeneralInfo(){
 
+        var paymentMethodsCount=0
 
+if (FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate != FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate){
+
+    MarkChangeWasDone()
+
+}
+
+
+if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName){
+
+    MarkChangeWasDone()
+    Log.v("MarkChangeWasDone", "TimezoneName")
+
+}
+
+
+
+
+        if ( FacilityDataModel.getInstance().tblFacilities[0].WebSite!= FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite){
+
+            MarkChangeWasDone()
+            Log.v("MarkChangeWasDone", "WebSite")
+
+        }
+
+
+
+        if ( FacilityDataModel.getInstance().tblFacilities[0].InternetAccess!= FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess){
+
+            MarkChangeWasDone()
+            Log.v("MarkChangeWasDone", "InternetAccess")
+
+        }
+
+
+
+
+
+        if (    FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount!= FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount){
+
+            MarkChangeWasDone()
+            Log.v("MarkChangeWasDone", "FacilityRepairOrderCount")
+
+        }
+
+
+
+
+
+
+        if (    FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability!= FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability){
+
+            MarkChangeWasDone()
+            Log.v("MarkChangeWasDone", FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability + "----->"+ FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability)
+
+        }
+
+
+
+
+
+
+        if (     FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName!= FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName){
+
+            MarkChangeWasDone()
+            Log.v("MarkChangeWasDone", "FacilityTypeName")
+
+        }
+
+
+
+
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblPaymentMethods
+        var itemArray = FacilityDataModel.getInstance().tblPaymentMethods
+        for (itemAr in itemArray) {
+            for (itemOrgAr in itemOrgArray) {
+
+
+
+                if (itemAr.PmtMethodID == itemOrgAr.PmtMethodID ) {
+                    paymentMethodsCount++
+                }
+
+
+            }
+
+        }
+
+        if (paymentMethodsCount!=itemArray.size||itemOrgArray.size!=itemArray.size){
+
+            Log.v("MarkChangeWasDone", paymentMethodsCount.toString()  +  "---"+itemArray.size.toString() +"------" +itemOrgArray.size.toString())
+            MarkChangeWasDone()
+
+        }
 
     }
 
@@ -849,6 +946,11 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        checkMarkChangesWasDoneForFacilityGeneralInfo()
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {

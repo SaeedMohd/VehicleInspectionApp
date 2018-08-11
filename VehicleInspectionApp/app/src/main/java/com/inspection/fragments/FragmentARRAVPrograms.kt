@@ -67,6 +67,7 @@ class FragmentARRAVPrograms : Fragment() {
     private var programTypesArray = ArrayList<String>()
     private var programTypesList = ArrayList<AAAProgramTypes>()
     private var facilityProgramsList = ArrayList<AAAFacilityPrograms>()
+    val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
 
     var dateOne = ""
     var dateTwo = ""
@@ -268,8 +269,9 @@ class FragmentARRAVPrograms : Fragment() {
 
 
                     //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
-                    item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString()
-                    item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
+
+                    item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString().appToApiFormat()
+                    item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString().appToApiFormat()
                     item.Comments = comments_editTextVal.text.toString()
                     //  BuildProgramsList()
 
@@ -285,22 +287,7 @@ class FragmentARRAVPrograms : Fragment() {
                                     enableAllAddButnsAndDialog()
                                     programCard.visibility = View.GONE
                                     alphaBackgroundForProgramDialogs.visibility = View.GONE
-
-                                    var itemOrgArray = FacilityDataModelOrg.getInstance().tblPrograms
-                                    var itemArray = FacilityDataModel.getInstance().tblPrograms
-                                    for (itemAr in itemArray) {
-                                        for (itemOrgAr in itemOrgArray) {
-
-                                            if (itemAr.Comments != itemOrgAr.Comments || itemAr.expDate != itemOrgAr.expDate ||
-                                                    itemAr.effDate != itemOrgAr.effDate ||
-                                                    itemAr.ProgramTypeID != itemOrgAr.ProgramTypeID) {
-                                                MarkChangeWasDone()
-                                      //          Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                                            }
-
-                                        }
-                                    }
-
+                                    checkMarkChangesWasDone()
 
                                 })
                             }, Response.ErrorListener {
@@ -354,6 +341,53 @@ class FragmentARRAVPrograms : Fragment() {
 
 
 
+    fun checkMarkChangesWasDone() {
+
+
+
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblPrograms
+        var itemArray = FacilityDataModel.getInstance().tblPrograms
+        if (itemOrgArray.size == itemArray.size) {
+            for (i in 0 until itemOrgArray.size){
+                var expDate=""
+                if (itemOrgArray[i].expDate.isNullOrBlank()&&!itemArray[i].expDate.isNullOrBlank()) {
+
+                    MarkChangeWasDone()
+                }
+                else
+                    if (itemOrgArray[i].expDate.isNullOrBlank()&&itemArray[i].expDate.isNullOrBlank()) {
+                        if (itemOrgArray[i].Comments != itemArray[i].Comments ||
+                                dateFormat1.parse(itemOrgArray[i].effDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].effDate.apiToAppFormat()) ||
+                                itemOrgArray[i].ProgramTypeID != itemArray[i].ProgramTypeID) {
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
+                            Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
+                            Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
+                            Log.v("checkkk", itemOrgArray[i].ProgramTypeID + "=="+ itemArray[i].ProgramTypeID)
+
+                        }
+                    }
+       else
+                        if (itemOrgArray[i].Comments != itemArray[i].Comments || dateFormat1.parse(itemOrgArray[i].expDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].expDate.apiToAppFormat()) ||
+                    dateFormat1.parse(itemOrgArray[i].effDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].effDate.apiToAppFormat()) ||
+                        itemOrgArray[i].ProgramTypeID != itemArray[i].ProgramTypeID) {
+                    MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                    Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
+                    Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
+                    Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
+                    Log.v("checkkk", itemOrgArray[i].ProgramTypeID + "=="+ itemArray[i].ProgramTypeID)
+
+                }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "2ndddd")
+
+        }
+    }
 
 
 
@@ -369,22 +403,20 @@ class FragmentARRAVPrograms : Fragment() {
         program_name_textviewVal.adapter = programsAdapter
         edit_program_name_textviewVal.adapter = programsAdapter
 
-
-
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPrograms + AnnualVisitationSingleton.getInstance().facilityId,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        facilityProgramsList = Gson().fromJson(response.toString(), Array<AAAFacilityPrograms>::class.java).toCollection(ArrayList())
-
-
-//                            drawProgramsTable()
-                        //          BuildProgramsList()
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading facility programs")
-            context!!.toast("Error loading Facility Program. Please check your internet connectivity")
-
-        }))
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPrograms + AnnualVisitationSingleton.getInstance().facilityId,
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        facilityProgramsList = Gson().fromJson(response.toString(), Array<AAAFacilityPrograms>::class.java).toCollection(ArrayList())
+//
+//
+////                            drawProgramsTable()
+//                        //          BuildProgramsList()
+//                    })
+//                }, Response.ErrorListener {
+//            Log.v("error while loading", "error while loading facility programs")
+//            context!!.toast("Error loading Facility Program. Please check your internet connectivity")
+//
+//        }))
 
     }
 //
@@ -520,6 +552,7 @@ class FragmentARRAVPrograms : Fragment() {
                         var originalDataModel = FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex]
 
 
+
                         if (edit_validateInputs()) {
 
 
@@ -576,12 +609,12 @@ class FragmentARRAVPrograms : Fragment() {
 
 
                                                         } else
-                                                            Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                                            Toast.makeText(context, "1st this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
                                                         validProgram = false
 
 
                                                     }else
-                                                        Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                                        Toast.makeText(context, "2nd this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
 
                                                     validProgram = false
 
@@ -593,6 +626,7 @@ class FragmentARRAVPrograms : Fragment() {
 
                             }
 
+
                                 if (validProgram||valid_validProgram) {
 
 
@@ -601,8 +635,8 @@ class FragmentARRAVPrograms : Fragment() {
 
                                 currentRowDataModel.Comments = edit_comments_editTextVal.text.toString()
 
-                                currentRowDataModel.effDate = if (edit_effective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_effective_date_textviewVal.text.toString()
-                                currentRowDataModel.expDate = if (edit_expiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_expiration_date_textviewVal.text.toString()
+                                currentRowDataModel.effDate = if (edit_effective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_effective_date_textviewVal.text.toString().appToDBFormat()
+                                currentRowDataModel.expDate = if (edit_expiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_expiration_date_textviewVal.text.toString().appToApiSubmitFormat()
 
 
                                 var effdateForSubmit=edit_effective_date_textviewVal.text.toString()
@@ -616,7 +650,7 @@ class FragmentARRAVPrograms : Fragment() {
                                 }
 
 
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + "&programId=29385&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=sa&insertDate=2013-04-24T13:40:34.240&updateBy=SumA&updateDate=2013-06-24T15:25:12.513",
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + "&programId=29385&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=sa&insertDate=2013-04-24T13:40:34.240&updateBy=SumA&updateDate=2013-06-24T15:25:12.513",
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread(Runnable {
                                                 Log.v("RESPONSE", response.toString())
@@ -628,44 +662,8 @@ class FragmentARRAVPrograms : Fragment() {
                                                 enableAllAddButnsAndDialog()
 
 
-                                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblPrograms
-                                                var itemArray = FacilityDataModel.getInstance().tblPrograms
-
-                                                if (itemOrgArray.size!=itemArray.size){
-
-                                                    MarkChangeWasDone()
-                                                }else {
 
 
-                                                    if (!edit_expiration_date_textviewVal.text.toString().isNullOrEmpty() && originalDataModel.expDate.isNullOrEmpty()) {
-                                                        MarkChangeWasDone()
-                                               //         Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
-
-                                                    } else
-                                                        if (edit_expiration_date_textviewVal.text.toString().isNullOrEmpty()) {
-                                                            if (currentRowDataModel.Comments != originalDataModel.Comments ||
-                                                                    currentRowDataModel.effDate != originalDataModel.effDate.apiToAppFormat() || currentRowDataModel.ProgramTypeID != originalDataModel.ProgramTypeID) {
-                                                                MarkChangeWasDone()
-                                           //                     Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
-
-                                                            } else {
-                                            //                    Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
-
-                                                            }
-                                                        } else {
-                                                            if (currentRowDataModel.Comments != originalDataModel.Comments ||
-                                                                    currentRowDataModel.effDate != originalDataModel.effDate.apiToAppFormat() || currentRowDataModel.expDate != originalDataModel.expDate.apiToAppFormat() || currentRowDataModel.ProgramTypeID != originalDataModel.ProgramTypeID) {
-                                                                MarkChangeWasDone()
-                                                                //                 Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
-
-                                                            } else {
-                                                  //              Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
-
-                                                            }
-
-                                                        }
-
-                                                }
                                             })
                                         }, Response.ErrorListener {
                                     Log.v("error while loading", "error while loading program record")
