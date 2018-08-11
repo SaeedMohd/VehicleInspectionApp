@@ -109,7 +109,7 @@ class FacilityDataModelOrg {
 
     class TblFacilityServiceProvider {
         var SrvProviderId = ""
-        var ProviderNum = 0
+        var ProviderNum = ""
     }
 
     class TblTerminationCodeType{
@@ -233,7 +233,7 @@ class FacilityDataModelOrg {
     class TblPersonnel {
         var personnelIsInputsValid = false
         var iscertInputValid = false
-        var PersonnelTypeID=""
+        var PersonnelTypeID=0
         var FirstName=""
         var LastName=""
         var CertificationNum=""
@@ -241,7 +241,7 @@ class FacilityDataModelOrg {
         var RSP_Email=""
         var SeniorityDate=""
         var startDate=""
-        var ContractSigner=""
+        var ContractSigner=false
         var Addr1=""
         var Addr2=""
         var CITY=""
@@ -250,7 +250,7 @@ class FacilityDataModelOrg {
         var ZIP4=""
         var Phone=""
         var email=""
-        var PrimaryMailRecipient=""
+        var PrimaryMailRecipient=false
         var CertificationTypeId=""
         var CertificationDate=""
         var ExpirationDate=""

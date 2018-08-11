@@ -478,7 +478,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             for (fac in TypeTablesModel.getInstance().PersonnelType) {
                                 if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
 
-                                    item.PersonnelTypeID =fac.PersonnelTypeID
+                                    item.PersonnelTypeID =fac.PersonnelTypeID.toInt()
                             }
 
                             item.FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
@@ -486,8 +486,8 @@ class FragmentARRAVPersonnel : Fragment() {
                             item.RSP_UserName=if (rspUserId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
                             item.RSP_Email=if (rspEmailId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
                             item.CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
-                            item.ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
-                            item.PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
+                            item.ContractSigner=if (newSignerCheck.isChecked==true) true else false
+                            item.PrimaryMailRecipient=if (newACSCheck.isChecked==true) true else false
                             item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
                             item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
                             item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
@@ -522,8 +522,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
                                                 itemAr.RSP_Email != itemOrgAr.RSP_Email ||
                                                 itemAr.CertificationNum != itemOrgAr.CertificationNum ||
-                                                itemAr.ContractSigner != itemOrgAr.ContractSigner ||
-                                                itemAr.PrimaryMailRecipient != itemOrgAr.PrimaryMailRecipient ||
+                                                !(itemAr.ContractSigner == itemOrgAr.ContractSigner) ||
+                                                !(itemAr.PrimaryMailRecipient == itemOrgAr.PrimaryMailRecipient) ||
                                                 itemAr.startDate != itemOrgAr.startDate ||
                                                 itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
                                                 itemAr.SeniorityDate != itemOrgAr.SeniorityDate) {
@@ -1415,7 +1415,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val textView1 = TextView(context)
                 textView1.layoutParams = rowLayoutParam
                 textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView1.text = getTypeName(get(it).PersonnelTypeID)
+                textView1.text = getTypeName(get(it).PersonnelTypeID.toString())
                 tableRow.addView(textView1)
 
                 val textView2 = TextView(context)
@@ -1785,7 +1785,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                             for (fac in TypeTablesModel.getInstance().PersonnelType) {
                                                 if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
 
-                                                    item.PersonnelTypeID = fac.PersonnelTypeID
+                                                    item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
                                             }
 
                                             item.FirstName = if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
@@ -1793,8 +1793,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                             item.RSP_UserName = if (edit_rspUserId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
                                             item.RSP_Email = if (edit_rspEmailId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
                                             item.CertificationNum = if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
-                                            item.ContractSigner = if (edit_newSignerCheck.isChecked == true) "true" else "false"
-                                            item.PrimaryMailRecipient = if (edit_newACSCheck.isChecked == true) "true" else ""
+                                            item.ContractSigner = if (edit_newSignerCheck.isChecked == true) true else false
+                                            item.PrimaryMailRecipient = if (edit_newACSCheck.isChecked == true) true else false
                                             item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
                                             item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
                                             item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()

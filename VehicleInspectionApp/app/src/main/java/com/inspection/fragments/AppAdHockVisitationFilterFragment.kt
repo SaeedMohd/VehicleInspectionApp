@@ -909,17 +909,29 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj,"tblPhone")
         }
 
-        var result = jsonObj.getJSONArray("tblPersonnel")
-        for (i in result.length()-1 downTo 0){
-            if (result[i].toString().equals("")) result.remove(i);
+        if (jsonObj.has("tblPersonnel")) {
+            if (!jsonObj.get("tblPersonnel").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblPersonnel")
+                    for (i in result.length()-1 downTo 0){
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblPersonnel"))
+                    jsonObj.put("tblPersonnel",result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnel")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblPersonnel")
         }
-        jsonObj.remove(("tblPersonnel"))
-        jsonObj.put("tblPersonnel",result)
 
         if (jsonObj.has("tblAmendmentOrderTracking")) {
             if (!jsonObj.get("tblAmendmentOrderTracking").toString().equals("")) {
                 try {
-                    result = jsonObj.getJSONArray("tblAmendmentOrderTracking")
+                    var result = jsonObj.getJSONArray("tblAmendmentOrderTracking")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
@@ -938,7 +950,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         if (jsonObj.has("tblAARPortalAdmin")) {
             if (!jsonObj.get("tblAARPortalAdmin").toString().equals("")) {
                 try {
-                    result = jsonObj.getJSONArray("tblAARPortalAdmin")
+                    var result = jsonObj.getJSONArray("tblAARPortalAdmin")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
@@ -958,7 +970,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         if (jsonObj.has("tblScopeofService")) {
             if (!jsonObj.get("tblScopeofService").toString().equals("")) {
             try {
-                result = jsonObj.getJSONArray("tblScopeofService")
+                var result = jsonObj.getJSONArray("tblScopeofService")
                 for (i in result.length() - 1 downTo 0) {
                     if (result[i].toString().equals("")) result.remove(i);
                 }
@@ -997,7 +1009,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         if (jsonObj.has("tblFacilityServices")) {
             if (!jsonObj.get("tblFacilityServices").toString().equals("")) {
                 try {
-                    result = jsonObj.getJSONArray("tblFacilityServices")
+                    var result = jsonObj.getJSONArray("tblFacilityServices")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
@@ -1016,7 +1028,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         if (jsonObj.has("tblAffiliations")) {
             if (!jsonObj.get("tblAffiliations").toString().equals("")) {
                 try {
-                    result = jsonObj.getJSONArray("tblAffiliations")
+                    var result = jsonObj.getJSONArray("tblAffiliations")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
@@ -1035,7 +1047,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         if (jsonObj.has("tblDeficiency")) {
             if (!jsonObj.get("tblDeficiency").toString().equals("")) {
                 try {
-                    result = jsonObj.getJSONArray("tblDeficiency")
+                    var result = jsonObj.getJSONArray("tblDeficiency")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
@@ -1163,6 +1175,25 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblInvoiceInfo")
+        }
+
+        if (jsonObj.has("tblVisitationTracking")) {
+            if (!jsonObj.get("tblVisitationTracking").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblVisitationTracking")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblVisitationTracking"))
+                    jsonObj.put("tblVisitationTracking", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblVisitationTracking")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblVisitationTracking")
         }
 
         if (jsonObj.has("tblVendorRevenue")) {
@@ -1296,6 +1327,25 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.ST=""
             oneArray.ZIP=""
             oneArray.ZIP4=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblVisitationTracking")) {
+            var oneArray = FacilityDataModel.TblVisitationTracking()
+            oneArray.AARSigns=""
+            oneArray.CertificateOfApproval=""
+            oneArray.DatePerformed=""
+            oneArray.MemberBenefitPoster=""
+            oneArray.QualityControl=""
+            oneArray.StaffTraining=""
+            oneArray.automotiveSpecialistName=""
+            oneArray.automotiveSpecialistSignature=null
+            oneArray.email=""
+            oneArray.emailVisitationPdfToFacility=false
+            oneArray.facilityRepresentativeDeficienciesSignature=null
+            oneArray.performedBy=""
+            oneArray.visitationType=null
+            oneArray.waiveVisitations=false
+            oneArray.waiverComments=""
+            oneArray.waiverSignature=null
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblPhone")) {
             var oneArray = FacilityDataModel.TblPhone()
