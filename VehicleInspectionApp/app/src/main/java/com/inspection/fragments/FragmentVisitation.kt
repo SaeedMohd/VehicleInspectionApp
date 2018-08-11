@@ -90,6 +90,7 @@ class FragmentVisitation : Fragment() {
         scopeOfServiceChangesWatcher()
         FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
         FragmentARRAVPrograms().checkMarkChangesWasDone()
+        FragmentARRAVRepairShopPortalAddendum().checkMarkChangesWasDone()
         FragmentARRAVPersonnel().checkMarkChangesWasDoneForPersonnel()
 
         dataChangeHandling()

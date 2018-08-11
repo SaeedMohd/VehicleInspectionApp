@@ -40,6 +40,8 @@ import com.inspection.model.FacilityDataModelOrg
 class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
+    var rowIndex=0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +64,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             addNewAAR_PortalTrackingCard.visibility=View.GONE
             alphaBackgroundForRSPDialogs.visibility = View.GONE
 
-
         })
+
         edit_exitRSPDialogeBtnId.setOnClickListener({
 
             fillPortalTrackingTableView()
@@ -269,30 +271,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 altLocationTableRow(2)
 
 
-                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
-                                var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
-                                if (itemOrgArray.size!=itemArray.size){
 
-                                    MarkChangeWasDone()
-                                }else {
-
-                                    for (itemAr in itemArray) {
-                                        for (itemOrgAr in itemOrgArray) {
-
-                                            if (itemAr.startDate != itemOrgAr.startDate || itemAr.PortalInspectionDate != itemOrgAr.PortalInspectionDate ||
-                                                    itemAr.LoggedIntoPortal != itemOrgAr.LoggedIntoPortal ||
-                                                    itemAr.InProgressTows != itemOrgAr.InProgressTows ||
-                                                    itemAr.InProgressWalkIns != itemOrgAr.InProgressWalkIns ||
-                                                    itemAr.NumberUnacknowledgedTows != itemOrgAr.NumberUnacknowledgedTows ||
-                                                    itemAr.CardReaders != itemOrgAr.CardReaders ||
-                                                    itemAr.AddendumSigned != itemOrgAr.AddendumSigned) {
-                                                MarkChangeWasDone()
-                                                Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                                            }
-
-                                        }
-                                    }
-                                }
 
                             })
                         }, Response.ErrorListener {
@@ -327,6 +306,102 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
     }
 
+    fun checkMarkChangesWasDone() {
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
+        var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
+        if (itemOrgArray.size == itemArray.size) {
+            for (i in 0 until itemOrgArray.size){
+                var startDate= try {
+                    dateFormat1.parse(itemArray[i].startDate.apiToAppFormat())
+                } catch (e: Exception) {
+                    dateFormat1.parse(itemArray[i].startDate)
+
+                }
+                var assignedDate= try {
+                    dateFormat1.parse(itemArray[i].AddendumSigned.apiToAppFormat())
+                } catch (e: Exception) {
+                    dateFormat1.parse(itemArray[i].AddendumSigned)
+
+                }
+                var portalDate= try {
+                    dateFormat1.parse(itemArray[i].PortalInspectionDate.apiToAppFormat())
+                } catch (e: Exception) {
+                    dateFormat1.parse(itemArray[i].PortalInspectionDate)
+
+                }
+
+                if (
+                        itemOrgArray[i].PortalInspectionDate.isNullOrBlank()&&!itemArray[i].PortalInspectionDate.isNullOrBlank()||
+                        itemOrgArray[i].startDate.isNullOrBlank()&&!itemArray[i].startDate.isNullOrBlank()||
+                        itemOrgArray[i].AddendumSigned.isNullOrBlank()&&!itemArray[i].AddendumSigned.isNullOrBlank()
+
+
+                ) {
+
+                    MarkChangeWasDone()
+                }
+                else
+                    if (
+                            itemOrgArray[i].PortalInspectionDate.isNullOrBlank()&&itemArray[i].PortalInspectionDate.isNullOrBlank()||
+                            itemOrgArray[i].startDate.isNullOrBlank()&&itemArray[i].startDate.isNullOrBlank()||
+                            itemOrgArray[i].AddendumSigned.isNullOrBlank()&&itemArray[i].AddendumSigned.isNullOrBlank()
+
+                    ) {
+                        if (
+
+                                itemOrgArray[i].LoggedIntoPortal != itemArray[i].LoggedIntoPortal ||
+                                itemOrgArray[i].InProgressTows != itemArray[i].InProgressTows ||
+                                itemOrgArray[i].InProgressWalkIns != itemArray[i].InProgressWalkIns ||
+                                itemOrgArray[i].NumberUnacknowledgedTows != itemArray[i].NumberUnacknowledgedTows
+                        ) {
+
+
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgArray[i].LoggedIntoPortal + "=="+ itemArray[i].LoggedIntoPortal)
+                            Log.v("checkkk", itemOrgArray[i].InProgressTows + "=="+ itemArray[i].InProgressTows)
+                            Log.v("checkkk", itemOrgArray[i].InProgressWalkIns + "=="+ itemArray[i].InProgressWalkIns)
+                            Log.v("checkkk", itemOrgArray[i].NumberUnacknowledgedTows + "=="+ itemArray[i].NumberUnacknowledgedTows)
+
+                        }
+                    }
+
+                    else
+                        if (
+
+                                itemOrgArray[i].LoggedIntoPortal != itemArray[i].LoggedIntoPortal ||
+                                itemOrgArray[i].InProgressTows != itemArray[i].InProgressTows ||
+                                itemOrgArray[i].InProgressWalkIns != itemArray[i].InProgressWalkIns ||
+                                itemOrgArray[i].NumberUnacknowledgedTows != itemArray[i].NumberUnacknowledgedTows ||
+                                dateFormat1.parse(itemOrgArray[i].AddendumSigned.apiToAppFormat()) != assignedDate ||
+                                dateFormat1.parse(itemOrgArray[i].startDate.apiToAppFormat()) != startDate ||
+                                dateFormat1.parse(itemOrgArray[i].PortalInspectionDate.apiToAppFormat()) != portalDate)
+
+                {
+
+
+
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                    Log.v("checkkk", itemOrgArray[i].LoggedIntoPortal + "=="+ itemArray[i].LoggedIntoPortal)
+                    Log.v("checkkk", itemOrgArray[i].InProgressTows + "=="+ itemArray[i].InProgressTows)
+                    Log.v("checkkk", itemOrgArray[i].InProgressWalkIns + "=="+ itemArray[i].InProgressWalkIns)
+                    Log.v("checkkk", itemOrgArray[i].NumberUnacknowledgedTows + "=="+ itemArray[i].NumberUnacknowledgedTows)
+                    Log.v("checkkk", itemOrgArray[i].AddendumSigned + "=="+ itemArray[i].AddendumSigned)
+                    Log.v("checkkk", itemOrgArray[i].startDate + "=="+ itemArray[i].startDate)
+                    Log.v("checkkk", itemOrgArray[i].PortalInspectionDate + "=="+ itemArray[i].PortalInspectionDate)
+
+
+                }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "2ndddd")
+
+        }
+    }
 
     fun validateInputs() : Boolean {
 
@@ -554,13 +629,24 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
                 updateButton.setOnClickListener(View.OnClickListener {
+                    rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
 
 
                     edit_numberOfUnacknowledgedRecordsEditText.setText(textView2.text)
                     edit_numberOfInProgressTwoIns.setText(textView3.text)
                     edit_numberOfInProgressWalkIns.setText(textView4.text)
                     edit_inspectionDateButton.setText(textView.text)
-
+                    try {
+                        edit_startDateButton.setText(if (get(rowIndex-1).startDate.isNullOrBlank()) "" else get(rowIndex-1).startDate.apiToAppFormat())
+                    } catch (e: Exception) {
+                        edit_startDateButton.setText(if (get(rowIndex-1).startDate.isNullOrBlank()) "" else get(rowIndex-1).startDate)
+                    }
+                    try {
+                        edit_addendumSignedDateButton.setText(if (get(rowIndex-1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex-1).AddendumSigned.apiToAppFormat())
+                    } catch (e: Exception) {
+                        edit_addendumSignedDateButton.setText(if (get(rowIndex-1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex-1).AddendumSigned)
+                    }
+                    edit_numberOfCardsReaderEditText.setText(get(rowIndex-1).CardReaders)
 
                     if (textView1.text.toString().contains("true")){
 
@@ -613,7 +699,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                 })
                 edit_submitNewAAR_PortalTracking.setOnClickListener {
-                    var rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
 
 
                     if (validateInputsForUpdate()) {
@@ -621,9 +706,9 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                         val date = edit_inspectionDateButton.text
                         val isLoggedInRsp = edit_loggedIntoRspButton.isChecked
-                        val numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
-                        val numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
-                        val numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
+                        var numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
+                        var numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
+                        var numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
 
 
                         var startDate = if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString()
@@ -650,33 +735,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
                                         FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
-
-
-                                        var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
-                                        var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
-                                        if (itemOrgArray.size!=itemArray.size){
-
-                                            MarkChangeWasDone()
-                                        }else {
-
-
-                                            if (
-                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].startDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].startDate ||
-                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].PortalInspectionDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].PortalInspectionDate ||
-                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].LoggedIntoPortal != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].LoggedIntoPortal ||
-                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressTows ||
-                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressWalkIns != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressWalkIns ||
-                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows ||
-                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders ||
-                                                    FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned
-
-                                            ) {
-
-                                                MarkChangeWasDone()
-                                            }
-
-                                        }
-
 
                                             RSP_LoadingView.visibility = View.GONE
                                             alphaBackgroundForRSPDialogs.visibility = View.GONE

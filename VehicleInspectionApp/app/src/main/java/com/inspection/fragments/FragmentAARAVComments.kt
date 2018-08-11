@@ -302,7 +302,6 @@ class FragmentAARAVComments : Fragment() {
                                         Log.v("RESPONSE", response.toString())
                                         commentsLoadingView.visibility = View.GONE
 
-                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                             FacilityDataModel.getInstance().tblScopeofService[0].apply {
 
