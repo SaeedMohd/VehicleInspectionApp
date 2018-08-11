@@ -95,6 +95,9 @@ class FragmentVisitation : Fragment() {
         FragmentARRAVFacilityServices().checkMarkChangesWasDone()
         FragmentARRAVDeficiency().checkMarkChangesWasDone()
         FragmentARRAVAmOrderTracking().checkMarkChangesWasDone()
+        FragmentARRAVLocation().checkMarkChangesWasDoneForAddressTable()
+        FragmentARRAVLocation().checkMarkChangesWasDoneForEmailTable()
+        FragmentARRAVLocation().checkMarkChangesWasDoneForPhoneTable()
 
         dataChangeHandling()
 
