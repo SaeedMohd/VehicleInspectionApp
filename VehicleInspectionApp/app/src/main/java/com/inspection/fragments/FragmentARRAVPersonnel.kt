@@ -507,40 +507,6 @@ class FragmentARRAVPersonnel : Fragment() {
                                 child.isEnabled = true
                             }
 
-                            var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
-                            var itemArray = FacilityDataModel.getInstance().tblPersonnel
-
-                            if (itemOrgArray.size!=itemArray.size){
-
-                                MarkChangeWasDone()
-                            }else {
-
-                                for (itemAr in itemArray) {
-                                    for (itemOrgAr in itemOrgArray) {
-
-                                        if
-                                                (
-
-
-                                                itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
-                                                itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
-                                                itemAr.RSP_Email != itemOrgAr.RSP_Email ||
-                                                itemAr.CertificationNum != itemOrgAr.CertificationNum ||
-                                                itemAr.ContractSigner != itemOrgAr.ContractSigner ||
-                                                itemAr.PrimaryMailRecipient != itemOrgAr.PrimaryMailRecipient ||
-                                                itemAr.startDate != itemOrgAr.startDate ||
-                                                itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
-                                                itemAr.SeniorityDate != itemOrgAr.SeniorityDate
-
-                                        ) {
-                                            MarkChangeWasDone()
-                                            Toast.makeText(context, "changes submitted", Toast.LENGTH_SHORT).show()
-                                        }
-
-                                    }
-                                }
-                            }
-
 
                         })
                     }, Response.ErrorListener {
@@ -1820,43 +1786,6 @@ class FragmentARRAVPersonnel : Fragment() {
                                             }
 
 
-                                            var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
-                                            var itemArray = FacilityDataModel.getInstance().tblPersonnel
-                                            if (itemOrgArray.size != itemArray.size) {
-
-                                                MarkChangeWasDone()
-                                            } else
-
-                                            {
-                                            var itemOrgAr = FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex]
-                                            var itemAr = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
-
-                                            var expirDateOrg = if (itemOrgAr.ExpirationDate.isNullOrBlank()) "" else itemOrgAr.ExpirationDate.apiToAppFormat()
-                                            var seniorityDateOrg = if (itemOrgAr.SeniorityDate.isNullOrBlank()) "" else itemOrgAr.SeniorityDate.apiToAppFormat()
-                                            var startDateOrg = if (itemOrgAr.startDate.isNullOrBlank()) "" else itemOrgAr.startDate.apiToAppFormat()
-                                            if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
-                                                    itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
-                                                    itemAr.RSP_Email != itemOrgAr.RSP_Email ||
-                                                    itemAr.CertificationNum != itemOrgAr.CertificationNum ||
-                                                    itemAr.ContractSigner != itemOrgAr.ContractSigner
-                                                    || itemAr.PrimaryMailRecipient != itemOrgAr.PrimaryMailRecipient
-                                                    || itemAr.startDate != startDateOrg
-                                                    || itemAr.ExpirationDate != expirDateOrg ||
-                                                    itemAr.SeniorityDate != seniorityDateOrg
-                                            ) {
-                                                MarkChangeWasDone()
-                                                //   Toast.makeText(context,"found changes current is ${itemAr.startDate} org is $startDateOrg ",Toast.LENGTH_SHORT).show()
-                                                Toast.makeText(context, "changes done", Toast.LENGTH_SHORT).show()
-
-                                            } else {
-                                                Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
-                                                //         Toast.makeText(context,"no changes current is ${itemAr.startDate} org is $startDateOrg ",Toast.LENGTH_SHORT).show()
-
-
-                                            }
-
-
-                                        }
 
                                         })
                                     }, Response.ErrorListener {
