@@ -518,7 +518,11 @@ class FragmentARRAVPersonnel : Fragment() {
                                 for (itemAr in itemArray) {
                                     for (itemOrgAr in itemOrgArray) {
 
-                                        if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
+                                        if
+                                                (
+
+
+                                                itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
                                                 itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
                                                 itemAr.RSP_Email != itemOrgAr.RSP_Email ||
                                                 itemAr.CertificationNum != itemOrgAr.CertificationNum ||
@@ -526,7 +530,9 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 itemAr.PrimaryMailRecipient != itemOrgAr.PrimaryMailRecipient ||
                                                 itemAr.startDate != itemOrgAr.startDate ||
                                                 itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
-                                                itemAr.SeniorityDate != itemOrgAr.SeniorityDate) {
+                                                itemAr.SeniorityDate != itemOrgAr.SeniorityDate
+
+                                        ) {
                                             MarkChangeWasDone()
                                             Toast.makeText(context, "changes submitted", Toast.LENGTH_SHORT).show()
                                         }
@@ -2209,6 +2215,96 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
     }
 
+    fun checkMarkChangesWasDoneForPersonnel() {
+
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+
+        var itemOrgAr = FacilityDataModelOrg.getInstance().tblPersonnel
+        var itemAr = FacilityDataModel.getInstance().tblPersonnel
+        if (itemOrgAr.size == itemAr.size) {
+            for (i in 0 until itemOrgAr.size){
+
+                  if (itemAr[i].PrimaryMailRecipient.isNullOrBlank()){itemAr[i].PrimaryMailRecipient="false"}
+                if (
+                        ( itemOrgAr[i].ExpirationDate.isNullOrBlank()&&!itemAr[i].ExpirationDate.isNullOrBlank()) ||
+                        ( itemOrgAr[i].startDate.isNullOrBlank()&&!itemAr[i].startDate.isNullOrBlank() )||
+                        (  itemOrgAr[i].SeniorityDate.isNullOrBlank()&&!itemAr[i].SeniorityDate.isNullOrBlank())
+                ) {
+
+                    MarkChangeWasDone()
+                }
+                else
+                    if (
+                            ( itemOrgAr[i].ExpirationDate.isNullOrBlank()&&itemAr[i].ExpirationDate.isNullOrBlank()) ||
+                            ( itemOrgAr[i].startDate.isNullOrBlank()&&itemAr[i].startDate.isNullOrBlank() )||
+                            (  itemOrgAr[i].SeniorityDate.isNullOrBlank()&&itemAr[i].SeniorityDate.isNullOrBlank())
+                    ) {
+
+                        if (
+                                itemAr[i].FirstName != itemOrgAr[i].FirstName || itemAr[i].LastName != itemOrgAr[i].LastName ||
+                                itemAr[i].RSP_UserName != itemOrgAr[i].RSP_UserName ||
+                                itemAr[i].PersonnelTypeID != itemOrgAr[i].PersonnelTypeID ||
+                                itemAr[i].RSP_Email != itemOrgAr[i].RSP_Email ||
+                                itemAr[i].CertificationNum != itemOrgAr[i].CertificationNum ||
+                                itemAr[i].ContractSigner != itemOrgAr[i].ContractSigner ||
+                                itemAr[i].PrimaryMailRecipient != itemOrgAr[i].PrimaryMailRecipient
+
+
+                        ) {
+                            MarkChangeWasDone()
+
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgAr[i].FirstName + "=="+ itemAr[i].FirstName)
+                            Log.v("checkkk", itemOrgAr[i].LastName + "=="+ itemAr[i].LastName)
+                            Log.v("checkkk", itemOrgAr[i].RSP_UserName + "=="+ itemAr[i].RSP_UserName)
+                            Log.v("checkkk", itemOrgAr[i].RSP_Email + "=="+ itemAr[i].RSP_Email)
+                            Log.v("checkkk", itemOrgAr[i].CertificationNum + "=="+ itemAr[i].CertificationNum)
+                            Log.v("checkkk", itemOrgAr[i].ContractSigner + "=="+ itemAr[i].ContractSigner)
+                            Log.v("checkkk", itemOrgAr[i].PrimaryMailRecipient + "=="+ itemAr[i].PrimaryMailRecipient)
+                            Log.v("checkkk", itemOrgAr[i].PersonnelTypeID + "=="+ itemAr[i].PersonnelTypeID)
+
+                        }
+                    }
+                    else
+                        if (
+
+                                itemAr[i].FirstName != itemOrgAr[i].FirstName || itemAr[i].LastName != itemOrgAr[i].LastName ||
+                                itemAr[i].RSP_UserName != itemOrgAr[i].RSP_UserName ||
+                                itemAr[i].RSP_Email != itemOrgAr[i].RSP_Email ||
+                                itemAr[i].CertificationNum != itemOrgAr[i].CertificationNum ||
+                                itemAr[i].PersonnelTypeID != itemOrgAr[i].PersonnelTypeID ||
+                                itemAr[i].ContractSigner != itemOrgAr[i].ContractSigner ||
+                                itemAr[i].PrimaryMailRecipient != itemOrgAr[i].PrimaryMailRecipient ||
+                                dateFormat1.parse(itemAr[i].startDate.apiToAppFormat()) != dateFormat1.parse(itemOrgAr[i].startDate.apiToAppFormat()) ||
+                                dateFormat1.parse(itemAr[i].ExpirationDate.apiToAppFormat()) != dateFormat1.parse(itemOrgAr[i].ExpirationDate.apiToAppFormat()) ||
+                                dateFormat1.parse(itemAr[i].SeniorityDate.apiToAppFormat()) != dateFormat1.parse(itemOrgAr[i].SeniorityDate.apiToAppFormat())
+
+
+                        ) {
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgAr[i].FirstName + "=="+ itemAr[i].FirstName)
+                            Log.v("checkkk", itemOrgAr[i].LastName + "=="+ itemAr[i].LastName)
+                            Log.v("checkkk", itemOrgAr[i].RSP_UserName + "=="+ itemAr[i].RSP_UserName)
+                            Log.v("checkkk", itemOrgAr[i].RSP_Email + "=="+ itemAr[i].RSP_Email)
+                            Log.v("checkkk", itemOrgAr[i].CertificationNum + "=="+ itemAr[i].CertificationNum)
+                            Log.v("checkkk", itemOrgAr[i].ContractSigner + "=="+ itemAr[i].ContractSigner)
+                            Log.v("checkkk", itemOrgAr[i].PrimaryMailRecipient + "=="+ itemAr[i].PrimaryMailRecipient)
+                            Log.v("checkkk", itemOrgAr[i].PersonnelTypeID + "=="+ itemAr[i].PersonnelTypeID)
+                            Log.v("checkkk", itemOrgAr[i].startDate + "=="+ itemAr[i].startDate)
+                            Log.v("checkkk", itemOrgAr[i].ExpirationDate + "=="+ itemAr[i].ExpirationDate)
+                            Log.v("checkkk", itemOrgAr[i].SeniorityDate + "=="+ itemAr[i].SeniorityDate)
+
+
+                        }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "array not equal")
+
+
+        }
+    }
 
     fun onlyOneMailRecepientLogic(){
 

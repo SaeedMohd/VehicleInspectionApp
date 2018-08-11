@@ -67,7 +67,6 @@ class FragmentARRAVPrograms : Fragment() {
     private var programTypesArray = ArrayList<String>()
     private var programTypesList = ArrayList<AAAProgramTypes>()
     private var facilityProgramsList = ArrayList<AAAFacilityPrograms>()
-    val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
 
     var dateOne = ""
     var dateTwo = ""
@@ -342,9 +341,7 @@ class FragmentARRAVPrograms : Fragment() {
 
 
     fun checkMarkChangesWasDone() {
-
-
-
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
 
         var itemOrgArray = FacilityDataModelOrg.getInstance().tblPrograms
         var itemArray = FacilityDataModel.getInstance().tblPrograms
@@ -362,10 +359,6 @@ class FragmentARRAVPrograms : Fragment() {
                                 itemOrgArray[i].ProgramTypeID != itemArray[i].ProgramTypeID) {
                             MarkChangeWasDone()
 //                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
-                            Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
-                            Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
-                            Log.v("checkkk", itemOrgArray[i].ProgramTypeID + "=="+ itemArray[i].ProgramTypeID)
 
                         }
                     }
@@ -375,10 +368,6 @@ class FragmentARRAVPrograms : Fragment() {
                         itemOrgArray[i].ProgramTypeID != itemArray[i].ProgramTypeID) {
                     MarkChangeWasDone()
 //                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                    Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
-                    Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
-                    Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
-                    Log.v("checkkk", itemOrgArray[i].ProgramTypeID + "=="+ itemArray[i].ProgramTypeID)
 
                 }
             }
