@@ -1485,6 +1485,30 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.CommentTypeID=0
             oneArray.SeqNum=0
             jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblPersonnel")) {
+            var oneArray = FacilityDataModel.TblPersonnel()
+            oneArray.Addr1=""
+            oneArray.Addr2=""
+            oneArray.CITY=""
+            oneArray.CertificationDate=""
+            oneArray.CertificationNum=""
+            oneArray.CertificationTypeId=""
+            oneArray.ContractSigner=false
+            oneArray.ExpirationDate=""
+            oneArray.FirstName=""
+            oneArray.LastName=""
+            oneArray.PersonnelTypeID=0
+            oneArray.Phone=""
+            oneArray.PrimaryMailRecipient=false
+            oneArray.RSP_Email=""
+            oneArray.RSP_UserName=""
+            oneArray.ST=""
+            oneArray.SeniorityDate=""
+            oneArray.ZIP=""
+            oneArray.ZIP4=""
+            oneArray.email=""
+            oneArray.startDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
         }
 
         return jsonObj;
