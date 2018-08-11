@@ -74,15 +74,36 @@ class FragmentVisitation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
-        scopeOfServiceChangesWatcher()
-        FragmentARRAVScopeOfService().checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
-        initializeFields()
+        FacilityDataModelOrg.getInstance().changeWasDone = false
+        dataChangeHandling()
+        checkMarkChangesDone()
+            initializeFields()
         setFieldsValues()
         setFieldsListeners()
 
+
+    }
+
+
+    fun checkMarkChangesDone(){
+        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
+        scopeOfServiceChangesWatcher()
+        FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
+        FragmentARRAVPrograms().checkMarkChangesWasDone()
+        FragmentARRAVPersonnel().checkMarkChangesWasDoneForPersonnel()
+
+        dataChangeHandling()
+
+
+    }
+    fun dataChangeHandling(){
+
         if (FacilityDataModelOrg.getInstance().changeWasDone==true ){
             dataChangedYesRadioButton.isChecked=true
+            dataChangedNoRadioButton.isChecked=false
+        }else{
+            dataChangedNoRadioButton.isChecked=true
+            dataChangedYesRadioButton.isChecked=false
         }
 
     }
@@ -1027,6 +1048,9 @@ class FragmentVisitation : Fragment() {
                                                 FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
 
                                                 FragmentARRAVScopeOfService.dataChanged = false
+                                                FragmentARRAVScopeOfService().checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
+                                                dataChangeHandling()
+
 
                                             }
 

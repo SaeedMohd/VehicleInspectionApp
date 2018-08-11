@@ -18,7 +18,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.inspection.R.drawable.circle
 import com.inspection.fragments.*
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_DiagnosticsRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_FixedLaborRate
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMax
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMin
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
+import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
@@ -35,6 +42,15 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         setContentView(R.layout.activity_forms)
         setSupportActionBar(toolbar)
         validationProblemFoundForOtherFragments=true
+
+         watcher_LaborMax=""
+         watcher_LaborMin=""
+         watcher_FixedLaborRate=""
+         watcher_DiagnosticsRate=""
+         watcher_NumOfBays=""
+         watcher_NumOfLifts=""
+         typeIdCompare=""
+
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)

@@ -79,7 +79,6 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
                    //     domesticVehiclesListItems.add(model)
                     }
-                    Toast.makeText(context,domesticVehiclesListItems.size.toString(),Toast.LENGTH_SHORT).show()
 
 
 
