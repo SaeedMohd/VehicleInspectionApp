@@ -92,6 +92,9 @@ class FragmentVisitation : Fragment() {
         FragmentARRAVPrograms().checkMarkChangesWasDone()
         FragmentARRAVRepairShopPortalAddendum().checkMarkChangesWasDone()
         FragmentARRAVPersonnel().checkMarkChangesWasDoneForPersonnel()
+        FragmentARRAVFacilityServices().checkMarkChangesWasDone()
+        FragmentARRAVDeficiency().checkMarkChangesWasDone()
+        FragmentARRAVAmOrderTracking().checkMarkChangesWasDone()
 
         dataChangeHandling()
 

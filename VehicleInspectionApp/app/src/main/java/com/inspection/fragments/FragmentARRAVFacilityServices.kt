@@ -158,29 +158,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                                 addTheLatestRowOfPortalAdmin()
 
 
-                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityServices
-                                var itemArray = FacilityDataModel.getInstance().tblFacilityServices
-                                if (itemOrgArray.size!=itemArray.size){
 
-                                    MarkChangeWasDone()
-                                }else {
-
-                                    for (itemAr in itemArray) {
-                                        for (itemOrgAr in itemOrgArray) {
-
-                                            if (itemAr.Comments != itemOrgAr.Comments || itemAr.effDate != itemOrgAr.effDate ||
-                                                    itemAr.expDate != itemOrgAr.expDate ||
-                                                    itemAr.ServiceID != itemOrgAr.ServiceID) {
-                                                MarkChangeWasDone()
-                                                Toast.makeText(context, "changes found", Toast.LENGTH_SHORT).show()
-                                            } else {
-                                                Toast.makeText(context, "no changes was found", Toast.LENGTH_SHORT).show()
-
-                                            }
-
-                                        }
-                                    }
-                                }
 
                             })
                         }, Response.ErrorListener {
@@ -238,14 +216,34 @@ class FragmentARRAVFacilityServices : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = if (get(it).effDate.isNullOrEmpty()) "" else get(it).effDate.apiToAppFormat()
+                if (get(it).effDate.isNullOrBlank()){
+                    textView.text =""
+                }else {
+                    try {
+                        textView.text = get(it).effDate.apiToAppFormat()
+                    } catch (e: Exception) {
+
+                        textView.text = get(it).effDate
+
+                    }
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
-                textView.text = if (get(it).expDate.isNullOrEmpty()) "" else  get(it).expDate.apiToAppFormat()
+                if (get(it).expDate.isNullOrBlank()){
+                    textView.text =""
+                }else {
+                    try {
+                        textView.text = get(it).expDate.apiToAppFormat()
+                    } catch (e: Exception) {
+
+                        textView.text = get(it).expDate
+
+                    }
+                }
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -298,14 +296,34 @@ class FragmentARRAVFacilityServices : Fragment() {
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = effDate.apiToAppFormat()
+            if (effDate.isNullOrBlank()){
+                textView.text =""
+            }else {
+                try {
+                    textView.text = effDate.apiToAppFormat()
+                } catch (e: Exception) {
+
+                    textView.text = effDate
+
+                }
+            }
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            textView.text = expDate.apiToAppFormat()
+            if (expDate.isNullOrBlank()){
+                textView.text =""
+            }else {
+                try {
+                    textView.text = expDate.apiToAppFormat()
+                } catch (e: Exception) {
+
+                    textView.text = expDate
+
+                }
+            }
             tableRow.addView(textView)
 
             textView = TextView(context)
@@ -447,6 +465,50 @@ class FragmentARRAVFacilityServices : Fragment() {
     }
 
 
+    fun checkMarkChangesWasDone() {
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityServices
+        var itemArray = FacilityDataModel.getInstance().tblFacilityServices
+        if (itemOrgArray.size == itemArray.size) {
+            for (i in 0 until itemOrgArray.size){
+                if (itemOrgArray[i].expDate.isNullOrBlank()&&!itemArray[i].expDate.isNullOrBlank()) {
+
+                    MarkChangeWasDone()
+                }
+                else
+                    if (itemOrgArray[i].expDate.isNullOrBlank()&&itemArray[i].expDate.isNullOrBlank()) {
+                        if (itemOrgArray[i].Comments != itemArray[i].Comments ||
+                                dateFormat1.parse(itemOrgArray[i].effDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].effDate.apiToAppFormat()) ||
+                                itemOrgArray[i].ServiceID != itemArray[i].ServiceID) {
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
+                            Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
+                            Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
+                            Log.v("checkkk", itemOrgArray[i].ServiceID + "=="+ itemArray[i].ServiceID)
+
+                        }
+                    }
+                    else
+                        if (itemOrgArray[i].Comments != itemArray[i].Comments || dateFormat1.parse(itemOrgArray[i].expDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].expDate.apiToAppFormat()) ||
+                                dateFormat1.parse(itemOrgArray[i].effDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].effDate.apiToAppFormat()) ||
+                                itemOrgArray[i].ServiceID != itemArray[i].ServiceID) {
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
+                            Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
+                            Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
+                            Log.v("checkkk", itemOrgArray[i].ServiceID + "=="+ itemArray[i].ServiceID)
+
+                        }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "2ndddd")
+
+        }
+    }
 
 
     fun validateInputs() : Boolean {

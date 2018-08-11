@@ -288,29 +288,6 @@ class FragmentARRAVDeficiency : Fragment() {
                                 addTheLatestRowOfPortalAdmin()
 
 
-
-                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblDeficiency
-                                var itemArray = FacilityDataModel.getInstance().tblDeficiency
-                                if (itemOrgArray.size!=itemArray.size){
-
-                                    MarkChangeWasDone()
-                                }else {
-
-                                    for (itemAr in itemArray) {
-                                        for (itemOrgAr in itemOrgArray) {
-
-                                            if (itemAr.Comments != itemOrgAr.Comments || itemAr.VisitationDate != itemOrgAr.VisitationDate ||
-                                                    itemAr.EnteredDate != itemOrgAr.EnteredDate ||
-                                                    itemAr.ClearedDate != itemOrgAr.ClearedDate) {
-                                                MarkChangeWasDone()
-                                                Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                                            }
-
-                                        }
-                                    }
-                                }
-
-
                             })
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading personnal record")
@@ -602,6 +579,68 @@ class FragmentARRAVDeficiency : Fragment() {
         return  defValide
 
     }
+
+    fun checkMarkChangesWasDone() {
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblDeficiency
+        var itemArray = FacilityDataModel.getInstance().tblDeficiency
+        if (itemOrgArray.size == itemArray.size) {
+            for (i in 0 until itemOrgArray.size){
+                if (
+                        itemOrgArray[i].ClearedDate.isNullOrBlank()&&!itemArray[i].ClearedDate.isNullOrBlank()||
+                        itemOrgArray[i].EnteredDate.isNullOrBlank()&&!itemArray[i].EnteredDate.isNullOrBlank()||
+                        itemOrgArray[i].VisitationDate.isNullOrBlank()&&!itemArray[i].VisitationDate.isNullOrBlank()
+
+                ) {
+
+                    MarkChangeWasDone()
+                }
+                else
+                    if (
+                            itemOrgArray[i].ClearedDate.isNullOrBlank()&&itemArray[i].ClearedDate.isNullOrBlank()||
+                            itemOrgArray[i].EnteredDate.isNullOrBlank()&&itemArray[i].EnteredDate.isNullOrBlank()
+                    ) {
+                        if (
+                                itemOrgArray[i].Comments != itemArray[i].Comments ||
+                                dateFormat1.parse(itemOrgArray[i].VisitationDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].VisitationDate.apiToAppFormat()) ||
+                                itemOrgArray[i].DefTypeID != itemArray[i].DefTypeID
+                        ) {
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
+                            Log.v("checkkk", itemOrgArray[i].DefTypeID + "=="+ itemArray[i].DefTypeID)
+                            Log.v("checkkk", itemOrgArray[i].VisitationDate + "=="+ itemArray[i].VisitationDate)
+
+                        }
+                    }
+                    else
+                        if (
+
+                                itemOrgArray[i].Comments != itemArray[i].Comments ||
+                                dateFormat1.parse(itemOrgArray[i].VisitationDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].VisitationDate.apiToAppFormat()) ||
+                                dateFormat1.parse(itemOrgArray[i].ClearedDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].ClearedDate.apiToAppFormat()) ||
+                                dateFormat1.parse(itemOrgArray[i].EnteredDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].EnteredDate.apiToAppFormat()) ||
+                                itemOrgArray[i].DefTypeID != itemArray[i].DefTypeID
+
+                        ) {
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
+                            Log.v("checkkk", itemOrgArray[i].DefTypeID + "=="+ itemArray[i].DefTypeID)
+                            Log.v("checkkk", itemOrgArray[i].VisitationDate + "=="+ itemArray[i].VisitationDate)
+                            Log.v("checkkk", itemOrgArray[i].EnteredDate + "=="+ itemArray[i].EnteredDate)
+                            Log.v("checkkk", itemOrgArray[i].EnteredDate + "=="+ itemArray[i].EnteredDate)
+
+                        }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "2ndddd")
+
+        }
+    }
+
     fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService(){
 
         FragmentARRAVScopeOfService.dataChanged =false
