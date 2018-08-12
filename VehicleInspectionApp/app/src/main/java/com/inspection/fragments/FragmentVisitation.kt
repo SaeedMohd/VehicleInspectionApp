@@ -409,13 +409,16 @@ class FragmentVisitation : Fragment() {
         }
 
         signatureClearButton.setOnClickListener {
+
             signatureInkView.clear()
+            checkMarkChangesDone()
         }
 
         signatureCancelButton.setOnClickListener {
             signatureInkView.clear()
             visitationFormAlphaBackground.visibility = View.GONE
             signatureDialog.visibility = View.GONE
+            checkMarkChangesDone()
         }
 
         signatureConfirmButton.setOnClickListener {
@@ -425,12 +428,15 @@ class FragmentVisitation : Fragment() {
             when (selectedSignature) {
                 requestedSignature.representative -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = bitmap
+
                     if (!isEmpty) {
                         facilityRepresentativeSignatureButton.text = "Edit Signature"
                         facilityRepresentativeSignatureImageView.setImageBitmap(bitmap)
                     } else {
                         facilityRepresentativeSignatureButton.text = "Add Signature"
                         facilityRepresentativeSignatureImageView.setImageBitmap(null)
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
+
                     }
                 }
 
@@ -442,6 +448,8 @@ class FragmentVisitation : Fragment() {
                     } else {
                         automotiveSpecialistSignatureButton.text = "Add Signature"
                         automotiveSpecialistSignatureImageView.setImageBitmap(null)
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
+
                     }
                 }
 
@@ -453,6 +461,8 @@ class FragmentVisitation : Fragment() {
                     } else {
                         facilityRepresentativeDeficienciesSignatureButton.text = "Add Signature"
                         facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature = null
+
                     }
 
                 }
@@ -465,6 +475,8 @@ class FragmentVisitation : Fragment() {
                     } else {
                         waiversSignatureButton.text = "Add Signature"
                         waiversSignatureImageView.setImageBitmap(null)
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature = null
+
                     }
                 }
 
@@ -474,6 +486,8 @@ class FragmentVisitation : Fragment() {
             signatureInkView.clear()
             visitationFormAlphaBackground.visibility = View.GONE
             signatureDialog.visibility = View.GONE
+            checkMarkChangesDone()
+
         }
 
         waiveVisitationCheckBox.setOnCheckedChangeListener { compoundButton, b ->
@@ -802,6 +816,18 @@ class FragmentVisitation : Fragment() {
 
 
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
+            MarkChangeWasDone()
+        }
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature){
+            MarkChangeWasDone()
+        }
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature){
+            MarkChangeWasDone()
+        }
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature){
+            MarkChangeWasDone()
+        }
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverSignature){
             MarkChangeWasDone()
         }
 
