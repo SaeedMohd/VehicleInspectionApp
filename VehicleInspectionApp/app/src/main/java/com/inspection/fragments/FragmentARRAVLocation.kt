@@ -1471,6 +1471,32 @@ class FragmentARRAVLocation : Fragment() {
 
         }
     }
+    fun checkMarkChangesWasDoneForlanguageContactInfoFacilityTab() {
+
+        var langCount=0
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblLanguage
+        var itemArray = FacilityDataModel.getInstance().tblLanguage
+        for (itemAr in itemArray) {
+            for (itemOrgAr in itemOrgArray) {
+
+
+
+                if (itemAr.LangTypeID == itemOrgAr.LangTypeID ) {
+                    langCount++
+                }
+
+
+            }
+
+        }
+
+        if (langCount!=itemArray.size||itemOrgArray.size!=itemArray.size){
+
+            Log.v("MarkChangeWasDone", langCount.toString()  +  "---"+itemArray.size.toString() +"------" +itemOrgArray.size.toString())
+            MarkChangeWasDone()
+
+        }
+    }
     fun checkMarkChangesWasDoneForEmailTable() {
         val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
 

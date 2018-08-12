@@ -101,6 +101,7 @@ class FragmentVisitation : Fragment() {
         FragmentARRAVLocation().checkMarkChangesWasDoneForAddressTable()
         FragmentARRAVLocation().checkMarkChangesWasDoneForEmailTable()
         FragmentARRAVLocation().checkMarkChangesWasDoneForPhoneTable()
+        FragmentARRAVLocation().checkMarkChangesWasDoneForlanguageContactInfoFacilityTab()
         FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
         checkMarkChangesWasDone()
 
