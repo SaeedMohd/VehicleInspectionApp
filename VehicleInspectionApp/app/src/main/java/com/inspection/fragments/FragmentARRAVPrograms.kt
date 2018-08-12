@@ -347,14 +347,17 @@ class FragmentARRAVPrograms : Fragment() {
         var itemArray = FacilityDataModel.getInstance().tblPrograms
         if (itemOrgArray.size == itemArray.size) {
             for (i in 0 until itemOrgArray.size){
-                if (itemOrgArray[i].expDate.isNullOrBlank()&&!itemArray[i].expDate.isNullOrBlank()) {
+                if (
+                        itemOrgArray[i].expDate.isNullOrBlank()&&!itemArray[i].expDate.isNullOrBlank()||itemOrgArray[i].effDate.isNullOrBlank()&&!itemArray[i].effDate.isNullOrBlank()
+                ) {
 
                     MarkChangeWasDone()
                 }
                 else
-                    if (itemOrgArray[i].expDate.isNullOrBlank()&&itemArray[i].expDate.isNullOrBlank()) {
+                    if (
+                            itemOrgArray[i].expDate.isNullOrBlank()&&itemArray[i].expDate.isNullOrBlank()||itemOrgArray[i].effDate.isNullOrBlank()&&itemArray[i].effDate.isNullOrBlank()
+                    ) {
                         if (itemOrgArray[i].Comments != itemArray[i].Comments ||
-                                dateFormat1.parse(itemOrgArray[i].effDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].effDate.apiToAppFormat()) ||
                                 itemOrgArray[i].ProgramTypeID != itemArray[i].ProgramTypeID) {
                             MarkChangeWasDone()
 //                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
