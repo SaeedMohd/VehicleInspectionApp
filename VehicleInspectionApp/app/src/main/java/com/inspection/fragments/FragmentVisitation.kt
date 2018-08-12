@@ -310,6 +310,7 @@ class FragmentVisitation : Fragment() {
 
         emailPdfCheckBox.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility = b
+            checkMarkChangesDone()
         }
 
         facilityRepresentativesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -476,17 +477,14 @@ class FragmentVisitation : Fragment() {
 
         waiveVisitationCheckBox.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations = b
+            checkMarkChangesDone()
         }
 
         aarSignEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
-                if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
-                    MarkChangeWasDone()
-                    dataChangeHandling()
-                    Log.v("dataHandle7", p0.toString())
 
-                }
+                checkMarkChangesDone()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -502,12 +500,9 @@ class FragmentVisitation : Fragment() {
         certificateOfApprovalEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
-                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
-                    MarkChangeWasDone()
-                    dataChangeHandling()
-                    Log.v("dataHandle6", p0.toString())
 
-                }
+                checkMarkChangesDone()
+
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -524,12 +519,8 @@ class FragmentVisitation : Fragment() {
         qualityControlProcessEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
-                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl){
-                    MarkChangeWasDone()
-                    dataChangeHandling()
-                    Log.v("dataHandle5", p0.toString())
 
-                }
+                checkMarkChangesDone()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -545,16 +536,8 @@ class FragmentVisitation : Fragment() {
         staffTrainingProcessEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining = p0.toString()
-                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining){
 
-                    MarkChangeWasDone()
-                    dataChangeHandling()
-                    Log.v("dataHandle4", p0.toString())
-
-                }else{
-
-
-                }
+                checkMarkChangesDone()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -570,13 +553,8 @@ class FragmentVisitation : Fragment() {
         memberBenefitsPosterEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster = p0.toString()
-                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
 
-                    MarkChangeWasDone()
-                    dataChangeHandling()
-                    Log.v("dataHandle3", p0.toString())
-
-                }
+                checkMarkChangesDone()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -592,13 +570,8 @@ class FragmentVisitation : Fragment() {
         waiverCommentsEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments = p0.toString()
-                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
 
-                    MarkChangeWasDone()
-                    dataChangeHandling()
-                    Log.v("dataHandle2", p0.toString())
-
-                }
+                checkMarkChangesDone()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -615,14 +588,7 @@ class FragmentVisitation : Fragment() {
         emailEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
-                if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].email){
-
-                    MarkChangeWasDone()
-                    dataChangeHandling()
-                    Log.v("dataHandle1", p0.toString())
-
-
-                }
+                checkMarkChangesDone()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -770,12 +736,73 @@ class FragmentVisitation : Fragment() {
             }
         }
         if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()) {
-            MarkChangeWasDone()
             Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+
+            MarkChangeWasDone()
+
+        }
+        if (FacilityDataModel.getInstance().tblFacilityEmail[0].email !=FacilityDataModelOrg.getInstance().tblFacilityEmail[0].email){
+            MarkChangeWasDone()
+            Log.v("dataHandle13",FacilityDataModelOrg.getInstance().tblFacilityEmail[0].email  + "====" + FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+
 
         }
 
 
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility){
+
+            MarkChangeWasDone()
+            Log.v("dataHandle16",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+
+
+        }
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiveVisitations){
+
+            MarkChangeWasDone()
+            Log.v("dataHandle14",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+
+
+        }
+
+               if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
+
+            MarkChangeWasDone()
+                   Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+
+
+               }
+
+        if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns
+                !=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
+            MarkChangeWasDone()
+        }
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval !=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
+            MarkChangeWasDone()
+        }
+
+        if ((FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl)
+                && (FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl!=" " )
+        ){
+            MarkChangeWasDone()
+            Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl)
+
+        }
+
+        if ((FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining)
+                && (FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining!=" ")
+        ){
+            Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining)
+
+            MarkChangeWasDone()
+        }
+
+
+
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
+            MarkChangeWasDone()
+        }
 
     }
 
