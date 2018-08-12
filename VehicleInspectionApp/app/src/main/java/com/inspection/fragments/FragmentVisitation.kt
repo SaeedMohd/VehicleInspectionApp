@@ -46,6 +46,7 @@ import com.inspection.model.FacilityDataModelOrg
  * create an instance of this fragment.
  */
 class FragmentVisitation : Fragment() {
+    var specialistWatcher=""
 
     var isFacilityRepresentativeSignatureInitialized = false
     var isAutomotiveSpecialistSignatureInitialized = false
@@ -53,6 +54,7 @@ class FragmentVisitation : Fragment() {
     var isFacilityRepresentativeDeficiencySignatureInitialized = false
 
     var facilityRepresentativeNames = ArrayList<String>()
+    var facilitySpecialistNames = ArrayList<String>()
 
     enum class requestedSignature {
         representative, specialist, representativeDeficiency, waiver
@@ -77,7 +79,7 @@ class FragmentVisitation : Fragment() {
         FacilityDataModelOrg.getInstance().changeWasDone = false
         dataChangeHandling()
         checkMarkChangesDone()
-            initializeFields()
+        initializeFields()
         setFieldsValues()
         setFieldsListeners()
 
@@ -86,6 +88,7 @@ class FragmentVisitation : Fragment() {
 
 
     fun checkMarkChangesDone(){
+        FacilityDataModelOrg.getInstance().changeWasDone = false
         fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
         FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
@@ -98,6 +101,8 @@ class FragmentVisitation : Fragment() {
         FragmentARRAVLocation().checkMarkChangesWasDoneForAddressTable()
         FragmentARRAVLocation().checkMarkChangesWasDoneForEmailTable()
         FragmentARRAVLocation().checkMarkChangesWasDoneForPhoneTable()
+        FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
+        checkMarkChangesWasDone()
 
         dataChangeHandling()
 
@@ -112,6 +117,7 @@ class FragmentVisitation : Fragment() {
             dataChangedNoRadioButton.isChecked=true
             dataChangedYesRadioButton.isChecked=false
         }
+
 
     }
 
@@ -213,18 +219,19 @@ class FragmentVisitation : Fragment() {
 
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
 
-            facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
-            automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
-            facilityNameAndNumberRelationForSelection()
-            if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && automotiveSpecialistSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName) {
 
-             //   MarkChangeWasDone()
+            facilitySpecialistNames.add("Select Specialist")
+            for (specialist in CsiSpecialistSingletonModel.getInstance().csiSpecialists){
 
-
-            } else {
-
-
+                facilitySpecialistNames.add(specialist.specialistname)
             }
+            facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
+            //   automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
+            automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilitySpecialistNames)
+
+            facilityNameAndNumberRelationForSelection()
+            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName))
+
         }
 
 
@@ -259,14 +266,7 @@ class FragmentVisitation : Fragment() {
 
             if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNotEmpty()) {
                 facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
-                if (facilityRepresentativesSpinner.selectedItem != FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName) {
-                //    MarkChangeWasDone()
 
-
-                } else {
-
-
-                }
             }
             if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
                 if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNotEmpty()) {
@@ -320,6 +320,7 @@ class FragmentVisitation : Fragment() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
                 if (p2 == 0){
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName =""
 
                 }else if (p2 > 0) {
                     if(isFacilityRepresentativeSignatureInitialized){
@@ -330,9 +331,12 @@ class FragmentVisitation : Fragment() {
                         FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
                     }
                 }
+
+                checkMarkChangesDone()
             }
 
         }
+
 
         automotiveSpecialistSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -341,11 +345,24 @@ class FragmentVisitation : Fragment() {
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
+
+
+                Log.v("dataHandle9",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + p2.toString())
+
+
                 if (p2>0) {
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }[p2]
+                    //FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }[p2]
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = facilitySpecialistNames[p2]
                     FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
                     automotiveSpecialistSignatureImageView.setImageBitmap(null)
+
+                }else{
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = ""
+
+
                 }
+                checkMarkChangesDone()
+
             }
 
         }
@@ -465,7 +482,10 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
                 if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
-                //    MarkChangeWasDone()
+                    MarkChangeWasDone()
+                    dataChangeHandling()
+                    Log.v("dataHandle7", p0.toString())
+
                 }
             }
 
@@ -483,7 +503,10 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
-              //      MarkChangeWasDone()
+                    MarkChangeWasDone()
+                    dataChangeHandling()
+                    Log.v("dataHandle6", p0.toString())
+
                 }
             }
 
@@ -502,7 +525,10 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl){
-                //    MarkChangeWasDone()
+                    MarkChangeWasDone()
+                    dataChangeHandling()
+                    Log.v("dataHandle5", p0.toString())
+
                 }
             }
 
@@ -521,8 +547,9 @@ class FragmentVisitation : Fragment() {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining){
 
-               //     MarkChangeWasDone()
-
+                    MarkChangeWasDone()
+                    dataChangeHandling()
+                    Log.v("dataHandle4", p0.toString())
 
                 }else{
 
@@ -545,8 +572,9 @@ class FragmentVisitation : Fragment() {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
 
-                 //   MarkChangeWasDone()
-
+                    MarkChangeWasDone()
+                    dataChangeHandling()
+                    Log.v("dataHandle3", p0.toString())
 
                 }
             }
@@ -566,7 +594,9 @@ class FragmentVisitation : Fragment() {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
 
-                //    MarkChangeWasDone()
+                    MarkChangeWasDone()
+                    dataChangeHandling()
+                    Log.v("dataHandle2", p0.toString())
 
                 }
             }
@@ -587,7 +617,9 @@ class FragmentVisitation : Fragment() {
                 FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
                 if (p0.toString()!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].email){
 
-                //    MarkChangeWasDone()
+                    MarkChangeWasDone()
+                    dataChangeHandling()
+                    Log.v("dataHandle1", p0.toString())
 
 
                 }
@@ -710,6 +742,43 @@ class FragmentVisitation : Fragment() {
             }
         }
     }
+    fun checkMarkChangesWasDone(){
+
+        Log.v("dataHandle11",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+
+
+        if (!FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()){
+
+            if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName!=FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName){
+                MarkChangeWasDone()
+                Log.v("dataHandle10",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+
+            }
+        }
+        if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) {
+            MarkChangeWasDone()
+            Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+
+        }
+
+        if (!FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()){
+
+            if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName!=FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName){
+                MarkChangeWasDone()
+                Log.v("dataHandle10",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+
+            }
+        }
+        if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()) {
+            MarkChangeWasDone()
+            Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+
+        }
+
+
+
+    }
+
 
     fun emailFormatValidation(target: CharSequence): Boolean {
 
@@ -1125,3 +1194,9 @@ class FragmentVisitation : Fragment() {
     }
 
 }
+
+
+//FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }[p2]
+
+
+
