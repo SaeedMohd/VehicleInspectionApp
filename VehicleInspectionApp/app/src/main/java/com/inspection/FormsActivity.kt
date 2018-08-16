@@ -8,15 +8,18 @@ import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.MenuItemCompat
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Toast
 import com.inspection.R.drawable.circle
 import com.inspection.fragments.*
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
@@ -60,12 +63,19 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+//        toggle.onDrawerStateChanged() {
+//            Toast.makeText(this,"TEST",Toast.LENGTH_LONG)
+//        })
 
         drawer_layout.openDrawer(GravityCompat.START)
 
+
         val navigationMenu = nav_view.menu
+
         refreshMenuIndicators()
+
         ////navigationMenu.findItem(R.id.visitation).actionView.setBackgroundResource(R.drawable.red_button_background)
+
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == FacilityDataModel.VisitationTypes.AdHoc) {
             navigationMenu.findItem(R.id.visitation).isEnabled = false
             navigationMenu.findItem(R.id.visitation).isVisible = false
@@ -81,10 +91,6 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     .commit()
             toolbar.title = "Visitation"
         }
-
-
-
-
     }
 
     override fun onBackPressed() {
@@ -95,35 +101,49 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
     }
 
-    public fun refreshMenuIndicators(){
+    public fun refreshMenuIndicators() {
         var navigationMenu = nav_view.menu
-        var indicatorImage:ImageView;
-
+        var indicatorImage: ImageView;
+        var isAllValid = true
         indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo)
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo && IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations
+                && IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices && IndicatorsDataModel.getInstance().tblScopeOfServices[0].Programs)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
-        else
+        else {
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            isAllValid = false
+        }
 
         indicatorImage = (navigationMenu.findItem(R.id.visitation).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblVisitation[0].Visitation)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
-        else
+        else {
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            isAllValid = false
+        }
 
         indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
-        else
+        else {
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            isAllValid = false
+        }
 
-        indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-        if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency)
+        indicatorImage = (navigationMenu.findItem(R.id.facility).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo && IndicatorsDataModel.getInstance().tblFacility[0].Location &&
+                IndicatorsDataModel.getInstance().tblFacility[0].Personnel && IndicatorsDataModel.getInstance().tblFacility[0].RSP)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            isAllValid = false
+        }
+
+        indicatorImage = nav_view.getHeaderView(0).findViewById<ImageView>(R.id.mainIndicatorImg)
+        if (isAllValid)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
-
-
 
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

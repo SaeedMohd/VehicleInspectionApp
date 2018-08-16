@@ -31,10 +31,12 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMax
 import com.inspection.model.FacilityDataModelOrg
+import com.inspection.model.IndicatorsDataModel
 
 
 /**
@@ -724,6 +726,9 @@ class FragmentVisitation : Fragment() {
         }
     }
     fun checkMarkChangesWasDone(){
+
+        IndicatorsDataModel.getInstance().validateVisitationSection()
+        (activity as FormsActivity).refreshMenuIndicators()
 
         Log.v("dataHandle11",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
 

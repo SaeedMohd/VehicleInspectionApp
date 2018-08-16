@@ -1,5 +1,8 @@
 package com.inspection.model
 
+import android.os.Debug
+import android.util.Log
+
 class IndicatorsDataModel {
 
         companion object {
@@ -51,6 +54,8 @@ class IndicatorsDataModel {
     class TblFacility {
         var GeneralInfo= false
         var RSP= false
+        var Location = false
+        var Personnel = false
     }
 
     class TblVisitation {
@@ -72,6 +77,8 @@ class IndicatorsDataModel {
         var Facility= TblFacility()
         Facility.GeneralInfo=false;
         Facility.RSP=false;
+        Facility.Location=false;
+        Facility.Personnel=false;
         tblFacility.add(0,Facility)
     }
 
@@ -101,6 +108,8 @@ class IndicatorsDataModel {
     fun validateFacilitySection(){
         validateFacilityGeneralInfo()
         validateFacilityRSP()
+        validateFacilityLocation()
+        validateFacilityPersonnel()
     }
 
     fun validateSoSGeneral() {
@@ -162,21 +171,19 @@ class IndicatorsDataModel {
 
     fun validateVisitation() {
         var isValid = true
-        FacilityDataModel.getInstance().tblVisitationTracking.apply {
-            (0 until size).forEach {
-                if (get(it).visitationType!!.equals(FacilityDataModel.VisitationTypes.AdHoc)){
 
-                } else {
-                    if(get(it).facilityRepresentativeSignature == null) isValid=false
-                }
-                if (get(it).facilityRepresentativeName.equals("")) isValid = false
-                if (get(it).automotiveSpecialistName.equals("")) isValid = false
-                if (get(it).automotiveSpecialistSignature==null) isValid = false
-                if (get(it).emailVisitationPdfToFacility && get(it).email.equals("")) isValid = false
-                if (get(it).waiveVisitations&& get(it).waiverComments.equals("")) isValid = false
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != null) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(FacilityDataModel.VisitationTypes.AdHoc)) {
+            } else {
+                if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature == null) isValid = false
             }
         }
-        tblVisitation[0].Visitation= isValid
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.equals("")) isValid = false
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.equals("")) isValid = false
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature == null) isValid = false
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility && FacilityDataModel.getInstance().tblVisitationTracking[0].email.equals("")) isValid = false
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations && FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments.equals("")) isValid = false
+        tblVisitation[0].Visitation = isValid
     }
 
     fun validateFacilityGeneralInfo() {
@@ -193,8 +200,8 @@ class IndicatorsDataModel {
         if (FacilityDataModel.getInstance().tblPaymentMethods[0].PmtMethodID.equals("")) isValid=false
         if (FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName.equals("") ) isValid=false
 
-
         tblFacility[0].GeneralInfo= isValid
+        Log.v("Facility General: --->",isValid.toString())
     }
 
     fun validateFacilityRSP() {
@@ -211,21 +218,72 @@ class IndicatorsDataModel {
             }
         }
         tblFacility[0].RSP= isValid
+        Log.v("Facility RSP: --->",isValid.toString());
     }
 
     fun validateFacilityLocation() {
         var isValid = true
         FacilityDataModel.getInstance().tblAddress.apply {
             (0 until size).forEach {
-//                if (!get(it).LocationTypeID.equals(Location) && get(it).AddendumSigned.equals("")) isValid = false
-//                if (!get(it).startDate.equals("") && get(it).CardReaders.equals("")) isValid = false
-//                if (get(it).PortalInspectionDate.equals("")) isValid = false
-//                if (get(it).NumberUnacknowledgedTows.equals("")) isValid = false
-//                if (get(it).InProgressTows.equals("")) isValid = false
-//                if (get(it).InProgressWalkIns.equals("")) isValid = false
-//                if (get(it).LoggedIntoPortal.equals("")) isValid = false
+                if (get(it).LocationTypeID.equals(TypeTablesModel.getInstance().LocationType.filter { s-> s.LocTypeName=="Physical" }[0].LocTypeID) && get(it).LATITUDE.equals("")) isValid = false
+                if (get(it).LocationTypeID.equals(TypeTablesModel.getInstance().LocationType.filter { s-> s.LocTypeName=="Physical" }[0].LocTypeID) && get(it).LONGITUDE.equals("")) isValid = false
             }
         }
-        tblFacility[0].RSP= isValid
+        FacilityDataModel.getInstance().tblPhone.apply {
+            (0 until size).forEach {
+                if (!get(it).PhoneTypeID.equals("") && get(it).PhoneNumber.equals("")) isValid = false
+            }
+        }
+        FacilityDataModel.getInstance().tblFacilityEmail.apply {
+            (0 until size).forEach {
+                if (!get(it).emailTypeId.equals("") && get(it).email.equals("")) isValid = false
+            }
+        }
+        FacilityDataModel.getInstance().tblHours.apply {
+            (0 until size).forEach {
+//                if (get(it).FriClose.equals("")) isValid = false
+//                if (get(it).FriOpen.equals("")) isValid = false
+//                if (get(it).SatClose.equals("")) isValid = false
+//                if (get(it).SatOpen.equals("")) isValid = false
+//                if (get(it).SunClose.equals("")) isValid = false
+//                if (get(it).SunOpen.equals("")) isValid = false
+//                if (get(it).MonClose.equals("")) isValid = false
+//                if (get(it).MonOpen.equals("")) isValid = false
+//                if (get(it).TueClose.equals("")) isValid = false
+//                if (get(it).TueOpen.equals("")) isValid = false
+//                if (get(it).WedClose.equals("")) isValid = false
+//                if (get(it).WedOpen.equals("")) isValid = false
+//                if (get(it).ThuClose.equals("")) isValid = false
+//                if (get(it).ThuOpen.equals("")) isValid = false
+                if (get(it).NightDrop && get(it).NightDropInstr.equals("")) isValid = false
+            }
+        }
+        tblFacility[0].Location= isValid
+        Log.v("Facility Location: --->",isValid.toString());
+    }
+
+    fun validateFacilityPersonnel(){
+        var isValid = true
+        FacilityDataModel.getInstance().tblPersonnel.apply {
+            (0 until size).forEach {
+                if (get(it).PersonnelTypeID==0) isValid = false
+                if (get(it).FirstName.equals("")) isValid = false
+                if (get(it).LastName.equals("")) isValid = false
+//                if (get(it).ContractSigner){
+//                    if (get(it).Addr1.equals("")) isValid = false
+//                    if (get(it).Addr2.equals("")) isValid = false
+//                    if (get(it).CITY.equals("")) isValid = false
+//                    if (get(it).ST.equals("")) isValid = false
+//                    if (get(it).ZIP.equals("")) isValid = false
+//                    if (get(it).ZIP4.equals("")) isValid = false
+//                    if (get(it).Phone.equals("")) isValid = false
+//                    if (get(it).email.equals("")) isValid = false
+//                    if (get(it).startDate.equals("")) isValid = false
+//                }
+
+            }
+        }
+        tblFacility[0].Personnel= isValid
+        Log.v("Facility Personnel: ->",isValid.toString());
     }
 }
