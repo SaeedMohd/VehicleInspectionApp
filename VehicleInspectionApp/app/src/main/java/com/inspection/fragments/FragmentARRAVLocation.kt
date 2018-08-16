@@ -459,11 +459,7 @@ class FragmentARRAVLocation : Fragment() {
         locationSubmitButton.setOnClickListener {
             FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
             FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
-            if (FacilityDataModel.getInstance().tblAddress[index].LATITUDE!=FacilityDataModelOrg.getInstance().tblAddress[index].LATITUDE||
-                    FacilityDataModel.getInstance().tblAddress[index].LONGITUDE!=FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE){
-                MarkChangeWasDone()
 
-            }
             editLocationDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
@@ -719,18 +715,6 @@ class FragmentARRAVLocation : Fragment() {
 
                                         enableAllAddButnsAndDialog()
 
-
-                                        if (FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneTypeID!=phoneTypeID
-                                        ||FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber!=phoneNo.toString()){
-
-
-                                            MarkChangeWasDone()
-                                            Toast.makeText(context,"changed Done" + " modelValue is = " + FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber + " tableValue is = " + phoneNo,Toast.LENGTH_SHORT).show()
-                                        }else
-                                        {
-                                            Toast.makeText(context,"No changes found" + " modelValue is = " + FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber + " tableValue is = " + phoneNo,Toast.LENGTH_SHORT).show()
-
-                                        }
 
                                     })
                                 }, Response.ErrorListener {
@@ -1316,18 +1300,7 @@ class FragmentARRAVLocation : Fragment() {
                         FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
                         fillEmailTableView()
 
-                        var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityEmail
-                        var itemArray = FacilityDataModel.getInstance().tblFacilityEmail
-                        for (itemAr in itemArray){
-                            for (itemOrgAr in itemOrgArray){
 
-                                if (itemAr.email!=itemOrgAr.email||itemAr.emailTypeId!=itemOrgAr.emailTypeId){
-                                    MarkChangeWasDone()
-                                    Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
-                                }
-
-                            }
-                        }
 
                     })
                 }, Response.ErrorListener {
@@ -1432,18 +1405,7 @@ class FragmentARRAVLocation : Fragment() {
                         FacilityDataModel.getInstance().tblPhone.add(newPhone)
                         fillPhoneTableView()
 
-                        var itemOrgArray = FacilityDataModelOrg.getInstance().tblPhone
-                        var itemArray = FacilityDataModel.getInstance().tblPhone
-                        for (itemAr in itemArray){
-                            for (itemOrgAr in itemOrgArray){
 
-                                if (itemAr.PhoneNumber!=itemOrgAr.PhoneNumber||itemAr.PhoneTypeID!=itemOrgAr.PhoneTypeID){
-                                    MarkChangeWasDone()
-                                    Toast.makeText(context,"data submitted",Toast.LENGTH_SHORT).show()
-                                }
-
-                            }
-                        }
 
 
                     })
@@ -1484,6 +1446,129 @@ class FragmentARRAVLocation : Fragment() {
 
         }
     }
+    fun checkMarkChangesWasDoneForPhoneTable() {
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblPhone
+        var itemArray = FacilityDataModel.getInstance().tblPhone
+        if (itemOrgArray.size == itemArray.size) {
+            for (i in 0 until itemOrgArray.size){
+
+                if (itemOrgArray[i].PhoneNumber != itemArray[i].PhoneNumber ||
+                        itemOrgArray[i].PhoneTypeID != itemArray[i].PhoneTypeID
+
+                ) {
+                    MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                    Log.v("checkkk", itemOrgArray[i].PhoneNumber + "=="+ itemArray[i].PhoneNumber)
+                    Log.v("checkkk", itemOrgArray[i].PhoneTypeID + "=="+ itemArray[i].PhoneTypeID)
+
+                }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "2ndddd")
+
+        }
+    }
+    fun checkMarkChangesWasDoneForlanguageContactInfoFacilityTab() {
+
+        var langCount=0
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblLanguage
+        var itemArray = FacilityDataModel.getInstance().tblLanguage
+        for (itemAr in itemArray) {
+            for (itemOrgAr in itemOrgArray) {
+
+
+
+                if (itemAr.LangTypeID == itemOrgAr.LangTypeID ) {
+                    langCount++
+                }
+
+
+            }
+
+        }
+
+        if (langCount!=itemArray.size||itemOrgArray.size!=itemArray.size){
+
+            Log.v("MarkChangeWasDone", langCount.toString()  +  "---"+itemArray.size.toString() +"------" +itemOrgArray.size.toString())
+            MarkChangeWasDone()
+
+        }
+    }
+    fun checkMarkChangesWasDoneForEmailTable() {
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityEmail
+        var itemArray = FacilityDataModel.getInstance().tblFacilityEmail
+        if (itemOrgArray.size == itemArray.size) {
+            for (i in 0 until itemOrgArray.size){
+
+                if (itemOrgArray[i].email != itemArray[i].email ||
+                        itemOrgArray[i].emailTypeId != itemArray[i].emailTypeId
+
+                ) {
+                    MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                    Log.v("checkkk", itemOrgArray[i].email + "=="+ itemArray[i].email)
+                    Log.v("checkkk", itemOrgArray[i].emailTypeId + "=="+ itemArray[i].emailTypeId)
+
+                }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "2ndddd")
+
+        }
+    }
+
+    fun checkMarkChangesWasDoneForAddressTable() {
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblAddress
+        var itemArray = FacilityDataModel.getInstance().tblAddress
+        if (itemOrgArray.size == itemArray.size) {
+            for (i in 0 until itemOrgArray.size){
+
+                if (itemOrgArray[i].BranchName != itemArray[i].BranchName ||
+                        itemOrgArray[i].BranchNumber != itemArray[i].BranchNumber||
+                        itemOrgArray[i].CITY != itemArray[i].CITY||
+                        itemOrgArray[i].County != itemArray[i].County||
+                        itemOrgArray[i].FAC_Addr1 != itemArray[i].FAC_Addr1||
+                        itemOrgArray[i].FAC_Addr2 != itemArray[i].FAC_Addr2||
+                        itemOrgArray[i].LATITUDE != itemArray[i].LATITUDE||
+                        itemOrgArray[i].LONGITUDE != itemArray[i].LONGITUDE||
+                        itemOrgArray[i].LocationTypeID != itemArray[i].LocationTypeID||
+                        itemOrgArray[i].ST != itemArray[i].ST||
+                        itemOrgArray[i].ZIP != itemArray[i].ZIP||
+                        itemOrgArray[i].ZIP4 != itemArray[i].ZIP4
+
+                ) {
+                    MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                    Log.v("checkkk", itemOrgArray[i].BranchName + "=="+ itemArray[i].BranchName)
+                    Log.v("checkkk", itemOrgArray[i].BranchNumber + "=="+ itemArray[i].BranchNumber)
+                    Log.v("checkkk", itemOrgArray[i].CITY + "=="+ itemArray[i].CITY)
+                    Log.v("checkkk", itemOrgArray[i].County + "=="+ itemArray[i].County)
+                    Log.v("checkkk", itemOrgArray[i].FAC_Addr1 + "=="+ itemArray[i].FAC_Addr1)
+                    Log.v("checkkk", itemOrgArray[i].FAC_Addr2 + "=="+ itemArray[i].FAC_Addr2)
+                    Log.v("checkkk", itemOrgArray[i].LATITUDE + "=="+ itemArray[i].LATITUDE)
+                    Log.v("checkkk", itemOrgArray[i].LONGITUDE + "=="+ itemArray[i].LONGITUDE)
+                    Log.v("checkkk", itemOrgArray[i].LocationTypeID + "=="+ itemArray[i].LocationTypeID)
+                    Log.v("checkkk", itemOrgArray[i].ST + "=="+ itemArray[i].ST)
+                    Log.v("checkkk", itemOrgArray[i].ZIP + "=="+ itemArray[i].ZIP)
+                    Log.v("checkkk", itemOrgArray[i].ZIP4 + "=="+ itemArray[i].ZIP4)
+
+                }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "2ndddd")
+
+        }
+    }
+
     fun altLocationTableRow(alt_row : Int) {
         var childViewCount = locationTbl.getChildCount();
 

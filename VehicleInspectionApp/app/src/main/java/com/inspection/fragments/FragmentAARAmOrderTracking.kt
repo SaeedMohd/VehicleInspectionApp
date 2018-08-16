@@ -18,6 +18,7 @@ import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.Constants.UpdateAmendmentOrderTrackingData
 import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.toast
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
@@ -207,31 +208,6 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
                             addTheLatestRowOfAmendmentAndTrackingTableView()
                             alt_AOT_TableRow(2)
-
-
-                            var itemOrgArray = FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking
-                            var itemArray = FacilityDataModel.getInstance().tblAmendmentOrderTracking
-                            if (itemOrgArray.size!=itemArray.size){
-
-                                MarkChangeWasDone()
-                            }else {
-
-                                for (itemAr in itemArray) {
-                                    for (itemOrgAr in itemOrgArray) {
-
-                                        if (itemAr.AOID != itemOrgAr.AOID || itemAr.EventTypeID != itemOrgAr.EventTypeID
-                                                || itemAr.EventID != itemOrgAr.EventID || itemAr.ReasonID != itemOrgAr.ReasonID) {
-                                            MarkChangeWasDone()
-                                            Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                                        } else {
-
-                                            Toast.makeText(context, "no changes found", Toast.LENGTH_SHORT).show()
-
-                                        }
-
-                                    }
-                                }
-                            }
 
 
                         })
@@ -657,6 +633,38 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
         altEventTableRow(2)
     }
+    fun checkMarkChangesWasDone() {
+        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+
+        var itemOrgArray = FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking
+        var itemArray = FacilityDataModel.getInstance().tblAmendmentOrderTracking
+        if (itemOrgArray.size == itemArray.size) {
+            for (i in 0 until itemOrgArray.size){
+
+                        if (itemOrgArray[i].AOID != itemArray[i].AOID ||
+                                itemOrgArray[i].AOTEmployee != itemArray[i].AOTEmployee||
+                                itemOrgArray[i].EventID != itemArray[i].EventID||
+                                itemOrgArray[i].EventTypeID != itemArray[i].EventTypeID||
+                                itemOrgArray[i].ReasonID != itemArray[i].ReasonID
+
+                        ) {
+                            MarkChangeWasDone()
+//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+                            Log.v("checkkk", itemOrgArray[i].AOID + "=="+ itemArray[i].AOID)
+                            Log.v("checkkk", itemOrgArray[i].AOTEmployee + "=="+ itemArray[i].AOTEmployee)
+                            Log.v("checkkk", itemOrgArray[i].EventID + "=="+ itemArray[i].EventID)
+                            Log.v("checkkk", itemOrgArray[i].EventTypeID + "=="+ itemArray[i].EventTypeID)
+                            Log.v("checkkk", itemOrgArray[i].ReasonID + "=="+ itemArray[i].ReasonID)
+
+                        }
+            }
+        }else{
+            MarkChangeWasDone()
+            Log.v("checkkk", "2ndddd")
+
+        }
+    }
+
 
     fun altEventTableRow(alt_row : Int) {
         var childViewCount = newEventTableLayout.getChildCount();

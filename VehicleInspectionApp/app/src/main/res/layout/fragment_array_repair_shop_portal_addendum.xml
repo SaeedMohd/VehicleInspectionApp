@@ -23,6 +23,11 @@
             android:orientation="vertical"
             android:padding="5dp">
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                android:id="@+id/testBtnId"/>
 
             <TextView
                 android:id="@+id/titleTextView"
@@ -630,7 +635,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:background="@color/transparent"
-                        android:text="Select Date"
+                        android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
 
