@@ -15,6 +15,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import android.widget.ImageView
 import com.inspection.R.drawable.circle
 import com.inspection.fragments.*
@@ -27,6 +28,7 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_La
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 
@@ -62,10 +64,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         drawer_layout.openDrawer(GravityCompat.START)
 
         val navigationMenu = nav_view.menu
-//        var indicatorImage:ImageView;
-//        indicatorImage = navigationMenu.findItem(R.id.visitation).actionView as ImageView
-//        indicatorImage.setBackgroundResource(R.drawable.red_button_background)
-//        navigationMenu.findItem(R.id.visitation).actionView.setBackgroundResource(R.drawable.red_button_background)
+        refreshMenuIndicators()
+        ////navigationMenu.findItem(R.id.visitation).actionView.setBackgroundResource(R.drawable.red_button_background)
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == FacilityDataModel.VisitationTypes.AdHoc) {
             navigationMenu.findItem(R.id.visitation).isEnabled = false
             navigationMenu.findItem(R.id.visitation).isVisible = false
@@ -95,6 +95,37 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
     }
 
+    public fun refreshMenuIndicators(){
+        var navigationMenu = nav_view.menu
+        var indicatorImage:ImageView;
+
+        indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+
+        indicatorImage = (navigationMenu.findItem(R.id.visitation).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblVisitation[0].Visitation)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+
+        indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+
+        indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+
+
+
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         menuInflater.inflate(R.menu.forms, menu)
@@ -207,9 +238,5 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
-    fun validateFacilityDataDetails (){
-        // Method to validate Facility Data Model data against the business rules
 
-
-    }
 }

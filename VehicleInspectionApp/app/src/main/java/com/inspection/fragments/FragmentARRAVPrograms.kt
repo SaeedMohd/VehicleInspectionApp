@@ -286,7 +286,7 @@ class FragmentARRAVPrograms : Fragment() {
                                     enableAllAddButnsAndDialog()
                                     programCard.visibility = View.GONE
                                     alphaBackgroundForProgramDialogs.visibility = View.GONE
-                                    checkMarkChangesWasDone()
+                                    //checkMarkChangesWasDone()
 
                                 })
                             }, Response.ErrorListener {

@@ -89,7 +89,7 @@ class FragmentVisitation : Fragment() {
         fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
         FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
-        FragmentARRAVPrograms().checkMarkChangesWasDone()
+        //FragmentARRAVPrograms().checkMarkChangesWasDone()
         FragmentARRAVPersonnel().checkMarkChangesWasDoneForPersonnel()
 
         dataChangeHandling()

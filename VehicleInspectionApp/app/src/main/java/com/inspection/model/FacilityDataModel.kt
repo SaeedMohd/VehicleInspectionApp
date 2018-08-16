@@ -280,7 +280,7 @@ class FacilityDataModel {
     }
 
     class TblScopeofService {
-            var isInputsValid = false
+        var isInputsValid = false
 
         var FixedLaborRate = ""
         var DiagnosticsRate = ""
@@ -462,4 +462,8 @@ class FacilityDataModel {
         var Comment = ""
         var insertDate = ""
     }
+
+
+
+
 }

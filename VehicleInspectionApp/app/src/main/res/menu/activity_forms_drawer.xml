@@ -10,63 +10,79 @@
         <item
             android:id="@+id/visitation"
             android:title="Visitation"
-            app:actionViewClass="android.widget.ImageView"
-            />
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
     <group
         android:id="@+id/facilityGroup"
         android:checkableBehavior="single">
         <item
             android:id="@+id/facility"
-            android:title="Facility" />
+            android:title="Facility"
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
     <group
         android:id="@+id/scopeOfServiceGroup"
         android:checkableBehavior="single">
         <item
             android:id="@+id/scopeOfService"
-            android:title="Scope Of Service" />
+            android:title="Scope Of Service"
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
     <group
         android:id="@+id/deficiencyGroup"
         android:checkableBehavior="single">
         <item
             android:id="@+id/deficiency"
-            android:title="Deficiency" />
+            android:title="Deficiency"
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
     <group
         android:id="@+id/complaintsGroup"
         android:checkableBehavior="single">
         <item
             android:id="@+id/complaints"
-            android:title="Complaints" />
+            android:title="Complaints"
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
     <group
         android:id="@+id/billingGroup"
         android:checkableBehavior="single">
         <item
             android:id="@+id/billing"
-            android:title="Billing" />
+            android:title="Billing"
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
     <group
         android:id="@+id/surveysGroup"
         android:checkableBehavior="single">
         <item
             android:id="@+id/surveys"
-            android:title="Surveys" />
+            android:title="Surveys"
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
     <group
         android:id="@+id/commentsGroup"
         android:checkableBehavior="single">
         <item
             android:id="@+id/comments"
-            android:title="Comments" />
+            android:title="Comments"
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
     <group
         android:id="@+id/photosGroup"
         android:checkableBehavior="single">
         <item
             android:id="@+id/photos"
-            android:title="Photos" />
+            android:title="Photos"
+            app:actionLayout="@layout/menu_item_with_indicator"
+            app:showAsAction="always"/>
     </group>
 </menu>

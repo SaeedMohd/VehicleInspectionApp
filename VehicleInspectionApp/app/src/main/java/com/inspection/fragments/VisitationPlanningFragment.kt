@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
@@ -1116,7 +1117,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 FacilityDataModelOrg.getInstance().tblComments.add(Gson().fromJson<FacilityDataModelOrg.TblComments>(jsonObj.get("tblComments").toString(), FacilityDataModelOrg.TblComments::class.java))
             }
         }
-
+        IndicatorsDataModel.getInstance().init()
+        IndicatorsDataModel.getInstance().validateBusinessRules()
     }
 
     fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {
