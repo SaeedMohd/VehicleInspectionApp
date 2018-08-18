@@ -13,8 +13,6 @@ import android.view.ViewGroup
 import android.widget.*
 
 import com.inspection.R
-import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.appToApiFormat
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
@@ -24,8 +22,8 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAARPortalAdminData
-import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.model.FacilityDataModelOrg
 
 
@@ -128,7 +126,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 startDateButton!!.text = sdf.format(c.time)
@@ -141,7 +139,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 edit_startDateButton!!.text = sdf.format(c.time)
@@ -155,7 +153,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 endDateButton!!.text = sdf.format(c.time)
@@ -168,7 +166,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 edit_endDateButton!!.text = sdf.format(c.time)
@@ -182,7 +180,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 addendumSignedDateButton!!.text = sdf.format(c.time)
@@ -195,7 +193,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 edit_addendumSignedDateButton!!.text = sdf.format(c.time)
@@ -209,7 +207,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 inspectionDateButton!!.text = sdf.format(c.time)
@@ -222,7 +220,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 edit_inspectionDateButton!!.text = sdf.format(c.time)
@@ -256,8 +254,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
 
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
-                        "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=2015-07-31T11:53:02.190&updateBy=SumA&updateDate=2015-07-31T11:53:02.190&active=1",
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
+                        "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE_LOOK",response.toString())
@@ -307,100 +305,99 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
     }
 
     fun checkMarkChangesWasDone() {
-        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
-
-        var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
-        var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
-        if (itemOrgArray.size == itemArray.size) {
-            for (i in 0 until itemOrgArray.size){
-                var startDate= try {
-                    dateFormat1.parse(itemArray[i].startDate.apiToAppFormat())
-                } catch (e: Exception) {
-                    dateFormat1.parse(itemArray[i].startDate)
-
-                }
-                var assignedDate= try {
-                    dateFormat1.parse(itemArray[i].AddendumSigned.apiToAppFormat())
-                } catch (e: Exception) {
-                    dateFormat1.parse(itemArray[i].AddendumSigned)
-
-                }
-                var portalDate= try {
-                    dateFormat1.parse(itemArray[i].PortalInspectionDate.apiToAppFormat())
-                } catch (e: Exception) {
-                    dateFormat1.parse(itemArray[i].PortalInspectionDate)
-
-                }
-
-                if (
-                        itemOrgArray[i].PortalInspectionDate.isNullOrBlank()&&!itemArray[i].PortalInspectionDate.isNullOrBlank()||
-                        itemOrgArray[i].startDate.isNullOrBlank()&&!itemArray[i].startDate.isNullOrBlank()||
-                        itemOrgArray[i].AddendumSigned.isNullOrBlank()&&!itemArray[i].AddendumSigned.isNullOrBlank()
-
-
-                ) {
-
-                    MarkChangeWasDone()
-                }
-                else
-                    if (
-                            itemOrgArray[i].PortalInspectionDate.isNullOrBlank()&&itemArray[i].PortalInspectionDate.isNullOrBlank()||
-                            itemOrgArray[i].startDate.isNullOrBlank()&&itemArray[i].startDate.isNullOrBlank()||
-                            itemOrgArray[i].AddendumSigned.isNullOrBlank()&&itemArray[i].AddendumSigned.isNullOrBlank()
-
-                    ) {
-                        if (
-
-                                itemOrgArray[i].LoggedIntoPortal != itemArray[i].LoggedIntoPortal ||
-                                itemOrgArray[i].InProgressTows != itemArray[i].InProgressTows ||
-                                itemOrgArray[i].InProgressWalkIns != itemArray[i].InProgressWalkIns ||
-                                itemOrgArray[i].NumberUnacknowledgedTows != itemArray[i].NumberUnacknowledgedTows
-                        ) {
-
-
-                            MarkChangeWasDone()
-//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                            Log.v("checkkk", itemOrgArray[i].LoggedIntoPortal + "=="+ itemArray[i].LoggedIntoPortal)
-                            Log.v("checkkk", itemOrgArray[i].InProgressTows + "=="+ itemArray[i].InProgressTows)
-                            Log.v("checkkk", itemOrgArray[i].InProgressWalkIns + "=="+ itemArray[i].InProgressWalkIns)
-                            Log.v("checkkk", itemOrgArray[i].NumberUnacknowledgedTows + "=="+ itemArray[i].NumberUnacknowledgedTows)
-
-                        }
-                    }
-
-                    else
-                        if (
-
-                                itemOrgArray[i].LoggedIntoPortal != itemArray[i].LoggedIntoPortal ||
-                                itemOrgArray[i].InProgressTows != itemArray[i].InProgressTows ||
-                                itemOrgArray[i].InProgressWalkIns != itemArray[i].InProgressWalkIns ||
-                                itemOrgArray[i].NumberUnacknowledgedTows != itemArray[i].NumberUnacknowledgedTows ||
-                                dateFormat1.parse(itemOrgArray[i].AddendumSigned.apiToAppFormat()) != assignedDate ||
-                                dateFormat1.parse(itemOrgArray[i].startDate.apiToAppFormat()) != startDate ||
-                                dateFormat1.parse(itemOrgArray[i].PortalInspectionDate.apiToAppFormat()) != portalDate)
-
-                {
-
-
-
-                            MarkChangeWasDone()
-//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                    Log.v("checkkk", itemOrgArray[i].LoggedIntoPortal + "=="+ itemArray[i].LoggedIntoPortal)
-                    Log.v("checkkk", itemOrgArray[i].InProgressTows + "=="+ itemArray[i].InProgressTows)
-                    Log.v("checkkk", itemOrgArray[i].InProgressWalkIns + "=="+ itemArray[i].InProgressWalkIns)
-                    Log.v("checkkk", itemOrgArray[i].NumberUnacknowledgedTows + "=="+ itemArray[i].NumberUnacknowledgedTows)
-                    Log.v("checkkk", itemOrgArray[i].AddendumSigned + "=="+ itemArray[i].AddendumSigned)
-                    Log.v("checkkk", itemOrgArray[i].startDate + "=="+ itemArray[i].startDate)
-                    Log.v("checkkk", itemOrgArray[i].PortalInspectionDate + "=="+ itemArray[i].PortalInspectionDate)
-
-
-                }
-            }
-        }else{
-            MarkChangeWasDone()
-            Log.v("checkkk", "2ndddd")
-
-        }
+//        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+//
+//        var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
+//        var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
+//        if (itemOrgArray.size == itemArray.size) {
+//            for (i in 0 until itemOrgArray.size){
+//                var startDate= try {
+//                    dateFormat1.parse(itemArray[i].startDate.apiToAppFormat())
+//                } catch (e: Exception) {
+//                    dateFormat1.parse(itemArray[i].startDate)
+//                }
+//                var assignedDate= try {
+//                    dateFormat1.parse(itemArray[i].AddendumSigned.apiToAppFormat())
+//                } catch (e: Exception) {
+//                    dateFormat1.parse(itemArray[i].AddendumSigned)
+//
+//                }
+//                var portalDate= try {
+//                    dateFormat1.parse(itemArray[i].PortalInspectionDate.apiToAppFormat())
+//                } catch (e: Exception) {
+//                    dateFormat1.parse(itemArray[i].PortalInspectionDate)
+//
+//                }
+//
+//                if (
+//                        itemOrgArray[i].PortalInspectionDate.isNullOrBlank()&&!itemArray[i].PortalInspectionDate.isNullOrBlank()||
+//                        itemOrgArray[i].startDate.isNullOrBlank()&&!itemArray[i].startDate.isNullOrBlank()||
+//                        itemOrgArray[i].AddendumSigned.isNullOrBlank()&&!itemArray[i].AddendumSigned.isNullOrBlank()
+//
+//
+//                ) {
+//
+//                    MarkChangeWasDone()
+//                }
+//                else
+//                    if (
+//                            itemOrgArray[i].PortalInspectionDate.isNullOrBlank()&&itemArray[i].PortalInspectionDate.isNullOrBlank()||
+//                            itemOrgArray[i].startDate.isNullOrBlank()&&itemArray[i].startDate.isNullOrBlank()||
+//                            itemOrgArray[i].AddendumSigned.isNullOrBlank()&&itemArray[i].AddendumSigned.isNullOrBlank()
+//
+//                    ) {
+//                        if (
+//
+//                                itemOrgArray[i].LoggedIntoPortal != itemArray[i].LoggedIntoPortal ||
+//                                itemOrgArray[i].InProgressTows != itemArray[i].InProgressTows ||
+//                                itemOrgArray[i].InProgressWalkIns != itemArray[i].InProgressWalkIns ||
+//                                itemOrgArray[i].NumberUnacknowledgedTows != itemArray[i].NumberUnacknowledgedTows
+//                        ) {
+//
+//
+//                            MarkChangeWasDone()
+////                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+//                            Log.v("checkkk", itemOrgArray[i].LoggedIntoPortal + "=="+ itemArray[i].LoggedIntoPortal)
+//                            Log.v("checkkk", itemOrgArray[i].InProgressTows + "=="+ itemArray[i].InProgressTows)
+//                            Log.v("checkkk", itemOrgArray[i].InProgressWalkIns + "=="+ itemArray[i].InProgressWalkIns)
+//                            Log.v("checkkk", itemOrgArray[i].NumberUnacknowledgedTows + "=="+ itemArray[i].NumberUnacknowledgedTows)
+//
+//                        }
+//                    }
+//
+//                    else
+//                        if (
+//
+//                                itemOrgArray[i].LoggedIntoPortal != itemArray[i].LoggedIntoPortal ||
+//                                itemOrgArray[i].InProgressTows != itemArray[i].InProgressTows ||
+//                                itemOrgArray[i].InProgressWalkIns != itemArray[i].InProgressWalkIns ||
+//                                itemOrgArray[i].NumberUnacknowledgedTows != itemArray[i].NumberUnacknowledgedTows ||
+//                                dateFormat1.parse(itemOrgArray[i].AddendumSigned.apiToAppFormat()) != assignedDate ||
+//                                dateFormat1.parse(itemOrgArray[i].startDate.apiToAppFormat()) != startDate ||
+//                                dateFormat1.parse(itemOrgArray[i].PortalInspectionDate.apiToAppFormat()) != portalDate)
+//
+//                {
+//
+//
+//
+//                            MarkChangeWasDone()
+////                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+//                    Log.v("checkkk", itemOrgArray[i].LoggedIntoPortal + "=="+ itemArray[i].LoggedIntoPortal)
+//                    Log.v("checkkk", itemOrgArray[i].InProgressTows + "=="+ itemArray[i].InProgressTows)
+//                    Log.v("checkkk", itemOrgArray[i].InProgressWalkIns + "=="+ itemArray[i].InProgressWalkIns)
+//                    Log.v("checkkk", itemOrgArray[i].NumberUnacknowledgedTows + "=="+ itemArray[i].NumberUnacknowledgedTows)
+//                    Log.v("checkkk", itemOrgArray[i].AddendumSigned + "=="+ itemArray[i].AddendumSigned)
+//                    Log.v("checkkk", itemOrgArray[i].startDate + "=="+ itemArray[i].startDate)
+//                    Log.v("checkkk", itemOrgArray[i].PortalInspectionDate + "=="+ itemArray[i].PortalInspectionDate)
+//
+//
+//                }
+//            }
+//        }else{
+//            MarkChangeWasDone()
+//            Log.v("checkkk", "2ndddd")
+//
+//        }
     }
 
     fun validateInputs() : Boolean {
@@ -590,7 +587,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 try {
-                    textView.text = get(it).PortalInspectionDate.apiToAppFormat()
+                    textView.text = get(it).PortalInspectionDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
                     textView.text = get(it).PortalInspectionDate
 
@@ -637,12 +634,12 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     edit_numberOfInProgressWalkIns.setText(textView4.text)
                     edit_inspectionDateButton.setText(textView.text)
                     try {
-                        edit_startDateButton.setText(if (get(rowIndex-1).startDate.isNullOrBlank()) "" else get(rowIndex-1).startDate.apiToAppFormat())
+                        edit_startDateButton.setText(if (get(rowIndex-1).startDate.isNullOrBlank()) "" else get(rowIndex-1).startDate.apiToAppFormatMMDDYYYY())
                     } catch (e: Exception) {
                         edit_startDateButton.setText(if (get(rowIndex-1).startDate.isNullOrBlank()) "" else get(rowIndex-1).startDate)
                     }
                     try {
-                        edit_addendumSignedDateButton.setText(if (get(rowIndex-1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex-1).AddendumSigned.apiToAppFormat())
+                        edit_addendumSignedDateButton.setText(if (get(rowIndex-1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex-1).AddendumSigned.apiToAppFormatMMDDYYYY())
                     } catch (e: Exception) {
                         edit_addendumSignedDateButton.setText(if (get(rowIndex-1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex-1).AddendumSigned)
                     }
@@ -704,24 +701,25 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     if (validateInputsForUpdate()) {
                         RSP_LoadingView.visibility = View.VISIBLE
 
-                        val date = edit_inspectionDateButton.text
+                        val date = edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                         val isLoggedInRsp = edit_loggedIntoRspButton.isChecked
                         var numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
                         var numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
                         var numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
 
 
-                        var startDate = if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString()
-                        var endDate = if (edit_endDateButton.text.equals("SELECT DATE")) "" else edit_endDateButton.text.toString()
-                        var signedDate = if (edit_addendumSignedDateButton.text.equals("SELECT DATE")) "" else edit_addendumSignedDateButton.text.toString()
+                        var startDate = if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                        var endDate = if (edit_endDateButton.text.equals("SELECT DATE")) "" else edit_endDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                        var signedDate = if (edit_addendumSignedDateButton.text.equals("SELECT DATE")) "" else edit_addendumSignedDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
 
 
 
+//                        Log.v("RSP EDIT",UpdateAARPortalAdminData + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
+//                                "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=2015-07-31T11:53:02.190&updateBy=SumA&updateDate=2015-07-31T11:53:02.190&active=1")
 
 
-
-                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
-                                "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=2015-07-31T11:53:02.190&updateBy=SumA&updateDate=2015-07-31T11:53:02.190&active=1",
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
+                                "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE",response.toString())
@@ -801,7 +799,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             textView.layoutParams = rowLayoutParam
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             try {
-                textView.text = PortalInspectionDate.appToApiFormat()
+                textView.text = PortalInspectionDate.appToApiSubmitFormatMMDDYYYY()
             } catch (e: Exception) {
                 textView.text = PortalInspectionDate
 

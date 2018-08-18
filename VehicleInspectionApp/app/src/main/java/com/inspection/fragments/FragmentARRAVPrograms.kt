@@ -130,7 +130,7 @@ class FragmentARRAVPrograms : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 val myFormat2 = "dd MM yyyy" // mention the format you need
                 val sdf2 = SimpleDateFormat(myFormat2, Locale.US)
@@ -148,7 +148,7 @@ class FragmentARRAVPrograms : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 val myFormat2 = "dd MM yyyy" // mention the format you need
                 val sdf2 = SimpleDateFormat(myFormat2, Locale.US)
@@ -168,7 +168,7 @@ class FragmentARRAVPrograms : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 val myFormat3 = "dd MM yyyy" // mention the format you need
                 val sdf3 = SimpleDateFormat(myFormat3, Locale.US)
@@ -185,7 +185,7 @@ class FragmentARRAVPrograms : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 val myFormat3 = "dd MM yyyy" // mention the format you need
                 val sdf3 = SimpleDateFormat(myFormat3, Locale.US)
@@ -215,7 +215,7 @@ class FragmentARRAVPrograms : Fragment() {
                             if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
 
 //
-                                val dateFormat = SimpleDateFormat("dd MMM yyyy")
+                                val dateFormat = SimpleDateFormat("MM/dd/yyyy")
                                 var newEffDate = Date()
                                 var newExpDate = Date()
                                 var DB_EffDate = Date()
@@ -275,7 +275,7 @@ class FragmentARRAVPrograms : Fragment() {
                     //  BuildProgramsList()
 
 
-                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + "&programId=29385&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=sa&insertDate=2013-04-24T13:40:34.240&updateBy=SumA&updateDate=2013-06-24T15:25:12.513",
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=29385&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                             Response.Listener { response ->
                                 activity!!.runOnUiThread(Runnable {
                                     Log.v("RESPONSE", response.toString())
@@ -491,11 +491,9 @@ class FragmentARRAVPrograms : Fragment() {
                     textView2.text =""
                 }else {
                     try {
-                        textView2.text = get(it).effDate.apiToAppFormat()
+                        textView2.text = get(it).effDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-
                         textView2.text = get(it).effDate
-
                     }
                 }
                 tableRow.addView(textView2)
@@ -634,8 +632,8 @@ class FragmentARRAVPrograms : Fragment() {
 
                                 currentRowDataModel.Comments = edit_comments_editTextVal.text.toString()
 
-                                currentRowDataModel.effDate = if (edit_effective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_effective_date_textviewVal.text.toString().appToDBFormat()
-                                currentRowDataModel.expDate = if (edit_expiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_expiration_date_textviewVal.text.toString().appToApiSubmitFormat()
+                                currentRowDataModel.effDate = if (edit_effective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_effective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                currentRowDataModel.expDate = if (edit_expiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_expiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
 
 
                                 var effdateForSubmit=edit_effective_date_textviewVal.text.toString()
@@ -649,7 +647,7 @@ class FragmentARRAVPrograms : Fragment() {
                                 }
 
 
-                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + "&programId=29385&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=sa&insertDate=2013-04-24T13:40:34.240&updateBy=SumA&updateDate=2013-06-24T15:25:12.513",
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=29385&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread(Runnable {
                                                 Log.v("RESPONSE", response.toString())
@@ -659,10 +657,6 @@ class FragmentARRAVPrograms : Fragment() {
                                                 edit_programsLoadingView.visibility = View.GONE
                                                 alphaBackgroundForProgramDialogs.visibility = View.GONE
                                                 enableAllAddButnsAndDialog()
-
-
-
-
                                             })
                                         }, Response.ErrorListener {
                                     Log.v("error while loading", "error while loading program record")
@@ -792,7 +786,7 @@ class FragmentARRAVPrograms : Fragment() {
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             try {
-                textView.text = effDate.appToApiFormat()
+                textView.text = effDate.apiToAppFormatMMDDYYYY()
             } catch (e: Exception) {
                 textView.text = effDate
             }
@@ -803,7 +797,7 @@ class FragmentARRAVPrograms : Fragment() {
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
             try {
-                textView.text = expDate.appToApiFormat()
+                textView.text = expDate.apiToAppFormatMMDDYYYY()
             } catch (e: Exception) {
                 textView.text = expDate
             }

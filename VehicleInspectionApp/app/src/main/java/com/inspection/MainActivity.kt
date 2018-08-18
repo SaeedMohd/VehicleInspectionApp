@@ -74,6 +74,7 @@ import com.inspection.model.AnnualVisitationInspectionFormData
 class MainActivity : AppCompatActivity(), LocationListener {
     //    public FragmentVehicleFacility FragmentRequestingPermission;
     var FacilityName = ""
+    var ClubCode = ""
     var FacilityNumber = ""
     var isLoadNewDetailsRequired = false
     var VisitationID = ""

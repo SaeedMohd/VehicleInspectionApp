@@ -15,8 +15,6 @@ import android.widget.*
 
 import com.inspection.R
 import com.inspection.Utils.toAppFormat
-import com.inspection.model.CsiSpecialistSingletonModel
-import com.inspection.model.FacilityDataModel
 
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import java.util.*
@@ -33,10 +31,11 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
 import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMax
-import com.inspection.model.FacilityDataModelOrg
-import com.inspection.model.IndicatorsDataModel
+import com.inspection.model.*
 
 
 /**
@@ -90,24 +89,24 @@ class FragmentVisitation : Fragment() {
 
 
     fun checkMarkChangesDone(){
-        FacilityDataModelOrg.getInstance().changeWasDone = false
-        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
-        scopeOfServiceChangesWatcher()
-        FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
-        FragmentARRAVPrograms().checkMarkChangesWasDone()
-        FragmentARRAVRepairShopPortalAddendum().checkMarkChangesWasDone()
-        FragmentARRAVPersonnel().checkMarkChangesWasDoneForPersonnel()
-        FragmentARRAVFacilityServices().checkMarkChangesWasDone()
-        FragmentARRAVDeficiency().checkMarkChangesWasDone()
-        FragmentARRAVAmOrderTracking().checkMarkChangesWasDone()
-        FragmentARRAVLocation().checkMarkChangesWasDoneForAddressTable()
-        FragmentARRAVLocation().checkMarkChangesWasDoneForEmailTable()
-        FragmentARRAVLocation().checkMarkChangesWasDoneForPhoneTable()
-        FragmentARRAVLocation().checkMarkChangesWasDoneForlanguageContactInfoFacilityTab()
-        FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
-        checkMarkChangesWasDone()
-
-        dataChangeHandling()
+//        FacilityDataModelOrg.getInstance().changeWasDone = false
+//        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
+//        scopeOfServiceChangesWatcher()
+//        FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
+//        FragmentARRAVPrograms().checkMarkChangesWasDone()
+//        FragmentARRAVRepairShopPortalAddendum().checkMarkChangesWasDone()
+//        FragmentARRAVPersonnel().checkMarkChangesWasDoneForPersonnel()
+//        FragmentARRAVFacilityServices().checkMarkChangesWasDone()
+//        FragmentARRAVDeficiency().checkMarkChangesWasDone()
+//        FragmentARRAVAmOrderTracking().checkMarkChangesWasDone()
+//        FragmentARRAVLocation().checkMarkChangesWasDoneForAddressTable()
+//        FragmentARRAVLocation().checkMarkChangesWasDoneForEmailTable()
+//        FragmentARRAVLocation().checkMarkChangesWasDoneForPhoneTable()
+//        FragmentARRAVLocation().checkMarkChangesWasDoneForlanguageContactInfoFacilityTab()
+//        FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
+//        checkMarkChangesWasDone()
+//
+//        dataChangeHandling()
 
 
     }
@@ -191,7 +190,7 @@ class FragmentVisitation : Fragment() {
 
         dateOfVisitationButton.text = Date().toAppFormat()
 
-        clubCodeEditText.setText("004")
+        //clubCodeEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].)
 
 
         facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
@@ -625,11 +624,12 @@ class FragmentVisitation : Fragment() {
             if (fac.FACNo.toString() == facilityNumberEditText.text.toString()) {
                 facilityNumberEditText.isEnabled = false
 
-                facilityNameEditText.setText(fac.EntityName.toString())
+                facilityNameEditText.setText(fac.BusinessName.toString())
+                //facilityNameEditText.setText(fac. .toString())
 
 
             }
-            if (fac.EntityName == facilityNameEditText.text.toString()) {
+            if (fac.BusinessName == facilityNameEditText.text.toString()) {
 
                 facilityNameEditText.isEnabled = false
 
@@ -653,7 +653,7 @@ class FragmentVisitation : Fragment() {
                     for (fac in FacilityDataModel.getInstance().tblFacilities) {
 
 
-                        if (fac.EntityName == facilityNameEditText.text.toString()) {
+                        if (fac.BusinessName == facilityNameEditText.text.toString()) {
 
                             facilityNumberEditText.setText(fac.FACNo.toString())
                         }
@@ -678,7 +678,7 @@ class FragmentVisitation : Fragment() {
 
                         if (fac.FACNo.toString() == facilityNumberEditText.text.toString()) {
 
-                            facilityNameEditText.setText(fac.EntityName.toString())
+                            facilityNameEditText.setText(fac.BusinessName.toString())
 
 
                         }
@@ -911,7 +911,7 @@ class FragmentVisitation : Fragment() {
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).Comments
+                textView.text = TypeTablesModel.getInstance().AARDeficiencyType.filter { s->s.DeficiencyTypeID.toString()==get(it).DefTypeID }[0].DeficiencyName
                 textView.setPadding(5)
                 textView.gravity = Gravity.CENTER_VERTICAL
                 tableRow.addView(textView)
@@ -919,7 +919,16 @@ class FragmentVisitation : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).VisitationDate
+                textView.text = get(it).Comments
+                textView.setPadding(5)
+                textView.setEms(8)
+                textView.gravity = Gravity.CENTER_VERTICAL
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
                 textView.gravity = Gravity.CENTER_VERTICAL
                 tableRow.addView(textView)
 
@@ -927,7 +936,7 @@ class FragmentVisitation : Fragment() {
                 textView.layoutParams = rowLayoutParam
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = get(it).ClearedDate
+                textView.text = get(it).ClearedDate.apiToAppFormatMMDDYYYY()
                 tableRow.addView(textView)
 
                 deficienciesTableLayout.addView(tableRow)

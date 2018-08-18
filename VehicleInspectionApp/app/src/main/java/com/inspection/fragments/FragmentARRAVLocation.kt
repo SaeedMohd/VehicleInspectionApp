@@ -18,6 +18,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.*
@@ -90,7 +91,7 @@ class FragmentARRAVLocation : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 facilityIsOpenEffDateBtn!!.text = sdf.format(c.time)
@@ -103,7 +104,7 @@ class FragmentARRAVLocation : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 facilityIsOpenExpDateBtn!!.text = sdf.format(c.time)
@@ -457,16 +458,53 @@ class FragmentARRAVLocation : Fragment() {
         newLocLongText.setText(FacilityDataModel.getInstance().tblAddress[index].LONGITUDE)
 
         locationSubmitButton.setOnClickListener {
-            FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
-            FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+
 
             editLocationDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
-            enableAllAddButnsAndDialog()
-            fillLocationTableView()
+//            enableAllAddButnsAndDialog()
+//            var rowIndex=phoneTbl.indexOfChild(tableRow)
+//            var phoneFacilityChangedIndex= rowIndex-1
+
+
+            val insertDate = Date().toAppFormatMMDDYYYY()
+            val insertBy = "sa"
+            val updateDate = Date().toAppFormatMMDDYYYY()
+            val updateBy = "sa"
+            val LocationTypeID = TypeTablesModel.getInstance().LocationType.filter { s->s.LocTypeName.equals("Physical") }[0].LocTypeID
+            val facAddr1 = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr1
+            val facAddr2 = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr2
+            val facCity = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].CITY
+            val facCountry= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].County
+            val facST = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].ST
+            val facZip= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].ZIP
+            val facZip4= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].ZIP4
+            val facBranchName= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].BranchName
+            val facBranchNo= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].BranchNumber
+            val Latitude = newLocLatText.text.toString()
+            val Longitude = newLocLongText.text.toString()
+
+            val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+
+            val clubCode = FacilityDataModel.getInstance().clubCode
+            var urlString = facilityNo + "&clubcode=" + clubCode +"&BranchName=" + facBranchName + "&LATITUDE=" + Latitude+"&LONGITUDE=" + Longitude +  "&BranchNumber=" + facBranchNo +  "&LocationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1"
+            Log.v("LOCATION Data To Submit", Constants.submitContactInfoAddress + urlString)
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            contactInfoLoadingView.visibility = View.GONE
+                            FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
+                            FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+                            fillLocationTableView()
+                            Log.v("LOCATION RESPONSE", response.toString())
+                            enableAllAddButnsAndDialog()
+                        })
+                    }, Response.ErrorListener {
+                contactInfoLoadingView.visibility = View.GONE
+                Log.v("error while submitting", "LOCATION Details")
+            }))
+
         }
-
-
     }
 
     private fun getLocationTypeName(typeID: String): String {
@@ -650,10 +688,9 @@ class FragmentARRAVLocation : Fragment() {
                 editPhoneBtn.layoutParams = rowLayoutParam2
                 editPhoneBtn.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
                 editPhoneBtn.text = "Edit"
-                editPhoneBtn.setTextColor(Color.WHITE)
+                editPhoneBtn.setTextColor(Color.BLACK)
 //                editPhoneBtn.setBackgroundResource(R.drawable.green_background_button)
                 tableRow.addView(editPhoneBtn)
-
 
                 editPhoneBtn.setOnClickListener(View.OnClickListener {
                     var rowIndex=phoneTbl.indexOfChild(tableRow)
@@ -692,13 +729,15 @@ class FragmentARRAVLocation : Fragment() {
 
                                  }
                              }
-                        val insertDate = Date().toAppFormat()
+                        val insertDate = Date().toAppFormatMMDDYYYY()
                         val insertBy ="sa"
-                        val updateDate = Date().toAppFormat()
+                        val updateDate = Date().toAppFormatMMDDYYYY()
                         val updateBy ="sa"
                         val activeVal = "0"
+
                         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-                        val clubCode ="004"
+
+                             val clubCode = FacilityDataModel.getInstance().clubCode
                         var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
                         Log.v("Data To Submit", urlString)
                         contactInfoLoadingView.visibility = View.VISIBLE
@@ -1016,8 +1055,8 @@ class FragmentARRAVLocation : Fragment() {
 
                         contactInfoLoadingView.visibility = View.VISIBLE
 
-
-                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                        val insertDate=Date().toAppFormatMMDDYYYY()
+                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+insertDate+"&updateBy=SumA&updateDate="+insertDate,
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE", response.toString())
@@ -1251,7 +1290,7 @@ class FragmentARRAVLocation : Fragment() {
                 editButton.text = "EDIT"
                 editButton.tag = it
 //                editButton.setBackgroundResource(R.drawable.green_background_button)
-                editButton.setTextColor(Color.WHITE)
+                editButton.setTextColor(Color.BLACK)
                 tableRow.addView(editButton)
                 if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")){
                     editButton.visibility = View.INVISIBLE
@@ -1273,13 +1312,13 @@ class FragmentARRAVLocation : Fragment() {
     fun submitFacilityEmail(){
         val emailTypeID = TypeTablesModel.getInstance().EmailType.filter { s -> s.EmailName==newEmailTypeSpinner.selectedItem.toString()}[0].EmailID
         val email = if (newEmailAddrText.text.isNullOrEmpty())  "" else newEmailAddrText.text
-        val insertDate = Date().toAppFormat()
+        val insertDate = Date().toAppFormatMMDDYYYY()
         val insertBy ="sa"
-        val updateDate = Date().toAppFormat()
+        val updateDate = Date().toAppFormatMMDDYYYY()
         val updateBy ="sa"
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-        val clubCode ="004"
+        val clubCode = FacilityDataModel.getInstance().clubCode
 
         val newEmail = FacilityDataModel.TblFacilityEmail()
         newEmail.email = email.toString()
@@ -1312,38 +1351,26 @@ class FragmentARRAVLocation : Fragment() {
 
 
     fun submitLanguages(){
-
-
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "&langTypeId=${LanguageListAdapter.langArray.toString().replace("[","").replace("]","")}&insertBy=SumA&insertDate=2014-03-17T14:06:18.464",
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        Log.v("LANG_SUBMIT_RESPONSE",response.toString())
-                        Toast.makeText(context,"languages submited",Toast.LENGTH_SHORT).show()
-
-
-                    })
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading personnal record")
-            Toast.makeText(context,"error submitting languages",Toast.LENGTH_SHORT).show()
-
-        }))
+//        val langTypeId=LanguageListAdapter.langArray.toString().replace("[","").replace("]","")
+//        Log.v("LANGUAGES --->",UpdateFacilityLanguageData + "&langTypeId="+langTypeId+"&insertBy=SumA&insertDate="+Date().toApiSubmitFormat())
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "&langTypeId=${LanguageListAdapter.langArray.toString().replace("[","").replace("]","")}&insertBy=SumA&insertDate="+Date().toAppFormatMMDDYYYY(),
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        Log.v("LANG_SUBMIT_RESPONSE",response.toString())
+//                        Toast.makeText(context,"languages submited",Toast.LENGTH_SHORT).show()
+//                    })
+//                }, Response.ErrorListener {
+//            Log.v("error while loading", "error while loading personnal record")
+//            Toast.makeText(context,"error submitting languages",Toast.LENGTH_SHORT).show()
+//
+//        }))
     }
 
 
     fun submitFacilityAddress(){
-//        val locTypeID = TypeTablesModel.getInstance().LocationType.filter { s -> s.LocTypeName==newLocTypeSpinner.selectedItem.toString()}[0].LocTypeID
-//        val address1Text = if (newLocAddr1Text.text.isNullOrEmpty())  "" else newLocAddr1Text.text
-//        val address2Text = if (newLocAddr2Text.text.isNullOrEmpty())  "" else newLocAddr2Text.text
-//        val cityText= if (newLocCityText.text.isNullOrEmpty())  "" else newLocCityText.text
-//        val countryText = if (newLocCountryText.text.isNullOrEmpty())  "" else newLocCountryText.text
-//        val longText = if (newLocLongText.text.isNullOrEmpty())  "" else newLocLongText.text
-//        val latText = if (newLocLatText.text.isNullOrEmpty())  "" else newLocLatText.text
-//        val zipText = if (newLocZipText.text.isNullOrEmpty())  "" else newLocZipText.text
-//        val branchNameText = if (newLocBranchNameText.text.isNullOrEmpty())  "" else newLocBranchNameText.text
-//        val branchNoText = if (newLocBranchNoText.text.isNullOrEmpty())  "" else newLocBranchNoText.text
-        val insertDate = Date().toAppFormat()
+        val insertDate = Date().toAppFormatMMDDYYYY()
         val insertBy ="sa"
-        val updateDate = Date().toAppFormat()
+        val updateDate = Date().toAppFormatMMDDYYYY()
         val updateBy ="sa"
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -1381,13 +1408,13 @@ class FragmentARRAVLocation : Fragment() {
     fun submitFacilityPhone(){
         val phoneTypeID = TypeTablesModel.getInstance().LocationPhoneType.filter { s -> s.LocPhoneName==newPhoneTypeSpinner.selectedItem.toString()}[0].LocPhoneID
         val phoneNo = if (newPhoneNoText.text.isNullOrEmpty())  "" else newPhoneNoText.text
-        val insertDate = Date().toAppFormat()
+        val insertDate = Date().toAppFormatMMDDYYYY()
         val insertBy ="sa"
-        val updateDate = Date().toAppFormat()
+        val updateDate = Date().toAppFormatMMDDYYYY()
         val updateBy ="sa"
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-        val clubCode ="004"
+        val clubCode = FacilityDataModel.getInstance().clubCode
         val newPhone = FacilityDataModel.TblPhone()
         newPhone.PhoneNumber = phoneNo.toString()
         newPhone.PhoneTypeID= phoneTypeID
@@ -1447,7 +1474,7 @@ class FragmentARRAVLocation : Fragment() {
         }
     }
     fun checkMarkChangesWasDoneForPhoneTable() {
-        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+        val dateFormat1 = SimpleDateFormat("MM/dd/yyyy")
 
         var itemOrgArray = FacilityDataModelOrg.getInstance().tblPhone
         var itemArray = FacilityDataModel.getInstance().tblPhone
@@ -1498,7 +1525,7 @@ class FragmentARRAVLocation : Fragment() {
         }
     }
     fun checkMarkChangesWasDoneForEmailTable() {
-        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+        val dateFormat1 = SimpleDateFormat("MM/dd/yyyy")
 
         var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityEmail
         var itemArray = FacilityDataModel.getInstance().tblFacilityEmail
@@ -1524,7 +1551,7 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun checkMarkChangesWasDoneForAddressTable() {
-        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+        val dateFormat1 = SimpleDateFormat("MM/dd/yyyy")
 
         var itemOrgArray = FacilityDataModelOrg.getInstance().tblAddress
         var itemArray = FacilityDataModel.getInstance().tblAddress

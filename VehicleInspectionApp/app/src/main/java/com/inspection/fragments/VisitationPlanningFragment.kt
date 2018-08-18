@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.inspection.FormsActivity
+import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
@@ -65,6 +66,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
     var allClubCodes = ArrayList<String>()
     var specialistClubCodes = ArrayList<String>()
     var specialistArrayModel = ArrayList<CsiSpecialist>()
+    var clubCode=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -613,26 +615,32 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
 
 
             if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
-                vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].EntityName
+                vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].FACNo
+                vh.initialContractDateTextView.text = "Initial Contract Date:"
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
-                vh.visitationTypeValueTextView.text = "Pending"
+                vh.visitationTypeValueTextView.text = "Not Started"
+                vh.visitationTypeTextView.text = "Status:"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
-                vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].EntityName
+                vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 vh.visitationTypeValueTextView.text = "Completed"
+                vh.initialContractDateTextView.text = "Visitation Date:"
+                vh.visitationTypeTextView.text = "Status:"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
-                vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].EntityName
+                vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 vh.visitationTypeValueTextView.text = "Deficiency"
+                vh.initialContractDateTextView.text = "Deficiency Due Date:"
+                vh.visitationTypeTextView.text = "Type:"
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode)
                 })
@@ -664,8 +672,11 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, clubCode)).build()
-
-
+        // Newly Added
+        //(activity as MainActivity).FacilityName = facilitiesList.filter { s->s.facno.equals(facilityNumber)}[0].businessname
+        //(activity as MainActivity).facilitySelected = facilitiesList.filter { s -> s.facno.equals(facilityNumber) }.get(0)
+        //(activity as MainActivity).FacilityNumber = (activity as MainActivity).facilitySelected.facno.toString()
+        this.clubCode = clubCode
 
         recordsProgressView.visibility = View.VISIBLE
         client.newCall(request).enqueue(object : Callback {
@@ -733,6 +744,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
         FacilityDataModel.getInstance().clear()
         FacilityDataModelOrg.getInstance().clear()
+        FacilityDataModel.getInstance().clubCode = clubCode
+        FacilityDataModelOrg.getInstance().clubCode = clubCode
         if (jsonObj.has("tblFacilities")) {
             if (jsonObj.get("tblFacilities").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilities = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilities>>(jsonObj.get("tblFacilities").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilities>>() {}.type)
@@ -1792,6 +1805,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         val facilityNoValueTextView: TextView
         val initialContractDateValueTextView: TextView
         val visitationTypeValueTextView: TextView
+        val initialContractDateTextView: TextView
+        val visitationTypeTextView:TextView
         val loadBtn: Button
 
         init {
@@ -1799,6 +1814,9 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             this.facilityNoValueTextView = view?.findViewById(R.id.facilityNoValueTextView) as TextView
             this.initialContractDateValueTextView = view?.findViewById(R.id.initialContractDateValueTextView) as TextView
             this.visitationTypeValueTextView = view?.findViewById(R.id.visitationTypeValueTextView) as TextView
+            this.initialContractDateTextView=view?.findViewById(R.id.initialContractDateTextView) as TextView
+            this.visitationTypeTextView = view?.findViewById(R.id.visitationTypeTextView ) as TextView
+
             this.loadBtn = view?.findViewById(R.id.loadBtn) as Button
 
         }

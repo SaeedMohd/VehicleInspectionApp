@@ -20,10 +20,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 
 import com.inspection.R
-import com.inspection.Utils.Constants
-import com.inspection.Utils.MarkChangeWasDone
-import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.appToApiFormat
+import com.inspection.Utils.*
 import com.inspection.model.AAAPersonnelDetails
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
@@ -237,7 +234,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newCertStartDateBtn!!.text = sdf.format(c.time)
@@ -259,7 +256,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newCoStartDateBtn!!.text = sdf.format(c.time)
@@ -275,7 +272,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     edit_newEndDateBtn!!.text = sdf.format(c.time)
@@ -292,7 +289,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     edit_newCoStartDateBtn!!.text = sdf.format(c.time)
@@ -309,7 +306,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newSeniorityDateBtn!!.text = sdf.format(c.time)
@@ -325,7 +322,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     edit_newSeniorityDateBtn!!.text = sdf.format(c.time)
@@ -342,7 +339,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newStartDateBtn!!.text = sdf.format(c.time)
@@ -358,7 +355,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     edit_newStartDateBtn!!.text = sdf.format(c.time)
@@ -469,7 +466,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
 //        urlString = URLEncoder.encode(urlString, "UTF-8")
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate=2013-04-24T13:39:56.490&updateBy=SumA&updateDate=2017-03-23T11:11:08.997&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             Log.v("RESPONSE",response.toString())
@@ -1070,7 +1067,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newCoEndDateBtn!!.text = sdf.format(c.time)
@@ -1096,7 +1093,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newEndDateBtn!!.text = sdf.format(c.time)
@@ -1122,7 +1119,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newCertEndDateBtn!!.text = sdf.format(c.time)
@@ -1150,7 +1147,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     edit_newCoEndDateBtn!!.text = sdf.format(c.time)
@@ -1176,7 +1173,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     edit_newEndDateBtn!!.text = sdf.format(c.time)
@@ -1451,7 +1448,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView6.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 if (!(get(it).SeniorityDate.isNullOrEmpty())) {
                     try {
-                        textView6.text  = get(it).SeniorityDate.apiToAppFormat()
+                        textView6.text  = get(it).SeniorityDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
                         textView6.text  = get(it).SeniorityDate
 
@@ -1476,7 +1473,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 TableRow.LayoutParams()
                 if (!(get(it).startDate.isNullOrEmpty())) {
                     try {
-                        textView8.text  = get(it).startDate.apiToAppFormat()
+                        textView8.text  = get(it).startDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
                         textView8.text  = get(it).startDate
 
@@ -1493,7 +1490,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 TableRow.LayoutParams()
                 if (!(get(it).ExpirationDate.isNullOrEmpty())) {
                     try {
-                        textView9.text = get(it).ExpirationDate.apiToAppFormat()
+                        textView9.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
                         textView9.text = get(it).ExpirationDate.appToApiFormat()
 
@@ -1776,7 +1773,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
 //        urlString = URLEncoder.encode(urlString, "UTF-8")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate=2013-04-24T13:39:56.490&updateBy=SumA&updateDate=2017-03-23T11:11:08.997&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread(Runnable {
                                             Log.v("RESPONSE", response.toString())
@@ -1882,7 +1879,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView2.layoutParams = rowLayoutParam1
                 textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 try {
-                    textView2.text = get(it).CertificationDate.apiToAppFormat()
+                    textView2.text = get(it).CertificationDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
                 }
                 tableRow.addView(textView2)
@@ -1892,7 +1889,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 TableRow.LayoutParams()
                 try {
-                    textView3.text = get(it).ExpirationDate.apiToAppFormat()
+                    textView3.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
                 }
                 tableRow.addView(textView3)
@@ -2174,7 +2171,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
     fun checkMarkChangesWasDoneForPersonnel() {
 
-        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+        val dateFormat1 = SimpleDateFormat("MM/dd/yyyy")
 
         var itemOrgAr = FacilityDataModelOrg.getInstance().tblPersonnel
         var itemAr = FacilityDataModel.getInstance().tblPersonnel
@@ -2409,7 +2406,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                         personnelLoadingView.visibility = View.VISIBLE
 
 
-                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE", response.toString())

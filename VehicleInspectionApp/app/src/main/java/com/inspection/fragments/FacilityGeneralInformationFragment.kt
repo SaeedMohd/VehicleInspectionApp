@@ -230,7 +230,6 @@ class FacilityGeneralInformationFragment : Fragment() {
                     office_textviewVal.text = ""
                 }else{
                     office_textviewVal.text = "" + tblOfficeType[0].OfficeName
-
                 }
                 assignedto_textviewVal.text = tblFacilities[0].AssignedTo
                 dba_textviewVal.text = tblFacilities[0].BusinessName
@@ -245,14 +244,14 @@ class FacilityGeneralInformationFragment : Fragment() {
                 availability_textviewVal.setSelection(svcAvailabilityArray.indexOf(TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID==tblFacilities[0].SvcAvailability}[0].SrvAvaName))
                 facilitytype_textviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
-                ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormat()
-                terminationDateButton.text = ""+tblFacilities[0].TerminationDate.apiToAppFormat()
+                ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY()
+                terminationDateButton.text = ""+tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY()
                 //SAEED
                 terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
                 terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
-                currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormat()
-                initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormat()
-                InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormat()
+                currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormatMMDDYYYY()
+                initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY()
+                InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
 
 
                 inspectionMonthsTextViewVal.text=inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth)-1]
@@ -364,7 +363,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
                 ARDexp_textviewVal!!.text = sdf.format(c.time)
@@ -380,7 +379,9 @@ class FacilityGeneralInformationFragment : Fragment() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+
+
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
                 InsuranceExpDate_textviewVal!!.text = sdf.format(c.time)
@@ -733,7 +734,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         val busType = TypeTablesModel.getInstance().BusinessType.filter { s -> s.BusTypeName==bustype_textviewVal.selectedItem.toString()}[0].BusTypeID
         val entityName =  if (entity_textviewVal.text.isNullOrEmpty())  "" else entity_textviewVal.text
         val assignedTo = if (assignedto_textviewVal.text.isNullOrEmpty())  "" else assignedto_textviewVal.text // get the ID
-        val officeID = if (office_textviewVal.text.isNullOrEmpty())  "" else office_textviewVal.text // get The ID
+        val officeID = if (office_textviewVal.text.isNullOrEmpty())  "" else "0" // get The ID
         val taxIDNo = if (taxno_textviewVal.text.isNullOrEmpty())  "" else taxno_textviewVal.text
         val facRepairCnt = if (repairorder_textviewVal.text.isNullOrEmpty())  "" else repairorder_textviewVal.text
         val inspectionMonth = (FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth).toString()
@@ -742,12 +743,12 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
         val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
         val automtiveRepairNo = if (ARDno_textviewVal.text.isNullOrEmpty())  "" else ARDno_textviewVal.text
-        val automtiveRepairExpDate = ARDexp_textviewVal.text.toString().appToApiSubmitFormat()
-        val contractCurrDate = currcodate_textviewVal.text.toString().appToApiSubmitFormat()
-        val contractInitDate = initcodate_textviewVal.text.toString().appToApiSubmitFormat()
+        val automtiveRepairExpDate = ARDexp_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val contractCurrDate = currcodate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val contractInitDate = initcodate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
         val internetAccess = if (wifiAvailableCheckBox.isChecked) "1" else "0"
         val webSite = if (website_textviewVal.text.isNullOrEmpty())  "" else website_textviewVal.text
-        val terminationDate = terminationDateButton.text.toString().appToApiSubmitFormat()
+        val terminationDate = terminationDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
         val terminationReasonID = TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID
         val terminationComments = if (terminationCommentEditText.text.isNullOrEmpty())  "" else terminationCommentEditText.text
         val insertDate = Date().toApiSubmitFormat()
@@ -755,12 +756,12 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         val updateDate = Date().toApiSubmitFormat()
         val updateBy ="sa"
         val activeVal = "0"
-        val insuranceExpDate = InsuranceExpDate_textviewVal.text
+        val insuranceExpDate = InsuranceExpDate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
         val contractType = TypeTablesModel.getInstance().ContractType.filter { s -> s.ContractTypeName==contractTypeValueSpinner.selectedItem.toString()}[0].ContractTypeID
         val billingMonth = FacilityDataModel.getInstance().tblFacilities[0].BillingMonth.toString()
         val billingAmount = FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toString()
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-        val clubCode ="004"
+        val clubCode =FacilityDataModel.getInstance().clubCode
         FacilityDataModel.getInstance().tblFacilities[0]
         var urlString = facilityNo+"&clubcode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
         Log.v("Data To Submit", urlString)
@@ -783,7 +784,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
     fun submitPaymentMethods(){
 
 
-        var insertDate = Date().toAppFormat()
+        var insertDate = Date().toAppFormatMMDDYYYY()
 
                 //  BuildProgramsList()
 
@@ -822,9 +823,10 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
 
 
 
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=$insertDate",
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
+                        Log.v("PAYMENT REQUEST",UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}")
                         Log.v("paymentSUBMIT_RESPONSE",response.toString())
                         Log.v("paymentsTRING",payments.toString())
 

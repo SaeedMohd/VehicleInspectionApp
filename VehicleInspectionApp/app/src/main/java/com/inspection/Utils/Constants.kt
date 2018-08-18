@@ -28,6 +28,7 @@ object Constants {
     val appFormat = SimpleDateFormat("dd MMM yyyy")
 
     // WebServices
+    //var clubCode=""
     val personnelTypeURL = "http://144.217.24.163:5000/getPersonnelTypes?facilityId="
     val personnelDetailsURL = "http://144.217.24.163:5000/getPersonnelsDetails?facilityId=%s&personnelTypeId=%d"
     val allPersonnel = "http://144.217.24.163:5000/getAllPersonnelsDetails"
@@ -71,12 +72,12 @@ object Constants {
     val getVisitations = "https://dev.facilityappointment.com/ACEAPI.asmx/GetVisitations?"
     val getFacilitiesWithFilters = "http://144.217.24.163:5000/getFacilitiesWithFilters?"
 
-    var facNo= if (FacilityDataModel.getInstance().tblFacilities.size>0) FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() else "2518"
-    val UpdateAARPortalAdminData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAARPortalAdminData?facNum=$facNo&clubCode=004"
-    val UpdateAmendmentOrderTrackingData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAmendmentOrderTrackingData?facNum=$facNo&clubCode=004"
+    var facNo= if (FacilityDataModel.getInstance().tblFacilities.size>0) FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() else "2089"
+    val UpdateAARPortalAdminData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAARPortalAdminData?facNum="
+    val UpdateAmendmentOrderTrackingData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAmendmentOrderTrackingData?facNum="
     val UpdateDeficiencyData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateDeficiencyData?facNum=$facNo&clubCode=004"
-    val UpdateProgramsData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateProgramsData?facNum=$facNo&clubCode=004"
-    val UpdateFacilityServicesData ="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityServicesData?facNum=$facNo&clubCode=004"
+    val UpdateProgramsData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateProgramsData?facNum="
+    val UpdateFacilityServicesData ="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityServicesData?facNum="
     val UpdateAffiliationsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAffiliationsData?facNum=$facNo&clubCode=004"
     val UpdatePaymentMethodsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdatePaymentMethodsData?facnum=$facNo&clubCode=004"
     val UpdateFacilityLanguageData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityLanguageData?facNum=$facNo&clubCode=004"

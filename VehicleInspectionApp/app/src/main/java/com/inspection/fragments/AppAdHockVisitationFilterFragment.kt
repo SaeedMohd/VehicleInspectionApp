@@ -847,6 +847,9 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         }
 
+        IndicatorsDataModel.getInstance().init()
+        IndicatorsDataModel.getInstance().validateBusinessRules()
+
     }
 
     fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {

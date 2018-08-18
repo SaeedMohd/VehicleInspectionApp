@@ -24,6 +24,7 @@ class FacilityDataModelOrg {
     }
 
     var annualVisitationId = -1
+    var clubCode = ""
     var changeWasDone = false
     var tblFacilities = ArrayList<TblFacilities>()
     var tblPaymentMethods = ArrayList<TblPaymentMethods>()

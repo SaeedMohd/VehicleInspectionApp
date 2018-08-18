@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="APP / Ad Hoc VISITATION"
+                android:text="APP/Ad Hoc Visitation"
                 android:textSize="26sp"
                 android:textColor="@color/mainColor"
                 android:layout_gravity="center"
@@ -103,7 +103,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MY\nPERFORMANCE"
+                android:text="My\nPerformance"
                 android:textSize="26sp"
                 android:textColor="@color/mainColor"
                 android:layout_gravity="center"

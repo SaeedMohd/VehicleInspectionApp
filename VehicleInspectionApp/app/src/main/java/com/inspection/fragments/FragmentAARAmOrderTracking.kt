@@ -15,11 +15,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.R
-import com.inspection.Utils.Constants
+import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAmendmentOrderTrackingData
-import com.inspection.Utils.MarkChangeWasDone
-import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.toast
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
@@ -113,7 +110,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
                 event_date_textviewVal!!.text = sdf.format(c.time)
@@ -195,7 +192,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
 
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAmendmentOrderTrackingData + "&facId=540554&aoId=${item.AOID.toString()}&employeeId=E654117&reasonId=${item.ReasonID.toString()}&insertBy=E110997&insertDate=2015-06-15T12:38:01.087-07:00&updateBy=SumA&updateDate=2018-06-29T00:02:15.573-07:00&active=1",
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAmendmentOrderTrackingData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facId="+FacilityDataModel.getInstance().tblFacilities[0].FACID+"&aoId=${item.AOID.toString()}&employeeId=E654117&reasonId=${item.ReasonID.toString()}&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             Log.v("RESPONSE",response.toString())
@@ -356,7 +353,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                         amendmentLoadingView.visibility = View.VISIBLE
 
 
-                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE", response.toString())
@@ -535,7 +532,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
             (0 until size).forEach {
 
-                if (get(it).AOID.equals("")) {
+                if (!get(it).AOID.equals("")) {
                     var tableRow = TableRow(context)
 
                     var textView = TextView(context)

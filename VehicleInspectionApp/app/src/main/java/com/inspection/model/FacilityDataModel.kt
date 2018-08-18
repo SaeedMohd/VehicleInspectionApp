@@ -25,6 +25,7 @@ class FacilityDataModel {
 
     //Visitation Fragment Related fields
     var annualVisitationId = -1
+    var clubCode = ""
 
     var tblFacilities = ArrayList<TblFacilities>()
     var tblPaymentMethods = ArrayList<TblPaymentMethods>()

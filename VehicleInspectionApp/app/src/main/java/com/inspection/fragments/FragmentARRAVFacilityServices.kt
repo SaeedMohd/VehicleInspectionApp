@@ -16,10 +16,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.R
+import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityServicesData
-import com.inspection.Utils.MarkChangeWasDone
-import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.appToApiFormat
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
@@ -88,7 +86,7 @@ class FragmentARRAVFacilityServices : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 fcexpiration_date_textviewVal!!.text = sdf.format(c.time)
@@ -103,7 +101,7 @@ class FragmentARRAVFacilityServices : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 fceffective_date_textviewVal!!.text = sdf.format(c.time)
@@ -140,14 +138,14 @@ class FragmentARRAVFacilityServices : Fragment() {
                         item.ServiceID =fac.ServiceTypeID
                 }
                 //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
-                item.effDate = if (fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else fceffective_date_textviewVal.text.toString()
-                item.expDate = if (fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else fcexpiration_date_textviewVal.text.toString()
+                item.effDate = if (fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else fceffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                item.expDate = if (fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else fcexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.Comments=comments_editTextVal.text.toString()
                 FacilityDataModel.getInstance().tblFacilityServices.add(item)
                 //  BuildProgramsList()
 
 
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + "&facilityServicesId=5307&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate=2013-06-18T10:38:53.773&updateBy=SumA&updateDate=2013-06-18T10:38:53.773",
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=5307&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("FC_SUBMIT_RESPONSE",response.toString())
@@ -220,7 +218,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                     textView.text =""
                 }else {
                     try {
-                        textView.text = get(it).effDate.apiToAppFormat()
+                        textView.text = get(it).effDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
 
                         textView.text = get(it).effDate
@@ -237,7 +235,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                     textView.text =""
                 }else {
                     try {
-                        textView.text = get(it).expDate.apiToAppFormat()
+                        textView.text = get(it).expDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
 
                         textView.text = get(it).expDate
@@ -300,7 +298,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                 textView.text =""
             }else {
                 try {
-                    textView.text = effDate.apiToAppFormat()
+                    textView.text = effDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
 
                     textView.text = effDate
@@ -317,7 +315,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                 textView.text =""
             }else {
                 try {
-                    textView.text = expDate.apiToAppFormat()
+                    textView.text = expDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
 
                     textView.text = expDate
@@ -464,54 +462,53 @@ class FragmentARRAVFacilityServices : Fragment() {
         }
     }
 
-
     fun checkMarkChangesWasDone() {
-        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
-
-        var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityServices
-        var itemArray = FacilityDataModel.getInstance().tblFacilityServices
-        if (itemOrgArray.size == itemArray.size) {
-            for (i in 0 until itemOrgArray.size){
-                if (
-                        itemOrgArray[i].expDate.isNullOrBlank()&&!itemArray[i].expDate.isNullOrBlank()||itemOrgArray[i].effDate.isNullOrBlank()&&!itemArray[i].effDate.isNullOrBlank()
-                ) {
-
-                    MarkChangeWasDone()
-                }
-                else
-                    if (
-                            itemOrgArray[i].expDate.isNullOrBlank()&&itemArray[i].expDate.isNullOrBlank()||itemOrgArray[i].effDate.isNullOrBlank()&&itemArray[i].effDate.isNullOrBlank()
-                    ) {
-                        if (
-                                itemOrgArray[i].Comments != itemArray[i].Comments ||
-                                itemOrgArray[i].ServiceID != itemArray[i].ServiceID) {
-                            MarkChangeWasDone()
-//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
-                            Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
-                            Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
-                            Log.v("checkkk", itemOrgArray[i].ServiceID + "=="+ itemArray[i].ServiceID)
-
-                        }
-                    }
-                    else
-                        if (itemOrgArray[i].Comments != itemArray[i].Comments || dateFormat1.parse(itemOrgArray[i].expDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].expDate.apiToAppFormat()) ||
-                                dateFormat1.parse(itemOrgArray[i].effDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].effDate.apiToAppFormat()) ||
-                                itemOrgArray[i].ServiceID != itemArray[i].ServiceID) {
-                            MarkChangeWasDone()
-//                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
-                            Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
-                            Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
-                            Log.v("checkkk", itemOrgArray[i].ServiceID + "=="+ itemArray[i].ServiceID)
-
-                        }
-            }
-        }else{
-            MarkChangeWasDone()
-            Log.v("checkkk", "2ndddd")
-
-        }
+//        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
+//
+//        var itemOrgArray = FacilityDataModelOrg.getInstance().tblFacilityServices
+//        var itemArray = FacilityDataModel.getInstance().tblFacilityServices
+//        if (itemOrgArray.size == itemArray.size) {
+//            for (i in 0 until itemOrgArray.size){
+//                if (
+//                        itemOrgArray[i].expDate.isNullOrBlank()&&!itemArray[i].expDate.isNullOrBlank()||itemOrgArray[i].effDate.isNullOrBlank()&&!itemArray[i].effDate.isNullOrBlank()
+//                ) {
+//
+//                    MarkChangeWasDone()
+//                }
+//                else
+//                    if (
+//                            itemOrgArray[i].expDate.isNullOrBlank()&&itemArray[i].expDate.isNullOrBlank()||itemOrgArray[i].effDate.isNullOrBlank()&&itemArray[i].effDate.isNullOrBlank()
+//                    ) {
+//                        if (
+//                                itemOrgArray[i].Comments != itemArray[i].Comments ||
+//                                itemOrgArray[i].ServiceID != itemArray[i].ServiceID) {
+//                            MarkChangeWasDone()
+////                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+//                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
+//                            Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
+//                            Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
+//                            Log.v("checkkk", itemOrgArray[i].ServiceID + "=="+ itemArray[i].ServiceID)
+//
+//                        }
+//                    }
+//                    else
+//                        if (itemOrgArray[i].Comments != itemArray[i].Comments || dateFormat1.parse(itemOrgArray[i].expDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].expDate.apiToAppFormat()) ||
+//                                dateFormat1.parse(itemOrgArray[i].effDate.apiToAppFormat()) != dateFormat1.parse(itemArray[i].effDate.apiToAppFormat()) ||
+//                                itemOrgArray[i].ServiceID != itemArray[i].ServiceID) {
+//                            MarkChangeWasDone()
+////                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
+//                            Log.v("checkkk", itemOrgArray[i].Comments + "=="+ itemArray[i].Comments)
+//                            Log.v("checkkk", itemOrgArray[i].expDate + "=="+ itemArray[i].expDate)
+//                            Log.v("checkkk", itemOrgArray[i].effDate + "=="+ itemArray[i].effDate)
+//                            Log.v("checkkk", itemOrgArray[i].ServiceID + "=="+ itemArray[i].ServiceID)
+//
+//                        }
+//            }
+//        }else{
+//            MarkChangeWasDone()
+//            Log.v("checkkk", "2ndddd")
+//
+//        }
     }
 
 
