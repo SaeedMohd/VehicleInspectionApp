@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.*
 
 import com.inspection.R
-import com.inspection.Utils.toAppFormat
 
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import java.util.*
@@ -30,9 +29,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
-import com.inspection.Utils.MarkChangeWasDone
-import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.apiToAppFormatMMDDYYYY
+import com.inspection.Utils.*
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMax
 import com.inspection.model.*
@@ -89,6 +86,8 @@ class FragmentVisitation : Fragment() {
 
 
     fun checkMarkChangesDone(){
+        IndicatorsDataModel.getInstance().validateVisitationSection()
+        (activity as FormsActivity).refreshMenuIndicators()
 //        FacilityDataModelOrg.getInstance().changeWasDone = false
 //        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
 //        scopeOfServiceChangesWatcher()
@@ -188,7 +187,7 @@ class FragmentVisitation : Fragment() {
 
         annualVisitationType.isChecked = true
 
-        dateOfVisitationButton.text = Date().toAppFormat()
+        dateOfVisitationButton.text = Date().toAppFormatMMDDYYYY()
 
         //clubCodeEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].)
 
@@ -322,30 +321,40 @@ class FragmentVisitation : Fragment() {
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
-                if (p2 == 0){
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName =""
+//                if (p2 == 0){
+//                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName =""
+//
+//                }else if (p2 > 0) {
+//                    if(isFacilityRepresentativeSignatureInitialized){
+//                        isFacilityRepresentativeSignatureInitialized = false
+//                    }else {
+//                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilityRepresentativeNames[p2]
+//                        facilityRepresentativeSignatureImageView.setImageBitmap(null)
+//                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
+//                    }
+//                }
 
-                }else if (p2 > 0) {
-                    if(isFacilityRepresentativeSignatureInitialized){
+                if (p2>0) {
+                    if (isFacilityRepresentativeSignatureInitialized) {
                         isFacilityRepresentativeSignatureInitialized = false
-                    }else {
-                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilityRepresentativeNames.get(p2)
-                        facilityRepresentativeSignatureImageView.setImageBitmap(null)
-                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
+                    } else if (!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.equals(facilitySpecialistNames[p2])) {
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = facilitySpecialistNames[p2]
+
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
+
+                        automotiveSpecialistSignatureImageView.setImageBitmap(null)
                     }
+                } else {
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = ""
                 }
 
                 checkMarkChangesDone()
             }
 
         }
-
-
         automotiveSpecialistSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
-
             }
-
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
 
@@ -354,15 +363,17 @@ class FragmentVisitation : Fragment() {
 
 
                 if (p2>0) {
-                    //FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }[p2]
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = facilitySpecialistNames[p2]
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
-                    automotiveSpecialistSignatureImageView.setImageBitmap(null)
+                    if (isAutomotiveSpecialistSignatureInitialized) {
+                        isAutomotiveSpecialistSignatureInitialized = false
+                    } else {
+                        //FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }[p2]
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilitySpecialistNames[p2]
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature= null
+                        automotiveSpecialistSignatureImageView.setImageBitmap(null)
 
-                }else{
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = ""
-
-
+                    }
+                } else{
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName= ""
                 }
                 checkMarkChangesDone()
 

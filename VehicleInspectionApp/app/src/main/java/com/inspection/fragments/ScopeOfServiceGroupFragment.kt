@@ -10,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
@@ -253,6 +255,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 otherSelectedIndicator.visibility = View.VISIBLE
             }
         }
+        IndicatorsDataModel.getInstance().validateFacilitySection()
+        (activity as FormsActivity).refreshMenuIndicators()
     }
 
 

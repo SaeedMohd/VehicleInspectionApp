@@ -6,8 +6,10 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import java.util.*
@@ -77,7 +79,8 @@ class DeficienciesGroupFragment : Fragment() {
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
         }
-
+        IndicatorsDataModel.getInstance().validateFacilitySection()
+        (activity as FormsActivity).refreshMenuIndicators()
     }
 
 
