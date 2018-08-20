@@ -22,10 +22,7 @@ import com.inspection.Utils.Constants
 import com.inspection.Utils.toast
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
-import com.inspection.model.AAAVehiclesModel
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.VehicleItem
-import com.inspection.model.VehicleServiceHeader
+import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravvehicles.*
 

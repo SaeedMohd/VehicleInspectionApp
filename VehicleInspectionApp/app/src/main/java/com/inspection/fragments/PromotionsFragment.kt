@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_promotions.*
 
 

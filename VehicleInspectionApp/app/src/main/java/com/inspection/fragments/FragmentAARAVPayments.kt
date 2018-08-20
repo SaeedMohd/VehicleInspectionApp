@@ -15,6 +15,7 @@ import android.widget.TextView
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_payments.*
@@ -66,7 +67,7 @@ class FragmentAARAVPayments : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newCheckDateBtn!!.text = sdf.format(c.time)
@@ -83,7 +84,7 @@ class FragmentAARAVPayments : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newTrxDateBtn!!.text = sdf.format(c.time)
@@ -253,7 +254,7 @@ class FragmentAARAVPayments : Fragment() {
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
                     textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).BillingDueDate.apiToAppFormat()
+                    textView.text = get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)

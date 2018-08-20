@@ -18,10 +18,8 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
-import com.inspection.Utils.Constants
+import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAffiliationsData
-import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.toast
 import com.inspection.model.AAAAffiliationTypes
 import com.inspection.model.AAAFacilityAffiliations
 import com.inspection.model.FacilityDataModel
@@ -158,7 +156,7 @@ class FragmentARRAVAffliations : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 afDtlseffective_date_textviewVal!!.text = sdf.format(c.time)
@@ -173,7 +171,7 @@ class FragmentARRAVAffliations : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 afDtlsexpiration_date_textviewVal!!.text = sdf.format(c.time)
@@ -189,7 +187,7 @@ class FragmentARRAVAffliations : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 edit_afDtlseffective_date_textviewVal!!.text = sdf.format(c.time)
@@ -204,7 +202,7 @@ class FragmentARRAVAffliations : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 edit_afDtlsexpiration_date_textviewVal!!.text = sdf.format(c.time)
@@ -219,25 +217,18 @@ class FragmentARRAVAffliations : Fragment() {
             if (validateInputs()) {
                 affLoadingView.visibility = View.VISIBLE
 
-                var startDate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString()
-                var endDate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString()
+                var startDate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                var endDate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var comment = affcomments_editTextVal.text.toString()
-//
-//                var affType = affiliations_textviewVal.selectedItem.toString()
+                var affTypeDetailID = TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(afDetails_textviewVal.selectedItem.toString()) }[0].AffiliationTypeDetailID
 //                var affDetail= afDetails_textviewVal.selectedItem.toString()
-//
-
-
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "&affiliationId=4931&affiliationTypeId=19&affiliationTypeDetailsId=63&effDate=1900-01-01T00:00:00&expDate=2013-11-13T00:00:00&comment=per%2011/13/13%20visitation&active=1&insertBy=sa&insertDate=2014-07-23T22:15:44.150&updateBy=SumA&updateDate=2014-07-23T22:15:44.150",
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=&affiliationTypeDetailsId="+affTypeDetailID+"&effDate="+startDate+"&expDate="+endDate+"&comment="+comment+"&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE",response.toString())
                                 affLoadingView.visibility = View.GONE
-
-
                                 affiliationsCard.visibility = View.GONE
                                 alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                           //     FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
                                 fillAffTableView()
                                 altLocationTableRow(2)
 
@@ -804,7 +795,7 @@ class FragmentARRAVAffliations : Fragment() {
 
 
 
-                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE", response.toString())

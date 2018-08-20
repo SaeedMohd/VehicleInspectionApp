@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_comments.*
@@ -72,7 +73,7 @@ class FragmentAARAVComments : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     startDateBtn!!.text = sdf.format(c.time)
@@ -89,7 +90,7 @@ class FragmentAARAVComments : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     endDateBtn!!.text = sdf.format(c.time)
@@ -193,7 +194,7 @@ class FragmentAARAVComments : Fragment() {
                     textView.layoutParams = rowLayoutParam2
                     textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                     TableRow.LayoutParams()
-                    textView.text = get(it).insertDate.apiToAppFormat()
+                    textView.text = get(it).insertDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)

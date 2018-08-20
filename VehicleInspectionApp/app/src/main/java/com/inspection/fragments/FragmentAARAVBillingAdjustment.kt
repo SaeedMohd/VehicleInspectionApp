@@ -70,7 +70,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 //                        newEffDateBtn!!.text == "SELECT DATE"
 //                        newEffDateBtn!!.setError("Must be Future Date")
 //                    } else {
-                        val myFormat = "dd MMM yyyy" // mention the format you need
+                        val myFormat = "MM/dd/yyyy" // mention the format you need
                         val sdf = SimpleDateFormat(myFormat, Locale.US)
                         c.set(year, monthOfYear, dayOfMonth)
                         newEffDateBtn!!.text = sdf.format(c.time)

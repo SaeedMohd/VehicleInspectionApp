@@ -18,10 +18,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.R
+import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateDeficiencyData
-import com.inspection.Utils.MarkChangeWasDone
-import com.inspection.Utils.apiToAppFormat
-import com.inspection.Utils.appToApiFormat
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.dataChanged
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.diagnosticLaborRate
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
@@ -111,7 +109,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
             facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
                 signatureDialog.visibility = View.VISIBLE
-                visitationFormAlphaBackground.visibility = View.VISIBLE
+//                visitationFormAlphaBackground.visibility = View.VISIBLE
                 selectedSignature = requestedSignature.representativeDeficiency
                 if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
                     signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
@@ -152,7 +150,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 }
 
                 signatureInkView.clear()
-                visitationFormAlphaBackground.visibility = View.GONE
+//                visitationFormAlphaBackground.visibility = View.GONE
                 signatureDialog.visibility = View.GONE
             }
 
@@ -197,7 +195,7 @@ class FragmentARRAVDeficiency : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 newClearedDateBtn!!.text = sdf.format(c.time)
@@ -211,7 +209,7 @@ class FragmentARRAVDeficiency : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 signatureDateBtn!!.text = sdf.format(c.time)
@@ -227,7 +225,7 @@ class FragmentARRAVDeficiency : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 newVisitationDateBtn!!.text = sdf.format(c.time)
@@ -242,7 +240,7 @@ class FragmentARRAVDeficiency : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
+                val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 newUpdatedByDateBtn!!.text = sdf.format(c.time)
@@ -266,17 +264,17 @@ class FragmentARRAVDeficiency : Fragment() {
 
 
                 //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
-                item.VisitationDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString()
-                item.EnteredDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString()
-                item.ClearedDate = if (newClearedDateBtn.text.equals("SELECT DATE")) "" else newClearedDateBtn.text.toString()
+                item.VisitationDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                item.EnteredDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                item.ClearedDate = if (newClearedDateBtn.text.equals("SELECT DATE")) "" else newClearedDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.Comments = if (comments_editTextVal.text.isNullOrEmpty())  "" else comments_editTextVal.text.toString()
 
                 //  BuildProgramsList()
 
 
 
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + "&defId=13688&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
-                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=MoritzM02&insertDate=2014-04-16T15:17:07.143&updateBy=SamA&updateDate=2014-04-30T13:45:28.477",
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
+                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=MoritzM02&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SamA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE",response.toString())
@@ -346,7 +344,7 @@ class FragmentARRAVDeficiency : Fragment() {
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
             try {
-                textView.text = VisitationDate.appToApiFormat()
+                textView.text = VisitationDate.apiToAppFormatMMDDYYYY()
             } catch (e: Exception) {
                 textView.text = VisitationDate
             }
@@ -359,7 +357,7 @@ class FragmentARRAVDeficiency : Fragment() {
             TableRow.LayoutParams()
 
             try {
-                textView.text = EnteredDate.appToApiFormat()
+                textView.text = EnteredDate.apiToAppFormatMMDDYYYY()
             } catch (e: Exception) {
                 textView.text = EnteredDate
             }
@@ -371,7 +369,7 @@ class FragmentARRAVDeficiency : Fragment() {
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
             try {
-                textView.text = ClearedDate.appToApiFormat()
+                textView.text = ClearedDate.apiToAppFormatMMDDYYYY()
             } catch (e: Exception) {
                 textView.text = ClearedDate
             }
@@ -487,7 +485,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
                 try {
-                    textView.text = get(it).VisitationDate.apiToAppFormat()
+                    textView.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
                     textView.text = get(it).VisitationDate
 
@@ -501,7 +499,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 TableRow.LayoutParams()
 
                 try {
-                    textView.text = get(it).EnteredDate.apiToAppFormat()
+                    textView.text = get(it).EnteredDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
                     textView.text = get(it).EnteredDate
 
@@ -514,7 +512,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
                 try {
-                    textView.text = get(it).ClearedDate.apiToAppFormat()
+                    textView.text = get(it).ClearedDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
                     textView.text = get(it).ClearedDate
 

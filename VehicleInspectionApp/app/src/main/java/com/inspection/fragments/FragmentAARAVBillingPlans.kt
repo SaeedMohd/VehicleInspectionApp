@@ -18,6 +18,7 @@ import android.widget.*
 import com.inspection.R
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.imageloader.Utils
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
@@ -87,7 +88,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                         newEffDateBtn!!.text == "SELECT DATE"
                         newEffDateBtn!!.setError("Error")
                     } else {
-                        val myFormat = "dd MMM yyyy" // mention the format you need
+                        val myFormat = "MM/dd/yyyy" // mention the format you need
                         val sdf = SimpleDateFormat(myFormat, Locale.US)
                         c.set(year, monthOfYear, dayOfMonth)
                         newEffDateBtn!!.text = sdf.format(c.time)
@@ -323,13 +324,13 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam3
                             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                            textView.text = if (get(it).EffectiveDate.equals("")) "" else get(it).EffectiveDate.apiToAppFormat()
+                            textView.text = if (get(it).EffectiveDate.equals("")) "" else get(it).EffectiveDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam4
                             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                            textView.text = if (get(it).ExpirationDate.equals("")) "" else get(it).ExpirationDate.apiToAppFormat()
+                            textView.text = if (get(it).ExpirationDate.equals("")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 
                             textView = TextView(context)
@@ -341,7 +342,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam6
                             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                            textView.text = get(it).updateDate.apiToAppFormat()
+                            textView.text = get(it).updateDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 
                             textView = TextView(context)

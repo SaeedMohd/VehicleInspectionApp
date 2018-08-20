@@ -145,7 +145,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                 //  BuildProgramsList()
 
 
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=5307&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("FC_SUBMIT_RESPONSE",response.toString())

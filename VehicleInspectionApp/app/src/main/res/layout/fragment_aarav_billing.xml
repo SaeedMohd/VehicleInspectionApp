@@ -48,6 +48,7 @@
                         android:background="@drawable/green_background_button"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
+                        android:visibility="gone"
                         android:text="+ add billing"
                         android:textColor="@color/white" />
 
@@ -175,7 +176,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:background="@color/mainColor"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:alpha="0.8"/>
 
     <ScrollView

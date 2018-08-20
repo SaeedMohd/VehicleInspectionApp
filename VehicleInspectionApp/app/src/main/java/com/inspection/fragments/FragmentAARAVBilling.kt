@@ -14,6 +14,7 @@ import android.widget.*
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.Utils.monthNoToName
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
@@ -70,7 +71,7 @@ class FragmentAARAVBilling : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newBillDueDateBtn!!.text = sdf.format(c.time)
@@ -87,7 +88,7 @@ class FragmentAARAVBilling : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newSecondDueDateText!!.text = sdf.format(c.time)
@@ -104,7 +105,7 @@ class FragmentAARAVBilling : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newFinalDueDateText!!.text = sdf.format(c.time)
@@ -121,7 +122,7 @@ class FragmentAARAVBilling : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newACHDateBtn!!.text = sdf.format(c.time)
@@ -138,7 +139,7 @@ class FragmentAARAVBilling : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newPayRecDateBtn!!.text = sdf.format(c.time)
@@ -155,7 +156,7 @@ class FragmentAARAVBilling : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    val myFormat = "dd MMM yyyy" // mention the format you need
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     newCreditAppliedDateBtn!!.text = sdf.format(c.time)
@@ -334,7 +335,7 @@ class FragmentAARAVBilling : Fragment() {
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
                     textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).BillingDate.apiToAppFormat()
+                    textView.text = get(it).BillingDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
@@ -346,7 +347,7 @@ class FragmentAARAVBilling : Fragment() {
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam7
                     textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).PaymentDate.apiToAppFormat()
+                    textView.text = get(it).PaymentDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
                     billingResultsTbl.addView(tableRow)
                 }

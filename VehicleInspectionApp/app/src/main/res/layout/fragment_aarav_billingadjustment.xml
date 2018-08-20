@@ -43,6 +43,7 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
                 android:background="@drawable/green_background_button"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:visibility="gone"
                 android:text="+ ADD Billing Adjustment"
                 android:textColor="@color/white" />
         </RelativeLayout>

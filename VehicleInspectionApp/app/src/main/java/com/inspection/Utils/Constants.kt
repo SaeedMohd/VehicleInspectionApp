@@ -75,10 +75,10 @@ object Constants {
     var facNo= if (FacilityDataModel.getInstance().tblFacilities.size>0) FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() else "2089"
     val UpdateAARPortalAdminData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAARPortalAdminData?facNum="
     val UpdateAmendmentOrderTrackingData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAmendmentOrderTrackingData?facNum="
-    val UpdateDeficiencyData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateDeficiencyData?facNum=$facNo&clubCode=004"
+    val UpdateDeficiencyData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateDeficiencyData?facNum="
     val UpdateProgramsData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateProgramsData?facNum="
     val UpdateFacilityServicesData ="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityServicesData?facNum="
-    val UpdateAffiliationsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAffiliationsData?facNum=$facNo&clubCode=004"
+    val UpdateAffiliationsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAffiliationsData?facNum="
     val UpdatePaymentMethodsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdatePaymentMethodsData?facnum=$facNo&clubCode=004"
     val UpdateFacilityLanguageData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityLanguageData?facNum=$facNo&clubCode=004"
 
