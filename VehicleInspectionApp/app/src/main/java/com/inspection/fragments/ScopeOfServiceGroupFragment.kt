@@ -255,7 +255,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 otherSelectedIndicator.visibility = View.VISIBLE
             }
         }
-        IndicatorsDataModel.getInstance().validateFacilitySection()
+        IndicatorsDataModel.getInstance().validateSoSSection()
         (activity as FormsActivity).refreshMenuIndicators()
     }
 
