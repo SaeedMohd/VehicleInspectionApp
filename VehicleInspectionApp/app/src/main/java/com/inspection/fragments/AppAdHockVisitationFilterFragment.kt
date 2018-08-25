@@ -62,6 +62,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
     var isVisitationPlanning = false
     var allClubCodes = ArrayList<String>()
     var requiredSpecialistName = ""
+    var clubCode =""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -390,7 +391,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, clubCode)).build()
-
+        this.clubCode=clubCode
 
 
         recordsProgressView.visibility = View.VISIBLE
@@ -465,6 +466,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
         FacilityDataModel.getInstance().clear()
         FacilityDataModelOrg.getInstance().clear()
+        FacilityDataModel.getInstance().clubCode = clubCode
+        FacilityDataModelOrg.getInstance().clubCode = clubCode
         if (jsonObj.has("tblFacilities")) {
             if (jsonObj.get("tblFacilities").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilities = Gson().fromJson<ArrayList<FacilityDataModel.TblFacilities>>(jsonObj.get("tblFacilities").toString(), object : TypeToken<ArrayList<FacilityDataModel.TblFacilities>>() {}.type)
@@ -910,6 +913,25 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         } else {
             jsonObj = addOneElementtoKey(jsonObj,"tblPhone")
+        }
+
+        if (jsonObj.has("tblOfficeType")) {
+            if (!jsonObj.get("tblOfficeType").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblOfficeType")
+                    for (i in result.length()-1 downTo 0){
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblOfficeType"))
+                    jsonObj.put("tblOfficeType",result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblOfficeType")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblOfficeType")
         }
 
         if (jsonObj.has("tblPersonnel")) {
@@ -1479,6 +1501,10 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.insertDate=""
             oneArray.TransactionType=""
             oneArray.updateDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblOfficeType")) {
+            var oneArray = FacilityDataModel.TblOfficeType()
+            oneArray.OfficeName=""
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblComments")) {
             var oneArray = FacilityDataModel.TblComments()

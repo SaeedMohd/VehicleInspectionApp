@@ -5,7 +5,9 @@ import android.app.DatePickerDialog
 //import android.app.Fragment
 import android.content.Context
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
+import android.support.constraint.R.id.gone
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -167,7 +169,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     private fun setFieldsValues() {
         FacilityDataModel.getInstance().apply {
-            try {
+//            try {
 
                 if(tblFacilities[0].ACTIVE==1){
                     activeRadioButton.isChecked = true
@@ -226,11 +228,9 @@ class FacilityGeneralInformationFragment : Fragment() {
 
                 contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
 
-                if (tblOfficeType[0].OfficeName.isNullOrEmpty()) {
-                    office_textviewVal.text = ""
-                }else{
-                    office_textviewVal.text = "" + tblOfficeType[0].OfficeName
-                }
+
+            office_textviewVal.text = if (tblOfficeType[0].OfficeName.equals("")) "" else tblOfficeType[0].OfficeName
+
                 assignedto_textviewVal.text = tblFacilities[0].AssignedTo
                 dba_textviewVal.text = tblFacilities[0].BusinessName
                 entity_textviewVal.text = tblFacilities[0].EntityName
@@ -248,7 +248,11 @@ class FacilityGeneralInformationFragment : Fragment() {
                 terminationDateButton.text = ""+tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY()
                 //SAEED
                 terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
-                terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
+                if (!tblFacilities[0].TerminationDate.equals("")) {
+                    terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
+                } else
+                    terminationReason_textviewVal.visibility=View.GONE
+
                 currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormatMMDDYYYY()
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
@@ -274,9 +278,9 @@ class FacilityGeneralInformationFragment : Fragment() {
 
                 }
 
-            }catch (exp:Exception){
-                exp.printStackTrace()
-            }
+//            }catch (exp:Exception){
+//                exp.printStackTrace()
+//            }
         }
 
         if (arguments!!.getBoolean(isValidating)) {
@@ -298,13 +302,13 @@ class FacilityGeneralInformationFragment : Fragment() {
                 submitFacilityGeneralInfo()
                 submitPaymentMethods()
 
-                Toast.makeText(context,"inputs validated",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context,"inputs validated",Toast.LENGTH_SHORT).show()
 
 
         }else
 
             {
-                Toast.makeText(context,"please fill requred fields",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context,"please fill requred fields",Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -743,12 +747,12 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
         val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
         val automtiveRepairNo = if (ARDno_textviewVal.text.isNullOrEmpty())  "" else ARDno_textviewVal.text
-        val automtiveRepairExpDate = ARDexp_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-        val contractCurrDate = currcodate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-        val contractInitDate = initcodate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val automtiveRepairExpDate = if (ARDexp_textviewVal.text.equals("")) "" else ARDexp_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val contractCurrDate = if (currcodate_textviewVal.text.equals("")) "" else currcodate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val contractInitDate = if (initcodate_textviewVal.text.equals("")) "" else initcodate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
         val internetAccess = if (wifiAvailableCheckBox.isChecked) "1" else "0"
         val webSite = if (website_textviewVal.text.isNullOrEmpty())  "" else website_textviewVal.text
-        val terminationDate = terminationDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val terminationDate = if (terminationDateButton.text.equals("")) "" else terminationDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
         val terminationReasonID = TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID
         val terminationComments = if (terminationCommentEditText.text.isNullOrEmpty())  "" else terminationCommentEditText.text
         val insertDate = Date().toApiSubmitFormat()
@@ -756,13 +760,14 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         val updateDate = Date().toApiSubmitFormat()
         val updateBy ="sa"
         val activeVal = "0"
-        val insuranceExpDate = InsuranceExpDate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val insuranceExpDate = if (InsuranceExpDate_textviewVal.text.equals("")) "" else InsuranceExpDate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
         val contractType = TypeTablesModel.getInstance().ContractType.filter { s -> s.ContractTypeName==contractTypeValueSpinner.selectedItem.toString()}[0].ContractTypeID
         val billingMonth = FacilityDataModel.getInstance().tblFacilities[0].BillingMonth.toString()
         val billingAmount = FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toString()
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode =FacilityDataModel.getInstance().clubCode
         FacilityDataModel.getInstance().tblFacilities[0]
+        //https://dev.facilityappointment.com/ACEAPI.asmx/updateFacilityInfo?facNum=155&clubcode=&businessName=De Lillo Chevrolet&busTypeId=1&entityName=De Lillo Chevrolet Co.&assignToId=Jeffrey Moss&officeId=0&taxIdNumber=95-1496182&facilityRepairOrderCount=12000&facilityAnnualInspectionMonth=4&inspectionCycle=1&timeZoneId=6&svcAvailability=1&facilityTypeId=1&automotiveRepairNumber=AA001515&automotiveRepairExpDate=2018-01-31T00:00:00&contractCurrentDate=2015-05-14T00:00:00&contractInitialDate=1979-04-27T00:00:00&billingMonth=10&billingAmount=495&internetAccess=1&webSite=www.delillo.com&terminationDate=&terminationId=1&terminationComments=&insertBy=sa&insertDate=2018-08-25T10:00:05&updateBy=sa&updateDate=2018-08-25T10:00:05&active=0&achParticipant=0&insuranceExpDate=2018-07-01T00:00:00&contractTypeId=1
         var urlString = facilityNo+"&clubcode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
         Log.v("Data To Submit", urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString,

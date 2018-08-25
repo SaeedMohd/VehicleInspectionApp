@@ -9,7 +9,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/visitation"
-            android:title="Visitation"
+            android:title="Visitation2"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
     </group>

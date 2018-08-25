@@ -95,14 +95,14 @@
                     <TextView
                         android:id="@+id/contract_number_textviewVal"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginLeft="5dp"
                         android:textColor="@color/black"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/textview_background"
+                        android:padding="4dp"
                         android:ems="6"
-                        android:padding="5dp"
                         android:text="test"
                         />
                 </RelativeLayout>

@@ -1213,6 +1213,26 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj,"tblPhone")
         }
 
+
+        if (jsonObj.has("tblOfficeType")) {
+            if (!jsonObj.get("tblOfficeType").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblOfficeType")
+                    for (i in result.length()-1 downTo 0){
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblOfficeType"))
+                    jsonObj.put("tblOfficeType",result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblOfficeType")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblOfficeType")
+        }
+
         if (jsonObj.has("tblPersonnel")) {
             if (!jsonObj.get("tblPersonnel").toString().equals("")) {
                 try {
@@ -1762,6 +1782,10 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             oneArray.insertDate=""
             oneArray.TransactionType=""
             oneArray.updateDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblOfficeType")) {
+            var oneArray = FacilityDataModel.TblOfficeType()
+            oneArray.OfficeName=""
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblComments")) {
             var oneArray = FacilityDataModel.TblComments()
