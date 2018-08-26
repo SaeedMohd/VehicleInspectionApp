@@ -47,7 +47,7 @@ class FragmentARRAVLocation : Fragment() {
     private var facLocationsList = ArrayList<AAALocations>()
     private var facLocationsArray = ArrayList<String>()
     private var states= arrayOf("select state","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
-
+    private var hoursArray:Array<String>? = null
 
 
     var languagesGridView: ExpandableHeightGridView? = null
@@ -57,8 +57,6 @@ class FragmentARRAVLocation : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         var view = inflater!!.inflate(R.layout.fragment_aarav_location, container, false)
-
-
         languagesGridView = view.findViewById(R.id.languagesGridView)
 
         // Inflate the layout for this fragment
@@ -68,6 +66,7 @@ class FragmentARRAVLocation : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         scopeOfServiceChangesWatcher()
+        hoursArray = resources.getStringArray(R.array.officeTimes)
         fillLocationTableView()
         fillPhoneTableView()
         fillOpenHoursTableView()
@@ -249,12 +248,10 @@ class FragmentARRAVLocation : Fragment() {
 
         saveButton.setOnClickListener(View.OnClickListener {
 
-
-            submitLanguages()
-
+            submitHours()
+//            submitLanguages()
 
         })
-
 
         nightDropCheck.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblHours[0].NightDrop = b
@@ -264,15 +261,10 @@ class FragmentARRAVLocation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblHours[0].NightDropInstr = p0.toString()
             }
-
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
-
         })
 
 
@@ -284,26 +276,18 @@ class FragmentARRAVLocation : Fragment() {
             val child = mainViewLinearId.getChildAt(i)
             child.isEnabled = true
         }
-
         for (i in 0 until mainViewLinearId2.childCount) {
             val child = mainViewLinearId2.getChildAt(i)
             child.isEnabled = true
         }
-
         for (i in 0 until mainViewLinearId3.childCount) {
             val child = mainViewLinearId3.getChildAt(i)
             child.isEnabled = true
         }
-
-
-
         var childViewCount = phoneTbl.getChildCount();
-
         for ( i in 1..childViewCount-1) {
             var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
-
             for (j in 0..row.getChildCount()-1) {
-
                 var tv : TextView= row.getChildAt(j) as TextView
                 tv.isEnabled=true
 
@@ -718,7 +702,7 @@ class FragmentARRAVLocation : Fragment() {
                          if (newChangesPhoneNoText.text.isNullOrEmpty())  {
                              newChangesPhoneNoText.setError("please enter required field")
 
-                             Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
+//                             Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
                          }
                         else {
                              val phoneNo =  newChangesPhoneNoText.text.toString()
@@ -928,107 +912,99 @@ class FragmentARRAVLocation : Fragment() {
         }
     }
     fun fillClosedHoursTableView() {
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
-        rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
-        rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
-        rowLayoutParam4.column = 4
-        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
-        rowLayoutParam5.column = 5
-        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        val rowLayoutParam6 = TableRow.LayoutParams()
-        rowLayoutParam6.weight = 1F
-        rowLayoutParam6.column = 6
-        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        val rowLayoutParam7 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.column = 7
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-        if (emailTbl.childCount>1) {
-            for (i in emailTbl.childCount - 1 downTo 1) {
-                emailTbl.removeViewAt(i)
-            }
-        }
+//        val rowLayoutParam = TableRow.LayoutParams()
+//        rowLayoutParam.weight = 1F
+//        rowLayoutParam.column = 0
+//        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam1 = TableRow.LayoutParams()
+//        rowLayoutParam1.weight = 1F
+//        rowLayoutParam1.column = 1
+//        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam2 = TableRow.LayoutParams()
+//        rowLayoutParam2.weight = 1F
+//        rowLayoutParam2.column = 2
+//        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam3 = TableRow.LayoutParams()
+//        rowLayoutParam3.weight = 1F
+//        rowLayoutParam3.column = 3
+//        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam4 = TableRow.LayoutParams()
+//        rowLayoutParam4.weight = 1F
+//        rowLayoutParam4.column = 4
+//        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam5 = TableRow.LayoutParams()
+//        rowLayoutParam5.weight = 1F
+//        rowLayoutParam5.column = 5
+//        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam6 = TableRow.LayoutParams()
+//        rowLayoutParam6.weight = 1F
+//        rowLayoutParam6.column = 6
+//        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+//
+//        val rowLayoutParam7 = TableRow.LayoutParams()
+//        rowLayoutParam7.weight = 1F
+//        rowLayoutParam7.column = 7
+//        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+//        if (emailTbl.childCount>1) {
+//            for (i in emailTbl.childCount - 1 downTo 1) {
+//                emailTbl.removeViewAt(i)
+//            }
+//        }
 
         FacilityDataModel.getInstance().tblHours.apply {
             (0 until size).forEach {
-                var tableRow = TableRow(context)
+                sunCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SunClose.isNullOrEmpty()) "Closed" else get(it).SunClose))
+                monCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).MonClose.isNullOrEmpty()) "Closed" else get(it).MonClose))
+                tueCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).TueClose.isNullOrEmpty()) "Closed" else get(it).TueClose))
+                wedCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).WedClose.isNullOrEmpty()) "Closed" else get(it).WedClose))
+                thuCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).ThuClose.isNullOrEmpty()) "Closed" else get(it).ThuClose))
+                friCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).FriClose.isNullOrEmpty()) "Closed" else get(it).FriClose))
+                satCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SatClose.isNullOrEmpty()) "Closed" else get(it).SatClose))
 
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                //getTypeName
-                textView.text = "Closed : "
-                tableRow.addView(textView)
-
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                //getTypeName
-                textView.text =if (getEmailTypeName(get(it).SunClose).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).MonClose
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).TueClose
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).WedClose
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).ThuClose
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).FriClose
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text =if (getEmailTypeName(get(it).SatClose).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
-                tableRow.addView(textView)
-
-                closedHoursTblId.addView(tableRow)
+//  1-7UQCNM
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam2
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).MonClose
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam3
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).TueClose
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam2
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).WedClose
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam2
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).ThuClose
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam2
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text = get(it).FriClose
+//                tableRow.addView(textView)
+//
+//                textView = TextView(context)
+//                textView.layoutParams = rowLayoutParam2
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.text =if (getEmailTypeName(get(it).SatClose).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
+//                tableRow.addView(textView)
+//
+//                closedHoursTblId.addView(tableRow)
             }
         }
     }
@@ -1062,7 +1038,7 @@ class FragmentARRAVLocation : Fragment() {
                                         Log.v("RESPONSE", response.toString())
                                         contactInfoLoadingView.visibility = View.GONE
 
-                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+//                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                             FacilityDataModel.getInstance().tblScopeofService[0].apply {
 
@@ -1084,7 +1060,7 @@ class FragmentARRAVLocation : Fragment() {
                                     })
                                 }, Response.ErrorListener {
                             Log.v("error while loading", "error while loading personnal record")
-                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
 
                             contactInfoLoadingView.visibility = View.GONE
 
@@ -1349,6 +1325,51 @@ class FragmentARRAVLocation : Fragment() {
         }))
     }
 
+    fun submitHours(){
+
+        val nightDrop=nightDropCheck.isChecked
+        val nightDropInstructions=nightDropInstText.text
+        val sunClose = sunCloseSpinner.selectedItem.toString()
+        val monClose = monCloseSpinner.selectedItem.toString()
+        val tueClose = tueCloseSpinner.selectedItem.toString()
+        val wedClose = wedCloseSpinner.selectedItem.toString()
+        val thuClose = thuCloseSpinner.selectedItem.toString()
+        val friClose = friCloseSpinner.selectedItem.toString()
+        val satClose = satCloseSpinner.selectedItem.toString()
+        val sunOpen = sunOpenSpinner.selectedItem.toString()
+        val monOpen = monOpenSpinner.selectedItem.toString()
+        val tueOpen = tueOpenSpinner.selectedItem.toString()
+        val wedOpen = wedOpenSpinner.selectedItem.toString()
+        val thuOpen = thuOpenSpinner.selectedItem.toString()
+        val friOpen = friOpenSpinner.selectedItem.toString()
+        val satOpen = satOpenSpinner.selectedItem.toString()
+        val facAvail = true
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityHours + "&clubcode=${FacilityDataModel.getInstance().clubCode}&MonOpen=${monOpen}&TueOpen=${tueOpen}&WedOpen=${wedOpen}&ThuOpen=${thuOpen}" +
+                "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
+                "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=SumA&insertDate="+Date().toApiSubmitFormat()+
+                "&updateBy=SumA&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        Log.v("HOURS SUBMITTED",response.toString())
+                        val alertDialog = AlertDialog.Builder(activity)
+                        alertDialog.setMessage("Facility Location Data Saved Succesfully")
+                        alertDialog.setCancelable(false)
+                        alertDialog.setPositiveButton("OK", null)
+                        alertDialog.show()
+                    })
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error submitting hours")
+            val alertDialog = AlertDialog.Builder(activity)
+            alertDialog.setMessage("Error occured while saving Facility Location Data Changes")
+            alertDialog.setPositiveButton("OK", null)
+            alertDialog.setCancelable(false)
+            alertDialog.show()
+//            Toast.makeText(context,"error submitting hours",Toast.LENGTH_SHORT).show()
+
+        }))
+
+    }
 
     fun submitLanguages(){
 //        val langTypeId=LanguageListAdapter.langArray.toString().replace("[","").replace("]","")

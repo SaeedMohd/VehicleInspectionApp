@@ -61,6 +61,7 @@ object Constants {
     val getVisitationPlanningList = "http://144.217.24.163:5000/getVisitationPlanningList?facilityName=%s&month=%s&year=%s"
     val submitContactInfoAddress = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityAddressData?facnum="
     val submitFacilityGeneralInfo = "https://dev.facilityappointment.com/ACEAPI.asmx/updateFacilityInfo?facNum="
+    val submitFacilityHours = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityHoursData?facnum="
     val submitFacilityEmail = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityEmailData?facnum="
     val submitFacilityAddress = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityAddressData?facnum="
     val submitFacilityPhone = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPhoneData?facNum="

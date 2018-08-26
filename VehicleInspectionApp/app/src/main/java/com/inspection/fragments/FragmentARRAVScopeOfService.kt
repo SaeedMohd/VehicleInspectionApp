@@ -172,12 +172,10 @@ dataChanged=true
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+                FacilityDataModel.getInstance().tblScopeofService[0].LaborMax = s.toString()
             }
 
             override fun afterTextChanged(s: Editable) {
-
-                Toast.makeText(context,s.toString(),Toast.LENGTH_SHORT).show()
                 watcher_LaborMax=s.toString()
                 if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax!=watcher_LaborMax){
 
@@ -190,7 +188,7 @@ dataChanged=true
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+                FacilityDataModel.getInstance().tblScopeofService[0].LaborMin = s.toString()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -211,7 +209,7 @@ dataChanged=true
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+                FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate = s.toString()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -231,7 +229,7 @@ dataChanged=true
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+                FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate = s.toString()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -250,7 +248,7 @@ dataChanged=true
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+                FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays = s.toString()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -270,7 +268,7 @@ dataChanged=true
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+                FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts = s.toString()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -301,37 +299,22 @@ dataChanged=true
 
         warrantyPeriodVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
-
-
-
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeName.equals(warrantyPeriodVal.selectedItem.toString()) }[0].WarrantyTypeID
                 for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
-
-
                     if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
-
                        typeIdCompare=typeWarranty.WarrantyTypeID
-
                         if (typeIdCompare!= FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID){
-
                             MarkChangeWasDone()
-
                         }
                         if (typeIdCompare!= FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID){
-
                             dataChanged=true
-
                         }
                     }
-
                 }
-
-
-
             }
-
         }
     }
 
@@ -435,40 +418,21 @@ dataChanged=true
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
                                 scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-
-
                                 if (dataChanged) {
-
-                                    Toast.makeText(context,"changes saved",Toast.LENGTH_SHORT).show()
-
-
                                     if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                         FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
                                             LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
                                             LaborMin = if (watcher_LaborMin.isNullOrBlank())LaborMin else watcher_LaborMin
                                             FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank())FixedLaborRate else watcher_FixedLaborRate
                                             DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank())DiagnosticsRate else watcher_DiagnosticsRate
                                             NumOfBays = if (watcher_NumOfBays.isNullOrBlank())NumOfBays else watcher_NumOfBays
                                             NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank())NumOfLifts else watcher_NumOfLifts
-
-
                                             for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
-
-
                                                 if (typeWarranty.WarrantyTypeName == warrantyPeriodVal.selectedItem) {
-
                                                     FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
-
-
                                                 }
-
-
                                             }
                                             checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
-
-
-
                                         }
                                     }
                                 }
@@ -477,28 +441,18 @@ dataChanged=true
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading personnal record")
                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                    Toast.makeText(context,"error while saving page",Toast.LENGTH_SHORT).show()
-
-
+//                    Toast.makeText(context,"error while saving page",Toast.LENGTH_SHORT).show()
                 }))
             }
         })
     }
 
     fun checkMarkChangeWasDoneForScopeOfServiceGeneralInfo(){
-
-
         if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != FacilityDataModel.getInstance().tblScopeofService[0].LaborMax) {
-
             MarkChangeWasDone()
         }
-
-
         if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != FacilityDataModel.getInstance().tblScopeofService[0].LaborMin) {
-
             MarkChangeWasDone()
-
-
         }
 
 

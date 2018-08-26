@@ -79,29 +79,22 @@ class FragmentARRAVPrograms : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater!!.inflate(R.layout.fragment_arrav_programs, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         scopeOfServiceChangesWatcher()
         exitProgramDialogeBtnId.setOnClickListener({
-
             programCard.visibility = View.GONE
             alphaBackgroundForProgramDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
 
         })
         edit_exitProgramDialogeBtnId.setOnClickListener({
-
             edit_programCard.visibility = View.GONE
             alphaBackgroundForProgramDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
-
-
         })
 
         showNewProgramDialogueButton.setOnClickListener(View.OnClickListener {
@@ -110,16 +103,11 @@ class FragmentARRAVPrograms : Fragment() {
             effective_date_textviewVal.setText("SELECT DATE")
             expiration_date_textviewVal.setText("SELECT DATE")
             program_name_textviewVal.setSelection(0)
-
-
-
             comments_editTextVal.setError(null)
             effective_date_textviewVal.setError(null)
             expiration_date_textviewVal.setError(null)
             programCard.visibility = View.VISIBLE
             alphaBackgroundForProgramDialogs.visibility = View.VISIBLE
-
-
         })
 
 
@@ -209,12 +197,8 @@ class FragmentARRAVPrograms : Fragment() {
                 for (fac in TypeTablesModel.getInstance().ProgramsType) {
                     if (program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName)) {
                         //   Toast.makeText(context,"spinner match",Toast.LENGTH_SHORT).show()
-
-
                         for (item1 in FacilityDataModel.getInstance().tblPrograms)
                             if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
-
-//
                                 val dateFormat = SimpleDateFormat("MM/dd/yyyy")
                                 var newEffDate = Date()
                                 var newExpDate = Date()
@@ -231,20 +215,12 @@ class FragmentARRAVPrograms : Fragment() {
                                 }
 
                                 if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
-
-
                                     if ((DB_ExpDate <= newEffDate) && (newExpDate >= DB_EffDate) ) {
-
                                         validProgram = true
                                         valid_validProgram=true
-
-
-
                                     } else
                                         Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
                                     validProgram = false
-
-
                                 } else
                                     Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
 

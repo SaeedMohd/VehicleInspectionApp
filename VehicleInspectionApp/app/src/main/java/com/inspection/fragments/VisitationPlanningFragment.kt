@@ -631,6 +631,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 vh.visitationTypeValueTextView.text = "Completed"
                 vh.initialContractDateTextView.text = "Visitation Date:"
                 vh.visitationTypeTextView.text = "Status:"
+                //visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
+                visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode)
                 })

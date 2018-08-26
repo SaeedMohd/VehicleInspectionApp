@@ -218,6 +218,8 @@
                         android:text="Phone Number"
                         android:textAlignment="center"
                         android:layout_column="1"
+                        android:inputType="phone"
+                        android:maxLength="10"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -331,12 +333,20 @@
                 >
 
             <TableRow>
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginTop="5dp"
+                    android:ems="6"
+                    android:text="DAY"
+                    android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_marginTop="5dp"
+                        android:ems="10"
                         android:text="SUN"
                         android:textStyle="bold" />
 
@@ -344,6 +354,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="2"
+                        android:ems="10"
                         android:layout_marginTop="5dp"
                         android:text="MON"
                         android:textStyle="bold" />
@@ -352,7 +363,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="3"
-
+                        android:ems="10"
                         android:layout_marginTop="5dp"
                         android:text="TUE"
                         android:textStyle="bold" />
@@ -361,7 +372,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="4"
-
+                        android:ems="10"
                         android:layout_marginTop="5dp"
                         android:text="WED"
                         android:textStyle="bold" />
@@ -370,7 +381,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="5"
-
+                        android:ems="10"
                         android:layout_marginTop="5dp"
                         android:text="THU"
                         android:textStyle="bold" />
@@ -379,7 +390,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="6"
-
+                        android:ems="10"
                         android:layout_marginTop="5dp"
                         android:text="FRI"
                         android:textStyle="bold" />
@@ -388,10 +399,69 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="7"
-
+                        android:ems="10"
                         android:layout_marginTop="5dp"
                         android:text="SAT"
                         android:textStyle="bold" />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="5dp"
+                        android:text="Open:"
+                        android:ems="6"
+                        android:textStyle="bold" />
+                    <Spinner
+                        android:id="@+id/sunOpenSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/monOpenSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/tueOpenSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/wedOpenSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="4"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/thuOpenSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="5"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/friOpenSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="6"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/satOpenSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="7"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
                 </TableRow>
 
             </TableLayout>
@@ -400,9 +470,67 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/closedHoursTblId"
-                android:stretchColumns="0,1,2,3,4,5,6,7"
+                android:stretchColumns="1,2,3,4,5,6,7"
                 >
-
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_marginTop="5dp"
+                        android:text="Closed:"
+                        android:ems="6"
+                        android:textStyle="bold" />
+                    <Spinner
+                        android:id="@+id/sunCloseSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/monCloseSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/tueCloseSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/wedCloseSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="4"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/thuCloseSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="5"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/friCloseSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="6"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                    <Spinner
+                        android:id="@+id/satCloseSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="7"
+                        android:ems="10"
+                        android:entries="@array/officeTimes" />
+                </TableRow>
             </TableLayout>
 
             <TableLayout
@@ -454,7 +582,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="2"
-
                         android:layout_marginTop="5dp"
                         android:text="Effective Date:"
                         android:textStyle="bold" />
