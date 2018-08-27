@@ -2539,10 +2539,8 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             newFirstNameText.setError(null)
 
         if (newCertNoText.text.toString().isNullOrEmpty()){
-
             persn.personnelIsInputsValid=false
             newCertNoText.setError("required field")
-
         }
         else
             newCertNoText.setError(null)

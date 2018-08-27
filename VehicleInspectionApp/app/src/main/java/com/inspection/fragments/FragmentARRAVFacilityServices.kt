@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityServicesData
+import com.inspection.Utils.Utility.showValidationAlertDialog
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
@@ -111,7 +112,7 @@ class FragmentARRAVFacilityServices : Fragment() {
 
         var servicesArray= ArrayList<String>()
 
-        servicesArray.add("select service")
+        servicesArray.add("Select Service")
 
         for (fac in TypeTablesModel.getInstance().ServicesType) {
 
@@ -123,7 +124,7 @@ class FragmentARRAVFacilityServices : Fragment() {
         servicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fc_services_textviewVal.adapter = servicesAdapter
 
-        submitNewserviceButton.setOnClickListener({
+        submitNewserviceButton.setOnClickListener {
 
             if (validateInputs()){
 
@@ -150,27 +151,21 @@ class FragmentARRAVFacilityServices : Fragment() {
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("FC_SUBMIT_RESPONSE",response.toString())
                                 FC_LoadingView.visibility = View.GONE
-
                                 facilityServicesCard.visibility=View.GONE
                                 alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+                                Utility.showSubmitAlertDialog(activity,true,"Facility Service")
                                 addTheLatestRowOfPortalAdmin()
-
-
-
-
                             })
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading personnal record")
                     FC_LoadingView.visibility = View.GONE
-
+                    Utility.showSubmitAlertDialog(activity,false,"Facility Service")
                 }))
-
-
             }else {
-                Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
+                showValidationAlertDialog(activity,"Please fill the required fields")
             }
 
-        })
+        }
         fillPortalTrackingTableView();
 
         altFacServiceTableRow(2)

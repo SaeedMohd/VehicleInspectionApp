@@ -128,6 +128,25 @@ public class Utility {
 //        }
 //    }
 
+    public static void showSubmitAlertDialog (Activity act,Boolean isSuccess, String dataToSave){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                act);
+        if (isSuccess) {
+            alertDialogBuilder.setTitle("Confirmation ...");
+            alertDialogBuilder.setMessage(dataToSave + " Data Saved Succesfully");
+        } else {
+            alertDialogBuilder.setTitle("Sorry ...");
+            alertDialogBuilder.setMessage("Error occured while saving " + dataToSave + " Changes");
+        }
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",null);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
     public static String postRequest(String url, ContentValues values) {
         String request = "";
         String result = null;
@@ -603,9 +622,9 @@ public class Utility {
 
     }
 
-    public static void showAlertDialog(Activity activity, String title, String message){
+    public static void showValidationAlertDialog(Activity activity, String message){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle(title);
+        alertDialog.setTitle("Validation ...");
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton("OK", null);
         alertDialog.show();

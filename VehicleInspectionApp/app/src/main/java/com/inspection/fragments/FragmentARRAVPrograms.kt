@@ -45,6 +45,7 @@ import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
+import org.json.JSONObject
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -207,8 +208,8 @@ class FragmentARRAVPrograms : Fragment() {
                                 try {
                                     newEffDate = dateFormat.parse(effective_date_textviewVal!!.text.toString())
                                     newExpDate = dateFormat.parse(expiration_date_textviewVal!!.text.toString())
-                                    DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormat())
-                                    DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormat())
+                                    DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormatMMDDYYYY())
+                                    DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormatMMDDYYYY())
                                 } catch (e: ParseException) {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace()
@@ -245,8 +246,8 @@ class FragmentARRAVPrograms : Fragment() {
 
                     //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
 
-                    item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString().appToApiFormat()
-                    item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString().appToApiFormat()
+                    item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                     item.Comments = comments_editTextVal.text.toString()
                     //  BuildProgramsList()
 
@@ -254,11 +255,17 @@ class FragmentARRAVPrograms : Fragment() {
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=29385&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                             Response.Listener { response ->
                                 activity!!.runOnUiThread(Runnable {
-                                    Log.v("RESPONSE", response.toString())
+//                                    Log.v("RESPONSE   --- >CODE", .toString())
                                     programsLoadingView.visibility = View.GONE
-                                    FacilityDataModel.getInstance().tblPrograms.add(item)
-                                    fillPortalTrackingTableView()
-                                    altTableRow(2)
+                                    if (response.toString().contains("returnCode&gt;0&",false)) {
+                                        Utility.showSubmitAlertDialog(activity,true,"Program")
+                                        FacilityDataModel.getInstance().tblPrograms.add(item)
+                                        fillPortalTrackingTableView()
+                                        altTableRow(2)
+
+                                    } else {
+                                        Utility.showSubmitAlertDialog(activity,false,"Program")
+                                    }
                                     enableAllAddButnsAndDialog()
                                     programCard.visibility = View.GONE
                                     alphaBackgroundForProgramDialogs.visibility = View.GONE
@@ -266,16 +273,17 @@ class FragmentARRAVPrograms : Fragment() {
 
                                 })
                             }, Response.ErrorListener {
-                        Log.v("error while loading", "error while loading personnal record")
-                        programsLoadingView.visibility = View.GONE
-
+                                Utility.showSubmitAlertDialog(activity,false,"Program")
+                                enableAllAddButnsAndDialog()
+                                programCard.visibility = View.GONE
+                                alphaBackgroundForProgramDialogs.visibility = View.GONE
                     }))
-
-
                 }
             } else {
-                Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
+                Utility.showValidationAlertDialog(activity,"Please fill the required fields")
             }
+
         })
 //
 //        deleteBtn.setOnClickListener({

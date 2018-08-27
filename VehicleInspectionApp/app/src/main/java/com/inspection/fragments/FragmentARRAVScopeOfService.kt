@@ -34,6 +34,7 @@ import com.inspection.MainActivity.Companion.activity
 import com.inspection.MainActivity.Companion.handler
 import com.inspection.R.id.numberOfLiftsEditText
 import com.inspection.Utils.MarkChangeWasDone
+import com.inspection.Utils.Utility
 import com.inspection.Utils.toApiSubmitFormat
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TypeTablesModel
@@ -418,6 +419,7 @@ dataChanged=true
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
                                 scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                                Utility.showSubmitAlertDialog(activity,true,"Scope of Services General Information")
                                 if (dataChanged) {
                                     if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                         FacilityDataModel.getInstance().tblScopeofService[0].apply {
@@ -441,6 +443,7 @@ dataChanged=true
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading personnal record")
                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                    Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information")
 //                    Toast.makeText(context,"error while saving page",Toast.LENGTH_SHORT).show()
                 }))
             }

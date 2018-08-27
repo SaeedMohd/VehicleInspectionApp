@@ -218,8 +218,6 @@
                         android:text="Phone Number"
                         android:textAlignment="center"
                         android:layout_column="1"
-                        android:inputType="phone"
-                        android:maxLength="10"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -336,7 +334,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="1"
+                    android:layout_column="0"
                     android:layout_marginTop="5dp"
                     android:ems="6"
                     android:text="DAY"
@@ -464,14 +462,6 @@
                         android:entries="@array/officeTimes" />
                 </TableRow>
 
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/closedHoursTblId"
-                android:stretchColumns="1,2,3,4,5,6,7"
-                >
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
@@ -536,6 +526,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 >
 
                 <TableRow>
@@ -1197,7 +1188,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-
                     android:text="Phone Type:*"
                     android:layout_column="0"
                     android:textStyle="bold"
@@ -1240,7 +1230,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-
                     android:text="Phone Number:*"
                     android:layout_column="0"
                     android:textStyle="bold"
@@ -1251,6 +1240,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text=""
+                    android:inputType="number"
+                    android:maxLength="10"
                     android:ems="8"
                     android:layout_column="1"
                     android:background="@drawable/textview_background"
@@ -1374,6 +1365,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text=""
+                    android:inputType="number"
+                    android:maxLength="10"
                     android:ems="8"
                     android:layout_column="1"
                     android:background="@drawable/textview_background"

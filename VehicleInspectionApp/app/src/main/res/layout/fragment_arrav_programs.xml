@@ -209,7 +209,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Program Name*"
+                    android:text="Program Name:*"
                     android:ems="12"
                     android:layout_marginRight="10dp"
                     android:layout_column="0"
@@ -233,7 +233,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Effective Date*"
+                    android:text="Effective Date:*"
                     android:ems="12"
                     android:layout_marginRight="10dp"
                     android:layout_column="0"
@@ -241,7 +241,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Expiration Date"
+                    android:text="Expiration Date:"
                     android:ems="12"
                     android:layout_marginRight="10dp"
                     android:layout_column="0"
@@ -279,7 +279,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Comments*"
+                    android:text="Comments:*"
                     android:layout_marginRight="10dp"
                     android:ems="12"
                     android:layout_gravity="center_vertical"

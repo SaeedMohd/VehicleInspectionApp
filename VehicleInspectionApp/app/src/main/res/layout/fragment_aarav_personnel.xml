@@ -652,7 +652,7 @@
                         android:layout_column="1"
                         android:background="@drawable/textview_background"
                         android:hint="Enter certificate ID"
-                        android:maxLength="16" />
+                        android:maxLength="30" />
 
 
                     <LinearLayout
@@ -707,7 +707,6 @@
                             android:text="SELECT DATE"
                             android:textColor="@color/blue"
                             android:textSize="12dp" />
-
 
                     </LinearLayout>
 
@@ -1224,7 +1223,7 @@
                         android:layout_column="1"
                         android:background="@drawable/textview_background"
                         android:hint="Enter certificate ID"
-                        android:maxLength="16" />
+                        android:maxLength="30" />
 
 
                     <LinearLayout
