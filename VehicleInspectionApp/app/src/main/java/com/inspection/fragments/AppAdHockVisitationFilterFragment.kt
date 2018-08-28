@@ -93,6 +93,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading facilities")
+
+            Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Specialists - " + it.message)
             Log.v("Loading error", "" + it.message)
         }))
 
@@ -105,6 +107,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
+
                             recordsProgressView.visibility = View.INVISIBLE
                             var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                             var facilityNames = ArrayList<String>()
@@ -124,7 +127,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                             }
                         })
                     }, Response.ErrorListener {
-                context!!.toast("Connection Error")
+//                context!!.toast("Connection Error")
+                Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Facilities - " + it.message)
                 recordsProgressView.visibility = View.INVISIBLE
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
@@ -152,8 +156,9 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
                             })
                         }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading facilities")
+//                    Log.v("error while loading", "error while loading facilities")
                     Log.v("Loading error", "" + it.message)
+                    Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Specialists Names' - " + it.message)
                 }))
 
 //                if (CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].clubcode == clubCodeEditText.text.toString()) {
@@ -210,6 +215,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                     reloadFacilitiesList()
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading club codes")
+            Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Club Codes - " + it.message)
         }))
     }
 
@@ -290,7 +296,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                     })
                 }, Response.ErrorListener {
             recordsProgressView.visibility = View.INVISIBLE
-            context!!.toast("Error while loading facilities")
+//            context!!.toast("Error while loading facilities")
+            Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Facilities List - " + it.message)
             Log.v("error while loading", "error while loading visitation records")
         }))
     }
@@ -399,7 +406,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             override fun onFailure(call: Call?, e: IOException?) {
                 Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
                 activity!!.runOnUiThread(Runnable {
-                    context!!.toast("Connection Error. Please check internet connection")
+//                    context!!.toast("Connection Error. Please check internet connection")
+                    Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Facility Data - " + e.message)
                 })
             }
 
@@ -419,7 +427,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                     override fun onFailure(call: Call?, e: IOException?) {
                         activity!!.runOnUiThread(Runnable {
                             Log.v("******eerrrrrror", "" + e!!.message)
-                            context!!.toast("Origin ERROR Connection Error. Please check internet connection")
+                            Utility.showMessageDialog(activity,"Retrieve Data Error","Origin ERROR Connection Error. Please check internet connection - " + e.message)
+//                            context!!.toast("")
                         })
                     }
 
@@ -431,25 +440,30 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
                             recordsProgressView.visibility = View.GONE
                             if (!responseString.contains("FacID not found")) {
-                                var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                                var jsonObj = obj.getJSONObject("responseXml")
+                                if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
+                                    Utility.showMessageDialog(activity, "Retrieve Data Error", "The underlying connection was closed: An unexpected error occurred on a send")
+                                } else {
+                                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+                                            .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+                                    var jsonObj = obj.getJSONObject("responseXml")
 
-                                jsonObj = removeEmptyJsonTags(jsonObj)
+                                    jsonObj = removeEmptyJsonTags(jsonObj)
 
-                                parseFacilityDataJsonToObject(jsonObj)
+                                    parseFacilityDataJsonToObject(jsonObj)
 
-                                if (FacilityDataModel.getInstance().tblVisitationTracking.size == 0) {
-                                    FacilityDataModel.getInstance().tblVisitationTracking.add(FacilityDataModel.TblVisitationTracking())
-                                }
-                                FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = FacilityDataModel.VisitationTypes.AdHoc
+                                    if (FacilityDataModel.getInstance().tblVisitationTracking.size == 0) {
+                                        FacilityDataModel.getInstance().tblVisitationTracking.add(FacilityDataModel.TblVisitationTracking())
+                                    }
+                                    FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = FacilityDataModel.VisitationTypes.AdHoc
 
 
-                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
+                                    var intent = Intent(context, com.inspection.FormsActivity::class.java)
 //                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-                                startActivity(intent)
+                                    startActivity(intent)
+                                }
                             } else {
-                                context!!.toast("Facility data not found")
+//                                context!!.toast("Facility data not found")
+                                    Utility.showMessageDialog(activity,"Retrieve Data Error","Facility data not found")
                             }
                         })
                     }

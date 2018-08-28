@@ -301,14 +301,11 @@ class FacilityGeneralInformationFragment : Fragment() {
             if (validateInputs()){
                 submitFacilityGeneralInfo()
                 submitPaymentMethods()
-
 //                Toast.makeText(context,"inputs validated",Toast.LENGTH_SHORT).show()
-
-
         }else
-
             {
 //                Toast.makeText(context,"please fill requred fields",Toast.LENGTH_SHORT).show()
+                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
             }
         }
 
@@ -774,13 +771,16 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         Log.v("RESPONSE",response.toString())
-                        FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timeZoneSpinner.selectedItem.toString()
-                        FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount =  facRepairCnt.toString().toInt()
-                        FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
-                        FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
-                        FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
-
-
+                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                            Utility.showSubmitAlertDialog(activity, true, "Facility General Information")
+                            FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timeZoneSpinner.selectedItem.toString()
+                            FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
+                            FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
+                            FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
+                            FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
+                        } else {
+                            Utility.showSubmitAlertDialog(activity,false,"Facility General Information")
+                        }
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading")
@@ -825,20 +825,22 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
 
 
         }
-
-
-
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         Log.v("PAYMENT REQUEST",UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}")
                         Log.v("paymentSUBMIT_RESPONSE",response.toString())
                         Log.v("paymentsTRING",payments.toString())
-
+                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                            Utility.showSubmitAlertDialog(activity, true, "Payment Methods")
+                        } else {
+                            Utility.showSubmitAlertDialog(activity,false,"Payment Methods")
+                        }
 
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnal record")
+                Utility.showSubmitAlertDialog(activity,false,"Payment Methods")
 
         }))
 
@@ -871,7 +873,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                                     activity!!.runOnUiThread(Runnable {
                                         Log.v("RESPONSE", response.toString())
 
-                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+//                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                             FacilityDataModel.getInstance().tblScopeofService[0].apply {
                                                 scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
@@ -894,7 +896,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                                     })
                                 }, Response.ErrorListener {
                             Log.v("error while loading", "error while loading personnal record")
-                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
 
                             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 

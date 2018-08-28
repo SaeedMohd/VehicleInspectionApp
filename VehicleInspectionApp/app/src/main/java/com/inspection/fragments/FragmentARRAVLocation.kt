@@ -239,8 +239,10 @@ class FragmentARRAVLocation : Fragment() {
             var emailValid=FacilityDataModel.TblFacilityEmail().emailIsInputsValid
             if (newEmailAddrText.text.isNullOrEmpty()) {
                 emailValid=false
-                newEmailAddrText.setError("please enter email address")
-            } else {
+                newEmailAddrText.setError("Required Field")
+            } else if (!Utility.isEmailValid(newEmailAddrText.text.toString())) {
+                Utility.showValidationAlertDialog(activity,"Please enter a valid Email address")
+            }else {
                 emailValid=true
                 submitFacilityEmail()
                 enableAllAddButnsAndDialog()
@@ -477,18 +479,25 @@ class FragmentARRAVLocation : Fragment() {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
+                            if (response.toString().contains("returnCode&gt;0&",false)) {
+                                Utility.showSubmitAlertDialog(activity, true, "Facility Location")
+                                FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
+                                FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+                                fillLocationTableView()
+
+                            } else {
+                                Utility.showSubmitAlertDialog(activity, false, "Facility Location")
+                            }
                             contactInfoLoadingView.visibility = View.GONE
-                            Utility.showSubmitAlertDialog(activity,true,"Facility Location")
-                            FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
-                            FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
-                            fillLocationTableView()
-                            Log.v("LOCATION RESPONSE", response.toString())
                             enableAllAddButnsAndDialog()
                         })
                     }, Response.ErrorListener {
-                contactInfoLoadingView.visibility = View.GONE
-                Utility.showSubmitAlertDialog(activity,true,"Facility Location")
-                Log.v("error while submitting", "LOCATION Details")
+                        contactInfoLoadingView.visibility = View.GONE
+                        Utility.showSubmitAlertDialog(activity,true,"Facility Location")
+                        contactInfoLoadingView.visibility = View.GONE
+                        enableAllAddButnsAndDialog()
+
+                        Log.v("error while submitting", "LOCATION Details")
             }))
 
         }
@@ -734,18 +743,20 @@ class FragmentARRAVLocation : Fragment() {
                         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
+                                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                                            Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
+                                            fillPhoneTableView()
+                                            FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
+                                        } else {
+                                            Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
+                                        }
                                         contactInfoLoadingView.visibility = View.GONE
-                                        Utility.showSubmitAlertDialog(activity,true,"Facility Phone")
-                                        FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber=newChangesPhoneNoText.text.toString()
-                                        Log.v("PHONE_RESPONSE",response.toString())
-                                        fillPhoneTableView()
                                         enableAllAddButnsAndDialog()
-
-
                                     })
                                 }, Response.ErrorListener {
                             contactInfoLoadingView.visibility = View.GONE
                             Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
+                            enableAllAddButnsAndDialog()
                             Log.v("error while submitting", "Phone Details")
                         }))
 
@@ -1322,14 +1333,14 @@ class FragmentARRAVLocation : Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
+                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                            Utility.showSubmitAlertDialog(activity, true, "Facility Email")
+                            FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
+                            fillEmailTableView()
+                        } else {
+                            Utility.showSubmitAlertDialog(activity, false, "Facility Email")
+                        }
                         contactInfoLoadingView.visibility = View.GONE
-                        context!!.toast("Email Submit Successful")
-                        Log.v("RESPONSE",response.toString())
-                        Utility.showSubmitAlertDialog(activity,true,"Facility Email")
-                        FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
-                        fillEmailTableView()
-
-
 
                     })
                 }, Response.ErrorListener {
@@ -1370,8 +1381,11 @@ class FragmentARRAVLocation : Fragment() {
                 "&updateBy=SumA&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=",
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
-                        Log.v("HOURS SUBMITTED",response.toString())
-                        Utility.showSubmitAlertDialog(activity,true,"Facility Hours / Nigh Drop")
+                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                            Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Nigh Drop")
+                        } else {
+                            Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Nigh Drop")
+                        }
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error submitting hours")
@@ -1457,15 +1471,19 @@ class FragmentARRAVLocation : Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
+
+                        if (response.toString().contains("returnCode&gt;0&", false)) {
+                            Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
+                            FacilityDataModel.getInstance().tblPhone.add(newPhone)
+                            fillPhoneTableView()
+                        } else {
+                            Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
+                        }
                         contactInfoLoadingView.visibility = View.GONE
-                        Log.v("RESPONSE",response.toString())
-                        Utility.showSubmitAlertDialog(activity,true,"Facility Phone")
-                        FacilityDataModel.getInstance().tblPhone.add(newPhone)
-                        fillPhoneTableView()
                     })
                 }, Response.ErrorListener {
-                    contactInfoLoadingView.visibility = View.GONE
-            Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
+            contactInfoLoadingView.visibility = View.GONE
+            Utility.showSubmitAlertDialog(activity, false, "Facility Phone")
         }))
     }
     fun altEmailTableRow(alt_row : Int) {

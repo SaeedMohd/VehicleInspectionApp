@@ -420,9 +420,6 @@ class FragmentARRAVPersonnel : Fragment() {
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("RESPONSE", response.toString())
                                 personnelLoadingView.visibility = View.GONE
-
-
-
                             })
                         }, Response.ErrorListener {
                     Log.v("error while loading", "error while loading certificate record")
@@ -471,92 +468,88 @@ class FragmentARRAVPersonnel : Fragment() {
                         activity!!.runOnUiThread(Runnable {
                             Log.v("RESPONSE",response.toString())
 //
-                            var item = FacilityDataModel.TblPersonnel()
-                            for (fac in TypeTablesModel.getInstance().PersonnelType) {
-                                if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+                            if (response.toString().contains("returnCode&gt;0&",false)) {
+                                Utility.showSubmitAlertDialog(activity, true, "Personnel")
+                                var item = FacilityDataModel.TblPersonnel()
+                                for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                                    if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
 
-                                    item.PersonnelTypeID =fac.PersonnelTypeID.toInt()
-                            }
+                                        item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
+                                }
 
-                            item.FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
-                            item.LastName=if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                            item.RSP_UserName=if (rspUserId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                            item.RSP_Email=if (rspEmailId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                            item.CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
-                            item.ContractSigner=if (newSignerCheck.isChecked==true) true else false
-                            item.PrimaryMailRecipient=if (newACSCheck.isChecked==true) true else false
-                            item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
-                            item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
-                            item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
-                            FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                item.FirstName = if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
+                                item.LastName = if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                                item.RSP_UserName = if (rspUserId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                                item.RSP_Email = if (rspEmailId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                                item.CertificationNum = if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+                                item.ContractSigner = if (newSignerCheck.isChecked == true) true else false
+                                item.PrimaryMailRecipient = if (newACSCheck.isChecked == true) true else false
+                                item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
+                                item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
+                                item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
+                                FacilityDataModel.getInstance().tblPersonnel.add(item)
 
-                            fillPersonnelTableView()
-                            altTableRow(2)
-                            personnelLoadingView.visibility = View.GONE
+                                fillPersonnelTableView()
+                                altTableRow(2)
 
-                            for (i in 0 until mainViewLinearId.childCount) {
-                                val child = mainViewLinearId.getChildAt(i)
-                                child.isEnabled = true
-                            }
+                                for (i in 0 until mainViewLinearId.childCount) {
+                                    val child = mainViewLinearId.getChildAt(i)
+                                    child.isEnabled = true
+                                }
 
-                            for (i in 0 until mainViewLinearId2.childCount) {
-                                val child = mainViewLinearId2.getChildAt(i)
-                                child.isEnabled = true
-                            }
+                                for (i in 0 until mainViewLinearId2.childCount) {
+                                    val child = mainViewLinearId2.getChildAt(i)
+                                    child.isEnabled = true
+                                }
 
-                            var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
-                            var itemArray = FacilityDataModel.getInstance().tblPersonnel
+                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
+                                var itemArray = FacilityDataModel.getInstance().tblPersonnel
 
-                            if (itemOrgArray.size!=itemArray.size){
+                                if (itemOrgArray.size != itemArray.size) {
 
-                                MarkChangeWasDone()
-                            }else {
+                                    MarkChangeWasDone()
+                                } else {
 
-                                for (itemAr in itemArray) {
-                                    for (itemOrgAr in itemOrgArray) {
+                                    for (itemAr in itemArray) {
+                                        for (itemOrgAr in itemOrgArray) {
 
-                                        if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
-                                                itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
-                                                itemAr.RSP_Email != itemOrgAr.RSP_Email ||
-                                                itemAr.CertificationNum != itemOrgAr.CertificationNum ||
-                                                !(itemAr.ContractSigner == itemOrgAr.ContractSigner) ||
-                                                !(itemAr.PrimaryMailRecipient == itemOrgAr.PrimaryMailRecipient) ||
-                                                itemAr.startDate != itemOrgAr.startDate ||
-                                                itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
-                                                itemAr.SeniorityDate != itemOrgAr.SeniorityDate) {
-                                            MarkChangeWasDone()
-                                            Toast.makeText(context, "changes submitted", Toast.LENGTH_SHORT).show()
+                                            if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
+                                                    itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
+                                                    itemAr.RSP_Email != itemOrgAr.RSP_Email ||
+                                                    itemAr.CertificationNum != itemOrgAr.CertificationNum ||
+                                                    !(itemAr.ContractSigner == itemOrgAr.ContractSigner) ||
+                                                    !(itemAr.PrimaryMailRecipient == itemOrgAr.PrimaryMailRecipient) ||
+                                                    itemAr.startDate != itemOrgAr.startDate ||
+                                                    itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
+                                                    itemAr.SeniorityDate != itemOrgAr.SeniorityDate) {
+                                                MarkChangeWasDone()
+//                                                Toast.makeText(context, "changes submitted", Toast.LENGTH_SHORT).show()
+                                            }
+
                                         }
-
                                     }
                                 }
+                            } else {
+                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
                             }
-
-
+                            personnelLoadingView.visibility = View.GONE
                         })
                     }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading personnal record")
+//                Log.v("error while loading", "error while loading personnal record")
+                Utility.showSubmitAlertDialog(activity, false, "Personnel")
                 personnelLoadingView.visibility = View.GONE
-
             }))
 
             }
             else
             {
-
-                Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
-
+                Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
+//                Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
             }
-
-
         })
-
         onlyOneMailRecepientLogic()
         altTableRow(2)
         altCertTableRow(2)
-
-
-
     }
 
 
@@ -1055,9 +1048,9 @@ class FragmentARRAVPersonnel : Fragment() {
         newCoEndDateBtn.setOnClickListener(View.OnClickListener {
             if (newCoStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
 
-                newCoEndDateBtn.setError("please enter a start date first")
-
-                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+                newCoEndDateBtn.setError("Required Field")
+                Utility.showValidationAlertDialog(activity,"Please enter Start Date")
+//                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
             }
             else {
                 newCoEndDateBtn.setError(null)
@@ -1080,8 +1073,9 @@ class FragmentARRAVPersonnel : Fragment() {
         newEndDateBtn.setOnClickListener(View.OnClickListener {
             if (newStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
 
-                newEndDateBtn.setError("please enter a start date first")
-                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+                newEndDateBtn.setError("Required Field")
+//                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+                Utility.showValidationAlertDialog(activity,"Please enter End Date")
 
             }
             else {
@@ -1106,8 +1100,9 @@ class FragmentARRAVPersonnel : Fragment() {
         newCertEndDateBtn.setOnClickListener(View.OnClickListener {
             if (newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
 
-                newCertEndDateBtn.setError("please enter a start date first")
-                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+                newCertEndDateBtn.setError("Required Field")
+                Utility.showValidationAlertDialog(activity,"Please enter Certificate End Date")
+//                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
 
             }
             else {
@@ -1135,9 +1130,9 @@ class FragmentARRAVPersonnel : Fragment() {
         edit_newCoEndDateBtn.setOnClickListener(View.OnClickListener {
             if (edit_newCoStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
 
-                edit_newCoEndDateBtn.setError("please enter a start date first")
-
-                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
+                edit_newCoEndDateBtn.setError("Required Field")
+                Utility.showValidationAlertDialog(activity,"Please enter Contract End Date")
+//                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
             }
             else {
                 edit_newCoEndDateBtn.setError(null)
@@ -1159,14 +1154,11 @@ class FragmentARRAVPersonnel : Fragment() {
         })
         edit_newEndDateBtn.setOnClickListener(View.OnClickListener {
             if (edit_newStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
-
-                edit_newEndDateBtn.setError("please enter a start date first")
-                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
-
+                edit_newEndDateBtn.setError("Required Field")
+                Utility.showValidationAlertDialog(activity,"Please enter ِEnd Date")
             }
             else {
                 edit_newEndDateBtn.setError(null)
-
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
@@ -1589,7 +1581,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
                             if (edit_newSignerCheck.isChecked ) {
 
-                                Toast.makeText(context, "there's already contract signer for this contract", Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(context, "there's already contract signer for this contract", Toast.LENGTH_SHORT).show()
+                                Utility.showValidationAlertDialog(activity,"There is already contract signer for this contract")
                                 edit_newSignerCheck.isChecked=false
 
                             } else {
@@ -1608,7 +1601,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
                             if (edit_newACSCheck.isChecked ) {
 
-                                Toast.makeText(context, "there's already primary email assigned for this contract", Toast.LENGTH_SHORT).show()
+                                Utility.showValidationAlertDialog(activity,"There's already primary email assigned for this contract")
+//                                Toast.makeText(context, "there's already primary email assigned for this contract", Toast.LENGTH_SHORT).show()
                                 edit_newACSCheck.isChecked=false
 
                             }
@@ -1823,7 +1817,8 @@ class FragmentARRAVPersonnel : Fragment() {
                         else
                         {
 
-                            Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
+                            Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
 
                         }
 
@@ -2138,14 +2133,12 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                         newSignerCheck.isChecked=false
                         disablecontractSignerFeilds()
-                        Toast.makeText(context,"there's already a contract signer for this contract",Toast.LENGTH_SHORT).show()
-
-
+//                        Toast.makeText(context,"there's already a contract signer for this contract",Toast.LENGTH_SHORT).show()
+                        Utility.showValidationAlertDialog(activity,"There is already a contract signer for this contract")
                     }else
                     {
-
-                        Toast.makeText(context,"no contract signer for the contract",Toast.LENGTH_SHORT).show()
-
+                        Utility.showValidationAlertDialog(activity,"No contract signer for this contract")
+//                        Toast.makeText(context,"no contract signer for the contract",Toast.LENGTH_SHORT).show()
                         newSignerCheck.isChecked=true
                         enable_contractSignerFeilds()
 

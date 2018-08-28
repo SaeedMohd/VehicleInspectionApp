@@ -305,8 +305,10 @@ class FragmentVisitation : Fragment() {
 
         completeButton.setOnClickListener(View.OnClickListener {
             if (validateInputs()) {
-                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
-            } else Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
+            } else
+//                Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
+                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
         })
 
         emailPdfCheckBox.setOnCheckedChangeListener { compoundButton, b ->
@@ -990,7 +992,8 @@ class FragmentVisitation : Fragment() {
             if (visitationReasonDropListId.selectedItem.toString() == visitationReasonDropListId.setSelection(0).toString()) {
 
                 isInputValid = false
-                Toast.makeText(context, "please select a visitation reason", Toast.LENGTH_LONG).show()
+                Utility.showValidationAlertDialog(activity,"Please select visitation reason")
+//                Toast.makeText(context, "please select a visitation reason", Toast.LENGTH_LONG).show()
 
             }
 
@@ -999,7 +1002,7 @@ class FragmentVisitation : Fragment() {
             if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature") {
 
                 isInputValid = false
-                facilityRepresentativeSignatureButton.setError("required field")
+                facilityRepresentativeSignatureButton.setError("Required field")
 
             }
 
@@ -1017,7 +1020,7 @@ class FragmentVisitation : Fragment() {
         if (automotiveSpecialistSignatureButton.text.toString() == "Add Signature") {
 
             isInputValid = false
-            automotiveSpecialistSignatureButton.setError("required field")
+            automotiveSpecialistSignatureButton.setError("Required field")
 
         }
 
@@ -1189,32 +1192,31 @@ class FragmentVisitation : Fragment() {
                                         Log.v("RESPONSE", response.toString())
                                         scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 
-                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                                            Utility.showSubmitAlertDialog(activity, true, "Visitation")
+                                            if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                                FacilityDataModel.getInstance().tblScopeofService[0].apply {
 
-                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-
-                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-
-                                                FragmentARRAVScopeOfService.dataChanged = false
-                                                FragmentARRAVScopeOfService().checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
-                                                dataChangeHandling()
-
-
+                                                    LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
+                                                    LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
+                                                    FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
+                                                    DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
+                                                    NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
+                                                    NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
+                                                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
+                                                    FragmentARRAVScopeOfService.dataChanged = false
+                                                    FragmentARRAVScopeOfService().checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
+                                                    dataChangeHandling()
+                                                }
                                             }
-
+                                        } else {
+                                            Utility.showSubmitAlertDialog(activity,false,"Visitation")
                                         }
 
                                     })
                                 }, Response.ErrorListener {
                             Log.v("error while loading", "error while loading personnal record")
-                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+                            Utility.showSubmitAlertDialog(activity,false,"Visitation")
                             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 
 

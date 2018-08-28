@@ -142,27 +142,33 @@ class FragmentARRAVFacilityServices : Fragment() {
                 item.effDate = if (fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else fceffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.expDate = if (fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else fcexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.Comments=comments_editTextVal.text.toString()
-                FacilityDataModel.getInstance().tblFacilityServices.add(item)
+
                 //  BuildProgramsList()
 
 
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("FC_SUBMIT_RESPONSE",response.toString())
+                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                    Utility.showSubmitAlertDialog(activity, true, "Facility Services")
+                                    FacilityDataModel.getInstance().tblFacilityServices.add(item)
+                                    addTheLatestRowOfPortalAdmin()
+                                } else {
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services")
+                                }
                                 FC_LoadingView.visibility = View.GONE
-                                facilityServicesCard.visibility=View.GONE
+                                facilityServicesCard.visibility = View.GONE
                                 alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-                                Utility.showSubmitAlertDialog(activity,true,"Facility Service")
-                                addTheLatestRowOfPortalAdmin()
                             })
                         }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
+                    Utility.showSubmitAlertDialog(activity,false,"Facility Services")
                     FC_LoadingView.visibility = View.GONE
-                    Utility.showSubmitAlertDialog(activity,false,"Facility Service")
+                    facilityServicesCard.visibility = View.GONE
+                    alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+
                 }))
             }else {
-                showValidationAlertDialog(activity,"Please fill the required fields")
+                showValidationAlertDialog(activity,"Please fill all the required fields")
             }
 
         }

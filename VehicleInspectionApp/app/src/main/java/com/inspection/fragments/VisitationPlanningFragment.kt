@@ -258,7 +258,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                         })
                     }, Response.ErrorListener {
 
-                context!!.toast("Connection Error")
+//                context!!.toast("Connection Error")
+                Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Facilities - " + it.message)
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
                 it.printStackTrace()
@@ -449,8 +450,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 override fun onFailure(call: Call?, e: IOException?) {
                     Log.v("failure http", "failed with exception : " + e!!.message)
                     activity!!.runOnUiThread(Runnable {
-                        activity!!.toast("Error while loading large data")
-
+//                        activity!!.toast("Error while loading large data")
+                        Utility.showMessageDialog(activity,"Retrieve Data Error",e.message)
                         recordsProgressView.visibility = View.INVISIBLE
 
 
@@ -486,12 +487,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
-
-
                             var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                             var jsonObj = obj.getJSONObject("responseXml")
-
-
                             var visitationsModel = parseVisitationsData(jsonObj)
                             recordsProgressView.visibility = View.GONE
                             visitationfacilityListView.visibility = View.VISIBLE
@@ -500,6 +497,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading visitation records")
+                Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Visitation records - " + it.message)
             }))
         }
     }
@@ -685,7 +683,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             override fun onFailure(call: Call?, e: IOException?) {
                 Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
                 activity!!.runOnUiThread(Runnable {
-                    context!!.toast("Connection Error. Please check internet connection")
+//                    context!!.toast("Connection Error. Please check internet connection")
+                    Utility.showMessageDialog(activity,"Retrieve Data Error",e.message)
                 })
             }
 
@@ -705,7 +704,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                     override fun onFailure(call: Call?, e: IOException?) {
                         activity!!.runOnUiThread(Runnable {
                             Log.v("******eerrrrrror", ""+e!!.message)
-                            context!!.toast("Origin ERROR Connection Error. Please check internet connection")
+//                            context!!.toast("Origin ERROR Connection Error. Please check internet connection")
+                            Utility.showMessageDialog(activity,"Retrieve Data Error","Origin ERROR Connection Error. Please check internet connection - "+e.message)
                         })
                     }
 
@@ -714,23 +714,23 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                         var responseString = response!!.body()!!.string()
                         activity!!.runOnUiThread(Runnable {
                             Log.v("POPOOriginal", responseString)
-
                             recordsProgressView.visibility = View.GONE
                             if (!responseString.contains("FacID not found")) {
-                                var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-                                        .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                                var jsonObj = obj.getJSONObject("responseXml")
-
-                                jsonObj = removeEmptyJsonTags(jsonObj)
-
-                                parseFacilityDataJsonToObject(jsonObj)
-
-
-                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
+                                if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
+                                    Utility.showMessageDialog(activity,"Retrieve Data Error","The underlying connection was closed: An unexpected error occurred on a send")
+                                } else {
+                                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+                                            .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+                                    var jsonObj = obj.getJSONObject("responseXml")
+                                    jsonObj = removeEmptyJsonTags(jsonObj)
+                                    parseFacilityDataJsonToObject(jsonObj)
+                                    var intent = Intent(context, com.inspection.FormsActivity::class.java)
 //                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-                                startActivity(intent)
+                                    startActivity(intent)
+                                }
                             } else {
-                                context!!.toast("Facility data not found")
+//                                context!!.toast("Facility data not found")
+                                Utility.showMessageDialog(activity,"Retrieve Data Error","Facility data not found")
                             }
                         })
                     }
