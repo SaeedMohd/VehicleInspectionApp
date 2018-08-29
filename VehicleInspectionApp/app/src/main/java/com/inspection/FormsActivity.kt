@@ -82,6 +82,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
 //            toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+
         }else{
             navigationMenu.findItem(R.id.visitation).isEnabled = true
             navigationMenu.findItem(R.id.visitation).isVisible = true
@@ -172,6 +173,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         when (item.itemId) {
             R.id.visitation -> {
                 toolbar.title = "Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = FragmentVisitation()
                         supportFragmentManager
                         .beginTransaction()
@@ -181,6 +183,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.facility -> {
                 toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = FacilityGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
@@ -190,6 +193,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.scopeOfService -> {
                 toolbar.title = "Scope Of Service - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Scope Of Service - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = ScopeOfServiceGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
@@ -201,6 +205,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             R.id.deficiency -> {
                 Log.v("POSITION:  ","BRAAAAAAAAAA")
                 toolbar.title = "Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = FragmentARRAVDeficiency()
                 supportFragmentManager
                         .beginTransaction()
@@ -211,6 +216,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.complaints -> {
                 toolbar.title = "Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = FragmentARRAVComplaints()
                 supportFragmentManager
                         .beginTransaction()
@@ -221,6 +227,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.billing -> {
                 toolbar.title = "Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = BillingGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
@@ -230,6 +237,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.surveys -> {
                 toolbar.title = "Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = SurveysGroupFragment()
                 supportFragmentManager
                         .beginTransaction()
@@ -239,6 +247,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.comments -> {
                 toolbar.title = "Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = FragmentAARAVComments()
                 supportFragmentManager
                         .beginTransaction()
@@ -248,6 +257,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.photos -> {
                 toolbar.title = "Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                setTitle("Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                 var fragment = FragmentAARAVPhotos()
                 supportFragmentManager
                         .beginTransaction()

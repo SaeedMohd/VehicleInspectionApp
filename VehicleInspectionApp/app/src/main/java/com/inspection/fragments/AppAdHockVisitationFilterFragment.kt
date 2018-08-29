@@ -415,62 +415,66 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
                 var responseString = response!!.body()!!.string()
                 Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
-                var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                var jsonObj = obj.getJSONObject("responseXml")
-                TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
+                if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
+                    Utility.showMessageDialog(activity, "Retrieve Data Error", "The underlying connection was closed: An unexpected error occurred on a send")
+                } else {
+                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                    var jsonObj = obj.getJSONObject("responseXml")
+                    TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
 
-                Log.v("requesting=========>", request2.url().toString());
-                Log.v("time out valueeeeee", "" + client.connectTimeoutMillis() / 1000)
-                Log.v("read time out valuee", "" + client.readTimeoutMillis() / 1000)
+                    Log.v("requesting=========>", request2.url().toString());
+                    Log.v("time out valueeeeee", "" + client.connectTimeoutMillis() / 1000)
+                    Log.v("read time out valuee", "" + client.readTimeoutMillis() / 1000)
 
-                client.newCall(request2).enqueue(object : Callback {
-                    override fun onFailure(call: Call?, e: IOException?) {
-                        activity!!.runOnUiThread(Runnable {
-                            Log.v("******eerrrrrror", "" + e!!.message)
-                            Utility.showMessageDialog(activity,"Retrieve Data Error","Origin ERROR Connection Error. Please check internet connection - " + e.message)
+                    client.newCall(request2).enqueue(object : Callback {
+                        override fun onFailure(call: Call?, e: IOException?) {
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("******eerrrrrror", "" + e!!.message)
+                                Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e.message)
 //                            context!!.toast("")
-                        })
-                    }
+                            })
+                        }
 
-                    override fun onResponse(call: Call?, response: okhttp3.Response?) {
-                        Log.v("GetFacilityData replied", "GetFacilityData replied")
-                        var responseString = response!!.body()!!.string()
-                        activity!!.runOnUiThread(Runnable {
-                            Log.v("POPOOriginal", responseString)
+                        override fun onResponse(call: Call?, response: okhttp3.Response?) {
+                            Log.v("GetFacilityData replied", "GetFacilityData replied")
+                            var responseString = response!!.body()!!.string()
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("POPOOriginal", responseString)
 
-                            recordsProgressView.visibility = View.GONE
-                            if (!responseString.contains("FacID not found")) {
-                                if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
-                                    Utility.showMessageDialog(activity, "Retrieve Data Error", "The underlying connection was closed: An unexpected error occurred on a send")
-                                } else {
-                                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-                                            .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                                    var jsonObj = obj.getJSONObject("responseXml")
+                                recordsProgressView.visibility = View.GONE
+                                if (!responseString.contains("FacID not found")) {
+                                    if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
+                                        Utility.showMessageDialog(activity, "Retrieve Data Error", "The underlying connection was closed: An unexpected error occurred on a send")
+                                    } else {
+                                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+                                                .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+                                        var jsonObj = obj.getJSONObject("responseXml")
 
-                                    jsonObj = removeEmptyJsonTags(jsonObj)
+                                        jsonObj = removeEmptyJsonTags(jsonObj)
 
-                                    parseFacilityDataJsonToObject(jsonObj)
+                                        parseFacilityDataJsonToObject(jsonObj)
 
-                                    if (FacilityDataModel.getInstance().tblVisitationTracking.size == 0) {
-                                        FacilityDataModel.getInstance().tblVisitationTracking.add(FacilityDataModel.TblVisitationTracking())
-                                    }
-                                    FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = FacilityDataModel.VisitationTypes.AdHoc
+                                        if (FacilityDataModel.getInstance().tblVisitationTracking.size == 0) {
+                                            FacilityDataModel.getInstance().tblVisitationTracking.add(FacilityDataModel.TblVisitationTracking())
+                                        }
+                                        FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = FacilityDataModel.VisitationTypes.AdHoc
 
 
-                                    var intent = Intent(context, com.inspection.FormsActivity::class.java)
+                                        var intent = Intent(context, com.inspection.FormsActivity::class.java)
 //                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            } else {
+                                        startActivity(intent)
+                                    }
+                                } else {
 //                                context!!.toast("Facility data not found")
-                                    Utility.showMessageDialog(activity,"Retrieve Data Error","Facility data not found")
-                            }
-                        })
-                    }
-
-                })
+                                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
+                                }
+                            })
+                        }
 
 
+                    })
+
+                }
             }
 
         })

@@ -115,7 +115,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
             if (validProgram) {
                 var item = FacilityDataModel.TblVisitationTracking()
                 item.performedBy =performedBy_dropdown.selectedItem.toString()
-                Toast.makeText(context,performedBy_dropdown.selectedItem.toString(),Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context,performedBy_dropdown.selectedItem.toString(),Toast.LENGTH_SHORT).show()
                 //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
                 item.DatePerformed = if (performed_date_textviewVal.text.equals("SELECT DATE")) "" else performed_date_textviewVal.text.toString()
 //                item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
@@ -311,7 +311,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
                                         Log.v("RESPONSE", response.toString())
                                         scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 
-                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+//                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
                                         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                             FacilityDataModel.getInstance().tblScopeofService[0].apply {
 

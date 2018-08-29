@@ -195,22 +195,23 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAmendmentOrderTrackingData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facId="+FacilityDataModel.getInstance().tblFacilities[0].FACID+"&aoId=${item.AOID.toString()}&employeeId=E654117&reasonId=${item.ReasonID.toString()}&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
-                            Log.v("RESPONSE",response.toString())
+                            if (response.toString().contains("returnCode&gt;0&",false)) {
+                                Utility.showSubmitAlertDialog(activity, true, "Amendment Order Tracking")
+                                FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(item)
+                                addTheLatestRowOfAmendmentAndTrackingTableView()
+                                alt_AOT_TableRow(2)
+                            } else {
+                                Utility.showSubmitAlertDialog(activity, false, "Amendment Order Tracking")
+                            }
                             amendmentLoadingView.visibility = View.GONE
-
-                            AOCardView.visibility=View.GONE
+                            AOCardView.visibility = View.GONE
                             alphaBackgroundForAOT_Dialogs.visibility = View.GONE
-                            FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(item)
-
-
-                            addTheLatestRowOfAmendmentAndTrackingTableView()
-                            alt_AOT_TableRow(2)
-
-
                         })
                     }, Response.ErrorListener {
-                Log.v("error while loading", "error while loading personnal record")
+                Utility.showSubmitAlertDialog(activity, false, "Amendment Order Tracking")
                 amendmentLoadingView.visibility = View.GONE
+                AOCardView.visibility = View.GONE
+                alphaBackgroundForAOT_Dialogs.visibility = View.GONE
 
             }))
 

@@ -16,45 +16,79 @@
 
         <TableRow>
 
-        <Button
-            android:id="@+id/generalInformationButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="General Information"
-            android:background="@color/transparent"
-            android:layout_marginLeft="10dp"
-            android:layout_column="0"
-            />
+            <Button
+                android:id="@+id/generalInformationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginLeft="10dp"
+                android:background="@color/transparent"
+                android:text="General Information" />
 
-        <Button
-            android:id="@+id/rspButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:text="RSP"
-            android:layout_marginLeft="10dp"
-            android:layout_column="1"
-            />
-        <Button
-            android:id="@+id/contactInfoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:text="Contact Info"
-            android:layout_marginLeft="10dp"
-            android:layout_column="2"
-            />
-    <Button
-            android:id="@+id/personnelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:text="Personnel"
-            android:layout_marginLeft="10dp"
-        android:layout_column="3"
-            />
+            <ImageView
+                android:id="@+id/facGIIndicator"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/red_button_background" />
 
-        <!--<Button-->
+            <Button
+                android:id="@+id/rspButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_marginLeft="10dp"
+                android:background="@color/transparent"
+                android:text="RSP" />
+
+            <ImageView
+                android:id="@+id/facRSPIndicator"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/red_button_background" />
+
+            <Button
+                android:id="@+id/contactInfoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginLeft="10dp"
+                android:background="@color/transparent"
+                android:text="Contact Info" />
+
+            <ImageView
+                android:id="@+id/facLocationIndicator"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/red_button_background" />
+
+            <Button
+                android:id="@+id/personnelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_marginLeft="10dp"
+                android:background="@color/transparent"
+                android:text="Personnel" />
+
+            <ImageView
+                android:id="@+id/facPersonnelIndicator"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/red_button_background" />
+
+            <!--<Button-->
             <!--android:id="@+id/visitationTrackingButton"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
@@ -64,15 +98,14 @@
             <!--android:layout_column="4"-->
             <!--/>-->
 
-        <Button
-            android:id="@+id/amendmentOrdersTrackingButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:text="Amendment Orders Tracking"
-            android:layout_column="5"
-            android:layout_marginLeft="10dp"
-            />
+            <Button
+                android:id="@+id/amendmentOrdersTrackingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="5"
+                android:layout_marginLeft="10dp"
+                android:background="@color/transparent"
+                android:text="Amendment Orders Tracking" />
         </TableRow>
         <TableRow>
             <View
@@ -89,7 +122,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/mainColor"
-                android:layout_column="1"
+                android:layout_column="2"
                 android:visibility="invisible"
                 />
 
@@ -98,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/mainColor"
-                android:layout_column="2"
+                android:layout_column="4"
                 android:visibility="invisible"
                 />
 
@@ -107,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/mainColor"
-                android:layout_column="3"
+                android:layout_column="6"
                 android:visibility="invisible"
                 />
 
@@ -125,7 +158,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/mainColor"
-                android:layout_column="5"
+                android:layout_column="8"
                 android:visibility="invisible"
                 />
         </TableRow>

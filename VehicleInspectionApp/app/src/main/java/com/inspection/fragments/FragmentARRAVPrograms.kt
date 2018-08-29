@@ -220,11 +220,12 @@ class FragmentARRAVPrograms : Fragment() {
                                         validProgram = true
                                         valid_validProgram=true
                                     } else
-                                        Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+//                                        Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                        Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
                                     validProgram = false
                                 } else
-                                    Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
-
+//                                    Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                    Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
                                 validProgram = false
 
 
@@ -256,7 +257,7 @@ class FragmentARRAVPrograms : Fragment() {
                             Response.Listener { response ->
                                 activity!!.runOnUiThread(Runnable {
 //                                    Log.v("RESPONSE   --- >CODE", .toString())
-                                    programsLoadingView.visibility = View.GONE
+
                                     if (response.toString().contains("returnCode&gt;0&",false)) {
                                         Utility.showSubmitAlertDialog(activity,true,"Program")
                                         FacilityDataModel.getInstance().tblPrograms.add(item)
@@ -268,6 +269,7 @@ class FragmentARRAVPrograms : Fragment() {
                                     }
                                     enableAllAddButnsAndDialog()
                                     programCard.visibility = View.GONE
+                                    programsLoadingView.visibility = View.GONE
                                     alphaBackgroundForProgramDialogs.visibility = View.GONE
                                     //checkMarkChangesWasDone()
 
@@ -276,6 +278,7 @@ class FragmentARRAVPrograms : Fragment() {
                                 Utility.showSubmitAlertDialog(activity,false,"Program")
                                 enableAllAddButnsAndDialog()
                                 programCard.visibility = View.GONE
+                                programsLoadingView.visibility = View.GONE
                                 alphaBackgroundForProgramDialogs.visibility = View.GONE
                     }))
                 }
@@ -590,12 +593,14 @@ class FragmentARRAVPrograms : Fragment() {
 
 
                                                         } else
-                                                            Toast.makeText(context, "1st this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+//                                                            Toast.makeText(context, "1st this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                                        Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
                                                         validProgram = false
 
 
                                                     }else
-                                                        Toast.makeText(context, "2nd this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+//                                                        Toast.makeText(context, "2nd this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                                        Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
 
                                                     validProgram = false
 
@@ -634,19 +639,27 @@ class FragmentARRAVPrograms : Fragment() {
                                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=29385&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread(Runnable {
-                                                Log.v("RESPONSE", response.toString())
-                                                fillPortalTrackingTableView()
-
+                                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                                    Utility.showSubmitAlertDialog(activity, true, "Program")
+                                                    Log.v("RESPONSE", response.toString())
+                                                    fillPortalTrackingTableView()
+                                                } else {
+                                                    Utility.showSubmitAlertDialog(activity, false, "Program")
+                                                }
                                                 edit_programCard.visibility = View.GONE
                                                 edit_programsLoadingView.visibility = View.GONE
                                                 alphaBackgroundForProgramDialogs.visibility = View.GONE
                                                 enableAllAddButnsAndDialog()
                                             })
                                         }, Response.ErrorListener {
-                                    Log.v("error while loading", "error while loading program record")
-                                    edit_programsLoadingView.visibility = View.GONE
+//                                    Log.v("error while loading", "error while loading program record")
+                                        Utility.showSubmitAlertDialog(activity, true, "Program")
+                                        edit_programCard.visibility = View.GONE
+                                        edit_programsLoadingView.visibility = View.GONE
+                                        alphaBackgroundForProgramDialogs.visibility = View.GONE
+                                        enableAllAddButnsAndDialog()
 
-                                    Toast.makeText(context,"error while submitting new program",Toast.LENGTH_SHORT).show()
+//                                    Toast.makeText(context,"error while submitting new program",Toast.LENGTH_SHORT).show()
 
                                 }))
 
@@ -654,9 +667,8 @@ class FragmentARRAVPrograms : Fragment() {
                             }
 
                         }else{
-                            Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
-
-
+//                            Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
+                            Utility.showValidationAlertDialog(activity,"Please fill all required fields")
                         }
 
                     })

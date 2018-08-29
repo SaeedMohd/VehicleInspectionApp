@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.inspection.FormsActivity
 
 import com.inspection.R
@@ -161,9 +162,17 @@ class FacilityGroupFragment : Fragment() {
             }
         }
         IndicatorsDataModel.getInstance().validateFacilitySection()
+        refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicators()
     }
 
+    fun refreshTabIndicators() {
+        var indicatorImage: ImageView;
+        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) facGIIndicator.setBackgroundResource(R.drawable.green_background_button) else facGIIndicator.setBackgroundResource(R.drawable.red_button_background)
+        if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) facRSPIndicator.setBackgroundResource(R.drawable.green_background_button) else facRSPIndicator.setBackgroundResource(R.drawable.red_button_background)
+        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) facPersonnelIndicator.setBackgroundResource(R.drawable.green_background_button) else facPersonnelIndicator.setBackgroundResource(R.drawable.red_button_background)
+        if (IndicatorsDataModel.getInstance().tblFacility[0].Location) facLocationIndicator.setBackgroundResource(R.drawable.green_background_button) else facLocationIndicator.setBackgroundResource(R.drawable.red_button_background)
+    }
 
     /**
      * This interface must be implemented by activities that contain this

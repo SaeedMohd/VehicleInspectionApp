@@ -277,22 +277,24 @@ class FragmentARRAVDeficiency : Fragment() {
                         "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=MoritzM02&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SamA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE",response.toString())
+                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                    Utility.showSubmitAlertDialog(activity, true, "Deficiency")
+                                    FacilityDataModel.getInstance().tblDeficiency.add(item)
+                                    addTheLatestRowOfPortalAdmin()
+                                } else {
+                                    Utility.showSubmitAlertDialog(activity, false, "Deficiency")
+                                }
                                 DeffLoadingView.visibility = View.GONE
-
-                                defeciencyCard.visibility=View.GONE
-                                visitationFormAlphaBackground.visibility = View.GONE
-                                FacilityDataModel.getInstance().tblDeficiency.add(item)
-                                addTheLatestRowOfPortalAdmin()
-
-
                             })
                         }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
+                    Utility.showSubmitAlertDialog(activity, false, "Deficiency")
                     DeffLoadingView.visibility = View.GONE
-
+                    defeciencyCard.visibility=View.GONE
+                    visitationFormAlphaBackground.visibility = View.GONE
                 }))
 
+            } else {
+            Utility.showValidationAlertDialog(activity,"Please fill all required fields")
             }
             // Toast.makeText(context,"please fill all required fields",Toast.LENGTH_SHORT).show()
 

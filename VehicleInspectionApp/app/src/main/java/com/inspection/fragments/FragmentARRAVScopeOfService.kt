@@ -396,56 +396,51 @@ dataChanged=true
 //    }
 
     fun saveBtnPressed() {
-
-
         saveBtnId.setOnClickListener(View.OnClickListener {
-
             if (validateInputs()) {
-
-
-
                 var fixedLaborRate = fixedLaborRateEditText.text.toString()
                 var diagnosticLaborRate = diagnosticRateEditText.text.toString()
                 var laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
                 var laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
                 var numberOfBaysEditText = numberOfBaysEditText.text.toString()
                 var numberOfLiftsEditText = numberOfLiftsEditText.text.toString()
-
-
                 scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
-                Log.v("SOS DATA -----> ","https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat())
+                //Log.v("SOS DATA -----> ","https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat())
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE", response.toString())
-                                scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                                Utility.showSubmitAlertDialog(activity,true,"Scope of Services General Information")
-                                if (dataChanged) {
-                                    if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                        FacilityDataModel.getInstance().tblScopeofService[0].apply {
-                                            LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
-                                            LaborMin = if (watcher_LaborMin.isNullOrBlank())LaborMin else watcher_LaborMin
-                                            FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank())FixedLaborRate else watcher_FixedLaborRate
-                                            DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank())DiagnosticsRate else watcher_DiagnosticsRate
-                                            NumOfBays = if (watcher_NumOfBays.isNullOrBlank())NumOfBays else watcher_NumOfBays
-                                            NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank())NumOfLifts else watcher_NumOfLifts
-                                            for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
-                                                if (typeWarranty.WarrantyTypeName == warrantyPeriodVal.selectedItem) {
-                                                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
+                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                    scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                                    Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
+                                    if (dataChanged) {
+                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                                                LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
+                                                LaborMin = if (watcher_LaborMin.isNullOrBlank()) LaborMin else watcher_LaborMin
+                                                FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FixedLaborRate else watcher_FixedLaborRate
+                                                DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank()) DiagnosticsRate else watcher_DiagnosticsRate
+                                                NumOfBays = if (watcher_NumOfBays.isNullOrBlank()) NumOfBays else watcher_NumOfBays
+                                                NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank()) NumOfLifts else watcher_NumOfLifts
+                                                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
+                                                    if (typeWarranty.WarrantyTypeName == warrantyPeriodVal.selectedItem) {
+                                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
+                                                    }
                                                 }
+                                                checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
                                             }
-                                            checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
                                         }
                                     }
+                                } else {
+                                    Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information")
+                                    scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
                                 }
-
                             })
                         }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
                     Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information")
-//                    Toast.makeText(context,"error while saving page",Toast.LENGTH_SHORT).show()
                 }))
+            } else {
+                Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
             }
         })
     }
@@ -458,47 +453,26 @@ dataChanged=true
             MarkChangeWasDone()
         }
 
-
         if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate) {
-
             MarkChangeWasDone()
-
-
         }
             if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate) {
-
                 MarkChangeWasDone()
-
             }
-
-
             if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays) {
-
                 MarkChangeWasDone()
-
             }
-
-
             if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts) {
-
                 MarkChangeWasDone()
-
             }
-
-
-
     }
+
     fun validateInputs(): Boolean {
-
         scopeOfServiceValide = true
-
         fixedLaborRateEditText.setError(null)
         diagnosticRateEditText.setError(null)
-
         laborRateMatrixMaxEditText.setError(null)
         laborRateMatrixMinEditText.setError(null)
-
-
         if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             fixedLaborRateEditText.setError("Required Field")

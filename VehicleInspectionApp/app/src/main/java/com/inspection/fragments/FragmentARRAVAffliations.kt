@@ -215,6 +215,7 @@ class FragmentARRAVAffliations : Fragment() {
 
 
             if (validateInputs()) {
+
                 affLoadingView.visibility = View.VISIBLE
 
                 var startDate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
@@ -225,110 +226,32 @@ class FragmentARRAVAffliations : Fragment() {
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=&affiliationTypeDetailsId="+affTypeDetailID+"&effDate="+startDate+"&expDate="+endDate+"&comment="+comment+"&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE",response.toString())
+                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                    Utility.showSubmitAlertDialog(activity, true, "Affiliation")
+                                    fillAffTableView()
+                                    altLocationTableRow(2)
+                                } else {
+                                    Utility.showSubmitAlertDialog(activity, false, "Affiliation")
+                                }
                                 affLoadingView.visibility = View.GONE
                                 affiliationsCard.visibility = View.GONE
                                 alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                                fillAffTableView()
-                                altLocationTableRow(2)
-
                             })
                         }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
+                    Utility.showSubmitAlertDialog(activity, false, "Affiliation")
                     affLoadingView.visibility = View.GONE
-
+                    affiliationsCard.visibility = View.GONE
+                    alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                 }))
-            }else
-                Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
-
-
-
-//            for (fac in facilityAffList) {
-//                if (fac.typename.equals(affiliations_textviewVal.selectedItem.toString())){
-//                    context!!.toast("Affiliation Type cannot be duplicated")
-//                    validAffType=false
-//                }
-//            }
-//            if (validAffType) {
-
-//                var item = AAAFacilityAffiliations()
-//                item.affiliationid = -1
-//                item.typename = affiliations_textviewVal.getSelectedItem().toString()
-//                item.typedetailname= afDetails_textviewVal.getSelectedItem().toString()
-//                item.effdate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString()
-//                item.expdate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString()
-//                item.comments=affcomments_editTextVal.text.toString()
-//                facilityAffList.add(facilityAffList.size, item)
-//              //  BuildAffiliationsList()
-//            }
+            }else {
+                Utility.showValidationAlertDialog(activity, "Please fill all required fields")
+            }
         })
-//
-//        affdeleteBtn.setOnClickListener({
-//            var itemFound =false
-//            var item = AAAFacilityAffiliations()
-//            for (fac in facilityAffList) {
-//                if (fac.typename.equals(affiliations_textviewVal.getSelectedItem().toString())){
-//                    item = fac
-//                    itemFound=true
-//                }
-//            }
-//            if (itemFound) {
-//                facilityAffList.remove(item)
-//                //BuildAffiliationsList()
-//            }
-//        })
-//
-//        affeditBtn.setOnClickListener({
-//            for (fac in facilityAffList) {
-//                if (fac.typename.equals(affiliations_textviewVal.getSelectedItem().toString())){
-//                    fac.effdate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE") || afDtlseffective_date_textviewVal.text.isNullOrEmpty() || afDtlseffective_date_textviewVal.text.equals("") || afDtlseffective_date_textviewVal.text.equals("NULL") || afDtlseffective_date_textviewVal.text.toString().toLowerCase().equals("no date provided")) "" else afDtlseffective_date_textviewVal.text.toString()
-//                    fac.expdate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE") || afDtlsexpiration_date_textviewVal.text.isNullOrEmpty() || afDtlsexpiration_date_textviewVal.text.equals("") || afDtlsexpiration_date_textviewVal.text.equals("NULL") || afDtlsexpiration_date_textviewVal.text.toString().toLowerCase().equals("no date provided")) "" else afDtlsexpiration_date_textviewVal.text.toString()
-//                    fac.comments = affcomments_editTextVal.text.toString()
-//                }
-//                //BuildAffiliationsList()
-//            }
-//        })
-//
         prepareAffiliations()
-
-//        affiliations_textviewVal.onItemSelectedListener = AdapterView.OnItemSelectedListener { adapterView, view, i, l ->
-//            if (affiliations_textviewVal.selectedItemPosition==7) {
-//                var afDetailsArray = arrayOf("Amoco", "ARCO", "BP", "Cenex", "Chevron", "CITGO", "Conoco", "Esso", "Exxon", "Gulf", "Hess", "Husky", "Marathon/Speedway", "Mobil", "Petro-Canada", "Phillips 66", "Shell", "Sinclair", "Sunoco", "Texaco", "Union 76")
-//                var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                afDetails_textviewVal.adapter = afDetailsAdapter
-//            } else {
-//                var afDetailsArray = arrayOf("No Details")
-//                var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                afDetails_textviewVal.adapter = afDetailsAdapter
-//            }
-//        }
-
-//        affiliations_textviewVal.setOnItemClickListener({
-//            if (affiliations_textviewVal.selectedItemPosition==7) {
-//                var afDetailsArray = arrayOf("Amoco", "ARCO", "BP", "Cenex", "Chevron", "CITGO", "Conoco", "Esso", "Exxon", "Gulf", "Hess", "Husky", "Marathon/Speedway", "Mobil", "Petro-Canada", "Phillips 66", "Shell", "Sinclair", "Sunoco", "Texaco", "Union 76")
-//                var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                afDetails_textviewVal.adapter = afDetailsAdapter
-//            } else {
-//                var afDetailsArray = arrayOf("No Details")
-//                var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                afDetails_textviewVal.adapter = afDetailsAdapter
-//            }
-//
-//        })
-
     }
 
 
     fun prepareAffiliations () {
-
-//        affTypesArray.clear()
-//        var typeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesArray)
-//        typeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        affiliations_textviewVal.adapter = typeAdapter
 
         // SAEED Need to implement dependency between Type & Type Detail
 
@@ -580,38 +503,27 @@ class FragmentARRAVAffliations : Fragment() {
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "&affiliationId=4931&affiliationTypeId=19&affiliationTypeDetailsId=63&effDate=1900-01-01T00:00:00&expDate=2013-11-13T00:00:00&comment=per%2011/13/13%20visitation&active=1&insertBy=sa&insertDate=2014-07-23T22:15:44.150&updateBy=SumA&updateDate=2014-07-23T22:15:44.150",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread(Runnable {
-                                            Log.v("RESPONSE", response.toString())
+                                            if (response.toString().contains("returnCode&gt;0&",false)) {
+                                                Utility.showSubmitAlertDialog(activity, true, "Affiliation")
+                                                fillAffTableView()
+                                                altLocationTableRow(2)
+                                            } else {
+                                                Utility.showSubmitAlertDialog(activity, false, "Affiliation")
+                                            }
                                             affLoadingView.visibility = View.GONE
-//
-//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].startDate = edit_startDateButton.text.toString()
-//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].PortalInspectionDate = "" + date
-//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].LoggedIntoPortal = "" + isLoggedInRsp
-//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-//                                        FacilityDataModel.getInstance().tblAffiliations[indexToRemove-1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-//
-
                                             edit_affiliationsCard.visibility = View.GONE
                                             alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-
-                                            fillAffTableView()
-                                            altLocationTableRow(2)
-
                                         })
                                     }, Response.ErrorListener {
-                                Log.v("error while loading", "error while loading personnal record")
+                                Utility.showSubmitAlertDialog(activity, false, "Affiliation")
                                 affLoadingView.visibility = View.GONE
-
+                                edit_affiliationsCard.visibility = View.GONE
+                                alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                             }))
-
                         } else
-                            Toast.makeText(context, "please fill all required field", Toast.LENGTH_SHORT).show()
-
-
+                            Utility.showValidationAlertDialog(activity,"Please fill all the required activity")
                     }
-
                     mainAffTableLayout.addView(tableRow)
-                    // Toast.makeText(context,indexToRemove.toString(),Toast.LENGTH_SHORT).show()
-
                 }
             }
         }

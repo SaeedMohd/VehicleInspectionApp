@@ -152,7 +152,6 @@
         </activity>
         <activity
             android:name=".FormsActivity"
-            android:label="@string/title_activity_forms"
             android:theme="@style/myAppTheme"
         android:windowSoftInputMode="stateHidden"
             ></activity>

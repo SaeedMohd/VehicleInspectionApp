@@ -450,8 +450,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 override fun onFailure(call: Call?, e: IOException?) {
                     Log.v("failure http", "failed with exception : " + e!!.message)
                     activity!!.runOnUiThread(Runnable {
-//                        activity!!.toast("Error while loading large data")
-                        Utility.showMessageDialog(activity,"Retrieve Data Error",e.message)
+                        //                        activity!!.toast("Error while loading large data")
+                        Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
                         recordsProgressView.visibility = View.INVISIBLE
 
 
@@ -463,9 +463,10 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                     var responseString = response!!.body()!!.string()
                     //  activity!!.toast("success!!!")
                     //     recordsProgressView.visibility = View.INVISIBLE
-                    Log.v("*****u got a  response", Constants.getVisitations+parametersString)
 
-
+                    if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
+                        Utility.showMessageDialog(activity,"Retrieve Data Error","The underlying connection was closed: An unexpected error occurred on a send")
+                    } else {
                     var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                     var jsonObj = obj.getJSONObject("responseXml")
 
@@ -480,6 +481,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                         visitationfacilityListView.adapter = visitationPlanningAdapter
                     }
                 }
+            }
             })
 
 
@@ -487,13 +489,17 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
-                            var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                            var jsonObj = obj.getJSONObject("responseXml")
-                            var visitationsModel = parseVisitationsData(jsonObj)
-                            recordsProgressView.visibility = View.GONE
-                            visitationfacilityListView.visibility = View.VISIBLE
-                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                            visitationfacilityListView.adapter = visitationPlanningAdapter
+                            if (response.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
+                                Utility.showMessageDialog(activity, "Retrieve Data Error", "The underlying connection was closed: An unexpected error occurred on a send")
+                            } else {
+                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                                var jsonObj = obj.getJSONObject("responseXml")
+                                var visitationsModel = parseVisitationsData(jsonObj)
+                                recordsProgressView.visibility = View.GONE
+                                visitationfacilityListView.visibility = View.VISIBLE
+                                var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                visitationfacilityListView.adapter = visitationPlanningAdapter
+                            }
                         })
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading visitation records")
@@ -692,52 +698,55 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
 
                 var responseString = response!!.body()!!.string()
                 Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
-                var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                var jsonObj = obj.getJSONObject("responseXml")
-                TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
+                if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
+                    Utility.showMessageDialog(activity,"Retrieve Data Error","The underlying connection was closed: An unexpected error occurred on a send")
+                } else {
+                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                    var jsonObj = obj.getJSONObject("responseXml")
+                    TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
 
-                Log.v("requesting=========>", request2.url().toString());
-                Log.v("time out valueeeeee", ""+client.connectTimeoutMillis()/1000)
-                Log.v("read time out valuee", ""+client.readTimeoutMillis()/1000)
+                    Log.v("requesting=========>", request2.url().toString());
+                    Log.v("time out valueeeeee", "" + client.connectTimeoutMillis() / 1000)
+                    Log.v("read time out valuee", "" + client.readTimeoutMillis() / 1000)
 
-                client.newCall(request2).enqueue(object : Callback {
-                    override fun onFailure(call: Call?, e: IOException?) {
-                        activity!!.runOnUiThread(Runnable {
-                            Log.v("******eerrrrrror", ""+e!!.message)
+                    client.newCall(request2).enqueue(object : Callback {
+                        override fun onFailure(call: Call?, e: IOException?) {
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("******eerrrrrror", "" + e!!.message)
 //                            context!!.toast("Origin ERROR Connection Error. Please check internet connection")
-                            Utility.showMessageDialog(activity,"Retrieve Data Error","Origin ERROR Connection Error. Please check internet connection - "+e.message)
-                        })
-                    }
+                                Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e.message)
+                            })
+                        }
 
-                    override fun onResponse(call: Call?, response: okhttp3.Response?) {
-                        Log.v("GetFacilityData replied", "GetFacilityData replied")
-                        var responseString = response!!.body()!!.string()
-                        activity!!.runOnUiThread(Runnable {
-                            Log.v("POPOOriginal", responseString)
-                            recordsProgressView.visibility = View.GONE
-                            if (!responseString.contains("FacID not found")) {
-                                if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
-                                    Utility.showMessageDialog(activity,"Retrieve Data Error","The underlying connection was closed: An unexpected error occurred on a send")
-                                } else {
-                                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-                                            .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                                    var jsonObj = obj.getJSONObject("responseXml")
-                                    jsonObj = removeEmptyJsonTags(jsonObj)
-                                    parseFacilityDataJsonToObject(jsonObj)
-                                    var intent = Intent(context, com.inspection.FormsActivity::class.java)
+                        override fun onResponse(call: Call?, response: okhttp3.Response?) {
+                            Log.v("GetFacilityData replied", "GetFacilityData replied")
+                            var responseString = response!!.body()!!.string()
+                            activity!!.runOnUiThread(Runnable {
+                                Log.v("POPOOriginal", responseString)
+                                recordsProgressView.visibility = View.GONE
+                                if (!responseString.contains("FacID not found")) {
+                                    if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
+                                        Utility.showMessageDialog(activity, "Retrieve Data Error", "The underlying connection was closed: An unexpected error occurred on a send")
+                                    } else {
+                                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+                                                .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+                                        var jsonObj = obj.getJSONObject("responseXml")
+                                        jsonObj = removeEmptyJsonTags(jsonObj)
+                                        parseFacilityDataJsonToObject(jsonObj)
+                                        var intent = Intent(context, com.inspection.FormsActivity::class.java)
 //                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            } else {
+                                        startActivity(intent)
+                                    }
+                                } else {
 //                                context!!.toast("Facility data not found")
-                                Utility.showMessageDialog(activity,"Retrieve Data Error","Facility data not found")
-                            }
-                        })
-                    }
+                                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
+                                }
+                            })
+                        }
 
-                })
+                    })
 
-
+                }
             }
 
         })
