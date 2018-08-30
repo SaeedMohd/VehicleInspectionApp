@@ -191,7 +191,7 @@ class FragmentVisitation : Fragment() {
 
         dateOfVisitationButton.text = Date().toAppFormatMMDDYYYY()
 
-        //clubCodeEditText.setText(FacilityDataModel.getInstance().tblFacilities[0].)
+        clubCodeEditText.setText(FacilityDataModel.getInstance().clubCode)
 
 
         facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)

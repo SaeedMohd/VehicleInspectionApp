@@ -289,6 +289,8 @@ class FragmentARRAVDeficiency : Fragment() {
                                     Utility.showSubmitAlertDialog(activity, false, "Deficiency")
                                 }
                                 DeffLoadingView.visibility = View.GONE
+                                defeciencyCard.visibility=View.GONE
+                                visitationFormAlphaBackground.visibility = View.GONE
                             })
                         }, Response.ErrorListener {
                     Utility.showSubmitAlertDialog(activity, false, "Deficiency")
@@ -301,13 +303,8 @@ class FragmentARRAVDeficiency : Fragment() {
             Utility.showValidationAlertDialog(activity,"Please fill all required fields")
             }
             // Toast.makeText(context,"please fill all required fields",Toast.LENGTH_SHORT).show()
-
-
         })
-
         altDeffTableRow(2)
-
-
     }
 
     fun addTheLatestRowOfPortalAdmin() {
