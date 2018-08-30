@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateDeficiencyData
@@ -36,6 +38,7 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_Nu
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import java.text.SimpleDateFormat
@@ -80,9 +83,7 @@ class FragmentARRAVDeficiency : Fragment() {
         fillDeffTableView()
         fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
-
-
-
+        if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
         exitDeffeciencyDialogeBtnId.setOnClickListener({
 
             defeciencyCard.visibility=View.GONE
@@ -281,6 +282,9 @@ class FragmentARRAVDeficiency : Fragment() {
                                     Utility.showSubmitAlertDialog(activity, true, "Deficiency")
                                     FacilityDataModel.getInstance().tblDeficiency.add(item)
                                     addTheLatestRowOfPortalAdmin()
+                                    IndicatorsDataModel.getInstance().validateDeffecienciesSection()
+                                    if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
                                     Utility.showSubmitAlertDialog(activity, false, "Deficiency")
                                 }

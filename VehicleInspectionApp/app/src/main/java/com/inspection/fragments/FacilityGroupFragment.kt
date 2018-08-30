@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -168,10 +169,15 @@ class FacilityGroupFragment : Fragment() {
 
     fun refreshTabIndicators() {
         var indicatorImage: ImageView;
-        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) facGIIndicator.setBackgroundResource(R.drawable.green_background_button) else facGIIndicator.setBackgroundResource(R.drawable.red_button_background)
-        if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) facRSPIndicator.setBackgroundResource(R.drawable.green_background_button) else facRSPIndicator.setBackgroundResource(R.drawable.red_button_background)
-        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) facPersonnelIndicator.setBackgroundResource(R.drawable.green_background_button) else facPersonnelIndicator.setBackgroundResource(R.drawable.red_button_background)
-        if (IndicatorsDataModel.getInstance().tblFacility[0].Location) facLocationIndicator.setBackgroundResource(R.drawable.green_background_button) else facLocationIndicator.setBackgroundResource(R.drawable.red_button_background)
+//        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) facGIIndicator.setBackgroundResource(R.drawable.green_background_button) else facGIIndicator.setBackgroundResource(R.drawable.red_button_background)
+//        if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) facRSPIndicator.setBackgroundResource(R.drawable.green_background_button) else facRSPIndicator.setBackgroundResource(R.drawable.red_button_background)
+//        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) facPersonnelIndicator.setBackgroundResource(R.drawable.green_background_button) else facPersonnelIndicator.setBackgroundResource(R.drawable.red_button_background)
+//        if (IndicatorsDataModel.getInstance().tblFacility[0].Location) facLocationIndicator.setBackgroundResource(R.drawable.green_background_button) else facLocationIndicator.setBackgroundResource(R.drawable.red_button_background)
+        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) rspButton.setTextColor(Color.parseColor("#26C3AA")) else rspButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) personnelButton.setTextColor(Color.parseColor("#26C3AA")) else personnelButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].Location) contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+        amendmentOrdersTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
     }
 
     /**

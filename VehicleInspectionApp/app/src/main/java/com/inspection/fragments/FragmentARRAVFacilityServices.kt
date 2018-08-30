@@ -3,6 +3,7 @@ package com.inspection.fragments
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,14 +16,17 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityServicesData
 import com.inspection.Utils.Utility.showValidationAlertDialog
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
+import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -153,6 +157,9 @@ class FragmentARRAVFacilityServices : Fragment() {
                                     Utility.showSubmitAlertDialog(activity, true, "Facility Services")
                                     FacilityDataModel.getInstance().tblFacilityServices.add(item)
                                     addTheLatestRowOfPortalAdmin()
+                                    IndicatorsDataModel.getInstance().validateSOSFacilityServices()
+                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
                                     Utility.showSubmitAlertDialog(activity, false, "Facility Services")
                                 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 //import android.app.Fragment
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
@@ -22,14 +23,17 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdatePaymentMethodsData
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.app_bar_forms.*
+import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import org.w3c.dom.Text
 import java.text.SimpleDateFormat
@@ -301,10 +305,9 @@ class FacilityGeneralInformationFragment : Fragment() {
             if (validateInputs()){
                 submitFacilityGeneralInfo()
                 submitPaymentMethods()
-//                Toast.makeText(context,"inputs validated",Toast.LENGTH_SHORT).show()
+
         }else
             {
-//                Toast.makeText(context,"please fill requred fields",Toast.LENGTH_SHORT).show()
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
             }
         }
@@ -778,6 +781,9 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
                             FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
                             FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
+                            IndicatorsDataModel.getInstance().validateFacilityGeneralInfo()
+                            if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+                            (activity as FormsActivity).refreshMenuIndicators()
                         } else {
                             Utility.showSubmitAlertDialog(activity,false,"Facility General Information")
                         }
@@ -836,13 +842,14 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                         } else {
                             Utility.showSubmitAlertDialog(activity,false,"Payment Methods")
                         }
-
+                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfo()
+                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+                        (activity as FormsActivity).refreshMenuIndicators()
                     })
                 }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading personnal record")
                 Utility.showSubmitAlertDialog(activity,false,"Payment Methods")
-
         }))
+
 
     }
     fun scopeOfServiceChangesWatcher() {

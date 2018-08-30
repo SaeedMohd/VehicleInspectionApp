@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
 import com.inspection.FormsActivity
 
@@ -256,9 +258,20 @@ class ScopeOfServiceGroupFragment : Fragment() {
             }
         }
         IndicatorsDataModel.getInstance().validateSoSSection()
+        refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicators()
     }
 
+    fun refreshTabIndicators() {
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Programs) programsButton.setTextColor(Color.parseColor("#26C3AA")) else programsButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
+        vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA"))
+        vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
+        promotionsButton.setTextColor(Color.parseColor("#26C3AA"))
+        awardsAndDistinctionsButton.setTextColor(Color.parseColor("#26C3AA"))
+    }
 
     /**
      * This interface must be implemented by activities that contain this

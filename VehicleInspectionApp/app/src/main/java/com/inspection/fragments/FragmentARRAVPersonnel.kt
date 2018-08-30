@@ -3,6 +3,7 @@ package com.inspection.fragments
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -18,16 +19,15 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.*
-import com.inspection.model.AAAPersonnelDetails
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.FacilityDataModelOrg
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
+import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
 
 import java.text.SimpleDateFormat
@@ -396,9 +396,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
                 item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
-                FacilityDataModel.getInstance().tblPersonnel.add(item)
 
-                addTheLatestRowOfPortalAdmin()
+
 
                 for (i in 0 until mainViewLinearId.childCount) {
                     val child = mainViewLinearId.getChildAt(i)
@@ -418,11 +417,17 @@ class FragmentARRAVPersonnel : Fragment() {
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityGeneralInfo + urlString,
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE", response.toString())
+                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                    Utility.showSubmitAlertDialog(activity, true, "Certification")
+                                    FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                    addTheLatestRowOfPortalAdmin()
+                                } else {
+                                    Utility.showSubmitAlertDialog(activity, false, "Certification")
+                                }
                                 personnelLoadingView.visibility = View.GONE
                             })
                         }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading certificate record")
+                    Utility.showSubmitAlertDialog(activity, false, "Certification")
                     personnelLoadingView.visibility = View.GONE
 
                 }))
@@ -529,6 +534,9 @@ class FragmentARRAVPersonnel : Fragment() {
                                         }
                                     }
                                 }
+                                IndicatorsDataModel.getInstance().validateFacilityPersonnel()
+                                if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                (activity as FormsActivity).refreshMenuIndicators()
                             } else {
                                 Utility.showSubmitAlertDialog(activity, false, "Personnel")
                             }
@@ -1770,45 +1778,50 @@ class FragmentARRAVPersonnel : Fragment() {
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread(Runnable {
-                                            Log.v("RESPONSE", response.toString())
+                                            if (response.toString().contains("returnCode&gt;0&",false)) {
+                                                Utility.showSubmitAlertDialog(activity, true, "Personnel")
 //
-                                            var item = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
-                                            for (fac in TypeTablesModel.getInstance().PersonnelType) {
-                                                if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+                                                var item = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
+                                                for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                                                    if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
 
-                                                    item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
+                                                        item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
+                                                }
+
+                                                item.FirstName = if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
+                                                item.LastName = if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                                item.RSP_UserName = if (edit_rspUserId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                                item.RSP_Email = if (edit_rspEmailId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
+                                                item.CertificationNum = if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
+                                                item.ContractSigner = if (edit_newSignerCheck.isChecked == true) true else false
+                                                item.PrimaryMailRecipient = if (edit_newACSCheck.isChecked == true) true else false
+                                                item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
+                                                item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
+                                                item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
+
+                                                fillPersonnelTableView()
+                                                altTableRow(2)
+                                                edit_personnelLoadingView.visibility = View.GONE
+
+                                                for (i in 0 until mainViewLinearId.childCount) {
+                                                    val child = mainViewLinearId.getChildAt(i)
+                                                    child.isEnabled = true
+                                                }
+
+                                                for (i in 0 until mainViewLinearId2.childCount) {
+                                                    val child = mainViewLinearId2.getChildAt(i)
+                                                    child.isEnabled = true
+                                                }
+
+                                                IndicatorsDataModel.getInstance().validateFacilityPersonnel()
+                                                if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                                (activity as FormsActivity).refreshMenuIndicators()
+                                            } else {
+                                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
                                             }
-
-                                            item.FirstName = if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
-                                            item.LastName = if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
-                                            item.RSP_UserName = if (edit_rspUserId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
-                                            item.RSP_Email = if (edit_rspEmailId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
-                                            item.CertificationNum = if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
-                                            item.ContractSigner = if (edit_newSignerCheck.isChecked == true) true else false
-                                            item.PrimaryMailRecipient = if (edit_newACSCheck.isChecked == true) true else false
-                                            item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
-                                            item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
-                                            item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
-
-                                            fillPersonnelTableView()
-                                            altTableRow(2)
-                                            edit_personnelLoadingView.visibility = View.GONE
-
-                                            for (i in 0 until mainViewLinearId.childCount) {
-                                                val child = mainViewLinearId.getChildAt(i)
-                                                child.isEnabled = true
-                                            }
-
-                                            for (i in 0 until mainViewLinearId2.childCount) {
-                                                val child = mainViewLinearId2.getChildAt(i)
-                                                child.isEnabled = true
-                                            }
-
-
-
                                         })
                                     }, Response.ErrorListener {
-                                Log.v("error while loading", "error while loading personnal record")
+                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
                                 personnelLoadingView.visibility = View.GONE
 
                             }))

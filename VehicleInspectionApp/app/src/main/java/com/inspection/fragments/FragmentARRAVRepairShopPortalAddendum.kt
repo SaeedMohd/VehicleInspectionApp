@@ -3,6 +3,7 @@ package com.inspection.fragments
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -22,9 +23,12 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAARPortalAdminData
 import com.inspection.model.FacilityDataModelOrg
+import com.inspection.model.IndicatorsDataModel
+import kotlinx.android.synthetic.main.facility_group_layout.*
 
 
 /**
@@ -258,27 +262,32 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
-                                Log.v("RESPONSE_LOOK",response.toString())
+                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                    Utility.showSubmitAlertDialog(activity, true, "RSP")
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
+                                    fillPortalTrackingTableView()
+                                    altLocationTableRow(2)
+                                    IndicatorsDataModel.getInstance().validateFacilityRSP()
+                                    if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicators()
+                                } else {
+                                    Utility.showSubmitAlertDialog(activity, false, "RSP")
+                                }
                                 RSP_LoadingView.visibility = View.GONE
-
-
                                 alphaBackgroundForRSPDialogs.visibility = View.GONE
                                 addNewAAR_PortalTrackingCard.visibility = View.GONE
-                                FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
-                                fillPortalTrackingTableView()
-                                altLocationTableRow(2)
-
-
-
-
                             })
                         }, Response.ErrorListener {
-                    Log.v("error while loading", "error while loading personnal record")
+                    Utility.showSubmitAlertDialog(activity, false, "RSP")
                     RSP_LoadingView.visibility = View.GONE
-
+                    alphaBackgroundForRSPDialogs.visibility = View.GONE
+                    addNewAAR_PortalTrackingCard.visibility = View.GONE
                 }))
-            }else
-                Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
+            } else {
+                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+            }
+
+//                Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
 
 
 
@@ -722,31 +731,34 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
-                                        Log.v("RESPONSE",response.toString())
-                                        Log.v("RowIndex",rowIndex.toString())
-
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].startDate = edit_startDateButton.text.toString()
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].PortalInspectionDate = "" + date
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].LoggedIntoPortal = "" + isLoggedInRsp
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex-1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
-
-                                            RSP_LoadingView.visibility = View.GONE
-                                            alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                            edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                                            Utility.showSubmitAlertDialog(activity, true, "RSP")
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].startDate = edit_startDateButton.text.toString()
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].PortalInspectionDate = "" + date
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
+                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
                                             fillPortalTrackingTableView()
                                             altLocationTableRow(2)
-
-
-
+                                            IndicatorsDataModel.getInstance().validateFacilityRSP()
+                                            if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
+                                            (activity as FormsActivity).refreshMenuIndicators()
+                                        } else {
+                                            Utility.showSubmitAlertDialog(activity, false, "RSP")
+                                        }
+                                        RSP_LoadingView.visibility = View.GONE
+                                        alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                        edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
 
                                     })
                                 }, Response.ErrorListener {
-                            Log.v("error while loading", "error while loading personnal record")
+                            Utility.showSubmitAlertDialog(activity, false, "RSP")
                             RSP_LoadingView.visibility = View.GONE
+                            alphaBackgroundForRSPDialogs.visibility = View.GONE
+                            edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
 
                         }))
 

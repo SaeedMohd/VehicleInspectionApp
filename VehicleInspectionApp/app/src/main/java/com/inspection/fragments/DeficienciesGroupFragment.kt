@@ -79,9 +79,10 @@ class DeficienciesGroupFragment : Fragment() {
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
         }
-        IndicatorsDataModel.getInstance().validateFacilitySection()
-        (activity as FormsActivity).refreshMenuIndicators()
+
     }
+
+
 
 
     /**

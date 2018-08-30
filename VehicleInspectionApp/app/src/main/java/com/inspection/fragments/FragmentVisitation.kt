@@ -68,7 +68,7 @@ class FragmentVisitation : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        // Inflate the layo ut for this fragment
         return inflater!!.inflate(R.layout.fragment_visitation_form, container, false)
     }
 
@@ -80,6 +80,8 @@ class FragmentVisitation : Fragment() {
         initializeFields()
         setFieldsValues()
         setFieldsListeners()
+
+        if (IndicatorsDataModel.getInstance().tblVisitation[0].Visitation) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
 
 
     }
@@ -306,6 +308,9 @@ class FragmentVisitation : Fragment() {
         completeButton.setOnClickListener(View.OnClickListener {
             if (validateInputs()) {
 //                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
+                IndicatorsDataModel.getInstance().validateVisitationSection()
+                if (IndicatorsDataModel.getInstance().tblVisitation[0].Visitation) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
+                (activity as FormsActivity).refreshMenuIndicators()
             } else
 //                Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")

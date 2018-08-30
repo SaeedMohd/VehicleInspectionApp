@@ -3,6 +3,7 @@ package com.inspection.fragments
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -23,6 +24,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.drive.events.ChangeListener
 import com.google.gson.Gson
+import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateProgramsData
@@ -45,6 +47,7 @@ import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
+import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import org.json.JSONObject
 import java.text.DateFormat
 import java.text.ParseException
@@ -272,6 +275,9 @@ class FragmentARRAVPrograms : Fragment() {
                                     programsLoadingView.visibility = View.GONE
                                     alphaBackgroundForProgramDialogs.visibility = View.GONE
                                     //checkMarkChangesWasDone()
+                                    IndicatorsDataModel.getInstance().validateSOSPrograms()
+                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Programs) (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicators()
 
                                 })
                             }, Response.ErrorListener {

@@ -25,15 +25,14 @@
                 android:background="@color/transparent"
                 android:text="General Information" />
 
-            <ImageView
-                android:id="@+id/facGIIndicator"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/red_button_background" />
-
+            <!--<ImageView-->
+                <!--android:id="@+id/facGIIndicator"-->
+                <!--android:layout_width="15dp"-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:background="@drawable/red_button_background" />-->
             <Button
                 android:id="@+id/rspButton"
                 android:layout_width="wrap_content"
@@ -43,14 +42,14 @@
                 android:background="@color/transparent"
                 android:text="RSP" />
 
-            <ImageView
-                android:id="@+id/facRSPIndicator"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/red_button_background" />
+            <!--<ImageView-->
+                <!--android:id="@+id/facRSPIndicator"-->
+                <!--android:layout_width="15dp"-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:background="@drawable/red_button_background" />-->
 
             <Button
                 android:id="@+id/contactInfoButton"
@@ -61,14 +60,14 @@
                 android:background="@color/transparent"
                 android:text="Contact Info" />
 
-            <ImageView
-                android:id="@+id/facLocationIndicator"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/red_button_background" />
+            <!--<ImageView-->
+                <!--android:id="@+id/facLocationIndicator"-->
+                <!--android:layout_width="15dp"-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:background="@drawable/red_button_background" />-->
 
             <Button
                 android:id="@+id/personnelButton"
@@ -79,14 +78,14 @@
                 android:background="@color/transparent"
                 android:text="Personnel" />
 
-            <ImageView
-                android:id="@+id/facPersonnelIndicator"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/red_button_background" />
+            <!--<ImageView-->
+                <!--android:id="@+id/facPersonnelIndicator"-->
+                <!--android:layout_width="15dp"-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:background="@drawable/red_button_background" />-->
 
             <!--<Button-->
             <!--android:id="@+id/visitationTrackingButton"-->

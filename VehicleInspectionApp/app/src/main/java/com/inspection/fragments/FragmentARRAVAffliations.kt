@@ -4,6 +4,7 @@ package com.inspection.fragments
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -17,15 +18,14 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAffiliationsData
-import com.inspection.model.AAAAffiliationTypes
-import com.inspection.model.AAAFacilityAffiliations
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
+import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -230,6 +230,9 @@ class FragmentARRAVAffliations : Fragment() {
                                     Utility.showSubmitAlertDialog(activity, true, "Affiliation")
                                     fillAffTableView()
                                     altLocationTableRow(2)
+                                    IndicatorsDataModel.getInstance().validateSOSAffiliations()
+                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
                                     Utility.showSubmitAlertDialog(activity, false, "Affiliation")
                                 }

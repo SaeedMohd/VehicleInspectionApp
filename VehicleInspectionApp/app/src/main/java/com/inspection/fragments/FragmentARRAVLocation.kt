@@ -19,16 +19,15 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 import com.inspection.MainActivity
 
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityLanguageData
 import com.inspection.adapter.LanguageListAdapter
-import com.inspection.model.AAALocations
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.FacilityDataModelOrg
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
+import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import java.text.SimpleDateFormat
@@ -484,7 +483,9 @@ class FragmentARRAVLocation : Fragment() {
                                 FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
                                 FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
                                 fillLocationTableView()
-
+                                IndicatorsDataModel.getInstance().validateFacilityLocation()
+                                if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+                                (activity as FormsActivity).refreshMenuIndicators()
                             } else {
                                 Utility.showSubmitAlertDialog(activity, false, "Facility Location")
                             }
@@ -496,7 +497,6 @@ class FragmentARRAVLocation : Fragment() {
                         Utility.showSubmitAlertDialog(activity,true,"Facility Location")
                         contactInfoLoadingView.visibility = View.GONE
                         enableAllAddButnsAndDialog()
-
                         Log.v("error while submitting", "LOCATION Details")
             }))
 
@@ -610,6 +610,11 @@ class FragmentARRAVLocation : Fragment() {
         if (phyloc1addr1latitude.text.toString().isNullOrEmpty()) {
             isInputsValid = false
             phyloc1addr1latitude.setError("Required Field")
+        }
+
+        if (nightDropCheck.isChecked && nightDropInstText.text.isNullOrEmpty()){
+            isInputsValid = false
+            nightDropInstText.setError("Required Field")
         }
 
 //        if (newStateSpinner.selectedItem.toString().contains("select")){
@@ -747,6 +752,9 @@ class FragmentARRAVLocation : Fragment() {
                                             Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
                                             fillPhoneTableView()
                                             FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
+                                            IndicatorsDataModel.getInstance().validateFacilityLocation()
+                                            if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+                                            (activity as FormsActivity).refreshMenuIndicators()
                                         } else {
                                             Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
                                         }
@@ -1337,6 +1345,9 @@ class FragmentARRAVLocation : Fragment() {
                             Utility.showSubmitAlertDialog(activity, true, "Facility Email")
                             FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
                             fillEmailTableView()
+                            IndicatorsDataModel.getInstance().validateFacilityLocation()
+                            if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+                            (activity as FormsActivity).refreshMenuIndicators()
                         } else {
                             Utility.showSubmitAlertDialog(activity, false, "Facility Email")
                         }
@@ -1382,7 +1393,26 @@ class FragmentARRAVLocation : Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         if (response.toString().contains("returnCode&gt;0&",false)) {
+                            FacilityDataModel.getInstance().tblHours[0].MonClose = monClose
+                            FacilityDataModel.getInstance().tblHours[0].SunClose = sunClose
+                            FacilityDataModel.getInstance().tblHours[0].SatClose = satClose
+                            FacilityDataModel.getInstance().tblHours[0].FriClose = friClose
+                            FacilityDataModel.getInstance().tblHours[0].ThuClose = thuClose
+                            FacilityDataModel.getInstance().tblHours[0].WedClose = wedClose
+                            FacilityDataModel.getInstance().tblHours[0].TueClose = tueClose
+                            FacilityDataModel.getInstance().tblHours[0].MonOpen = monOpen
+                            FacilityDataModel.getInstance().tblHours[0].SunOpen = sunOpen
+                            FacilityDataModel.getInstance().tblHours[0].SatOpen = satOpen
+                            FacilityDataModel.getInstance().tblHours[0].FriOpen = friOpen
+                            FacilityDataModel.getInstance().tblHours[0].ThuOpen = thuOpen
+                            FacilityDataModel.getInstance().tblHours[0].WedOpen = wedOpen
+                            FacilityDataModel.getInstance().tblHours[0].TueOpen = tueOpen
+                            FacilityDataModel.getInstance().tblHours[0].NightDrop= nightDropCheck.isChecked
+                            FacilityDataModel.getInstance().tblHours[0].NightDropInstr = nightDropInstText.text.toString()
                             Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Nigh Drop")
+                            IndicatorsDataModel.getInstance().validateFacilityLocation()
+                            if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+                            (activity as FormsActivity).refreshMenuIndicators()
                         } else {
                             Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Nigh Drop")
                         }
@@ -1476,6 +1506,9 @@ class FragmentARRAVLocation : Fragment() {
                             Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
                             FacilityDataModel.getInstance().tblPhone.add(newPhone)
                             fillPhoneTableView()
+                            IndicatorsDataModel.getInstance().validateFacilityLocation()
+                            if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+                            (activity as FormsActivity).refreshMenuIndicators()
                         } else {
                             Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
                         }

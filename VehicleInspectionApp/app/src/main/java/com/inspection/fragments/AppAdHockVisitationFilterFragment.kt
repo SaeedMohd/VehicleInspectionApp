@@ -415,8 +415,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
                 var responseString = response!!.body()!!.string()
                 Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
-                if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
-                    Utility.showMessageDialog(activity, "Retrieve Data Error", "The underlying connection was closed: An unexpected error occurred on a send")
+                if (responseString.toString().contains("returnCode&gt;1&",false)) {
+                    Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message")+12,responseString.indexOf("&lt;/message")))
                 } else {
                     var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                     var jsonObj = obj.getJSONObject("responseXml")
@@ -443,8 +443,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
 
                                 recordsProgressView.visibility = View.GONE
                                 if (!responseString.contains("FacID not found")) {
-                                    if (responseString.contains("The underlying connection was closed: An unexpected error occurred on a send")) {
-                                        Utility.showMessageDialog(activity, "Retrieve Data Error", "The underlying connection was closed: An unexpected error occurred on a send")
+                                    if (responseString.toString().contains("returnCode&gt;1&",false)) {
+                                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message")+12,responseString.indexOf("&lt;/message")))
                                     } else {
                                         var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
                                                 .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))

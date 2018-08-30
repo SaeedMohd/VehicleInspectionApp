@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -37,7 +38,9 @@ import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.Utility
 import com.inspection.Utils.toApiSubmitFormat
 import com.inspection.model.FacilityDataModelOrg
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
 import kotlin.jvm.java
 import kotlin.properties.Delegates
@@ -430,6 +433,9 @@ dataChanged=true
                                             }
                                         }
                                     }
+                                    IndicatorsDataModel.getInstance().validateSoSGeneral()
+                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
                                     Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information")
                                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
