@@ -226,10 +226,10 @@ public class Utility {
 //    }
 
     //------------Show Messege Dialog
-    public static final void showMessageDialog(Context contex, String title,
+    public static final void showMessageDialog(Context context, String title,
                                                String message) {
         if (message != null && message.trim().length() > 0) {
-            Builder builder = new AlertDialog.Builder(contex);
+            Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(title);
             builder.setMessage(message);
             builder.setPositiveButton("OK",
@@ -239,6 +239,13 @@ public class Utility {
                         }
                     });
             builder.show();
+//            context.runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            });
+
         }
     }
 
@@ -630,6 +637,14 @@ public class Utility {
         alertDialog.show();
     }
 
+
+    public static void showSaveOrCancelAlertDialog(Activity activity){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+        alertDialog.setTitle("Validation ...");
+        alertDialog.setMessage("Please save or Cancel the changes first");
+        alertDialog.setNegativeButton("Ok",null);
+        alertDialog.show();
+    }
 
 //    public static VinResolvedObject resolveVin(String VIN) {
 //        Utility.VehiclePofileData = new ArrayList<VehicleProfileModel>();

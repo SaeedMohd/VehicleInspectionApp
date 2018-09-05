@@ -27,6 +27,7 @@ import com.inspection.FormsActivity
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAARPortalAdminData
 import com.inspection.model.FacilityDataModelOrg
+import com.inspection.model.HasChangedModel
 import com.inspection.model.IndicatorsDataModel
 import kotlinx.android.synthetic.main.facility_group_layout.*
 
@@ -265,8 +266,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "RSP")
                                     FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
+//                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP= true
                                     fillPortalTrackingTableView()
                                     altLocationTableRow(2)
+                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
                                     IndicatorsDataModel.getInstance().validateFacilityRSP()
                                     if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
                                     (activity as FormsActivity).refreshMenuIndicators()
@@ -741,8 +744,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                             FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
                                             FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
                                             FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
+//                                            HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP= true
                                             fillPortalTrackingTableView()
                                             altLocationTableRow(2)
+                                            HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
                                             IndicatorsDataModel.getInstance().validateFacilityRSP()
                                             if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
                                             (activity as FormsActivity).refreshMenuIndicators()

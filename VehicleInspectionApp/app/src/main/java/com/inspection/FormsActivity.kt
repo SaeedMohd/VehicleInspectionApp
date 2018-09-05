@@ -21,6 +21,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import com.inspection.R.drawable.circle
+import com.inspection.Utils.Utility
 import com.inspection.fragments.*
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
@@ -31,18 +32,29 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_La
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.HasChangedModel
 import com.inspection.model.IndicatorsDataModel
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 
+enum class fragmentsNames {
+    FacilityGeneralInfo, FacilityContactInfo,FacilityRSP,FacilityPersonnel,FacilityAmedndmentsOrderTracking,
+    Visitation,
+    SoSGeneralInfo,
+    Deficiency,
+    Comments,
+    Complaints,
+    Billing,
+    Surveys,
+    Photos
+}
 
 class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-
-
+    var currentFragment = ""
+    var saveRequired = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         setContentView(R.layout.activity_forms)
         setSupportActionBar(toolbar)
@@ -79,13 +91,14 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == FacilityDataModel.VisitationTypes.AdHoc) {
             navigationMenu.findItem(R.id.visitation).isEnabled = false
             navigationMenu.findItem(R.id.visitation).isVisible = false
-
+            currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
             this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
 //            toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
 
         }else{
             navigationMenu.findItem(R.id.visitation).isEnabled = true
             navigationMenu.findItem(R.id.visitation).isVisible = true
+            currentFragment = fragmentsNames.Visitation.toString()
             this.onNavigationItemSelected(navigationMenu.findItem(R.id.visitation))
 //            Log.v("visitationtype is******", "Annual")
 //            supportFragmentManager
@@ -172,97 +185,152 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.visitation -> {
-                toolbar.title = "Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = FragmentVisitation()
-                        supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.Visitation.toString()
+                    var fragment = FragmentVisitation()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+                }
             }
 
             R.id.facility -> {
-                toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = FacilityGroupFragment()
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
+                    var fragment = FacilityGroupFragment()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+
+
+                }
             }
 
             R.id.scopeOfService -> {
-                toolbar.title = "Scope Of Service - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Scope Of Service - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = ScopeOfServiceGroupFragment()
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Scope Of Service - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Scope Of Service - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.SoSGeneralInfo.toString()
+                    var fragment = ScopeOfServiceGroupFragment()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+                }
             }
 
 
             R.id.deficiency -> {
-                Log.v("POSITION:  ","BRAAAAAAAAAA")
-                toolbar.title = "Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = FragmentARRAVDeficiency()
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.Deficiency.toString()
+                    var fragment = FragmentARRAVDeficiency()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+                }
             }
 
 
             R.id.complaints -> {
-                toolbar.title = "Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = FragmentARRAVComplaints()
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.Complaints.toString()
+                    var fragment = FragmentARRAVComplaints()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+                }
             }
 
 
             R.id.billing -> {
-                toolbar.title = "Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = BillingGroupFragment()
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.Billing.toString()
+                    var fragment = BillingGroupFragment()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+                }
             }
 
             R.id.surveys -> {
-                toolbar.title = "Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = SurveysGroupFragment()
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.Surveys.toString()
+                    var fragment = SurveysGroupFragment()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+                }
             }
 
             R.id.comments -> {
-                toolbar.title = "Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = FragmentAARAVComments()
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.Comments.toString()
+                    var fragment = FragmentAARAVComments()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+                }
             }
 
             R.id.photos -> {
-                toolbar.title = "Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                setTitle("Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-                var fragment = FragmentAARAVPhotos()
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment, fragment)
-                        .commit()
+                if (preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(this)
+                } else {
+                    toolbar.title = "Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    saveRequired = false
+                    currentFragment = fragmentsNames.Photos.toString()
+                    var fragment = FragmentAARAVPhotos()
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, fragment)
+                            .commit()
+                }
             }
         }
 
@@ -270,5 +338,10 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
+    fun preventNavigation() : Boolean{
+        if (saveRequired) return true
+//        else if (currentFragment.equals(fragmentsNames.FacilityGeneralInfo.toString()) && HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo() ) return true
+        else return false
 
+    }
 }

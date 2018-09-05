@@ -11,6 +11,9 @@ import android.widget.ImageView
 import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.Utils.Utility
+import com.inspection.fragmentsNames
+import com.inspection.model.HasChangedModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.app_bar_forms.*
@@ -62,37 +65,59 @@ class FacilityGroupFragment : Fragment() {
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
         updateSelectedIndicator(R.id.generalInformationButton)
+        (activity as FormsActivity).currentFragment=fragmentsNames.FacilityGeneralInfo.toString()
+        (activity as FormsActivity).saveRequired = false
 
         generalInformationButton.setOnClickListener {
             var fragment = FacilityGeneralInformationFragment.newInstance(false)
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment=fragmentsNames.FacilityGeneralInfo.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.generalInformationButton)
         }
 
         rspButton.setOnClickListener {
-            var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            updateSelectedIndicator(R.id.rspButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                updateSelectedIndicator(R.id.rspButton)
+                (activity as FormsActivity).currentFragment=fragmentsNames.FacilityRSP.toString()
+                (activity as FormsActivity).saveRequired = false
+            }
         }
 
         contactInfoButton.setOnClickListener {
-            var fragment = FragmentARRAVLocation.newInstance(false)
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            updateSelectedIndicator(R.id.contactInfoButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVLocation.newInstance(false)
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.FacilityContactInfo.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.contactInfoButton)
+            }
         }
 
         personnelButton.setOnClickListener {
-            var fragment = FragmentARRAVPersonnel.newInstance(false)
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            updateSelectedIndicator(R.id.personnelButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVPersonnel.newInstance(false)
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment=fragmentsNames.FacilityPersonnel.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.personnelButton)
+            }
         }
 
 //        visitationTrackingButton.setOnClickListener {
@@ -104,11 +129,18 @@ class FacilityGroupFragment : Fragment() {
 //        }
 
         amendmentOrdersTrackingButton.setOnClickListener {
-            var fragment = FragmentARRAVAmOrderTracking.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            updateSelectedIndicator(R.id.amendmentOrdersTrackingButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVAmOrderTracking.newInstance("", "")
+
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment=fragmentsNames.FacilityAmedndmentsOrderTracking.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.amendmentOrdersTrackingButton)
+            }
         }
     }
 
@@ -166,6 +198,8 @@ class FacilityGroupFragment : Fragment() {
         refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicators()
     }
+
+
 
     fun refreshTabIndicators() {
         var indicatorImage: ImageView;

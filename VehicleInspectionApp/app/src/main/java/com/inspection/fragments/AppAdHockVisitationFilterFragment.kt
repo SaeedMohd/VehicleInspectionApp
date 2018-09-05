@@ -370,8 +370,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 Log.v("required facility number", facilitiesArrayList[position].facnum + " " + facilitiesArrayList[position].clubcode)
                 getFullFacilityDataFromAAA(facilitiesArrayList[position].facnum.toInt(), facilitiesArrayList[position].clubcode)
             }
-
-
             return view
         }
 
@@ -416,7 +414,10 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                 var responseString = response!!.body()!!.string()
                 Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
                 if (responseString.toString().contains("returnCode&gt;1&",false)) {
-                    Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message")+12,responseString.indexOf("&lt;/message")))
+                    activity!!.runOnUiThread(Runnable {
+                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
+                        recordsProgressView.visibility = View.GONE
+                    })
                 } else {
                     var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                     var jsonObj = obj.getJSONObject("responseXml")
@@ -430,7 +431,10 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                         override fun onFailure(call: Call?, e: IOException?) {
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("******eerrrrrror", "" + e!!.message)
-                                Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e.message)
+                                activity!!.runOnUiThread(Runnable {
+                                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e.message)
+                                    recordsProgressView.visibility = View.GONE
+                                })
 //                            context!!.toast("")
                             })
                         }
@@ -440,11 +444,13 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                             var responseString = response!!.body()!!.string()
                             activity!!.runOnUiThread(Runnable {
                                 Log.v("POPOOriginal", responseString)
-
                                 recordsProgressView.visibility = View.GONE
                                 if (!responseString.contains("FacID not found")) {
                                     if (responseString.toString().contains("returnCode&gt;1&",false)) {
-                                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message")+12,responseString.indexOf("&lt;/message")))
+                                        activity!!.runOnUiThread(Runnable {
+                                            Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
+                                        })
+
                                     } else {
                                         var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
                                                 .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
@@ -465,8 +471,9 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
                                         startActivity(intent)
                                     }
                                 } else {
-//                                context!!.toast("Facility data not found")
-                                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
+                                    activity!!.runOnUiThread(Runnable {
+                                        Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
+                                    })
                                 }
                             })
                         }

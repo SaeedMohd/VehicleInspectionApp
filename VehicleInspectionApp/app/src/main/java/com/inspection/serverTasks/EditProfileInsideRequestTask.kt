@@ -1,5 +1,6 @@
 package com.inspection.serverTasks
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
@@ -50,7 +51,7 @@ class EditProfileInsideRequestTask
 
         }
         else ErrorDetail="Error while updating profile"
-        Utility.showMessageDialog(mContext, "", ErrorDetail)
+        Utility.showMessageDialog(mContext , "", ErrorDetail)
         //		if (status.equalsIgnoreCase("true")) {
         ////			LoginActivity.storeStringUserDetails(LoginActivity.First_Name, value);
         ////			Intent intent = new Intent(mContext, MainActivity.class);

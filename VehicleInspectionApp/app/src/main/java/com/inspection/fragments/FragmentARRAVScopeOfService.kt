@@ -433,6 +433,8 @@ dataChanged=true
                                             }
                                         }
                                     }
+                                    Utility.showValidationAlertDialog(activity,FacilityDataModel.getInstance().tblScopeofService.equals(FacilityDataModelOrg.getInstance().tblScopeofService).toString())
+
                                     IndicatorsDataModel.getInstance().validateSoSGeneral()
                                     if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
                                     (activity as FormsActivity).refreshMenuIndicators()

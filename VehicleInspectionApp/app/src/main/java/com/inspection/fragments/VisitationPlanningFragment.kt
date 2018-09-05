@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -304,8 +305,6 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
     }
 
     fun reloadVisitationsList() {
-
-
 
         var parametersString = StringBuilder()
         if (true) {
@@ -698,9 +697,12 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             override fun onResponse(call: Call?, response: okhttp3.Response?) {
 
                 var responseString = response!!.body()!!.string()
-                Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
+                Log.v("GETTYPETABLE ---> ", responseString.toString())
                 if (responseString.toString().contains("returnCode&gt;1&",false)) {
-                    Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message")+12,responseString.indexOf("&lt;/message")))
+                    activity!!.runOnUiThread(Runnable {
+                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
+                        recordsProgressView.visibility = View.GONE
+                    })
                 } else {
                     var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                     var jsonObj = obj.getJSONObject("responseXml")
@@ -716,6 +718,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                                 Log.v("******eerrrrrror", "" + e!!.message)
 //                            context!!.toast("Origin ERROR Connection Error. Please check internet connection")
                                 Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e.message)
+                                recordsProgressView.visibility = View.GONE
                             })
                         }
 
@@ -727,7 +730,9 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                                 recordsProgressView.visibility = View.GONE
                                 if (!responseString.contains("FacID not found")) {
                                     if (responseString.toString().contains("returnCode&gt;1&",false)) {
-                                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message")+12,responseString.indexOf("&lt;/message")))
+                                        activity!!.runOnUiThread(Runnable {
+                                            Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
+                                        })
                                     } else {
                                         var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
                                                 .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
@@ -740,7 +745,9 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                                     }
                                 } else {
 //                                context!!.toast("Facility data not found")
-                                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
+                                    activity!!.runOnUiThread(Runnable {
+                                        Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
+                                    })
                                 }
                             })
                         }
@@ -1143,6 +1150,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             }
         }
         IndicatorsDataModel.getInstance().init()
+        HasChangedModel.getInstance().init()
         IndicatorsDataModel.getInstance().validateBusinessRules()
     }
 

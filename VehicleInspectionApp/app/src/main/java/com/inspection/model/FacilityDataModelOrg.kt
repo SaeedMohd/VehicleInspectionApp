@@ -2,7 +2,7 @@ package com.inspection.model
 
 import android.graphics.Bitmap
 
-class FacilityDataModelOrg {
+class FacilityDataModelOrg  {
 
     companion object {
 
