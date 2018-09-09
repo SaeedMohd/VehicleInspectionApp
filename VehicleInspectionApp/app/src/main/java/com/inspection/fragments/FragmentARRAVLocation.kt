@@ -670,7 +670,7 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-   //     rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
@@ -681,112 +681,114 @@ class FragmentARRAVLocation : Fragment() {
 
         FacilityDataModel.getInstance().tblPhone.apply {
             (0 until size).forEach {
-                var tableRow = TableRow(context)
+                if (!get(it).PhoneID.equals("-1")) {
+                    var tableRow = TableRow(context)
 
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
-                //getTypeName
-                textView.text = getPhoneTypeName(get(it).PhoneTypeID)
-                tableRow.addView(textView)
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
+                    //getTypeName
+                    textView.text = getPhoneTypeName(get(it).PhoneTypeID)
+                    tableRow.addView(textView)
 
-                val textView2 = TextView(context)
-                textView2.layoutParams = rowLayoutParam1
-                textView2.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
-                textView2.text = get(it).PhoneNumber
-                tableRow.addView(textView2)
+                    val textView2 = TextView(context)
+                    textView2.layoutParams = rowLayoutParam1
+                    textView2.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
+                    textView2.text = get(it).PhoneNumber
+                    tableRow.addView(textView2)
 
-                val editPhoneBtn = Button(context)
-                editPhoneBtn.layoutParams = rowLayoutParam2
-                editPhoneBtn.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
-                editPhoneBtn.text = "Edit"
-                editPhoneBtn.setTextColor(Color.BLACK)
+                    val editPhoneBtn = Button(context)
+                    editPhoneBtn.layoutParams = rowLayoutParam2
+                    editPhoneBtn.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
+                    editPhoneBtn.text = "Edit"
+                    editPhoneBtn.setTextColor(Color.BLACK)
 //                editPhoneBtn.setBackgroundResource(R.drawable.green_background_button)
-                tableRow.addView(editPhoneBtn)
+                    tableRow.addView(editPhoneBtn)
 
-                editPhoneBtn.setOnClickListener(View.OnClickListener {
-                    var rowIndex=phoneTbl.indexOfChild(tableRow)
-                    var phoneFacilityChangedIndex= rowIndex-1
-             //       Toast.makeText(context,rowIndex.toString(),Toast.LENGTH_SHORT).show()
+                    editPhoneBtn.setOnClickListener(View.OnClickListener {
+                        var rowIndex = phoneTbl.indexOfChild(tableRow)
+                        var phoneFacilityChangedIndex = rowIndex - 1
+                        //       Toast.makeText(context,rowIndex.toString(),Toast.LENGTH_SHORT).show()
 
 
-                    disableAllAddButnsAndDialog()
-                    newChangesPhoneNoText.text.clear()
-                    alphaBackgroundForDialogs.visibility = View.VISIBLE
-                    editPhoneDialog.visibility = View.VISIBLE
-                    phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
-                    phoneTypeArray.clear()
-                    for (fac in phoneTypeList) {
-                        phoneTypeArray.add(fac.LocPhoneName)
-                    }
+                        disableAllAddButnsAndDialog()
+                        newChangesPhoneNoText.text.clear()
+                        alphaBackgroundForDialogs.visibility = View.VISIBLE
+                        editPhoneDialog.visibility = View.VISIBLE
+                        phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
+                        phoneTypeArray.clear()
+                        for (fac in phoneTypeList) {
+                            phoneTypeArray.add(fac.LocPhoneName)
+                        }
 
-                    var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray)
-                    phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    newPhoneTypeSpinner.adapter = phoneTypeAdapter
+                        var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray)
+                        phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        newPhoneTypeSpinner.adapter = phoneTypeAdapter
 
-                    phoneSaveChangesButton.setOnClickListener(View.OnClickListener {
+                        phoneSaveChangesButton.setOnClickListener(View.OnClickListener {
 
-                        var phoneTypeID=""
-                         if (newChangesPhoneNoText.text.isNullOrEmpty())  {
-                             newChangesPhoneNoText.setError("please enter required field")
+                            var phoneTypeID = ""
+                            if (newChangesPhoneNoText.text.isNullOrEmpty()) {
+                                newChangesPhoneNoText.setError("please enter required field")
 
 //                             Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
-                         }
-                        else {
-                             val phoneNo =  newChangesPhoneNoText.text.toString()
-                             for (phoneTypeTableId in TypeTablesModel.getInstance().LocationPhoneType){
-                                     if (phoneTypeTableId.LocPhoneName==textView.text.toString()){
+                            } else {
+                                val phoneNo = newChangesPhoneNoText.text.toString()
+                                for (phoneTypeTableId in TypeTablesModel.getInstance().LocationPhoneType) {
+                                    if (phoneTypeTableId.LocPhoneName == textView.text.toString()) {
 
-                                         phoneTypeID = phoneTypeTableId.LocPhoneID.toString()
+                                        phoneTypeID = phoneTypeTableId.LocPhoneID.toString()
 
-                                 }
-                             }
-                        val insertDate = Date().toAppFormatMMDDYYYY()
-                        val insertBy ="sa"
-                        val updateDate = Date().toAppFormatMMDDYYYY()
-                        val updateBy ="sa"
-                        val activeVal = "0"
+                                    }
+                                }
+                                val insertDate = Date().toAppFormatMMDDYYYY()
+                                val insertBy = "sa"
+                                val updateDate = Date().toAppFormatMMDDYYYY()
+                                val updateBy = "sa"
+                                val activeVal = "0"
 
-                        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
 
-                             val clubCode = FacilityDataModel.getInstance().clubCode
-                        var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
-                        Log.v("Data To Submit", urlString)
-                        contactInfoLoadingView.visibility = View.VISIBLE
-                        editPhoneDialog.visibility = View.GONE
-                        alphaBackgroundForDialogs.visibility = View.GONE
+                                val clubCode = FacilityDataModel.getInstance().clubCode
+                                var urlString = facilityNo + "&clubcode=" + clubCode + "&phoneTypeId=" + phoneTypeID + "&phoneNumber=" + phoneNo + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&phoneId=${FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneID}&active=1"
+                                Log.v("Data To Submit", urlString)
+                                contactInfoLoadingView.visibility = View.VISIBLE
+                                editPhoneDialog.visibility = View.GONE
+                                alphaBackgroundForDialogs.visibility = View.GONE
 
-                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread(Runnable {
-                                        if (response.toString().contains("returnCode&gt;0&",false)) {
-                                            Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
-                                            fillPhoneTableView()
-                                            FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
-                                            IndicatorsDataModel.getInstance().validateFacilityLocation()
-                                            if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-                                            (activity as FormsActivity).refreshMenuIndicators()
-                                        } else {
-                                            Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
-                                        }
-                                        contactInfoLoadingView.visibility = View.GONE
-                                        enableAllAddButnsAndDialog()
-                                    })
-                                }, Response.ErrorListener {
-                            contactInfoLoadingView.visibility = View.GONE
-                            Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
-                            enableAllAddButnsAndDialog()
-                            Log.v("error while submitting", "Phone Details")
-                        }))
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
+                                        Response.Listener { response ->
+                                            activity!!.runOnUiThread(Runnable {
+                                                if (response.toString().contains("returnCode&gt;0&", false)) {
+                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
+                                                    fillPhoneTableView()
+                                                    FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
+                                                    HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = true
+                                                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                                                    IndicatorsDataModel.getInstance().validateFacilityLocation()
+                                                    if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+                                                    (activity as FormsActivity).refreshMenuIndicators()
+                                                } else {
+                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone")
+                                                }
+                                                contactInfoLoadingView.visibility = View.GONE
+                                                enableAllAddButnsAndDialog()
+                                            })
+                                        }, Response.ErrorListener {
+                                    contactInfoLoadingView.visibility = View.GONE
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone")
+                                    enableAllAddButnsAndDialog()
+                                    Log.v("error while submitting", "Phone Details")
+                                }))
 
 
+                            }
+                        })
 
-                    }
                     })
 
-                })
-
-                phoneTbl.addView(tableRow)
+                    phoneTbl.addView(tableRow)
+                }
             }
         }
         altPhoneTableRow(2)
@@ -815,25 +817,34 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = TableLayout.LayoutParams.WRAP_CONTENT
 
         FacilityDataModel.getInstance().tblFacilityEmail.apply {
             (0 until size).forEach {
-                var tableRow = TableRow(context)
+                if (!get(it).emailID.equals("-1")) {
+                    var tableRow = TableRow(context)
 
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                //getTypeName
-                textView.text = getEmailTypeName(get(it).emailTypeId)
-                tableRow.addView(textView)
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    //getTypeName
+                    textView.text = getEmailTypeName(get(it).emailTypeId)
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).email
-                tableRow.addView(textView)
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).email
+                    tableRow.addView(textView)
 
-                emailTbl.addView(tableRow)
+                    val editEmailBtn = Button(context)
+                    editEmailBtn .layoutParams = rowLayoutParam2
+                    editEmailBtn .text = "Edit"
+                    editEmailBtn .setTextColor(Color.WHITE)
+                    tableRow.addView(editEmailBtn )
+
+                    emailTbl.addView(tableRow)
+                }
             }
 
         }
@@ -1353,9 +1364,17 @@ class FragmentARRAVLocation : Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         if (response.toString().contains("returnCode&gt;0&",false)) {
+
                             Utility.showSubmitAlertDialog(activity, true, "Facility Email")
+                            if (FacilityDataModel.getInstance().tblFacilityEmail.size==1 && FacilityDataModel.getInstance().tblFacilityEmail[0].emailID.equals("-1")){
+                                FacilityDataModel.getInstance().tblFacilityEmail.removeAt(0)
+                                FacilityDataModelOrg.getInstance().tblFacilityEmail.removeAt(0)
+                            }
+                            newEmail.emailID = response.toString().substring(response.toString().indexOf(";emailID")+11,response.toString().indexOf("&lt;/emailID"))
                             FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
                             fillEmailTableView()
+                            HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail= true
+                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             IndicatorsDataModel.getInstance().validateFacilityLocation()
                             if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                             (activity as FormsActivity).refreshMenuIndicators()
@@ -1512,10 +1531,16 @@ class FragmentARRAVLocation : Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
-
                         if (response.toString().contains("returnCode&gt;0&", false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
+                            if (FacilityDataModel.getInstance().tblPhone.size==1 && FacilityDataModel.getInstance().tblPhone[0].PhoneID.equals("-1")){
+                                FacilityDataModel.getInstance().tblPhone.removeAt(0)
+                                FacilityDataModelOrg.getInstance().tblPhone.removeAt(0)
+                            }
+                            newPhone.PhoneID = response.toString().substring(response.toString().indexOf(";PhoneID")+12,response.toString().indexOf("&lt;/PhoneID"))
                             FacilityDataModel.getInstance().tblPhone.add(newPhone)
+                            HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = true
+                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             fillPhoneTableView()
                             IndicatorsDataModel.getInstance().validateFacilityLocation()
                             if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
