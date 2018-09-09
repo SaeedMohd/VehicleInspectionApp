@@ -101,7 +101,7 @@
                 android:id="@+id/amendmentOrdersTrackingButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="5"
+                android:layout_column="4"
                 android:layout_marginLeft="10dp"
                 android:background="@color/transparent"
                 android:text="Amendment Orders Tracking" />
@@ -121,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/mainColor"
-                android:layout_column="2"
+                android:layout_column="1"
                 android:visibility="invisible"
                 />
 
@@ -130,7 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/mainColor"
-                android:layout_column="4"
+                android:layout_column="2"
                 android:visibility="invisible"
                 />
 
@@ -139,7 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/mainColor"
-                android:layout_column="6"
+                android:layout_column="3"
                 android:visibility="invisible"
                 />
 
@@ -157,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/mainColor"
-                android:layout_column="8"
+                android:layout_column="4"
                 android:visibility="invisible"
                 />
         </TableRow>

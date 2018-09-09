@@ -240,7 +240,7 @@ class FragmentARRAVPrograms : Fragment() {
                 }
                 if (validProgram||valid_validProgram) {
 
-                    var item = FacilityDataModel.TblPrograms()
+                    var item = TblPrograms()
                     for (fac in TypeTablesModel.getInstance().ProgramsType) {
                         if (program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName))
 
@@ -942,7 +942,7 @@ class FragmentARRAVPrograms : Fragment() {
 
     fun validateInputs(): Boolean {
 
-        var programValide= FacilityDataModel.TblPrograms().isInputsValid
+        var programValide= TblPrograms().isInputsValid
         programValide = true
 
         effective_date_textviewVal.setError(null)
@@ -969,7 +969,7 @@ class FragmentARRAVPrograms : Fragment() {
     }
     fun edit_validateInputs(): Boolean {
 
-        var programValide= FacilityDataModel.TblPrograms().isInputsValid
+        var programValide= TblPrograms().isInputsValid
         programValide = true
 
         edit_comments_editTextVal.setError(null)

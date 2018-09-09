@@ -19,6 +19,7 @@ import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAmendmentOrderTrackingData
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
+import com.inspection.model.TblAmendmentOrderTracking
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aaram_order_tracking.*
@@ -129,7 +130,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             alphaBackgroundForAOT_Dialogs.visibility = View.GONE
 
 
-            var item = FacilityDataModel.TblAmendmentOrderTracking()
+            var item = TblAmendmentOrderTracking()
                 for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
                     if (eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
 
@@ -174,7 +175,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         submitNewAOTButton.setOnClickListener(View.OnClickListener {
 
 
-            var item = FacilityDataModel.TblAmendmentOrderTracking()
+            var item = TblAmendmentOrderTracking()
                 for (fac in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
                     if (employeeDropDown.getSelectedItem().toString().equals(fac.AOTEmployee))
 

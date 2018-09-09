@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
+import android.os.Debug
 import android.support.constraint.R.id.gone
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -85,6 +86,7 @@ class FacilityGeneralInformationFragment : Fragment() {
     private var termReasonArray = ArrayList<String>()
     private var inspectionMonths= arrayOf("jan","feb","march","april","may","june","july","aug","sep","oct","nov","dec")
 
+//    private var firstTime = true
 //    private var assignedToList = ArrayList<CsiSpecialist>()
 //    private var assignedToArray = ArrayList<String>()
 
@@ -166,10 +168,13 @@ class FacilityGeneralInformationFragment : Fragment() {
         ImplementBusinessRules()
         setFieldsListeners()
 
+
     }
 
 
     private fun setFieldsValues() {
+//        FacilityDataModel.getInstance().tblFacilities = FacilityDataModelOrg.getInstance().tblFacilities.clone() as ArrayList<TblFacilities>
+
         FacilityDataModel.getInstance().apply {
 //            try {
 
@@ -239,12 +244,15 @@ class FacilityGeneralInformationFragment : Fragment() {
                 bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
 
                 timeZoneSpinner.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
+                timeZoneSpinner.tag = timeZoneSpinner.selectedItemPosition
                 website_textviewVal.setText(tblFacilities[0].WebSite)
                 wifiAvailableCheckBox.isChecked = tblFacilities[0].InternetAccess
                 taxno_textviewVal.text = tblFacilities[0].TaxIDNumber
                 repairorder_textviewVal.setText("" + tblFacilities[0].FacilityRepairOrderCount)
                 availability_textviewVal.setSelection(svcAvailabilityArray.indexOf(TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID==tblFacilities[0].SvcAvailability}[0].SrvAvaName))
+                availability_textviewVal.tag = availability_textviewVal.selectedItemPosition
                 facilitytype_textviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
+                facilitytype_textviewVal.tag = facilitytype_textviewVal.selectedItemPosition
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
                 ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY()
                 terminationDateButton.text = ""+tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY()
@@ -274,7 +282,6 @@ class FacilityGeneralInformationFragment : Fragment() {
 
                     inspectionCycleTextViewVal.text="3"
                 }
-
 
                 for(paymentMethod in tblPaymentMethods){
 
@@ -310,12 +317,21 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
         }
         cancelButton.setOnClickListener {
-            FacilityDataModel.getInstance().tblFacilities[0] = FacilityDataModelOrg.getInstance().tblFacilities[0] as FacilityDataModel.TblFacilities
-            FacilityDataModel.getInstance().tblTimezoneType[0] = FacilityDataModelOrg.getInstance().tblTimezoneType[0] as FacilityDataModel.TblTimezoneType
-            FacilityDataModel.getInstance().tblFacilityType[0] = FacilityDataModelOrg.getInstance().tblFacilityType[0] as FacilityDataModel.TblFacilityType
+            cancelButton.hideKeyboard()
+            FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount
+            FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName
+            FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount
+            FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability
+            FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate
+            FacilityDataModel.getInstance().tblFacilities[0].WebSite = FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite
+            FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess
+            FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName
             FacilityDataModel.getInstance().tblPaymentMethods[0].PmtMethodID = FacilityDataModelOrg.getInstance().tblPaymentMethods[0].PmtMethodID
+            setFieldsValues()
+            (activity as FormsActivity).saveRequired = false
+            refreshButtonsState()
+            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully")
         }
-
     }
 
 
@@ -378,7 +394,9 @@ class FacilityGeneralInformationFragment : Fragment() {
                 FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate= sdf.format(c.time)
                 //                if (FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate!=FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate) MarkChangeWasDone()
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
-                (activity as FormsActivity).saveRequired = true
+                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+                    (activity as FormsActivity).saveRequired = true
+
                 refreshButtonsState()
             }, year, month, day)
             dpd.show()
@@ -400,6 +418,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                 FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate = sdf.format(c.time)
 //                if (FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate!=FacilityDataModelOrg.getInstance().tblFacilities[0].InsuranceExpDate) MarkChangeWasDone()
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
+                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                 (activity as FormsActivity).saveRequired = true
                 refreshButtonsState()
             }, year, month, day)
@@ -412,17 +431,20 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timeZoneArray[p2]
-                if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName !=FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName) {
-                    HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone = true
-                } else {
-                    HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone= false
-
+                if (!timeZoneSpinner.tag.equals(p2) || timeZoneSpinner.tag.equals("-1")) {
+                    timeZoneSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timeZoneArray[p2]
+                    if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName) {
+                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone = true
+                        HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+                    } else {
+                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone = false
+                        HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+                    }
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
                 }
-                (activity as FormsActivity).saveRequired = true
-                refreshButtonsState()
             }
-
         }
 
         website_textviewVal.addTextChangedListener(object : TextWatcher{
@@ -430,6 +452,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                 FacilityDataModel.getInstance().tblFacilities[0].WebSite = p0.toString()
 //                if (FacilityDataModel.getInstance().tblFacilities[0].WebSite !=FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite ) MarkChangeWasDone()
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
+                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                 (activity as FormsActivity).saveRequired = true
                 refreshButtonsState()
             }
@@ -448,6 +471,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = b
 //            if (FacilityDataModel.getInstance().tblFacilities[0].InternetAccess !=FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess ) MarkChangeWasDone()
             HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
+            HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
             (activity as FormsActivity).saveRequired = true
             refreshButtonsState()
         }
@@ -456,8 +480,8 @@ class FacilityGeneralInformationFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0.toString().length > 0) {
                     FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = p0.toString().toInt()
-//                    if (FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount !=FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount ) MarkChangeWasDone()
                     HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                     (activity as FormsActivity).saveRequired = true
                     refreshButtonsState()
                 }
@@ -479,11 +503,15 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-         //       FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailabilityArray[p2]
-                FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==svcAvailabilityArray[p2]}[0].SrvAvaID
-                HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
-                (activity as FormsActivity).saveRequired = true
-                refreshButtonsState()
+                if (!availability_textviewVal.tag.equals(p2) || availability_textviewVal.tag.equals("-1")) {
+                    availability_textviewVal.tag = "-1"
+                    FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName == svcAvailabilityArray[p2] }[0].SrvAvaID
+                    HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
 //                if (FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability !=FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability ) MarkChangeWasDone()
 
             }
@@ -496,15 +524,23 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facTypeArray[p2]
-                if (FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName  !=FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName  ) {
-                    HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType = true
-                } else {
-                    HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType = false
+                if (!facilitytype_textviewVal.tag.equals(p2) || facilitytype_textviewVal.tag.equals("-1")) {
+                    facilitytype_textviewVal.tag = "-1"
+                    FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facTypeArray[p2]
+                    if (FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName != FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName) {
+                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType = true
+                    } else {
+                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType = false
+                    }
+                    HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+
+                    (activity as FormsActivity).saveRequired = true
+
+                    refreshButtonsState()
                 }
-                (activity as FormsActivity).saveRequired = true
-                refreshButtonsState()
             }
+
+
 
         }
 
@@ -570,12 +606,13 @@ class FacilityGeneralInformationFragment : Fragment() {
             handlePaymentMethodsSelection(9, b)
         }
 
-
+//        firstTime = false
+//        (activity as FormsActivity).saveRequired = false
     }
 
     fun validateInputs() : Boolean{
 
-        var facValide=FacilityDataModel.TblFacilities().isInputsValid
+        var facValide= TblFacilities().isInputsValid
 
         facValide=true
 
@@ -650,7 +687,7 @@ class FacilityGeneralInformationFragment : Fragment() {
     fun handlePaymentMethodsSelection(paymentMethodId: Int, isSelected: Boolean){
         if (isSelected){
             if (FacilityDataModel.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == paymentMethodId }.isEmpty()){
-                var pmethod = FacilityDataModel.TblPaymentMethods()
+                var pmethod = TblPaymentMethods()
                 pmethod.PmtMethodID = ""+paymentMethodId
                 FacilityDataModel.getInstance().tblPaymentMethods.add(pmethod)
             }
@@ -825,8 +862,11 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
                             FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
                             FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
+                            FacilityDataModel.getInstance().tblFacilities[0].WebSite = webSite.toString()
+                            FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
                             FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
 //                            (activity as FormsActivity).saveRequired = false
+//                            HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                             IndicatorsDataModel.getInstance().validateFacilityGeneralInfo()
                             if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
                             (activity as FormsActivity).refreshMenuIndicators()
@@ -877,27 +917,34 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
 
 
         }
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}",
-                Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-                        Log.v("PAYMENT REQUEST",UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}")
-                        Log.v("paymentSUBMIT_RESPONSE",response.toString())
-                        Log.v("paymentsTRING",payments.toString())
-                        if (response.toString().contains("returnCode&gt;0&",false)) {
-                            Utility.showSubmitAlertDialog(activity, true, "Payment Methods")
-                            (activity as FormsActivity).saveRequired = false
-                            refreshButtonsState()
-                        } else {
-                            Utility.showSubmitAlertDialog(activity,false,"Payment Methods")
-                        }
-                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfo()
-                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-                        (activity as FormsActivity).refreshMenuIndicators()
-                    })
-                }, Response.ErrorListener {
-                Utility.showSubmitAlertDialog(activity,false,"Payment Methods")
-        }))
 
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}",
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread(Runnable {
+//                        Log.v("PAYMENT REQUEST",UpdatePaymentMethodsData + "&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}")
+//                        Log.v("paymentSUBMIT_RESPONSE",response.toString())
+//                        Log.v("paymentsTRING",payments.toString())
+//                        if (response.toString().contains("returnCode&gt;0&",false)) {
+//                            Utility.showSubmitAlertDialog(activity, true, "Payment Methods")
+//                            (activity as FormsActivity).saveRequired = false
+//                            HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods = true
+//                            HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+//                            refreshButtonsState()
+//                        } else {
+//                            Utility.showSubmitAlertDialog(activity,false,"Payment Methods")
+//                        }
+//                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfo()
+//                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+//                        (activity as FormsActivity).refreshMenuIndicators()
+//                    })
+//                }, Response.ErrorListener {
+//                Utility.showSubmitAlertDialog(activity,false,"Payment Methods")
+//        }))
+
+                            (activity as FormsActivity).saveRequired = false
+                            HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods = true
+                            HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+                            refreshButtonsState()
 
     }
     fun scopeOfServiceChangesWatcher() {
@@ -1018,7 +1065,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
 
     override fun onPause() {
         super.onPause()
-        checkMarkChangesWasDoneForFacilityGeneralInfo()
+//        checkMarkChangesWasDoneForFacilityGeneralInfo()
     }
 
     // TODO: Rename method, update argument and hook method into UI event

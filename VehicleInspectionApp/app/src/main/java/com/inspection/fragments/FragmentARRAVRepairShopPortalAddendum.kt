@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.*
 
 import com.inspection.R
-import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,9 +25,7 @@ import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAARPortalAdminData
-import com.inspection.model.FacilityDataModelOrg
-import com.inspection.model.HasChangedModel
-import com.inspection.model.IndicatorsDataModel
+import com.inspection.model.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 
 
@@ -241,14 +238,14 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 var startDate = if (startDateButton.text.equals("SELECT DATE")) "" else startDateButton.text.toString()
                 var endDate = if (endDateButton.text.equals("SELECT DATE")) "" else endDateButton.text.toString()
                 var signedDate = if (addendumSignedDateButton.text.equals("SELECT DATE")) "" else addendumSignedDateButton.text.toString()
-
                 val date = inspectionDateButton.text
                 val isLoggedInRsp = loggedIntoRspButton.isChecked
                 val numberOfUnacknowledgedRecords = numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
                 val numberOfInProgressTwoInsvalue = numberOfInProgressTwoIns.text.toString().toInt()
                 val numberOfInProgressWalkInsValue = numberOfInProgressWalkIns.text.toString().toInt()
-                var portalTrackingentry = FacilityDataModel.TblAARPortalAdmin()
+                var portalTrackingentry = TblAARPortalAdmin()
                 portalTrackingentry.startDate = startDateButton.text.toString()
+                portalTrackingentry.endDate = endDateButton.text.toString()
                 portalTrackingentry.PortalInspectionDate = "" + date
                 portalTrackingentry.LoggedIntoPortal = "" + isLoggedInRsp
                 portalTrackingentry.InProgressTows = "" + numberOfInProgressTwoInsvalue
@@ -256,20 +253,22 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 portalTrackingentry.NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
                 portalTrackingentry.CardReaders = numberOfCardsReaderEditText.text.toString()
                 portalTrackingentry.AddendumSigned = addendumSignedDateButton.text.toString()
-
-
-
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
                         "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "RSP")
+                                    if (FacilityDataModel.getInstance().tblAARPortalAdmin.size==1 && FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders.equals("-1")){
+                                        FacilityDataModel.getInstance().tblAARPortalAdmin.removeAt(0)
+                                        FacilityDataModelOrg.getInstance().tblAARPortalAdmin.removeAt(0)
+                                    }
                                     FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
 //                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP= true
                                     fillPortalTrackingTableView()
                                     altLocationTableRow(2)
                                     HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
+                                    HasChangedModel.getInstance().changeDoneForFacilityRSP()
                                     IndicatorsDataModel.getInstance().validateFacilityRSP()
                                     if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
                                     (activity as FormsActivity).refreshMenuIndicators()
@@ -414,7 +413,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     fun validateInputs() : Boolean {
 
-        var portalValide= FacilityDataModel.TblAARPortalAdmin().isInputsValid
+        var portalValide= TblAARPortalAdmin().isInputsValid
         portalValide = true
 
         startDateButton.setError(null)
@@ -593,191 +592,181 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
             (0 until size).forEach {
-                val tableRow = TableRow(context)
+                if ( !get(it).CardReaders.equals("-1") ) {
+                    val tableRow = TableRow(context)
 
-                val textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                try {
-                    textView.text = get(it).PortalInspectionDate.apiToAppFormatMMDDYYYY()
-                } catch (e: Exception) {
-                    textView.text = get(it).PortalInspectionDate
-
-                }
-                tableRow.addView(textView)
-
-                val textView1 = TextView(context)
-                textView1.layoutParams = rowLayoutParam1
-                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView1.text = get(it).LoggedIntoPortal
-                tableRow.addView(textView1)
-
-               val textView2 = TextView(context)
-                textView2.layoutParams = rowLayoutParam2
-                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView2.text = get(it).NumberUnacknowledgedTows
-                tableRow.addView(textView2)
-
-                val textView3 = TextView(context)
-                textView3.layoutParams = rowLayoutParam3
-                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView3.text = get(it).InProgressTows
-                tableRow.addView(textView3)
-
-               val textView4 = TextView(context)
-                textView4.layoutParams = rowLayoutParam4
-                textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView4.text = get(it).InProgressWalkIns
-                tableRow.addView(textView4)
-
-                val updateButton = Button(context)
-                updateButton.layoutParams = rowLayoutParam5
-                updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-                updateButton.text = "update"
-                tableRow.addView(updateButton)
-
-
-                updateButton.setOnClickListener(View.OnClickListener {
-                    rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
-
-
-                    edit_numberOfUnacknowledgedRecordsEditText.setText(textView2.text)
-                    edit_numberOfInProgressTwoIns.setText(textView3.text)
-                    edit_numberOfInProgressWalkIns.setText(textView4.text)
-                    edit_inspectionDateButton.setText(textView.text)
+                    val textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                     try {
-                        edit_startDateButton.setText(if (get(rowIndex-1).startDate.isNullOrBlank()) "" else get(rowIndex-1).startDate.apiToAppFormatMMDDYYYY())
+                        textView.text = get(it).PortalInspectionDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-                        edit_startDateButton.setText(if (get(rowIndex-1).startDate.isNullOrBlank()) "" else get(rowIndex-1).startDate)
-                    }
-                    try {
-                        edit_addendumSignedDateButton.setText(if (get(rowIndex-1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex-1).AddendumSigned.apiToAppFormatMMDDYYYY())
-                    } catch (e: Exception) {
-                        edit_addendumSignedDateButton.setText(if (get(rowIndex-1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex-1).AddendumSigned)
-                    }
-                    edit_numberOfCardsReaderEditText.setText(get(rowIndex-1).CardReaders)
-
-                    if (textView1.text.toString().contains("true")){
-
-                        edit_loggedIntoRspButton.isChecked=true
-                    }else
-                    {
-                        edit_loggedIntoRspButton.isChecked=false
+                        textView.text = get(it).PortalInspectionDate
 
                     }
+                    tableRow.addView(textView)
+
+                    val textView1 = TextView(context)
+                    textView1.layoutParams = rowLayoutParam1
+                    textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView1.text = get(it).LoggedIntoPortal
+                    tableRow.addView(textView1)
+
+                    val textView2 = TextView(context)
+                    textView2.layoutParams = rowLayoutParam2
+                    textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView2.text = get(it).NumberUnacknowledgedTows
+                    tableRow.addView(textView2)
+
+                    val textView3 = TextView(context)
+                    textView3.layoutParams = rowLayoutParam3
+                    textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView3.text = get(it).InProgressTows
+                    tableRow.addView(textView3)
+
+                    val textView4 = TextView(context)
+                    textView4.layoutParams = rowLayoutParam4
+                    textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView4.text = get(it).InProgressWalkIns
+                    tableRow.addView(textView4)
+
+                    val updateButton = Button(context)
+                    updateButton.layoutParams = rowLayoutParam5
+                    updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+                    updateButton.text = "update"
+                    tableRow.addView(updateButton)
 
 
+                    updateButton.setOnClickListener(View.OnClickListener {
+                        rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
 
 
+                        edit_numberOfUnacknowledgedRecordsEditText.setText(textView2.text)
+                        edit_numberOfInProgressTwoIns.setText(textView3.text)
+                        edit_numberOfInProgressWalkIns.setText(textView4.text)
+                        edit_inspectionDateButton.setText(textView.text)
+                        try {
+                            edit_startDateButton.setText(if (get(rowIndex - 1).startDate.isNullOrBlank()) "" else get(rowIndex - 1).startDate.apiToAppFormatMMDDYYYY())
+                        } catch (e: Exception) {
+                            edit_startDateButton.setText(if (get(rowIndex - 1).startDate.isNullOrBlank()) "" else get(rowIndex - 1).startDate)
+                        }
+                        try {
+                            edit_addendumSignedDateButton.setText(if (get(rowIndex - 1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex - 1).AddendumSigned.apiToAppFormatMMDDYYYY())
+                        } catch (e: Exception) {
+                            edit_addendumSignedDateButton.setText(if (get(rowIndex - 1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex - 1).AddendumSigned)
+                        }
+                        edit_numberOfCardsReaderEditText.setText(get(rowIndex - 1).CardReaders)
 
-                    edit_numberOfCardsReaderEditText.setError(null)
-                    edit_numberOfUnacknowledgedRecordsEditText.setError(null)
-                    edit_numberOfInProgressTwoIns.setError(null)
-                    edit_numberOfInProgressWalkIns.setError(null)
-                    edit_startDateButton.setError(null)
-                    edit_addendumSignedDateButton.setError(null)
-                    edit_inspectionDateButton.setError(null)
+                        if (textView1.text.toString().contains("true")) {
 
-                    edit_AAR_PortalTrackingEntryCard.visibility=View.VISIBLE
-                    alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
-
-
-
-
-                    for (i in 0 until mainViewLinearId.childCount) {
-                        val child = mainViewLinearId.getChildAt(i)
-                        child.isEnabled = false
-                    }
-
-                        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
-
-                        for ( i in 1..childViewCount-1) {
-                            var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
-
-                            for (j in 0..row.getChildCount()-1) {
-
-                                var tv : TextView= row.getChildAt(j) as TextView
-                                    tv.isEnabled=false
-
-                            }
+                            edit_loggedIntoRspButton.isChecked = true
+                        } else {
+                            edit_loggedIntoRspButton.isChecked = false
 
                         }
 
 
 
 
-                })
-                edit_submitNewAAR_PortalTracking.setOnClickListener {
 
+                        edit_numberOfCardsReaderEditText.setError(null)
+                        edit_numberOfUnacknowledgedRecordsEditText.setError(null)
+                        edit_numberOfInProgressTwoIns.setError(null)
+                        edit_numberOfInProgressWalkIns.setError(null)
+                        edit_startDateButton.setError(null)
+                        edit_addendumSignedDateButton.setError(null)
+                        edit_inspectionDateButton.setError(null)
 
-                    if (validateInputsForUpdate()) {
-                        RSP_LoadingView.visibility = View.VISIBLE
-
-                        val date = edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                        val isLoggedInRsp = edit_loggedIntoRspButton.isChecked
-                        var numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
-                        var numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
-                        var numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
-
-
-                        var startDate = if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                        var endDate = if (edit_endDateButton.text.equals("SELECT DATE")) "" else edit_endDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                        var signedDate = if (edit_addendumSignedDateButton.text.equals("SELECT DATE")) "" else edit_addendumSignedDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                        edit_AAR_PortalTrackingEntryCard.visibility = View.VISIBLE
+                        alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
 
 
 
-//                        Log.v("RSP EDIT",UpdateAARPortalAdminData + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
-//                                "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=2015-07-31T11:53:02.190&updateBy=SumA&updateDate=2015-07-31T11:53:02.190&active=1")
+
+                        for (i in 0 until mainViewLinearId.childCount) {
+                            val child = mainViewLinearId.getChildAt(i)
+                            child.isEnabled = false
+                        }
+
+                        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+
+                        for (i in 1..childViewCount - 1) {
+                            var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+
+                            for (j in 0..row.getChildCount() - 1) {
+
+                                var tv: TextView = row.getChildAt(j) as TextView
+                                tv.isEnabled = false
+
+                            }
+
+                        }
 
 
-                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
-                                "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread(Runnable {
-                                        if (response.toString().contains("returnCode&gt;0&",false)) {
-                                            Utility.showSubmitAlertDialog(activity, true, "RSP")
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].startDate = edit_startDateButton.text.toString()
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].PortalInspectionDate = "" + date
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
-                                            FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
+                    })
+                    edit_submitNewAAR_PortalTracking.setOnClickListener {
+
+
+                        if (validateInputsForUpdate()) {
+                            RSP_LoadingView.visibility = View.VISIBLE
+
+                            val date = edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            val isLoggedInRsp = edit_loggedIntoRspButton.isChecked
+                            var numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
+                            var numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
+                            var numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
+                            var startDate = if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var endDate = if (edit_endDateButton.text.equals("SELECT DATE")) "" else edit_endDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var signedDate = if (edit_addendumSignedDateButton.text.equals("SELECT DATE")) "" else edit_addendumSignedDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
+                                    "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat() + "&active=1",
+                                    Response.Listener { response ->
+                                        activity!!.runOnUiThread(Runnable {
+                                            if (response.toString().contains("returnCode&gt;0&", false)) {
+                                                Utility.showSubmitAlertDialog(activity, true, "RSP")
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].startDate = edit_startDateButton.text.toString()
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].endDate= endDate
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].PortalInspectionDate = "" + date
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
 //                                            HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP= true
-                                            fillPortalTrackingTableView()
-                                            altLocationTableRow(2)
-                                            HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
-                                            IndicatorsDataModel.getInstance().validateFacilityRSP()
-                                            if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
-                                            (activity as FormsActivity).refreshMenuIndicators()
-                                        } else {
-                                            Utility.showSubmitAlertDialog(activity, false, "RSP")
-                                        }
-                                        RSP_LoadingView.visibility = View.GONE
-                                        alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                        edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                                fillPortalTrackingTableView()
+                                                altLocationTableRow(2)
+                                                HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
+                                                IndicatorsDataModel.getInstance().validateFacilityRSP()
+                                                if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
+                                                (activity as FormsActivity).refreshMenuIndicators()
+                                            } else {
+                                                Utility.showSubmitAlertDialog(activity, false, "RSP")
+                                            }
+                                            RSP_LoadingView.visibility = View.GONE
+                                            alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                            edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
 
-                                    })
-                                }, Response.ErrorListener {
-                            Utility.showSubmitAlertDialog(activity, false, "RSP")
-                            RSP_LoadingView.visibility = View.GONE
-                            alphaBackgroundForRSPDialogs.visibility = View.GONE
-                            edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                        })
+                                    }, Response.ErrorListener {
+                                Utility.showSubmitAlertDialog(activity, false, "RSP")
+                                RSP_LoadingView.visibility = View.GONE
+                                alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
 
-                        }))
+                            }))
 
-                    }else
-                        Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
+                        } else
+                            Toast.makeText(context, "please fill all required field", Toast.LENGTH_SHORT).show()
 
 
+                    }
+
+                    aarPortalTrackingTableLayout.addView(tableRow)
+                    // Toast.makeText(context,indexToRemove.toString(),Toast.LENGTH_SHORT).show()
 
                 }
-
-                aarPortalTrackingTableLayout.addView(tableRow)
-                       // Toast.makeText(context,indexToRemove.toString(),Toast.LENGTH_SHORT).show()
-
-
             }
         }
 

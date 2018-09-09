@@ -21,10 +21,7 @@ import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityServicesData
 import com.inspection.Utils.Utility.showValidationAlertDialog
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.FacilityDataModelOrg
-import com.inspection.model.IndicatorsDataModel
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
@@ -136,7 +133,7 @@ class FragmentARRAVFacilityServices : Fragment() {
 
 
 
-                var item = FacilityDataModel.TblFacilityServices()
+                var item = TblFacilityServices()
                 for (fac in TypeTablesModel.getInstance().ServicesType) {
                     if (fc_services_textviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
 
@@ -522,7 +519,7 @@ class FragmentARRAVFacilityServices : Fragment() {
 
     fun validateInputs() : Boolean {
 
-        var facServicesValide=FacilityDataModel.TblFacilityServices().isInputsValid
+        var facServicesValide= TblFacilityServices().isInputsValid
         facServicesValide = true
 
         fceffective_date_textviewVal.setError(null)

@@ -173,7 +173,7 @@ class IndicatorsDataModel {
         var isValid = true
 
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != null) {
-            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(FacilityDataModel.VisitationTypes.AdHoc)) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
             } else {
                 if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature == null) isValid = false
             }
@@ -206,15 +206,20 @@ class IndicatorsDataModel {
 
     fun validateFacilityRSP() {
         var isValid = true
-        FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
-            (0 until size).forEach {
-                if (!get(it).startDate.equals("") && get(it).AddendumSigned.equals("")) isValid = false
-                if (!get(it).startDate.equals("") && get(it).CardReaders.equals("")) isValid = false
-                if (get(it).PortalInspectionDate.equals("")) isValid = false
-                if (get(it).NumberUnacknowledgedTows.equals("")) isValid = false
-                if (get(it).InProgressTows.equals("")) isValid = false
-                if (get(it).InProgressWalkIns.equals("")) isValid = false
-                if (get(it).LoggedIntoPortal.equals("")) isValid = false
+        if (FacilityDataModel.getInstance().tblAARPortalAdmin.size==1 && FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders.equals("-1")) isValid=false
+        else {
+            FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
+                (0 until size).forEach {
+                    if (!get(it).CardReaders.equals("-1")) {
+                        if (!get(it).startDate.equals("") && get(it).AddendumSigned.equals("")) isValid = false
+                        if (!get(it).startDate.equals("") && get(it).CardReaders.equals("")) isValid = false
+                        if (get(it).PortalInspectionDate.equals("")) isValid = false
+                        if (get(it).NumberUnacknowledgedTows.equals("")) isValid = false
+                        if (get(it).InProgressTows.equals("")) isValid = false
+                        if (get(it).InProgressWalkIns.equals("")) isValid = false
+                        if (get(it).LoggedIntoPortal.equals("")) isValid = false
+                    }
+                }
             }
         }
         tblFacility[0].RSP= isValid

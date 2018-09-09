@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TblVisitationTracking
 import kotlinx.android.synthetic.main.fragment_arrav_visitation_tracking.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -113,7 +114,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
 //                }
 //            }
             if (validProgram) {
-                var item = FacilityDataModel.TblVisitationTracking()
+                var item = TblVisitationTracking()
                 item.performedBy =performedBy_dropdown.selectedItem.toString()
 //                Toast.makeText(context,performedBy_dropdown.selectedItem.toString(),Toast.LENGTH_SHORT).show()
                 //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()

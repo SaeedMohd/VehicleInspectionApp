@@ -148,10 +148,10 @@ class FacilityGroupFragment : Fragment() {
         when(selectedViewId){
             R.id.generalInformationButton->{
                 generalInformationSelectedIndicator.visibility = View.VISIBLE
-                        rspSelectedIndicator.visibility = View.INVISIBLE
-                        contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                        personnelSelectedIndicator.visibility = View.INVISIBLE
-                        amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+                rspSelectedIndicator.visibility = View.INVISIBLE
+                contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                personnelSelectedIndicator.visibility = View.INVISIBLE
+                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.rspButton->{

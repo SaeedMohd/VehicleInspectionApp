@@ -30,6 +30,7 @@ import com.inspection.model.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
+import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -94,6 +95,8 @@ class FragmentARRAVLocation : Fragment() {
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 facilityIsOpenEffDateBtn!!.text = sdf.format(c.time)
+                HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
             }, year, month, day)
             dpd.show()
         }
@@ -107,6 +110,8 @@ class FragmentARRAVLocation : Fragment() {
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
                 facilityIsOpenExpDateBtn!!.text = sdf.format(c.time)
+                HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
             }, year, month, day)
             dpd.show()
         }
@@ -161,7 +166,7 @@ class FragmentARRAVLocation : Fragment() {
         locationSubmitButton.setOnClickListener({
             // missing validation for states when the lookup is ready
 
-            var location =FacilityDataModel.TblAddress().locIsInputsValid
+            var location =TblAddress().locIsInputsValid
 
 //            if (newStateSpinner.selectedItem.toString().contains("select")){
 //                location=false
@@ -222,7 +227,7 @@ class FragmentARRAVLocation : Fragment() {
 
         phoneSubmitButton.setOnClickListener({
 
-            var phoneValide=FacilityDataModel.TblPhone().phoneIsInputsValid
+            var phoneValide=TblPhone().phoneIsInputsValid
             if (newPhoneNoText.text.isNullOrEmpty()) {
                 newPhoneNoText.setError("please enter phone number")
                 phoneValide=false
@@ -235,7 +240,7 @@ class FragmentARRAVLocation : Fragment() {
 
         emailSubmitButton.setOnClickListener({
 
-            var emailValid=FacilityDataModel.TblFacilityEmail().emailIsInputsValid
+            var emailValid=TblFacilityEmail().emailIsInputsValid
             if (newEmailAddrText.text.isNullOrEmpty()) {
                 emailValid=false
                 newEmailAddrText.setError("Required Field")
@@ -257,11 +262,17 @@ class FragmentARRAVLocation : Fragment() {
 
         nightDropCheck.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblHours[0].NightDrop = b
+            HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+            (activity as FormsActivity).saveRequired = true
         }
 
         nightDropInstText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblHours[0].NightDropInstr = p0.toString()
+                HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                (activity as FormsActivity).saveRequired = true
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -1328,7 +1339,7 @@ class FragmentARRAVLocation : Fragment() {
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode = FacilityDataModel.getInstance().clubCode
 
-        val newEmail = FacilityDataModel.TblFacilityEmail()
+        val newEmail = TblFacilityEmail()
         newEmail.email = email.toString()
         newEmail.emailTypeId = emailTypeID
 
@@ -1449,7 +1460,7 @@ class FragmentARRAVLocation : Fragment() {
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode ="004"
-        val newLocation = FacilityDataModel.TblAddress()
+        val newLocation = TblAddress()
 //        newLocation.BranchName = branchNameText.toString()
 //        newLocation.BranchNumber = branchNoText.toString()
 //        newLocation.CITY = cityText.toString()
@@ -1489,7 +1500,7 @@ class FragmentARRAVLocation : Fragment() {
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode = FacilityDataModel.getInstance().clubCode
-        val newPhone = FacilityDataModel.TblPhone()
+        val newPhone = TblPhone()
         newPhone.PhoneNumber = phoneNo.toString()
         newPhone.PhoneTypeID= phoneTypeID
         var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"

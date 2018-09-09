@@ -22,7 +22,6 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
-import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -37,9 +36,7 @@ import com.inspection.R.id.numberOfLiftsEditText
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.Utility
 import com.inspection.Utils.toApiSubmitFormat
-import com.inspection.model.FacilityDataModelOrg
-import com.inspection.model.IndicatorsDataModel
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
 import kotlin.jvm.java
@@ -616,7 +613,7 @@ dataChanged=true
         var watcher_NumOfLifts=""
         var typeIdCompare=""
 
-        var scopeOfServiceValide = FacilityDataModel.TblScopeofService().isInputsValid
+        var scopeOfServiceValide = TblScopeofService().isInputsValid
         var scopeOfServiceValideForOtherFragmentToTest = false
 
 

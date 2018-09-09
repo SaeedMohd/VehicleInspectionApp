@@ -122,6 +122,7 @@ class TypeTablesModel {
         var updateDate = ""
     }
 
+
     class amendmentOrderTrackingEventsType {
         var AmendmentEventID = ""
         var AmendmentEventName = ""

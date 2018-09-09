@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.TblLanguage
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.lang_checkbox_item.view.*
 import java.util.ArrayList
@@ -54,36 +55,24 @@ class LanguageListAdapter(internal var context: Context, internal var recource: 
 
 
         checkBoxItem.setOnClickListener(View.OnClickListener {
-
-
             if (checkBoxItem.isChecked == true) {
-
                 checkBoxItemnum++
-                var lang = FacilityDataModel.TblLanguage()
+                var lang = TblLanguage()
                 lang.LangTypeID = namesList.get(position).LangTypeID
                 langArray.add(lang)
                 FacilityDataModel.getInstance().tblLanguage = langArray
-
             } else
                 langArray.removeIf { s -> s.LangTypeID == namesList.get(position).LangTypeID }
             checkBoxItemnum--
             // langArray.remove(namesList.get(position).LangTypeID)
             FacilityDataModel.getInstance().tblLanguage = langArray
-
-
         })
-
-
-
         return view
     }
 
     companion object {
-
         var checkBoxItemnum = 0
-        val langArray = ArrayList<FacilityDataModel.TblLanguage>()
-
-
+        val langArray = ArrayList<TblLanguage>()
     }
 }
 

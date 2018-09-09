@@ -36,10 +36,7 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_La
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMin
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.FacilityDataModelOrg
-import com.inspection.model.IndicatorsDataModel
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -255,7 +252,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 DeffLoadingView.visibility = View.VISIBLE
 
 
-                var item = FacilityDataModel.TblDeficiency()
+                var item = TblDeficiency()
 
                 for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
                     if (newDefSpinner.getSelectedItem().toString().equals(fac.DeficiencyName))
@@ -539,7 +536,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
     fun validateInputs() : Boolean {
 
-        var defValide=FacilityDataModel.TblDeficiency().isInputsValid
+        var defValide= TblDeficiency().isInputsValid
         defValide = true
 
         newVisitationDateBtn.setError(null)

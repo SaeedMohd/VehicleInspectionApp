@@ -24,6 +24,8 @@ class HasChangedModel {
     var groupFacility = ArrayList<GroupFacility>()
     var groupFacilityGeneralInfo = ArrayList<GroupFacilityGeneralInfo>()
     var groupFacilityRSP = ArrayList<GroupFacilityRSP>()
+    var groupFacilityContactInfo = ArrayList<GroupFacilityContactInfo>()
+    var groupFacilityPersonnel = ArrayList<GroupFacilityPersonnel>()
 
     class GroupFacility {
         var FacilityGeneral = false
@@ -44,11 +46,28 @@ class HasChangedModel {
         var FacilityRSP = false
     }
 
-    class GroupFacilityCOntactInfo {
-        var FacilityRSP = false
+    class GroupFacilityContactInfo {
+        var FacilityAddress= false
+        var FacilityPhone= false
+        var FacilityEmail= false
+        var FacilityHours= false
+
+    }
+
+    class GroupFacilityPersonnel {
+        var FacilityPersonnel = false
     }
 
     fun init() {
+        var GFPersonnel = GroupFacilityPersonnel()
+        GFPersonnel.FacilityPersonnel= false
+        groupFacilityPersonnel.add(GFPersonnel)
+        var GFContactInfo = GroupFacilityContactInfo()
+        GFContactInfo.FacilityAddress= false
+        GFContactInfo.FacilityEmail= false
+        GFContactInfo.FacilityHours= false
+        GFContactInfo.FacilityPhone= false
+        groupFacilityContactInfo.add(GFContactInfo)
         var GFRSP= GroupFacilityRSP()
         GFRSP.FacilityRSP = false
         groupFacilityRSP.add(GFRSP)
@@ -57,7 +76,6 @@ class HasChangedModel {
         GFGeneral.FacilityGeneralPaymentMethods = false
         GFGeneral.FacilityTimeZone = false
         GFGeneral.FacilityType = false
-//        GFGeneral.SaveCompleted=false
         groupFacilityGeneralInfo.add(GFGeneral)
         var GF = GroupFacility()
         GF.FacilityGeneral= false;
@@ -85,6 +103,27 @@ class HasChangedModel {
         }
     }
 
+    fun changeDoneForFacilityPersonnel() : Boolean {
+        if (groupFacilityPersonnel[0].FacilityPersonnel) {
+            groupFacility[0].FacilityPersonnel=true
+            return true
+        } else {
+            groupFacility[0].FacilityPersonnel=false
+            return false
+        }
+    }
+
+    fun changeDoneForFacilityContactInfo() : Boolean {
+        if (groupFacilityContactInfo[0].FacilityAddress || groupFacilityContactInfo[0].FacilityEmail || groupFacilityContactInfo[0].FacilityHours || groupFacilityContactInfo[0].FacilityPhone) {
+            groupFacility[0].FacilityContactInfo=true
+            return true
+        } else {
+            groupFacility[0].FacilityContactInfo=false
+            return false
+        }
+    }
+
+
     fun checkGeneralInfoTblFacilitiesChange () {
         var changeWasDone = false
         if (FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate!=FacilityDataModelOrg.getInstance().tblFacilities[0].InsuranceExpDate) changeWasDone = true
@@ -96,6 +135,28 @@ class HasChangedModel {
         groupFacilityGeneralInfo[0].FacilityGeneral = changeWasDone
 //        groupFacilityGeneralInfo[0].SaveCompleted = !changeWasDone
 //        return changeWasDone
+    }
+
+    fun checkGeneralInfoTblHoursChange () {
+        var changeWasDone = false
+        if (FacilityDataModel.getInstance().tblHours[0].SatOpen!=FacilityDataModelOrg.getInstance().tblHours[0].SatOpen) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].SatClose!=FacilityDataModelOrg.getInstance().tblHours[0].SatClose) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].SunOpen!=FacilityDataModelOrg.getInstance().tblHours[0].SunOpen) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].SunClose!=FacilityDataModelOrg.getInstance().tblHours[0].SatClose) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].MonOpen!=FacilityDataModelOrg.getInstance().tblHours[0].MonOpen) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].MonClose!=FacilityDataModelOrg.getInstance().tblHours[0].MonClose) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].TueOpen!=FacilityDataModelOrg.getInstance().tblHours[0].TueOpen) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].TueClose!=FacilityDataModelOrg.getInstance().tblHours[0].TueClose) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].WedOpen!=FacilityDataModelOrg.getInstance().tblHours[0].WedOpen) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].WedClose!=FacilityDataModelOrg.getInstance().tblHours[0].WedClose) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].ThuOpen!=FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].ThuClose!=FacilityDataModelOrg.getInstance().tblHours[0].ThuClose) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].FriOpen!=FacilityDataModelOrg.getInstance().tblHours[0].FriOpen) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].FriClose!=FacilityDataModelOrg.getInstance().tblHours[0].FriClose) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].NightDrop!=FacilityDataModelOrg.getInstance().tblHours[0].NightDrop) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblHours[0].NightDropInstr!=FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr) changeWasDone = true
+        groupFacilityContactInfo[0].FacilityHours = changeWasDone
+
     }
 
 

@@ -34,6 +34,7 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_Nu
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.HasChangedModel
 import com.inspection.model.IndicatorsDataModel
+import com.inspection.model.VisitationTypes
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 
@@ -88,7 +89,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         ////navigationMenu.findItem(R.id.visitation).actionView.setBackgroundResource(R.drawable.red_button_background)
 
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == FacilityDataModel.VisitationTypes.AdHoc) {
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) {
             navigationMenu.findItem(R.id.visitation).isEnabled = false
             navigationMenu.findItem(R.id.visitation).isVisible = false
             currentFragment = fragmentsNames.FacilityGeneralInfo.toString()

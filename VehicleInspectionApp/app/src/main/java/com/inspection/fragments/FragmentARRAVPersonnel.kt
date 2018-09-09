@@ -387,7 +387,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 var ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
 
 
-                var item = FacilityDataModel.TblPersonnel()
+                var item = TblPersonnel()
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
                     if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
 
@@ -420,6 +420,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Certification")
                                     FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                    HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
+                                    HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                     addTheLatestRowOfPortalAdmin()
                                 } else {
                                     Utility.showSubmitAlertDialog(activity, false, "Certification")
@@ -475,7 +477,7 @@ class FragmentARRAVPersonnel : Fragment() {
 //
                             if (response.toString().contains("returnCode&gt;0&",false)) {
                                 Utility.showSubmitAlertDialog(activity, true, "Personnel")
-                                var item = FacilityDataModel.TblPersonnel()
+                                var item = TblPersonnel()
                                 for (fac in TypeTablesModel.getInstance().PersonnelType) {
                                     if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
 
@@ -493,7 +495,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                 item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
                                 item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
                                 FacilityDataModel.getInstance().tblPersonnel.add(item)
-
+                                HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
+                                HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                 fillPersonnelTableView()
                                 altTableRow(2)
 
@@ -1798,7 +1801,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
                                                 item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
                                                 item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
-
+                                                HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
+                                                HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                                 fillPersonnelTableView()
                                                 altTableRow(2)
                                                 edit_personnelLoadingView.visibility = View.GONE
@@ -2504,7 +2508,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         certTypeTextView.setError(null)
 
 
-           var cert = FacilityDataModel.TblPersonnel()
+           var cert = TblPersonnel()
 
         cert.iscertInputValid=true
 
@@ -2530,7 +2534,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
     fun validateInputs() : Boolean{
 
-        var persn = FacilityDataModel.TblPersonnel()
+        var persn = TblPersonnel()
 
 
         persn.personnelIsInputsValid=true
@@ -2670,7 +2674,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
     }
     fun edit_validateInputs() : Boolean{
 
-        var persn = FacilityDataModel.TblPersonnel()
+        var persn = TblPersonnel()
 
 
         persn.personnelIsInputsValid=true
