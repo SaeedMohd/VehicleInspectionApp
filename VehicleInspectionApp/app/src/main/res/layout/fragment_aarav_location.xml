@@ -191,29 +191,31 @@
 
             </RelativeLayout>
 
+            <!--android:showDividers="middle|beginning|end"-->
+            <!--android:divider="@drawable/divider_table_layout"-->
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/phoneTbl"
-                android:showDividers="middle|beginning|end"
-                android:divider="@drawable/divider_table_layout"
+                android:stretchColumns="0,1,2"
                 >
 
                 <TableRow android:background="@color/mainColor">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:textAlignment="center"
                         android:text="Phone Type"
                         android:layout_column="0"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_weight="1"
                         android:text="Phone Number"
                         android:textAlignment="center"
@@ -224,7 +226,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_weight="1"
                         android:text="Options"
                         android:gravity="center"
@@ -270,23 +272,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emailTbl"
+                android:stretchColumns="0,1,2"
                 >
 
-                <TableRow android:background="@color/mainColor">
+                <TableRow android:background="@color/mainColor"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_gravity="center_vertical"
                         android:layout_column="0"
+                        android:layout_marginLeft="10dp"
                         android:text="Email Type"
+                        android:layout_weight="1"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:layout_column="1"
                         android:text="Email Address"
                         android:textColor="@color/white"
@@ -294,10 +301,10 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:gravity="center"
                         android:text="Options"
-                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
                         android:layout_column="2"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
@@ -658,15 +665,14 @@
                 </TableRow>
 
                 <TableRow>
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Language Spoken"
                         android:layout_column="0"
-
-                        android:layout_marginTop="5dp"
-                        android:text="Language Spoken:"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/mainColor"
+                        android:textSize="18sp" />
                 </TableRow>
 
                 <TableRow>
@@ -679,6 +685,7 @@
                         android:horizontalSpacing="2dp"
                         android:isScrollContainer="false"
                         android:numColumns="4"
+                        android:layout_marginTop="10dp"
                         android:stretchMode="columnWidth"
                         android:verticalSpacing="20dp" />
 
@@ -688,21 +695,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/saveButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Save" />
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:elevation="5dp"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                android:padding="30dp">
 
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
+                    android:background="@drawable/grey_background_button"
                     android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/green_background_button"
+                    android:text="Save" />
             </LinearLayout>
         </LinearLayout>
 
@@ -1407,6 +1420,131 @@
         </TableLayout>
     </android.support.v7.widget.CardView>
 
+    <android.support.v7.widget.CardView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/editEmailDialog"
+        app:cardElevation="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Edit Email Address"
+            android:layout_gravity="top|left"
+            android:textSize="18dp"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:text="Submit"
+            android:id="@+id/emailSaveChangesButton"
+            android:textColor="@color/white"
+            android:background="@drawable/green_background_button"
+            />
+
+
+        <ImageButton
+            android:layout_marginTop="25dp"
+            android:id="@+id/exitUpdateEmailDialogeBtnId"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="20dp"
+            android:background="@drawable/close"
+            android:layout_gravity="top|right"
+            />
+
+
+        <TableLayout
+            android:layout_marginTop="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+
+            <!--<TableRow>-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+
+            <!--android:text="Description:"-->
+            <!--android:layout_column="0"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
+            <!--<EditText-->
+            <!--android:id="@+id/newPhoneDescText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:text=""-->
+            <!--android:ems="8"-->
+            <!--android:layout_column="1"-->
+            <!--android:background="@drawable/textview_background"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
+            <!--</TableRow>-->
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Email Address:*"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/newChangesEmailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:ems="25"
+                    android:padding="5dp"
+                    android:inputType="textEmailAddress"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+            <!--<TableRow>-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+
+            <!--android:text="Phone Extension:"-->
+            <!--android:layout_column="0"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
+            <!--<EditText-->
+            <!--android:id="@+id/newPhoneExtText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:text=""-->
+            <!--android:ems="8"-->
+            <!--android:layout_column="1"-->
+            <!--android:background="@drawable/textview_background"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
+            <!--</TableRow>-->
+
+        </TableLayout>
+    </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
         android:layout_width="800dp"
         android:layout_height="wrap_content"

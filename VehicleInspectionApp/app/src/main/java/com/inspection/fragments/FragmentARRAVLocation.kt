@@ -9,8 +9,11 @@ import android.os.Bundle
 import android.os.Debug
 import android.support.v4.app.Fragment
 import android.text.Editable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.UnderlineSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +32,7 @@ import com.inspection.adapter.LanguageListAdapter
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
+import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import java.text.Normalizer
 import java.text.SimpleDateFormat
@@ -79,12 +83,241 @@ class FragmentARRAVLocation : Fragment() {
 
 
         setFieldsListeners()
-
+        refreshButtonsState()
 
     }
 
+    fun refreshButtonsState(){
+        saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+    }
 
     fun setFieldsListeners(){
+
+        cancelButton.setOnClickListener {
+            cancelButton.hideKeyboard()
+            FacilityDataModel.getInstance().tblHours[0].SunClose = FacilityDataModelOrg.getInstance().tblHours[0].SunClose
+            FacilityDataModel.getInstance().tblHours[0].SunOpen = FacilityDataModelOrg.getInstance().tblHours[0].SunOpen
+            FacilityDataModel.getInstance().tblHours[0].SatClose = FacilityDataModelOrg.getInstance().tblHours[0].SatClose
+            FacilityDataModel.getInstance().tblHours[0].SatOpen = FacilityDataModelOrg.getInstance().tblHours[0].SatOpen
+            FacilityDataModel.getInstance().tblHours[0].MonOpen= FacilityDataModelOrg.getInstance().tblHours[0].MonOpen
+            FacilityDataModel.getInstance().tblHours[0].MonClose= FacilityDataModelOrg.getInstance().tblHours[0].MonClose
+            FacilityDataModel.getInstance().tblHours[0].TueOpen = FacilityDataModelOrg.getInstance().tblHours[0].TueOpen
+            FacilityDataModel.getInstance().tblHours[0].TueClose = FacilityDataModelOrg.getInstance().tblHours[0].TueClose
+            FacilityDataModel.getInstance().tblHours[0].WedClose= FacilityDataModelOrg.getInstance().tblHours[0].WedClose
+            FacilityDataModel.getInstance().tblHours[0].WedOpen= FacilityDataModelOrg.getInstance().tblHours[0].WedOpen
+            FacilityDataModel.getInstance().tblHours[0].ThuOpen= FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen
+            FacilityDataModel.getInstance().tblHours[0].ThuClose= FacilityDataModelOrg.getInstance().tblHours[0].ThuClose
+            FacilityDataModel.getInstance().tblHours[0].FriClose= FacilityDataModelOrg.getInstance().tblHours[0].FriClose
+            FacilityDataModel.getInstance().tblHours[0].FriOpen= FacilityDataModelOrg.getInstance().tblHours[0].FriOpen
+            FacilityDataModel.getInstance().tblHours[0].NightDrop= FacilityDataModelOrg.getInstance().tblHours[0].NightDrop
+            FacilityDataModel.getInstance().tblHours[0].NightDropInstr= FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr
+            fillOpenHoursTableView()
+            fillClosedHoursTableView()
+            (activity as FormsActivity).saveRequired = false
+            refreshButtonsState()
+            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully")
+        }
+
+
+        sunOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!sunOpenSpinner.tag.equals(p2) || sunOpenSpinner.tag.equals("-1")) {
+                    sunOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].SunOpen = sunOpenSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        sunCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!sunCloseSpinner.tag.equals(p2) || sunCloseSpinner.tag.equals("-1")) {
+                    sunCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].SunClose = sunCloseSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        monCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!monCloseSpinner.tag.equals(p2) || monCloseSpinner.tag.equals("-1")) {
+                    monCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].MonClose = monCloseSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        monOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!monOpenSpinner.tag.equals(p2) || monOpenSpinner.tag.equals("-1")) {
+                    monOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].MonOpen = monOpenSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        tueCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!tueCloseSpinner.tag.equals(p2) || tueCloseSpinner.tag.equals("-1")) {
+                    tueCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].TueClose = tueCloseSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        tueOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!tueOpenSpinner.tag.equals(p2) || tueOpenSpinner.tag.equals("-1")) {
+                    tueOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].TueOpen = tueOpenSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        wedOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!wedOpenSpinner.tag.equals(p2) || wedOpenSpinner.tag.equals("-1")) {
+                    wedOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].WedOpen = wedOpenSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        wedCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!wedCloseSpinner.tag.equals(p2) || wedCloseSpinner.tag.equals("-1")) {
+                    wedCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].WedClose = wedCloseSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        thuCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!thuCloseSpinner.tag.equals(p2) || thuCloseSpinner.tag.equals("-1")) {
+                    thuCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].ThuClose = thuCloseSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        thuOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!thuOpenSpinner.tag.equals(p2) || thuOpenSpinner.tag.equals("-1")) {
+                    thuOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].ThuOpen = thuOpenSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        friOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!friOpenSpinner.tag.equals(p2) || friOpenSpinner.tag.equals("-1")) {
+                    friOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].FriOpen = friOpenSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        friCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!friCloseSpinner.tag.equals(p2) || friCloseSpinner.tag.equals("-1")) {
+                    friCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].FriClose = friCloseSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        satCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!satCloseSpinner.tag.equals(p2) || satCloseSpinner.tag.equals("-1")) {
+                    satCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].SatClose = satCloseSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+        satOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (!satOpenSpinner.tag.equals(p2) || satOpenSpinner.tag.equals("-1")) {
+                    satOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].SatOpen = satOpenSpinner.getItemAtPosition(p2).toString()
+                    HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
+
+
         facilityIsOpenEffDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -256,7 +489,7 @@ class FragmentARRAVLocation : Fragment() {
         saveButton.setOnClickListener(View.OnClickListener {
 
             submitHours()
-//            submitLanguages()
+            submitLanguages()
 
         })
 
@@ -265,6 +498,7 @@ class FragmentARRAVLocation : Fragment() {
             HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
             (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
         }
 
         nightDropInstText.addTextChangedListener(object : TextWatcher{
@@ -273,6 +507,7 @@ class FragmentARRAVLocation : Fragment() {
                 HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                 HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                 (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -413,6 +648,10 @@ class FragmentARRAVLocation : Fragment() {
 
         languagesGridView?.adapter = arrayAdapter
         languagesGridView?.isExpanded=true
+//        languagesGridView?.setOnClickListener({
+//            (activity as FormsActivity).saveRequired = true
+//            refreshButtonsState()
+//        })
 
     }
 
@@ -494,6 +733,8 @@ class FragmentARRAVLocation : Fragment() {
                                 FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
                                 FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
                                 fillLocationTableView()
+                                HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
+                                HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                                 IndicatorsDataModel.getInstance().validateFacilityLocation()
                                 if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                                 (activity as FormsActivity).refreshMenuIndicators()
@@ -656,10 +897,10 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun fillPhoneTableView() {
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-      //  rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+//        val rowLayoutParam = TableRow.LayoutParams()
+//        rowLayoutParam.weight = 1F
+//        rowLayoutParam.column = 0
+//      //  rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         if (phoneTbl.childCount>1) {
             for (i in phoneTbl.childCount - 1 downTo 1) {
@@ -667,15 +908,21 @@ class FragmentARRAVLocation : Fragment() {
             }
         }
 
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.leftMargin=10
+        rowLayoutParam.height = 30
+
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-       rowLayoutParam2.width = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
 
 
 
@@ -686,23 +933,37 @@ class FragmentARRAVLocation : Fragment() {
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
-                    //getTypeName
+//                    textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     textView.text = getPhoneTypeName(get(it).PhoneTypeID)
                     tableRow.addView(textView)
 
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam1
-                    textView2.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
+//                    textView2.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     textView2.text = get(it).PhoneNumber
                     tableRow.addView(textView2)
 
-                    val editPhoneBtn = Button(context)
-                    editPhoneBtn.layoutParams = rowLayoutParam2
-                    editPhoneBtn.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
-                    editPhoneBtn.text = "Edit"
-                    editPhoneBtn.setTextColor(Color.BLACK)
-//                editPhoneBtn.setBackgroundResource(R.drawable.green_background_button)
+//                    val editPhoneBtn = Button(context)
+//                    editPhoneBtn.layoutParams = rowLayoutParam2
+////                    editPhoneBtn.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
+//                    textView.gravity = Gravity.CENTER_VERTICAL
+//                    textView.textSize = 18f
+//                    editPhoneBtn.text = "Edit"
+//                    editPhoneBtn.setTextColor(Color.BLACK)
+////                editPhoneBtn.setBackgroundResource(R.drawable.green_background_button)
+//                    tableRow.addView(editPhoneBtn)
+
+                    val editPhoneBtn = TextView(context)
+                    editPhoneBtn.layoutParams = rowLayoutParam1
+                    editPhoneBtn.setTextColor(Color.BLUE)
+                    editPhoneBtn.text = "EDIT"
+                    editPhoneBtn.textSize = 18f
+                    editPhoneBtn.gravity = Gravity.CENTER
+                    editPhoneBtn.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(editPhoneBtn)
 
                     editPhoneBtn.setOnClickListener(View.OnClickListener {
@@ -761,10 +1022,9 @@ class FragmentARRAVLocation : Fragment() {
                                             activity!!.runOnUiThread(Runnable {
                                                 if (response.toString().contains("returnCode&gt;0&", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
-                                                    fillPhoneTableView()
                                                     FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
-                                                    HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = true
-                                                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                                                    fillPhoneTableView()
+                                                    checkIfChangeDone("PHONE")
                                                     IndicatorsDataModel.getInstance().validateFacilityLocation()
                                                     if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                                                     (activity as FormsActivity).refreshMenuIndicators()
@@ -806,18 +1066,18 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.leftMargin=10
+        rowLayoutParam.height = 30
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
-        rowLayoutParam2.width = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
 
         FacilityDataModel.getInstance().tblFacilityEmail.apply {
             (0 until size).forEach {
@@ -826,23 +1086,118 @@ class FragmentARRAVLocation : Fragment() {
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     //getTypeName
                     textView.text = getEmailTypeName(get(it).emailTypeId)
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER_VERTICAL
                     textView.text = get(it).email
+                    textView.textSize = 18f
                     tableRow.addView(textView)
 
-                    val editEmailBtn = Button(context)
-                    editEmailBtn .layoutParams = rowLayoutParam2
-                    editEmailBtn .text = "Edit"
-                    editEmailBtn .setTextColor(Color.WHITE)
-                    tableRow.addView(editEmailBtn )
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.setTextColor(Color.BLUE)
+                    textView.text = "EDIT"
+                    textView.textSize = 18f
+                    textView.gravity = Gravity.CENTER
+                    textView.setBackgroundColor(Color.TRANSPARENT)
 
+
+                    textView.setOnClickListener(View.OnClickListener {
+                        var rowIndex = emailTbl.indexOfChild(tableRow)
+                        var emailFacilityChangedIndex = rowIndex - 1
+                        //       Toast.makeText(context,rowIndex.toString(),Toast.LENGTH_SHORT).show()
+
+
+                        disableAllAddButnsAndDialog()
+                        newChangesEmailText.text.clear()
+                        alphaBackgroundForDialogs.visibility = View.VISIBLE
+                        editEmailDialog.visibility = View.VISIBLE
+                        emailTypeList = TypeTablesModel.getInstance().EmailType
+                        emailTypeArray.clear()
+                        for (fac in emailTypeList) {
+                            emailTypeArray.add(fac.EmailName)
+                        }
+
+                        var emailTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, emailTypeArray)
+                        emailTypeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        newEmailTypeSpinner.adapter = emailTypeAdapter
+
+                        emailSaveChangesButton.setOnClickListener(View.OnClickListener {
+
+                            var emailTypeID = ""
+                            if (newChangesEmailText.text.isNullOrEmpty()) {
+                                newChangesEmailText.setError("please enter required field")
+
+//                             Toast.makeText(context,"please fill required fields",Toast.LENGTH_SHORT).show()
+                            } else if (!Utility.isEmailValid(newChangesEmailText.text.toString())) {
+                                Utility.showValidationAlertDialog(activity,"Please enter a valid Email address")
+                            } else {
+                                val emailAddress = newChangesEmailText.text.toString()
+                                for (emailTypeTableId in TypeTablesModel.getInstance().EmailType) {
+                                    if (emailTypeTableId.EmailName == textView.text.toString()) {
+
+                                        emailTypeID = emailTypeTableId.EmailID.toString()
+
+                                    }
+                                }
+                                val insertDate = Date().toAppFormatMMDDYYYY()
+                                val insertBy = "sa"
+                                val updateDate = Date().toAppFormatMMDDYYYY()
+                                val updateBy = "sa"
+                                val activeVal = "0"
+
+                                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+
+                                val clubCode = FacilityDataModel.getInstance().clubCode
+                                var urlString = facilityNo + "&clubcode=" + clubCode + "&emailTypeId=" + FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].emailTypeId + "&email=" + emailAddress+ "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&emailId=${FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].emailID}&active=1"
+                                Log.v("Data To Submit", urlString)
+                                contactInfoLoadingView.visibility = View.VISIBLE
+                                editEmailDialog.visibility = View.GONE
+                                alphaBackgroundForDialogs.visibility = View.GONE
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
+                                        Response.Listener { response ->
+                                            activity!!.runOnUiThread(Runnable {
+                                                if (response.toString().contains("returnCode&gt;0&", false)) {
+                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Email")
+                                                    FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = newChangesEmailText.text.toString()
+                                                    fillEmailTableView()
+                                                    checkIfChangeDone("EMAIL")
+                                                    IndicatorsDataModel.getInstance().validateFacilityLocation()
+                                                    if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+                                                    (activity as FormsActivity).refreshMenuIndicators()
+                                                } else {
+                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email")
+                                                }
+                                                contactInfoLoadingView.visibility = View.GONE
+                                                enableAllAddButnsAndDialog()
+                                            })
+                                        }, Response.ErrorListener {
+                                    contactInfoLoadingView.visibility = View.GONE
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email")
+                                    enableAllAddButnsAndDialog()
+                                }))
+
+
+                            }
+                        })
+
+                    })
+
+                    tableRow.addView(textView)
+
+
+//                    val editEmailBtn = Button(context)
+//                    editEmailBtn .layoutParams = rowLayoutParam2
+//                    editEmailBtn .text = "Edit"
+//                    editEmailBtn .setTextColor(Color.BLACK)
+//                    editEmailBtn.setBackgroundResource(R.drawable.green_background_button)
+//                    tableRow.addView(editEmailBtn )
                     emailTbl.addView(tableRow)
                 }
             }
@@ -851,6 +1206,34 @@ class FragmentARRAVLocation : Fragment() {
         altEmailTableRow(2)
 
     }
+
+    fun checkIfChangeDone(strType : String)  {
+        var changeWasDone = false
+        if (strType.equals("EMAIL")){
+            for (i in 0 .. FacilityDataModel.getInstance().tblFacilityEmail.size-1) {
+                if (!FacilityDataModel.getInstance().tblFacilityEmail[i].email.equals(FacilityDataModelOrg.getInstance().tblFacilityEmail[i].email)) changeWasDone=true
+            }
+            if (changeWasDone){
+                HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail = true
+            } else {
+                HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail = false
+            }
+            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+        }
+        if (strType.equals("PHONE")){
+            for (i in 0 .. FacilityDataModel.getInstance().tblPhone.size-1) {
+                if (!FacilityDataModel.getInstance().tblPhone[i].PhoneNumber.equals(FacilityDataModelOrg.getInstance().tblPhone[i].PhoneNumber)) changeWasDone=true
+            }
+            if (changeWasDone){
+                HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = true
+            } else {
+                HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = false
+            }
+            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+        }
+    }
+
+
     fun fillOpenHoursTableView() {
 //        val rowLayoutParam = TableRow.LayoutParams()
 //        rowLayoutParam.weight = 1F
@@ -900,165 +1283,45 @@ class FragmentARRAVLocation : Fragment() {
         FacilityDataModel.getInstance().tblHours.apply {
             (0 until size).forEach {
                 sunOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SunOpen.isNullOrEmpty()) "Closed" else get(it).SunOpen))
+                sunOpenSpinner.tag = sunOpenSpinner.selectedItemPosition
                 monOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).MonOpen.isNullOrEmpty()) "Closed" else get(it).MonOpen))
+                monOpenSpinner.tag = monOpenSpinner.selectedItemPosition
                 tueOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).TueOpen.isNullOrEmpty()) "Closed" else get(it).TueOpen))
+                tueOpenSpinner.tag = tueOpenSpinner.selectedItemPosition
                 wedOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).WedOpen.isNullOrEmpty()) "Closed" else get(it).WedOpen))
+                wedOpenSpinner.tag = wedOpenSpinner.selectedItemPosition
                 thuOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).ThuOpen.isNullOrEmpty()) "Closed" else get(it).ThuOpen))
+                thuOpenSpinner.tag = thuOpenSpinner.selectedItemPosition
                 friOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).FriOpen.isNullOrEmpty()) "Closed" else get(it).FriOpen))
+                friOpenSpinner.tag = friOpenSpinner.selectedItemPosition
                 satOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SatOpen.isNullOrEmpty()) "Closed" else get(it).SatOpen))
+                satOpenSpinner.tag = satOpenSpinner.selectedItemPosition
                 nightDropCheck.isChecked = get(it).NightDrop
                 nightDropInstText.setText(get(it).NightDropInstr)
-//                var tableRow = TableRow(context)
-//
-//                var textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                //getTypeName
-//                textView.text = "Open : "
-//                tableRow.addView(textView)
-//
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam1
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                //getTypeName
-//                textView.text =if (getEmailTypeName(get(it).SunOpen).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).MonOpen
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam3
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).TueOpen
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).WedOpen
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).ThuOpen
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).FriOpen
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text =if (getEmailTypeName(get(it).SatOpen).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
-//                tableRow.addView(textView)
-//
-//                openHoursTblId.addView(tableRow)
+
             }
         }
     }
     fun fillClosedHoursTableView() {
-//        val rowLayoutParam = TableRow.LayoutParams()
-//        rowLayoutParam.weight = 1F
-//        rowLayoutParam.column = 0
-//        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
-//
-//        val rowLayoutParam1 = TableRow.LayoutParams()
-//        rowLayoutParam1.weight = 1F
-//        rowLayoutParam1.column = 1
-//        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
-//
-//        val rowLayoutParam2 = TableRow.LayoutParams()
-//        rowLayoutParam2.weight = 1F
-//        rowLayoutParam2.column = 2
-//        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
-//
-//        val rowLayoutParam3 = TableRow.LayoutParams()
-//        rowLayoutParam3.weight = 1F
-//        rowLayoutParam3.column = 3
-//        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
-//
-//        val rowLayoutParam4 = TableRow.LayoutParams()
-//        rowLayoutParam4.weight = 1F
-//        rowLayoutParam4.column = 4
-//        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
-//
-//        val rowLayoutParam5 = TableRow.LayoutParams()
-//        rowLayoutParam5.weight = 1F
-//        rowLayoutParam5.column = 5
-//        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
-//
-//        val rowLayoutParam6 = TableRow.LayoutParams()
-//        rowLayoutParam6.weight = 1F
-//        rowLayoutParam6.column = 6
-//        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
-//
-//        val rowLayoutParam7 = TableRow.LayoutParams()
-//        rowLayoutParam7.weight = 1F
-//        rowLayoutParam7.column = 7
-//        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-//        if (emailTbl.childCount>1) {
-//            for (i in emailTbl.childCount - 1 downTo 1) {
-//                emailTbl.removeViewAt(i)
-//            }
-//        }
 
         FacilityDataModel.getInstance().tblHours.apply {
             (0 until size).forEach {
                 sunCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SunClose.isNullOrEmpty()) "Closed" else get(it).SunClose))
+                sunCloseSpinner.tag = sunCloseSpinner.selectedItemPosition
                 monCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).MonClose.isNullOrEmpty()) "Closed" else get(it).MonClose))
+                monCloseSpinner.tag = monCloseSpinner.selectedItemPosition
                 tueCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).TueClose.isNullOrEmpty()) "Closed" else get(it).TueClose))
+                tueCloseSpinner.tag = tueCloseSpinner.selectedItemPosition
                 wedCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).WedClose.isNullOrEmpty()) "Closed" else get(it).WedClose))
+                wedCloseSpinner.tag = wedCloseSpinner.selectedItemPosition
                 thuCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).ThuClose.isNullOrEmpty()) "Closed" else get(it).ThuClose))
+                thuCloseSpinner.tag = thuCloseSpinner.selectedItemPosition
                 friCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).FriClose.isNullOrEmpty()) "Closed" else get(it).FriClose))
+                friCloseSpinner.tag = friCloseSpinner.selectedItemPosition
                 satCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SatClose.isNullOrEmpty()) "Closed" else get(it).SatClose))
+                satCloseSpinner.tag = satCloseSpinner.selectedItemPosition
 
-//  1-7UQCNM
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).MonClose
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam3
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).TueClose
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).WedClose
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).ThuClose
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).FriClose
-//                tableRow.addView(textView)
-//
-//                textView = TextView(context)
-//                textView.layoutParams = rowLayoutParam2
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text =if (getEmailTypeName(get(it).SatClose).isNullOrEmpty()) "Closed" else getEmailTypeName(get(it).SunOpen)
-//                tableRow.addView(textView)
-//
-//                closedHoursTblId.addView(tableRow)
+
             }
         }
     }
@@ -1439,6 +1702,10 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModel.getInstance().tblHours[0].TueOpen = tueOpen
                             FacilityDataModel.getInstance().tblHours[0].NightDrop= nightDropCheck.isChecked
                             FacilityDataModel.getInstance().tblHours[0].NightDropInstr = nightDropInstText.text.toString()
+                            (activity as FormsActivity).saveRequired = false
+                            HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                            refreshButtonsState()
                             Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Nigh Drop")
                             IndicatorsDataModel.getInstance().validateFacilityLocation()
                             if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
@@ -1455,19 +1722,36 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun submitLanguages(){
-//        val langTypeId=LanguageListAdapter.langArray.toString().replace("[","").replace("]","")
-//        Log.v("LANGUAGES --->",UpdateFacilityLanguageData + "&langTypeId="+langTypeId+"&insertBy=SumA&insertDate="+Date().toApiSubmitFormat())
-//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "&langTypeId=${LanguageListAdapter.langArray.toString().replace("[","").replace("]","")}&insertBy=SumA&insertDate="+Date().toAppFormatMMDDYYYY(),
-//                Response.Listener { response ->
-//                    activity!!.runOnUiThread(Runnable {
-//                        Log.v("LANG_SUBMIT_RESPONSE",response.toString())
-//                        Toast.makeText(context,"languages submited",Toast.LENGTH_SHORT).show()
-//                    })
-//                }, Response.ErrorListener {
-//            Log.v("error while loading", "error while loading personnal record")
-//            Toast.makeText(context,"error submitting languages",Toast.LENGTH_SHORT).show()
-//
-//        }))
+        var langTypeId=""
+        //LanguageListAdapter.langArray.toString().replace("[","").replace("]","")
+        try {
+            for (i in 0..LanguageListAdapter.langArray.size-1) {
+                langTypeId += LanguageListAdapter.langArray[i].LangTypeID + ","
+            }
+            langTypeId=langTypeId.dropLast(1)
+        } catch (e: Exception){
+            Log.v("ERROR --- >",e.message)
+        }
+//$facNo&clubCode=004
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=SumA&insertDate="+Date().toAppFormatMMDDYYYY(),
+                Response.Listener { response ->
+                    activity!!.runOnUiThread(Runnable {
+                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                            Utility.showSubmitAlertDialog(activity, true, "Facility Languages")
+                            (activity as FormsActivity).saveRequired = false
+                            HasChangedModel.getInstance().checkGeneralInfoTblLanguagesChange()
+                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                            refreshButtonsState()
+                            IndicatorsDataModel.getInstance().validateFacilityLocation()
+                            if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+                            (activity as FormsActivity).refreshMenuIndicators()
+                        } else {
+                            Utility.showSubmitAlertDialog(activity, false, "Facility Languages")
+                        }
+                    })
+                }, Response.ErrorListener {
+                Utility.showSubmitAlertDialog(activity, false, "Facility Languages")
+        }))
     }
 
 

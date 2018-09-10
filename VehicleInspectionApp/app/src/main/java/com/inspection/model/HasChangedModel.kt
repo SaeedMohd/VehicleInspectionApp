@@ -51,7 +51,7 @@ class HasChangedModel {
         var FacilityPhone= false
         var FacilityEmail= false
         var FacilityHours= false
-
+        var FacilityLanguages= false
     }
 
     class GroupFacilityPersonnel {
@@ -67,6 +67,7 @@ class HasChangedModel {
         GFContactInfo.FacilityEmail= false
         GFContactInfo.FacilityHours= false
         GFContactInfo.FacilityPhone= false
+        GFContactInfo.FacilityLanguages= false
         groupFacilityContactInfo.add(GFContactInfo)
         var GFRSP= GroupFacilityRSP()
         GFRSP.FacilityRSP = false
@@ -114,7 +115,7 @@ class HasChangedModel {
     }
 
     fun changeDoneForFacilityContactInfo() : Boolean {
-        if (groupFacilityContactInfo[0].FacilityAddress || groupFacilityContactInfo[0].FacilityEmail || groupFacilityContactInfo[0].FacilityHours || groupFacilityContactInfo[0].FacilityPhone) {
+        if (groupFacilityContactInfo[0].FacilityAddress || groupFacilityContactInfo[0].FacilityEmail || groupFacilityContactInfo[0].FacilityHours || groupFacilityContactInfo[0].FacilityPhone || groupFacilityContactInfo[0].FacilityLanguages) {
             groupFacility[0].FacilityContactInfo=true
             return true
         } else {
@@ -156,7 +157,12 @@ class HasChangedModel {
         else if (FacilityDataModel.getInstance().tblHours[0].NightDrop!=FacilityDataModelOrg.getInstance().tblHours[0].NightDrop) changeWasDone = true
         else if (FacilityDataModel.getInstance().tblHours[0].NightDropInstr!=FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr) changeWasDone = true
         groupFacilityContactInfo[0].FacilityHours = changeWasDone
+    }
 
+    fun checkGeneralInfoTblLanguagesChange () {
+        var changeWasDone = false
+        if (FacilityDataModel.getInstance().tblLanguage[0].LangTypeID!=FacilityDataModelOrg.getInstance().tblLanguage[0].LangTypeID) changeWasDone = true
+        groupFacilityContactInfo[0].FacilityLanguages = changeWasDone
     }
 
 
