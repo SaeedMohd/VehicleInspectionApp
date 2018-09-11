@@ -22,8 +22,6 @@ class LanguageListAdapter(internal var context: Context, internal var recource: 
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-
-
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(recource, parent, false)
 //        val textView3 = view.itemTextView

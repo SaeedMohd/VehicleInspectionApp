@@ -230,6 +230,7 @@ class TblPersonnel {
     var personnelIsInputsValid = false
     var iscertInputValid = false
     var PersonnelTypeID=0
+    var PersonnelID=0
     var FirstName=""
     var LastName=""
     var CertificationNum=""

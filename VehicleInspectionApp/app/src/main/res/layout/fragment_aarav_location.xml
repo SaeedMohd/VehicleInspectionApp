@@ -34,7 +34,8 @@
                 android:id="@+id/mainViewLinearId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp">
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp">
 
 
                 <TextView
@@ -44,7 +45,7 @@
                     android:text="Location"
                     android:textStyle="bold"
                     android:textColor="@color/mainColor"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     />
 
             </RelativeLayout>
@@ -184,7 +185,7 @@
                     android:text="Phone"
                     android:textStyle="bold"
                     android:textColor="@color/mainColor"
-                    android:textSize="18sp" />
+                    android:textSize="22sp" />
 
                 <Button
                     android:id="@+id/addNewPhoneButton"
@@ -261,7 +262,7 @@
                     android:text="E-mail"
                     android:textStyle="bold"
                     android:textColor="@color/mainColor"
-                    android:textSize="18sp" />
+                    android:textSize="22sp" />
 
                 <Button
                     android:id="@+id/addNewEmailButton"
@@ -572,7 +573,7 @@
                         android:layout_height="wrap_content"
                         android:text="Facility Availability"
                         android:textColor="@color/mainColor"
-                        android:textSize="18sp" />
+                        android:textSize="22sp" />
                 </TableRow>
 
                 <TableRow>
@@ -682,7 +683,7 @@
                         android:layout_column="0"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/mainColor"
-                        android:textSize="18sp" />
+                        android:textSize="22sp" />
                 </TableRow>
 
                 <TableRow>

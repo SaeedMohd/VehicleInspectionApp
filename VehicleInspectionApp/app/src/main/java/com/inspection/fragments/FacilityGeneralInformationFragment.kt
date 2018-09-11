@@ -334,7 +334,6 @@ class FacilityGeneralInformationFragment : Fragment() {
             FacilityDataModel.getInstance().tblFacilities[0].WebSite = FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite
             FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess
             FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName
-
             FacilityDataModel.getInstance().tblPaymentMethods.clear()
             for (i in 0..FacilityDataModelOrg.getInstance().tblPaymentMethods.size-1) {
                 var payMethod = TblPaymentMethods()

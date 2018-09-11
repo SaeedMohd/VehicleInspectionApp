@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,20 +82,20 @@ class FragmentARRAVPersonnel : Fragment() {
         rspUserId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName.toString())
         rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
 
-
+        AddNewCertBtn.isEnabled=false
 
         exitDialogeBtnId.setOnClickListener({
 
 
-            for (i in 0 until mainViewLinearId.childCount) {
-                val child = mainViewLinearId.getChildAt(i)
-                child.isEnabled = true
-            }
-
-            for (i in 0 until mainViewLinearId2.childCount) {
-                val child = mainViewLinearId2.getChildAt(i)
-                child.isEnabled = true
-            }
+//            for (i in 0 until mainViewLinearId.childCount) {
+//                val child = mainViewLinearId.getChildAt(i)
+//                child.isEnabled = true
+//            }
+//
+//            for (i in 0 until mainViewLinearId2.childCount) {
+//                val child = mainViewLinearId2.getChildAt(i)
+//                child.isEnabled = true
+//            }
 
 
 
@@ -106,15 +107,15 @@ class FragmentARRAVPersonnel : Fragment() {
         edit_exitDialogeBtnId.setOnClickListener({
 
 
-            for (i in 0 until mainViewLinearId.childCount) {
-                val child = mainViewLinearId.getChildAt(i)
-                child.isEnabled = true
-            }
-
-            for (i in 0 until mainViewLinearId2.childCount) {
-                val child = mainViewLinearId2.getChildAt(i)
-                child.isEnabled = true
-            }
+//            for (i in 0 until mainViewLinearId.childCount) {
+//                val child = mainViewLinearId.getChildAt(i)
+//                child.isEnabled = true
+//            }
+//
+//            for (i in 0 until mainViewLinearId2.childCount) {
+//                val child = mainViewLinearId2.getChildAt(i)
+//                child.isEnabled = true
+//            }
 
 
 
@@ -126,16 +127,16 @@ class FragmentARRAVPersonnel : Fragment() {
 
         exitCertificateDialogeBtnId.setOnClickListener({
 
-            for (i in 0 until mainViewLinearId.childCount) {
-                val child = mainViewLinearId.getChildAt(i)
-                child.isEnabled = true
-            }
-
-            for (i in 0 until mainViewLinearId2.childCount) {
-                val child = mainViewLinearId2.getChildAt(i)
-                child.isEnabled = true
-            }
-
+//            for (i in 0 until mainViewLinearId.childCount) {
+//                val child = mainViewLinearId.getChildAt(i)
+//                child.isEnabled = true
+//            }
+//
+//            for (i in 0 until mainViewLinearId2.childCount) {
+//                val child = mainViewLinearId2.getChildAt(i)
+//                child.isEnabled = true
+//            }
+//
 
             addNewCertificateDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
@@ -145,15 +146,15 @@ class FragmentARRAVPersonnel : Fragment() {
 
         AddNewCertBtn.setOnClickListener(View.OnClickListener {
 
-            for (i in 0 until mainViewLinearId.childCount) {
-                val child = mainViewLinearId.getChildAt(i)
-                child.isEnabled = false
-            }
-
-            for (i in 0 until mainViewLinearId2.childCount) {
-                val child = mainViewLinearId2.getChildAt(i)
-                child.isEnabled = false
-            }
+//            for (i in 0 until mainViewLinearId.childCount) {
+//                val child = mainViewLinearId.getChildAt(i)
+//                child.isEnabled = false
+//            }
+//
+//            for (i in 0 until mainViewLinearId2.childCount) {
+//                val child = mainViewLinearId2.getChildAt(i)
+//                child.isEnabled = false
+//            }
 
             newCertTypeSpinner.setSelection(0)
             newCertStartDateBtn.setText("SELECT DATE")
@@ -170,15 +171,15 @@ class FragmentARRAVPersonnel : Fragment() {
         })
         addNewPersnRecordBtn.setOnClickListener(View.OnClickListener {
 
-            for (i in 0 until mainViewLinearId.childCount) {
-                val child = mainViewLinearId.getChildAt(i)
-                child.isEnabled = false
-            }
-
-            for (i in 0 until mainViewLinearId2.childCount) {
-                val child = mainViewLinearId2.getChildAt(i)
-                child.isEnabled = false
-            }
+//            for (i in 0 until mainViewLinearId.childCount) {
+//                val child = mainViewLinearId.getChildAt(i)
+//                child.isEnabled = false
+//            }
+//
+//            for (i in 0 until mainViewLinearId2.childCount) {
+//                val child = mainViewLinearId2.getChildAt(i)
+//                child.isEnabled = false
+//            }
 
 
             newFirstNameText.setText("")
@@ -399,15 +400,15 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
 
-                for (i in 0 until mainViewLinearId.childCount) {
-                    val child = mainViewLinearId.getChildAt(i)
-                    child.isEnabled = true
-                }
-
-                for (i in 0 until mainViewLinearId2.childCount) {
-                    val child = mainViewLinearId2.getChildAt(i)
-                    child.isEnabled = true
-                }
+//                for (i in 0 until mainViewLinearId.childCount) {
+//                    val child = mainViewLinearId.getChildAt(i)
+//                    child.isEnabled = true
+//                }
+//
+//                for (i in 0 until mainViewLinearId2.childCount) {
+//                    val child = mainViewLinearId2.getChildAt(i)
+//                    child.isEnabled = true
+//                }
 
 
 
@@ -422,7 +423,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                     FacilityDataModel.getInstance().tblPersonnel.add(item)
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
-                                    addTheLatestRowOfPortalAdmin()
+//                                    addTheLatestRowOfPortalAdmin()
+                                    fillCertificationTableView()
                                 } else {
                                     Utility.showSubmitAlertDialog(activity, false, "Certification")
                                 }
@@ -466,11 +468,7 @@ class FragmentARRAVPersonnel : Fragment() {
             var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
             var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
 
-
-
-
-//        urlString = URLEncoder.encode(urlString, "UTF-8")
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
                     Response.Listener { response ->
                         activity!!.runOnUiThread(Runnable {
                             Log.v("RESPONSE",response.toString())
@@ -500,43 +498,43 @@ class FragmentARRAVPersonnel : Fragment() {
                                 fillPersonnelTableView()
                                 altTableRow(2)
 
-                                for (i in 0 until mainViewLinearId.childCount) {
-                                    val child = mainViewLinearId.getChildAt(i)
-                                    child.isEnabled = true
-                                }
-
-                                for (i in 0 until mainViewLinearId2.childCount) {
-                                    val child = mainViewLinearId2.getChildAt(i)
-                                    child.isEnabled = true
-                                }
-
-                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
-                                var itemArray = FacilityDataModel.getInstance().tblPersonnel
-
-                                if (itemOrgArray.size != itemArray.size) {
-
-                                    MarkChangeWasDone()
-                                } else {
-
-                                    for (itemAr in itemArray) {
-                                        for (itemOrgAr in itemOrgArray) {
-
-                                            if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
-                                                    itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
-                                                    itemAr.RSP_Email != itemOrgAr.RSP_Email ||
-                                                    itemAr.CertificationNum != itemOrgAr.CertificationNum ||
-                                                    !(itemAr.ContractSigner == itemOrgAr.ContractSigner) ||
-                                                    !(itemAr.PrimaryMailRecipient == itemOrgAr.PrimaryMailRecipient) ||
-                                                    itemAr.startDate != itemOrgAr.startDate ||
-                                                    itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
-                                                    itemAr.SeniorityDate != itemOrgAr.SeniorityDate) {
-                                                MarkChangeWasDone()
-//                                                Toast.makeText(context, "changes submitted", Toast.LENGTH_SHORT).show()
-                                            }
-
-                                        }
-                                    }
-                                }
+//                                for (i in 0 until mainViewLinearId.childCount) {
+//                                    val child = mainViewLinearId.getChildAt(i)
+//                                    child.isEnabled = true
+//                                }
+//
+//                                for (i in 0 until mainViewLinearId2.childCount) {
+//                                    val child = mainViewLinearId2.getChildAt(i)
+//                                    child.isEnabled = true
+//                                }
+//
+//                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
+//                                var itemArray = FacilityDataModel.getInstance().tblPersonnel
+//
+//                                if (itemOrgArray.size != itemArray.size) {
+//
+//                                    MarkChangeWasDone()
+//                                } else {
+//
+//                                    for (itemAr in itemArray) {
+//                                        for (itemOrgAr in itemOrgArray) {
+//
+//                                            if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
+//                                                    itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
+//                                                    itemAr.RSP_Email != itemOrgAr.RSP_Email ||
+//                                                    itemAr.CertificationNum != itemOrgAr.CertificationNum ||
+//                                                    !(itemAr.ContractSigner == itemOrgAr.ContractSigner) ||
+//                                                    !(itemAr.PrimaryMailRecipient == itemOrgAr.PrimaryMailRecipient) ||
+//                                                    itemAr.startDate != itemOrgAr.startDate ||
+//                                                    itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
+//                                                    itemAr.SeniorityDate != itemOrgAr.SeniorityDate) {
+//                                                MarkChangeWasDone()
+////                                                Toast.makeText(context, "changes submitted", Toast.LENGTH_SHORT).show()
+//                                            }
+//
+//                                        }
+//                                    }
+//                                }
                                 IndicatorsDataModel.getInstance().validateFacilityPersonnel()
                                 if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
                                 (activity as FormsActivity).refreshMenuIndicators()
@@ -1350,63 +1348,64 @@ class FragmentARRAVPersonnel : Fragment() {
         }
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
+        rowLayoutParam.leftMargin = 10
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.height = 30
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.height = 30
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.height = 30
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.height = 30
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
-        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.height = 30
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
-        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam6.height = 30
 
         val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.height = 30
 
         val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam8.weight = 1F
-        rowLayoutParam8.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam8.height = 30
         rowLayoutParam8.column = 8
 
         val rowLayoutParam9 = TableRow.LayoutParams()
         rowLayoutParam9.weight = 1F
-        rowLayoutParam9.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam9.height = 30
         rowLayoutParam9.column = 9
 
         val rowLayoutParam10 = TableRow.LayoutParams()
         rowLayoutParam10.weight = 1F
-        rowLayoutParam10.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam10.height = 30
         rowLayoutParam10.column = 10
         var dateTobeFormated = ""
 
         val rowLayoutParam11 = TableRow.LayoutParams()
         rowLayoutParam11.weight = 1F
-        rowLayoutParam11.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam11.height = 30
         rowLayoutParam11.column = 11
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
@@ -1414,41 +1413,41 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 val textView1 = TextView(context)
                 textView1.layoutParams = rowLayoutParam
-                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView1.gravity = Gravity.CENTER_VERTICAL
                 textView1.text = getTypeName(get(it).PersonnelTypeID.toString())
                 tableRow.addView(textView1)
 
                 val textView2 = TextView(context)
                 textView2.layoutParams = rowLayoutParam1
-                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView2.gravity = Gravity.CENTER_VERTICAL
                 textView2.text = get(it).FirstName
                 tableRow.addView(textView2)
 
                 val textView3 = TextView(context)
                 textView3.layoutParams = rowLayoutParam2
-                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView3.gravity = Gravity.CENTER_VERTICAL
                 TableRow.LayoutParams()
                 textView3.text = get(it).LastName
                 tableRow.addView(textView3)
 
                 val textView4 = TextView(context)
                 textView4.layoutParams = rowLayoutParam3
-                textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
+                textView4.gravity = Gravity.CENTER_VERTICAL
                 textView4.text = get(it).RSP_UserName
                 tableRow.addView(textView4)
 
                 val textView5 = TextView(context)
                 textView5.layoutParams = rowLayoutParam4
-                textView5.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
+                textView5.gravity = Gravity.CENTER_VERTICAL
+//                TableRow.LayoutParams()
                 textView5.text = get(it).RSP_Email
                 tableRow.addView(textView5)
 
                 val textView6 = TextView(context)
                 textView6.layoutParams = rowLayoutParam5
-                TableRow.LayoutParams()
-                textView6.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                TableRow.LayoutParams()
+                textView6.gravity = Gravity.CENTER_VERTICAL
                 if (!(get(it).SeniorityDate.isNullOrEmpty())) {
                     try {
                         textView6.text  = get(it).SeniorityDate.apiToAppFormatMMDDYYYY()
@@ -1465,15 +1464,13 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 val textView7 = TextView(context)
                 textView7.layoutParams = rowLayoutParam6
-                textView7.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
+                textView7.gravity = Gravity.CENTER_VERTICAL
                 textView7.text = get(it).CertificationNum
                 tableRow.addView(textView7)
 
                 val textView8 = TextView(context)
                 textView8.layoutParams = rowLayoutParam7
-                textView8.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
+                textView8.gravity = Gravity.CENTER_VERTICAL
                 if (!(get(it).startDate.isNullOrEmpty())) {
                     try {
                         textView8.text  = get(it).startDate.apiToAppFormatMMDDYYYY()
@@ -1489,8 +1486,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 val textView9 = TextView(context)
                 textView9.layoutParams = rowLayoutParam8
-                textView9.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
+                textView9.gravity = Gravity.CENTER_VERTICAL
                 if (!(get(it).ExpirationDate.isNullOrEmpty())) {
                     try {
                         textView9.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
@@ -1508,25 +1504,33 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 val checkBox10 = CheckBox(context)
                 checkBox10.layoutParams = rowLayoutParam9
-                checkBox10.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
+                checkBox10.gravity = Gravity.CENTER_VERTICAL
                 checkBox10.isChecked = (get(it).ContractSigner.equals("true"))
-                TableRow.LayoutParams()
                 checkBox10.isEnabled=false
                 tableRow.addView(checkBox10)
 
                 val checkBox11 = CheckBox(context)
                 checkBox11.layoutParams = rowLayoutParam10
-                checkBox11.textAlignment = CheckBox.TEXT_ALIGNMENT_CENTER
+                checkBox11.gravity = Gravity.CENTER_VERTICAL
                 checkBox11.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
-                TableRow.LayoutParams()
                 checkBox11.isEnabled=false
                 tableRow.addView(checkBox11)
 
-                val updateBtn = Button(context)
+
+
+                val updateBtn = TextView(context)
                 updateBtn.layoutParams = rowLayoutParam11
-                updateBtn.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
-                updateBtn.text = "Update"
+                updateBtn .setTextColor(Color.BLUE)
+                updateBtn .text = "EDIT"
+                updateBtn.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                updateBtn .setBackgroundColor(Color.TRANSPARENT)
+//                editButton.tag = it
+
+//                val updateBtn = Button(context)
+//                updateBtn.layoutParams = rowLayoutParam11
+//                updateBtn.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+////                TableRow.LayoutParams()
+//                updateBtn.text = "EDIT"
 
                 tableRow.addView(updateBtn)
 
@@ -1678,15 +1682,15 @@ class FragmentARRAVPersonnel : Fragment() {
                     var currentfacilityDataModelIndex=currentTableRowIndex-1
 
 
-                    for (i in 0 until mainViewLinearId.childCount) {
-                        val child = mainViewLinearId.getChildAt(i)
-                        child.isEnabled = false
-                    }
-
-                    for (i in 0 until mainViewLinearId2.childCount) {
-                        val child = mainViewLinearId2.getChildAt(i)
-                        child.isEnabled = false
-                    }
+//                    for (i in 0 until mainViewLinearId.childCount) {
+//                        val child = mainViewLinearId.getChildAt(i)
+//                        child.isEnabled = false
+//                    }
+//
+//                    for (i in 0 until mainViewLinearId2.childCount) {
+//                        val child = mainViewLinearId2.getChildAt(i)
+//                        child.isEnabled = false
+//                    }
 
 
                     edit_newFirstNameText.setText(textView2.text)
@@ -1773,12 +1777,12 @@ class FragmentARRAVPersonnel : Fragment() {
                             var startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
                             var ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
                             var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
-
+                            var personnelID = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID
 
 
 
 //        urlString = URLEncoder.encode(urlString, "UTF-8")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=63384&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=McCaulley&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=",
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread(Runnable {
                                             if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -1807,15 +1811,15 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 altTableRow(2)
                                                 edit_personnelLoadingView.visibility = View.GONE
 
-                                                for (i in 0 until mainViewLinearId.childCount) {
-                                                    val child = mainViewLinearId.getChildAt(i)
-                                                    child.isEnabled = true
-                                                }
-
-                                                for (i in 0 until mainViewLinearId2.childCount) {
-                                                    val child = mainViewLinearId2.getChildAt(i)
-                                                    child.isEnabled = true
-                                                }
+//                                                for (i in 0 until mainViewLinearId.childCount) {
+//                                                    val child = mainViewLinearId.getChildAt(i)
+//                                                    child.isEnabled = true
+//                                                }
+//
+//                                                for (i in 0 until mainViewLinearId2.childCount) {
+//                                                    val child = mainViewLinearId2.getChildAt(i)
+//                                                    child.isEnabled = true
+//                                                }
 
                                                 IndicatorsDataModel.getInstance().validateFacilityPersonnel()
                                                 if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
@@ -1855,22 +1859,22 @@ class FragmentARRAVPersonnel : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.height = 30
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.height = 30
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.height = 30
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
                 var forCompr=""
@@ -1878,7 +1882,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 val textView1 = TextView(context)
                 textView1.layoutParams = rowLayoutParam
-                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView1.gravity = Gravity.CENTER_VERTICAL
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
                     if (get(it).CertificationTypeId.equals(fac.PersonnelCertID))
 
@@ -1889,7 +1894,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 val textView2 = TextView(context)
                 textView2.layoutParams = rowLayoutParam1
-                textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView2.gravity = Gravity.CENTER_VERTICAL
                 try {
                     textView2.text = get(it).CertificationDate.apiToAppFormatMMDDYYYY()
                 } catch (e: Exception) {
@@ -1898,7 +1903,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
                val textView3 = TextView(context)
                 textView3.layoutParams = rowLayoutParam2
-                textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView3.gravity = Gravity.CENTER_VERTICAL
                 TableRow.LayoutParams()
                 try {
                     textView3.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
@@ -1908,7 +1913,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
                val textView4 = TextView(context)
                 textView4.layoutParams = rowLayoutParam3
-                textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView4.gravity = Gravity.CENTER_VERTICAL
                 textView4.text = ""
                 tableRow.addView(textView4)
 

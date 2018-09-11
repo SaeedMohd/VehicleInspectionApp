@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@color/white"
+        android:background="@color/light_gray"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
@@ -21,6 +21,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -66,11 +72,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="Type"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp"
+                         />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -80,7 +88,7 @@
                         android:text="First Name"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -90,7 +98,7 @@
                         android:text="Last Name"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -100,7 +108,7 @@
                         android:text="RSP User ID"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -110,7 +118,7 @@
                         android:text="Email Address"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -120,7 +128,7 @@
                         android:text="Seniority Date"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -130,7 +138,7 @@
                         android:text="Cert ID#"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -140,7 +148,7 @@
                         android:text="Start Date"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -150,7 +158,7 @@
                         android:text="End Date"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -160,7 +168,7 @@
                         android:text="Contract Signer"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -170,7 +178,7 @@
                         android:text="Primary Mail Recipient"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -179,7 +187,7 @@
                         android:text="Update"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="14sp" />
                 </TableRow>
             </TableLayout>
 
@@ -233,8 +241,9 @@
                         android:layout_weight="1"
                         android:text="Certification Type"
                         android:textAlignment="center"
+                        android:layout_marginLeft="10dp"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -244,7 +253,7 @@
                         android:text="Certification Date"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -254,7 +263,7 @@
                         android:text="Expiration Date"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -264,11 +273,11 @@
                         android:text="Description"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        android:textSize="15sp" />
                 </TableRow>
             </TableLayout>
 
-
+        </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

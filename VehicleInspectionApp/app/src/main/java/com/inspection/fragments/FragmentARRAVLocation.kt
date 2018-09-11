@@ -635,6 +635,11 @@ class FragmentARRAVLocation : Fragment() {
 
     }
 
+//    fun languageGridViewCLick(v : View){
+//        (activity as FormsActivity).saveRequired = true
+//        refreshButtonsState()
+//    }
+
     private fun setServices() {
 
 
@@ -648,6 +653,7 @@ class FragmentARRAVLocation : Fragment() {
 
         languagesGridView?.adapter = arrayAdapter
         languagesGridView?.isExpanded=true
+
 //        languagesGridView?.setOnClickListener({
 //            (activity as FormsActivity).saveRequired = true
 //            refreshButtonsState()
@@ -1439,7 +1445,7 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
 
         if (locationTbl.childCount>1) {
             for (i in locationTbl.childCount - 1 downTo 1) {
@@ -1511,70 +1517,71 @@ class FragmentARRAVLocation : Fragment() {
 
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 //getTypeName
                 textView.text = getLocationTypeName(get(it).LocationTypeID)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).FAC_Addr1
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 TableRow.LayoutParams()
                 textView.text = get(it).FAC_Addr2
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).CITY
 
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam4
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).County
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam5
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ST
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam6
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ZIP + "-" + get(it).ZIP4
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam7
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).LATITUDE
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam8
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).LONGITUDE
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam9
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).BranchNumber
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam10
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).BranchName
                 tableRow.addView(textView)
 
@@ -1670,6 +1677,7 @@ class FragmentARRAVLocation : Fragment() {
         val nightDropInstructions=nightDropInstText.text
         val sunClose = sunCloseSpinner.selectedItem.toString()
         val monClose = monCloseSpinner.selectedItem.toString()
+//        val monClose = monCloseSpinner.selectedItem.toString()
         val tueClose = tueCloseSpinner.selectedItem.toString()
         val wedClose = wedCloseSpinner.selectedItem.toString()
         val thuClose = thuCloseSpinner.selectedItem.toString()

@@ -62,7 +62,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
             fillPortalTrackingTableView()
             altLocationTableRow(2)
-            addNewAAR_PortalTrackingCard.visibility=View.GONE
+            Add_AAR_PortalTrackingEntryCard.visibility=View.GONE
             alphaBackgroundForRSPDialogs.visibility = View.GONE
 
         })
@@ -97,7 +97,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             addendumSignedDateButton.setError(null)
             inspectionDateButton.setError(null)
 
-            addNewAAR_PortalTrackingCard.visibility=View.VISIBLE
+            Add_AAR_PortalTrackingEntryCard.visibility=View.VISIBLE
             alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
 
             for (i in 0 until mainViewLinearId.childCount) {
@@ -278,13 +278,13 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 }
                                 RSP_LoadingView.visibility = View.GONE
                                 alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                addNewAAR_PortalTrackingCard.visibility = View.GONE
+                                Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
                             })
                         }, Response.ErrorListener {
                     Utility.showSubmitAlertDialog(activity, false, "RSP")
                     RSP_LoadingView.visibility = View.GONE
                     alphaBackgroundForRSPDialogs.visibility = View.GONE
-                    addNewAAR_PortalTrackingCard.visibility = View.GONE
+                    Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
                 }))
             } else {
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
