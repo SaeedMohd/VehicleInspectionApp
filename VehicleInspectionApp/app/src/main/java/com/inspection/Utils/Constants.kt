@@ -80,7 +80,7 @@ object Constants {
     val UpdateProgramsData = "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateProgramsData?facNum="
     val UpdateFacilityServicesData ="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityServicesData?facNum="
     val UpdateAffiliationsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateAffiliationsData?facNum="
-    val UpdatePaymentMethodsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdatePaymentMethodsData?facnum=$facNo&clubCode=004"
+    val UpdatePaymentMethodsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdatePaymentMethodsData?facnum="
     val UpdateFacilityLanguageData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityLanguageData?facNum="
 
     val getSpecialistIdsForClubCode = "http://144.217.24.163:5000/getSpecialistsForClubCode?"

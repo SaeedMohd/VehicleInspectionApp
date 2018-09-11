@@ -9,9 +9,9 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:background="@color/light_gray"
         android:orientation="vertical"
+        android:layout_margin="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -41,6 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:textSize="18sp"
                         android:layout_gravity="center_vertical"
                         android:text="Contract Status: "
                         android:textStyle="bold" />
@@ -60,12 +61,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:textSize="18sp"
                             android:checked="true"
                             android:text="Active" />
 
                         <RadioButton
                             android:id="@+id/inActiveRadioButton"
                             android:layout_width="wrap_content"
+                            android:textSize="18sp"
                             android:layout_height="wrap_content"
                             android:text="InActive" />
 
@@ -89,6 +92,7 @@
                         android:id="@+id/contract_number_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="18sp"
                         android:text="Contract Number: "
                         android:textStyle="bold" />
 
@@ -98,6 +102,7 @@
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginLeft="5dp"
+                        android:textSize="18sp"
                         android:textColor="@color/black"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/textview_background"
@@ -131,6 +136,7 @@
                         android:id="@+id/contractTypeValueSpinner"
                         android:layout_width="wrap_content"
                         android:textColor="@color/black"
+                        android:textSize="18sp"
                         android:background="@drawable/textview_background"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -153,6 +159,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:textSize="18sp"
                         android:text="Provider Type: "
                         android:textStyle="bold" />
 
@@ -166,24 +173,26 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:orientation="vertical">
 
                             <CheckBox
                                 android:id="@+id/aarCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textSize="18sp"
                                 android:text="AAR" />
 
                             <CheckBox
                                 android:id="@+id/aabCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textSize="18sp"
                                 android:text="AAB" />
 
                             <CheckBox
                                 android:id="@+id/aagCheckBox"
                                 android:layout_width="wrap_content"
+                                android:textSize="18sp"
                                 android:layout_height="wrap_content"
                                 android:text="AAG" />
 
@@ -191,17 +200,20 @@
                                 android:id="@+id/cogCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textSize="18sp"
                                 android:text="COG" />
 
                             <CheckBox
                                 android:id="@+id/corCheckBox"
                                 android:layout_width="wrap_content"
+                                android:textSize="18sp"
                                 android:layout_height="wrap_content"
                                 android:text="COR" />
 
                             <CheckBox
                                 android:id="@+id/ersCheckBox"
                                 android:layout_width="wrap_content"
+                                android:textSize="18sp"
                                 android:layout_height="wrap_content"
                                 android:text="ERS" />
 
@@ -209,12 +221,14 @@
                                 android:id="@+id/mprCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textSize="18sp"
                                 android:text="MPR" />
 
                             <CheckBox
                                 android:id="@+id/pspCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textSize="18sp"
                                 android:text="PSP" />
                         </LinearLayout>
 
@@ -353,7 +367,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Office: "
                         android:textStyle="bold" />
 
@@ -361,6 +375,7 @@
                         android:id="@+id/office_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="18sp"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/black"
                         android:text="test" />
@@ -385,7 +400,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/officell"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Assigned To: "
                         android:textStyle="bold" />
 
@@ -393,6 +408,7 @@
                         android:id="@+id/assignedto_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="18sp"
                         android:textColor="@color/black"
                         android:layout_alignParentRight="true"
                         android:text="" />
@@ -417,7 +433,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/AssignedToll"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="DBA: "
                         android:textStyle="bold" />
 
@@ -426,7 +442,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-
+                        android:textSize="18sp"
                         android:textColor="@color/black"
 
                         android:text="test" />
@@ -449,7 +465,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Entity Name: "
                         android:textStyle="bold" />
 
@@ -459,7 +475,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/black"
-
+                        android:textSize="18sp"
                         android:text="test" />
                 </RelativeLayout>
 
@@ -480,7 +496,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Business Type: "
                         android:textStyle="bold" />
 
@@ -488,6 +504,7 @@
                         android:id="@+id/bustype_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="18sp"
                         android:textColor="@color/black"
                         android:layout_alignParentRight="true"
                         android:text="test" />
@@ -511,7 +528,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Termination Date: "
                         android:textStyle="bold" />
 
@@ -520,11 +537,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
-                        android:textSize="12dp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
                 <View
@@ -544,7 +560,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Termination Reason: "
                         android:textStyle="bold" />
 
@@ -553,6 +569,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:textSize="18sp"
                         android:text="test" />
                 </RelativeLayout>
 
@@ -573,7 +590,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Termination Comment: "
                         android:textStyle="bold" />
 
@@ -586,6 +603,7 @@
                         android:ems="20"
                         android:inputType="textMultiLine"
                         android:lines="8"
+                        android:textSize="18sp"
                         android:padding="5dp"
                         android:scrollHorizontally="true"
                         android:text=""
@@ -609,7 +627,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Time Zone: "
                         android:textStyle="bold" />
 
@@ -618,7 +636,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-
+                        android:textSize="18sp"
                         android:text="test" />
                 </RelativeLayout>
 
@@ -640,6 +658,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_marginTop="5dp"
+                        android:textSize="18sp"
                         android:text="Payment Methods: "
                         android:textStyle="bold" />
 
@@ -654,6 +673,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
+                            android:textSize="18sp"
                             android:clickable="true"
                             android:padding="5dp"
                             android:text="American Express" />
@@ -663,6 +683,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
+                            android:textSize="18sp"
                             android:clickable="true"
                             android:padding="5dp"
                             android:text="Cash" />
@@ -673,6 +694,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:clickable="true"
+                            android:textSize="18sp"
                             android:padding="5dp"
                             android:text="Check" />
 
@@ -681,6 +703,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
+                            android:textSize="18sp"
                             android:clickable="true"
                             android:padding="5dp"
                             android:text="Debit"
@@ -692,6 +715,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:clickable="true"
+                            android:textSize="18sp"
                             android:padding="5dp"
                             android:text="Discover" />
 
@@ -700,6 +724,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
+                            android:textSize="18sp"
                             android:clickable="true"
                             android:padding="5dp"
                             android:text="Goodyear Credit Card" />
@@ -711,6 +736,7 @@
                             android:layout_marginTop="5dp"
                             android:clickable="true"
                             android:padding="5dp"
+                            android:textSize="18sp"
                             android:text="Master Card"
                             app:layout_wrapBefore="true" />
 
@@ -720,6 +746,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:clickable="true"
+                            android:textSize="18sp"
                             android:text="PayPal" />
 
                         <CheckBox
@@ -728,6 +755,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:clickable="true"
+                            android:textSize="18sp"
                             android:padding="5dp"
                             android:text="Visa" />
                     </com.google.android.flexbox.FlexboxLayout>
@@ -751,6 +779,7 @@
                         android:id="@+id/website_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="18sp"
                         android:text="Website URL: "
                         android:textStyle="bold" />
 
@@ -758,6 +787,7 @@
                         android:id="@+id/website_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="18sp"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/textview_background"
                         android:hint="Enter website URL"
@@ -783,6 +813,7 @@
                         android:id="@+id/wifiAvailableCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="18sp"
                         android:layout_column="0"
                         android:text="Wi-Fi Available"
                         android:textStyle="bold" />
@@ -805,7 +836,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Tax-ID: "
                         android:textStyle="bold" />
 
@@ -813,6 +844,7 @@
                         android:id="@+id/taxno_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="18sp"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/black"
                         android:text="test" />
@@ -835,6 +867,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Repair Order Count: "
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <EditText
@@ -846,6 +879,7 @@
                         android:inputType="number"
                         android:maxLength="6"
                         android:padding="5dp"
+                        android:textSize="18sp"
                         android:background="@drawable/textview_background"
                         android:text=""
                         android:ems="20"/>
@@ -868,6 +902,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:textSize="18sp"
                         android:text="Inspection Month:"
                         android:textStyle="bold" />
 
@@ -876,7 +911,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
+                        android:textSize="16sp"
                         android:ems="7"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/textview_background"
@@ -903,6 +938,7 @@
                         android:layout_column="2"
                         android:layout_gravity="center"
                         android:text="Inspection Cycle:"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -911,6 +947,7 @@
                         android:textColor="@color/black"
                         android:layout_height="wrap_content"
                         android:ems="7"
+                        android:textSize="18sp"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="center"
                         android:background="@drawable/textview_background"
@@ -934,7 +971,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Service Availability:"
                         android:textStyle="bold" />
 
@@ -944,7 +981,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_column="1"
-
+                        android:textSize="18sp"
                         android:text="test" />
                 </RelativeLayout>
 
@@ -965,7 +1002,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Facility Type: "
                         android:textStyle="bold" />
 
@@ -974,7 +1011,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-
+                        android:textSize="18sp"
                         android:text="test" />
                 </RelativeLayout>
 
@@ -995,7 +1032,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="ARD Number: "
                         android:textStyle="bold" />
 
@@ -1009,6 +1046,7 @@
                         android:hint="Enter ARD Number"
                         android:maxLength="12"
                         android:padding="5dp"
+                        android:textSize="18sp"
                         android:text=""
                         />
                 </RelativeLayout>
@@ -1030,7 +1068,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="ARD Expiration Date: "
                         android:textStyle="bold" />
 
@@ -1043,7 +1081,7 @@
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
-                        android:textSize="12dp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
 
@@ -1098,7 +1136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Current Contract Date: "
                         android:textStyle="bold" />
 
@@ -1107,6 +1145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:textSize="18sp"
                         android:textColor="@color/black"
                         android:text="test" />
                 </RelativeLayout>
@@ -1128,7 +1167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Initial Contract Date: "
                         android:textStyle="bold" />
 
@@ -1139,6 +1178,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_column="1"
                         android:textColor="@color/black"
+                        android:textSize="18sp"
                         android:text="test" />
                 </RelativeLayout>
 
@@ -1159,7 +1199,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
+                        android:textSize="18sp"
                         android:text="Insurance Expiration Date: "
                         android:textStyle="bold" />
 
@@ -1170,7 +1210,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_column="1"
                         android:textColor="@color/black"
-
+                        android:textSize="18sp"
                         android:text="test" />
                 </RelativeLayout>
             </LinearLayout>
@@ -1219,6 +1259,7 @@
             android:progressTint="@color/white" />
 
         <TextView
+            android:id="@+id/progressBarText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/progressBarRecords"

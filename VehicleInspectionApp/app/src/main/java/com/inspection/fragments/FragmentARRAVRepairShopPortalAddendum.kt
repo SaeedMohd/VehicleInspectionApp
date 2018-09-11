@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -537,6 +538,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.leftMargin=10
+        rowLayoutParam.height = 30
 
 
 
@@ -569,22 +572,27 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam.height = 30
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam.height = 30
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
+        rowLayoutParam.height = 30
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
+        rowLayoutParam.height = 30
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
+        rowLayoutParam.height = 30
 
 
         FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
@@ -597,7 +605,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                     val textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     try {
                         textView.text = get(it).PortalInspectionDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
@@ -608,34 +617,40 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                     val textView1 = TextView(context)
                     textView1.layoutParams = rowLayoutParam1
-                    textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView1.gravity = Gravity.CENTER_VERTICAL
+                    textView1.textSize = 18f
                     textView1.text = get(it).LoggedIntoPortal
                     tableRow.addView(textView1)
 
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam2
-                    textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView2.gravity = Gravity.CENTER_VERTICAL
+                    textView2.textSize = 18f
                     textView2.text = get(it).NumberUnacknowledgedTows
                     tableRow.addView(textView2)
 
                     val textView3 = TextView(context)
                     textView3.layoutParams = rowLayoutParam3
-                    textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView3.gravity = Gravity.CENTER_VERTICAL
+                    textView3.textSize = 18f
                     textView3.text = get(it).InProgressTows
                     tableRow.addView(textView3)
 
                     val textView4 = TextView(context)
                     textView4.layoutParams = rowLayoutParam4
-                    textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView4.gravity = Gravity.CENTER_VERTICAL
+                    textView4.textSize = 18f
                     textView4.text = get(it).InProgressWalkIns
                     tableRow.addView(textView4)
 
-                    val updateButton = Button(context)
-                    updateButton.layoutParams = rowLayoutParam5
-                    updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-                    updateButton.text = "update"
+                    val updateButton  = TextView(context)
+                    updateButton.layoutParams = rowLayoutParam1
+                    updateButton.setTextColor(Color.BLUE)
+                    updateButton.text = "EDIT"
+                    updateButton.textSize = 18f
+                    updateButton.gravity = Gravity.CENTER
+                    updateButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(updateButton)
-
 
                     updateButton.setOnClickListener(View.OnClickListener {
                         rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)

@@ -917,12 +917,12 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam.height = 30
+        rowLayoutParam1.height = 30
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam.height = 30
+        rowLayoutParam1.height = 30
 
 
 
@@ -942,8 +942,8 @@ class FragmentARRAVLocation : Fragment() {
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam1
 //                    textView2.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
-                    textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
+                    textView2.gravity = Gravity.CENTER_VERTICAL
+                    textView2.textSize = 18f
                     textView2.text = get(it).PhoneNumber
                     tableRow.addView(textView2)
 
@@ -1072,12 +1072,12 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam.height = 30
+        rowLayoutParam1.height = 30
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam.height = 30
+        rowLayoutParam2.height = 30
 
         FacilityDataModel.getInstance().tblFacilityEmail.apply {
             (0 until size).forEach {
@@ -1088,7 +1088,6 @@ class FragmentARRAVLocation : Fragment() {
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 18f
-                    //getTypeName
                     textView.text = getEmailTypeName(get(it).emailTypeId)
                     tableRow.addView(textView)
 
@@ -1451,57 +1450,58 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.leftMargin = 10
+        rowLayoutParam1.height = 30
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.height = 30
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.height = 30
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.height = 30
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
-        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.height = 30
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
-        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam6.height = 30
 
 
         val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.height = 30
 
         val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam8.weight = 1F
-        rowLayoutParam8.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam8.height = 30
         rowLayoutParam8.column = 8
 
         val rowLayoutParam9 = TableRow.LayoutParams()
         rowLayoutParam9.weight = 1F
-        rowLayoutParam9.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam9.height = 30
         rowLayoutParam9.column = 9
 
         val rowLayoutParam10 = TableRow.LayoutParams()
         rowLayoutParam10.weight = 1F
-        rowLayoutParam10.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam10.height = 30
         rowLayoutParam10.column = 10
 
         val rowLayoutParam11 = TableRow.LayoutParams()
         rowLayoutParam11.weight = 1F
-        rowLayoutParam11.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam11.height = 30
         rowLayoutParam11.column = 11
         var dateTobeFormated = ""
 
@@ -1578,12 +1578,22 @@ class FragmentARRAVLocation : Fragment() {
                 textView.text = get(it).BranchName
                 tableRow.addView(textView)
 
-                var editButton = Button(context)
-                editButton.layoutParams = rowLayoutParam11
-                editButton.text = "EDIT"
+                var editButton = TextView(context)
+                editButton.layoutParams = rowLayoutParam1
+                editButton .setTextColor(Color.BLUE)
+                editButton .text = "EDIT"
+//                editButton .gravity = Gravity.CENTER
+                editButton.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                editButton .setBackgroundColor(Color.TRANSPARENT)
                 editButton.tag = it
-//                editButton.setBackgroundResource(R.drawable.green_background_button)
-                editButton.setTextColor(Color.BLACK)
+//
+//                var editButton = Button(context)
+//                editButton.layoutParams = rowLayoutParam11
+//                editButton.text = "EDIT"
+//                editButton.tag = it
+////                editButton.setBackgroundResource(R.drawable.green_background_button)
+//                editButton.setTextColor(Color.BLACK)
+
                 tableRow.addView(editButton)
                 if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")){
                     editButton.visibility = View.INVISIBLE

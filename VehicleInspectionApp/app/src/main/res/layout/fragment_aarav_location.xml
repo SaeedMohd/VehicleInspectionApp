@@ -12,16 +12,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/facComp"
         android:layout_margin="10dp"
-        android:background="@color/white"
+        android:background="@color/light_gray"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
             android:orientation="vertical">
 
 
@@ -37,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Location"
+                    android:textStyle="bold"
                     android:textColor="@color/mainColor"
                     android:textSize="18sp"
                     />
@@ -57,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_gravity="center_vertical"
-                        android:text="Location Type:"
+                        android:text="Location Type"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -155,10 +161,12 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:background="@null"
-                        android:ems="5"
-                        android:text="" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/white"
+                        android:layout_column="11"
+                        android:textSize="16sp"
+                        android:text="Options" />
                 </TableRow>
 
             </TableLayout>
@@ -174,6 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phone"
+                    android:textStyle="bold"
                     android:textColor="@color/mainColor"
                     android:textSize="18sp" />
 
@@ -250,6 +259,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="E-mail"
+                    android:textStyle="bold"
                     android:textColor="@color/mainColor"
                     android:textSize="18sp" />
 
@@ -692,6 +702,8 @@
                 </TableRow>
             </TableLayout>
 
+
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -717,8 +729,7 @@
                     android:background="@drawable/green_background_button"
                     android:text="Save" />
             </LinearLayout>
-        </LinearLayout>
-
+            </LinearLayout>
     </ScrollView>
 
     <View
