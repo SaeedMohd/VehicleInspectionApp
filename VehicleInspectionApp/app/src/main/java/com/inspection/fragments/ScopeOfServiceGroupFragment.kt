@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.fragmentsNames
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
@@ -68,6 +69,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
+        (activity as FormsActivity).currentFragment= fragmentsNames.SoSGeneralInfo.toString()
+        (activity as FormsActivity).saveRequired = false
         updateSelectedIndicator(R.id.generalInformationButton)
 
         generalInformationButton.setOnClickListener {
@@ -75,6 +78,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSGeneralInfo.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.generalInformationButton)
         }
 
@@ -83,6 +88,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSVehicleServices.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.vehicleServicesButton)
         }
 
@@ -91,6 +98,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSPrograms.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.programsButton)
         }
 
@@ -99,6 +108,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSFacilityServices.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.facilityServicesButton)
         }
 
@@ -107,6 +118,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSVehicles.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.vehiclesButton)
         }
 
@@ -115,6 +128,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSAffiliations.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.AffiliationsButton)
         }
 
@@ -123,6 +138,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSPromotions.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.promotionsButton)
         }
 
@@ -131,6 +148,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSAwards.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.awardsAndDistinctionsButton)
         }
 
@@ -139,6 +158,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
+            (activity as FormsActivity).currentFragment= fragmentsNames.SoSOthers.toString()
+            (activity as FormsActivity).saveRequired = false
             updateSelectedIndicator(R.id.otherButton)
         }
 

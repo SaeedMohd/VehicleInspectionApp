@@ -27,12 +27,23 @@ class HasChangedModel {
     var groupFacilityContactInfo = ArrayList<GroupFacilityContactInfo>()
     var groupFacilityPersonnel = ArrayList<GroupFacilityPersonnel>()
 
+    var groupSoS = ArrayList<GroupSoS>()
+    var groupSoSGeneralInfo = ArrayList<GroupSoSGeneralInfo>()
+    var groupSoSVehicleService= ArrayList<GroupSoSVehicleService>()
+    var groupSoSVehicles  = ArrayList<GroupSoSVehicles>()
+    var groupSoSPrograms = ArrayList<GroupSoSPrograms>()
+    var groupSoSPromotions = ArrayList<GroupSoSPromotions>()
+    var groupSoSAffiliations = ArrayList<GroupSoSAffiliations>()
+    var groupSoSAwards = ArrayList<GroupSoSAwards>()
+    var groupSoSOthers = ArrayList<GroupSoSOthers>()
+    var groupSoSFacilityServices = ArrayList<GroupSoSFacilityServices>()
+
     class GroupFacility {
         var FacilityGeneral = false
         var FacilityContactInfo = false
         var FacilityRSP = false
         var FacilityPersonnel = false
-        var FacilityAmendmentsOrderTracking = false
+//        var FacilityAmendmentsOrderTracking = false
     }
 
     class GroupFacilityGeneralInfo {
@@ -58,6 +69,56 @@ class HasChangedModel {
         var FacilityPersonnel = false
     }
 
+
+    class GroupSoS {
+        var SoSGeneralInfo = false
+        var SoSVehicleService = false
+        var SoSFacilityServices = false
+        var SoSPrograms = false
+        var SoSVehicles = false
+        var SoSAffiliations = false
+        var SoSPromotions = false
+        var SoSAwards = false
+        var SoSOthers = false
+    }
+
+    class GroupSoSGeneralInfo {
+        var SoSGeneral = false
+    }
+
+    class GroupSoSVehicleService {
+        var SoSVehicleService = false
+    }
+
+    class GroupSoSFacilityServices {
+        var SoSFacilityServices = false
+    }
+
+    class GroupSoSPrograms {
+        var SoSPrograms = false
+    }
+
+    class GroupSoSVehicles {
+        var SoSVehicles = false
+    }
+
+    class GroupSoSAffiliations {
+        var SoSAffiliations = false
+    }
+
+    class GroupSoSPromotions {
+        var SoSPromotions = false
+    }
+
+    class GroupSoSAwards {
+        var SoSAwards = false
+    }
+
+    class GroupSoSOthers {
+        var SoSOthers = false
+    }
+
+
     fun init() {
         var GFPersonnel = GroupFacilityPersonnel()
         GFPersonnel.FacilityPersonnel= false
@@ -81,7 +142,53 @@ class HasChangedModel {
         var GF = GroupFacility()
         GF.FacilityGeneral= false;
         GF.FacilityContactInfo= false;
-        groupFacility.add(0, GF)
+        groupFacility.add(GF)
+        var SoSGeneralInfo = GroupSoSGeneralInfo()
+        SoSGeneralInfo.SoSGeneral=false
+        groupSoSGeneralInfo.add(SoSGeneralInfo)
+        var SoSVehicleServices = GroupSoSVehicleService()
+        SoSVehicleServices.SoSVehicleService=false
+        groupSoSVehicleService.add(SoSVehicleServices)
+        var SoSVehicles= GroupSoSVehicles()
+        SoSVehicles.SoSVehicles=false
+        groupSoSVehicles.add(SoSVehicles)
+        var SoSPromotions= GroupSoSPromotions()
+        SoSPromotions.SoSPromotions=false
+        groupSoSPromotions.add(SoSPromotions)
+        var SoSPrograms= GroupSoSPrograms()
+        SoSPrograms.SoSPrograms=false
+        groupSoSPrograms.add(SoSPrograms)
+        var SoSAffiliations= GroupSoSAffiliations()
+        SoSAffiliations.SoSAffiliations=false
+        groupSoSAffiliations.add(SoSAffiliations)
+        var SoSAwards= GroupSoSAwards()
+        SoSAwards.SoSAwards=false
+        groupSoSAwards.add(SoSAwards)
+        var SoSOthers= GroupSoSOthers()
+        SoSOthers.SoSOthers=false
+        groupSoSOthers.add(SoSOthers)
+        var SoSFacilityServices= GroupSoSFacilityServices()
+        SoSFacilityServices.SoSFacilityServices=false
+        groupSoSFacilityServices.add(SoSFacilityServices)
+        var SOS = GroupSoS()
+        SOS.SoSAffiliations= false;
+        SOS.SoSAwards= false;
+        SOS.SoSFacilityServices= false;
+        SOS.SoSGeneralInfo= false;
+        SOS.SoSOthers= false;
+        SOS.SoSPrograms= false;
+        SOS.SoSPromotions= false;
+        SOS.SoSVehicleService= false;
+        SOS.SoSVehicles= false;
+        groupSoS.add(SOS)
+    }
+
+    fun changeDoneForFacilityGeneralGroup() : Boolean{
+        var changeWasDone = false
+        if (changeDoneForFacilityGeneralInfo() || changeDoneForFacilityContactInfo() || changeDoneForFacilityPersonnel() || changeDoneForFacilityRSP()){
+            changeWasDone = true
+        }
+        return changeWasDone
     }
 
     fun changeDoneForFacilityGeneralInfo() : Boolean {
@@ -165,5 +272,11 @@ class HasChangedModel {
         groupFacilityContactInfo[0].FacilityLanguages = changeWasDone
     }
 
-
+    fun checkIfChangeWasDoneforVisitation() : Boolean{
+        var changeWasDone = false
+        if (changeDoneForFacilityGeneralGroup()){
+            changeWasDone = true
+        }
+        return changeWasDone
+    }
 }

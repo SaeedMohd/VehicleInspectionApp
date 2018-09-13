@@ -373,6 +373,7 @@ class FragmentARRAVPersonnel : Fragment() {
             if (validateCertificationInputs()) {
                 addNewCertificateDialogue.visibility=View.GONE
                 alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+                personnelLoadingText.text = "Saving ..."
                 personnelLoadingView.visibility = View.VISIBLE
 
 
@@ -426,13 +427,17 @@ class FragmentARRAVPersonnel : Fragment() {
 //                                    addTheLatestRowOfPortalAdmin()
                                     fillCertificationTableView()
                                 } else {
-                                    Utility.showSubmitAlertDialog(activity, false, "Certification")
+//                                    Utility.showSubmitAlertDialog(activity, false, "Certification")
+                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    Utility.showSubmitAlertDialog(activity,false,"Certification (Error: "+ errorMessage+" )")
                                 }
                                 personnelLoadingView.visibility = View.GONE
+                                personnelLoadingText.text = "Loading ..."
                             })
                         }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity, false, "Certification")
+                    Utility.showSubmitAlertDialog(activity, false, "Certification (Error: "+it.message+" )")
                     personnelLoadingView.visibility = View.GONE
+                    personnelLoadingText.text = "Loading ..."
 
                 }))
             }
@@ -444,7 +449,7 @@ class FragmentARRAVPersonnel : Fragment() {
             if (validateInputs()){
                 addNewPersonnelDialogue.visibility=View.GONE
                 alphaBackgroundForPersonnelDialogs.visibility = View.GONE
-
+                personnelLoadingText.text = "Saving ..."
                 personnelLoadingView.visibility = View.VISIBLE
 
 
@@ -464,9 +469,9 @@ class FragmentARRAVPersonnel : Fragment() {
             var CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
             var ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
             var PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
-            var startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
-            var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
-            var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
+            var startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+            var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+            var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
 
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
                     Response.Listener { response ->
@@ -489,9 +494,9 @@ class FragmentARRAVPersonnel : Fragment() {
                                 item.CertificationNum = if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
                                 item.ContractSigner = if (newSignerCheck.isChecked == true) true else false
                                 item.PrimaryMailRecipient = if (newACSCheck.isChecked == true) true else false
-                                item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
-                                item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString()
-                                item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString()
+                                item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                 FacilityDataModel.getInstance().tblPersonnel.add(item)
                                 HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                 HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
@@ -539,14 +544,18 @@ class FragmentARRAVPersonnel : Fragment() {
                                 if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
                                 (activity as FormsActivity).refreshMenuIndicators()
                             } else {
-                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
+//                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
+                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                Utility.showSubmitAlertDialog(activity,false,"Personnel (Error: "+ errorMessage+" )")
                             }
                             personnelLoadingView.visibility = View.GONE
+                            personnelLoadingText.text = "Loading ..."
                         })
                     }, Response.ErrorListener {
 //                Log.v("error while loading", "error while loading personnal record")
-                Utility.showSubmitAlertDialog(activity, false, "Personnel")
+                Utility.showSubmitAlertDialog(activity, false, "Personnel (Error: "+it.message+" )")
                 personnelLoadingView.visibility = View.GONE
+                personnelLoadingText.text = "Loading ..."
             }))
 
             }
@@ -1081,15 +1090,12 @@ class FragmentARRAVPersonnel : Fragment() {
         })
         newEndDateBtn.setOnClickListener(View.OnClickListener {
             if (newStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
-
-                newEndDateBtn.setError("Required Field")
+                newStartDateBtn.setError("Required Field")
 //                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
-                Utility.showValidationAlertDialog(activity,"Please enter End Date")
-
+                Utility.showValidationAlertDialog(activity,"Please enter Start Date")
             }
             else {
                 newEndDateBtn.setError(null)
-
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
@@ -1109,8 +1115,8 @@ class FragmentARRAVPersonnel : Fragment() {
         newCertEndDateBtn.setOnClickListener(View.OnClickListener {
             if (newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
 
-                newCertEndDateBtn.setError("Required Field")
-                Utility.showValidationAlertDialog(activity,"Please enter Certificate End Date")
+                newCertStartDateBtn.setError("Required Field")
+                Utility.showValidationAlertDialog(activity,"Please enter Certificate Start Date")
 //                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
 
             }
@@ -1452,7 +1458,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     try {
                         textView6.text  = get(it).SeniorityDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-                        textView6.text  = get(it).SeniorityDate
+                        textView6.text  = get(it).SeniorityDate.apiToAppFormatMMDDYYYY()
 
                     }
                 } else {
@@ -1475,7 +1481,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     try {
                         textView8.text  = get(it).startDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-                        textView8.text  = get(it).startDate
+                        textView8.text  = get(it).startDate.apiToAppFormatMMDDYYYY()
 
                     }
                 } else {
@@ -1491,17 +1497,13 @@ class FragmentARRAVPersonnel : Fragment() {
                     try {
                         textView9.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-                        textView9.text = get(it).ExpirationDate.appToApiFormat()
-
+                        textView9.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                     }
                 } else {
                     textView9.text = ""
                 }
 
-
                 tableRow.addView(textView9)
-
-
                 val checkBox10 = CheckBox(context)
                 checkBox10.layoutParams = rowLayoutParam9
                 checkBox10.gravity = Gravity.CENTER_VERTICAL
@@ -1754,9 +1756,9 @@ class FragmentARRAVPersonnel : Fragment() {
                         if (edit_validateInputs()){
                             edit_addNewPersonnelDialogue.visibility=View.GONE
                             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
-
-                            edit_personnelLoadingView.visibility = View.VISIBLE
-
+                            personnelLoadingText.text = "Saving ..."
+//                            edit_personnelLoadingView.visibility = View.VISIBLE
+                            personnelLoadingView.visibility = View.VISIBLE
 
                             var PersonnelTypeId=""
 
@@ -1774,9 +1776,9 @@ class FragmentARRAVPersonnel : Fragment() {
                             var CertificationNum=if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
                             var ContractSigner=if (edit_newSignerCheck.isChecked==true) "true" else "false"
                             var PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "true" else "false"
-                            var startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
-                            var ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
-                            var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
+                            var startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var personnelID = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID
 
 
@@ -1802,14 +1804,16 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 item.CertificationNum = if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
                                                 item.ContractSigner = if (edit_newSignerCheck.isChecked == true) true else false
                                                 item.PrimaryMailRecipient = if (edit_newACSCheck.isChecked == true) true else false
-                                                item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString()
-                                                item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString()
-                                                item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString()
+                                                item.startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                                item.ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                                item.SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                                 HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                                 HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                                 fillPersonnelTableView()
                                                 altTableRow(2)
-                                                edit_personnelLoadingView.visibility = View.GONE
+//                                                edit_personnelLoadingView.visibility = View.GONE
+                                                personnelLoadingView.visibility = View.GONE
+                                                personnelLoadingText.text = "Loading ..."
 
 //                                                for (i in 0 until mainViewLinearId.childCount) {
 //                                                    val child = mainViewLinearId.getChildAt(i)
@@ -1825,12 +1829,15 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
                                                 (activity as FormsActivity).refreshMenuIndicators()
                                             } else {
-                                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
+//                                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
+                                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                Utility.showSubmitAlertDialog(activity,false,"Personnel (Error: "+ errorMessage+" )")
                                             }
                                         })
                                     }, Response.ErrorListener {
-                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
+                                Utility.showSubmitAlertDialog(activity, false, "Personnel (Error: "+it.message+" )")
                                 personnelLoadingView.visibility = View.GONE
+                                personnelLoadingText.text = "Loading ..."
 
                             }))
 
@@ -1963,7 +1970,7 @@ class FragmentARRAVPersonnel : Fragment() {
             textView.layoutParams = rowLayoutParam1
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
-                textView.text = CertificationDate
+                textView.text = CertificationDate.apiToAppFormatMMDDYYYY()
 
             tableRow.addView(textView)
 
@@ -1971,7 +1978,7 @@ class FragmentARRAVPersonnel : Fragment() {
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-                textView.text = ExpirationDate
+                textView.text = ExpirationDate.apiToAppFormatMMDDYYYY()
 
             tableRow.addView(textView)
 
@@ -2072,7 +2079,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam5
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = SeniorityDate
+            textView.text = SeniorityDate.apiToAppFormatMMDDYYYY()
             tableRow.addView(textView)
 
 
@@ -2086,14 +2093,14 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam7
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = startDate
+            textView.text = startDate.apiToAppFormatMMDDYYYY()
             tableRow.addView(textView)
 
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam8
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ExpirationDate
+            textView.text = ExpirationDate.apiToAppFormatMMDDYYYY()
             tableRow.addView(textView)
 
             var checkBox = CheckBox(context)
@@ -2399,110 +2406,110 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 //        }
 
     fun scopeOfServiceChangesWatcher() {
-        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
-
-
-            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
-
-                if (FragmentARRAVScopeOfService.dataChanged) {
-
-                    val builder = AlertDialog.Builder(context)
-
-                    // Set the alert dialog title
-                    builder.setTitle("Changes made confirmation")
-
-                    // Display a message on alert dialog
-                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-
-                    // Set a positive button and its click listener on alert dialog
-                    builder.setPositiveButton("YES") { dialog, which ->
-
-
-                        personnelLoadingView.visibility = View.VISIBLE
-
-
-                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread(Runnable {
-                                        Log.v("RESPONSE", response.toString())
-                                        personnelLoadingView.visibility = View.GONE
-
-                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
-                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-
-                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-
-                                                FragmentARRAVScopeOfService.dataChanged = false
-
-                                            }
-
-                                        }
-
-                                    })
-                                }, Response.ErrorListener {
-                            Log.v("error while loading", "error while loading personnal record")
-                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
-                            personnelLoadingView.visibility = View.GONE
-
-
-                        }))
-
-
-                    }
-
-
-                    // Display a negative button on alert dialog
-                    builder.setNegativeButton("No") { dialog, which ->
-                        FragmentARRAVScopeOfService.dataChanged = false
-                        personnelLoadingView.visibility = View.GONE
-
-                    }
-
-
-                    // Finally, make the alert dialog using builder
-                    val dialog: AlertDialog = builder.create()
-                    dialog.setCanceledOnTouchOutside(false)
-                    // Display the alert dialog on app interface
-                    dialog.show()
-
-                }
-
-            } else {
-
-
-                val builder = AlertDialog.Builder(context)
-
-                // Set the alert dialog title
-                builder.setTitle("Changes made Warning")
-
-                // Display a message on alert dialog
-                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
-
-                // Set a positive button and its click listener on alert dialog
-                builder.setPositiveButton("Ok") { dialog, which ->
-
-                    FragmentARRAVScopeOfService.dataChanged = false
-
-                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
-
-                }
-
-
-                val dialog: AlertDialog = builder.create()
-                dialog.setCanceledOnTouchOutside(false)
-                dialog.show()
-
-            }
-
-        }
+//        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
+//
+//
+//            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
+//
+//                if (FragmentARRAVScopeOfService.dataChanged) {
+//
+//                    val builder = AlertDialog.Builder(context)
+//
+//                    // Set the alert dialog title
+//                    builder.setTitle("Changes made confirmation")
+//
+//                    // Display a message on alert dialog
+//                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+//
+//                    // Set a positive button and its click listener on alert dialog
+//                    builder.setPositiveButton("YES") { dialog, which ->
+//
+//
+//                        personnelLoadingView.visibility = View.VISIBLE
+//
+//
+//                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
+//                                Response.Listener { response ->
+//                                    activity!!.runOnUiThread(Runnable {
+//                                        Log.v("RESPONSE", response.toString())
+//                                        personnelLoadingView.visibility = View.GONE
+//
+//                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+//                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+//                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+//
+//                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
+//                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
+//                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
+//                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
+//                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
+//                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
+//
+//                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
+//
+//                                                FragmentARRAVScopeOfService.dataChanged = false
+//
+//                                            }
+//
+//                                        }
+//
+//                                    })
+//                                }, Response.ErrorListener {
+//                            Log.v("error while loading", "error while loading personnal record")
+//                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+//                            personnelLoadingView.visibility = View.GONE
+//
+//
+//                        }))
+//
+//
+//                    }
+//
+//
+//                    // Display a negative button on alert dialog
+//                    builder.setNegativeButton("No") { dialog, which ->
+//                        FragmentARRAVScopeOfService.dataChanged = false
+//                        personnelLoadingView.visibility = View.GONE
+//
+//                    }
+//
+//
+//                    // Finally, make the alert dialog using builder
+//                    val dialog: AlertDialog = builder.create()
+//                    dialog.setCanceledOnTouchOutside(false)
+//                    // Display the alert dialog on app interface
+//                    dialog.show()
+//
+//                }
+//
+//            } else {
+//
+//
+//                val builder = AlertDialog.Builder(context)
+//
+//                // Set the alert dialog title
+//                builder.setTitle("Changes made Warning")
+//
+//                // Display a message on alert dialog
+//                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
+//
+//                // Set a positive button and its click listener on alert dialog
+//                builder.setPositiveButton("Ok") { dialog, which ->
+//
+//                    FragmentARRAVScopeOfService.dataChanged = false
+//
+//                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
+//
+//                }
+//
+//
+//                val dialog: AlertDialog = builder.create()
+//                dialog.setCanceledOnTouchOutside(false)
+//                dialog.show()
+//
+//            }
+//
+//        }
     }
 
 

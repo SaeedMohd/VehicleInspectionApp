@@ -75,6 +75,8 @@ class FragmentVisitation : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         FacilityDataModelOrg.getInstance().changeWasDone = false
+        dataChangedNoRadioButton.isClickable=false
+        dataChangedYesRadioButton.isClickable=false
         dataChangeHandling()
         checkMarkChangesDone()
         initializeFields()
@@ -113,15 +115,13 @@ class FragmentVisitation : Fragment() {
     }
     fun dataChangeHandling(){
 
-        if (FacilityDataModelOrg.getInstance().changeWasDone==true ){
+        if (HasChangedModel.getInstance().checkIfChangeWasDoneforVisitation()){
             dataChangedYesRadioButton.isChecked=true
             dataChangedNoRadioButton.isChecked=false
         }else{
             dataChangedNoRadioButton.isChecked=true
             dataChangedYesRadioButton.isChecked=false
         }
-
-
     }
 
     private fun initializeFields() {

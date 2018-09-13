@@ -41,7 +41,7 @@ import kotlinx.android.synthetic.main.app_bar_forms.*
 enum class fragmentsNames {
     FacilityGeneralInfo, FacilityContactInfo,FacilityRSP,FacilityPersonnel,FacilityAmedndmentsOrderTracking,
     Visitation,
-    SoSGeneralInfo,
+    SoSGeneralInfo,SoSVehicleServices,SoSPrograms,SoSFacilityServices,SoSVehicles,SoSAffiliations,SoSPromotions,SoSAwards,SoSOthers,
     Deficiency,
     Comments,
     Complaints,

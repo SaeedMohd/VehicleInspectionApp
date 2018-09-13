@@ -234,6 +234,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         submitNewAAR_PortalTracking.setOnClickListener {
 
             if (validateInputs()) {
+                rspLoadingText.text = "Saving ..."
                 RSP_LoadingView.visibility = View.VISIBLE
 
                 var startDate = if (startDateButton.text.equals("SELECT DATE")) "" else startDateButton.text.toString()
@@ -274,21 +275,28 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
                                     (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
-                                    Utility.showSubmitAlertDialog(activity, false, "RSP")
+
+                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    Utility.showSubmitAlertDialog(activity,false,"RSP (Error: "+ errorMessage+" )")
                                 }
                                 RSP_LoadingView.visibility = View.GONE
+                                rspLoadingText.text = "Loading ..."
                                 alphaBackgroundForRSPDialogs.visibility = View.GONE
                                 Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
                             })
                         }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity, false, "RSP")
+                    Utility.showSubmitAlertDialog(activity, false, "RSP (Error: "+it.message+" )")
+
                     RSP_LoadingView.visibility = View.GONE
+                    rspLoadingText.text = "Loading ..."
                     alphaBackgroundForRSPDialogs.visibility = View.GONE
                     Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
                 }))
             } else {
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
             }
+
+//            RSP_LoadingView.visibility = View.GONE
 
 //                Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
 
@@ -698,24 +706,24 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
 
-                        for (i in 0 until mainViewLinearId.childCount) {
-                            val child = mainViewLinearId.getChildAt(i)
-                            child.isEnabled = false
-                        }
-
-                        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
-
-                        for (i in 1..childViewCount - 1) {
-                            var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
-
-                            for (j in 0..row.getChildCount() - 1) {
-
-                                var tv: TextView = row.getChildAt(j) as TextView
-                                tv.isEnabled = false
-
-                            }
-
-                        }
+//                        for (i in 0 until mainViewLinearId.childCount) {
+//                            val child = mainViewLinearId.getChildAt(i)
+//                            child.isEnabled = false
+//                        }
+//
+//                        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+//
+//                        for (i in 1..childViewCount - 1) {
+//                            var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+//
+//                            for (j in 0..row.getChildCount() - 1) {
+//
+//                                var tv: TextView = row.getChildAt(j) as TextView
+//                                tv.isEnabled = false
+//
+//                            }
+//
+//                        }
 
 
                     })
@@ -723,6 +731,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
                         if (validateInputsForUpdate()) {
+                            rspLoadingText.text = "Saving ..."
                             RSP_LoadingView.visibility = View.VISIBLE
 
                             val date = edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
@@ -757,7 +766,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                                 if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
                                                 (activity as FormsActivity).refreshMenuIndicators()
                                             } else {
-                                                Utility.showSubmitAlertDialog(activity, false, "RSP")
+                                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                Utility.showSubmitAlertDialog(activity,false,"RSP (Error: "+ errorMessage+" )")
                                             }
                                             RSP_LoadingView.visibility = View.GONE
                                             alphaBackgroundForRSPDialogs.visibility = View.GONE
@@ -765,16 +775,17 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                                         })
                                     }, Response.ErrorListener {
-                                Utility.showSubmitAlertDialog(activity, false, "RSP")
+                                Utility.showSubmitAlertDialog(activity, false, "RSP (Error: "+it.message+" )")
                                 RSP_LoadingView.visibility = View.GONE
+                                rspLoadingText.text = "Loading ..."
                                 alphaBackgroundForRSPDialogs.visibility = View.GONE
                                 edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
 
                             }))
 
                         } else
-                            Toast.makeText(context, "please fill all required field", Toast.LENGTH_SHORT).show()
-
+//                            Toast.makeText(context, "please fill all required field", Toast.LENGTH_SHORT).show()
+                            Utility.showValidationAlertDialog(activity,"Please fill all required fields")
 
                     }
 

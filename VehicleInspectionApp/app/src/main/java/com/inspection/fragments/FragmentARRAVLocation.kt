@@ -352,7 +352,7 @@ class FragmentARRAVLocation : Fragment() {
         exitAddEmailDialogeBtnId.setOnClickListener({
             addNewEmailDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
-            enableAllAddButnsAndDialog()
+//            enableAllAddButnsAndDialog()
         })
 //        exitAddLocationDialogeBtnId.setOnClickListener({
 //            addNewLocationDialog.visibility = View.GONE
@@ -363,17 +363,17 @@ class FragmentARRAVLocation : Fragment() {
         exitEditLocationDialogeBtnId.setOnClickListener({
             editLocationDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
-            enableAllAddButnsAndDialog()
+//            enableAllAddButnsAndDialog()
         })
         exitUpdatePhoneDialogeBtnId.setOnClickListener({
             alphaBackgroundForDialogs.visibility = View.GONE
             editPhoneDialog.visibility = View.GONE
-            enableAllAddButnsAndDialog()
+//            enableAllAddButnsAndDialog()
         })
         exitAddPhoneDialogeBtnId.setOnClickListener({
             addNewPhoneDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
-            enableAllAddButnsAndDialog()
+//            enableAllAddButnsAndDialog()
         })
 
 //        addNewLocationButton.setOnClickListener({
@@ -383,12 +383,12 @@ class FragmentARRAVLocation : Fragment() {
 //        })
 
         addNewPhoneButton.setOnClickListener({
-            disableAllAddButnsAndDialog()
+//            disableAllAddButnsAndDialog()
             showPhoneDialog()
         })
 
         addNewEmailButton.setOnClickListener {
-            disableAllAddButnsAndDialog()
+//            disableAllAddButnsAndDialog()
             showEmailDialog()
         }
 
@@ -467,7 +467,7 @@ class FragmentARRAVLocation : Fragment() {
             } else {
                 phoneValide=true
                 submitFacilityPhone()
-                enableAllAddButnsAndDialog()
+//                enableAllAddButnsAndDialog()
             }
         })
 
@@ -482,12 +482,13 @@ class FragmentARRAVLocation : Fragment() {
             }else {
                 emailValid=true
                 submitFacilityEmail()
-                enableAllAddButnsAndDialog()
+//                enableAllAddButnsAndDialog()
             }
         })
 
         saveButton.setOnClickListener(View.OnClickListener {
-
+            contactInfoLoadingText.text = "Saving ..."
+            contactInfoLoadingView.visibility = View.VISIBLE
             submitHours()
             submitLanguages()
 
@@ -700,8 +701,8 @@ class FragmentARRAVLocation : Fragment() {
         newLocLongText.setText(FacilityDataModel.getInstance().tblAddress[index].LONGITUDE)
 
         locationSubmitButton.setOnClickListener {
-
-
+            contactInfoLoadingText.text = "Saving ..."
+            contactInfoLoadingView.visibility = View.VISIBLE
             editLocationDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
 //            enableAllAddButnsAndDialog()
@@ -745,16 +746,19 @@ class FragmentARRAVLocation : Fragment() {
                                 if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                                 (activity as FormsActivity).refreshMenuIndicators()
                             } else {
-                                Utility.showSubmitAlertDialog(activity, false, "Facility Location")
+                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: "+errorMessage+" )")
                             }
                             contactInfoLoadingView.visibility = View.GONE
-                            enableAllAddButnsAndDialog()
+                            contactInfoLoadingText.text = "Loading ..."
+//                            enableAllAddButnsAndDialog()
                         })
                     }, Response.ErrorListener {
+
+                        Utility.showSubmitAlertDialog(activity,true,"Facility Location (Error: "+it.message+" )")
                         contactInfoLoadingView.visibility = View.GONE
-                        Utility.showSubmitAlertDialog(activity,true,"Facility Location")
-                        contactInfoLoadingView.visibility = View.GONE
-                        enableAllAddButnsAndDialog()
+                        contactInfoLoadingText.text = "Loading ..."
+//                        enableAllAddButnsAndDialog()
                         Log.v("error while submitting", "LOCATION Details")
             }))
 
@@ -978,7 +982,7 @@ class FragmentARRAVLocation : Fragment() {
                         //       Toast.makeText(context,rowIndex.toString(),Toast.LENGTH_SHORT).show()
 
 
-                        disableAllAddButnsAndDialog()
+//                        disableAllAddButnsAndDialog()
                         newChangesPhoneNoText.text.clear()
                         alphaBackgroundForDialogs.visibility = View.VISIBLE
                         editPhoneDialog.visibility = View.VISIBLE
@@ -1019,6 +1023,7 @@ class FragmentARRAVLocation : Fragment() {
                                 val clubCode = FacilityDataModel.getInstance().clubCode
                                 var urlString = facilityNo + "&clubcode=" + clubCode + "&phoneTypeId=" + phoneTypeID + "&phoneNumber=" + phoneNo + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&phoneId=${FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneID}&active=1"
                                 Log.v("Data To Submit", urlString)
+                                contactInfoLoadingText.text = "Saving ..."
                                 contactInfoLoadingView.visibility = View.VISIBLE
                                 editPhoneDialog.visibility = View.GONE
                                 alphaBackgroundForDialogs.visibility = View.GONE
@@ -1035,15 +1040,19 @@ class FragmentARRAVLocation : Fragment() {
                                                     if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                                                     (activity as FormsActivity).refreshMenuIndicators()
                                                 } else {
-                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone")
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
+
                                                 }
                                                 contactInfoLoadingView.visibility = View.GONE
-                                                enableAllAddButnsAndDialog()
+                                                contactInfoLoadingText.text = "Loading ..."
+//                                                enableAllAddButnsAndDialog()
                                             })
                                         }, Response.ErrorListener {
                                     contactInfoLoadingView.visibility = View.GONE
-                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone")
-                                    enableAllAddButnsAndDialog()
+                                    contactInfoLoadingText.text = "Loading ..."
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
+//                                    enableAllAddButnsAndDialog()
                                     Log.v("error while submitting", "Phone Details")
                                 }))
 
@@ -1052,14 +1061,11 @@ class FragmentARRAVLocation : Fragment() {
                         })
 
                     })
-
                     phoneTbl.addView(tableRow)
                 }
             }
         }
         altPhoneTableRow(2)
-
-
     }
 
     fun fillEmailTableView() {
@@ -1119,7 +1125,7 @@ class FragmentARRAVLocation : Fragment() {
                         //       Toast.makeText(context,rowIndex.toString(),Toast.LENGTH_SHORT).show()
 
 
-                        disableAllAddButnsAndDialog()
+//                        disableAllAddButnsAndDialog()
                         newChangesEmailText.text.clear()
                         alphaBackgroundForDialogs.visibility = View.VISIBLE
                         editEmailDialog.visibility = View.VISIBLE
@@ -1162,6 +1168,7 @@ class FragmentARRAVLocation : Fragment() {
                                 val clubCode = FacilityDataModel.getInstance().clubCode
                                 var urlString = facilityNo + "&clubcode=" + clubCode + "&emailTypeId=" + FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].emailTypeId + "&email=" + emailAddress+ "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&emailId=${FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].emailID}&active=1"
                                 Log.v("Data To Submit", urlString)
+                                contactInfoLoadingText.text = "Saving ..."
                                 contactInfoLoadingView.visibility = View.VISIBLE
                                 editEmailDialog.visibility = View.GONE
                                 alphaBackgroundForDialogs.visibility = View.GONE
@@ -1177,15 +1184,18 @@ class FragmentARRAVLocation : Fragment() {
                                                     if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                                                     (activity as FormsActivity).refreshMenuIndicators()
                                                 } else {
-                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email")
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
                                                 }
                                                 contactInfoLoadingView.visibility = View.GONE
-                                                enableAllAddButnsAndDialog()
+                                                contactInfoLoadingText.text = "Loading ..."
+//                                                enableAllAddButnsAndDialog()
                                             })
                                         }, Response.ErrorListener {
                                     contactInfoLoadingView.visibility = View.GONE
-                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email")
-                                    enableAllAddButnsAndDialog()
+                                    contactInfoLoadingText.text = "Loading ..."
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+it.message+" )")
+//                                    enableAllAddButnsAndDialog()
                                 }))
 
 
@@ -1332,110 +1342,110 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun scopeOfServiceChangesWatcher() {
-        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
-
-            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
-
-
-                if (FragmentARRAVScopeOfService.dataChanged) {
-
-                    val builder = AlertDialog.Builder(context)
-
-                    // Set the alert dialog title
-                    builder.setTitle("Changes made confirmation")
-
-                    // Display a message on alert dialog
-                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-
-                    // Set a positive button and its click listener on alert dialog
-                    builder.setPositiveButton("YES") { dialog, which ->
-
-
-                        contactInfoLoadingView.visibility = View.VISIBLE
-
-                        val insertDate=Date().toAppFormatMMDDYYYY()
-                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+insertDate+"&updateBy=SumA&updateDate="+insertDate,
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread(Runnable {
-                                        Log.v("RESPONSE", response.toString())
-                                        contactInfoLoadingView.visibility = View.GONE
-
-//                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
-                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-
-                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-
-                                                FragmentARRAVScopeOfService.dataChanged = false
-
-                                            }
-
-                                        }
-
-                                    })
-                                }, Response.ErrorListener {
-                            Log.v("error while loading", "error while loading personnal record")
-//                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
-
-                            contactInfoLoadingView.visibility = View.GONE
-
-                        }))
-
-
-                    }
-
-
-                    // Display a negative button on alert dialog
-                    builder.setNegativeButton("No") { dialog, which ->
-                        FragmentARRAVScopeOfService.dataChanged = false
-                        contactInfoLoadingView.visibility = View.GONE
-
-                    }
-
-
-                    // Finally, make the alert dialog using builder
-                    val dialog: AlertDialog = builder.create()
-                    dialog.setCanceledOnTouchOutside(false)
-                    // Display the alert dialog on app interface
-                    dialog.show()
-
-                }
-
-            } else {
-
-
-                val builder = AlertDialog.Builder(context)
-
-                // Set the alert dialog title
-                builder.setTitle("Changes made Warning")
-
-                // Display a message on alert dialog
-                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
-
-                // Set a positive button and its click listener on alert dialog
-                builder.setPositiveButton("Ok") { dialog, which ->
-
-                    FragmentARRAVScopeOfService.dataChanged = false
-
-                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
-
-                }
-
-
-                val dialog: AlertDialog = builder.create()
-                dialog.setCanceledOnTouchOutside(false)
-                dialog.show()
-
-            }
-
-        }
+//        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
+//
+//            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
+//
+//
+//                if (FragmentARRAVScopeOfService.dataChanged) {
+//
+//                    val builder = AlertDialog.Builder(context)
+//
+//                    // Set the alert dialog title
+//                    builder.setTitle("Changes made confirmation")
+//
+//                    // Display a message on alert dialog
+//                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+//
+//                    // Set a positive button and its click listener on alert dialog
+//                    builder.setPositiveButton("YES") { dialog, which ->
+//
+//                        contactInfoLoadingText.text = "Saving ..."
+//                        contactInfoLoadingView.visibility = View.VISIBLE
+//
+//                        val insertDate=Date().toAppFormatMMDDYYYY()
+//                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+insertDate+"&updateBy=SumA&updateDate="+insertDate,
+//                                Response.Listener { response ->
+//                                    activity!!.runOnUiThread(Runnable {
+//                                        Log.v("RESPONSE", response.toString())
+////                                        contactInfoLoadingView.visibility = View.GONE
+//
+////                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+//                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+//                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+//
+//                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
+//                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
+//                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
+//                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
+//                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
+//                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
+//
+//                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
+//
+//                                                FragmentARRAVScopeOfService.dataChanged = false
+//
+//                                            }
+//
+//                                        }
+//
+//                                    })
+//                                }, Response.ErrorListener {
+//                            Log.v("error while loading", "error while loading personnal record")
+////                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+//
+//                            contactInfoLoadingView.visibility = View.GONE
+//
+//                        }))
+//
+//
+//                    }
+//
+//
+//                    // Display a negative button on alert dialog
+//                    builder.setNegativeButton("No") { dialog, which ->
+//                        FragmentARRAVScopeOfService.dataChanged = false
+//                        contactInfoLoadingView.visibility = View.GONE
+//
+//                    }
+//
+//
+//                    // Finally, make the alert dialog using builder
+//                    val dialog: AlertDialog = builder.create()
+//                    dialog.setCanceledOnTouchOutside(false)
+//                    // Display the alert dialog on app interface
+//                    dialog.show()
+//
+//                }
+//
+//            } else {
+//
+//
+//                val builder = AlertDialog.Builder(context)
+//
+//                // Set the alert dialog title
+//                builder.setTitle("Changes made Warning")
+//
+//                // Display a message on alert dialog
+//                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
+//
+//                // Set a positive button and its click listener on alert dialog
+//                builder.setPositiveButton("Ok") { dialog, which ->
+//
+//                    FragmentARRAVScopeOfService.dataChanged = false
+//
+//                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
+//
+//                }
+//
+//
+//                val dialog: AlertDialog = builder.create()
+//                dialog.setCanceledOnTouchOutside(false)
+//                dialog.show()
+//
+//            }
+//
+//        }
     }
 
 
@@ -1607,7 +1617,7 @@ class FragmentARRAVLocation : Fragment() {
                 }
 
                 editButton.setOnClickListener { s ->
-                    disableAllAddButnsAndDialog()
+//                    disableAllAddButnsAndDialog()
                     showLocationDialog(it)
                 }
 
@@ -1636,6 +1646,7 @@ class FragmentARRAVLocation : Fragment() {
 
         var urlString = facilityNo+"&clubcode="+clubCode+"&emailTypeId="+emailTypeID+"&email="+email+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
         Log.v("Data To Submit", urlString)
+        contactInfoLoadingText.text = "Saving ..."
         contactInfoLoadingView.visibility = View.VISIBLE
         addNewEmailDialog.visibility = View.GONE
         alphaBackgroundForDialogs.visibility = View.GONE
@@ -1659,15 +1670,18 @@ class FragmentARRAVLocation : Fragment() {
                             if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                             (activity as FormsActivity).refreshMenuIndicators()
                         } else {
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Email")
+                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                            Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
                         }
                         contactInfoLoadingView.visibility = View.GONE
+                        contactInfoLoadingText.text = "Loading ..."
 
                     })
                 }, Response.ErrorListener {
                     contactInfoLoadingView.visibility = View.GONE
+            contactInfoLoadingText.text = "Loading ..."
 
-            Utility.showSubmitAlertDialog(activity,false,"Facility Email")
+            Utility.showSubmitAlertDialog(activity,false,"Facility Email (Error: "+it.message+" )")
         }))
     }
 
@@ -1729,12 +1743,13 @@ class FragmentARRAVLocation : Fragment() {
                             if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                             (activity as FormsActivity).refreshMenuIndicators()
                         } else {
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Nigh Drop")
+                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                            Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Night Drop (Error: "+errorMessage+" )")
                         }
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error submitting hours")
-            Utility.showSubmitAlertDialog(activity,false,"Facility Hours / Nigh Drop")
+            Utility.showSubmitAlertDialog(activity,false,"Facility Hours / Nigh Drop (Error: "+it.message+" )")
         }))
 
     }
@@ -1764,11 +1779,18 @@ class FragmentARRAVLocation : Fragment() {
                             if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                             (activity as FormsActivity).refreshMenuIndicators()
                         } else {
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Languages")
+
+                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                            Utility.showSubmitAlertDialog(activity, false, "Facility Languages (Error: "+errorMessage+" )")
                         }
+
+                        contactInfoLoadingView.visibility = View.GONE
+                        contactInfoLoadingText.text = "Loading ..."
                     })
                 }, Response.ErrorListener {
-                Utility.showSubmitAlertDialog(activity, false, "Facility Languages")
+                Utility.showSubmitAlertDialog(activity, false, "Facility Languages (Error: "+it.message+" )")
+            contactInfoLoadingView.visibility = View.GONE
+            contactInfoLoadingText.text = "Loading ..."
         }))
     }
 
@@ -1826,6 +1848,7 @@ class FragmentARRAVLocation : Fragment() {
         newPhone.PhoneTypeID= phoneTypeID
         var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
         Log.v("Data To Submit", urlString)
+        contactInfoLoadingText.text = "Saving ..."
         contactInfoLoadingView.visibility = View.VISIBLE
         addNewPhoneDialog.visibility = View.GONE
         alphaBackgroundForDialogs.visibility = View.GONE
@@ -1848,13 +1871,17 @@ class FragmentARRAVLocation : Fragment() {
                             if (IndicatorsDataModel.getInstance().tblFacility[0].Location) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
                             (activity as FormsActivity).refreshMenuIndicators()
                         } else {
-                            Utility.showSubmitAlertDialog(activity,false,"Facility Phone")
+//                            Utility.showSubmitAlertDialog(activity,false,"Facility Phone (Error: "+it.message+" )")
+                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                            Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
                         }
                         contactInfoLoadingView.visibility = View.GONE
+                        contactInfoLoadingText.text = "Loading ..."
                     })
                 }, Response.ErrorListener {
             contactInfoLoadingView.visibility = View.GONE
-            Utility.showSubmitAlertDialog(activity, false, "Facility Phone")
+            contactInfoLoadingText.text = "Loading ..."
+            Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
         }))
     }
     fun altEmailTableRow(alt_row : Int) {

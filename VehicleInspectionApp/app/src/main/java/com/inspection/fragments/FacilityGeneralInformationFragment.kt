@@ -914,11 +914,11 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             (activity as FormsActivity).refreshMenuIndicators()
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
-                            Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+ errorMessage)
+                            Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+ errorMessage+" )")
                         }
                     })
                 }, Response.ErrorListener {
-            Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+it.message)
+            Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+it.message+" )")
         }))
     }
     fun submitPaymentMethods(){
@@ -966,7 +966,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             submitPaymentRequired=false
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
-                            Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage)
+                            Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage+" )")
                         }
                         IndicatorsDataModel.getInstance().validateFacilityGeneralInfo()
                         if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
@@ -974,7 +974,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                         scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                 })
     }, Response.ErrorListener {
-        Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+it.message)
+        Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+it.message+" )")
             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
         }))
 
