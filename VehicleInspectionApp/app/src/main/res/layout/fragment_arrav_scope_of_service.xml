@@ -102,7 +102,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="4"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:id="@+id/connumberll">
                 <TextView
@@ -159,7 +159,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="4"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:id="@+id/connumberll">
                 <TextView
@@ -406,7 +406,7 @@
                         android:layout_marginRight="10dp"
                         android:background="@drawable/grey_background_button"
                         android:text="Cancel"
-                        android:textColor="@color/white" />
+                        />
 
 
                     <Button
@@ -415,7 +415,8 @@
                         android:layout_height="25dp"
                         android:background="@drawable/green_background_button"
                         android:text="Save"
-                        android:textColor="@color/white" />
+                        android:layout_marginLeft="15dp"
+                        />
 
 
                 </LinearLayout>
@@ -450,6 +451,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/progressBarRecords"
             android:layout_centerHorizontal="true"
+            android:id="@+id/progressBarText"
             android:text="Loading..."
             android:textColor="@color/white"
             android:textSize="26sp"

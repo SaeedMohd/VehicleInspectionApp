@@ -1093,6 +1093,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
     }
 
     fun refreshButtonsState(){
+
         saveButton.isEnabled = (activity as FormsActivity).saveRequired
         cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }

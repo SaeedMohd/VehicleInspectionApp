@@ -233,7 +233,8 @@ class FragmentVisitation : Fragment() {
             automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilitySpecialistNames)
 
             facilityNameAndNumberRelationForSelection()
-            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName))
+//            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName))
+            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.toUpperCase()))
 
         }
 
@@ -278,7 +279,7 @@ class FragmentVisitation : Fragment() {
             }
 
             if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
-                if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNotEmpty()) {
+                if (FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.isNotEmpty()) {
                     facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
                 }
             }
@@ -344,15 +345,15 @@ class FragmentVisitation : Fragment() {
                 if (p2>0) {
                     if (isFacilityRepresentativeSignatureInitialized) {
                         isFacilityRepresentativeSignatureInitialized = false
-                    } else if (!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.equals(facilitySpecialistNames[p2])) {
-                        FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = facilitySpecialistNames[p2]
+                    } else if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals(facilitySpecialistNames[p2])) {
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy = facilitySpecialistNames[p2]
 
                         FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
 
                         automotiveSpecialistSignatureImageView.setImageBitmap(null)
                     }
                 } else {
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = ""
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy = ""
                 }
 
                 checkMarkChangesDone()
@@ -916,48 +917,50 @@ class FragmentVisitation : Fragment() {
         FacilityDataModel.getInstance().tblDeficiency.apply {
 
             (0 until size).forEach {
-                var tableRow = TableRow(context)
+                if (!get(it).DefTypeID.equals("-1")) {
+                    var tableRow = TableRow(context)
 
-                if (tableRowColorSwitch) {
-                    tableRow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.table_row_color))
-                } else {
-                    tableRow.setBackgroundColor(Color.WHITE)
+                    if (tableRowColorSwitch) {
+                        tableRow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.table_row_color))
+                    } else {
+                        tableRow.setBackgroundColor(Color.WHITE)
+                    }
+
+                    tableRowColorSwitch = !tableRowColorSwitch //Switching smartly :)
+
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.toString() == get(it).DefTypeID }[0].DeficiencyName
+                    textView.setPadding(5)
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).Comments
+                    textView.setPadding(5)
+                    textView.setEms(8)
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.text = get(it).ClearedDate.apiToAppFormatMMDDYYYY()
+                    tableRow.addView(textView)
+
+                    deficienciesTableLayout.addView(tableRow)
                 }
-
-                tableRowColorSwitch = !tableRowColorSwitch //Switching smartly :)
-
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = TypeTablesModel.getInstance().AARDeficiencyType.filter { s->s.DeficiencyTypeID.toString()==get(it).DefTypeID }[0].DeficiencyName
-                textView.setPadding(5)
-                textView.gravity = Gravity.CENTER_VERTICAL
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).Comments
-                textView.setPadding(5)
-                textView.setEms(8)
-                textView.gravity = Gravity.CENTER_VERTICAL
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
-                textView.gravity = Gravity.CENTER_VERTICAL
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = get(it).ClearedDate.apiToAppFormatMMDDYYYY()
-                tableRow.addView(textView)
-
-                deficienciesTableLayout.addView(tableRow)
             }
         }
     }

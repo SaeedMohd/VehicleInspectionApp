@@ -191,12 +191,31 @@ class HasChangedModel {
         return changeWasDone
     }
 
+    fun changeDoneForSoSGroup() : Boolean{
+        var changeWasDone = false
+        if (changeDoneForFacilityGeneralInfo() || changeDoneForFacilityContactInfo() || changeDoneForFacilityPersonnel() || changeDoneForFacilityRSP()){
+            changeWasDone = true
+        }
+        return changeWasDone
+    }
+
+
     fun changeDoneForFacilityGeneralInfo() : Boolean {
         if (groupFacilityGeneralInfo[0].FacilityGeneral || groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods || groupFacilityGeneralInfo[0].FacilityTimeZone || groupFacilityGeneralInfo[0].FacilityType) {
             groupFacility[0].FacilityGeneral=true
             return true
         } else {
             groupFacility[0].FacilityGeneral=false
+            return false
+        }
+    }
+
+    fun changeDoneForSoSGeneral() : Boolean {
+        if (groupSoSGeneralInfo[0].SoSGeneral) {
+            groupSoS[0].SoSGeneralInfo=true
+            return true
+        } else {
+            groupSoS[0].SoSGeneralInfo=false
             return false
         }
     }
@@ -278,5 +297,17 @@ class HasChangedModel {
             changeWasDone = true
         }
         return changeWasDone
+    }
+
+    fun checkIfChangeWasDoneforSoSGeneral() {
+        var changeWasDone = false
+        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!=FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!=FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!=FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!=FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!=FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!=FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID!=FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) changeWasDone = true
+        groupSoSGeneralInfo[0].SoSGeneral= changeWasDone
     }
 }

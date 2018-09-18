@@ -133,35 +133,35 @@ class ScopeOfServiceGroupFragment : Fragment() {
             updateSelectedIndicator(R.id.AffiliationsButton)
         }
 
-        promotionsButton.setOnClickListener {
-            var fragment = PromotionsFragment.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSPromotions.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.promotionsButton)
-        }
-
-        awardsAndDistinctionsButton.setOnClickListener {
-            var fragment = AwardsAndDistinctionsFragment.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSAwards.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.awardsAndDistinctionsButton)
-        }
-
-        otherButton.setOnClickListener {
-            var fragment = OthersFragment.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSOthers.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.otherButton)
-        }
+//        promotionsButton.setOnClickListener {
+//            var fragment = PromotionsFragment.newInstance("","")
+//            fragmentManager!!.beginTransaction()
+//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+//                    .commit()
+//            (activity as FormsActivity).currentFragment= fragmentsNames.SoSPromotions.toString()
+//            (activity as FormsActivity).saveRequired = false
+//            updateSelectedIndicator(R.id.promotionsButton)
+//        }
+//
+//        awardsAndDistinctionsButton.setOnClickListener {
+//            var fragment = AwardsAndDistinctionsFragment.newInstance("","")
+//            fragmentManager!!.beginTransaction()
+//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+//                    .commit()
+//            (activity as FormsActivity).currentFragment= fragmentsNames.SoSAwards.toString()
+//            (activity as FormsActivity).saveRequired = false
+//            updateSelectedIndicator(R.id.awardsAndDistinctionsButton)
+//        }
+//
+//        otherButton.setOnClickListener {
+//            var fragment = OthersFragment.newInstance("","")
+//            fragmentManager!!.beginTransaction()
+//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+//                    .commit()
+//            (activity as FormsActivity).currentFragment= fragmentsNames.SoSOthers.toString()
+//            (activity as FormsActivity).saveRequired = false
+//            updateSelectedIndicator(R.id.otherButton)
+//        }
 
 
     }
@@ -177,9 +177,9 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedIndicator.visibility = View.INVISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
-                otherSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
+//                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.vehicleServicesButton->{
@@ -189,9 +189,9 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedIndicator.visibility = View.INVISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
-                otherSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
+//                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.programsButton->{
@@ -201,9 +201,9 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedIndicator.visibility = View.INVISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
-                otherSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
+//                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.facilityServicesButton->{
@@ -213,9 +213,9 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.VISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedIndicator.visibility = View.INVISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
-                otherSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
+//                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.vehiclesButton->{
@@ -225,9 +225,9 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.VISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedIndicator.visibility = View.INVISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
-                otherSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
+//                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.AffiliationsButton->{
@@ -237,46 +237,46 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.VISIBLE
-                promotionsSelectedIndicator.visibility = View.INVISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
-                otherSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
+//                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
-            R.id.promotionsButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedIndicator.visibility = View.VISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
-                otherSelectedIndicator.visibility = View.INVISIBLE
-            }
-
-            R.id.awardsAndDistinctionsButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedIndicator.visibility = View.INVISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.VISIBLE
-                otherSelectedIndicator.visibility = View.INVISIBLE
-            }
-
-            R.id.otherButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedIndicator.visibility = View.INVISIBLE
-                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
-                otherSelectedIndicator.visibility = View.VISIBLE
-            }
+//            R.id.promotionsButton->{
+//                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+//                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+//                programsSelectedIndicator.visibility = View.INVISIBLE
+//                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+//                vehiclesSelectedIndicator.visibility = View.INVISIBLE
+//                affiliationsSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.VISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
+//                otherSelectedIndicator.visibility = View.INVISIBLE
+//            }
+//
+//            R.id.awardsAndDistinctionsButton->{
+//                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+//                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+//                programsSelectedIndicator.visibility = View.INVISIBLE
+//                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+//                vehiclesSelectedIndicator.visibility = View.INVISIBLE
+//                affiliationsSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.VISIBLE
+//                otherSelectedIndicator.visibility = View.INVISIBLE
+//            }
+//
+//            R.id.otherButton->{
+//                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+//                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+//                programsSelectedIndicator.visibility = View.INVISIBLE
+//                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+//                vehiclesSelectedIndicator.visibility = View.INVISIBLE
+//                affiliationsSelectedIndicator.visibility = View.INVISIBLE
+//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+//                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
+//                otherSelectedIndicator.visibility = View.VISIBLE
+//            }
         }
         IndicatorsDataModel.getInstance().validateSoSSection()
         refreshTabIndicators()
@@ -290,8 +290,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
         vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA"))
         vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
-        promotionsButton.setTextColor(Color.parseColor("#26C3AA"))
-        awardsAndDistinctionsButton.setTextColor(Color.parseColor("#26C3AA"))
+//        promotionsButton.setTextColor(Color.parseColor("#26C3AA"))
+//        awardsAndDistinctionsButton.setTextColor(Color.parseColor("#26C3AA"))
     }
 
     /**

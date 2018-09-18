@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.get
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -35,6 +36,7 @@ import com.inspection.MainActivity.Companion.handler
 import com.inspection.R.id.numberOfLiftsEditText
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.Utility
+import com.inspection.Utils.hideKeyboard
 import com.inspection.Utils.toApiSubmitFormat
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
@@ -87,7 +89,18 @@ class FragmentARRAVScopeOfService : Fragment() {
 
         validationProblemFoundForOtherFragments=false
         cancelButton.setOnClickListener(View.OnClickListener {
-
+            cancelButton.hideKeyboard()
+            FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate= FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate
+            FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate= FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate
+            FacilityDataModel.getInstance().tblScopeofService[0].LaborMax= FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax
+            FacilityDataModel.getInstance().tblScopeofService[0].LaborMin= FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin
+            FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays= FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays
+            FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts= FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts
+            FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID= FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID
+            setFields()
+            (activity as FormsActivity).saveRequired = false
+            refreshButtonsState()
+            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
         })
 
         for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
@@ -96,11 +109,13 @@ class FragmentARRAVScopeOfService : Fragment() {
         var warrantyAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, warrantyArray)
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
+
         saveBtnPressed()
 //        prepareScopePage()
         setFields()
         setFieldsListener()
-
+        (activity as FormsActivity).saveRequired = false
+        refreshButtonsState()
     }
 
 
@@ -156,6 +171,12 @@ dataChanged=true
         fillMethodCalled = true
 
     }
+
+    fun refreshButtonsState(){
+        saveBtnId.isEnabled = (activity as FormsActivity).saveRequired
+        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+    }
+
     fun setFieldsListener (){
         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
             FacilityDataModel.getInstance().tblScopeofService[0].apply {
@@ -166,6 +187,10 @@ dataChanged=true
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 FacilityDataModel.getInstance().tblScopeofService[0].LaborMax = s.toString()
+                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -182,6 +207,10 @@ dataChanged=true
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 FacilityDataModel.getInstance().tblScopeofService[0].LaborMin = s.toString()
+                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -203,6 +232,10 @@ dataChanged=true
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate = s.toString()
+                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -223,6 +256,10 @@ dataChanged=true
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate = s.toString()
+                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -242,6 +279,10 @@ dataChanged=true
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays = s.toString()
+                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -262,6 +303,10 @@ dataChanged=true
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts = s.toString()
+                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -295,17 +340,31 @@ dataChanged=true
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeName.equals(warrantyPeriodVal.selectedItem.toString()) }[0].WarrantyTypeID
-                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
-                    if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
-                       typeIdCompare=typeWarranty.WarrantyTypeID
-                        if (typeIdCompare!= FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID){
-                            MarkChangeWasDone()
-                        }
-                        if (typeIdCompare!= FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID){
-                            dataChanged=true
-                        }
-                    }
+//                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeName.equals(warrantyPeriodVal.selectedItem.toString()) }[0].WarrantyTypeID
+//                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
+//                    if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
+//                       typeIdCompare=typeWarranty.WarrantyTypeID
+//                        if (typeIdCompare!= FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID){
+//                            MarkChangeWasDone()
+//                        }
+//                        if (typeIdCompare!= FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID){
+//                            dataChanged=true
+//                        }
+//                    }
+//                }
+
+                if (!warrantyPeriodVal.tag.equals(position) || warrantyPeriodVal.tag.equals("-1")) {
+                    warrantyPeriodVal.tag = "-1"
+                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = warrantyArray[position]
+//                    if (FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID != FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) {
+                        HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                        HasChangedModel.getInstance().changeDoneForSoSGeneral()
+//                    } else {
+//                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone = false
+//                        HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+//                    }
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
                 }
             }
         }
@@ -328,6 +387,7 @@ dataChanged=true
                                 if (typeWarranty.WarrantyTypeName == warSpinner) {
                                     var i = warrantyArray.indexOf(warSpinner)
                                     warrantyPeriodVal.setSelection(i)
+                                    warrantyPeriodVal.tag=i
                                 }
                             }
                         }
@@ -384,44 +444,53 @@ dataChanged=true
                 var laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
                 var numberOfBaysEditText = numberOfBaysEditText.text.toString()
                 var numberOfLiftsEditText = numberOfLiftsEditText.text.toString()
+
+                progressBarText.text = "Saving ..."
                 scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                                    progressBarText.text = "Loading ..."
                                     Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
-                                    if (dataChanged) {
-                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
-                                                LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
-                                                LaborMin = if (watcher_LaborMin.isNullOrBlank()) LaborMin else watcher_LaborMin
-                                                FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FixedLaborRate else watcher_FixedLaborRate
-                                                DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank()) DiagnosticsRate else watcher_DiagnosticsRate
-                                                NumOfBays = if (watcher_NumOfBays.isNullOrBlank()) NumOfBays else watcher_NumOfBays
-                                                NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank()) NumOfLifts else watcher_NumOfLifts
-                                                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
-                                                    if (typeWarranty.WarrantyTypeName == warrantyPeriodVal.selectedItem) {
-                                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
-                                                    }
+//                                    if (dataChanged) {
+                                    if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                        FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                                            LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
+                                            LaborMin = if (watcher_LaborMin.isNullOrBlank()) LaborMin else watcher_LaborMin
+                                            FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FixedLaborRate else watcher_FixedLaborRate
+                                            DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank()) DiagnosticsRate else watcher_DiagnosticsRate
+                                            NumOfBays = if (watcher_NumOfBays.isNullOrBlank()) NumOfBays else watcher_NumOfBays
+                                            NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank()) NumOfLifts else watcher_NumOfLifts
+                                            for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
+                                                if (typeWarranty.WarrantyTypeName == warrantyPeriodVal.selectedItem) {
+                                                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
                                                 }
-                                                checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
                                             }
+//                                            checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
+
                                         }
                                     }
-                                    Utility.showValidationAlertDialog(activity,FacilityDataModel.getInstance().tblScopeofService.equals(FacilityDataModelOrg.getInstance().tblScopeofService).toString())
-
+//                                    }
+//                                    Utility.showValidationAlertDialog(activity,FacilityDataModel.getInstance().tblScopeofService.equals(FacilityDataModelOrg.getInstance().tblScopeofService).toString())
+                                    (activity as FormsActivity).saveRequired = false
+                                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                                    HasChangedModel.getInstance().changeDoneForSoSGeneral()
                                     IndicatorsDataModel.getInstance().validateSoSGeneral()
                                     if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
                                     (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
-                                    Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information")
+                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")
                                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                                    progressBarText.text = "Loading ..."
                                 }
                             })
                         }, Response.ErrorListener {
                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                    Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information")
+                    progressBarText.text = "Loading ..."
+                    Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information (Error: "+it.message+" )")
                 }))
             } else {
                 Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
@@ -430,25 +499,25 @@ dataChanged=true
     }
 
     fun checkMarkChangeWasDoneForScopeOfServiceGeneralInfo(){
-        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != FacilityDataModel.getInstance().tblScopeofService[0].LaborMax) {
-            MarkChangeWasDone()
-        }
-        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != FacilityDataModel.getInstance().tblScopeofService[0].LaborMin) {
-            MarkChangeWasDone()
-        }
-
-        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate) {
-            MarkChangeWasDone()
-        }
-            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate) {
-                MarkChangeWasDone()
-            }
-            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays) {
-                MarkChangeWasDone()
-            }
-            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts) {
-                MarkChangeWasDone()
-            }
+//        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != FacilityDataModel.getInstance().tblScopeofService[0].LaborMax) {
+//            MarkChangeWasDone()
+//        }
+//        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != FacilityDataModel.getInstance().tblScopeofService[0].LaborMin) {
+//            MarkChangeWasDone()
+//        }
+//
+//        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate) {
+//            MarkChangeWasDone()
+//        }
+//            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate) {
+//                MarkChangeWasDone()
+//            }
+//            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays) {
+//                MarkChangeWasDone()
+//            }
+//            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts) {
+//                MarkChangeWasDone()
+//            }
     }
 
     fun validateInputs(): Boolean {
@@ -520,8 +589,8 @@ dataChanged=true
 
 
     override fun onPause() {
-        validateInputsForOtherFragmentAloneNotInGroups()
-        fillFieldsIntoVariables()
+//        validateInputsForOtherFragmentAloneNotInGroups()
+//        fillFieldsIntoVariables()
 
         super.onPause()
 

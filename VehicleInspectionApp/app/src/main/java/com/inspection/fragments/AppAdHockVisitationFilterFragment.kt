@@ -1345,7 +1345,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             var oneArray = TblDeficiency()
             oneArray.ClearedDate = ""
             oneArray.Comments = ""
-            oneArray.DefTypeID = ""
+            oneArray.DefTypeID = "-1"
             oneArray.EnteredDate = ""
             oneArray.VisitationDate = ""
             jsonObj.put(key, Gson().toJson(oneArray))

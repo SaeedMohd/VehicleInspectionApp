@@ -74,35 +74,35 @@
                 android:layout_marginLeft="10dp"
                 />
 
-            <Button
-                android:id="@+id/promotionsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:text="Promotions"
-                android:layout_column="6"
-                android:layout_marginLeft="10dp"
-                />
+            <!--<Button-->
+                <!--android:id="@+id/promotionsButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/transparent"-->
+                <!--android:text="Promotions"-->
+                <!--android:layout_column="6"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--/>-->
 
-            <Button
-                android:id="@+id/awardsAndDistinctionsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:text="Awards And Distinctions"
-                android:layout_column="7"
-                android:layout_marginLeft="10dp"
-                />
+            <!--<Button-->
+                <!--android:id="@+id/awardsAndDistinctionsButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/transparent"-->
+                <!--android:text="Awards And Distinctions"-->
+                <!--android:layout_column="7"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--/>-->
 
-            <Button
-                android:id="@+id/otherButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:text="Other"
-                android:layout_column="8"
-                android:layout_marginLeft="10dp"
-                />
+            <!--<Button-->
+                <!--android:id="@+id/otherButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/transparent"-->
+                <!--android:text="Other"-->
+                <!--android:layout_column="8"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--/>-->
         </TableRow>
         <TableRow>
             <View
@@ -159,32 +159,32 @@
                 android:visibility="invisible"
                 />
 
-            <View
-                android:id="@+id/promotionsSelectedIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/mainColor"
-                android:layout_column="6"
-                android:visibility="invisible"
-                />
+            <!--<View-->
+                <!--android:id="@+id/promotionsSelectedIndicator"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="4dp"-->
+                <!--android:background="@color/mainColor"-->
+                <!--android:layout_column="6"-->
+                <!--android:visibility="invisible"-->
+                <!--/>-->
 
-            <View
-                android:id="@+id/awardsAndDistinctionsSelectedIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/mainColor"
-                android:layout_column="7"
-                android:visibility="invisible"
-                />
+            <!--<View-->
+                <!--android:id="@+id/awardsAndDistinctionsSelectedIndicator"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="4dp"-->
+                <!--android:background="@color/mainColor"-->
+                <!--android:layout_column="7"-->
+                <!--android:visibility="invisible"-->
+                <!--/>-->
 
-            <View
-                android:id="@+id/otherSelectedIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/mainColor"
-                android:layout_column="8"
-                android:visibility="invisible"
-                />
+            <!--<View-->
+                <!--android:id="@+id/otherSelectedIndicator"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="4dp"-->
+                <!--android:background="@color/mainColor"-->
+                <!--android:layout_column="8"-->
+                <!--android:visibility="invisible"-->
+                <!--/>-->
         </TableRow>
     </TableLayout>
 

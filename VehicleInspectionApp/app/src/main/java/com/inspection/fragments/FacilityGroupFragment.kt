@@ -59,7 +59,7 @@ class FacilityGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        contactInfoButton.text = "Location & Contact Info"
         var fragment = FacilityGeneralInformationFragment.newInstance(false)
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)

@@ -49,24 +49,43 @@
                     />
 
             </RelativeLayout>
-
-
-            <TableLayout
+            <ScrollView
+                android:id="@+id/scrollView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1">
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/LinearLayout1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:orientation="horizontal">-->
+            <TableLayout
+                android:layout_width="1500dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/locationTbl"
+                android:scrollbars="horizontal"
                 android:scrollbarAlwaysDrawHorizontalTrack="true"
                 android:stretchColumns="*">
-                <TableRow android:background="@color/mainColor">
+                <TableRow android:background="@color/mainColor"
+                    android:layout_height="wrap_content"
+                    android:weightSum="12">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:layout_marginStart="2dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:text="Location Type"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -75,24 +94,27 @@
                         android:text="Address 1"
                         android:ems="8"
                         android:layout_column="1"
+                        android:layout_weight="1.4"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Address 2"
+                        android:layout_weight="1.4"
                         android:ems="8"
                         android:textColor="@color/white"
                         android:layout_column="2"
-                        android:textSize="16sp" />
+                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="City"
+                        android:layout_weight="1"
                         android:textColor="@color/white"
                         android:layout_column="3"
                         android:textSize="16sp" />
@@ -102,6 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Country"
+                        android:layout_weight="1"
                         android:layout_column="4"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
@@ -112,6 +135,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_column="5"
                         android:text="State"
+                        android:layout_weight="0.5"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -120,6 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Zip Code"
+                        android:layout_weight="1"
                         android:layout_column="6"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
@@ -129,6 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Latitude"
+                        android:layout_weight="1"
                         android:layout_column="7"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
@@ -138,6 +164,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Longitude"
+                        android:layout_weight="1"
                         android:layout_column="8"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
@@ -156,6 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Branch Name"
+                        android:layout_weight="1"
                         android:layout_column="10"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
@@ -166,12 +194,15 @@
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/white"
                         android:layout_column="11"
+                        android:layout_weight="0.7"
                         android:textSize="16sp"
                         android:text="Options" />
                 </TableRow>
 
             </TableLayout>
-
+                <!--</LinearLayout>-->
+            </HorizontalScrollView>
+            </ScrollView>
             <RelativeLayout
                 android:id="@+id/mainViewLinearId2"
                 android:layout_width="match_parent"

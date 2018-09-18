@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 
+import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Debug
 import android.support.v4.app.Fragment
+import android.support.v4.widget.TextViewCompat
 import android.text.Editable
 import android.text.SpannableString
 import android.text.TextWatcher
@@ -354,6 +356,14 @@ class FragmentARRAVLocation : Fragment() {
             alphaBackgroundForDialogs.visibility = View.GONE
 //            enableAllAddButnsAndDialog()
         })
+
+
+        exitUpdateEmailDialogeBtnId.setOnClickListener({
+            editEmailDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+//            enableAllAddButnsAndDialog()
+        })
+
 //        exitAddLocationDialogeBtnId.setOnClickListener({
 //            addNewLocationDialog.visibility = View.GONE
 //                     alphaBackgroundForDialogs.visibility = View.GONE
@@ -992,9 +1002,13 @@ class FragmentARRAVLocation : Fragment() {
                             phoneTypeArray.add(fac.LocPhoneName)
                         }
 
+
+
                         var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray)
                         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         newPhoneTypeSpinner.adapter = phoneTypeAdapter
+
+                        newChangesPhoneNoText.setText(FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber)
 
                         phoneSaveChangesButton.setOnClickListener(View.OnClickListener {
 
@@ -1138,6 +1152,8 @@ class FragmentARRAVLocation : Fragment() {
                         var emailTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, emailTypeArray)
                         emailTypeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         newEmailTypeSpinner.adapter = emailTypeAdapter
+
+                        newChangesEmailText.setText(FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email)
 
                         emailSaveChangesButton.setOnClickListener(View.OnClickListener {
 
@@ -1455,7 +1471,8 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = 30
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
 
         if (locationTbl.childCount>1) {
             for (i in locationTbl.childCount - 1 downTo 1) {
@@ -1464,143 +1481,174 @@ class FragmentARRAVLocation : Fragment() {
         }
 
         val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.weight = 1.4F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.leftMargin = 10
-        rowLayoutParam1.height = 30
+        rowLayoutParam1.leftMargin = 2
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.weight = 1.4F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = 30
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = 30
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = 30
+        rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.weight = 0.5F
         rowLayoutParam5.column = 5
-        rowLayoutParam5.height = 30
+        rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.width = 0
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
-        rowLayoutParam6.height = 30
-
+        rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam6.width = 0
 
         val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
-        rowLayoutParam7.height = 30
+        rowLayoutParam7.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.width = 0
 
         val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam8.weight = 1F
-        rowLayoutParam8.height = 30
+        rowLayoutParam8.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam8.column = 8
+        rowLayoutParam8.width = 0
 
         val rowLayoutParam9 = TableRow.LayoutParams()
         rowLayoutParam9.weight = 1F
-        rowLayoutParam9.height = 30
+        rowLayoutParam9.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam9.column = 9
+        rowLayoutParam9.width = 0
 
         val rowLayoutParam10 = TableRow.LayoutParams()
         rowLayoutParam10.weight = 1F
-        rowLayoutParam10.height = 30
+        rowLayoutParam10.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam10.column = 10
+        rowLayoutParam10.width = 0
 
         val rowLayoutParam11 = TableRow.LayoutParams()
-        rowLayoutParam11.weight = 1F
-        rowLayoutParam11.height = 30
+        rowLayoutParam11.weight = 0.7F
+        rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam11.column = 11
+        rowLayoutParam11.width = 0
+
         var dateTobeFormated = ""
+
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
+
 
         FacilityDataModel.getInstance().tblAddress.apply {
             (0 until size).forEach {
                 var tableRow = TableRow(context)
+                tableRow.weightSum = 12F
+                tableRow.layoutParams = rowLayoutParamRow
+                tableRow.minimumHeight = 30
+
 
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
 //                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView.gravity = Gravity.CENTER_VERTICAL
                 //getTypeName
+                textView.minimumHeight=30
                 textView.text = getLocationTypeName(get(it).LocationTypeID)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
                 textView.gravity = Gravity.CENTER_VERTICAL
+                textView.minimumHeight=30
+                textView.setEms(8)
                 textView.text = get(it).FAC_Addr1
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
                 textView.gravity = Gravity.CENTER_VERTICAL
-                TableRow.LayoutParams()
+                textView.minimumHeight=30
+                textView.setEms(8)
                 textView.text = get(it).FAC_Addr2
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam3
                 textView.gravity = Gravity.CENTER_VERTICAL
+                textView.minimumHeight=30
                 textView.text = get(it).CITY
-
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam4
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).County
+                textView.minimumHeight=30
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam5
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ST
+                textView.minimumHeight=30
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam6
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ZIP + "-" + get(it).ZIP4
+                textView.minimumHeight=30
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam7
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).LATITUDE
+                textView.minimumHeight=30
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam8
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).LONGITUDE
+                textView.minimumHeight=30
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam9
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).BranchNumber
+                textView.minimumHeight=30
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam10
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).BranchName
+                textView.minimumHeight=30
                 tableRow.addView(textView)
 
                 var editButton = TextView(context)
-                editButton.layoutParams = rowLayoutParam1
+                editButton.layoutParams = rowLayoutParam11
                 editButton .setTextColor(Color.BLUE)
+                textView.minimumHeight=30
                 editButton .text = "EDIT"
-//                editButton .gravity = Gravity.CENTER
-                editButton.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                editButton .gravity = Gravity.CENTER
+//                editButton.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 editButton .setBackgroundColor(Color.TRANSPARENT)
                 editButton.tag = it
 //

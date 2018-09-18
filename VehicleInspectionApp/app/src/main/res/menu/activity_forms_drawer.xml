@@ -27,7 +27,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/scopeOfService"
-            android:title="Scope Of Service"
+            android:title="Scope of Services"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
     </group>

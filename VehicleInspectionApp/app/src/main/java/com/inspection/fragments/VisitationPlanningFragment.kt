@@ -329,13 +329,19 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                 with(parametersString) {
                     //TODO added to void specialist value until they let us know how we will use it
                     try {
-                        append("specialist=" + CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == visitationSpecialistName.text.toString() }[0].accspecid)
+                        var specialistName = visitationSpecialistName.text
+//                        var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                        var firstName = specialistName.substring(specialistName.indexOf(",")+2,specialistName.length)
+                        var lastName = specialistName.substring(0,specialistName.indexOf(","))
+                        var reformattedName = firstName + " " + lastName
+//                        Utility.showMessageDialog(activity,"TEST",reformattedName)
+//                        append("specialist=" + CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == visitationSpecialistName.text.toString() }[0].accspecid)
+                        append("specialist=" + CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == reformattedName }[0].accspecid)
                         append("&")
                     } catch (exp: Exception) {
                         append("specialist=")
                         append("&")
                     }
-
                 }
             } else {
                 with(parametersString) {
@@ -1621,7 +1627,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             var oneArray = TblDeficiency()
             oneArray.ClearedDate = ""
             oneArray.Comments = ""
-            oneArray.DefTypeID = ""
+            oneArray.DefTypeID = "-1"
             oneArray.EnteredDate = ""
             oneArray.VisitationDate = ""
             jsonObj.put(key, Gson().toJson(oneArray))

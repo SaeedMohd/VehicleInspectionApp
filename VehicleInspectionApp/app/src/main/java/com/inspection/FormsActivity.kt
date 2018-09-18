@@ -223,8 +223,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Scope Of Service - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                    setTitle("Scope Of Service - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
+                    toolbar.title = "Scope of Services- " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    setTitle("Scope of Services- " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     currentFragment = fragmentsNames.SoSGeneralInfo.toString()
                     var fragment = ScopeOfServiceGroupFragment()
