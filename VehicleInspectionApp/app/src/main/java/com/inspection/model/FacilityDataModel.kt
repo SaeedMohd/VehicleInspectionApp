@@ -65,6 +65,7 @@ class FacilityDataModel {
     var tblVendorRevenue = ArrayList<TblVendorRevenue>()
     var tblBillingHistoryReport = ArrayList<TblBillingHistoryReport>()
     var tblComments = ArrayList<TblComments>()
+    var tblVehicleServices= ArrayList<TblVehicleServices>()
 
 
 //    class TblFacilities {

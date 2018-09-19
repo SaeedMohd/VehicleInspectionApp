@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.inspection.R.id.itemCheckBox
+import com.inspection.model.FacilityDataModel
+import com.inspection.model.TblVehicleServices
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.vehicle_services_item.view.*
 
@@ -27,6 +29,7 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         this.namesList = objects
         namesList = objects
 
+
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -34,16 +37,18 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
 
        var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(recource, parent, false)
-        val textView3 = view.itemTextView
+//        val textView3 = view.itemTextView
         val checkBoxItem = view.itemCheckBox
 
-        textView3.text = namesList.get(position).ScopeServiceName
+        checkBoxItem.text = namesList.get(position).ScopeServiceName
      //   checkBoxItem.isEnabled=false
-
+        if (FacilityDataModel.getInstance().tblVehicleServices[0].VehiclesTypeID!=-1) {
+            if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.ScopeServiceID == namesList.get(position).ScopeServiceID.toInt()}.isNotEmpty()){
+                checkBoxItem.isChecked = true
+            }
+        }
 
         if (namesList.get(position).active=="true"){
-
-
 
         }
 

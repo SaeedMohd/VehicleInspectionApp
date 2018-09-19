@@ -33,8 +33,8 @@ class VehicleServiceItem(val vehicleServiceModel: AAAVehicleServicesModel) : Veh
         }
 
 
-        val text1 = view!!.findViewById(R.id.itemTextView) as TextView
-        text1.text = vehicleServiceModel.scopeservicename
+//        val text1 = view!!.findViewById(R.id.itemTextView) as TextView
+        view!!.itemCheckBox.text = vehicleServiceModel.scopeservicename
         view!!.itemCheckBox.isChecked = isSelected
 
         return view!!

@@ -4,21 +4,23 @@
     android:layout_height="wrap_content"
  >
 
-    <TextView
-        android:id="@+id/itemTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:textAlignment="gravity"
-        android:layout_marginLeft="10dp"
-        />
-
-
     <CheckBox
         android:id="@+id/itemCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
         />
+
+    <!--<TextView-->
+        <!--android:id="@+id/itemTextView"-->
+        <!--android:layout_toRightOf="@id/itemCheckBox"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:textAlignment="gravity"-->
+        <!--/>-->
 
 </RelativeLayout>

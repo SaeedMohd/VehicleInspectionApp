@@ -64,37 +64,38 @@ class FacilityDataModelOrg  {
     var tblVendorRevenue = ArrayList<TblVendorRevenue>()
     var tblBillingHistoryReport = ArrayList<TblBillingHistoryReport>()
     var tblComments = ArrayList<TblComments>()
+    var tblVehicleServices= ArrayList<TblVehicleServices>()
 
 
-    class TblFacilities {
-        var isInputsValid = false
-        var FACID = 0
-        var FACNo = 0
-        var BusinessName = ""
-        var EntityName = ""
-        var ACTIVE = 1
-        var TerminationComments = ""
-        var TerminationDate = ""
-        var FacilityAnnualInspectionMonth = 0
-        var InspectionCycle = ""
-        var AutomotiveSpecialist = ""
-        var AutomotiveSpecialistSignature = ""
-        var InspectionCycle1 = ""
-        var AssignedTo = ""
-        var AdminAssistants = ""
-        var WebSite = ""
-        var InternetAccess = true
-        var TaxIDNumber = ""
-        var FacilityRepairOrderCount = 0
-        var SvcAvailability = ""
-        var AutomotiveRepairNumber = ""
-        var AutomotiveRepairExpDate = ""
-        var ContractCurrentDate = ""
-        var ContractInitialDate = ""
-        var BillingMonth = 0
-        var BillingAmount = 0
-        var InsuranceExpDate = ""
-    }
+//    class TblFacilities {
+//        var isInputsValid = false
+//        var FACID = 0
+//        var FACNo = 0
+//        var BusinessName = ""
+//        var EntityName = ""
+//        var ACTIVE = 1
+//        var TerminationComments = ""
+//        var TerminationDate = ""
+//        var FacilityAnnualInspectionMonth = 0
+//        var InspectionCycle = ""
+//        var AutomotiveSpecialist = ""
+//        var AutomotiveSpecialistSignature = ""
+//        var InspectionCycle1 = ""
+//        var AssignedTo = ""
+//        var AdminAssistants = ""
+//        var WebSite = ""
+//        var InternetAccess = true
+//        var TaxIDNumber = ""
+//        var FacilityRepairOrderCount = 0
+//        var SvcAvailability = ""
+//        var AutomotiveRepairNumber = ""
+//        var AutomotiveRepairExpDate = ""
+//        var ContractCurrentDate = ""
+//        var ContractInitialDate = ""
+//        var BillingMonth = 0
+//        var BillingAmount = 0
+//        var InsuranceExpDate = ""
+//    }
 
 //    class TblBusinessType {
 //        var BusTypeName = ""

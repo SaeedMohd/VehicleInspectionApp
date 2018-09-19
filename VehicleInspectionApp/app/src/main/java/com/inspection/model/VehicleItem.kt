@@ -33,8 +33,8 @@ class VehicleItem(val vehicleModel: AAAVehiclesModel) : VehicleServicesListItem 
         }
 
 
-        val text1 = view!!.findViewById(R.id.itemTextView) as TextView
-        text1.text = vehicleModel.vehmakename
+//        val text1 = view!!.findViewById(R.id.itemTextView) as TextView
+        view!!.itemCheckBox.text = vehicleModel.vehmakename
         view!!.itemCheckBox.isChecked = isSelected
 
         return view!!

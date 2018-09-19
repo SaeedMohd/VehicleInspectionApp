@@ -458,3 +458,12 @@ class TblComments {
     var Comment = ""
     var insertDate = ""
 }
+
+class TblVehicleServices{
+    var FACID = 0
+    var VehiclesTypeID = 0
+    var ScopeServiceID = 0
+    var insertBy = ""
+    var insertDate = ""
+
+}

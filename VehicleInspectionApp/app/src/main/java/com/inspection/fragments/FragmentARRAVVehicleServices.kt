@@ -46,14 +46,20 @@ class FragmentARRAVVehicleServices : Fragment() {
     var autoBodyServicesListView: ExpandableHeightGridView? = null
     var MarineServicesListView: ExpandableHeightGridView? = null
     var RecreationalServicesListView: ExpandableHeightGridView? = null
+    var AutoGlassServicesListView: ExpandableHeightGridView? = null
+    var OtherServicesListView: ExpandableHeightGridView? = null
         internal var arrayAdapter: DatesListAdapter? = null
     internal var arrayAdapter2: DatesListAdapter? = null
     internal var arrayAdapter3: DatesListAdapter? = null
     internal var arrayAdapter4: DatesListAdapter? = null
-        var vehicleServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+    internal var arrayAdapter5: DatesListAdapter? = null
+    internal var arrayAdapter6: DatesListAdapter? = null
+    var vehicleServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
     var autoBodyServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
     var marineServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
     var recreationalServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+    var autoGlassServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+    var otherServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +75,8 @@ class FragmentARRAVVehicleServices : Fragment() {
         autoBodyServicesListView = view.findViewById(R.id.languagesGridView)
         MarineServicesListView = view.findViewById(R.id.MarineServicesListView)
         RecreationalServicesListView = view.findViewById(R.id.RecreationalServicesListView)
+//        AutoGlassServicesListView = view.findViewById(R.id.AutoGlassServicesListView)
+//        OtherServicesListView = view.findViewById(R.id.OtherServicesListView)
 
         return view
     }
@@ -79,7 +87,7 @@ class FragmentARRAVVehicleServices : Fragment() {
 //        if (progressbarVehicleServices != null) {
 //            progressbarVehicleServices.visibility = View.VISIBLE
 //        }
-        scopeOfServiceChangesWatcher()
+//        scopeOfServiceChangesWatcher()
             setServices()
 
 
@@ -115,6 +123,15 @@ class FragmentARRAVVehicleServices : Fragment() {
 
                         recreationalServicesListItems.add(model)
                     }
+                    if (model2.VehiclesTypeName.toString().contains("Auto Glass")) {
+
+                        autoGlassServicesListItems.add(model)
+                    }
+
+                    if (model2.VehiclesTypeName.toString().contains("Other")) {
+
+                        otherServicesListItems.add(model)
+                    }
 
 
                                     }
@@ -127,27 +144,37 @@ class FragmentARRAVVehicleServices : Fragment() {
 
 
 
-            arrayAdapter = DatesListAdapter(context!!, R.layout.vehicle_services_item, vehicleServicesListItems)
+        arrayAdapter = DatesListAdapter(context!!, R.layout.vehicle_services_item, vehicleServicesListItems)
 
-            vehicleServicesListView?.adapter = arrayAdapter
+        vehicleServicesListView?.adapter = arrayAdapter
         vehicleServicesListView?.isExpanded=true
 
-            arrayAdapter2 = DatesListAdapter(context!!, R.layout.vehicle_services_item, autoBodyServicesListItems)
+        arrayAdapter2 = DatesListAdapter(context!!, R.layout.vehicle_services_item, autoBodyServicesListItems)
 
         autoBodyServicesListView?.adapter = arrayAdapter2
         autoBodyServicesListView?.isExpanded=true
 
 
-            arrayAdapter3 = DatesListAdapter(context!!, R.layout.vehicle_services_item, marineServicesListItems)
+        arrayAdapter3 = DatesListAdapter(context!!, R.layout.vehicle_services_item, marineServicesListItems)
 
         MarineServicesListView?.adapter = arrayAdapter3
         MarineServicesListView?.isExpanded=true
 
 
-            arrayAdapter4 = DatesListAdapter(context!!, R.layout.vehicle_services_item, recreationalServicesListItems)
+        arrayAdapter4 = DatesListAdapter(context!!, R.layout.vehicle_services_item, recreationalServicesListItems)
 
         RecreationalServicesListView?.adapter = arrayAdapter4
         RecreationalServicesListView?.isExpanded=true
+
+        arrayAdapter5 = DatesListAdapter(context!!, R.layout.vehicle_services_item, autoGlassServicesListItems)
+
+        AutoGlassServicesListView?.adapter = arrayAdapter5
+        AutoGlassServicesListView?.isExpanded=true
+
+        arrayAdapter6 = DatesListAdapter(context!!, R.layout.vehicle_services_item, otherServicesListItems)
+
+        OtherServicesListView?.adapter = arrayAdapter6
+        OtherServicesListView?.isExpanded=true
 
 
 //
@@ -177,109 +204,109 @@ class FragmentARRAVVehicleServices : Fragment() {
     }
 
     fun scopeOfServiceChangesWatcher(){
-        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
-
-            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
-
-
-                if (FragmentARRAVScopeOfService.dataChanged) {
-
-                    val builder = AlertDialog.Builder(context)
-
-                    // Set the alert dialog title
-                    builder.setTitle("Changes made confirmation")
-
-                    // Display a message on alert dialog
-                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-
-                    // Set a positive button and its click listener on alert dialog
-                    builder.setPositiveButton("YES") { dialog, which ->
-
-
-                        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-
-
-                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread(Runnable {
-                                        Log.v("RESPONSE", response.toString())
-                                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
-
-                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-
-                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-
-                                                FragmentARRAVScopeOfService.dataChanged = false
-
-                                            }
-
-                                        }
-
-                                    })
-                                }, Response.ErrorListener {
-                            Log.v("error while loading", "error while loading personnal record")
-                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
-
-                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-                        }))
-
-
-                    }
-
-
-                    // Display a negative button on alert dialog
-                    builder.setNegativeButton("No") { dialog, which ->
-                        FragmentARRAVScopeOfService.dataChanged = false
-                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-
-                    }
-
-
-                    // Finally, make the alert dialog using builder
-                    val dialog: AlertDialog = builder.create()
-                    dialog.setCanceledOnTouchOutside(false)
-                    // Display the alert dialog on app interface
-                    dialog.show()
-
-                }
-
-            } else {
-
-
-                val builder = AlertDialog.Builder(context)
-
-                // Set the alert dialog title
-                builder.setTitle("Changes made Warning")
-
-                // Display a message on alert dialog
-                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
-
-                // Set a positive button and its click listener on alert dialog
-                builder.setPositiveButton("Ok") { dialog, which ->
-
-                    FragmentARRAVScopeOfService.dataChanged = false
-                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
-
-
-                }
-
-
-                val dialog: AlertDialog = builder.create()
-                dialog.setCanceledOnTouchOutside(false)
-                dialog.show()
-
-            }
-        }
+//        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
+//
+//            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
+//
+//
+//                if (FragmentARRAVScopeOfService.dataChanged) {
+//
+//                    val builder = AlertDialog.Builder(context)
+//
+//                    // Set the alert dialog title
+//                    builder.setTitle("Changes made confirmation")
+//
+//                    // Display a message on alert dialog
+//                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
+//
+//                    // Set a positive button and its click listener on alert dialog
+//                    builder.setPositiveButton("YES") { dialog, which ->
+//
+//
+//                        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+//
+//
+//                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
+//                                Response.Listener { response ->
+//                                    activity!!.runOnUiThread(Runnable {
+//                                        Log.v("RESPONSE", response.toString())
+//                                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+//
+//                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
+//                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+//                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+//
+//                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
+//                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
+//                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
+//                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
+//                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
+//                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
+//
+//                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
+//
+//                                                FragmentARRAVScopeOfService.dataChanged = false
+//
+//                                            }
+//
+//                                        }
+//
+//                                    })
+//                                }, Response.ErrorListener {
+//                            Log.v("error while loading", "error while loading personnal record")
+//                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
+//
+//                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+//
+//                        }))
+//
+//
+//                    }
+//
+//
+//                    // Display a negative button on alert dialog
+//                    builder.setNegativeButton("No") { dialog, which ->
+//                        FragmentARRAVScopeOfService.dataChanged = false
+//                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+//
+//                    }
+//
+//
+//                    // Finally, make the alert dialog using builder
+//                    val dialog: AlertDialog = builder.create()
+//                    dialog.setCanceledOnTouchOutside(false)
+//                    // Display the alert dialog on app interface
+//                    dialog.show()
+//
+//                }
+//
+//            } else {
+//
+//
+//                val builder = AlertDialog.Builder(context)
+//
+//                // Set the alert dialog title
+//                builder.setTitle("Changes made Warning")
+//
+//                // Display a message on alert dialog
+//                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
+//
+//                // Set a positive button and its click listener on alert dialog
+//                builder.setPositiveButton("Ok") { dialog, which ->
+//
+//                    FragmentARRAVScopeOfService.dataChanged = false
+//                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
+//
+//
+//                }
+//
+//
+//                val dialog: AlertDialog = builder.create()
+//                dialog.setCanceledOnTouchOutside(false)
+//                dialog.show()
+//
+//            }
+//        }
     }
 
 

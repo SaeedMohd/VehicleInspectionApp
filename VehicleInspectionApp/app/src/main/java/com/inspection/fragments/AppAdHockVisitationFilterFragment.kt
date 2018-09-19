@@ -496,10 +496,10 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         if (jsonObj.has("tblFacilities")) {
             if (jsonObj.get("tblFacilities").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacilities = Gson().fromJson<ArrayList<TblFacilities>>(jsonObj.get("tblFacilities").toString(), object : TypeToken<ArrayList<TblFacilities>>() {}.type)
-                FacilityDataModelOrg.getInstance().tblFacilities = Gson().fromJson<ArrayList<FacilityDataModelOrg.TblFacilities>>(jsonObj.get("tblFacilities").toString(), object : TypeToken<ArrayList<FacilityDataModelOrg.TblFacilities>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilities = Gson().fromJson<ArrayList<TblFacilities>>(jsonObj.get("tblFacilities").toString(), object : TypeToken<ArrayList<TblFacilities>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblFacilities.add(Gson().fromJson<TblFacilities>(jsonObj.get("tblFacilities").toString(), TblFacilities::class.java))
-                FacilityDataModelOrg.getInstance().tblFacilities.add(Gson().fromJson<FacilityDataModelOrg.TblFacilities>(jsonObj.get("tblFacilities").toString(), FacilityDataModelOrg.TblFacilities::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilities.add(Gson().fromJson<TblFacilities>(jsonObj.get("tblFacilities").toString(), TblFacilities::class.java))
             }
         }
 
@@ -872,6 +872,16 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             } else {
                 FacilityDataModel.getInstance().tblComments.add(Gson().fromJson<TblComments>(jsonObj.get("tblComments").toString(), TblComments::class.java))
                 FacilityDataModelOrg.getInstance().tblComments.add(Gson().fromJson<TblComments>(jsonObj.get("tblComments").toString(), TblComments::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblVehicleServices")) {
+            if (jsonObj.get("tblVehicleServices").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblVehicleServices = Gson().fromJson<ArrayList<TblVehicleServices>>(jsonObj.get("tblVehicleServices").toString(), object : TypeToken<ArrayList<TblVehicleServices>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblVehicleServices= Gson().fromJson<ArrayList<TblVehicleServices>>(jsonObj.get("tblVehicleServices").toString(), object : TypeToken<ArrayList<TblVehicleServices>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblVehicleServices.add(Gson().fromJson<TblVehicleServices>(jsonObj.get("tblVehicleServices").toString(), TblVehicleServices::class.java))
+                FacilityDataModelOrg.getInstance().tblVehicleServices.add(Gson().fromJson<TblVehicleServices>(jsonObj.get("tblVehicleServices").toString(), TblVehicleServices::class.java))
             }
         }
 
@@ -1323,6 +1333,25 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblComments")
         }
 
+        if (jsonObj.has("tblVehicleServices")) {
+            if (!jsonObj.get("tblVehicleServices").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblVehicleServices")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblVehicleServices"))
+                    jsonObj.put("tblVehicleServices", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblVehicleServices")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblVehicleServices")
+        }
+
         return jsonObj
     }
 
@@ -1589,6 +1618,14 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.ZIP4=""
             oneArray.email=""
             oneArray.startDate=""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblVehicleServices")) {
+            var oneArray = TblVehicleServices()
+            oneArray.FACID = 0
+            oneArray.ScopeServiceID = -1
+            oneArray.VehiclesTypeID = -1
+            oneArray.insertBy=""
+            oneArray.insertDate = ""
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

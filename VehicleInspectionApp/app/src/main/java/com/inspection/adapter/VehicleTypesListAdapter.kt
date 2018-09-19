@@ -22,10 +22,10 @@ class VehicleTypesListAdapter (internal var context: Context, internal var recou
 
         var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(recource, parent, false)
-        val textView3 = view.itemTextView
+//        val textView3 = view.itemTextView
         val checkBoxItem = view.itemCheckBox
 
-        textView3.text = namesList.get(position).VehMakeName
+        checkBoxItem.text = namesList.get(position).VehMakeName
         //   checkBoxItem.isEnabled=false
 
 
