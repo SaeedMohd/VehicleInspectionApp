@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,16 +69,11 @@ class FragmentARRAVFacilityServices : Fragment() {
             fceffective_date_textviewVal.setText("SELECT DATE")
             fcexpiration_date_textviewVal.setText("SELECT DATE")
             fc_services_textviewVal.setSelection(0)
-
-
-
             comments_editTextVal.setError(null)
             fceffective_date_textviewVal.setError(null)
             fc_servicestextViewToCheckSpinner.setError(null)
             facilityServicesCard.visibility=View.VISIBLE
             alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
-
-
         })
 
 
@@ -128,7 +124,7 @@ class FragmentARRAVFacilityServices : Fragment() {
         submitNewserviceButton.setOnClickListener {
 
             if (validateInputs()){
-
+                progressBarText.text = "Saving ..."
                 FC_LoadingView.visibility = View.VISIBLE
 
 
@@ -153,62 +149,92 @@ class FragmentARRAVFacilityServices : Fragment() {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Facility Services")
                                     FacilityDataModel.getInstance().tblFacilityServices.add(item)
-                                    addTheLatestRowOfPortalAdmin()
+                                    fillPortalTrackingTableView()
+                                    HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices=true
+                                    HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
                                     IndicatorsDataModel.getInstance().validateSOSFacilityServices()
                                     if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
                                     (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
                                     Utility.showSubmitAlertDialog(activity, false, "Facility Services")
                                 }
-                                FC_LoadingView.visibility = View.GONE
                                 facilityServicesCard.visibility = View.GONE
+                                FC_LoadingView.visibility = View.GONE
+                                progressBarText.text = "Loading ..."
                                 alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                             })
                         }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity,false,"Facility Services")
-                    FC_LoadingView.visibility = View.GONE
-                    facilityServicesCard.visibility = View.GONE
-                    alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-
+                        Utility.showSubmitAlertDialog(activity,false,"Facility Services")
+                        facilityServicesCard.visibility = View.GONE
+                        FC_LoadingView.visibility = View.GONE
+                        progressBarText.text = "Loading ..."
+                        alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                 }))
             }else {
                 showValidationAlertDialog(activity,"Please fill all the required fields")
             }
-
         }
         fillPortalTrackingTableView();
-
         altFacServiceTableRow(2)
-
     }
 
     fun fillPortalTrackingTableView() {
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
+        if (aarPortalTrackingTableLayout.childCount>1) {
+            for (i in aarPortalTrackingTableLayout.childCount - 1 downTo 1) {
+                aarPortalTrackingTableLayout.removeViewAt(i)
+            }
+        }
+
         val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
+        rowLayoutParam.weight = 3F
         rowLayoutParam.column = 0
+        rowLayoutParam.leftMargin=10
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.weight = 1.5F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.weight = 1.5F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.weight = 3F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.width = 0
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.width = 0
+
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
+
 
            FacilityDataModel.getInstance().tblFacilityServices.apply {
 
             (0 until size).forEach {
                 var tableRow = TableRow(context)
+                tableRow.layoutParams = rowLayoutParamRow
+                tableRow.minimumHeight = 30
 
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.textSize = 18f
+                textView.minimumHeight = 30
+
                 for (fac in TypeTablesModel.getInstance().ServicesType) {
                     if (get(it).ServiceID.equals(fac.ServiceTypeID))
 
@@ -218,7 +244,9 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.textSize = 18f
+                textView.minimumHeight = 30
                 if (get(it).effDate.isNullOrBlank()){
                     textView.text =""
                 }else {
@@ -234,7 +262,9 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.textSize = 18f
+                textView.minimumHeight = 30
                 TableRow.LayoutParams()
                 if (get(it).expDate.isNullOrBlank()){
                     textView.text =""
@@ -251,97 +281,109 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.textSize = 18f
+                textView.minimumHeight = 30
                 textView.text = get(it).Comments
                 tableRow.addView(textView)
 
+
+                val updateButton = Button(context)
+                updateButton.layoutParams = rowLayoutParam4
+                updateButton.setTextColor(Color.BLUE)
+                updateButton.text = "EDIT"
+                updateButton.textSize = 18f
+                updateButton.minimumHeight = 30
+                updateButton.gravity = Gravity.CENTER
+                updateButton.setBackgroundColor(Color.TRANSPARENT)
+                tableRow.addView(updateButton)
 
                 aarPortalTrackingTableLayout.addView(tableRow)
             }
         }
     }
 
-    fun addTheLatestRowOfPortalAdmin() {
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-
-        val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
-        rowLayoutParam1.column = 1
-
-        val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 2
-
-        val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
-        rowLayoutParam3.column = 3
-
-        val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
-        rowLayoutParam4.column = 4
-        FacilityDataModel.getInstance().tblFacilityServices[FacilityDataModel.getInstance().tblFacilityServices.size - 1].apply {
-
-
-            var tableRow = TableRow(context)
-
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            for (fac in TypeTablesModel.getInstance().ServicesType) {
-                if (ServiceID.equals(fac.ServiceTypeID))
-
-                    textView.text =fac.ServiceTypeName
-            }
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            if (effDate.isNullOrBlank()){
-                textView.text =""
-            }else {
-                try {
-                    textView.text = effDate.apiToAppFormatMMDDYYYY()
-                } catch (e: Exception) {
-
-                    textView.text = effDate
-
-                }
-            }
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            if (expDate.isNullOrBlank()){
-                textView.text =""
-            }else {
-                try {
-                    textView.text = expDate.apiToAppFormatMMDDYYYY()
-                } catch (e: Exception) {
-
-                    textView.text = expDate
-
-                }
-            }
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = Comments
-            tableRow.addView(textView)
-
-
-            aarPortalTrackingTableLayout.addView(tableRow)
-
-        }
-
-        altFacServiceTableRow(2)
-    }
+//    fun addTheLatestRowOfPortalAdmin() {
+//        val rowLayoutParam = TableRow.LayoutParams()
+//        rowLayoutParam.weight = 1F
+//        rowLayoutParam.column = 0
+//
+//        val rowLayoutParam1 = TableRow.LayoutParams()
+//        rowLayoutParam1.weight = 1F
+//        rowLayoutParam1.column = 1
+//
+//        val rowLayoutParam2 = TableRow.LayoutParams()
+//        rowLayoutParam2.weight = 1F
+//        rowLayoutParam2.column = 2
+//
+//        val rowLayoutParam3 = TableRow.LayoutParams()
+//        rowLayoutParam3.weight = 1F
+//        rowLayoutParam3.column = 3
+//
+//        val rowLayoutParam4 = TableRow.LayoutParams()
+//        rowLayoutParam4.weight = 1F
+//        rowLayoutParam4.column = 4
+//        FacilityDataModel.getInstance().tblFacilityServices[FacilityDataModel.getInstance().tblFacilityServices.size - 1].apply {
+//
+//
+//            var tableRow = TableRow(context)
+//
+//            var textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            for (fac in TypeTablesModel.getInstance().ServicesType) {
+//                if (ServiceID.equals(fac.ServiceTypeID))
+//
+//                    textView.text =fac.ServiceTypeName
+//            }
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam1
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            if (effDate.isNullOrBlank()){
+//                textView.text =""
+//            }else {
+//                try {
+//                    textView.text = effDate.apiToAppFormatMMDDYYYY()
+//                } catch (e: Exception) {
+//
+//                    textView.text = effDate
+//
+//                }
+//            }
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam2
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            TableRow.LayoutParams()
+//            if (expDate.isNullOrBlank()){
+//                textView.text =""
+//            }else {
+//                try {
+//                    textView.text = expDate.apiToAppFormatMMDDYYYY()
+//                } catch (e: Exception) {
+//
+//                    textView.text = expDate
+//
+//                }
+//            }
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam3
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = Comments
+//            tableRow.addView(textView)
+//
+//
+//            aarPortalTrackingTableLayout.addView(tableRow)
+//
+//        }
+//
+//        altFacServiceTableRow(2)
+//    }
 
     fun altFacServiceTableRow(alt_row : Int) {
         var childViewCount = aarPortalTrackingTableLayout.getChildCount();

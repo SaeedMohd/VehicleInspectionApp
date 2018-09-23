@@ -1756,6 +1756,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         } else if (key.equals("tblPrograms")) {
             var oneArray = TblPrograms()
             oneArray.Comments=""
+            oneArray.programId = "-1"
             oneArray.ProgramTypeID=""
             oneArray.effDate=""
             oneArray.expDate=""

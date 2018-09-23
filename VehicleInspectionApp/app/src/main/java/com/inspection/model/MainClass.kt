@@ -289,7 +289,7 @@ class TblScopeofService {
 
 class TblPrograms {
     var isInputsValid = false
-
+    var programId = ""
     var ProgramTypeID = ""
     var programtypename = ""
     var effDate = ""

@@ -220,6 +220,27 @@ class HasChangedModel {
         }
     }
 
+    fun changeDoneForSoSPrograms() : Boolean {
+        if (groupSoSPrograms[0].SoSPrograms) {
+            groupSoS[0].SoSPrograms=true
+            return true
+        } else {
+            groupSoS[0].SoSPrograms=false
+            return false
+        }
+    }
+
+
+    fun changeDoneForSoSFacilityServices() : Boolean {
+        if (groupSoSFacilityServices[0].SoSFacilityServices) {
+            groupSoS[0].SoSFacilityServices=true
+            return true
+        } else {
+            groupSoS[0].SoSFacilityServices=false
+            return false
+        }
+    }
+
     fun changeDoneForFacilityRSP() : Boolean {
         if (groupFacilityRSP[0].FacilityRSP) {
             groupFacility[0].FacilityRSP=true
@@ -310,4 +331,21 @@ class HasChangedModel {
         else if (FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID!=FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) changeWasDone = true
         groupSoSGeneralInfo[0].SoSGeneral= changeWasDone
     }
+
+    fun checkIfChangeWasDoneforSoSPrograms() {
+        var changeWasDone = false
+        if (changeDoneForSoSPrograms()){
+            changeWasDone = true
+        }
+        groupSoSPrograms[0].SoSPrograms= changeWasDone
+    }
+
+    fun checkIfChangeWasDoneforSoSFacilityServices() {
+        var changeWasDone = false
+        if (changeDoneForSoSFacilityServices()){
+            changeWasDone = true
+        }
+        groupSoSFacilityServices[0].SoSFacilityServices = changeWasDone
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,16 +14,19 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 import com.inspection.R
+import com.inspection.Utils.Constants
 import com.inspection.Utils.ExpandableHeightGridView
+import com.inspection.Utils.Utility
+import com.inspection.Utils.toApiSubmitFormat
 import com.inspection.adapter.DatesListAdapter
 import com.inspection.adapter.VehicleServicesArrayAdapter
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.TypeTablesModel
-import com.inspection.model.VehicleServiceItem
+import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
-import java.util.ArrayList
+import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
+import java.util.*
 
 //import kotlinx.android.synthetic.main.temp.view.*
 
@@ -90,10 +94,49 @@ class FragmentARRAVVehicleServices : Fragment() {
 //        scopeOfServiceChangesWatcher()
             setServices()
 
+        saveButton.setOnClickListener(View.OnClickListener {
+//            var fixedLaborRate = fixedLaborRateEditText.text.toString()
+//            var diagnosticLaborRate = diagnosticRateEditText.text.toString()
+//            var laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
+//            var laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
+//            var numberOfBaysEditText = numberOfBaysEditText.text.toString()
+//            var numberOfLiftsEditText = numberOfLiftsEditText.text.toString()
 
+            progressBarText.text = "Saving ..."
+            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehicleId=1&insertBy=e107369&insertDate="+ Date().toApiSubmitFormat(),
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread(Runnable {
+                            if (response.toString().contains("returnCode&gt;0&",false)) {
+                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                progressBarText.text = "Loading ..."
+                                Utility.showSubmitAlertDialog(activity, true, "Vehicle Services Details")
+                                (activity as FormsActivity).saveRequired = false
+                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                                HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                                IndicatorsDataModel.getInstance().validateSoSGeneral()
+                                if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+                                (activity as FormsActivity).refreshMenuIndicators()
+                            } else {
+                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")
+                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                progressBarText.text = "Loading ..."
+                            }
+                        })
+                    }, Response.ErrorListener {
+                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                progressBarText.text = "Loading ..."
+                Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information (Error: "+it.message+" )")
+            }))
+        })
     }
 
-
+    fun refreshButtonsState(){
+        saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+    }
 
     private fun setServices() {
 
