@@ -982,9 +982,13 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             if (jsonObj.get("tblAARPortalAdmin").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblAARPortalAdmin = Gson().fromJson<ArrayList<TblAARPortalAdmin>>(jsonObj.get("tblAARPortalAdmin").toString(), object : TypeToken<ArrayList<TblAARPortalAdmin>>() {}.type)
                 FacilityDataModelOrg.getInstance().tblAARPortalAdmin = Gson().fromJson<ArrayList<TblAARPortalAdmin>>(jsonObj.get("tblAARPortalAdmin").toString(), object : TypeToken<ArrayList<TblAARPortalAdmin>>() {}.type)
+                FacilityDataModel.getInstance().tblAARPortalAdmin.sortedWith(compareByDescending<TblAARPortalAdmin> { it.PortalInspectionDate })
+                FacilityDataModelOrg.getInstance().tblAARPortalAdmin.sortedWith(compareByDescending<TblAARPortalAdmin> { it.PortalInspectionDate })
             } else {
                 FacilityDataModel.getInstance().tblAARPortalAdmin.add(Gson().fromJson<TblAARPortalAdmin>(jsonObj.get("tblAARPortalAdmin").toString(), TblAARPortalAdmin::class.java))
                 FacilityDataModelOrg.getInstance().tblAARPortalAdmin.add(Gson().fromJson<TblAARPortalAdmin>(jsonObj.get("tblAARPortalAdmin").toString(), TblAARPortalAdmin::class.java))
+                FacilityDataModel.getInstance().tblAARPortalAdmin.sortedWith(compareByDescending<TblAARPortalAdmin> { it.PortalInspectionDate })
+                FacilityDataModelOrg.getInstance().tblAARPortalAdmin.sortedWith(compareByDescending<TblAARPortalAdmin> { it.PortalInspectionDate })
             }
         }
 
@@ -1645,6 +1649,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             oneArray.ServiceID = "";
             oneArray.effDate = "";
             oneArray.expDate = "";
+            oneArray.FacilityServicesID="-1"
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblAffiliations")) {
             var oneArray = TblAffiliations()
@@ -1756,7 +1761,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         } else if (key.equals("tblPrograms")) {
             var oneArray = TblPrograms()
             oneArray.Comments=""
-            oneArray.programId = "-1"
+            oneArray.ProgramID = "-1"
             oneArray.ProgramTypeID=""
             oneArray.effDate=""
             oneArray.expDate=""

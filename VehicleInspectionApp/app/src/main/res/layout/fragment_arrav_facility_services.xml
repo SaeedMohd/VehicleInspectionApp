@@ -6,6 +6,22 @@
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:layout_margin="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <RelativeLayout
         android:layout_marginTop="10dp"
         android:padding="10dp"
@@ -113,20 +129,6 @@
 
         </TableLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/aarPortalTrackingTableLayout"
-            android:id="@+id/btnslayout"
-            android:weightSum="3"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:orientation="horizontal">
-
-
-
-        </LinearLayout>
-
         <!---->
         <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
         <!--android:id="@+id/programsTableLayout"-->
@@ -156,6 +158,8 @@
         <!--</LinearLayout>-->
         <!--</ScrollView>-->
     </RelativeLayout>
+    </LinearLayout>
+    </ScrollView>
 
     <View
         android:id="@+id/alphaBackgroundForFC_ServicesDialogs"
@@ -168,7 +172,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardCornerRadius="5dp"
         android:id="@+id/facilityServicesCard"
         app:cardElevation="10dp">
@@ -237,6 +241,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Service:*"
+                    android:id="@+id/fcServiceSpinner"
                     android:ems="12"
                     android:layout_marginRight="10dp"
                     android:layout_column="0"
@@ -300,50 +305,191 @@
                     android:textColor="@color/blue"
                     android:textSize="12dp" />
             </TableRow>
-        </TableLayout>
-
-
-
-
-        <LinearLayout
-            android:padding="40dp"
-            android:layout_below="@+id/btnslayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/secondPartOfPAGEiD">
-
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_below="@id/officell"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:id="@+id/AssignedToll">
+            <TableRow android:layout_marginTop="10dp">
                 <TextView
-                    android:id="@+id/comments_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/officell"
+                    android:text="Comments:*"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Comments: "
-                    android:textStyle="bold"
+                    android:layout_column="0"
                     />
-            </LinearLayout>
-
+            </TableRow>
             <EditText
                 android:id="@+id/comments_editTextVal"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/AssignedToll"
                 android:layout_width="match_parent"
-                android:background="@drawable/item_solid_border"
                 android:layout_height="wrap_content"
-                android:maxEms="250"
-                android:lines="3"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:ems="12"
+                android:lines="5"
+                android:background="@drawable/textview_background"
+                android:layout_column="1"
                 />
-        </LinearLayout>
+        </TableLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/editFacilityServicesCard"
+        app:cardElevation="10dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            >
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/editFacilityServicesDialogeTitle"
+                    android:text="Update Facility Service"
+                    android:ems="12"
+                    android:textSize="18dp"
+                    android:layout_column="0"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="top|right"
+                    android:layout_marginLeft="50dp"
+                    android:text="Submit"
+                    android:ems="12"
+                    android:layout_column="1"
+                    android:id="@+id/edit_submitNewserviceButton"
+                    android:textColor="@color/white"
+                    android:background="@drawable/green_background_button"
+                    />
+                <ImageButton
+                    android:layout_marginTop="25dp"
+                    android:id="@+id/edit_exitFC_ServicesDialogeBtnId"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/close"
+                    android:layout_gravity="top|right"
+                    android:layout_column="2"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="20dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="0"
+                    android:background="@android:color/darker_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="1"
+                    android:background="@android:color/darker_gray"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="2"
+                    android:background="@android:color/darker_gray"/>
+            </TableRow>
+
+            <TableRow android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Service:*"
+                    android:id="@+id/edit_fcServiceSpinner"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+                <Spinner
+                    android:id="@+id/edit_fc_services_textviewVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:entries="@array/contractTypesEntries"
+                    />
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Effective Date:*"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Expiration Date:"
+                    android:ems="12"
+                    android:layout_marginRight="10dp"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+                <Button
+                    android:id="@+id/edit_fceffective_date_textviewVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="0"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/transparent"
+                    android:ems="12"
+                    android:text="SELECT DATE"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+                <Button
+                    android:id="@+id/edit_fcexpiration_date_textviewVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_column="1"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/transparent"
+                    android:ems="12"
+                    android:text="SELECT DATE"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Comments:*"
+                    android:layout_marginRight="10dp"
+                    android:ems="12"
+                    android:layout_gravity="center_vertical"
+                    android:layout_column="0"
+                    />
+            </TableRow>
+            <EditText
+                android:id="@+id/edit_comments_editTextVal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:ems="12"
+                android:lines="5"
+                android:background="@drawable/textview_background"
+                android:layout_column="1"
+                />
+        </TableLayout>
     </android.support.v7.widget.CardView>
 
 

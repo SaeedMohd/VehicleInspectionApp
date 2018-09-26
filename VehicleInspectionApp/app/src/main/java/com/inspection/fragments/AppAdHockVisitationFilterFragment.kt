@@ -886,6 +886,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         }
 
         IndicatorsDataModel.getInstance().init()
+        HasChangedModel.getInstance().init()
         IndicatorsDataModel.getInstance().validateBusinessRules()
 
     }
@@ -1362,6 +1363,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.ServiceID = "";
             oneArray.effDate = "";
             oneArray.expDate = "";
+            oneArray.FacilityServicesID="-1"
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblAffiliations")) {
             var oneArray = TblAffiliations()
@@ -1472,8 +1474,8 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         } else if (key.equals("tblPrograms")) {
             var oneArray = TblPrograms()
             oneArray.Comments=""
-            oneArray.programId = "-1"
-            oneArray.ProgramTypeID=""
+            oneArray.ProgramID = "-1"
+            oneArray.ProgramID=""
             oneArray.effDate=""
             oneArray.expDate=""
             oneArray.programtypename=""

@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,11 +83,8 @@ class FragmentARRAVDeficiency : Fragment() {
         scopeOfServiceChangesWatcher()
         if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
         exitDeffeciencyDialogeBtnId.setOnClickListener({
-
             defeciencyCard.visibility=View.GONE
             visitationFormAlphaBackground.visibility = View.GONE
-
-
         })
 
         showNewDeffDialogueBtn.setOnClickListener(View.OnClickListener {
@@ -95,8 +93,6 @@ class FragmentARRAVDeficiency : Fragment() {
             signatureDateBtn.setText("SELECT DATE")
             facilityRepresentativeDeficienciesSignatureButton.setText("ADD SIGNATURE")
             facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
-
-
 
             newVisitationDateBtn.setError(null)
             signatureDateBtn.setError(null)
@@ -129,8 +125,6 @@ class FragmentARRAVDeficiency : Fragment() {
                 var bitmap = signatureInkView.bitmap
                 var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
                 when (selectedSignature) {
-
-
                     requestedSignature.representativeDeficiency -> {
                         facilityRepresentativeDeficienciesSignatureBitmap = bitmap
                         if (!isEmpty){
@@ -140,18 +134,12 @@ class FragmentARRAVDeficiency : Fragment() {
                             facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
                             facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
                         }
-
                     }
-
-
-
                 }
-
                 signatureInkView.clear()
 //                visitationFormAlphaBackground.visibility = View.GONE
                 signatureDialog.visibility = View.GONE
             }
-
 
             try {
                 var bitmap = signatureInkView.bitmap
@@ -168,13 +156,8 @@ class FragmentARRAVDeficiency : Fragment() {
                             facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
                             facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
                         }
-
                     }
-
-
-
                 }
-
                 signatureInkView.clear()
                 visitationFormAlphaBackground.visibility = View.GONE
                 signatureDialog.visibility = View.GONE
@@ -184,6 +167,9 @@ class FragmentARRAVDeficiency : Fragment() {
 
         })
 
+        loadDefButton.setOnClickListener({
+            fillDeffTableView()
+        })
 
 
         newClearedDateBtn.setOnClickListener {
@@ -248,28 +234,16 @@ class FragmentARRAVDeficiency : Fragment() {
         submitNewDeffNewBtn.setOnClickListener({
 
             if (validateInputs()){
-
                 DeffLoadingView.visibility = View.VISIBLE
-
-
                 var item = TblDeficiency()
-
                 for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
                     if (newDefSpinner.getSelectedItem().toString().equals(fac.DeficiencyName))
-
                         item.DefTypeID =fac.DeficiencyTypeID
                 }
-
-
-                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
                 item.VisitationDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.EnteredDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.ClearedDate = if (newClearedDateBtn.text.equals("SELECT DATE")) "" else newClearedDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.Comments = if (comments_editTextVal.text.isNullOrEmpty())  "" else comments_editTextVal.text.toString()
-
-                //  BuildProgramsList()
-
-
 
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
                         "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=MoritzM02&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SamA&updateDate="+Date().toApiSubmitFormat(),
@@ -448,87 +422,151 @@ class FragmentARRAVDeficiency : Fragment() {
     }
 
     fun fillDeffTableView() {
+        DeffLoadingView.visibility = View.VISIBLE
+
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        if (DeffResultsTbl.childCount>1) {
+            for (i in DeffResultsTbl.childCount - 1 downTo 1) {
+                DeffResultsTbl.removeViewAt(i)
+            }
+
+        }
 
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.leftMargin=10
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.weight = 0.7F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.weight = 0.7F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.weight = 0.7F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.weight = 1.4F
         rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.width = 0
+
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
+
         FacilityDataModel.getInstance().tblDeficiency.apply {
-
             (0 until size).forEach {
-                var tableRow = TableRow(context)
+                if ((filteredDefRadioButton.isChecked && get(it).ClearedDate.isNullOrEmpty()) || allDefRadioButton.isChecked) {
+                    var tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
+//                    if (it % 2 == 0) {
+//                        tableRow.setBackgroundResource(R.drawable.alt_row_color)
+//                    }
 
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = getDefTypeName(get(it).DefTypeID)
-                tableRow.addView(textView)
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.text = getDefTypeName(get(it).DefTypeID)
+                    tableRow.addView(textView)
 
-                try {
-                    textView.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
-                } catch (e: Exception) {
-                    textView.text = get(it).VisitationDate
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
 
+                    try {
+                        textView.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
+                    } catch (e: Exception) {
+                        textView.text = get(it).VisitationDate
+
+                    }
+
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam2
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
+                    TableRow.LayoutParams()
+
+                    try {
+                        textView.text = get(it).EnteredDate.apiToAppFormatMMDDYYYY()
+                    } catch (e: Exception) {
+                        textView.text = get(it).EnteredDate
+
+                    }
+
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam3
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
+
+
+                    try {
+                        textView.text = get(it).ClearedDate.apiToAppFormatMMDDYYYY()
+                    } catch (e: Exception) {
+                        textView.text = get(it).ClearedDate
+
+                    }
+                    tableRow.addView(textView)
+
+
+
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam4
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
+
+                    textView.text = get(it).Comments
+                    tableRow.addView(textView)
+
+
+                    DeffResultsTbl.addView(tableRow)
                 }
-
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                TableRow.LayoutParams()
-
-                try {
-                    textView.text = get(it).EnteredDate.apiToAppFormatMMDDYYYY()
-                } catch (e: Exception) {
-                    textView.text = get(it).EnteredDate
-
-                }
-
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-
-                try {
-                    textView.text = get(it).ClearedDate.apiToAppFormatMMDDYYYY()
-                } catch (e: Exception) {
-                    textView.text = get(it).ClearedDate
-
-                }
-
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam4
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.text = get(it).Comments
-                tableRow.addView(textView)
-
-
-                DeffResultsTbl.addView(tableRow)
             }
+        }
+        altDefTableRow(2)
+        DeffLoadingView.visibility = View.GONE
+    }
+    fun altDefTableRow(alt_row : Int) {
+        var childViewCount = DeffResultsTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= DeffResultsTbl.getChildAt(i) as TableRow;
+
+            if (i % alt_row != 0) {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.alt_row_color));
+            } else {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.row_color));
+            }
+
+
         }
     }
 

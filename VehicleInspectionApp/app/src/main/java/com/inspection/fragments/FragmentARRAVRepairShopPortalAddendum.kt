@@ -620,7 +620,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     } catch (e: Exception) {
                         textView.text = get(it).PortalInspectionDate
 
-                    }
+                        }
                     tableRow.addView(textView)
 
                     val textView1 = TextView(context)

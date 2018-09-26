@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import org.w3c.dom.Text
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -855,16 +856,18 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
     }
 
     fun submitFacilityGeneralInfo(){
-        val busName =  if (dba_textviewVal.text.isNullOrEmpty())  "" else dba_textviewVal.text
+        var busName =  if (dba_textviewVal.text.isNullOrEmpty())  "" else dba_textviewVal.text
+        busName = URLEncoder.encode(busName.toString() , "UTF-8");
         val busType = TypeTablesModel.getInstance().BusinessType.filter { s -> s.BusTypeName==bustype_textviewVal.selectedItem.toString()}[0].BusTypeID
-        val entityName =  if (entity_textviewVal.text.isNullOrEmpty())  "" else entity_textviewVal.text
+        var entityName =  if (entity_textviewVal.text.isNullOrEmpty())  "" else entity_textviewVal.text
+        entityName = URLEncoder.encode(entityName.toString() , "UTF-8");
         val assignedTo = if (assignedto_textviewVal.text.isNullOrEmpty())  "" else assignedto_textviewVal.text // get the ID
         val officeID = if (office_textviewVal.text.isNullOrEmpty())  "" else "0" // get The ID
         val taxIDNo = if (taxno_textviewVal.text.isNullOrEmpty())  "" else taxno_textviewVal.text
         val facRepairCnt = if (repairorder_textviewVal.text.isNullOrEmpty())  "" else repairorder_textviewVal.text
         val inspectionMonth = (FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth).toString()
         val inspectionCycle = inspectionCycleTextViewVal.text.toString()
-        val timeZoneID = (timeZoneSpinner.selectedItemPosition+1).toString()
+        val timeZoneID = TypeTablesModel.getInstance().TimezoneType.filter { s->s.TimezoneName.equals(timeZoneSpinner.selectedItem.toString()) }[0].TimezoneID
         val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
         val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
         val automtiveRepairNo = if (ARDno_textviewVal.text.isNullOrEmpty())  "" else ARDno_textviewVal.text

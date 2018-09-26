@@ -6,7 +6,21 @@
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:layout_margin="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/white"
+        android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +37,7 @@
             android:gravity="center"
             android:textColor="@color/mainColor"
             android:textSize="22sp"
+            android:textStyle="bold"
             />
 
         <Button
@@ -50,65 +65,72 @@
             <TableLayout
                 android:id="@+id/mainAffTableLayout"
                 xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
                 android:layout_height="wrap_content"
-
+                android:stretchColumns="*"
                 >
-
 
                 <TableRow
                     android:background="@color/mainColor"
                     >
                     <TextView android:text="Affiliation Type"
-                        android:layout_width="100dp"
-                        android:textAlignment="center"
+                        android:layout_width="0dp"
                         android:textColor="@color/white"
                         android:layout_column="0"
-                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
                         android:layout_weight="1"/>
-   <TextView android:text="Affiliation Details"
-                        android:layout_width="100dp"
-       android:textAlignment="center"
-       android:textColor="@color/white"
-       android:textStyle="bold"
-       android:layout_column="1"
-                        android:layout_weight="1"/>
+
+                   <TextView android:text="Affiliation Details"
+                       android:layout_width="0dp"
+                       android:textColor="@color/white"
+                       android:layout_column="1"
+                       android:textSize="18sp"
+                       android:layout_height="30dp"
+                       android:gravity="center_vertical"
+                       android:layout_weight="1"/>
+
                     <TextView android:text="Effective Date"
-                        android:textAlignment="center"
+                        android:layout_width="0dp"
                         android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:layout_width="30dp"
                         android:layout_column="2"
-                        android:layout_weight="1">
+                        android:textSize="18sp"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="0.8">
                     </TextView>
                     <TextView android:text="Expiration Date"
-                        android:layout_width="30dp"
-                        android:layout_column="3"
+                        android:layout_width="0dp"
                         android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:layout_weight="1">
+                        android:layout_column="3"
+                        android:textSize="18sp"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="0.8">
                     </TextView>
                     <TextView android:text="Comments"
-                        android:layout_width="30dp"
-                        android:layout_column="4"
+                        android:layout_width="0dp"
                         android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:layout_weight="1">
+                        android:layout_column="4"
+                        android:textSize="18sp"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="2">
                     </TextView>
 
                     <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Update"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_column="5"
+                        android:layout_weight="0.6"
+                        android:textSize="18sp"
+                        android:layout_height="30dp"
+                        android:text="Options"
+                        android:gravity="center"
+                        android:textColor="@color/white"
                         />
 
                 </TableRow>
@@ -116,7 +138,8 @@
             </TableLayout>
 
         </RelativeLayout>
-
+    </LinearLayout>
+    </ScrollView>
     <View
         android:id="@+id/alphaBackgroundForAffilliationsDialogs"
         android:layout_width="match_parent"

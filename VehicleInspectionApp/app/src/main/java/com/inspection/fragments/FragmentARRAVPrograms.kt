@@ -23,40 +23,24 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.gms.drive.events.ChangeListener
+
 import com.google.gson.Gson
 import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateProgramsData
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.dataChanged
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.diagnosticLaborRate
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.implementOnAnyFragment
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMax
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMin
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfBaysEditText_
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfLiftsEditText_
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_DiagnosticsRate
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_FixedLaborRate
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMax
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMin
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
+
 import com.inspection.model.*
-import com.inspection.singletons.AnnualVisitationSingleton
+
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
-import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
+
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
-import org.json.JSONObject
-import java.text.DateFormat
+
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+
 import java.util.*
-import kotlin.properties.Delegates
+
 
 /**
  * A simple [Fragment] subclass.
@@ -371,7 +355,7 @@ class FragmentARRAVPrograms : Fragment() {
 
         FacilityDataModel.getInstance().tblPrograms.apply {
             (0 until size).forEach {
-                if (!get(it).programId.equals("-1")) {
+                if (!get(it).ProgramID.equals("-1")) {
                     var tableRow = TableRow(context)
                     tableRow.layoutParams = rowLayoutParamRow
                     tableRow.minimumHeight = 30
@@ -464,16 +448,9 @@ class FragmentARRAVPrograms : Fragment() {
 
                             var currentRowDataModel = FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex]
                             var originalDataModel = FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex]
-
-
-
                             if (edit_validateInputs()) {
-
-
                                 var validProgram = true
                                 var valid_validProgram = false
-
-
                                 for (fac in TypeTablesModel.getInstance().ProgramsType) {
                                     if (edit_program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName)) {
                                         //   Toast.makeText(context,"spinner match",Toast.LENGTH_SHORT).show()
@@ -546,18 +523,16 @@ class FragmentARRAVPrograms : Fragment() {
                                     currentRowDataModel.expDate = if (edit_expiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_expiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
 
 
-                                    var effdateForSubmit = edit_effective_date_textviewVal.text.toString()
-                                    var expdateForSubmit = edit_expiration_date_textviewVal.text.toString()
+                                    var effdateForSubmit = if (edit_effective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_effective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                    var expdateForSubmit = if (edit_expiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_expiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                                     for (fac in TypeTablesModel.getInstance().ProgramsType) {
                                         if (edit_program_name_textviewVal.selectedItem.toString().equals(fac.ProgramTypeName)) {
-
                                             currentRowDataModel.ProgramTypeID = fac.ProgramTypeID
                                         }
-
                                     }
 
 
-                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&programId=${currentRowDataModel.programId}&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=sa&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat(),
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&programId=${currentRowDataModel.ProgramID}&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=sa&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat(),
                                             Response.Listener { response ->
                                                 activity!!.runOnUiThread(Runnable {
                                                     if (response.toString().contains("returnCode&gt;0&", false)) {
@@ -566,7 +541,8 @@ class FragmentARRAVPrograms : Fragment() {
                                                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSPrograms()
                                                         fillPortalTrackingTableView()
                                                     } else {
-                                                        Utility.showSubmitAlertDialog(activity, false, "Program")
+                                                        var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                        Utility.showSubmitAlertDialog(activity, false, "Program (Error: "+ errorMessage+" )")
                                                     }
                                                     edit_programCard.visibility = View.GONE
                                                     edit_programsLoadingView.visibility = View.GONE

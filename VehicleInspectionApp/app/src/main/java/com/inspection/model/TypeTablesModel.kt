@@ -25,6 +25,7 @@ class TypeTablesModel {
     var AARDeficiencyActionsType = ArrayList<aARDeficiencyActionsType>()
     var AdjustmentDescriptionType = ArrayList<adjustmentDescriptionType>()
     var AffiliationDetailType = ArrayList<affiliationDetailType>()
+    var AARAffiliationType = ArrayList<affiliationType>()
     var AmendmentOrderTrackingEventsType = ArrayList<amendmentOrderTrackingEventsType>()
     var tblAmendmentOrderTrackingSubReasonsType = ArrayList<TblAmendmentOrderTrackingSubReasonsType>()
     var AwardsDistinctionsType = ArrayList<awardsDistinctionsType>()
@@ -115,6 +116,16 @@ class TypeTablesModel {
         var AffiliationTypeDetailID = ""
         var AffiliationDetailTypeName = ""
         var AARAffiliationTypeID = ""
+        var active = ""
+        var insertBy = ""
+        var insertDate = ""
+        var updateBy = ""
+        var updateDate = ""
+    }
+
+    class affiliationType {
+        var AARAffiliationTypeID = ""
+        var AffiliationTypeName = ""
         var active = ""
         var insertBy = ""
         var insertDate = ""

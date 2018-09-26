@@ -129,7 +129,6 @@ class IndicatorsDataModel {
         var isValid = true
         FacilityDataModel.getInstance().tblPrograms.apply {
             (0 until size).forEach {
-                if (get(it).programtypename.equals("")) isValid = false;
                 if (get(it).effDate.equals("")) isValid = false
                 if (get(it).ProgramTypeID.equals("")) isValid = false
                 if (get(it).Comments.equals("")) isValid = false

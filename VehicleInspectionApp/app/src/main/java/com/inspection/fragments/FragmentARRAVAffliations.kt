@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,7 @@ class FragmentARRAVAffliations : Fragment() {
     private var affTypesArray = ArrayList<String>()
     private var affTypesDetailsList = ArrayList<TypeTablesModel.affiliationDetailType>()
     private var affTypesDetailsArray = ArrayList<String>()
-    private var affTypesList = ArrayList<AAAAffiliationTypes>()
+    private var affTypesList = ArrayList<TypeTablesModel.affiliationType>()
     private var facilityAffList = ArrayList<AAAFacilityAffiliations>()
     private var selectedTypeDetailName = ""
     var rowIndex = 0
@@ -61,89 +62,60 @@ class FragmentARRAVAffliations : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scopeOfServiceChangesWatcher()
+//        scopeOfServiceChangesWatcher()
 
 //        var affiliationsArray = arrayOf("ACDelco", "AutoValue", "AutoZone", "Bosch", "Carquest", "DescRepairAffil", "Federated", "Gas Brand", "Mechanical Repair", "NAPA", "Oil", "OtherRepairAffil", "Parts", "PartsPlus", "ProntoVIP", "Quick Lube", "Tire", "Transmission", "WorldPac")
 //        var affiliationsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affiliationsArray)
 //        affiliationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        affiliations_textviewVal.adapter = affiliationsAdapter
 
+        afDetails_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                affTypesList = TypeTablesModel.getInstance().AARAffiliationType
+                affTypesArray.clear()
+                for (fac in affTypesList ) {
+                    if (!TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(afDetails_textviewVal.selectedItem.toString())}.filter { s->s.AARAffiliationTypeID.equals(fac.AARAffiliationTypeID) }.isEmpty())
+                    affTypesArray.add(fac.AffiliationTypeName)
+                }
+                var afTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesArray)
+                afTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                affiliations_textviewVal.adapter = afTypesAdapter
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
 
-//        affiliations_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-//                if (position==7) {
-//                    var afDetailsArray = arrayOf("Amoco", "ARCO", "BP", "Cenex", "Chevron", "CITGO", "Conoco", "Esso", "Exxon", "Gulf", "Hess", "Husky", "Marathon/Speedway", "Mobil", "Petro-Canada", "Phillips 66", "Shell", "Sinclair", "Sunoco", "Texaco", "Union 76")
-//                    var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                    afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    afDetails_textviewVal.adapter = afDetailsAdapter
-//                } else if (position==9) {
-//                    var afDetailsArray = arrayOf("All Tune & Lube", "Car-X", "Certified", "Kwik Kar", "Meineke", "Midas", "Monro", "NAPA AutoCare Program", "Precision Tune", "Tuffy")
-//                    var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                    afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    afDetails_textviewVal.adapter = afDetailsAdapter
-//                } else if (position==10) {
-//                    var afDetailsArray = arrayOf("Ataram", "B E", "Castrol", "Felt Oil", "Ford", "H & H", "NAPA", "Rorick", "Timmons", "United", "Valvoline", "Velvin")
-//                    var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                    afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    afDetails_textviewVal.adapter = afDetailsAdapter
-//                } else if (position==12) {
-//                    var afDetailsArray = arrayOf("AC Delco", "Advanced Auto", "AutoValue", "AutoZone", "Bosch", "Carquest", "Excel", "Federated", "Motorcraft", "NAPA Quality Parts Program", "Oreillys", "PartsPlus", "ProntoVIP", "WorldPac")
-//                    var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                    afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    afDetails_textviewVal.adapter = afDetailsAdapter
-//                } else if (position==15) {
-//                    var afDetailsArray = arrayOf("Citgo Fast Lube", "Econo", "Grease Monkey", "Jiffy Lube", "Lube Pros", "Oil Can Henry's", "Quaker State", "Q Lube", "Texaco", "Xpress Lube", "Valvoline Instant Oil Change")
-//                    var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                    afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    afDetails_textviewVal.adapter = afDetailsAdapter
-//                } else if (position==16) {
-//                    var afDetailsArray = arrayOf("Active Green + Ross", "Big O Tires", "Discount Tire", "Firestone", "Complete Auto Care", "Goodyear", "Gemini", "National Tire & Battery / Tire Kingdom", "Tires Plus")
-//                    var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                    afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    afDetails_textviewVal.adapter = afDetailsAdapter
-//                } else if (position==17) {
-//                    var afDetailsArray = arrayOf("AAMCO Transmissions", "Cottman Transmissions", "Lee Myles Transmissions", "Mr. Transmission", "Not Applicable")
-//                    var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                    afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    afDetails_textviewVal.adapter = afDetailsAdapter
-//                } else {
-//                    var afDetailsArray = arrayOf("Not Applicable")
-//                    var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, afDetailsArray)
-//                    afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    afDetails_textviewVal.adapter = afDetailsAdapter
-//                }
-//            } // to close the onItemSelected
-//
-//            override fun onNothingSelected(parent: AdapterView<*>) {
-//
-//            }
-//        }
-
+        edit_afDetails_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                affTypesList = TypeTablesModel.getInstance().AARAffiliationType
+                affTypesArray.clear()
+                for (fac in affTypesList ) {
+                    if (!TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(edit_afDetails_textviewVal.selectedItem.toString())}.filter { s->s.AARAffiliationTypeID.equals(fac.AARAffiliationTypeID) }.isEmpty())
+                        affTypesArray.add(fac.AffiliationTypeName)
+                }
+                var edit_afTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesArray)
+                edit_afTypesAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                edit_afDetails_textviewVal.adapter = edit_afTypesAdapter
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
 
         exitAffDialogeBtnId.setOnClickListener({
-
             affiliationsCard.visibility=View.GONE
             alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-
-
         })
-        edit_exitAffDialogeBtnId.setOnClickListener({
 
+        edit_exitAffDialogeBtnId.setOnClickListener({
             fillAffTableView()
             altLocationTableRow(2)
-
             edit_affiliationsCard.visibility=View.GONE
             alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-
-
         })
 
         addNewAffil.setOnClickListener(View.OnClickListener {
-
-                        affiliationsCard.visibility=View.VISIBLE
+            affiliationsCard.visibility=View.VISIBLE
             alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
-
-
         })
 
         fillAffTableView()
@@ -267,6 +239,18 @@ class FragmentARRAVAffliations : Fragment() {
         var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesDetailsArray);
         afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         afDetails_textviewVal.adapter = afDetailsAdapter
+        edit_afDetails_textviewVal.adapter = afDetailsAdapter
+
+        affTypesList = TypeTablesModel.getInstance().AARAffiliationType
+        affTypesArray.clear()
+        for (fac in affTypesList ) {
+            affTypesArray.add(fac.AffiliationTypeName)
+        }
+
+        var afTypeAdapter= ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesArray);
+        afTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        affiliations_textviewVal.adapter = afTypeAdapter
+        edit_affiliations_textviewVal.adapter = afTypeAdapter
 
 
 //            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAffTypesURL,
@@ -328,20 +312,7 @@ class FragmentARRAVAffliations : Fragment() {
 
     fun fillAffTableView(){
 
-
-
-
-
-
         mainViewLinearId.isEnabled=true
-
-        //val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-
-
 
         if (mainAffTableLayout.childCount>1) {
             for (i in mainAffTableLayout.childCount - 1 downTo 1) {
@@ -367,34 +338,53 @@ class FragmentARRAVAffliations : Fragment() {
 
         }
 
-
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.leftMargin = 10
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.weight = 0.8F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.weight = 0.8F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.weight = 2F
         rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.weight = 0.6F
         rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.width = 0
 
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         FacilityDataModel.getInstance().tblAffiliations.apply {
             (0 until size).forEach {
                 if (get(it).AffiliationTypeID>0) {
 
                     val tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
 
                     if (it % 2 == 0) {
                         tableRow.setBackgroundResource(R.drawable.alt_row_color)
@@ -402,69 +392,68 @@ class FragmentARRAVAffliations : Fragment() {
 
                     val textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = ""
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
+                    textView.text = if (get(it).AffiliationTypeID == 0) "" else TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == get(it).AffiliationTypeID}[0].AffiliationTypeName
 
                     tableRow.addView(textView)
 
                     val textView1 = TextView(context)
                     textView1.layoutParams = rowLayoutParam1
-                    textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView1.gravity = Gravity.CENTER_VERTICAL
+                    textView1.textSize = 18f
+                    textView1.minimumHeight = 30
 //                textView1.text = get(it).LoggedIntoPortal
                     textView1.text = if (get(it).AffiliationTypeDetailID == 0) "" else TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == get(it).AffiliationTypeDetailID }[0].AffiliationDetailTypeName
                     tableRow.addView(textView1)
 
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam2
-                    textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView2.text = get(it).NumberUnacknowledgedTows
-                    textView2.text = get(it).effDate.apiToAppFormat()
+                    textView2.gravity = Gravity.CENTER_VERTICAL
+                    textView2.textSize = 18f
+                    textView2.minimumHeight = 30
+                    textView2.text = get(it).effDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView2)
 
                     val textView3 = TextView(context)
                     textView3.layoutParams = rowLayoutParam3
-                    textView3.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView3.text = get(it).InProgressTows
-                    textView3.text = get(it).expDate.apiToAppFormat()
+                    textView3.gravity = Gravity.CENTER_VERTICAL
+                    textView3.textSize = 18f
+                    textView3.minimumHeight = 30
+                    textView3.text = get(it).expDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView3)
 
                     val textView4 = TextView(context)
                     textView4.layoutParams = rowLayoutParam4
-                    textView4.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView4.text = get(it).InProgressWalkIns
+                    textView4.gravity = Gravity.CENTER_VERTICAL
+                    textView4.textSize = 18f
+                    textView4.minimumHeight = 30
                     textView4.text = get(it).comment
                     tableRow.addView(textView4)
 
                     val updateButton = Button(context)
                     updateButton.layoutParams = rowLayoutParam5
-                    updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-                    updateButton.text = "update"
+                    updateButton.setTextColor(Color.BLUE)
+                    updateButton.text = "EDIT"
+                    updateButton.textSize = 18f
+                    updateButton.minimumHeight = 30
+                    updateButton.isEnabled=false
+                    updateButton.gravity = Gravity.CENTER
+                    updateButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(updateButton)
 
 
                     updateButton.setOnClickListener(View.OnClickListener {
-
-
                         edit_afDtlseffective_date_textviewVal.setText(textView2.text)
                         edit_afDtlsexpiration_date_textviewVal.setText(textView3.text)
                         edit_affcomments_editTextVal.setText(textView4.text)
                         edit_affiliations_textviewVal.setSelection(0)
                         edit_afDetails_textviewVal.setSelection(0)
-
-
-
-
                         rowIndex = mainAffTableLayout.indexOfChild(tableRow)
-
-
-
                         edit_afDtlseffective_date_textviewVal.setError(null)
-
                         edit_affiliationsCard.visibility = View.VISIBLE
                         alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
-
-
-
 
                         for (i in 0 until mainViewLinearId.childCount) {
                             val child = mainViewLinearId.getChildAt(i)
