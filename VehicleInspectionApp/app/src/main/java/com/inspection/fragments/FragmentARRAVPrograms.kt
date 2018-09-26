@@ -114,7 +114,7 @@ class FragmentARRAVPrograms : Fragment() {
                 c.set(year, monthOfYear, dayOfMonth)
                 effective_date_textviewVal!!.text = sdf.format(c.time)
                 dateOne = sdf2.format(c.time)
-                (activity as FormsActivity).saveRequired = true
+
             }, year, month, day)
             dpd.show()
         }
@@ -249,7 +249,9 @@ class FragmentARRAVPrograms : Fragment() {
                                         alphaBackgroundForProgramDialogs.visibility = View.GONE
                                         // collect program id
                                         Utility.showSubmitAlertDialog(activity,true,"Program")
+                                        item.ProgramID= response.toString().substring(response.toString().indexOf(";programID")+14,response.toString().indexOf("&lt;/programID"))
                                         FacilityDataModel.getInstance().tblPrograms.add(item)
+                                        Utility.showMessageDialog(activity,"Program ID",item.ProgramID)
                                         HasChangedModel.getInstance().groupSoSPrograms[0].SoSPrograms= true
                                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSPrograms()
                                         fillPortalTrackingTableView()
@@ -261,7 +263,8 @@ class FragmentARRAVPrograms : Fragment() {
                                     } else {
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE
-                                        Utility.showSubmitAlertDialog(activity,false,"Program")
+                                        var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                        Utility.showSubmitAlertDialog(activity, false, "Program (Error: "+errorMessage+" )")
 
                                     }
                                     enableAllAddButnsAndDialog()

@@ -38,6 +38,20 @@ class HasChangedModel {
     var groupSoSOthers = ArrayList<GroupSoSOthers>()
     var groupSoSFacilityServices = ArrayList<GroupSoSFacilityServices>()
 
+
+    var groupDeficiency = ArrayList<GroupDeficiency>()
+    var groupDeficiencyDef = ArrayList<GroupDefeciencyDef>()
+
+    class GroupDeficiency {
+        var DeficiencyDef = false
+    }
+
+    class GroupDefeciencyDef {
+        var DeficiencyDef = false
+    }
+
+
+
     class GroupFacility {
         var FacilityGeneral = false
         var FacilityContactInfo = false
@@ -181,6 +195,14 @@ class HasChangedModel {
         SOS.SoSVehicleService= false;
         SOS.SoSVehicles= false;
         groupSoS.add(SOS)
+
+
+        var DeficiencyDef= GroupDefeciencyDef()
+        DeficiencyDef.DeficiencyDef=false
+        groupDeficiencyDef.add(DeficiencyDef)
+        var Deficiency = GroupDeficiency()
+        Deficiency.DeficiencyDef = false
+        groupDeficiency.add(Deficiency)
     }
 
     fun changeDoneForFacilityGeneralGroup() : Boolean{
@@ -237,6 +259,16 @@ class HasChangedModel {
             return true
         } else {
             groupSoS[0].SoSFacilityServices=false
+            return false
+        }
+    }
+
+    fun changeDoneForDeficiencyDef() : Boolean {
+        if (groupDeficiencyDef[0].DeficiencyDef) {
+            groupDeficiency[0].DeficiencyDef=true
+            return true
+        } else {
+            groupDeficiency[0].DeficiencyDef=false
             return false
         }
     }

@@ -316,7 +316,7 @@ class TblAffiliations {
 
 class TblDeficiency {
     var isInputsValid = false
-
+    var DefID = ""
     var DefTypeID = ""
     var VisitationDate = ""
     var ClearedDate = ""
