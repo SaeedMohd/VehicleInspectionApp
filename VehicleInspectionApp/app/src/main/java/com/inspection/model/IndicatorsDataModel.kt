@@ -212,11 +212,6 @@ class IndicatorsDataModel {
                     if (!get(it).CardReaders.equals("-1")) {
                         if (!get(it).startDate.equals("") && get(it).AddendumSigned.equals("")) isValid = false
                         if (!get(it).startDate.equals("") && get(it).CardReaders.equals("")) isValid = false
-                        if (get(it).PortalInspectionDate.equals("")) isValid = false
-                        if (get(it).NumberUnacknowledgedTows.equals("")) isValid = false
-                        if (get(it).InProgressTows.equals("")) isValid = false
-                        if (get(it).InProgressWalkIns.equals("")) isValid = false
-                        if (get(it).LoggedIntoPortal.equals("")) isValid = false
                     }
                 }
             }

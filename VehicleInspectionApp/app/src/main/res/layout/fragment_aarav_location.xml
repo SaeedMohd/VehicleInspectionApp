@@ -74,21 +74,21 @@
                 android:stretchColumns="*">
                 <TableRow android:background="@color/mainColor"
                     android:layout_height="wrap_content"
-                    android:weightSum="12">
+                    >
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginStart="2dp"
-                        android:layout_weight="1"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="0.8"
                         android:layout_gravity="center_vertical"
                         android:text="Location Type"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Address 1"
@@ -99,7 +99,7 @@
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Address 2"
@@ -110,7 +110,7 @@
                          />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="City"
@@ -120,7 +120,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Country"
@@ -130,17 +130,17 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_column="5"
                         android:text="State"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.8"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Zip Code"
@@ -150,7 +150,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Latitude"
@@ -160,7 +160,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Longitude"
@@ -170,16 +170,17 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Branch Number"
+                        android:layout_weight="1"
                         android:layout_column="9"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="Branch Name"
@@ -189,12 +190,12 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/white"
                         android:layout_column="11"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.8"
                         android:textSize="16sp"
                         android:text="Options" />
                 </TableRow>

@@ -114,6 +114,18 @@ class FragmentARRAVLocation : Fragment() {
             FacilityDataModel.getInstance().tblHours[0].FriOpen= FacilityDataModelOrg.getInstance().tblHours[0].FriOpen
             FacilityDataModel.getInstance().tblHours[0].NightDrop= FacilityDataModelOrg.getInstance().tblHours[0].NightDrop
             FacilityDataModel.getInstance().tblHours[0].NightDropInstr= FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr
+            FacilityDataModel.getInstance().tblLanguage.clear()
+
+            FacilityDataModelOrg.getInstance().tblLanguage.apply {
+                (0 until size).forEach {
+                    var langItem = TblLanguage()
+                    langItem.LangTypeID = get(it).LangTypeID
+                    FacilityDataModel.getInstance().tblLanguage.add(langItem)
+                }
+            }
+
+            setServices()
+
             fillOpenHoursTableView()
             fillClosedHoursTableView()
             (activity as FormsActivity).saveRequired = false
@@ -653,6 +665,7 @@ class FragmentARRAVLocation : Fragment() {
 
     private fun setServices() {
 
+        langListItems.clear()
 
         for (model in TypeTablesModel.getInstance().LanguageType) {
 
@@ -660,7 +673,7 @@ class FragmentARRAVLocation : Fragment() {
 
         }
 
-        arrayAdapter = LanguageListAdapter(context!!, R.layout.lang_checkbox_item, langListItems)
+        arrayAdapter = LanguageListAdapter(context!!, R.layout.lang_checkbox_item, this ,langListItems)
 
         languagesGridView?.adapter = arrayAdapter
         languagesGridView?.isExpanded=true
@@ -1469,7 +1482,7 @@ class FragmentARRAVLocation : Fragment() {
     fun fillLocationTableView() {
 
         val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
+        rowLayoutParam.weight = 0.8F
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
@@ -1506,7 +1519,7 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 0.5F
+        rowLayoutParam5.weight = 0.8F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
@@ -1542,7 +1555,7 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam10.width = 0
 
         val rowLayoutParam11 = TableRow.LayoutParams()
-        rowLayoutParam11.weight = 0.7F
+        rowLayoutParam11.weight = 0.8F
         rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam11.column = 11
         rowLayoutParam11.width = 0
@@ -1564,6 +1577,7 @@ class FragmentARRAVLocation : Fragment() {
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
 //                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+
                 textView.gravity = Gravity.CENTER_VERTICAL
                 //getTypeName
                 textView.minimumHeight=30

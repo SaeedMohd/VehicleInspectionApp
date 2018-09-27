@@ -47,6 +47,7 @@ class FacilityDataModelOrg  {
     var tblPersonnel = ArrayList<TblPersonnel>()
     var tblAmendmentOrderTracking = ArrayList<TblAmendmentOrderTracking>()
     var tblAARPortalAdmin = ArrayList<TblAARPortalAdmin>()
+    var tblAARPortalTracking = ArrayList<TblAARPortalTracking>()
     var tblScopeofService = ArrayList<TblScopeofService>()
     var tblPrograms = ArrayList<TblPrograms>()
     var tblFacilityServices = ArrayList<TblFacilityServices>()

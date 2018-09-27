@@ -268,11 +268,21 @@ class TblAARPortalAdmin {
     var AddendumSigned = ""
     var endDate = ""
     var CardReaders = ""
+}
+
+class TblAARPortalTracking {
+    var FACID = ""
+    var TrackingID = ""
     var PortalInspectionDate = ""
     var LoggedIntoPortal = ""
     var NumberUnacknowledgedTows = ""
     var InProgressTows = ""
     var InProgressWalkIns = ""
+    var insertBy = ""
+    var insertDate = ""
+    var updateBy = ""
+    var updateDate = ""
+    var active = ""
 }
 
 class TblScopeofService {

@@ -95,8 +95,9 @@
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
                         android:text="Portal InspectionDate"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                          />
@@ -107,7 +108,7 @@
                         android:layout_column="1"
                         android:layout_weight="1"
                         android:text="Logged Into Portal"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -117,7 +118,7 @@
                         android:layout_column="2"
                         android:layout_weight="1"
                         android:text="Unacknowledged Tows"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -127,7 +128,7 @@
                         android:layout_column="3"
                         android:layout_weight="1"
                         android:text="In Progress Tows"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -137,7 +138,7 @@
                         android:layout_column="4"
                         android:layout_weight="1"
                         android:text="In Progress Walk-ins"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 

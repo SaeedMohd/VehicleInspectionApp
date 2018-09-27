@@ -245,27 +245,35 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 val numberOfUnacknowledgedRecords = numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
                 val numberOfInProgressTwoInsvalue = numberOfInProgressTwoIns.text.toString().toInt()
                 val numberOfInProgressWalkInsValue = numberOfInProgressWalkIns.text.toString().toInt()
-                var portalTrackingentry = TblAARPortalAdmin()
-                portalTrackingentry.startDate = startDateButton.text.toString()
-                portalTrackingentry.endDate = endDateButton.text.toString()
-                portalTrackingentry.PortalInspectionDate = "" + date
-                portalTrackingentry.LoggedIntoPortal = "" + isLoggedInRsp
-                portalTrackingentry.InProgressTows = "" + numberOfInProgressTwoInsvalue
-                portalTrackingentry.InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                portalTrackingentry.NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                portalTrackingentry.CardReaders = numberOfCardsReaderEditText.text.toString()
-                portalTrackingentry.AddendumSigned = addendumSignedDateButton.text.toString()
+                var portalTrackingEntry = TblAARPortalTracking()
+                var portalAdminEntry = TblAARPortalAdmin()
+                portalAdminEntry.startDate = startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                portalAdminEntry.endDate = endDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                portalAdminEntry.CardReaders = numberOfCardsReaderEditText.text.toString()
+                portalAdminEntry.AddendumSigned = addendumSignedDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                portalTrackingEntry.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID.toString()
+                portalTrackingEntry.InProgressTows = numberOfInProgressTwoInsvalue.toString()
+                portalTrackingEntry.InProgressWalkIns = numberOfInProgressWalkInsValue.toString()
+                portalTrackingEntry.LoggedIntoPortal = isLoggedInRsp.toString()
+                portalTrackingEntry.PortalInspectionDate = date.toString().appToApiSubmitFormatMMDDYYYY()
+                portalTrackingEntry.NumberUnacknowledgedTows = numberOfUnacknowledgedRecords.toString()
+                portalTrackingEntry.active="1"
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
-                        "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
+                        "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+
+                        "&TrackingID=0&PortalInspectionDate=${date.toString().appToApiSubmitFormatMMDDYYYY()}&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "RSP")
-                                    if (FacilityDataModel.getInstance().tblAARPortalAdmin.size==1 && FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders.equals("-1")){
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin.removeAt(0)
-                                        FacilityDataModelOrg.getInstance().tblAARPortalAdmin.removeAt(0)
-                                    }
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin.add(portalTrackingentry)
+//                                    if (FacilityDataModel.getInstance().tblAARPortalAdmin.size==1 && FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders.equals("-1")){
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin.removeAt(0)
+//                                        FacilityDataModelOrg.getInstance().tblAARPortalAdmin.removeAt(0)
+//                                    }
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate=portalAdminEntry.endDate
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate=portalAdminEntry.startDate
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders=portalAdminEntry.CardReaders
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned=portalAdminEntry.AddendumSigned
+                                    FacilityDataModel.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
 //                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP= true
                                     fillPortalTrackingTableView()
                                     altLocationTableRow(2)
@@ -603,17 +611,17 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         rowLayoutParam.height = 30
 
 
-        FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
+        FacilityDataModel.getInstance().tblAARPortalTracking.apply {
 
 
 
             (0 until size).forEach {
-                if ( !get(it).CardReaders.equals("-1") ) {
+                if ( !get(it).TrackingID.equals("-1") ) {
                     val tableRow = TableRow(context)
 
                     val textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     try {
                         textView.text = get(it).PortalInspectionDate.apiToAppFormatMMDDYYYY()
@@ -625,28 +633,28 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                     val textView1 = TextView(context)
                     textView1.layoutParams = rowLayoutParam1
-                    textView1.gravity = Gravity.CENTER_VERTICAL
+                    textView1.gravity = Gravity.CENTER
                     textView1.textSize = 18f
                     textView1.text = get(it).LoggedIntoPortal
                     tableRow.addView(textView1)
 
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam2
-                    textView2.gravity = Gravity.CENTER_VERTICAL
+                    textView2.gravity = Gravity.CENTER
                     textView2.textSize = 18f
                     textView2.text = get(it).NumberUnacknowledgedTows
                     tableRow.addView(textView2)
 
                     val textView3 = TextView(context)
                     textView3.layoutParams = rowLayoutParam3
-                    textView3.gravity = Gravity.CENTER_VERTICAL
+                    textView3.gravity = Gravity.CENTER
                     textView3.textSize = 18f
                     textView3.text = get(it).InProgressTows
                     tableRow.addView(textView3)
 
                     val textView4 = TextView(context)
                     textView4.layoutParams = rowLayoutParam4
-                    textView4.gravity = Gravity.CENTER_VERTICAL
+                    textView4.gravity = Gravity.CENTER
                     textView4.textSize = 18f
                     textView4.text = get(it).InProgressWalkIns
                     tableRow.addView(textView4)
@@ -662,23 +670,19 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                     updateButton.setOnClickListener(View.OnClickListener {
                         rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
-
-
                         edit_numberOfUnacknowledgedRecordsEditText.setText(textView2.text)
                         edit_numberOfInProgressTwoIns.setText(textView3.text)
                         edit_numberOfInProgressWalkIns.setText(textView4.text)
                         edit_inspectionDateButton.setText(textView.text)
                         try {
-                            edit_startDateButton.setText(if (get(rowIndex - 1).startDate.isNullOrBlank()) "" else get(rowIndex - 1).startDate.apiToAppFormatMMDDYYYY())
+                            edit_startDateButton.setText(if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate.isNullOrEmpty()) "SELECT DATE" else FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate.apiToAppFormatMMDDYYYY())
+                            edit_endDateButton.setText(if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate.isNullOrEmpty()) "SELECT DATE" else FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate.apiToAppFormatMMDDYYYY())
+                            edit_addendumSignedDateButton.setText(if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned.isNullOrEmpty()) "SELECT DATE" else FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned.apiToAppFormatMMDDYYYY())
                         } catch (e: Exception) {
-                            edit_startDateButton.setText(if (get(rowIndex - 1).startDate.isNullOrBlank()) "" else get(rowIndex - 1).startDate)
+
                         }
-                        try {
-                            edit_addendumSignedDateButton.setText(if (get(rowIndex - 1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex - 1).AddendumSigned.apiToAppFormatMMDDYYYY())
-                        } catch (e: Exception) {
-                            edit_addendumSignedDateButton.setText(if (get(rowIndex - 1).AddendumSigned.isNullOrBlank()) "" else get(rowIndex - 1).AddendumSigned)
-                        }
-                        edit_numberOfCardsReaderEditText.setText(get(rowIndex - 1).CardReaders)
+
+                        edit_numberOfCardsReaderEditText.setText(FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders)
 
                         if (textView1.text.toString().contains("true")) {
 
@@ -742,22 +746,25 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                             var startDate = if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var endDate = if (edit_endDateButton.text.equals("SELECT DATE")) "" else edit_endDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var signedDate = if (edit_addendumSignedDateButton.text.equals("SELECT DATE")) "" else edit_addendumSignedDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var inspectionDate = if (edit_inspectionDateButton.text.equals("SELECT DATE")) "" else edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var trackingID = FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex].TrackingID
 
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
-                                    "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat() + "&active=1",
+                                    "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&TrackingID=${trackingID}&PortalInspectionDate=${inspectionDate}&insertBy=E642707&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat() + "&active=1"+
+                                    "LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread(Runnable {
                                             if (response.toString().contains("returnCode&gt;0&", false)) {
                                                 Utility.showSubmitAlertDialog(activity, true, "RSP")
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].startDate = edit_startDateButton.text.toString()
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].endDate= endDate
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].PortalInspectionDate = "" + date
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[rowIndex - 1].AddendumSigned = edit_addendumSignedDateButton.text.toString()
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = edit_startDateButton.text.toString()
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate= endDate
+                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
+                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
+                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
+                                                FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = edit_addendumSignedDateButton.text.toString()
 //                                            HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP= true
                                                 fillPortalTrackingTableView()
                                                 altLocationTableRow(2)
@@ -798,84 +805,84 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     }
 
-    fun addTheLatestRowOfPortalAdmin(){
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-
-        val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
-        rowLayoutParam1.column = 1
-
-        val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 2
-
-        val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
-        rowLayoutParam3.column = 3
-
-        val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
-        rowLayoutParam4.column = 4
-
-        val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
-        rowLayoutParam5.column = 5
-        FacilityDataModel.getInstance().tblAARPortalAdmin[FacilityDataModel.getInstance().tblAARPortalAdmin.size-1].apply {
-
-
-            var tableRow = TableRow(context)
-
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            try {
-                textView.text = PortalInspectionDate.appToApiSubmitFormatMMDDYYYY()
-            } catch (e: Exception) {
-                textView.text = PortalInspectionDate
-
-            }
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = LoggedIntoPortal
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            textView.text = NumberUnacknowledgedTows
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = InProgressTows
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = InProgressWalkIns
-            tableRow.addView(textView)
-
-
-            val updateButton = Button(context)
-            updateButton.layoutParams = rowLayoutParam5
-            updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-            updateButton.text = "update"
-            tableRow.addView(updateButton)
-
-
-            aarPortalTrackingTableLayout.addView(tableRow)
-
-        }
-        altLocationTableRow(2)
-    }
+//    fun addTheLatestRowOfPortalAdmin(){
+//        val rowLayoutParam = TableRow.LayoutParams()
+//        rowLayoutParam.weight = 1F
+//        rowLayoutParam.column = 0
+//
+//        val rowLayoutParam1 = TableRow.LayoutParams()
+//        rowLayoutParam1.weight = 1F
+//        rowLayoutParam1.column = 1
+//
+//        val rowLayoutParam2 = TableRow.LayoutParams()
+//        rowLayoutParam2.weight = 1F
+//        rowLayoutParam2.column = 2
+//
+//        val rowLayoutParam3 = TableRow.LayoutParams()
+//        rowLayoutParam3.weight = 1F
+//        rowLayoutParam3.column = 3
+//
+//        val rowLayoutParam4 = TableRow.LayoutParams()
+//        rowLayoutParam4.weight = 1F
+//        rowLayoutParam4.column = 4
+//
+//        val rowLayoutParam5 = TableRow.LayoutParams()
+//        rowLayoutParam5.weight = 1F
+//        rowLayoutParam5.column = 5
+//        FacilityDataModel.getInstance().tblAARPortalAdmin[FacilityDataModel.getInstance().tblAARPortalAdmin.size-1].apply {
+//
+//
+//            var tableRow = TableRow(context)
+//
+//            var textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            try {
+//                textView.text = PortalInspectionDate.appToApiSubmitFormatMMDDYYYY()
+//            } catch (e: Exception) {
+//                textView.text = PortalInspectionDate
+//
+//            }
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam1
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = LoggedIntoPortal
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam2
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            TableRow.LayoutParams()
+//            textView.text = NumberUnacknowledgedTows
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam3
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = InProgressTows
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam4
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = InProgressWalkIns
+//            tableRow.addView(textView)
+//
+//
+//            val updateButton = Button(context)
+//            updateButton.layoutParams = rowLayoutParam5
+//            updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+//            updateButton.text = "update"
+//            tableRow.addView(updateButton)
+//
+//
+//            aarPortalTrackingTableLayout.addView(tableRow)
+//
+//        }
+//        altLocationTableRow(2)
+//    }
     fun altLocationTableRow(alt_row : Int) {
         var childViewCount = aarPortalTrackingTableLayout.getChildCount();
 

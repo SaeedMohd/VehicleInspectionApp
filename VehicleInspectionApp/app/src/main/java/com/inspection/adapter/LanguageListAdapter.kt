@@ -1,11 +1,15 @@
 package com.inspection.adapter
 
 
+import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.inspection.FormsActivity
+import com.inspection.fragments.FragmentARRAVLocation
 
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TblLanguage
@@ -13,23 +17,21 @@ import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.lang_checkbox_item.view.*
 import java.util.ArrayList
 
-class LanguageListAdapter(internal var context: Context, internal var recource: Int, objects: List<TypeTablesModel.languageType>) : ArrayAdapter<TypeTablesModel.languageType>(context, recource, objects) {
+class LanguageListAdapter(internal var context: Context, internal var recource: Int,parentFragment : FragmentARRAVLocation , objects: List<TypeTablesModel.languageType>) : ArrayAdapter<TypeTablesModel.languageType>(context, recource, objects) {
     internal var namesList: List<TypeTablesModel.languageType>
+    internal var parentFragment : FragmentARRAVLocation
 
     init {
         this.namesList = objects
         namesList = objects
+        this.parentFragment = parentFragment
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(recource, parent, false)
-//        val textView3 = view.itemTextView
         val checkBoxItem = view.itemCheckBox
         checkBoxItem.text = namesList.get(position).LangTypeName
-        //   checkBoxItem.isEnabled=false
-
-
         for (model in TypeTablesModel.getInstance().LanguageType) {
             for (model2 in FacilityDataModel.getInstance().tblLanguage) {
                 if (namesList.get(position).LangTypeID == model2.LangTypeID) {
@@ -59,6 +61,8 @@ class LanguageListAdapter(internal var context: Context, internal var recource: 
                 checkBoxItemnum--
             }
             FacilityDataModel.getInstance().tblLanguage = langArray
+            (context as FormsActivity).saveRequired = true
+            parentFragment.refreshButtonsState()
             //// SAVE REQUIRED LOGIC REMAINING
         })
         return view

@@ -885,6 +885,21 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         }
 
+        if (jsonObj.has("tblAARPortalTracking")) {
+            if (jsonObj.get("tblAARPortalTracking").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblAARPortalTracking = Gson().fromJson<ArrayList<TblAARPortalTracking>>(jsonObj.get("tblAARPortalTracking").toString(), object : TypeToken<ArrayList<TblAARPortalTracking>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblAARPortalTracking= Gson().fromJson<ArrayList<TblAARPortalTracking>>(jsonObj.get("tblAARPortalTracking").toString(), object : TypeToken<ArrayList<TblAARPortalTracking>>() {}.type)
+                FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
+                FacilityDataModelOrg.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
+            } else {
+                FacilityDataModel.getInstance().tblAARPortalTracking.add(Gson().fromJson<TblAARPortalTracking>(jsonObj.get("tblAARPortalTracking").toString(), TblAARPortalTracking::class.java))
+                FacilityDataModelOrg.getInstance().tblAARPortalTracking.add(Gson().fromJson<TblAARPortalTracking>(jsonObj.get("tblAARPortalTracking").toString(), TblAARPortalTracking::class.java))
+                FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
+                FacilityDataModelOrg.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
+            }
+        }
+
+
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
         IndicatorsDataModel.getInstance().validateBusinessRules()
@@ -1352,7 +1367,24 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblVehicleServices")
         }
+        if (jsonObj.has("tblAARPortalTracking")) {
+            if (!jsonObj.get("tblAARPortalTracking").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblAARPortalTracking")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblAARPortalTracking"))
+                    jsonObj.put("tblAARPortalTracking", result)
+                } catch (e: Exception) {
 
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalTracking")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalTracking")
+        }
         return jsonObj
     }
 
@@ -1464,11 +1496,6 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             var oneArray = TblAARPortalAdmin()
             oneArray.AddendumSigned=""
             oneArray.CardReaders="-1"
-            oneArray.InProgressTows=""
-            oneArray.InProgressWalkIns=""
-            oneArray.LoggedIntoPortal=""
-            oneArray.NumberUnacknowledgedTows=""
-            oneArray.PortalInspectionDate=""
             oneArray.startDate=""
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblPrograms")) {
@@ -1629,6 +1656,10 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.VehiclesTypeID = -1
             oneArray.insertBy=""
             oneArray.insertDate = ""
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblAARPortalTracking")) {
+            var oneArray = TblAARPortalTracking()
+            oneArray.TrackingID="-1"
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 
