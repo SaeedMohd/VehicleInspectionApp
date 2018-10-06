@@ -315,17 +315,19 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-
+                item.CertDesc = if (newCertDescText.text.isNullOrEmpty()) "" else newCertDescText.text.toString()
+                item.PersonnelID = selectedPersonnelID
 
                 var urlString = "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&PersonnelID=${selectedPersonnelID}"+
-                        "&CertID=&CertificationTypeId=${item.CertificationTypeId}&CertificationDate=${item.CertificationDate}&ExpirationDate=${item.ExpirationDate}"+
-                        "&CertDesc=${item.CertDesc}&insertBy=sa&insertDate=04/24/2013%201:40:01%20PM&updateBy=sa&updateDate=04/24/2013%201:40:01%20PM&active=1"
+                        "&certID=&CertificationTypeId=${item.CertificationTypeId}&CertificationDate=${item.CertificationDate}&ExpirationDate=${item.ExpirationDate}"+
+                        "&certDesc=${item.CertDesc}&insertBy=sa&insertDate=${Date().toApiSubmitFormat()}&updateBy=sa&updateDate=${Date().toApiSubmitFormat()}&active=1"
                 Log.v("Data To Submit", urlString)
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.UpdatePersonnelCertification + urlString,
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdatePersonnelCertification + urlString,
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Certification")
+//                                    item.CertID= response.toString().substring(response.toString().indexOf(";CertID")+11,response.toString().indexOf("&lt;/CertID"))
                                     FacilityDataModel.getInstance().tblPersonnelCertification.add(item)
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
@@ -1342,12 +1344,11 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView6.layoutParams = rowLayoutParam5
                 textView6.minimumHeight = 30
                 textView6.gravity = Gravity.CENTER_VERTICAL
-                if (!(get(it).SeniorityDate.isNullOrEmpty())) {
+                if (!(get(it).SeniorityDate.isNullOrEmpty()) ) {
                     try {
-                        textView6.text  = get(it).SeniorityDate.apiToAppFormatMMDDYYYY()
+                        textView6.text  = if (get(it).SeniorityDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).SeniorityDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
                         textView6.text  = get(it).SeniorityDate.apiToAppFormatMMDDYYYY()
-
                     }
                 } else {
                     textView6.text  = ""
@@ -1369,7 +1370,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView8.minimumHeight = 30
                 if (!(get(it).startDate.isNullOrEmpty())) {
                     try {
-                        textView8.text  = get(it).startDate.apiToAppFormatMMDDYYYY()
+                        textView8.text  = if (get(it).startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
                         textView8.text  = get(it).startDate.apiToAppFormatMMDDYYYY()
 
@@ -1386,7 +1387,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView9.minimumHeight = 30
                 if (!(get(it).ExpirationDate.isNullOrEmpty())) {
                     try {
-                        textView9.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
+                        textView9.text = if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
                         textView9.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                     }
@@ -1419,27 +1420,16 @@ class FragmentARRAVPersonnel : Fragment() {
                 updateBtn .text = "EDIT"
                 updateBtn.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 updateBtn .setBackgroundColor(Color.TRANSPARENT)
-//                editButton.tag = it
-
-//                val updateBtn = Button(context)
-//                updateBtn.layoutParams = rowLayoutParam11
-//                updateBtn.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-////                TableRow.LayoutParams()
-//                updateBtn.text = "EDIT"
 
                 tableRow.addView(updateBtn)
 
                 PersonnelResultsTbl.addView(tableRow)
 
-                updateBtn.setOnClickListener(View.OnClickListener {
+                updateBtn.setOnClickListener {
                     var contractSignerFound = 0
                     var emailPrimaryFound = 0
 
                     if (checkBox10.isChecked){
-
-
-
-
                         edit_enableContractSignerIsChecked()
                         edit_newSignerCheck.isChecked=true
 
@@ -1485,56 +1475,56 @@ class FragmentARRAVPersonnel : Fragment() {
                             }
 
 
-                    if (contractSignerFound>0&&!checkBox10.isChecked){
-                        edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+                            if (contractSignerFound>0&&!checkBox10.isChecked){
+                                edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
 
 
-                            if (edit_newSignerCheck.isChecked ) {
+                                    if (edit_newSignerCheck.isChecked ) {
 
-//                                Toast.makeText(context, "there's already contract signer for this contract", Toast.LENGTH_SHORT).show()
-                                Utility.showValidationAlertDialog(activity,"There is already contract signer for this contract")
-                                edit_newSignerCheck.isChecked=false
+        //                                Toast.makeText(context, "there's already contract signer for this contract", Toast.LENGTH_SHORT).show()
+                                        Utility.showValidationAlertDialog(activity,"There is already contract signer for this contract")
+                                        edit_newSignerCheck.isChecked=false
 
-                            } else {
+                                    } else {
 
-                                edit_disableContractSignerIsChecked()
+                                        edit_disableContractSignerIsChecked()
+
+                                    }
+
+                                }
+
 
                             }
-
-                        }
-
-
-                    }
-                    if (emailPrimaryFound>0&&!checkBox11.isChecked){
-                        edit_newACSCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+                            if (emailPrimaryFound>0&&!checkBox11.isChecked){
+                                edit_newACSCheck.setOnCheckedChangeListener { buttonView, isChecked ->
 
 
-                            if (edit_newACSCheck.isChecked ) {
+                                    if (edit_newACSCheck.isChecked ) {
 
-                                Utility.showValidationAlertDialog(activity,"There's already primary email assigned for this contract")
-//                                Toast.makeText(context, "there's already primary email assigned for this contract", Toast.LENGTH_SHORT).show()
-                                edit_newACSCheck.isChecked=false
+                                        Utility.showValidationAlertDialog(activity,"There's already primary email assigned for this contract")
+        //                                Toast.makeText(context, "there's already primary email assigned for this contract", Toast.LENGTH_SHORT).show()
+                                        edit_newACSCheck.isChecked=false
+
+                                    }
+
+                                }
+
 
                             }
-
-                        }
-
-
-                    }
-                    if (emailPrimaryFound>0&&checkBox11.isChecked){
-                        edit_newACSCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+                            if (emailPrimaryFound>0&&checkBox11.isChecked){
+                                edit_newACSCheck.setOnCheckedChangeListener { buttonView, isChecked ->
 
 
-                            if (edit_newACSCheck.isChecked ) {
+                                    if (edit_newACSCheck.isChecked ) {
 
-                                edit_newACSCheck.isChecked=true
+                                        edit_newACSCheck.isChecked=true
+
+                                    }
+
+                                }
+
 
                             }
-
-                        }
-
-
-                    }
                             if (contractSignerFound==0){
                                 edit_newSignerCheck.setOnClickListener(View.OnClickListener {
                                     if (edit_newSignerCheck.isChecked) {
@@ -1572,38 +1562,45 @@ class FragmentARRAVPersonnel : Fragment() {
                     }
 
 
-
                     var currentTableRowIndex=PersonnelResultsTbl.indexOfChild(tableRow)
                     var currentfacilityDataModelIndex=currentTableRowIndex-1
 
 
-//                    for (i in 0 until mainViewLinearId.childCount) {
-//                        val child = mainViewLinearId.getChildAt(i)
-//                        child.isEnabled = false
-//                    }
-//
-//                    for (i in 0 until mainViewLinearId2.childCount) {
-//                        val child = mainViewLinearId2.getChildAt(i)
-//                        child.isEnabled = false
-//                    }
+        //                    for (i in 0 until mainViewLinearId.childCount) {
+        //                        val child = mainViewLinearId.getChildAt(i)
+        //                        child.isEnabled = false
+        //                    }
+        //
+        //                    for (i in 0 until mainViewLinearId2.childCount) {
+        //                        val child = mainViewLinearId2.getChildAt(i)
+        //                        child.isEnabled = false
+        //                    }
 
 
                     edit_newFirstNameText.setText(textView2.text)
                     edit_newLastNameText.setText(textView3.text)
                     edit_newCertNoText.setText(textView7.text)
                     edit_newStartDateBtn.setText(textView8.text)
-                    if (textView9.text.isNullOrEmpty()){
-                    edit_newEndDateBtn.setText("SELECT DATE")
+                    if (textView9.text.isNullOrEmpty() || textView9.equals("01/01/1900")) {
+                        edit_newEndDateBtn.setText("SELECT DATE")
                     }else{
                         edit_newEndDateBtn.setText(textView9.text)
 
                     }
-                    if (textView6.text.isNullOrEmpty()){
+                    if (textView6.text.isNullOrEmpty() || textView6.equals("01/01/1900")) {
                         edit_newSeniorityDateBtn.setText("SELECT DATE")
                     }else{
                         edit_newSeniorityDateBtn.setText(textView6.text)
 
                     }
+
+                    if (textView6.text.isNullOrEmpty() || textView6.equals("01/01/1900")) {
+                        edit_newSeniorityDateBtn.setText("SELECT DATE")
+                    }else{
+                        edit_newSeniorityDateBtn.setText(textView6.text)
+
+                    }
+
                     edit_newCoStartDateBtn.setText("SELECT DATE")
                     edit_newCoEndDateBtn.setText("SELECT DATE")
                     edit_newPhoneText.setText("")
@@ -1630,27 +1627,15 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
 
-                    if (checkBox11.isChecked){
-
-                        edit_newACSCheck.isChecked=true
-
-
-
-                    }else{
-                        edit_newACSCheck.isChecked=false
-
-
-
-                    }
+                    edit_newACSCheck.isChecked = checkBox11.isChecked
                     edit_addNewPersonnelDialogue.visibility=View.VISIBLE
                     alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
-                    edit_submitNewPersnRecordBtn.setOnClickListener({
+                    edit_submitNewPersnRecordBtn.setOnClickListener {
 
                         if (edit_validateInputs()){
                             edit_addNewPersonnelDialogue.visibility=View.GONE
                             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
                             personnelLoadingText.text = "Saving ..."
-//                            edit_personnelLoadingView.visibility = View.VISIBLE
                             personnelLoadingView.visibility = View.VISIBLE
 
                             var PersonnelTypeId=""
@@ -1674,22 +1659,16 @@ class FragmentARRAVPersonnel : Fragment() {
                             var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var personnelID = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID
 
-
-
-//        urlString = URLEncoder.encode(urlString, "UTF-8")
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
                                     Response.Listener { response ->
-                                        activity!!.runOnUiThread(Runnable {
+                                        activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode&gt;0&",false)) {
                                                 Utility.showSubmitAlertDialog(activity, true, "Personnel")
-//
                                                 var item = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
                                                 for (fac in TypeTablesModel.getInstance().PersonnelType) {
                                                     if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
-
                                                         item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
                                                 }
-
                                                 item.FirstName = if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
                                                 item.LastName = if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
                                                 item.RSP_UserName = if (edit_rspUserId.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
@@ -1704,29 +1683,29 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                                 fillPersonnelTableView()
                                                 altTableRow(2)
-//                                                edit_personnelLoadingView.visibility = View.GONE
+                                                //                                                edit_personnelLoadingView.visibility = View.GONE
                                                 personnelLoadingView.visibility = View.GONE
                                                 personnelLoadingText.text = "Loading ..."
 
-//                                                for (i in 0 until mainViewLinearId.childCount) {
-//                                                    val child = mainViewLinearId.getChildAt(i)
-//                                                    child.isEnabled = true
-//                                                }
-//
-//                                                for (i in 0 until mainViewLinearId2.childCount) {
-//                                                    val child = mainViewLinearId2.getChildAt(i)
-//                                                    child.isEnabled = true
-//                                                }
+                                                //                                                for (i in 0 until mainViewLinearId.childCount) {
+                                                //                                                    val child = mainViewLinearId.getChildAt(i)
+                                                //                                                    child.isEnabled = true
+                                                //                                                }
+                                                //
+                                                //                                                for (i in 0 until mainViewLinearId2.childCount) {
+                                                //                                                    val child = mainViewLinearId2.getChildAt(i)
+                                                //                                                    child.isEnabled = true
+                                                //                                                }
 
                                                 IndicatorsDataModel.getInstance().validateFacilityPersonnel()
                                                 if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
                                                 (activity as FormsActivity).refreshMenuIndicators()
                                             } else {
-//                                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
+                                                //                                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
                                                 var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                                 Utility.showSubmitAlertDialog(activity,false,"Personnel (Error: "+ errorMessage+" )")
                                             }
-                                        })
+                                        }
                                     }, Response.ErrorListener {
                                 Utility.showSubmitAlertDialog(activity, false, "Personnel (Error: "+it.message+" )")
                                 personnelLoadingView.visibility = View.GONE
@@ -1734,20 +1713,18 @@ class FragmentARRAVPersonnel : Fragment() {
 
                             }))
 
-                        }
-                        else
-                        {
+                        } else {
 
-//                            Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
+                            //                            Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
                             Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
 
                         }
 
 
-                    })
+                    }
 
 
-                })
+                }
 
 
             }
@@ -2435,7 +2412,9 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             certTypeTextView.setError("required field")
         }
 
-
+        if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s->s.CertificationTypeId.equals(newCertTypeSpinner.selectedItem.toString())}.size>0){
+            // check certification overlap
+        }
 
         return cert.iscertInputValid
     }
