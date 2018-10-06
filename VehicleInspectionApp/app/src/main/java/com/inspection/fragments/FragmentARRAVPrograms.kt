@@ -175,7 +175,7 @@ class FragmentARRAVPrograms : Fragment() {
 
 
 
-        submitNewProgramButton.setOnClickListener({
+        submitNewProgramButton.setOnClickListener {
 
             if (validateInputs()) {
 
@@ -242,7 +242,7 @@ class FragmentARRAVPrograms : Fragment() {
 
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                             Response.Listener { response ->
-                                activity!!.runOnUiThread(Runnable {
+                                activity!!.runOnUiThread({
                                     if (response.toString().contains("returnCode&gt;0&",false)) {
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE
@@ -272,18 +272,18 @@ class FragmentARRAVPrograms : Fragment() {
 
                                 })
                             }, Response.ErrorListener {
-                                Utility.showSubmitAlertDialog(activity,false,"Program")
-                                enableAllAddButnsAndDialog()
-                                progressBarTextVal.text = "Loading ..."
-                                programsLoadingView.visibility = View.GONE
-                                alphaBackgroundForProgramDialogs.visibility = View.GONE
+                        Utility.showSubmitAlertDialog(activity,false,"Program")
+                        enableAllAddButnsAndDialog()
+                        progressBarTextVal.text = "Loading ..."
+                        programsLoadingView.visibility = View.GONE
+                        alphaBackgroundForProgramDialogs.visibility = View.GONE
                     }))
                 }
             } else {
                 Utility.showValidationAlertDialog(activity,"Please fill the required fields")
             }
 
-        })
+        }
         prepareProgramTypes()
         fillPortalTrackingTableView();
 

@@ -47,6 +47,7 @@ class FragmentARRAVPersonnel : Fragment() {
     // TODO: Rename and change types of parameters
     var emailValid=true
     var zipFormat=true
+    var selectedPersonnelID = 0
        var contractSignatureIsChecked=false
     private var mParam1: String? = null
     var countIfContractSignedBefore=0
@@ -78,24 +79,13 @@ class FragmentARRAVPersonnel : Fragment() {
         scopeOfServiceChangesWatcher()
         preparePersonnelPage()
         fillPersonnelTableView()
-        fillCertificationTableView()
+//        fillCertificationTableView()
         rspUserId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName.toString())
         rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
 
-        AddNewCertBtn.isEnabled=false
+//        AddNewCertBtn.isEnabled=false
 
-        exitDialogeBtnId.setOnClickListener({
-
-
-//            for (i in 0 until mainViewLinearId.childCount) {
-//                val child = mainViewLinearId.getChildAt(i)
-//                child.isEnabled = true
-//            }
-//
-//            for (i in 0 until mainViewLinearId2.childCount) {
-//                val child = mainViewLinearId2.getChildAt(i)
-//                child.isEnabled = true
-//            }
+        exitDialogeBtnId.setOnClickListener {
 
 
 
@@ -103,19 +93,8 @@ class FragmentARRAVPersonnel : Fragment() {
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
 
 
-        })
-        edit_exitDialogeBtnId.setOnClickListener({
-
-
-//            for (i in 0 until mainViewLinearId.childCount) {
-//                val child = mainViewLinearId.getChildAt(i)
-//                child.isEnabled = true
-//            }
-//
-//            for (i in 0 until mainViewLinearId2.childCount) {
-//                val child = mainViewLinearId2.getChildAt(i)
-//                child.isEnabled = true
-//            }
+        }
+        edit_exitDialogeBtnId.setOnClickListener {
 
 
 
@@ -123,65 +102,31 @@ class FragmentARRAVPersonnel : Fragment() {
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
 
 
-        })
+        }
 
-        exitCertificateDialogeBtnId.setOnClickListener({
-
-//            for (i in 0 until mainViewLinearId.childCount) {
-//                val child = mainViewLinearId.getChildAt(i)
-//                child.isEnabled = true
-//            }
-//
-//            for (i in 0 until mainViewLinearId2.childCount) {
-//                val child = mainViewLinearId2.getChildAt(i)
-//                child.isEnabled = true
-//            }
-//
+        exitCertificateDialogeBtnId.setOnClickListener {
 
             addNewCertificateDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
 
 
-        })
+        }
 
-        AddNewCertBtn.setOnClickListener(View.OnClickListener {
-
-//            for (i in 0 until mainViewLinearId.childCount) {
-//                val child = mainViewLinearId.getChildAt(i)
-//                child.isEnabled = false
-//            }
-//
-//            for (i in 0 until mainViewLinearId2.childCount) {
-//                val child = mainViewLinearId2.getChildAt(i)
-//                child.isEnabled = false
-//            }
-
-            newCertTypeSpinner.setSelection(0)
-            newCertStartDateBtn.setText("SELECT DATE")
-            newCertEndDateBtn.setText("SELECT DATE")
-            newCertDescText.setText("")
-
-
-            newCertStartDateBtn.setError(null)
-            certTypeTextView.setError(null)
-            addNewCertificateDialogue.visibility=View.VISIBLE
-            alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
-
-
-        })
-        addNewPersnRecordBtn.setOnClickListener(View.OnClickListener {
-
-//            for (i in 0 until mainViewLinearId.childCount) {
-//                val child = mainViewLinearId.getChildAt(i)
-//                child.isEnabled = false
-//            }
-//
-//            for (i in 0 until mainViewLinearId2.childCount) {
-//                val child = mainViewLinearId2.getChildAt(i)
-//                child.isEnabled = false
-//            }
-
-
+        AddNewCertBtn.setOnClickListener {
+            if (selectedPersonnelID.equals(0)) {
+                Utility.showValidationAlertDialog(activity,"Please select the related personnel from the list")
+            } else {
+                newCertTypeSpinner.setSelection(0)
+                newCertStartDateBtn.setText("SELECT DATE")
+                newCertEndDateBtn.setText("SELECT DATE")
+                newCertDescText.setText("")
+                newCertStartDateBtn.setError(null)
+                certTypeTextView.setError(null)
+                addNewCertificateDialogue.visibility = View.VISIBLE
+                alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
+            }
+        }
+        addNewPersnRecordBtn.setOnClickListener {
             newFirstNameText.setText("")
             newLastNameText.setText("")
             newCertNoText.setText("")
@@ -207,41 +152,27 @@ class FragmentARRAVPersonnel : Fragment() {
             stateTextView.setError(null)
             newEmailText.setError(null)
             personnelTypeTextViewId.setError(null)
-
-
             onlyOneContractSignerLogic()
-
-//            if (newSignerCheck.isChecked){
-//                newSignerCheck.isChecked=false
-//
-//
-//
-//            }
             addNewPersonnelDialogue.visibility=View.VISIBLE
             alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
+        }
 
 
-        })
-
-
-
-       // contractSignerIsNotCheckedLogic()
+        // contractSignerIsNotCheckedLogic()
 
         newCertStartDateBtn.setOnClickListener {
-//            if (newCertStartDateBtn.text.equals("SELECT DATE")) {
-                val c = Calendar.getInstance()
-                val year = c.get(Calendar.YEAR)
-                val month = c.get(Calendar.MONTH)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    val myFormat = "MM/dd/yyyy" // mention the format you need
-                    val sdf = SimpleDateFormat(myFormat, Locale.US)
-                    c.set(year, monthOfYear, dayOfMonth)
-                    newCertStartDateBtn!!.text = sdf.format(c.time)
-                }, year, month, day)
-                dpd.show()
-//            }
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                newCertStartDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
         }
 
 
@@ -368,72 +299,44 @@ class FragmentARRAVPersonnel : Fragment() {
 
         fillData()
 
-        submitNewCertBtn.setOnClickListener({
-
+        submitNewCertBtn.setOnClickListener {
             if (validateCertificationInputs()) {
                 addNewCertificateDialogue.visibility=View.GONE
                 alphaBackgroundForPersonnelDialogs.visibility = View.GONE
                 personnelLoadingText.text = "Saving ..."
                 personnelLoadingView.visibility = View.VISIBLE
 
-
-
-                var CertificationTypeId = ""
-                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
-                    if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
-
-                        CertificationTypeId = fac.PersonnelCertID
-                }
-
-                var CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
-                var ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
-
-
-                var item = TblPersonnel()
+                var item = TblPersonnelCertification()
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
                     if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
 
                         item.CertificationTypeId = fac.PersonnelCertID
                 }
 
-                item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString()
-                item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString()
+                item.CertificationDate = if (newCertStartDateBtn.text.equals("SELECT DATE")) "" else newCertStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                item.ExpirationDate = if (newCertEndDateBtn.text.equals("SELECT DATE")) "" else newCertEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
 
 
-
-//                for (i in 0 until mainViewLinearId.childCount) {
-//                    val child = mainViewLinearId.getChildAt(i)
-//                    child.isEnabled = true
-//                }
-//
-//                for (i in 0 until mainViewLinearId2.childCount) {
-//                    val child = mainViewLinearId2.getChildAt(i)
-//                    child.isEnabled = true
-//                }
-
-
-
-                var urlString = ""
+                var urlString = "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&PersonnelID=${selectedPersonnelID}"+
+                        "&CertID=&CertificationTypeId=${item.CertificationTypeId}&CertificationDate=${item.CertificationDate}&ExpirationDate=${item.ExpirationDate}"+
+                        "&CertDesc=${item.CertDesc}&insertBy=sa&insertDate=04/24/2013%201:40:01%20PM&updateBy=sa&updateDate=04/24/2013%201:40:01%20PM&active=1"
                 Log.v("Data To Submit", urlString)
-//        urlString = URLEncoder.encode(urlString, "UTF-8")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.submitFacilityGeneralInfo + urlString,
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.UpdatePersonnelCertification + urlString,
                         Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                            activity!!.runOnUiThread {
+                                if (response.toString().contains("returnCode&gt;0&", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Certification")
-                                    FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                    FacilityDataModel.getInstance().tblPersonnelCertification.add(item)
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
-//                                    addTheLatestRowOfPortalAdmin()
-                                    fillCertificationTableView()
+                                    fillCertificationTableView(selectedPersonnelID)
                                 } else {
-//                                    Utility.showSubmitAlertDialog(activity, false, "Certification")
-                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
-                                    Utility.showSubmitAlertDialog(activity,false,"Certification (Error: "+ errorMessage+" )")
+                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message") + 12, response.toString().indexOf("&lt;/message"))
+                                    Utility.showSubmitAlertDialog(activity, false, "Certification (Error: " + errorMessage + " )")
                                 }
                                 personnelLoadingView.visibility = View.GONE
                                 personnelLoadingText.text = "Loading ..."
-                            })
+                            }
                         }, Response.ErrorListener {
                     Utility.showSubmitAlertDialog(activity, false, "Certification (Error: "+it.message+" )")
                     personnelLoadingView.visibility = View.GONE
@@ -442,9 +345,9 @@ class FragmentARRAVPersonnel : Fragment() {
                 }))
             }
 
-        })
+        }
 
-        submitNewPersnRecordBtn.setOnClickListener({
+        submitNewPersnRecordBtn.setOnClickListener {
 
             if (validateInputs()){
                 addNewPersonnelDialogue.visibility=View.GONE
@@ -453,118 +356,74 @@ class FragmentARRAVPersonnel : Fragment() {
                 personnelLoadingView.visibility = View.VISIBLE
 
 
-            var PersonnelTypeId=""
+                var PersonnelTypeId=""
 
-            for (fac in TypeTablesModel.getInstance().PersonnelType) {
-                if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+                for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                    if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
 
-                PersonnelTypeId =fac.PersonnelTypeID
-            }
+                        PersonnelTypeId =fac.PersonnelTypeID
+                }
 
-            var FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
-            var LastName=if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-            var RSP_UserName=FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName
-            var RSP_Email=FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email
-            var facNo=FacilityDataModel.getInstance().tblFacilities[0].FACNo
-            var CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
-            var ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
-            var PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
-            var startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-            var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-            var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                var FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
+                var LastName=if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                var RSP_UserName=FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName
+                var RSP_Email=FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email
+                var facNo=FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                var CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+                var ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
+                var PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
+                var startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
 
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            Log.v("RESPONSE",response.toString())
-//
-                            if (response.toString().contains("returnCode&gt;0&",false)) {
-                                Utility.showSubmitAlertDialog(activity, true, "Personnel")
-                                var item = TblPersonnel()
-                                for (fac in TypeTablesModel.getInstance().PersonnelType) {
-                                    if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
-
-                                        item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread {
+                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                    Utility.showSubmitAlertDialog(activity, true, "Personnel")
+                                    var item = TblPersonnel()
+                                    for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                                        if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+                                            item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
+                                    }
+                                    item.PersonnelID= response.toString().substring(response.toString().indexOf(";PersonnelID")+16,response.toString().indexOf("&lt;/PersonnelID")).toInt()
+                                    item.FirstName = if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
+                                    item.LastName = if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                                    item.RSP_UserName = if (rspUserId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                                    item.RSP_Email = if (rspEmailId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                                    item.CertificationNum = if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+                                    item.ContractSigner = if (newSignerCheck.isChecked == true) true else false
+                                    item.PrimaryMailRecipient = if (newACSCheck.isChecked == true) true else false
+                                    item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                    item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                    item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                    FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                    HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
+                                    HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
+                                    fillPersonnelTableView()
+                                    altTableRow(2)
+                                    IndicatorsDataModel.getInstance().validateFacilityPersonnel()
+                                    if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicators()
+                                } else {
+                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    Utility.showSubmitAlertDialog(activity,false,"Personnel (Error: "+ errorMessage+" )")
                                 }
-
-                                item.FirstName = if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
-                                item.LastName = if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                                item.RSP_UserName = if (rspUserId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                                item.RSP_Email = if (rspEmailId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                                item.CertificationNum = if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
-                                item.ContractSigner = if (newSignerCheck.isChecked == true) true else false
-                                item.PrimaryMailRecipient = if (newACSCheck.isChecked == true) true else false
-                                item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                FacilityDataModel.getInstance().tblPersonnel.add(item)
-                                HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
-                                HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
-                                fillPersonnelTableView()
-                                altTableRow(2)
-
-//                                for (i in 0 until mainViewLinearId.childCount) {
-//                                    val child = mainViewLinearId.getChildAt(i)
-//                                    child.isEnabled = true
-//                                }
-//
-//                                for (i in 0 until mainViewLinearId2.childCount) {
-//                                    val child = mainViewLinearId2.getChildAt(i)
-//                                    child.isEnabled = true
-//                                }
-//
-//                                var itemOrgArray = FacilityDataModelOrg.getInstance().tblPersonnel
-//                                var itemArray = FacilityDataModel.getInstance().tblPersonnel
-//
-//                                if (itemOrgArray.size != itemArray.size) {
-//
-//                                    MarkChangeWasDone()
-//                                } else {
-//
-//                                    for (itemAr in itemArray) {
-//                                        for (itemOrgAr in itemOrgArray) {
-//
-//                                            if (itemAr.FirstName != itemOrgAr.FirstName || itemAr.LastName != itemOrgAr.LastName ||
-//                                                    itemAr.RSP_UserName != itemOrgAr.RSP_UserName ||
-//                                                    itemAr.RSP_Email != itemOrgAr.RSP_Email ||
-//                                                    itemAr.CertificationNum != itemOrgAr.CertificationNum ||
-//                                                    !(itemAr.ContractSigner == itemOrgAr.ContractSigner) ||
-//                                                    !(itemAr.PrimaryMailRecipient == itemOrgAr.PrimaryMailRecipient) ||
-//                                                    itemAr.startDate != itemOrgAr.startDate ||
-//                                                    itemAr.ExpirationDate != itemOrgAr.ExpirationDate ||
-//                                                    itemAr.SeniorityDate != itemOrgAr.SeniorityDate) {
-//                                                MarkChangeWasDone()
-////                                                Toast.makeText(context, "changes submitted", Toast.LENGTH_SHORT).show()
-//                                            }
-//
-//                                        }
-//                                    }
-//                                }
-                                IndicatorsDataModel.getInstance().validateFacilityPersonnel()
-                                if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
-                                (activity as FormsActivity).refreshMenuIndicators()
-                            } else {
-//                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
-                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
-                                Utility.showSubmitAlertDialog(activity,false,"Personnel (Error: "+ errorMessage+" )")
+                                personnelLoadingView.visibility = View.GONE
+                                personnelLoadingText.text = "Loading ..."
                             }
-                            personnelLoadingView.visibility = View.GONE
-                            personnelLoadingText.text = "Loading ..."
-                        })
-                    }, Response.ErrorListener {
-//                Log.v("error while loading", "error while loading personnal record")
-                Utility.showSubmitAlertDialog(activity, false, "Personnel (Error: "+it.message+" )")
-                personnelLoadingView.visibility = View.GONE
-                personnelLoadingText.text = "Loading ..."
-            }))
+                        }, Response.ErrorListener {
+                    Utility.showSubmitAlertDialog(activity, false, "Personnel (Error: "+it.message+" )")
+                    personnelLoadingView.visibility = View.GONE
+                    personnelLoadingText.text = "Loading ..."
+                }))
 
             }
             else
             {
                 Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
-//                Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
             }
-        })
+        }
         onlyOneMailRecepientLogic()
         altTableRow(2)
         altCertTableRow(2)
@@ -1112,17 +971,13 @@ class FragmentARRAVPersonnel : Fragment() {
             }
 
         })
-        newCertEndDateBtn.setOnClickListener(View.OnClickListener {
+        newCertEndDateBtn.setOnClickListener {
             if (newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
-
                 newCertStartDateBtn.setError("Required Field")
                 Utility.showValidationAlertDialog(activity,"Please enter Certificate Start Date")
-//                Toast.makeText(context,"please enter a start date first",Toast.LENGTH_LONG).show()
-
             }
             else {
-                newCertEndDateBtn.setError(null)
-
+                newCertStartDateBtn.setError(null)
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
@@ -1138,7 +993,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
             }
 
-        })
+        }
     }
     fun edit_endDateMustBeAfterStartDateLogic(){
 
@@ -1353,87 +1208,118 @@ class FragmentARRAVPersonnel : Fragment() {
             }
         }
         val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
+        rowLayoutParam.weight = 1.4F
         rowLayoutParam.leftMargin = 10
         rowLayoutParam.column = 0
-        rowLayoutParam.height = 30
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = 30
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = 30
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = 30
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.weight = 1.5F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = 30
+        rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
-        rowLayoutParam5.height = 30
+        rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.width = 0
 
         val rowLayoutParam6 = TableRow.LayoutParams()
-        rowLayoutParam6.weight = 1F
+        rowLayoutParam6.weight = 1.5F
         rowLayoutParam6.column = 6
-        rowLayoutParam6.height = 30
+        rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam6.width = 0
 
         val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
-        rowLayoutParam7.height = 30
+        rowLayoutParam7.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.width = 0
 
         val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam8.weight = 1F
-        rowLayoutParam8.height = 30
         rowLayoutParam8.column = 8
+        rowLayoutParam8.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam8.width = 0
 
         val rowLayoutParam9 = TableRow.LayoutParams()
         rowLayoutParam9.weight = 1F
-        rowLayoutParam9.height = 30
         rowLayoutParam9.column = 9
+        rowLayoutParam9.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam9.width = 0
 
         val rowLayoutParam10 = TableRow.LayoutParams()
         rowLayoutParam10.weight = 1F
-        rowLayoutParam10.height = 30
         rowLayoutParam10.column = 10
+        rowLayoutParam10.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam10.width = 0
         var dateTobeFormated = ""
 
         val rowLayoutParam11 = TableRow.LayoutParams()
-        rowLayoutParam11.weight = 1F
-        rowLayoutParam11.height = 30
+        rowLayoutParam11.weight = 0.8F
         rowLayoutParam11.column = 11
+        rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam11.width = 0
+
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParamRow.weight=1F
+
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
                 var tableRow = TableRow(context)
+                tableRow.layoutParams = rowLayoutParamRow
 
+                tableRow.minimumHeight = 30
+
+                tableRow.setOnClickListener {
+                    altTableRow(2)
+                    tableRow.setBackgroundColor(Color.GREEN)
+                    var currentTableRowIndex=PersonnelResultsTbl.indexOfChild(tableRow)
+                    var currentfacilityDataModelIndex=currentTableRowIndex-1
+                    certTextViewVal.text = "Personnel Certification(s) - ${FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].FirstName} ${FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].LastName}  "
+                    fillCertificationTableView(FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID)
+                    selectedPersonnelID = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID
+                }
                 val textView1 = TextView(context)
                 textView1.layoutParams = rowLayoutParam
 //                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView1.gravity = Gravity.CENTER_VERTICAL
                 textView1.text = getTypeName(get(it).PersonnelTypeID.toString())
+                textView1.minimumHeight = 30
                 tableRow.addView(textView1)
 
                 val textView2 = TextView(context)
                 textView2.layoutParams = rowLayoutParam1
                 textView2.gravity = Gravity.CENTER_VERTICAL
                 textView2.text = get(it).FirstName
+                textView2.minimumHeight = 30
                 tableRow.addView(textView2)
 
                 val textView3 = TextView(context)
                 textView3.layoutParams = rowLayoutParam2
                 textView3.gravity = Gravity.CENTER_VERTICAL
-                TableRow.LayoutParams()
+                textView3.minimumHeight = 30
                 textView3.text = get(it).LastName
                 tableRow.addView(textView3)
 
@@ -1441,6 +1327,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView4.layoutParams = rowLayoutParam3
                 textView4.gravity = Gravity.CENTER_VERTICAL
                 textView4.text = get(it).RSP_UserName
+                textView4.minimumHeight = 30
                 tableRow.addView(textView4)
 
                 val textView5 = TextView(context)
@@ -1448,11 +1335,12 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView5.gravity = Gravity.CENTER_VERTICAL
 //                TableRow.LayoutParams()
                 textView5.text = get(it).RSP_Email
+                textView5.minimumHeight = 30
                 tableRow.addView(textView5)
 
                 val textView6 = TextView(context)
                 textView6.layoutParams = rowLayoutParam5
-//                TableRow.LayoutParams()
+                textView6.minimumHeight = 30
                 textView6.gravity = Gravity.CENTER_VERTICAL
                 if (!(get(it).SeniorityDate.isNullOrEmpty())) {
                     try {
@@ -1472,11 +1360,13 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView7.layoutParams = rowLayoutParam6
                 textView7.gravity = Gravity.CENTER_VERTICAL
                 textView7.text = get(it).CertificationNum
+                textView7.minimumHeight = 30
                 tableRow.addView(textView7)
 
                 val textView8 = TextView(context)
                 textView8.layoutParams = rowLayoutParam7
                 textView8.gravity = Gravity.CENTER_VERTICAL
+                textView8.minimumHeight = 30
                 if (!(get(it).startDate.isNullOrEmpty())) {
                     try {
                         textView8.text  = get(it).startDate.apiToAppFormatMMDDYYYY()
@@ -1493,6 +1383,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val textView9 = TextView(context)
                 textView9.layoutParams = rowLayoutParam8
                 textView9.gravity = Gravity.CENTER_VERTICAL
+                textView9.minimumHeight = 30
                 if (!(get(it).ExpirationDate.isNullOrEmpty())) {
                     try {
                         textView9.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
@@ -1506,16 +1397,18 @@ class FragmentARRAVPersonnel : Fragment() {
                 tableRow.addView(textView9)
                 val checkBox10 = CheckBox(context)
                 checkBox10.layoutParams = rowLayoutParam9
-                checkBox10.gravity = Gravity.CENTER_VERTICAL
+                checkBox10.gravity = Gravity.CENTER
                 checkBox10.isChecked = (get(it).ContractSigner.equals("true"))
+                checkBox10.minimumHeight = 30
                 checkBox10.isEnabled=false
                 tableRow.addView(checkBox10)
 
                 val checkBox11 = CheckBox(context)
                 checkBox11.layoutParams = rowLayoutParam10
-                checkBox11.gravity = Gravity.CENTER_VERTICAL
+                checkBox11.gravity = Gravity.CENTER
                 checkBox11.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
                 checkBox11.isEnabled=false
+                checkBox11.minimumHeight = 30
                 tableRow.addView(checkBox11)
 
 
@@ -1860,80 +1753,89 @@ class FragmentARRAVPersonnel : Fragment() {
             }
         }
     }
-    fun fillCertificationTableView() {
-        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+    fun fillCertificationTableView(personnelID : Int) {
 
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-        rowLayoutParam.height = 30
+        if (certificationsTable.childCount>1) {
+            for (i in certificationsTable.childCount - 1 downTo 1) {
+                certificationsTable.removeViewAt(i)
+            }
+        }
 
-        val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
-        rowLayoutParam1.column = 1
-        rowLayoutParam1.height = 30
-
-        val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 2
-        rowLayoutParam2.height = 30
-
-        val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
-        rowLayoutParam3.column = 3
-        rowLayoutParam3.height = 30
-        FacilityDataModel.getInstance().tblPersonnel.apply {
+        FacilityDataModel.getInstance().tblPersonnelCertification.filter { s->s.PersonnelID.equals(personnelID)}.apply  {
             (0 until size).forEach {
-                var forCompr=""
-                val tableRow = TableRow(context)
+                if (!get(it).CertificationTypeId.isNullOrEmpty()) {
+                    val rowLayoutParam = TableRow.LayoutParams()
+                    rowLayoutParam.weight = 1F
+                    rowLayoutParam.column = 0
+                    rowLayoutParam.leftMargin = 10
+                    rowLayoutParam.height = 30
+                    rowLayoutParam.width = 0
 
-                val textView1 = TextView(context)
-                textView1.layoutParams = rowLayoutParam
-//                textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView1.gravity = Gravity.CENTER_VERTICAL
-                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
-                    if (get(it).CertificationTypeId.equals(fac.PersonnelCertID))
+                    val rowLayoutParam1 = TableRow.LayoutParams()
+                    rowLayoutParam1.weight = 1F
+                    rowLayoutParam1.column = 1
+                    rowLayoutParam1.height = 30
+                    rowLayoutParam1.width = 0
 
-                        textView1.text =fac.PersonnelCertName
-                    forCompr=fac.PersonnelCertName
-                }
-                tableRow.addView(textView1)
+                    val rowLayoutParam2 = TableRow.LayoutParams()
+                    rowLayoutParam2.weight = 1F
+                    rowLayoutParam2.column = 2
+                    rowLayoutParam2.height = 30
+                    rowLayoutParam2.width = 0
 
-                val textView2 = TextView(context)
-                textView2.layoutParams = rowLayoutParam1
-                textView2.gravity = Gravity.CENTER_VERTICAL
-                try {
-                    textView2.text = get(it).CertificationDate.apiToAppFormatMMDDYYYY()
-                } catch (e: Exception) {
-                }
-                tableRow.addView(textView2)
+                    val rowLayoutParam3 = TableRow.LayoutParams()
+                    rowLayoutParam3.weight = 1F
+                    rowLayoutParam3.column = 3
+                    rowLayoutParam3.height = 30
+                    rowLayoutParam3.width = 0
 
-               val textView3 = TextView(context)
-                textView3.layoutParams = rowLayoutParam2
-                textView3.gravity = Gravity.CENTER_VERTICAL
-                TableRow.LayoutParams()
-                try {
-                    textView3.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
-                } catch (e: Exception) {
-                }
-                tableRow.addView(textView3)
+                    val rowLayoutParamRow = TableRow.LayoutParams()
+                    rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
+                    rowLayoutParamRow.weight=1F
 
-               val textView4 = TextView(context)
-                textView4.layoutParams = rowLayoutParam3
-                textView4.gravity = Gravity.CENTER_VERTICAL
-                textView4.text = ""
-                tableRow.addView(textView4)
 
-                if (textView1.text.toString().isNullOrBlank()&&textView2.text.toString().isNullOrBlank()&&textView3.text.toString().isNullOrBlank())
-                {
+                    val tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
 
-                }else{
+                    val textView1 = TextView(context)
+                    textView1.layoutParams = rowLayoutParam
+                    textView1.gravity = Gravity.CENTER
+                    textView1.text = get(it).CertificationTypeId
+                    tableRow.addView(textView1)
+
+                    val textView2 = TextView(context)
+                    textView2.layoutParams = rowLayoutParam1
+                    textView2.gravity = Gravity.CENTER
+                    try {
+                        textView2.text = get(it).CertificationDate.apiToAppFormatMMDDYYYY()
+                    } catch (e: Exception) {
+                        textView2.text = ""
+                    }
+                    tableRow.addView(textView2)
+
+                    val textView3 = TextView(context)
+                    textView3.layoutParams = rowLayoutParam2
+                    textView3.gravity = Gravity.CENTER
+                    TableRow.LayoutParams()
+                    try {
+                        textView3.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
+                    } catch (e: Exception) {
+                        textView3.text = ""
+                    }
+                    tableRow.addView(textView3)
+
+                    val textView4 = TextView(context)
+                    textView4.layoutParams = rowLayoutParam3
+                    textView4.gravity = Gravity.CENTER
+                    textView4.text = get(it).CertDesc
+                    tableRow.addView(textView4)
                     certificationsTable.addView(tableRow)
                 }
-
+                altCertTableRow(2)
             }
         }
     }
+
     fun addTheLatestRowOfPortalAdmin() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
@@ -2524,17 +2426,13 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
         cert.iscertInputValid=true
 
-
         if (newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
             cert.iscertInputValid = false
             certDateTextView.setError("Required Field")
         }
         if (newCertTypeSpinner.selectedItem.toString().contains("Not")){
-
             cert.iscertInputValid=false
             certTypeTextView.setError("required field")
-
-
         }
 
 

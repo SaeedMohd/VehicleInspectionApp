@@ -475,5 +475,14 @@ class TblVehicleServices{
     var ScopeServiceID = 0
     var insertBy = ""
     var insertDate = ""
+}
 
+class TblPersonnelCertification{
+    var PersonnelID = 0
+    var TechName = ""
+    var CertID = ""
+    var CertificationTypeId = ""
+    var CertificationDate = ""
+    var ExpirationDate = ""
+    var CertDesc = ""
 }

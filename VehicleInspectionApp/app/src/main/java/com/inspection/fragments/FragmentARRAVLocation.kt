@@ -1564,22 +1564,19 @@ class FragmentARRAVLocation : Fragment() {
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParamRow.weight=1F
 
 
         FacilityDataModel.getInstance().tblAddress.apply {
             (0 until size).forEach {
                 var tableRow = TableRow(context)
-                tableRow.weightSum = 12F
                 tableRow.layoutParams = rowLayoutParamRow
                 tableRow.minimumHeight = 30
 
 
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
-//                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-
                 textView.gravity = Gravity.CENTER_VERTICAL
-                //getTypeName
                 textView.minimumHeight=30
                 textView.text = getLocationTypeName(get(it).LocationTypeID)
                 tableRow.addView(textView)

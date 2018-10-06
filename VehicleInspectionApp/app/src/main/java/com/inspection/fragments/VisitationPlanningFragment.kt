@@ -1182,7 +1182,15 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             }
         }
 
-
+        if (jsonObj.has("tblPersonnelCertification")) {
+            if (jsonObj.get("tblPersonnelCertification").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblPersonnelCertification = Gson().fromJson<ArrayList<TblPersonnelCertification>>(jsonObj.get("tblPersonnelCertification").toString(), object : TypeToken<ArrayList<TblPersonnelCertification>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblPersonnelCertification= Gson().fromJson<ArrayList<TblPersonnelCertification>>(jsonObj.get("tblPersonnelCertification").toString(), object : TypeToken<ArrayList<TblPersonnelCertification>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblPersonnelCertification.add(Gson().fromJson<TblPersonnelCertification>(jsonObj.get("tblPersonnelCertification").toString(), TblPersonnelCertification::class.java))
+                FacilityDataModelOrg.getInstance().tblPersonnelCertification.add(Gson().fromJson<TblPersonnelCertification>(jsonObj.get("tblPersonnelCertification").toString(), TblPersonnelCertification::class.java))
+            }
+        }
 
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
@@ -1670,6 +1678,25 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalTracking")
         }
 
+        if (jsonObj.has("tblPersonnelCertification")) {
+            if (!jsonObj.get("tblPersonnelCertification").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblPersonnelCertification")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblPersonnelCertification"))
+                    jsonObj.put("tblPersonnelCertification", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelCertification")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelCertification")
+        }
+
         return jsonObj
     }
 
@@ -1947,6 +1974,10 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         } else if (key.equals("tblAARPortalTracking")) {
             var oneArray = TblAARPortalTracking()
             oneArray.TrackingID="-1"
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblPersonnelCertification")) {
+            var oneArray = TblPersonnelCertification()
+            oneArray.PersonnelID=0
             jsonObj.put(key, Gson().toJson(oneArray))
         }
         //

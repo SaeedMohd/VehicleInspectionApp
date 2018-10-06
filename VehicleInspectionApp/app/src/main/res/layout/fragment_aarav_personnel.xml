@@ -64,16 +64,15 @@
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divider_table_layout"
                 android:showDividers="middle|beginning|end"
-                android:stretchColumns="0,1,2,3,4,5,6,7,8,9,10">
+                android:stretchColumns="*">
 
-                <TableRow android:background="@color/mainColor">
-
+                <TableRow android:background="@color/mainColor" android:minHeight="30dp" android:layout_height="wrap_content">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
+                        android:layout_weight="1.4"
                         android:text="Type"
                         android:textAlignment="center"
                         android:textColor="@color/white"
@@ -81,7 +80,7 @@
                          />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_weight="1"
@@ -91,7 +90,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="2"
                         android:layout_weight="1"
@@ -101,7 +100,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="3"
                         android:layout_weight="1"
@@ -111,17 +110,17 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="4"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="Email Address"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="5"
                         android:layout_weight="1"
@@ -131,17 +130,17 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="6"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="Cert ID#"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="7"
                         android:layout_weight="1"
@@ -151,7 +150,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="8"
                         android:layout_weight="1"
@@ -161,7 +160,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="9"
                         android:layout_weight="1"
@@ -171,7 +170,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="10"
                         android:layout_weight="1"
@@ -180,11 +179,11 @@
                         android:textColor="@color/white"
                         android:textSize="14sp" />
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="11"
-                        android:layout_weight="1"
-                        android:text="Update"
+                        android:layout_weight="0.8"
+                        android:text="Options"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
@@ -202,7 +201,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="Personnel Certification(s)"
+                    android:id="@+id/certTextViewVal"
+                    android:text="Personnel ID : Certification(s)"
                     android:textColor="@color/mainColor"
                     android:textSize="22sp" />
 
@@ -229,49 +229,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divider_table_layout"
-                android:showDividers="middle|beginning|end">
+                android:showDividers="middle|beginning|end"
+                android:stretchColumns="*">
 
 
                 <TableRow android:background="@color/mainColor">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_weight="1"
                         android:text="Certification Type"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_weight="1"
                         android:text="Certification Date"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="2"
                         android:layout_weight="1"
                         android:text="Expiration Date"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="3"
                         android:layout_weight="1"
                         android:text="Description"
-                        android:textAlignment="center"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </TableRow>
@@ -312,6 +313,7 @@
                 android:layout_gravity="top|left"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:text="Add New Certificate"
                 android:textSize="18dp" />
 
@@ -342,6 +344,7 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:padding="40dp">
 
                 <TableRow>
@@ -376,7 +379,7 @@
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
                         android:ems="8"
-                        android:text="Certification Date:"
+                        android:text="Certification Date:*"
                         android:textStyle="bold" />
 
                     <Button
@@ -384,9 +387,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@color/transparent"
-                        android:ems="8"
+                        android:gravity="center"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
@@ -405,7 +408,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="4"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
@@ -428,6 +431,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
+                        android:layout_span="3"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/textview_background"
                         android:ems="16"
