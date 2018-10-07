@@ -24,6 +24,8 @@ private val appFormatMMDDYYYY = SimpleDateFormat("MM/dd/yyyy")
 private val apiSubmitFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 
 fun String.toDate(): Date = dbFormat.parse(this)
+fun String.toDateDBFormat(): Date = apiSubmitFormat.parse(this)
+fun String.toDateMMDDYYYY(): Date = appFormatMMDDYYYY.parse(this)
 fun String.toTime(): Long = this.toDate().time
 
 fun String.appToDBFormat(): String = apiFormat.format(appFormat.parse(this))

@@ -45,14 +45,21 @@ class FragmentARRAVVehicleServices : Fragment() {
 
     private var isServicesLoaded = false
 
-    //changed from listview to gridview > sherif yousry
+    var selectedVehicleServices = "-1"
+    var selectedAutoBodyServices = "-1"
+    var selectedMarineServices = "-1"
+    var selectedRecreationServices = "-1"
+    var selectedAutoGlassServices = "-1"
+    var selectedOthersServices = "-1"
+
     var vehicleServicesListView: ExpandableHeightGridView? = null
     var autoBodyServicesListView: ExpandableHeightGridView? = null
     var MarineServicesListView: ExpandableHeightGridView? = null
     var RecreationalServicesListView: ExpandableHeightGridView? = null
     var AutoGlassServicesListView: ExpandableHeightGridView? = null
     var OtherServicesListView: ExpandableHeightGridView? = null
-        internal var arrayAdapter: DatesListAdapter? = null
+
+    internal var arrayAdapter: DatesListAdapter? = null
     internal var arrayAdapter2: DatesListAdapter? = null
     internal var arrayAdapter3: DatesListAdapter? = null
     internal var arrayAdapter4: DatesListAdapter? = null
@@ -93,46 +100,71 @@ class FragmentARRAVVehicleServices : Fragment() {
 //        }
 //        scopeOfServiceChangesWatcher()
             setServices()
+        refreshButtonsState()
 
-        saveButton.setOnClickListener(View.OnClickListener {
-//            var fixedLaborRate = fixedLaborRateEditText.text.toString()
-//            var diagnosticLaborRate = diagnosticRateEditText.text.toString()
-//            var laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
-//            var laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
-//            var numberOfBaysEditText = numberOfBaysEditText.text.toString()
-//            var numberOfLiftsEditText = numberOfLiftsEditText.text.toString()
-
+        saveButton.setOnClickListener {
             progressBarText.text = "Saving ..."
             scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehicleId=1&insertBy=e107369&insertDate="+ Date().toApiSubmitFormat(),
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-                            if (response.toString().contains("returnCode&gt;0&",false)) {
-                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                                progressBarText.text = "Loading ..."
-                                Utility.showSubmitAlertDialog(activity, true, "Vehicle Services Details")
-                                (activity as FormsActivity).saveRequired = false
-                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
-                                HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                                IndicatorsDataModel.getInstance().validateSoSGeneral()
-                                if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-                                (activity as FormsActivity).refreshMenuIndicators()
-                            } else {
-                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
-                                Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")
-                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                                progressBarText.text = "Loading ..."
-                            }
-                        })
-                    }, Response.ErrorListener {
-                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                progressBarText.text = "Loading ..."
-                Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information (Error: "+it.message+" )")
-            }))
-        })
+            if (!selectedVehicleServices.equals("-1")) saveVehicleServiceChanges("0")
+            if (!selectedAutoBodyServices.equals("-1")) saveVehicleServiceChanges("1")
+            if (!selectedMarineServices.equals("-1")) saveVehicleServiceChanges("2")
+            if (!selectedRecreationServices.equals("-1")) saveVehicleServiceChanges("3")
+            if (!selectedAutoGlassServices.equals("-1")) saveVehicleServiceChanges("4")
+            if (!selectedOthersServices.equals("-1")) saveVehicleServiceChanges("5")
+        }
     }
 
+    fun saveVehicleServiceChanges(gridType: String) {
+        var vehiclesTypeId=""
+        var scopeServiceId=""
+        if (gridType.equals("0")) {
+            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Autom") }[0].VehiclesTypeID
+            scopeServiceId = selectedVehicleServices
+        } else if (gridType.equals("1")) {
+            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Body") }[0].VehiclesTypeID
+            scopeServiceId = selectedAutoBodyServices
+        }else if (gridType.equals("2")) {
+            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Marin") }[0].VehiclesTypeID
+            scopeServiceId ==selectedMarineServices
+        }else if (gridType.equals("3")) {
+            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("RV") }[0].VehiclesTypeID
+            scopeServiceId = selectedRecreationServices
+        }else if (gridType.equals("4")) {
+            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Auto Glass") }[0].VehiclesTypeID
+            scopeServiceId = selectedAutoGlassServices
+        }else if (gridType.equals("5")) {
+            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Other") }[0].VehiclesTypeID
+            scopeServiceId = selectedOthersServices
+        }
+
+        scopeServiceId.removeSuffix(",")
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=e107369",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread {
+                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            progressBarText.text = "Loading ..."
+                            Utility.showSubmitAlertDialog(activity, true, "Vehicle Services")
+                            (activity as FormsActivity).saveRequired = false
+                            HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                            HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                            IndicatorsDataModel.getInstance().validateSoSGeneral()
+                            if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+                            (activity as FormsActivity).refreshMenuIndicators()
+                        } else {
+                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                            Utility.showSubmitAlertDialog(activity, false, "Vehicle Services (Error: "+ errorMessage+" )")
+                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            progressBarText.text = "Loading ..."
+                        }
+                    }
+                }, Response.ErrorListener {
+            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+            progressBarText.text = "Loading ..."
+            Utility.showSubmitAlertDialog(activity,false,"Vehicle Services (Error: "+it.message+" )")
+        }))
+    }
     fun refreshButtonsState(){
         saveButton.isEnabled = (activity as FormsActivity).saveRequired
         cancelButton.isEnabled = (activity as FormsActivity).saveRequired
@@ -150,30 +182,36 @@ class FragmentARRAVVehicleServices : Fragment() {
 
                 if (model.VehiclesTypeID==model2.VehiclesTypeID){
 
-                    if (model2.VehiclesTypeName.toString().contains("Autom")) {
-
-                        vehicleServicesListItems.add(model)
+                    if (model2.VehiclesTypeName.toString().contains("Autom") ) {
+                        if (vehicleServicesListItems.filter { s->s.ScopeServiceID.equals(model.ScopeServiceID) }.size==0) {
+                            vehicleServicesListItems.add(model)
+                            selectedVehicleServices = ""
+                        }
                     }
                     if (model2.VehiclesTypeName.toString().contains("Body")) {
-
                         autoBodyServicesListItems.add(model)
+                        selectedAutoBodyServices=""
                     }
                     if (model2.VehiclesTypeName.toString().contains("Marin")) {
 
                         marineServicesListItems.add(model)
+                        selectedMarineServices=""
                     }
                     if (model2.VehiclesTypeName.toString().contains("RV")) {
 
                         recreationalServicesListItems.add(model)
+                        selectedRecreationServices=""
                     }
                     if (model2.VehiclesTypeName.toString().contains("Auto Glass")) {
 
                         autoGlassServicesListItems.add(model)
+                        selectedAutoGlassServices=""
                     }
 
                     if (model2.VehiclesTypeName.toString().contains("Other")) {
 
                         otherServicesListItems.add(model)
+                        selectedOthersServices=""
                     }
 
 
@@ -187,34 +225,34 @@ class FragmentARRAVVehicleServices : Fragment() {
 
 
 
-        arrayAdapter = DatesListAdapter(context!!, R.layout.vehicle_services_item, vehicleServicesListItems)
+        arrayAdapter = DatesListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems)
 
         vehicleServicesListView?.adapter = arrayAdapter
         vehicleServicesListView?.isExpanded=true
 
-        arrayAdapter2 = DatesListAdapter(context!!, R.layout.vehicle_services_item, autoBodyServicesListItems)
+        arrayAdapter2 = DatesListAdapter(context!!, R.layout.vehicle_services_item, this,"Body",autoBodyServicesListItems)
 
         autoBodyServicesListView?.adapter = arrayAdapter2
         autoBodyServicesListView?.isExpanded=true
 
 
-        arrayAdapter3 = DatesListAdapter(context!!, R.layout.vehicle_services_item, marineServicesListItems)
+        arrayAdapter3 = DatesListAdapter(context!!, R.layout.vehicle_services_item,this, "Marin",marineServicesListItems)
 
         MarineServicesListView?.adapter = arrayAdapter3
         MarineServicesListView?.isExpanded=true
 
 
-        arrayAdapter4 = DatesListAdapter(context!!, R.layout.vehicle_services_item, recreationalServicesListItems)
+        arrayAdapter4 = DatesListAdapter(context!!, R.layout.vehicle_services_item,this, "RV",recreationalServicesListItems)
 
         RecreationalServicesListView?.adapter = arrayAdapter4
         RecreationalServicesListView?.isExpanded=true
 
-        arrayAdapter5 = DatesListAdapter(context!!, R.layout.vehicle_services_item, autoGlassServicesListItems)
+        arrayAdapter5 = DatesListAdapter(context!!, R.layout.vehicle_services_item,this,"Auto Glass", autoGlassServicesListItems)
 
         AutoGlassServicesListView?.adapter = arrayAdapter5
         AutoGlassServicesListView?.isExpanded=true
 
-        arrayAdapter6 = DatesListAdapter(context!!, R.layout.vehicle_services_item, otherServicesListItems)
+        arrayAdapter6 = DatesListAdapter(context!!, R.layout.vehicle_services_item, this,"Other",otherServicesListItems)
 
         OtherServicesListView?.adapter = arrayAdapter6
         OtherServicesListView?.isExpanded=true

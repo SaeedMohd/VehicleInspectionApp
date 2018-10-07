@@ -128,6 +128,19 @@ public class Utility {
 //        }
 //    }
 
+
+    public static boolean datesAreOverlapping(Date start1,Date end1,Date start2,Date end2) throws NullPointerException{
+        if (((start1.before(start2)||start1.equals(start2)) && (end1.after(start2) || end1.equals(start2))) ||
+                ((start1.before(end2)||start1.equals(end2)) && (end1.after(end2) || end1.equals(end2))) ||
+                ((start1.before(start2) || start1.equals(start2)) && (end1.after(end2) || end1.equals(end2))) ||
+                ((start1.after(start2) || start1.equals(start2)) && (end1.before(end2) || end1.equals(end2)))
+                ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void showSubmitAlertDialog (Activity act,Boolean isSuccess, String dataToSave){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 act);

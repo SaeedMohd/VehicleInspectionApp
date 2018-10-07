@@ -2407,13 +2407,35 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             cert.iscertInputValid = false
             certDateTextView.setError("Required Field")
         }
+        if (!newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE") && newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
+            cert.iscertInputValid = false
+            expirationDateText.setError("Required Field")
+        }
         if (newCertTypeSpinner.selectedItem.toString().contains("Not")){
             cert.iscertInputValid=false
             certTypeTextView.setError("required field")
         }
+        var certificateType = ""
+        for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+            if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
+                certificateType = fac.PersonnelCertID
+        }
 
-        if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s->s.CertificationTypeId.equals(newCertTypeSpinner.selectedItem.toString())}.size>0){
-            // check certification overlap
+
+
+        var datesOverlapping = false
+        FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.CertificationTypeId.equals(certificateType)}.apply {
+            (0 until size).forEach {
+                if (get(it).PersonnelID.equals(selectedPersonnelID)) {
+                    if (Utility.datesAreOverlapping(newCertStartDateBtn.text.toString().toDateMMDDYYYY(), newCertEndDateBtn.text.toString().toDateMMDDYYYY(), get(it).CertificationDate.toDateDBFormat(), get(it).ExpirationDate.toDateDBFormat())) {
+                        datesOverlapping = true
+                    }
+                }
+            }
+        }
+        if (datesOverlapping) {
+            Utility.showValidationAlertDialog(activity,"The certification overlaps with another active certification from the same type")
+            cert.iscertInputValid = !datesOverlapping
         }
 
         return cert.iscertInputValid

@@ -272,7 +272,7 @@ class FragmentARRAVPrograms : Fragment() {
 
                                 })
                             }, Response.ErrorListener {
-                        Utility.showSubmitAlertDialog(activity,false,"Program")
+                        Utility.showSubmitAlertDialog(activity, false, "Program (Error: "+it.message+" )")
                         enableAllAddButnsAndDialog()
                         progressBarTextVal.text = "Loading ..."
                         programsLoadingView.visibility = View.GONE

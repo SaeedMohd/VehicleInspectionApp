@@ -173,27 +173,29 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
+                            activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     item.FacilityServicesID= response.toString().substring(response.toString().indexOf(";FacilityServicesID")+23,response.toString().indexOf("&lt;/FacilityServicesID"))
                                     FacilityDataModel.getInstance().tblFacilityServices.add(item)
-                                    Utility.showSubmitAlertDialog(activity, true, "Facility Services "+ item.FacilityServicesID)
+                                    Utility.showSubmitAlertDialog(activity, true, "Facility Services")
                                     fillPortalTrackingTableView()
+                                    altFacServiceTableRow(2)
                                     HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices=true
                                     HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
                                     IndicatorsDataModel.getInstance().validateSOSFacilityServices()
                                     if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
                                     (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
-                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services")
+                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
                                 }
                                 facilityServicesCard.visibility = View.GONE
                                 FC_LoadingView.visibility = View.GONE
                                 progressBarText.text = "Loading ..."
                                 alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-                            })
+                            }
                         }, Response.ErrorListener {
-                        Utility.showSubmitAlertDialog(activity,false,"Facility Services")
+                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
                         facilityServicesCard.visibility = View.GONE
                         FC_LoadingView.visibility = View.GONE
                         progressBarText.text = "Loading ..."
@@ -252,83 +254,83 @@ class FragmentARRAVFacilityServices : Fragment() {
 
 
         FacilityDataModel.getInstance().tblFacilityServices.apply {
-
             (0 until size).forEach {
-                var tableRow = TableRow(context)
-                tableRow.layoutParams = rowLayoutParamRow
-                tableRow.minimumHeight = 30
+                if (!get(it).FacilityServicesID.equals("-1")) {
+                    var tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
 
-                var textView1 = TextView(context)
-                textView1.layoutParams = rowLayoutParam
-                textView1.gravity = Gravity.CENTER_VERTICAL
-                textView1.textSize = 18f
-                textView1.minimumHeight = 30
+                    var textView1 = TextView(context)
+                    textView1.layoutParams = rowLayoutParam
+                    textView1.gravity = Gravity.CENTER_VERTICAL
+                    textView1.textSize = 18f
+                    textView1.minimumHeight = 30
 
-                for (fac in TypeTablesModel.getInstance().ServicesType) {
-                    if (get(it).ServiceID.equals(fac.ServiceTypeID))
+                    for (fac in TypeTablesModel.getInstance().ServicesType) {
+                        if (get(it).ServiceID.equals(fac.ServiceTypeID))
 
-                        textView1.text = fac.ServiceTypeName
-                }
-                tableRow.addView(textView1)
-
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.textSize = 18f
-                textView.minimumHeight = 30
-                if (get(it).effDate.isNullOrBlank()) {
-                    textView.text = ""
-                } else {
-                    try {
-                        textView.text = get(it).effDate.apiToAppFormatMMDDYYYY()
-                    } catch (e: Exception) {
-
-                        textView.text = get(it).effDate
-
+                            textView1.text = fac.ServiceTypeName
                     }
-                }
-                tableRow.addView(textView)
+                    tableRow.addView(textView1)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.textSize = 18f
-                textView.minimumHeight = 30
-                TableRow.LayoutParams()
-                if (get(it).expDate.isNullOrBlank()) {
-                    textView.text = ""
-                } else {
-                    try {
-                        textView.text = get(it).expDate.apiToAppFormatMMDDYYYY()
-                    } catch (e: Exception) {
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
+                    if (get(it).effDate.isNullOrBlank()) {
+                        textView.text = ""
+                    } else {
+                        try {
+                            textView.text = get(it).effDate.apiToAppFormatMMDDYYYY()
+                        } catch (e: Exception) {
 
-                        textView.text = get(it).expDate
+                            textView.text = get(it).effDate
 
+                        }
                     }
-                }
-                tableRow.addView(textView)
+                    tableRow.addView(textView)
 
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.textSize = 18f
-                textView.minimumHeight = 30
-                textView.text = get(it).Comments
-                tableRow.addView(textView)
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam2
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
+                    TableRow.LayoutParams()
+                    if (get(it).expDate.isNullOrBlank()) {
+                        textView.text = ""
+                    } else {
+                        try {
+                            textView.text = get(it).expDate.apiToAppFormatMMDDYYYY()
+                        } catch (e: Exception) {
+
+                            textView.text = get(it).expDate
+
+                        }
+                    }
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam3
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
+                    textView.text = get(it).Comments
+                    tableRow.addView(textView)
 
 
-                val updateButton = Button(context)
-                updateButton.layoutParams = rowLayoutParam4
-                updateButton.setTextColor(Color.BLUE)
-                updateButton.text = "EDIT"
-                updateButton.textSize = 18f
-                updateButton.minimumHeight = 30
-                updateButton.gravity = Gravity.CENTER
-                updateButton.setBackgroundColor(Color.TRANSPARENT)
-                tableRow.addView(updateButton)
+                    val updateButton = Button(context)
+                    updateButton.layoutParams = rowLayoutParam4
+                    updateButton.setTextColor(Color.BLUE)
+                    updateButton.text = "EDIT"
+                    updateButton.textSize = 18f
+                    updateButton.minimumHeight = 30
+                    updateButton.gravity = Gravity.CENTER
+                    updateButton.setBackgroundColor(Color.TRANSPARENT)
+                    tableRow.addView(updateButton)
 
-                aarPortalTrackingTableLayout.addView(tableRow)
-                updateButton.setOnClickListener {
+                    aarPortalTrackingTableLayout.addView(tableRow)
+                    updateButton.setOnClickListener {
                         var currentTableRowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
                         var currentfacilityDataModelIndex = currentTableRowIndex - 1
 
@@ -339,57 +341,60 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                         var i = servicesArray.indexOf(textView1.text)
                         edit_fc_services_textviewVal.setSelection(i)
-                    editFacilityServicesCard.visibility = View.VISIBLE
-                    alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
-                    edit_submitNewserviceButton.setOnClickListener({
-                    if (edit_validateInputs()) {
-                        editFacilityServicesCard.visibility = View.GONE
-                        progressBarText.text = "Saving ..."
-                        FC_LoadingView.visibility = View.VISIBLE
-                        var item = TblFacilityServices()
-                        for (fac in TypeTablesModel.getInstance().ServicesType) {
-                            if (edit_fc_services_textviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
-                                item.ServiceID = fac.ServiceTypeID
-                        }
-                        item.effDate = if (edit_fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_fceffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                        item.expDate = if (edit_fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_fcexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                        item.Comments = edit_comments_editTextVal.text.toString()
-                        item.FacilityServicesID = FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].FacilityServicesID
+                        editFacilityServicesCard.visibility = View.VISIBLE
+                        alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
+                        edit_submitNewserviceButton.setOnClickListener {
+                            if (edit_validateInputs()) {
+                                editFacilityServicesCard.visibility = View.GONE
+                                progressBarText.text = "Saving ..."
+                                FC_LoadingView.visibility = View.VISIBLE
+                                var item = TblFacilityServices()
+                                for (fac in TypeTablesModel.getInstance().ServicesType) {
+                                    if (edit_fc_services_textviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
+                                        item.ServiceID = fac.ServiceTypeID
+                                }
+                                item.effDate = if (edit_fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_fceffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                item.expDate = if (edit_fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_fcexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                item.Comments = edit_comments_editTextVal.text.toString()
+                                item.FacilityServicesID = FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].FacilityServicesID
 
-                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat(),
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread(Runnable {
-                                        if (response.toString().contains("returnCode&gt;0&", false)) {
-                                            Utility.showSubmitAlertDialog(activity, true, "Facility Services")
-                                            FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments=item.Comments
-                                            FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate=item.effDate
-                                            FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate=item.expDate
-                                            FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID=item.ServiceID
-                                            fillPortalTrackingTableView()
-                                            HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices = true
-                                            HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
-                                            IndicatorsDataModel.getInstance().validateSOSFacilityServices()
-                                            if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
-                                            (activity as FormsActivity).refreshMenuIndicators()
-                                        } else {
-                                            Utility.showSubmitAlertDialog(activity, false, "Facility Services")
-                                        }
-                                        FC_LoadingView.visibility = View.GONE
-                                        progressBarText.text = "Loading ..."
-                                        alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-                                    })
-                                }, Response.ErrorListener {
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Services")
-                            editFacilityServicesCard.visibility = View.GONE
-                            FC_LoadingView.visibility = View.GONE
-                            progressBarText.text = "Loading ..."
-                            alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-                        }))
-                    } else {
-                        showValidationAlertDialog(activity, "Please fill all the required fields")
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat(),
+                                        Response.Listener { response ->
+                                            activity!!.runOnUiThread {
+                                                if (response.toString().contains("returnCode&gt;0&", false)) {
+                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Services")
+                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
+                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
+                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
+                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
+                                                    fillPortalTrackingTableView()
+                                                    altFacServiceTableRow(2)
+                                                    HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices = true
+                                                    HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
+                                                    IndicatorsDataModel.getInstance().validateSOSFacilityServices()
+                                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+                                                    (activity as FormsActivity).refreshMenuIndicators()
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
+                                                }
+                                                FC_LoadingView.visibility = View.GONE
+                                                progressBarText.text = "Loading ..."
+                                                alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+                                            }
+                                        }, Response.ErrorListener {
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
+                                    editFacilityServicesCard.visibility = View.GONE
+                                    FC_LoadingView.visibility = View.GONE
+                                    progressBarText.text = "Loading ..."
+                                    alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+                                }))
+                            } else {
+                                showValidationAlertDialog(activity, "Please fill all the required fields")
+                            }
+                        }
                     }
-                })
-            }
+                }
             }
         }
     }
