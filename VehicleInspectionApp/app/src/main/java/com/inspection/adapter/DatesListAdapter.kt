@@ -45,12 +45,13 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
 //        val textView3 = view.itemTextView
         val checkBoxItem = view.itemCheckBox
 
+
         checkBoxItem.text = namesList.get(position).ScopeServiceName
-     //   checkBoxItem.isEnabled=false
+        var vehicleIDRef = TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeName.contains(gridType)}[0].VehiclesTypeID.toInt()
         if (FacilityDataModel.getInstance().tblVehicleServices[0].VehiclesTypeID!=-1) {
-            if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.ScopeServiceID == namesList.get(position).ScopeServiceID.toInt()}.isNotEmpty()){
+            if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.ScopeServiceID == namesList.get(position).ScopeServiceID.toInt()}.filter { s -> s.VehiclesTypeID == vehicleIDRef}.isNotEmpty()){
                 checkBoxItem.isChecked = true
-                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(), 1)
+                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(), 1,false)
             }
         }
 
@@ -59,9 +60,9 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         }
         checkBoxItem.setOnClickListener{
             if (checkBoxItem.isChecked == true) {
-                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),1)
+                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),1,true)
             } else {
-                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),0)
+                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),0,true)
             }
             //FacilityDataModel.getInstance().tblLanguage = langArray
             (context as FormsActivity).saveRequired = true
@@ -69,44 +70,61 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         }
         return view
     }
-    fun updateSelectedLists(value : Int, action :  Int) { //1:add,0:remove
+    fun updateSelectedLists(value : Int, action :  Int, isChanged: Boolean) { //1:add,0:remove
 
         if (gridType.equals("Autom")) {
-            if (action==1)
-                parentFragment.selectedVehicleServices += "${value},"
+            parentFragment.selectedVehicleServicesChanged = isChanged
+            if (action==1) {
+                if (!parentFragment.selectedVehicleServices.contains(value.toString())) parentFragment.selectedVehicleServices.add(value.toString())
+            }
             else
-                parentFragment.selectedVehicleServices = parentFragment.selectedVehicleServices.replace("${value},","")
+                parentFragment.selectedVehicleServices.remove(value.toString())
         }
         if (gridType.equals("Body")) {
-            if (action==1)
-                parentFragment.selectedAutoBodyServices+= "${value},"
+            parentFragment.selectedAutoBodyServicesChanged = isChanged
+            if (action==1) {
+                if (!parentFragment.selectedAutoBodyServices.contains(value.toString()))
+                    parentFragment.selectedAutoBodyServices.add(value.toString())
+            }
             else
-                parentFragment.selectedAutoBodyServices = parentFragment.selectedAutoBodyServices.replace("${value},","")
+                parentFragment.selectedAutoBodyServices.remove(value.toString())
         }
         if (gridType.equals("Marin")) {
-            if (action==1)
-                parentFragment.selectedMarineServices+= "${value},"
+            parentFragment.selectedMarineServicesChanged = isChanged
+            if (action==1) {
+                if (!parentFragment.selectedMarineServices.contains(value.toString()))
+                    parentFragment.selectedMarineServices.add(value.toString())
+            }
             else
-                parentFragment.selectedMarineServices = parentFragment.selectedMarineServices.replace("${value},","")
+                parentFragment.selectedMarineServices.remove(value.toString())
         }
         if (gridType.equals("RV")) {
-            if (action==1)
-                parentFragment.selectedRecreationServices += "${value},"
+            parentFragment.selectedRecreationServicesChanged = isChanged
+            if (action==1) {
+                if (!parentFragment.selectedRecreationServices.contains(value.toString()))
+                    parentFragment.selectedRecreationServices.add(value.toString())
+            }
             else
-                parentFragment.selectedRecreationServices = parentFragment.selectedRecreationServices.replace("${value},","")
+                parentFragment.selectedRecreationServices.remove(value.toString())
         }
         if (gridType.equals("Auto Glass")) {
-            if (action==1)
-                parentFragment.selectedAutoGlassServices += "${value},"
+            parentFragment.selectedAutoGlassServicesChanged= isChanged
+            if (action==1) {
+                if (!parentFragment.selectedAutoGlassServices.contains(value.toString()))
+                    parentFragment.selectedAutoGlassServices.add(value.toString())
+            }
             else
-                parentFragment.selectedAutoGlassServices = parentFragment.selectedAutoGlassServices.replace("${value},","")
+                parentFragment.selectedAutoGlassServices.remove(value.toString())
         }
 
         if (gridType.equals("Other")) {
-            if (action==1)
-                parentFragment.selectedOthersServices += "${value},"
+            parentFragment.selectedOthersServicesChanged= isChanged
+            if (action==1) {
+                if (!parentFragment.selectedOthersServices.contains(value.toString()))
+                    parentFragment.selectedOthersServices.add(value.toString())
+            }
             else
-                parentFragment.selectedOthersServices = parentFragment.selectedOthersServices.replace("${value},","")
+                parentFragment.selectedOthersServices.remove(value.toString())
         }
 
     }

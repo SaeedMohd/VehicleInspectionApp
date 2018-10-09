@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:id="@+id/facComp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     </LinearLayout>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -23,8 +24,6 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +34,7 @@
                 android:text="Complaints"
                 android:textStyle="bold"
                 android:textSize="22sp"
-                android:layout_margin="10dp"
+                android:gravity="center"
                 android:textColor="@color/mainColor"
                 />
 
@@ -113,171 +112,183 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:showDividers="middle|beginning|end"
-                android:divider="@drawable/divider_table_layout"
+                android:layout_marginTop="10dp"
+                android:stretchColumns="*"
                 >
                 <TableRow
                     android:background="@color/mainColor">
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
                         android:text="Complaint ID"
-                        android:textStyle="bold"
+                        android:textSize="18sp"
                         android:textColor="@color/white"
                         android:layout_column="0"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
                         />
 
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Contract No"
-                        android:textStyle="bold"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:text="First Name"
+                        android:textSize="18sp"
                         android:layout_column="1"
                         android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:gravity="center_vertical"
                         />
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Entered By"
-                        android:textStyle="bold"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:text="Last Name"
+                        android:textSize="18sp"
                         android:layout_column="2"
                         android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:gravity="center_vertical"
                         />
+
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Assigned To"
-                        android:textStyle="bold"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:text="Received Date"
+                        android:textSize="18sp"
                         android:layout_column="3"
                         android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:gravity="center_vertical"
                         />
+
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="First Name"
-                        android:textStyle="bold"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:text="Reason"
+                        android:textSize="18sp"
                         android:layout_column="4"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:layout_weight="1.5"
+                        android:gravity="center_vertical"
                         />
+
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Last Name"
-                        android:textStyle="bold"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:text="Resolution"
+                        android:textSize="18sp"
                         android:layout_column="5"
                         android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Reason"
-                        android:textStyle="bold"
-                        android:layout_column="6"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Received Date"
-                        android:textStyle="bold"
-                        android:layout_column="7"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        />
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Resolution"
-                        android:textStyle="bold"
-                        android:layout_column="8"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:gravity="center_vertical"
                         />
                 </TableRow>
             </TableLayout>
 
 <LinearLayout
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
-    <LinearLayout
+    <TableLayout
+        android:id="@+id/ComplaintsResultsTbl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:showDividers="middle|beginning|end"
+        android:layout_marginTop="10dp"
+        android:stretchColumns="*"
+        >
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="# of complaints during previous 12 months  = "
+                android:textSize="18sp"
+                android:layout_column="0"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="number of complaints during previous 12 months  = "/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:id="@+id/comNoTextViewId"
+                android:layout_column="1"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:textSize="18sp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="# of JUSTIFIED complaints during previous 12 months  = "
+                android:textSize="18sp"
+                android:layout_column="0"
+                />
 
-        <TextView
-            android:id="@+id/comNoTextViewId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:ems="2"
-            android:background="@drawable/textview_background"
-            />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:id="@+id/justComNoTextViewId"
+                android:layout_column="1"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:textSize="18sp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                />
+        </TableRow>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="Justified Complaints Ratio = "
+                android:textSize="18sp"
+                android:layout_column="0"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="number of JUSTIFIED complaints during previous 12 months  = "/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:id="@+id/justComRatioTextViewId"
+                android:layout_column="1"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:textSize="18sp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/justComNoTextViewId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:ems="2"
-            android:background="@drawable/textview_background"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Justified Complaints Ratio= "/>
-
-        <TextView
-            android:id="@+id/justComRatioTextViewId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:ems="8"
-            android:background="@drawable/textview_background"
-            />
-
-    </LinearLayout>
-
+    </TableLayout>
 
 </LinearLayout>
 

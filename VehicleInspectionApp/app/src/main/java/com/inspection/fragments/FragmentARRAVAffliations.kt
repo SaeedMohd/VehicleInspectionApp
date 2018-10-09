@@ -69,33 +69,33 @@ class FragmentARRAVAffliations : Fragment() {
 //        affiliationsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        affiliations_textviewVal.adapter = affiliationsAdapter
 
-        afDetails_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        affiliations_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 affTypesList = TypeTablesModel.getInstance().AARAffiliationType
-                affTypesArray.clear()
-                for (fac in affTypesList ) {
-                    if (!TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(afDetails_textviewVal.selectedItem.toString())}.filter { s->s.AARAffiliationTypeID.equals(fac.AARAffiliationTypeID) }.isEmpty())
-                    affTypesArray.add(fac.AffiliationTypeName)
+                var selectedTypeID = affTypesList.filter { s->s.AffiliationTypeName.equals(affiliations_textviewVal.selectedItem.toString())}[0].AARAffiliationTypeID
+                affTypesDetailsArray.clear()
+                for (fac in affTypesDetailsList.filter { s->s.AARAffiliationTypeID.equals(selectedTypeID) }) {
+                    affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
                 }
-                var afTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesArray)
-                afTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                affiliations_textviewVal.adapter = afTypesAdapter
+                var afTypeDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesDetailsArray)
+                afTypeDetailsAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                afDetails_textviewVal.adapter = afTypeDetailsAdapter
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
 
-        edit_afDetails_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        edit_affiliations_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 affTypesList = TypeTablesModel.getInstance().AARAffiliationType
-                affTypesArray.clear()
-                for (fac in affTypesList ) {
-                    if (!TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(edit_afDetails_textviewVal.selectedItem.toString())}.filter { s->s.AARAffiliationTypeID.equals(fac.AARAffiliationTypeID) }.isEmpty())
-                        affTypesArray.add(fac.AffiliationTypeName)
+                var selectedTypeID = affTypesList.filter { s->s.AffiliationTypeName.equals(edit_affiliations_textviewVal.selectedItem.toString())}[0].AARAffiliationTypeID
+                affTypesDetailsArray.clear()
+                for (fac in affTypesDetailsList.filter { s->s.AARAffiliationTypeID.equals(selectedTypeID) }) {
+                    affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
                 }
-                var edit_afTypesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesArray)
-                edit_afTypesAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                edit_afDetails_textviewVal.adapter = edit_afTypesAdapter
+                var afTypeDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesDetailsArray)
+                afTypeDetailsAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                edit_afDetails_textviewVal.adapter = afTypeDetailsAdapter
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
@@ -236,10 +236,10 @@ class FragmentARRAVAffliations : Fragment() {
             affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
         }
 
-        var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesDetailsArray);
-        afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        afDetails_textviewVal.adapter = afDetailsAdapter
-        edit_afDetails_textviewVal.adapter = afDetailsAdapter
+//        var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesDetailsArray);
+//        afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        afDetails_textviewVal.adapter = afDetailsAdapter
+//        edit_afDetails_textviewVal.adapter = afDetailsAdapter
 
         affTypesList = TypeTablesModel.getInstance().AARAffiliationType
         affTypesArray.clear()
@@ -438,7 +438,7 @@ class FragmentARRAVAffliations : Fragment() {
                     updateButton.text = "EDIT"
                     updateButton.textSize = 18f
                     updateButton.minimumHeight = 30
-                    updateButton.isEnabled=false
+//                    updateButton.isEnabled=false
                     updateButton.gravity = Gravity.CENTER
                     updateButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(updateButton)
@@ -484,11 +484,11 @@ class FragmentARRAVAffliations : Fragment() {
                             var endDate = if (edit_afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlsexpiration_date_textviewVal.text.toString()
                             var comment = edit_affcomments_editTextVal.text.toString()
 //
-//                        var affType = edit_affiliations_textviewVal.selectedItem.toString()
-//                        var affDetail= edit_afDetails_textviewVal.selectedItem.toString()
-
-
+                            var affTypeID = TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(edit_affiliations_textviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID
+                            var affDetailID = TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(edit_afDetails_textviewVal.selectedItem.toString()) }[0].AffiliationTypeDetailID
+                            var affiliationID = FacilityDataModel.getInstance().tblAffiliations[rowIndex-1]
                             indexToRemove = rowIndex
+
 
 
 
@@ -672,6 +672,8 @@ class FragmentARRAVAffliations : Fragment() {
             isInputsValid=false
             edit_afDtlseffective_date_textviewVal.setError("Required Field")
         }
+
+//        edit_afDetails_textviewVal.selectedItemId
 
 
         return isInputsValid

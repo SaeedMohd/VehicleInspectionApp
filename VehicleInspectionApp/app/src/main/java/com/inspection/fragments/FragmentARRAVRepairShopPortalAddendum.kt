@@ -275,6 +275,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders=portalAdminEntry.CardReaders
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned=portalAdminEntry.AddendumSigned
                                     FacilityDataModel.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
+//                                    FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
                                     fillPortalTrackingTableView()
                                     altLocationTableRow(2)
                                     HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
@@ -762,7 +763,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                                 FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
                                                 FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
                                                 FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = edit_addendumSignedDateButton.text.toString()
-                                //                                            HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP= true
+//                                                FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate.apiToAppFormatMMDDYYYY()})
                                                 fillPortalTrackingTableView()
                                                 altLocationTableRow(2)
                                                 HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true

@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:text="Software"
+            android:visibility="gone"
             android:layout_marginLeft="10dp"
             android:layout_column="1"
             />

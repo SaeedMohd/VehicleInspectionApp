@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.google.gson.Gson
 import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.apiToAppFormat
+import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.Utils.toast
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
 import com.inspection.model.AAAFacilityComplaints
@@ -377,128 +379,93 @@ class FragmentARRAVComplaints : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
+        rowLayoutParam.leftMargin = 10
+        rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.height = 30
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.height = 30
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.height = 30
+        rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.weight = 1.5F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.height = 30
+        rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
-        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.height = 30
+        rowLayoutParam5.width = 0
 
-        val rowLayoutParam6 = TableRow.LayoutParams()
-        rowLayoutParam6.weight = 1F
-        rowLayoutParam6.column = 6
-        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
-        val rowLayoutParam7 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.column = 7
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-
-        val rowLayoutParam8 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam8.column = 8
-        rowLayoutParam8.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-//        val rowLayoutParam8 = TableRow.LayoutParams()
-//        rowLayoutParam7.weight = 1F
-//        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-//        rowLayoutParam7.column = 8
-        var dateTobeFormated = ""
         FacilityDataModel.getInstance().tblComplaintFiles.apply {
             (0 until size).forEach {
 
                 if (!get(it).ComplaintID.equals("")) {
                     var tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
+
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = getTypeName(get(it).PersonnelTypeID)
+                    textView.gravity = Gravity.CENTER_VERTICAL
                     textView.text = get(it).ComplaintID
+                    textView.textSize = 18f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                textView.text = get(it).
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.text = get(it).FirstName
+                    textView.textSize = 18f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    TableRow.LayoutParams()
-//                textView.text = get(it).LastName
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.text = get(it).LastName
+                    textView.textSize = 18f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                if (!(get(it).SeniorityDate.isNullOrEmpty())) {
-//                    textView.text = get(it).SeniorityDate.apiToAppFormat()
-//                } else {
-//                    textView.text = ""
-//                }
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.text = get(it).ReceivedDate.apiToAppFormatMMDDYYYY()
+                    textView.textSize = 18f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).FirstName
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.text = get(it).ComplaintReasonName
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).LastName
-                    tableRow.addView(textView)
-
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam6
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//                    //  textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID.toString()==get(it).ComplaintID.toString()}[0].ComplaintReasonName.toString()
-//                    for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
-//                        if (get(it).ComplaintID.equals(fac.ComplaintReasonID)) {
-//                            textView.text = fac.ComplaintReasonName
-//                        }
-//                    }
-                    textView.text = get(it).ComplaintReasonName
-                    tableRow.addView(textView)
-
-
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam7
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).ReceivedDate.apiToAppFormat()
-                    tableRow.addView(textView)
-
-
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam8
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     textView.text = get(it).ComplaintResolutionName
-
                     tableRow.addView(textView)
+
                     ComplaintsResultsTbl.addView(tableRow)
                 }
             }

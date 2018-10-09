@@ -69,7 +69,8 @@
     </group>
     <group
         android:id="@+id/commentsGroup"
-        android:checkableBehavior="single">
+        android:checkableBehavior="single"
+        android:visible="false">
         <item
             android:id="@+id/comments"
             android:title="Comments"

@@ -66,6 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
@@ -106,9 +107,35 @@
                 android:orientation="horizontal"
                 android:id="@+id/connumberll">
                 <TextView
-                    android:id="@+id/program_name_textview"
+                    android:id="@+id/diagnosticRateTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="18sp"
+                    android:text="Diagnostic Rate ($): "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+
+                <EditText
+                    android:id="@+id/diagnosticRateEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/textview_background"
+                    android:digits="0123456789."
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/fixedLaborRateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:text="Fixed Labor Rate ($): "
@@ -129,36 +156,12 @@
                     android:background="@drawable/textview_background"
                     android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/program_name_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="18sp"
-                    android:text="Diagnostic Rate ($): "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/diagnosticRateEditText"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="numberDecimal"
-                    android:digits="0123456789."
-                    android:gravity="center"
-                    android:background="@drawable/textview_background"
-                    android:textSize="18sp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="3dp"
+                android:id="@+id/laborRateView"
                 android:background="@color/light_gray" />
 
             <LinearLayout
@@ -168,12 +171,14 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
-                android:id="@+id/connumberll">
+                android:id="@+id/laborRateLL">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
                     android:textSize="18sp"
+                    android:id="@+id/laborRateMatrixMinTextView"
                     android:text="Labor Rate Matrix Min ($): "
                     android:layout_gravity="center_vertical"
                     android:textStyle="bold"
@@ -192,11 +197,12 @@
                     android:background="@drawable/textview_background"
                     android:layout_height="wrap_content" />
 
-                        <TextView
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginLeft="20dp"
+                    android:id="@+id/laborRateMatrixMaxTextView"
                     android:textSize="18sp"
                     android:text="Labor Rate Matrix Max ($): "
                     android:layout_gravity="center_vertical"
@@ -297,12 +303,12 @@
                 android:orientation="horizontal"
                 android:id="@+id/AssignedToll">
                 <TextView
-                    android:id="@+id/comments_textview"
+                    android:id="@+id/numberOfBaysTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/officell"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
                     android:text="Number Of Bays: "
                     android:textStyle="bold"
                     android:textSize="18sp"
@@ -324,7 +330,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/comments_textview"
+                    android:id="@+id/numberOfLiftsTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -373,6 +379,7 @@
                     android:layout_weight="1"
                     android:text="Warranty Period: "
                     android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
                     android:textStyle="bold"
                     />
 
