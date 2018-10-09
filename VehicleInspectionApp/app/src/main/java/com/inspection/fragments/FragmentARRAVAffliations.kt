@@ -112,7 +112,7 @@ class FragmentARRAVAffliations : Fragment() {
             edit_affiliationsCard.visibility=View.GONE
             alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
         })
-
+        addNewAffil.isEnabled = false
         addNewAffil.setOnClickListener(View.OnClickListener {
             affiliationsCard.visibility=View.VISIBLE
             alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
@@ -182,7 +182,7 @@ class FragmentARRAVAffliations : Fragment() {
             dpd.show()
         }
 
-        submitNewAffil.setOnClickListener({
+        submitNewAffil.setOnClickListener {
             var validAffType = true
 
 
@@ -197,7 +197,7 @@ class FragmentARRAVAffliations : Fragment() {
 //                var affDetail= afDetails_textviewVal.selectedItem.toString()
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=&affiliationTypeDetailsId="+affTypeDetailID+"&effDate="+startDate+"&expDate="+endDate+"&comment="+comment+"&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
+                            activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Affiliation")
                                     fillAffTableView()
@@ -206,14 +206,15 @@ class FragmentARRAVAffliations : Fragment() {
                                     if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
                                     (activity as FormsActivity).refreshMenuIndicators()
                                 } else {
-                                    Utility.showSubmitAlertDialog(activity, false, "Affiliation")
+                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
                                 }
                                 affLoadingView.visibility = View.GONE
                                 affiliationsCard.visibility = View.GONE
                                 alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                            })
+                            }
                         }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity, false, "Affiliation")
+                    Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
                     affLoadingView.visibility = View.GONE
                     affiliationsCard.visibility = View.GONE
                     alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
@@ -221,7 +222,7 @@ class FragmentARRAVAffliations : Fragment() {
             }else {
                 Utility.showValidationAlertDialog(activity, "Please fill all required fields")
             }
-        })
+        }
         prepareAffiliations()
     }
 
@@ -320,23 +321,23 @@ class FragmentARRAVAffliations : Fragment() {
             }
         }
 
-        for (i in 0 until mainViewLinearId.childCount) {
-            val child = mainViewLinearId.getChildAt(i)
-            child.isEnabled = true
-        }
-
-        var childViewCount = mainAffTableLayout.getChildCount();
-
-        for ( i in 1..childViewCount-1) {
-            var row : TableRow= mainAffTableLayout.getChildAt(i) as TableRow;
-
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                tv.isEnabled=true
-            }
-
-        }
+//        for (i in 0 until mainViewLinearId.childCount) {
+//            val child = mainViewLinearId.getChildAt(i)
+//            child.isEnabled = true
+//        }
+//
+//        var childViewCount = mainAffTableLayout.getChildCount();
+//
+//        for ( i in 1..childViewCount-1) {
+//            var row : TableRow= mainAffTableLayout.getChildAt(i) as TableRow;
+//
+//            for (j in 0..row.getChildCount()-1) {
+//
+//                var tv : TextView= row.getChildAt(j) as TextView
+//                tv.isEnabled=true
+//            }
+//
+//        }
 
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
@@ -438,50 +439,52 @@ class FragmentARRAVAffliations : Fragment() {
                     updateButton.text = "EDIT"
                     updateButton.textSize = 18f
                     updateButton.minimumHeight = 30
-//                    updateButton.isEnabled=false
+                    updateButton.isEnabled=false
                     updateButton.gravity = Gravity.CENTER
                     updateButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(updateButton)
 
 
-                    updateButton.setOnClickListener(View.OnClickListener {
-                        edit_afDtlseffective_date_textviewVal.setText(textView2.text)
-                        edit_afDtlsexpiration_date_textviewVal.setText(textView3.text)
-                        edit_affcomments_editTextVal.setText(textView4.text)
-                        edit_affiliations_textviewVal.setSelection(0)
-                        edit_afDetails_textviewVal.setSelection(0)
+                    updateButton.setOnClickListener {
+
+
                         rowIndex = mainAffTableLayout.indexOfChild(tableRow)
+                        edit_afDtlseffective_date_textviewVal.setText(FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate)
+                        edit_afDtlsexpiration_date_textviewVal.setText(FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate)
+                        edit_affcomments_editTextVal.setText(FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment)
+//                        edit_affiliations_textviewVal.setSelection(affTypesArray.indexOf(FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID))
+                        edit_afDetails_textviewVal.setSelection(affTypesDetailsArray.indexOf(textView2.text.toString()))
                         edit_afDtlseffective_date_textviewVal.setError(null)
                         edit_affiliationsCard.visibility = View.VISIBLE
                         alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
 
-                        for (i in 0 until mainViewLinearId.childCount) {
-                            val child = mainViewLinearId.getChildAt(i)
-                            child.isEnabled = false
-                        }
+//                        for (i in 0 until mainViewLinearId.childCount) {
+//                            val child = mainViewLinearId.getChildAt(i)
+//                            child.isEnabled = false
+//                        }
 
                         var childViewCount = mainAffTableLayout.getChildCount();
 
-                        for (i in 1..childViewCount - 1) {
-                            var row: TableRow = mainAffTableLayout.getChildAt(i) as TableRow;
+//                        for (i in 1..childViewCount - 1) {
+//                            var row: TableRow = mainAffTableLayout.getChildAt(i) as TableRow;
+//
+//                            for (j in 0..row.getChildCount() - 1) {
+//
+//                                var tv: TextView = row.getChildAt(j) as TextView
+//                                tv.isEnabled = false
+//
+//                            }
+//
+//                        }
 
-                            for (j in 0..row.getChildCount() - 1) {
 
-                                var tv: TextView = row.getChildAt(j) as TextView
-                                tv.isEnabled = false
-
-                            }
-
-                        }
-
-
-                    })
+                    }
                     edit_submitNewAffil.setOnClickListener {
 
                         if (validateInputsForUpdate()) {
 
-                            var startDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString()
-                            var endDate = if (edit_afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlsexpiration_date_textviewVal.text.toString()
+                            var startDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var endDate = if (edit_afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlsexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var comment = edit_affcomments_editTextVal.text.toString()
 //
                             var affTypeID = TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(edit_affiliations_textviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID
@@ -489,25 +492,23 @@ class FragmentARRAVAffliations : Fragment() {
                             var affiliationID = FacilityDataModel.getInstance().tblAffiliations[rowIndex-1]
                             indexToRemove = rowIndex
 
-
-
-
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "&affiliationId=4931&affiliationTypeId=19&affiliationTypeDetailsId=63&effDate=1900-01-01T00:00:00&expDate=2013-11-13T00:00:00&comment=per%2011/13/13%20visitation&active=1&insertBy=sa&insertDate=2014-07-23T22:15:44.150&updateBy=SumA&updateDate=2014-07-23T22:15:44.150",
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=sa&insertDate=2014-07-23T22:15:44.150&updateBy=SumA&updateDate=2014-07-23T22:15:44.150",
                                     Response.Listener { response ->
-                                        activity!!.runOnUiThread(Runnable {
+                                        activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode&gt;0&",false)) {
                                                 Utility.showSubmitAlertDialog(activity, true, "Affiliation")
                                                 fillAffTableView()
                                                 altLocationTableRow(2)
                                             } else {
-                                                Utility.showSubmitAlertDialog(activity, false, "Affiliation")
+                                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
                                             }
                                             affLoadingView.visibility = View.GONE
                                             edit_affiliationsCard.visibility = View.GONE
                                             alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                                        })
+                                        }
                                     }, Response.ErrorListener {
-                                Utility.showSubmitAlertDialog(activity, false, "Affiliation")
+                                Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
                                 affLoadingView.visibility = View.GONE
                                 edit_affiliationsCard.visibility = View.GONE
                                 alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
@@ -660,6 +661,11 @@ class FragmentARRAVAffliations : Fragment() {
             afDtlseffective_date_textviewVal.setError("Required Field")
         }
 
+        if (afDetails_textviewVal.selectedItem.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            afDetails_textview.setError("Required Field")
+        }
+
 
         return isInputsValid
     }
@@ -673,8 +679,10 @@ class FragmentARRAVAffliations : Fragment() {
             edit_afDtlseffective_date_textviewVal.setError("Required Field")
         }
 
-//        edit_afDetails_textviewVal.selectedItemId
-
+        if (edit_afDetails_textviewVal.selectedItem.toString().isNullOrEmpty()) {
+            isInputsValid=false
+            edit_afDetails_textview.setError("Required Field")
+        }
 
         return isInputsValid
     }
