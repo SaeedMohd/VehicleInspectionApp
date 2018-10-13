@@ -3,6 +3,7 @@ package com.inspection.fragments
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -25,6 +26,7 @@ import com.inspection.Utils.toast
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
 import com.inspection.model.AAAFacilityComplaints
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_aarav_complaints.*
@@ -59,7 +61,7 @@ class FragmentARRAVComplaints : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
-        scopeOfServiceChangesWatcher()
+        if (IndicatorsDataModel.getInstance().tblComplaints[0].Complaints) compTitle.setTextColor(Color.parseColor("#26C3AA")) else compTitle.setTextColor(Color.parseColor("#A42600"))
         programsChangesMade = false
         // The no os complaints , justified and ratio need to be clarified when all are showed
 //        compeditBtn.setOnClickListener({

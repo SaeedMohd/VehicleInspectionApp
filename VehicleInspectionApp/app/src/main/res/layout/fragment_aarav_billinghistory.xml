@@ -35,7 +35,7 @@ tools:context=".fragments.FragmentAARAVBillingHistory">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Billing History"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:textColor="@color/mainColor"
                 />
 
@@ -45,82 +45,82 @@ tools:context=".fragments.FragmentAARAVBillingHistory">
             android:id="@+id/billHistoryResultsTbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
             android:stretchColumns="*">
             <TableRow android:background="@color/mainColor">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Invoice #"
                     android:layout_column="0"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Status"
                     android:layout_column="1"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Printed Record"
-                    android:layout_column="2"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Billing Month"
-                    android:layout_column="3"
-                    android:layout_weight="1"
+                    android:layout_column="2"
+                    android:layout_weight="0.7"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Billing Due Date"
-                    android:layout_column="4"
-                    android:layout_weight="1"
+                    android:layout_column="3"
+                    android:layout_weight="0.7"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Invoice Amount"
-                    android:layout_column="5"
-                    android:layout_weight="1"
+                    android:layout_column="4"
+                    android:layout_weight="0.7"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Payment Amount"
+                    android:layout_column="5"
+                    android:layout_weight="0.7"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:text="Payment Received Date"
                     android:layout_column="6"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Payment Received Date"
-                    android:layout_column="7"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
             </TableRow>
         </TableLayout>

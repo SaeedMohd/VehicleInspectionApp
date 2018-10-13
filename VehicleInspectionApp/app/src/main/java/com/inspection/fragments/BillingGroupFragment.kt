@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,9 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.billing_group_layout.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
@@ -172,6 +176,19 @@ class BillingGroupFragment : Fragment() {
                 billingAdjustmentSelectedIndicator.visibility = View.VISIBLE
             }
         }
+
+        IndicatorsDataModel.getInstance().validateBillingSection()
+        refreshTabIndicators()
+        (activity as FormsActivity).refreshMenuIndicators()
+    }
+
+    fun refreshTabIndicators() {
+        if (IndicatorsDataModel.getInstance().tblBilling[0].Billing) billingButton.setTextColor(Color.parseColor("#26C3AA")) else billingButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingPlan) billingPlanButton.setTextColor(Color.parseColor("#26C3AA")) else billingPlanButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustments) billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA")) else billingAdjustmentButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingHistory) billingHistoryButton.setTextColor(Color.parseColor("#26C3AA")) else billingHistoryButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].Payments) paymentsButton.setTextColor(Color.parseColor("#26C3AA")) else paymentsButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenue) vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA")) else vendorRevenueButton.setTextColor(Color.parseColor("#A42600"))
     }
 
 

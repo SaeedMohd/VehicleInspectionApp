@@ -147,9 +147,43 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             isAllValid = false
         }
 
+        indicatorImage = (navigationMenu.findItem(R.id.surveys).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblSurveys[0].Surveys)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            isAllValid = false
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.photos).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblPhotos[0].Photos)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            isAllValid = false
+        }
+
         indicatorImage = (navigationMenu.findItem(R.id.facility).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo && IndicatorsDataModel.getInstance().tblFacility[0].Location &&
                 IndicatorsDataModel.getInstance().tblFacility[0].Personnel && IndicatorsDataModel.getInstance().tblFacility[0].RSP)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            isAllValid = false
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.complaints).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblComplaints[0].Complaints)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            isAllValid = false
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.billing).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingHistory && IndicatorsDataModel.getInstance().tblBilling[0].Billing &&
+                IndicatorsDataModel.getInstance().tblBilling[0].BillingPlan && IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustments &&
+                IndicatorsDataModel.getInstance().tblBilling[0].Payments&& IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenue)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else {
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
@@ -161,6 +195,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+
+
 
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

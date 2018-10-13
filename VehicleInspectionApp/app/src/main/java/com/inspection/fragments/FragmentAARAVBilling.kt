@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -245,47 +246,50 @@ class FragmentAARAVBilling : Fragment() {
         }
 
         val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
+        rowLayoutParam.weight = 0.4F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
+        rowLayoutParam.leftMargin = 10
+        rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.height = 30
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.weight = 0.6F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.height = 30
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.height = 30
+        rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.height = 30
+        rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
-        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.height = 30
+        rowLayoutParam5.width = 0
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
-        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam6.height = 30
+        rowLayoutParam6.width = 0
 
-
-        val rowLayoutParam7 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.column = 7
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        var dateTobeFormated = ""
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         FacilityDataModel.getInstance().tblBilling.apply {
             (0 until size).forEach {
@@ -295,22 +299,20 @@ class FragmentAARAVBilling : Fragment() {
                     if (it % 2 == 0) {
                         tableRow.setBackgroundResource(R.drawable.alt_row_color)
                     }
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
+
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     textView.text = get(it).BillingID.toString()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = "Test" // get(it).FAC_Addr1
-                    tableRow.addView(textView)
-
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam2
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    TableRow.LayoutParams()
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     textView.text = ""
                     try {
                         textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
@@ -321,34 +323,41 @@ class FragmentAARAVBilling : Fragment() {
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam3
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = ""
-                    tableRow.addView(textView)
-
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam4
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.layoutParams = rowLayoutParam2
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    TableRow.LayoutParams()
                     textView.text = get(it).BillingMonthNumber.monthNoToName()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam5
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).BillingDate.apiToAppFormatMMDDYYYY()
+                    textView.layoutParams = rowLayoutParam3
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.text = if (get(it).BillingDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam6
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.layoutParams = rowLayoutParam4
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     textView.text = get(it).BillingAmount.toString()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam7
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).PaymentDate.apiToAppFormatMMDDYYYY()
+                    textView.layoutParams = rowLayoutParam5
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.text = get(it).PaymentAmount.toString()
                     tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam6
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.text = if (get(it).PaymentDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).PaymentDate.apiToAppFormatMMDDYYYY()
+                    tableRow.addView(textView)
+
                     billingResultsTbl.addView(tableRow)
                 }
             }

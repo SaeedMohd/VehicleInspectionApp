@@ -31,6 +31,9 @@ class IndicatorsDataModel {
     var tblDeffeciencies= ArrayList<TblDeffeciencies>()
     var tblVisitation= ArrayList<TblVisitation>()
     var tblFacility= ArrayList<TblFacility>()
+    var tblComplaints= ArrayList<TblComplaints>()
+    var tblSurveys= ArrayList<TblSurveys>()
+    var tblPhotos= ArrayList<TblPhotos>()
 
     class TblBilling {
         var BillingPlan = false
@@ -38,6 +41,7 @@ class IndicatorsDataModel {
         var BillingAdjustments = false
         var Payments = false
         var VendorRevenue = false
+        var BillingHistory = false
     }
 
     class TblScopeOfServices {
@@ -49,6 +53,18 @@ class IndicatorsDataModel {
 
     class TblDeffeciencies {
         var Deffeciency= false
+    }
+
+    class TblSurveys {
+        var Surveys= false
+    }
+
+    class TblPhotos {
+        var Photos = false
+    }
+
+    class TblComplaints {
+        var Complaints= false
     }
 
     class TblFacility {
@@ -71,6 +87,18 @@ class IndicatorsDataModel {
         var Def = TblDeffeciencies()
         Def.Deffeciency=false;
         tblDeffeciencies.add(0,Def)
+        var Complaints = TblComplaints()
+        Complaints.Complaints=true;
+        tblComplaints.add(0,Complaints)
+
+        var Surveys = TblSurveys()
+        Surveys.Surveys=true;
+        tblSurveys.add(0,Surveys)
+
+        var Photos = TblPhotos()
+        Photos.Photos=true;
+        tblPhotos.add(0,Photos)
+
         var Visitation = TblVisitation()
         Visitation.Visitation=false;
         tblVisitation.add(0,Visitation)
@@ -80,6 +108,14 @@ class IndicatorsDataModel {
         Facility.Location=false;
         Facility.Personnel=false;
         tblFacility.add(0,Facility)
+        var Billing = TblBilling()
+        Billing.Billing=true;
+        Billing.BillingAdjustments=true
+        Billing.BillingHistory=true
+        Billing.BillingPlan=true
+        Billing.Payments=true
+        Billing.VendorRevenue=true
+        tblBilling.add(0,Billing)
     }
 
     fun validateBusinessRules() {
@@ -87,6 +123,10 @@ class IndicatorsDataModel {
         validateDeffecienciesSection()
         validateVisitationSection()
         validateFacilitySection()
+        validateComplaintsSection()
+        validateBillingSection()
+        validatePhotosSection()
+        validateSurveysSection()
 //        refreshIndicatorsView()
     }
 
@@ -101,10 +141,25 @@ class IndicatorsDataModel {
         validateDeffeciency()
     }
 
+    fun validateComplaintsSection() {
+        validateComplaints()
+    }
+
+    fun validateSurveysSection() {
+        validateSurveys()
+    }
+
+    fun validatePhotosSection() {
+        validatePhotos()
+    }
+
     fun validateVisitationSection() {
         validateVisitation()
     }
 
+    fun validateBillingSection() {
+
+    }
     fun validateFacilitySection(){
         validateFacilityGeneralInfo()
         validateFacilityRSP()
@@ -153,9 +208,23 @@ class IndicatorsDataModel {
         FacilityDataModel.getInstance().tblAffiliations.apply {
             (0 until size).forEach {
                 if (get(it).effDate.equals("")) isValid = false
+                if (get(it).AffiliationTypeID==0) isValid = false
+                if (get(it).AffiliationTypeDetailID==0) isValid = false
             }
         }
         tblScopeOfServices[0].Affiliations = isValid
+    }
+
+    fun validateComplaints(){
+
+    }
+
+    fun validateSurveys(){
+
+    }
+
+    fun validatePhotos(){
+
     }
 
     fun validateDeffeciency(){

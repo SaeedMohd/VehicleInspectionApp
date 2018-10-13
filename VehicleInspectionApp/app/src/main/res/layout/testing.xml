@@ -248,7 +248,6 @@
                     android:id="@+id/edit_contypell"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/affliationdetails"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     android:weightSum="5">
@@ -281,7 +280,6 @@
                     android:id="@+id/edit_contypell"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/affliationdetails"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     android:weightSum="5">
@@ -313,7 +311,6 @@
                     android:id="@+id/edit_contypell"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/affliationdetails"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"

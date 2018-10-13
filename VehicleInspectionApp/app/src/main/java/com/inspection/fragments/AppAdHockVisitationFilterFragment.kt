@@ -1428,6 +1428,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblAffiliations")) {
             var oneArray = TblAffiliations()
+            oneArray.AffiliationID = -1
             oneArray.AffiliationTypeDetailID = 0
             oneArray.AffiliationTypeID = 0
             oneArray.effDate = "";

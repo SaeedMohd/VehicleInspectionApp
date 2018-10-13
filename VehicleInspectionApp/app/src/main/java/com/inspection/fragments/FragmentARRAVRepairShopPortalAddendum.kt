@@ -77,7 +77,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         })
 
-        addNewAarButton.setOnClickListener(View.OnClickListener {
+        addNewAarButton.setOnClickListener {
 
             numberOfCardsReaderEditText.setText("")
             numberOfUnacknowledgedRecordsEditText.setText("")
@@ -120,7 +120,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
 
 
-        })
+        }
 
 
         startDateButton.setOnClickListener {

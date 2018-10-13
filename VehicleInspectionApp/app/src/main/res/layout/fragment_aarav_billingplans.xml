@@ -27,7 +27,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Billing Method"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textColor="@color/mainColor"
             />
 
@@ -38,6 +38,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
             android:layout_marginTop="5dp"
             android:layout_margin="5dp"
             android:enabled="false"
+            android:textSize="18sp"
             android:text="ACH"
             android:textStyle="bold"
             />
@@ -63,7 +64,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                 android:layout_height="wrap_content"
                 android:text="Billing Plan"
                 android:textColor="@color/mainColor"
-                android:textSize="18sp" />
+                android:textSize="22sp" />
 
             <Button
                 android:id="@+id/addNewPlanBtn"
@@ -85,81 +86,81 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
             android:id="@+id/billingPlansResultsTbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
             android:stretchColumns="*">
 
             <TableRow android:background="@color/mainColor">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Category"
+                    android:layout_marginLeft="10dp"
                     android:layout_column="0"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Name"
                     android:layout_column="1"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Frequency"
                     android:layout_column="1"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Effective Date"
                     android:layout_column="1"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"/>
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Expiration Date"
                     android:layout_column="1"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Cost"
                     android:layout_column="1"
-                    android:layout_weight="1"
+                    android:layout_weight="1    "
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Last Updated"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:text="Last Updated Date"
                     android:layout_column="1"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Updated By"
-                    android:layout_column="1"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
             </TableRow>
         </TableLayout>

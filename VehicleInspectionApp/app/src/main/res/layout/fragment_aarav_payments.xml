@@ -30,81 +30,80 @@
                     android:layout_height="wrap_content"
                     android:text="Invoice"
                     android:textColor="@color/mainColor"
-                    android:textSize="18sp" />
+                    android:textSize="22sp" />
 
 
                 <TableLayout
                     android:id="@+id/InvoiceResultsTbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:scrollbarAlwaysDrawHorizontalTrack="true"
                     android:stretchColumns="*">
                     >
                     <TableRow android:background="@color/mainColor">
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
                             android:text="Invoice #"
+                            android:layout_marginLeft="10dp"
                             android:layout_column="0"
                             android:layout_weight="1"
                             android:textColor="@color/white"
-                            android:layout_gravity="center_vertical"
+                            android:textSize="18sp"
+                            android:gravity="center_vertical"
                             />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Printed Record"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:text="Billing Month"
                             android:layout_column="1"
                             android:layout_weight="1"
                             android:textColor="@color/white"
-                            android:layout_gravity="center_vertical"
+                            android:textSize="18sp"
+                            android:gravity="center"
                             />
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Billing Month"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:text="Billing Due Date"
                             android:layout_column="2"
                             android:layout_weight="1"
                             android:textColor="@color/white"
-                            android:layout_gravity="center_vertical"
+                            android:textSize="18sp"
+                            android:gravity="center"
                             />
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Billing Due Date"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:text="Invoice Amount"
                             android:textStyle="bold"
                             android:layout_column="3"
                             android:layout_weight="1"
                             android:textColor="@color/white"
-                            android:layout_gravity="center_vertical"
+                            android:textSize="18sp"
+                            android:gravity="center"
                             />
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Invoice Amount"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:text="Payment Amount"
                             android:layout_column="4"
                             android:layout_weight="1"
                             android:textColor="@color/white"
-                            android:layout_gravity="center_vertical"
+                            android:textSize="18sp"
+                            android:gravity="center"
                             />
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Payment Amount"
-                            android:layout_column="6"
-                            android:layout_weight="1"
-                            android:textColor="@color/white"
-                            android:layout_gravity="center_vertical"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
                             android:text="Billing Amount Due"
-                            android:layout_column="7"
+                            android:layout_column="5"
                             android:layout_weight="1"
                             android:textColor="@color/white"
-                            android:layout_gravity="center_vertical"
+                            android:textSize="18sp"
+                            android:gravity="center"
                             />
                     </TableRow>
                 </TableLayout>
@@ -113,6 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
+                    android:visibility="gone"
                     android:layout_marginTop="30dp">
 
                     <TextView
@@ -146,6 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
                     android:scrollbarAlwaysDrawHorizontalTrack="true"
+                    android:visibility="gone"
                     android:stretchColumns="*">
                     <TableRow android:background="@color/mainColor">
                         <TextView

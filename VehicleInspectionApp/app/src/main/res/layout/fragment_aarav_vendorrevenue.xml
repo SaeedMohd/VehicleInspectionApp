@@ -35,7 +35,7 @@ tools:context=".fragments.FragmentAARAVVendorRevenue">
                 android:layout_height="wrap_content"
                 android:text="Vendor Revenue"
                 android:textColor="@color/mainColor"
-                android:textSize="18sp" />
+                android:textSize="22sp" />
 
             <Button
                 android:id="@+id/addNewVenRevBtn"
@@ -57,65 +57,73 @@ tools:context=".fragments.FragmentAARAVVendorRevenue">
             android:id="@+id/venRevResultsTbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
             android:layout_marginBottom="30dp"
             android:stretchColumns="*">
 
             <TableRow android:background="@color/mainColor">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Revenue ID"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:text="Revenue ID #"
                     android:layout_column="0"
                     android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="18sp"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Revenue Source"
                     android:layout_column="1"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Date of Check"
                     android:layout_column="2"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Amount"
                     android:layout_column="3"
                     android:layout_weight="1"
+                    android:textSize="18sp"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:text="Receipt Date"
                     android:layout_column="4"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Receipt Number"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:text="Receipt #"
                     android:layout_column="5"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
                     />
             </TableRow>
         </TableLayout>

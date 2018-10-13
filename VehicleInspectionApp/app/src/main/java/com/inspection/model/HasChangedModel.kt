@@ -262,6 +262,16 @@ class HasChangedModel {
         }
     }
 
+    fun changeDoneForSoSAffiliations() : Boolean {
+        if (groupSoSAffiliations[0].SoSAffiliations) {
+            groupSoS[0].SoSAffiliations=true
+            return true
+        } else {
+            groupSoS[0].SoSAffiliations=false
+            return false
+        }
+    }
+
 
     fun changeDoneForSoSFacilityServices() : Boolean {
         if (groupSoSFacilityServices[0].SoSFacilityServices) {
@@ -388,6 +398,14 @@ class HasChangedModel {
             changeWasDone = true
         }
         groupSoSPrograms[0].SoSPrograms= changeWasDone
+    }
+
+    fun checkIfChangeWasDoneforSoSAffiliations() {
+        var changeWasDone = false
+        if (changeDoneForSoSAffiliations()){
+            changeWasDone = true
+        }
+        groupSoSAffiliations[0].SoSAffiliations= changeWasDone
     }
 
     fun checkIfChangeWasDoneforSoSFacilityServices() {

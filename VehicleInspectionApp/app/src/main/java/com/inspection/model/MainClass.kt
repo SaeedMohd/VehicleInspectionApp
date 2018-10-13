@@ -317,6 +317,7 @@ class TblFacilityServices {
 }
 
 class TblAffiliations {
+    var AffiliationID = 0
     var AffiliationTypeID = 0
     var AffiliationTypeDetailID = 0
     var effDate = ""

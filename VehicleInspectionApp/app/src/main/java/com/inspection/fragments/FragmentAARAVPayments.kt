@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -183,46 +184,48 @@ class FragmentAARAVPayments : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.height = 30
+        rowLayoutParam.leftMargin = 10
+        rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.height = 30
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.height = 30
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.height = 30
+        rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.height = 30
+        rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
-        rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.height = 30
+        rowLayoutParam5.width = 0
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
-        rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
+        rowLayoutParam6.height = 30
+        rowLayoutParam6.width = 0
 
-
-        val rowLayoutParam7 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.column = 7
-        rowLayoutParam7.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-        var dateTobeFormated = ""
-
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         FacilityDataModel.getInstance().tblInvoiceInfo.apply {
             (0 until size).forEach {
@@ -231,48 +234,51 @@ class FragmentAARAVPayments : Fragment() {
                 if (it % 2 == 0) {
                     tableRow.setBackgroundResource(R.drawable.alt_row_color)
                 }
+                tableRow.layoutParams = rowLayoutParamRow
+                tableRow.minimumHeight = 30
+
                 if (get((it)).InvoiceId>0) {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
                     textView.text = get(it).InvoiceNumber
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).InvoiceFileName
-                    tableRow.addView(textView)
-
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam2
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    TableRow.LayoutParams()
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
                     textView.text = "TEST"
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam3
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
+                    textView.layoutParams = rowLayoutParam2
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
+                    TableRow.LayoutParams()
+                    textView.text = if (get(it).BillingDueDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam4
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.layoutParams = rowLayoutParam3
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
                     textView.text = get(it).InvoiceAmount.toString()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam5
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = get(it).CreditAmount.toString()
+                    textView.layoutParams = rowLayoutParam4
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
+                    textView.text = "Test"
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam6
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.text = "Test"
+                    textView.layoutParams = rowLayoutParam5
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
+                    textView.text = "TEST"
                     tableRow.addView(textView)
 
                     InvoiceResultsTbl.addView(tableRow)
