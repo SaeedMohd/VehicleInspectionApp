@@ -180,13 +180,13 @@ class FragmentAARAVBillingPlans : Fragment() {
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1.5F
+        rowLayoutParam1.weight = 2F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = 30
         rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.weight = 0.7F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = 30
         rowLayoutParam2.width = 0
@@ -204,7 +204,7 @@ class FragmentAARAVBillingPlans : Fragment() {
         rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.weight = 0.5F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = 30
         rowLayoutParam5.width = 0
@@ -243,7 +243,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView.layoutParams = rowLayoutParam1
                             textView.gravity = Gravity.CENTER_VERTICAL
                             textView.textSize = 18f
-                            textView.text = "Test"
+                            textView.text = if (TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}.size>0) TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}[0].BillingPlanTypeName else ""
                             tableRow.addView(textView)
 
                             textView = TextView(context)
@@ -256,28 +256,28 @@ class FragmentAARAVBillingPlans : Fragment() {
 
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam3
-                            textView.gravity = Gravity.CENTER_VERTICAL
+                            textView.gravity = Gravity.CENTER
                             textView.textSize = 18f
                             textView.text = if (get(it).EffectiveDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).EffectiveDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam4
-                            textView.gravity = Gravity.CENTER_VERTICAL
+                            textView.gravity = Gravity.CENTER
                             textView.textSize = 18f
                             textView.text = if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam5
-                            textView.gravity = Gravity.CENTER_VERTICAL
+                            textView.gravity = Gravity.CENTER
                             textView.textSize = 18f
-                            textView.text = "Test" // get(it).CITY
+                            textView.text = if (TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}.size>0) TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}[0].Cost else ""
                             tableRow.addView(textView)
 
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam6
-                            textView.gravity = Gravity.CENTER_VERTICAL
+                            textView.gravity = Gravity.CENTER
                             textView.textSize = 18f
                             textView.text = get(it).updateDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)

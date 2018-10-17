@@ -251,6 +251,8 @@ class TblPersonnel {
     var CertificationTypeId=""
     var CertificationDate=""
     var ExpirationDate=""
+    var ContractStartDate=""
+    var ContractEndDate=""
 }
 //    <CertificationNum/><ContractSigner>true</ContractSigner><Addr2/><PrimaryMailRecipient>true</PrimaryMailRecipient>
 
@@ -486,4 +488,16 @@ class TblPersonnelCertification{
     var CertificationDate = ""
     var ExpirationDate = ""
     var CertDesc = ""
+}
+
+class TblBillingAdjustments {
+    var AdjustmentId = 0
+    var FacId = 0
+    var EffectiveDate = ""
+    var Type = ""
+    var DescriptionId = ""
+    var Amount = 0
+    var Comments = ""
+    var LastUpdateBy = ""
+    var LastUpdateDate = ""
 }

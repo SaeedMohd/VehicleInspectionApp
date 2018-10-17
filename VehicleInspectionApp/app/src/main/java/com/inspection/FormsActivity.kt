@@ -135,8 +135,10 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         if (IndicatorsDataModel.getInstance().tblVisitation[0].Visitation)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else {
-            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
-            isAllValid = false
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != VisitationTypes.AdHoc) {
+                indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+                isAllValid = false
+            }
         }
 
         indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView

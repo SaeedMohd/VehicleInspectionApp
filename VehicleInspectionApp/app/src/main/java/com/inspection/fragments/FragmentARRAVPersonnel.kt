@@ -54,7 +54,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var mParam2: String? = null
     private var personnelTypeList = ArrayList<TypeTablesModel.personnelType>()
     private var certificationTypeList= ArrayList<TypeTablesModel.personnelCertificationType>()
-    private var states= arrayOf("select state","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
+    private var states= arrayOf("Select State","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
 
     private var personTypeArray = ArrayList<String>()
     private var certTypeArray = ArrayList<String>()
@@ -327,7 +327,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Certification")
-//                                    item.CertID= response.toString().substring(response.toString().indexOf(";CertID")+11,response.toString().indexOf("&lt;/CertID"))
+                                    item.CertID= response.toString().substring(response.toString().indexOf(";CertID")+11,response.toString().indexOf("&lt;/CertID"))
                                     FacilityDataModel.getInstance().tblPersonnelCertification.add(item)
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
@@ -399,9 +399,50 @@ class FragmentARRAVPersonnel : Fragment() {
                                     item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                     item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                     item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                    FacilityDataModel.getInstance().tblPersonnel.add(item)
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
+                                    if (ContractSigner.toBoolean()){
+                                        item.Addr1= if (newAdd1Text.text.toString().isNullOrEmpty()) "" else newAdd1Text.text.toString()
+                                        item.Addr2= if (newAdd2Text.text.toString().isNullOrEmpty()) "" else newAdd2Text.text.toString()
+                                        item.CITY= if (newCityText.text.toString().isNullOrEmpty()) "" else newCityText.text.toString()
+                                        item.ST= if (newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else newStateSpinner.selectedItem.toString()
+                                        item.ZIP= if (newZipText.text.toString().isNullOrEmpty()) "" else newZipText.text.toString()
+                                        item.ZIP4= if (newZipText2.text.toString().isNullOrEmpty()) "" else newZipText2.text.toString()
+                                        item.Phone= if (newPhoneText.text.equals("SELECT DATE")) "" else newPhoneText.text.toString()
+                                        item.Phone= if (newEmailText.text.equals("SELECT DATE")) "" else newEmailText.text.toString()
+                                        item.ContractStartDate = if (newCoStartDateBtn.text.equals("SELECT DATE")) "" else newCoStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                        item.ContractStartDate = if (newCoEndDateBtn.text.equals("SELECT DATE")) "" else newCoEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelSignerData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&addr1=%22test%22&addr2=%22test%22&city=%22123&st=%22123%22&phone=%22123%22&email=%22123%22&zip=&zip4=&contractStartDate=&contractEndDate=&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
+                                                Response.Listener { response ->
+                                                    activity!!.runOnUiThread {
+                                                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                                                            Utility.showSubmitAlertDialog(activity, true, "Contract Signer")
+                                                            FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                                            fillPersonnelTableView()
+                                                            altTableRow(2)
+                                                            IndicatorsDataModel.getInstance().validateFacilityPersonnel()
+                                                            if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                                            (activity as FormsActivity).refreshMenuIndicators()
+                                                        } else {
+                                                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                            Utility.showSubmitAlertDialog(activity,false,"Contract Signer (Error: "+ errorMessage+" )")
+                                                        }
+                                                        personnelLoadingView.visibility = View.GONE
+                                                        personnelLoadingText.text = "Loading ..."
+                                                    }
+                                                }, Response.ErrorListener {
+                                            Utility.showSubmitAlertDialog(activity, false, "Contract Signer (Error: "+it.message+" )")
+                                            personnelLoadingView.visibility = View.GONE
+                                            personnelLoadingText.text = "Loading ..."
+                                        }))
+                                    } else {
+                                        FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                        fillPersonnelTableView()
+                                        altTableRow(2)
+                                        IndicatorsDataModel.getInstance().validateFacilityPersonnel()
+                                        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                        (activity as FormsActivity).refreshMenuIndicators()
+                                    }
                                     fillPersonnelTableView()
                                     altTableRow(2)
                                     IndicatorsDataModel.getInstance().validateFacilityPersonnel()
@@ -2510,7 +2551,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 else
                     newCityText.setError(null)
 
-                if (newStateSpinner.selectedItem.toString().contains("select")){
+                if (newStateSpinner.selectedItem.toString().contains("Select")){
 
                     persn.personnelIsInputsValid=false
                     stateTextView.setError("required field")

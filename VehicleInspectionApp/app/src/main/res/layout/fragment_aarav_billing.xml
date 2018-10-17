@@ -92,7 +92,7 @@
                             android:layout_weight="0.6"
                             android:textColor="@color/white"
                             android:textSize="18sp"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             />
                         <TextView
                             android:layout_width="0dp"
@@ -102,26 +102,26 @@
                             android:layout_weight="1"
                             android:textColor="@color/white"
                             android:textSize="18sp"
-                            android:gravity="center_vertical"/>
+                            android:gravity="center"/>
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="30dp"
                             android:text="Billing Amount"
                             android:layout_column="4"
-                            android:layout_weight="1"
+                            android:layout_weight="0.7"
                             android:textColor="@color/white"
                             android:textSize="18sp"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             />
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="30dp"
                             android:text="Payment Amount"
                             android:layout_column="5"
-                            android:layout_weight="1"
+                            android:layout_weight="0.7"
                             android:textColor="@color/white"
                             android:textSize="18sp"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             />
                         <TextView
                             android:layout_width="0dp"
@@ -131,7 +131,7 @@
                             android:layout_weight="1"
                             android:textColor="@color/white"
                             android:textSize="18sp"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             />
                     </TableRow>
                 </TableLayout>

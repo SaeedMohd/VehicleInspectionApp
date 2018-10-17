@@ -271,13 +271,13 @@ class FragmentAARAVBilling : Fragment() {
         rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.weight = 0.7F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = 30
         rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.weight = 0.7F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = 30
         rowLayoutParam5.width = 0
@@ -324,7 +324,7 @@ class FragmentAARAVBilling : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     TableRow.LayoutParams()
                     textView.text = get(it).BillingMonthNumber.monthNoToName()
@@ -332,28 +332,28 @@ class FragmentAARAVBilling : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     textView.text = if (get(it).BillingDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     textView.text = get(it).BillingAmount.toString()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     textView.text = get(it).PaymentAmount.toString()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam6
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     textView.text = if (get(it).PaymentDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).PaymentDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)

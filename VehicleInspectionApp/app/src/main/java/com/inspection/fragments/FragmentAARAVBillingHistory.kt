@@ -71,31 +71,31 @@ class FragmentAARAVBillingHistory : Fragment() {
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 0.7F
+        rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = 30
         rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 0.7F
+        rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = 30
         rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 0.7F
+        rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = 30
         rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 0.7F
+        rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = 30
         rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 0.7F
+        rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = 30
         rowLayoutParam5.width = 0

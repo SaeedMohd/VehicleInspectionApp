@@ -209,7 +209,7 @@ class FragmentARRAVAffliations : Fragment() {
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Affiliation")
-                                    affiliationItem.AffiliationID= response.toString().substring(response.toString().indexOf(";AffiliationID")+18,response.toString().indexOf("&lt;/AffiliationID")).toInt()
+                                    affiliationItem.AffiliationID = response.toString().substring(response.toString().indexOf(";AffiliationID")+18,response.toString().indexOf("&lt;/AffiliationID")).toInt()
                                     FacilityDataModel.getInstance().tblAffiliations.add(affiliationItem)
                                     fillAffTableView()
                                     altLocationTableRow(2)

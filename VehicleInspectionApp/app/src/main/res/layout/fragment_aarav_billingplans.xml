@@ -108,7 +108,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_height="30dp"
                     android:text="Name"
                     android:layout_column="1"
-                    android:layout_weight="1.5"
+                    android:layout_weight="2"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:gravity="center_vertical"
@@ -118,7 +118,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_height="30dp"
                     android:text="Frequency"
                     android:layout_column="1"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:gravity="center_vertical"
@@ -131,7 +131,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="30dp"
@@ -140,17 +140,17 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:text="Cost"
                     android:layout_column="1"
-                    android:layout_weight="1    "
+                    android:layout_weight="0.5"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     />
                 <TextView
                     android:layout_width="0dp"
@@ -160,7 +160,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     />
             </TableRow>
         </TableLayout>

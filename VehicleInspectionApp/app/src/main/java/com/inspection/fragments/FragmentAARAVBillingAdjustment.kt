@@ -15,6 +15,8 @@ import android.widget.TableRow
 import android.widget.TextView
 
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormatMMDDYYYY
+import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_billingadjustment.*
 import java.text.SimpleDateFormat
@@ -127,7 +129,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 
 
         val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
+        rowLayoutParam.weight = 0.5F
         rowLayoutParam.leftMargin = 10
         rowLayoutParam.column = 0
         rowLayoutParam.height = 30
@@ -152,7 +154,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
         rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
+        rowLayoutParam4.weight = 0.7F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = 30
         rowLayoutParam4.width = 0
@@ -170,79 +172,77 @@ class FragmentAARAVBillingAdjustment : Fragment() {
         rowLayoutParam6.width = 0
 
 
-        val rowLayoutParam7 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.column = 7
-        rowLayoutParam7.height = 30
-        rowLayoutParam7.width = 0
+
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
-//        FacilityDataModel.getInstance().tbl.apply {
-//            (0 until size).forEach {
-        for (i in 1..2) {
+        FacilityDataModel.getInstance().tblBillingAdjustments.apply {
+            (0 until size).forEach {
 
-            var tableRow = TableRow(context)
-            if (i % 2 == 0) {
-                tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                if (get(it).AdjustmentId > -1) {
+
+                    var tableRow = TableRow(context)
+                    if (it % 2 == 0) {
+                        tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                    }
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
+
+
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.text = get(it).AdjustmentId.toString()
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
+                    textView.text = if (get(it).EffectiveDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).EffectiveDate.apiToAppFormatMMDDYYYY()
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam2
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    TableRow.LayoutParams()
+                    textView.text = get(it).Type
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam3
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.text = TypeTablesModel.getInstance().AdjustmentDescriptionType.filter { s->s.AdjustmentDescId==get(it).DescriptionId }[0].Description
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam4
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
+                    textView.text = get(it).Amount.toString()
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam5
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
+                    textView.text = get(it).LastUpdateBy
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam6
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 18f
+                    textView.text = if (get(it).LastUpdateDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).LastUpdateDate.apiToAppFormatMMDDYYYY()
+                    tableRow.addView(textView)
+
+                    billAdjResultsTbl.addView(tableRow)
+                }
             }
-            tableRow.layoutParams = rowLayoutParamRow
-            tableRow.minimumHeight = 30
-
-
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.gravity = Gravity.CENTER_VERTICAL
-            textView.textSize = 18f
-            textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.gravity = Gravity.CENTER_VERTICAL
-            textView.textSize = 18f
-            textView.text = "Test" // get(it).FAC_Addr1
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.gravity = Gravity.CENTER_VERTICAL
-            textView.textSize = 18f
-            TableRow.LayoutParams()
-            textView.text = "Test" // get(it).FAC_Addr2
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.gravity = Gravity.CENTER_VERTICAL
-            textView.textSize = 18f
-            textView.text = "Test" // get(it).CITY
-
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
-            textView.gravity = Gravity.CENTER_VERTICAL
-            textView.textSize = 18f
-            textView.text = "Test" // get(it).County
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam5
-            textView.gravity = Gravity.CENTER_VERTICAL
-            textView.textSize = 18f
-            textView.text = "Test" // get(it).ST
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam6
-            textView.gravity = Gravity.CENTER_VERTICAL
-            textView.textSize = 18f
-            textView.text = "Test" // get(it).ZIP + "-" + get(it).ZIP4
-            tableRow.addView(textView)
-
-            billAdjResultsTbl.addView(tableRow)
         }
 //        altVenRevTableRow(2)
 //            }

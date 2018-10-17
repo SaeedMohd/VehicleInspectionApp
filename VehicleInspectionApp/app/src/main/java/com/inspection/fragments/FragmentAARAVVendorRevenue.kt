@@ -150,7 +150,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
         rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.weight = 0.7F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = 30
         rowLayoutParam3.width = 0
@@ -162,7 +162,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
         rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
+        rowLayoutParam5.weight = 0.7F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = 30
         rowLayoutParam5.width = 0
@@ -203,7 +203,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     TableRow.LayoutParams()
                     textView.text = if (get(it).DateofCheck.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DateofCheck.apiToAppFormatMMDDYYYY()
@@ -211,7 +211,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     textView.text = get(it).Amount.toString()
 
@@ -219,14 +219,14 @@ class FragmentAARAVVendorRevenue : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     textView.text = if (get(it).ReceiptDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ReceiptDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     textView.text = get(it).ReceiptNumber
                     tableRow.addView(textView)

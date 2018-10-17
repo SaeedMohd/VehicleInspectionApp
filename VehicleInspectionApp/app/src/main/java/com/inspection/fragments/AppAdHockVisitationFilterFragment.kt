@@ -909,6 +909,16 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         }
 
+        if (jsonObj.has("tblBillingAdjustments")) {
+            if (jsonObj.get("tblBillingAdjustments").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblBillingAdjustments = Gson().fromJson<ArrayList<TblBillingAdjustments>>(jsonObj.get("tblBillingAdjustments").toString(), object : TypeToken<ArrayList<TblBillingAdjustments>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBillingAdjustments= Gson().fromJson<ArrayList<TblBillingAdjustments>>(jsonObj.get("tblBillingAdjustments").toString(), object : TypeToken<ArrayList<TblBillingAdjustments>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblBillingAdjustments.add(Gson().fromJson<TblBillingAdjustments>(jsonObj.get("tblBillingAdjustments").toString(), TblBillingAdjustments::class.java))
+                FacilityDataModelOrg.getInstance().tblBillingAdjustments.add(Gson().fromJson<TblBillingAdjustments>(jsonObj.get("tblBillingAdjustments").toString(), TblBillingAdjustments::class.java))
+            }
+        }
+
 
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
@@ -1414,6 +1424,26 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelCertification")
         }
+
+        if (jsonObj.has("tblBillingAdjustments")) {
+            if (!jsonObj.get("tblBillingAdjustments").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblBillingAdjustments")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblBillingAdjustments"))
+                    jsonObj.put("tblBillingAdjustments", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblBillingAdjustments")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblBillingAdjustments")
+        }
+
         return jsonObj
     }
 
@@ -1694,6 +1724,10 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
         } else if (key.equals("tblPersonnelCertification")) {
             var oneArray = TblPersonnelCertification()
             oneArray.PersonnelID=0
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblBillingAdjustments")) {
+            var oneArray = TblBillingAdjustments()
+            oneArray.AdjustmentId=-1
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 
