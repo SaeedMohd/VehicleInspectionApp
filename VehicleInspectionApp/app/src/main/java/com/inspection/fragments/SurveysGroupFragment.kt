@@ -59,27 +59,27 @@ class SurveysGroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var fragment = FragmentAARAVSoftware.newInstance("","")
+        var fragment = FragmentCSIResult.newInstance("","")
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
         updateSelectedIndicator(R.id.csiResultsButton)
 
         csiResultsButton.setOnClickListener {
-            var fragment = FragmentAARAVSoftware.newInstance("","")
+            var fragment = FragmentCSIResult.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
             updateSelectedIndicator(R.id.csiResultsButton)
         }
 
-        softwareButton.setOnClickListener {
-            var fragment = FragmentAARAVSoftware.newInstance("", "")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            updateSelectedIndicator(R.id.softwareButton)
-        }
+//        softwareButton.setOnClickListener {
+//            var fragment = FragmentAARAVSoftware.newInstance("", "")
+//            fragmentManager!!.beginTransaction()
+//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+//                    .commit()
+//            updateSelectedIndicator(R.id.softwareButton)
+//        }
 
     }
 

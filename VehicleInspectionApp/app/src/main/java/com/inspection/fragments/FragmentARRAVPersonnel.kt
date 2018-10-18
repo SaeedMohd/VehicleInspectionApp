@@ -409,7 +409,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                         item.ZIP= if (newZipText.text.toString().isNullOrEmpty()) "" else newZipText.text.toString()
                                         item.ZIP4= if (newZipText2.text.toString().isNullOrEmpty()) "" else newZipText2.text.toString()
                                         item.Phone= if (newPhoneText.text.equals("SELECT DATE")) "" else newPhoneText.text.toString()
-                                        item.Phone= if (newEmailText.text.equals("SELECT DATE")) "" else newEmailText.text.toString()
+                                        item.email= if (newEmailText.text.equals("SELECT DATE")) "" else newEmailText.text.toString()
                                         item.ContractStartDate = if (newCoStartDateBtn.text.equals("SELECT DATE")) "" else newCoStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                         item.ContractStartDate = if (newCoEndDateBtn.text.equals("SELECT DATE")) "" else newCoEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelSignerData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&addr1=%22test%22&addr2=%22test%22&city=%22123&st=%22123%22&phone=%22123%22&email=%22123%22&zip=&zip4=&contractStartDate=&contractEndDate=&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
@@ -1377,7 +1377,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView5.layoutParams = rowLayoutParam4
                 textView5.gravity = Gravity.CENTER_VERTICAL
 //                TableRow.LayoutParams()
-                textView5.text = get(it).RSP_Email
+                textView5.text = get(it).email
                 textView5.minimumHeight = 30
                 tableRow.addView(textView5)
 
@@ -1440,7 +1440,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val checkBox10 = CheckBox(context)
                 checkBox10.layoutParams = rowLayoutParam9
                 checkBox10.gravity = Gravity.CENTER
-                checkBox10.isChecked = (get(it).ContractSigner.equals("true"))
+                checkBox10.isChecked = get(it).ContractSigner
                 checkBox10.minimumHeight = 30
                 checkBox10.isEnabled=false
                 tableRow.addView(checkBox10)
@@ -1448,7 +1448,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val checkBox11 = CheckBox(context)
                 checkBox11.layoutParams = rowLayoutParam10
                 checkBox11.gravity = Gravity.CENTER
-                checkBox11.isChecked = (get(it).PrimaryMailRecipient.equals("true"))
+                checkBox11.isChecked = get(it).PrimaryMailRecipient
                 checkBox11.isEnabled=false
                 checkBox11.minimumHeight = 30
                 tableRow.addView(checkBox11)

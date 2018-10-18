@@ -501,3 +501,26 @@ class TblBillingAdjustments {
     var LastUpdateBy = ""
     var LastUpdateDate = ""
 }
+
+class TblAAAPortalEmailFacilityRepTable {
+    var Year = ""
+    var Quarter = ""
+    var Month = ""
+    var Club_x0020_Code = ""
+    var ContractSID = ""
+    var Facility_x0020__x0023_ = ""
+    var RO_x0020_Count = ""
+    var Records_x0020_Received = ""
+    var Valid_x0020_Phone_x0020_Numbers = ""
+    var Passed_x0020_Business_x0020_Rules = ""
+    var Total_x0020_Responses = ""
+    var Q1_x0020_Satisfied = ""
+    var Q7_x0020_Return = ""
+    var Q2_x0020_Repair = ""
+    var Q3_x0020_Personnel = ""
+    var Q4_x0020_Estimate = ""
+    var Q5_x0020_Clean = ""
+    var Q6_x0020_Ready = ""
+    var Q8_x0020_Member = ""
+    var Q9_x0020_Choose = ""
+}

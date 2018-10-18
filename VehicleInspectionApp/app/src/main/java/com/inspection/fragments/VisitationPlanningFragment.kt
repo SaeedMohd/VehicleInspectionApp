@@ -1202,6 +1202,18 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
             }
         }
 
+        if (jsonObj.has("AAAPortalEmailFacilityRepTable")) {
+            if (jsonObj.get("AAAPortalEmailFacilityRepTable").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblAAAPortalEmailFacilityRepTable = Gson().fromJson<ArrayList<TblAAAPortalEmailFacilityRepTable>>(jsonObj.get("AAAPortalEmailFacilityRepTable").toString(), object : TypeToken<ArrayList<TblAAAPortalEmailFacilityRepTable>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable= Gson().fromJson<ArrayList<TblAAAPortalEmailFacilityRepTable>>(jsonObj.get("AAAPortalEmailFacilityRepTable").toString(), object : TypeToken<ArrayList<TblAAAPortalEmailFacilityRepTable>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblAAAPortalEmailFacilityRepTable.add(Gson().fromJson<TblAAAPortalEmailFacilityRepTable>(jsonObj.get("AAAPortalEmailFacilityRepTable").toString(), TblAAAPortalEmailFacilityRepTable::class.java))
+                FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable.add(Gson().fromJson<TblAAAPortalEmailFacilityRepTable>(jsonObj.get("AAAPortalEmailFacilityRepTable").toString(), TblAAAPortalEmailFacilityRepTable::class.java))
+            }
+//            FacilityDataModel.getInstance().tblAAAPortalEmailFacilityRepTable.sortedWith(compareBy{ it.Year.toInt()}).sortedWith(compareBy { it.Quarter.toInt() }).sortedWith(compareBy { it.Month.toInt() }).toCollection()
+//            FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable = FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable.sortedWith(compareBy{ it.Year.toInt()}).sortedWith(compareBy { it.Quarter.toInt() }).sortedWith(compareBy { it.Month.toInt()}))
+        }
+//
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
         IndicatorsDataModel.getInstance().validateBusinessRules()
@@ -1725,6 +1737,25 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblBillingAdjustments")
         }
+
+        if (jsonObj.has("tblAAAPortalEmailFacilityRepTable")) {
+            if (!jsonObj.get("tblAAAPortalEmailFacilityRepTable").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblAAAPortalEmailFacilityRepTable")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblAAAPortalEmailFacilityRepTable"))
+                    jsonObj.put("tblAAAPortalEmailFacilityRepTable", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblAAAPortalEmailFacilityRepTable")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblAAAPortalEmailFacilityRepTable")
+        }
 //
         return jsonObj
     }
@@ -2012,6 +2043,10 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         } else if (key.equals("tblBillingAdjustments")) {
             var oneArray = TblBillingAdjustments()
             oneArray.AdjustmentId=-1
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblAAAPortalEmailFacilityRepTable")) {
+            var oneArray = TblAAAPortalEmailFacilityRepTable()
+            oneArray.ContractSID="-1"
             jsonObj.put(key, Gson().toJson(oneArray))
         }
         //

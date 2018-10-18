@@ -69,7 +69,7 @@ class FacilityDataModel {
     var tblVehicleServices= ArrayList<TblVehicleServices>()
     var tblPersonnelCertification= ArrayList<TblPersonnelCertification>()
     var tblBillingAdjustments = ArrayList<TblBillingAdjustments>()
-
+    var tblAAAPortalEmailFacilityRepTable = ArrayList<TblAAAPortalEmailFacilityRepTable>()
 
 
 //    class TblFacilities {
