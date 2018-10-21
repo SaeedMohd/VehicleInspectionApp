@@ -91,10 +91,8 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
                 Response.Listener { response ->
                     Log.v("****response", response)
-                    activity!!.runOnUiThread(Runnable {
+                    activity!!.runOnUiThread {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-
-                        Log.v("loading user"," request: "+Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail)
                         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread(Runnable {
@@ -107,7 +105,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                                                 specialistClubCodes.add(sn.clubcode)
                                             }
 
-                                                visitationSpecialistName.setText(requiredSpecialistName)
+                                            visitationSpecialistName.setText(requiredSpecialistName)
 
                                         }
 
@@ -120,7 +118,7 @@ class VisitationPlanningFragment : android.support.v4.app.Fragment() {
                             Log.v("Loading error", "" + it.message)
                         }))
 
-                    })
+                    }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading specialists")
             Log.v("Loading error", "" + it.message)
