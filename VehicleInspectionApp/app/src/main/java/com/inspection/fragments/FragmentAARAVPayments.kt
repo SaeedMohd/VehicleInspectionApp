@@ -4,7 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -227,7 +227,7 @@ class FragmentAARAVPayments : Fragment() {
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
-        FacilityDataModel.getInstance().tblInvoiceInfo.apply {
+        FacilityDataModel.getInstance().tblInvoiceInfoUpdated.apply {
             (0 until size).forEach {
 
                 var tableRow = TableRow(context)
@@ -237,7 +237,7 @@ class FragmentAARAVPayments : Fragment() {
                 tableRow.layoutParams = rowLayoutParamRow
                 tableRow.minimumHeight = 30
 
-                if (get((it)).InvoiceId>0) {
+                if (!get((it)).InvoiceId.equals("-1")) {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
@@ -249,7 +249,7 @@ class FragmentAARAVPayments : Fragment() {
                     textView.layoutParams = rowLayoutParam1
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = "TEST"
+                    textView.text = get(it).BillingMonth
                     tableRow.addView(textView)
 
                     textView = TextView(context)
@@ -264,21 +264,21 @@ class FragmentAARAVPayments : Fragment() {
                     textView.layoutParams = rowLayoutParam3
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = get(it).InvoiceAmount.toString()
+                    textView.text = if (get(it).InvoiceAmount.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = "Test"
+                    textView.text = if (get(it).AmountReceived.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = "TEST"
+                    textView.text = if (get(it).BillBalanceDue.isNullOrEmpty()) "" else "%.3f".format(get(it).BillBalanceDue.toFloat())
                     tableRow.addView(textView)
 
                     InvoiceResultsTbl.addView(tableRow)

@@ -5,8 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -316,6 +316,18 @@ class FragmentVisitation : Fragment() {
 //                Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
         })
+
+
+        saveButton.setOnClickListener {
+//            if (validateInputs()) {
+//                progressBarTextVal.text = "Saving ..."
+//                dialogueLoadingView.visibility = View.VISIBLE
+//            } else {
+//                Utility.showValidationAlertDialog(activity,"Please fill the required fields")
+//            }
+        }
+
+
 
         emailPdfCheckBox.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility = b

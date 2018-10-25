@@ -2,9 +2,10 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +59,9 @@ class SurveysGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        csiResultsButton.setTextColor(Color.parseColor("#26C3AA"))
+        softwareButton.setTextColor(Color.parseColor("#26C3AA"))
+        softwareButton.visibility = View.GONE
         var fragment = FragmentCSIResult.newInstance("","")
         fragmentManager!!.beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
@@ -84,17 +87,17 @@ class SurveysGroupFragment : Fragment() {
     }
 
     fun updateSelectedIndicator(selectedViewId: Int){
-        when(selectedViewId){
-            R.id.csiResultsButton->{
-                csiResultsSelectedIndicator.visibility = View.VISIBLE
-                softwareSelectedIndicator.visibility = View.INVISIBLE
-            }
-
-            R.id.softwareButton->{
-                csiResultsSelectedIndicator.visibility = View.INVISIBLE
-                softwareSelectedIndicator.visibility = View.VISIBLE
-            }
-        }
+//        when(selectedViewId){
+//            R.id.csiResultsButton->{
+//                csiResultsSelectedIndicator.visibility = View.VISIBLE
+//                softwareSelectedIndicator.visibility = View.INVISIBLE
+//            }
+//
+//            R.id.softwareButton->{
+//                csiResultsSelectedIndicator.visibility = View.INVISIBLE
+//                softwareSelectedIndicator.visibility = View.VISIBLE
+//            }
+//        }
     }
 
 

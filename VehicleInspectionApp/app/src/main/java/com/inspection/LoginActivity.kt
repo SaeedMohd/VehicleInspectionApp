@@ -9,33 +9,22 @@ import android.app.ProgressDialog
 import android.content.*
 import android.os.AsyncTask
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
+import android.widget.Button
+import androidx.appcompat.widget.ButtonBarLayout
 
 
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GooglePlayServicesUtil
-import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.ResultCallback
-import com.google.android.gms.plus.People
-import com.google.android.gms.plus.Plus
 import com.google.gson.Gson
-import com.inspection.imageloader.Utils
 import com.inspection.model.AccountDetailModel
 import com.inspection.model.UserAccountModel
 import com.inspection.model.UserProfileModel
 import com.inspection.model.VehicleProfileModel
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Utility
-import com.inspection.R
 import com.inspection.Utils.toast
 import com.inspection.serverTasks.*
 import kotlinx.android.synthetic.main.activity_login.*

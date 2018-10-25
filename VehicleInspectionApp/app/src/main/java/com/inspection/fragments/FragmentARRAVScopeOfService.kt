@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.transition.Visibility
@@ -29,8 +29,6 @@ import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import org.json.JSONException
 import org.json.JSONObject
-import org.json.XML
-import com.google.android.gms.drive.metadata.CustomPropertyKey.fromJson
 import com.google.gson.GsonBuilder
 import com.inspection.FormsActivity
 import com.inspection.MainActivity

@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -26,7 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class FragmentARRAnualVisitation : android.support.v4.app.Fragment() {
+class FragmentARRAnualVisitation : Fragment() {
 
     var facilityNames = ArrayList<String>()
     var facilitiesList = ArrayList<AAAFacilityComplete>()

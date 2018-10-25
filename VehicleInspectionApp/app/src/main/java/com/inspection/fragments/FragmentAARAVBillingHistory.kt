@@ -3,7 +3,7 @@ package com.inspection.fragments
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +13,7 @@ import android.widget.TableRow
 import android.widget.TextView
 
 import com.inspection.R
+import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.fragment_aarav_billinghistory.*
 
@@ -109,10 +110,10 @@ class FragmentAARAVBillingHistory : Fragment() {
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
-        FacilityDataModel.getInstance().tblBillingHistoryReport.apply {
+        FacilityDataModel.getInstance().tblInvoiceInfoUpdated.apply {
             (0 until size).forEach {
 
-                if (get(it).BillingHistoryReportID>0) {
+                if (!get(it).InvoiceId.equals("-1")) {
 
                     var tableRow = TableRow(context)
                     if (it % 2 == 0) {
@@ -125,14 +126,14 @@ class FragmentAARAVBillingHistory : Fragment() {
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 18f
-                    textView.text = "test"
+                    textView.text = get(it).InvoiceNumber
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = "Test" // get(it).FAC_Addr1
+                    textView.text = get(it).InvoiceStatusName
                     tableRow.addView(textView)
 
                     textView = TextView(context)
@@ -140,36 +141,35 @@ class FragmentAARAVBillingHistory : Fragment() {
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     TableRow.LayoutParams()
-                    textView.text = "Test" // get(it).FAC_Addr2
+                    textView.text = get(it).BillingMonth
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = "Test" // get(it).CITY
-
+                    textView.text = if (get(it).BillingDueDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = "Test" // get(it).County
+                    textView.text = if (get(it).InvoiceAmount.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = "Test" // get(it).ST
+                    textView.text = if (get(it).AmountReceived.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam6
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = "Test" // get(it).ZIP + "-" + get(it).ZIP4
+                    textView.text = if (get(it).InvoicePrintDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     billHistoryResultsTbl.addView(tableRow)

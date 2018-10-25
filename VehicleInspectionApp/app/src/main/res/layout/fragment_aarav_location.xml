@@ -782,7 +782,7 @@
         <!--android:layout_marginBottom="5dp"-->
         <!--android:visibility="gone"-->
         <!--android:id="@+id/addNewLocationDialog">-->
-        <!--<android.support.v7.widget.CardView-->
+        <!--<androidx.cardview.widget.CardView-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
             <!--app:cardCornerRadius="5dp"-->
@@ -1082,7 +1082,7 @@
 
             <!--</TableLayout>-->
 
-        <!--</android.support.v7.widget.CardView>-->
+        <!--</androidx.cardview.widget.CardView>-->
     <!--</ScrollView>-->
 
 
@@ -1094,7 +1094,7 @@
         android:layout_marginBottom="5dp"
         android:visibility="gone"
         android:id="@+id/editLocationDialog">
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
@@ -1190,11 +1190,11 @@
 
             </TableLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -1337,8 +1337,8 @@
             <!--</TableRow>-->
 
         </TableLayout>
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
         android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -1462,9 +1462,9 @@
             <!--</TableRow>-->
 
         </TableLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -1588,8 +1588,8 @@
             <!--</TableRow>-->
 
         </TableLayout>
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
         android:layout_width="800dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -1689,7 +1689,7 @@
             </TableRow>
 
         </TableLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <RelativeLayout
         android:id="@+id/contactInfoLoadingView"

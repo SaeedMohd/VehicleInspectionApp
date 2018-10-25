@@ -149,6 +149,20 @@ class TblVisitationTracking {
 
 }
 
+class TblVisitationDetailsData{
+    var facnum = 0
+    var clubcode = 0
+    var StaffTraining = ""
+    var QualityControl = ""
+    var AARSigns = ""
+    var CertificaterOfApproval = ""
+    var MemberBenefitPoster = ""
+    var insertBy=""
+    var insertDate=""
+    var updateBy = ""
+    var updateDate=""
+}
+
 class TblFacilityType {
     var FacilityTypeName = ""
 }
@@ -374,7 +388,9 @@ class TblBilling {
     var BillingID = 0
     var ACHParticipant = 0
     var RevenueSourceID = 0
+    var RevenueSourceName = ""
     var BillingMonthNumber = 1
+    var BillingMonth = ""
     var BillingDate = ""
     var SecondBillDate = ""
     var BillingAmount = 0.0
@@ -386,8 +402,7 @@ class TblBilling {
     var insertDate = ""
     var updateBy = ""
     var updateDate = ""
-    var BillingPlanID = 0
-    var ResubmitFlag = 0
+    var PrintedRecLinkName = ""
 }
 
 class TblBillingPlan {
@@ -402,6 +417,10 @@ class TblBillingPlan {
     var insertDate = ""
     var updateBy = ""
     var updateDate = ""
+    var BillingPlanCatgName=""
+    var BillingPlanTypeName=""
+    var BillingPlanFrequencyTypeName=""
+    var Cost=""
 }
 
 class TblFacilityBillingDetail {
@@ -434,14 +453,39 @@ class TblInvoiceInfo {
     var updateDate = ""
 }
 
+class InvoiceInfo {
+    var InvoiceStatusName = ""
+    var BillingMonthNumber = 0
+    var BillingMonth = ""
+    var BillBalanceDue = ""
+    var BillingAmount = ""
+    var AmountReceived = ""
+    var InvoiceId = ""
+    var FACID = 0
+    var InvoiceNumber = ""
+    var InvoiceAmount = ""
+    var CreditAmount = ""
+    var BillingDueDate = ""
+    var InvoicePrintDate = ""
+    var InvoiceStatusId =""
+    var ACHParticipant = ""
+    var InvoiceFileName = ""
+    var insertBy = ""
+    var insertDate = ""
+    var updateBy = ""
+    var updateDate = ""
+}
+
+
 class TblVendorRevenue {
     var FACID = 0
     var VendorRevenueID = 0
-    var DateofCheck = ""
-    var Amount = 0.0
+    var DateOfCheck = ""
+    var Amount = ""
     var ReceiptDate = ""
     var ReceiptNumber = ""
     var RevenueSourceID = 0
+    var RevenueSourceName = ""
     var StateRevenueAcct = ""
     var Comments = ""
     var insertBy = ""
@@ -495,7 +539,7 @@ class TblBillingAdjustments {
     var FacId = 0
     var EffectiveDate = ""
     var Type = ""
-    var DescriptionId = ""
+    var Description = ""
     var Amount = 0
     var Comments = ""
     var LastUpdateBy = ""

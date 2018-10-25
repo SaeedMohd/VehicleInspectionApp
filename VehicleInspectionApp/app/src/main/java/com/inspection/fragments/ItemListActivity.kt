@@ -2,14 +2,15 @@ package com.inspection.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import com.inspection.R
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.activity_item_list.*
@@ -34,13 +35,13 @@ class ItemListActivity : AppCompatActivity() {
     var isValidating = false
 
     private var mTwoPane: Boolean = false
-    var activeFragment: android.support.v4.app.Fragment? = null
+    var activeFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
 
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
 //        toolbar.title = title
 
 
@@ -148,7 +149,7 @@ class ItemListActivity : AppCompatActivity() {
 
             if (selectedPosition == position) {
                 holder.listLayout.setBackgroundColor(mParentActivity.getColor(R.color.light_gray))
-                var fragment: android.support.v4.app.Fragment
+                var fragment: Fragment
                 if (mTwoPane) {
                     Log.v("POSITION:  ", position.toString())
 //                    if (FragmentARRAnnualVisitationRecords.shouldShowVisitation) {

@@ -9,8 +9,7 @@ import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Debug
-import android.support.constraint.R.id.gone
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log

@@ -10,7 +10,7 @@ import com.inspection.MainActivity
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_forms.*
 
-class FragmentForms : android.support.v4.app.Fragment(), OnClickListener {
+class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
     var formsStringsArray = arrayOf("Visitation Planning", "APP / Ad Hoc Visitation", "My Performance")
 

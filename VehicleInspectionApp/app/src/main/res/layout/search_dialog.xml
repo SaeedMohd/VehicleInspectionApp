@@ -3,10 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    
+    <!--android:drawableLeft=@drawable/places_ic_search-->
  <EditText
      android:id="@+id/searchDialogEditText"
-     android:drawableLeft="@drawable/places_ic_search"
      android:paddingLeft="10dp"
      android:lines="1"
      android:layout_width="match_parent"

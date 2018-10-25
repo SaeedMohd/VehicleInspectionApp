@@ -301,7 +301,7 @@
         android:layout_marginTop="5dp"
         android:visibility="gone">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
@@ -442,7 +442,7 @@
                 </TableRow>
 
             </TableLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 
     <ScrollView
@@ -454,7 +454,7 @@
         android:layout_marginTop="5dp"
         android:visibility="gone">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
@@ -747,7 +747,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Contract Signer"
-                            android:textStyle="bold" />
+                            />
 
                         <CheckBox
                             android:id="@+id/newACSCheck"
@@ -757,7 +757,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Primary Mail Recipients"
-                            android:textStyle="bold" />
+                            />
 
                     </LinearLayout>
 
@@ -1014,7 +1014,7 @@
 
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
     <ScrollView
         android:id="@+id/edit_addNewPersonnelDialogue"
@@ -1025,7 +1025,7 @@
         android:layout_marginTop="5dp"
         android:visibility="gone">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
@@ -1135,7 +1135,7 @@
                             android:layout_margin="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/textview_background"
-                            android:textStyle="bold" />
+                            />
 
                         <EditText
                             android:id="@+id/edit_newLastNameText"
@@ -1320,7 +1320,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Contract Signer"
-                            android:textStyle="bold" />
+                            />
 
                         <CheckBox
                             android:id="@+id/edit_newACSCheck"
@@ -1330,7 +1330,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Primary Mail Recipients"
-                            android:textStyle="bold" />
+                            />
 
                     </LinearLayout>
 
@@ -1587,7 +1587,7 @@
 
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 
     <RelativeLayout

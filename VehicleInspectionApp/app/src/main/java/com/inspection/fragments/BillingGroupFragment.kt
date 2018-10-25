@@ -5,7 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +20,7 @@ import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.billing_group_layout.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
+import kotlinx.android.synthetic.main.surveys_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 

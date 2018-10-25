@@ -10,14 +10,16 @@ import android.view.ViewGroup
 
 
 import com.inspection.R
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import com.inspection.MainActivity
 
 import kotlinx.android.synthetic.main.fragment_main_visitation.*
 import android.app.AlertDialog
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.*
 
 
@@ -29,7 +31,7 @@ import kotlinx.android.synthetic.*
  * Use the [FragmentAnnualVisitationPager.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
+class FragmentAnnualVisitationPager : Fragment() {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -226,9 +228,9 @@ class FragmentAnnualVisitationPager : android.support.v4.app.Fragment() {
         }
     }
 
-    inner class SectionsPagerAdapter(fm: android.support.v4.app.FragmentManager) : FragmentStatePagerAdapter(fm) {
-        override fun getItem(position: Int): android.support.v4.app.Fragment? {
-            var ft: android.support.v4.app.Fragment? = null
+    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+        override fun getItem(position: Int): Fragment? {
+            var ft: Fragment? = null
             when (position) {
 //                 0 -> ft = FragmentARRAnualVisitation.newInstance("Test", "Test")
                  1 -> ft = FacilityGeneralInformationFragment.newInstance(false)

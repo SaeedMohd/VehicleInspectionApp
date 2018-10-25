@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -47,12 +47,12 @@ import java.util.concurrent.TimeUnit
  * Use the [FrgmentARRAnnualVisitationRecords.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
+class AppAdHockVisitationFilterFragment : Fragment() {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-    var fragment: android.support.v4.app.Fragment? = null
+    var fragment: Fragment? = null
     private var mListener: OnFragmentInteractionListener? = null
     var facilityNames = ArrayList<String>()
     var facilitiesList = ArrayList<CsiFacility>()
@@ -805,23 +805,23 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         }
 
-        if (jsonObj.has("tblBilling")) {
-            if (jsonObj.get("tblBilling").toString().startsWith("[")) {
-                FacilityDataModel.getInstance().tblBilling = Gson().fromJson<ArrayList<TblBilling>>(jsonObj.get("tblBilling").toString(), object : TypeToken<ArrayList<TblBilling>>() {}.type)
-                FacilityDataModelOrg.getInstance().tblBilling = Gson().fromJson<ArrayList<TblBilling>>(jsonObj.get("tblBilling").toString(), object : TypeToken<ArrayList<TblBilling>>() {}.type)
+        if (jsonObj.has("Billing")) {
+            if (jsonObj.get("Billing").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblBilling = Gson().fromJson<ArrayList<TblBilling>>(jsonObj.get("Billing").toString(), object : TypeToken<ArrayList<TblBilling>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBilling = Gson().fromJson<ArrayList<TblBilling>>(jsonObj.get("Billing").toString(), object : TypeToken<ArrayList<TblBilling>>() {}.type)
             } else {
-                FacilityDataModel.getInstance().tblBilling.add(Gson().fromJson<TblBilling>(jsonObj.get("tblBilling").toString(), TblBilling::class.java))
-                FacilityDataModelOrg.getInstance().tblBilling.add(Gson().fromJson<TblBilling>(jsonObj.get("tblBilling").toString(), TblBilling::class.java))
+                FacilityDataModel.getInstance().tblBilling.add(Gson().fromJson<TblBilling>(jsonObj.get("Billing").toString(), TblBilling::class.java))
+                FacilityDataModelOrg.getInstance().tblBilling.add(Gson().fromJson<TblBilling>(jsonObj.get("Billing").toString(), TblBilling::class.java))
             }
         }
 
-        if (jsonObj.has("tblBillingPlan")) {
-            if (jsonObj.get("tblBillingPlan").toString().startsWith("[")) {
-                FacilityDataModel.getInstance().tblBillingPlan = Gson().fromJson<ArrayList<TblBillingPlan>>(jsonObj.get("tblBillingPlan").toString(), object : TypeToken<ArrayList<TblBillingPlan>>() {}.type)
-                FacilityDataModelOrg.getInstance().tblBillingPlan = Gson().fromJson<ArrayList<TblBillingPlan>>(jsonObj.get("tblBillingPlan").toString(), object : TypeToken<ArrayList<TblBillingPlan>>() {}.type)
+        if (jsonObj.has("BillingPlan")) {
+            if (jsonObj.get("BillingPlan").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblBillingPlan = Gson().fromJson<ArrayList<TblBillingPlan>>(jsonObj.get("BillingPlan").toString(), object : TypeToken<ArrayList<TblBillingPlan>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBillingPlan = Gson().fromJson<ArrayList<TblBillingPlan>>(jsonObj.get("BillingPlan").toString(), object : TypeToken<ArrayList<TblBillingPlan>>() {}.type)
             } else {
-                FacilityDataModel.getInstance().tblBillingPlan.add(Gson().fromJson<TblBillingPlan>(jsonObj.get("tblBillingPlan").toString(), TblBillingPlan::class.java))
-                FacilityDataModelOrg.getInstance().tblBillingPlan.add(Gson().fromJson<TblBillingPlan>(jsonObj.get("tblBillingPlan").toString(), TblBillingPlan::class.java))
+                FacilityDataModel.getInstance().tblBillingPlan.add(Gson().fromJson<TblBillingPlan>(jsonObj.get("BillingPlan").toString(), TblBillingPlan::class.java))
+                FacilityDataModelOrg.getInstance().tblBillingPlan.add(Gson().fromJson<TblBillingPlan>(jsonObj.get("BillingPlan").toString(), TblBillingPlan::class.java))
             }
         }
 
@@ -845,13 +845,13 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         }
 
-        if (jsonObj.has("tblVendorRevenue")) {
-            if (jsonObj.get("tblVendorRevenue").toString().startsWith("[")) {
-                FacilityDataModel.getInstance().tblVendorRevenue = Gson().fromJson<ArrayList<TblVendorRevenue>>(jsonObj.get("tblVendorRevenue").toString(), object : TypeToken<ArrayList<TblVendorRevenue>>() {}.type)
-                FacilityDataModelOrg.getInstance().tblVendorRevenue = Gson().fromJson<ArrayList<TblVendorRevenue>>(jsonObj.get("tblVendorRevenue").toString(), object : TypeToken<ArrayList<TblVendorRevenue>>() {}.type)
+        if (jsonObj.has("VendorRevenue")) {
+            if (jsonObj.get("VendorRevenue").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblVendorRevenue = Gson().fromJson<ArrayList<TblVendorRevenue>>(jsonObj.get("VendorRevenue").toString(), object : TypeToken<ArrayList<TblVendorRevenue>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblVendorRevenue = Gson().fromJson<ArrayList<TblVendorRevenue>>(jsonObj.get("VendorRevenue").toString(), object : TypeToken<ArrayList<TblVendorRevenue>>() {}.type)
             } else {
-                FacilityDataModel.getInstance().tblVendorRevenue.add(Gson().fromJson<TblVendorRevenue>(jsonObj.get("tblVendorRevenue").toString(), TblVendorRevenue::class.java))
-                FacilityDataModelOrg.getInstance().tblVendorRevenue.add(Gson().fromJson<TblVendorRevenue>(jsonObj.get("tblVendorRevenue").toString(), TblVendorRevenue::class.java))
+                FacilityDataModel.getInstance().tblVendorRevenue.add(Gson().fromJson<TblVendorRevenue>(jsonObj.get("VendorRevenue").toString(), TblVendorRevenue::class.java))
+                FacilityDataModelOrg.getInstance().tblVendorRevenue.add(Gson().fromJson<TblVendorRevenue>(jsonObj.get("VendorRevenue").toString(), TblVendorRevenue::class.java))
             }
         }
 
@@ -909,13 +909,13 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         }
 
-        if (jsonObj.has("tblBillingAdjustments")) {
-            if (jsonObj.get("tblBillingAdjustments").toString().startsWith("[")) {
-                FacilityDataModel.getInstance().tblBillingAdjustments = Gson().fromJson<ArrayList<TblBillingAdjustments>>(jsonObj.get("tblBillingAdjustments").toString(), object : TypeToken<ArrayList<TblBillingAdjustments>>() {}.type)
-                FacilityDataModelOrg.getInstance().tblBillingAdjustments= Gson().fromJson<ArrayList<TblBillingAdjustments>>(jsonObj.get("tblBillingAdjustments").toString(), object : TypeToken<ArrayList<TblBillingAdjustments>>() {}.type)
+        if (jsonObj.has("BillingAdjustments")) {
+            if (jsonObj.get("BillingAdjustments").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblBillingAdjustments = Gson().fromJson<ArrayList<TblBillingAdjustments>>(jsonObj.get("BillingAdjustments").toString(), object : TypeToken<ArrayList<TblBillingAdjustments>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBillingAdjustments= Gson().fromJson<ArrayList<TblBillingAdjustments>>(jsonObj.get("BillingAdjustments").toString(), object : TypeToken<ArrayList<TblBillingAdjustments>>() {}.type)
             } else {
-                FacilityDataModel.getInstance().tblBillingAdjustments.add(Gson().fromJson<TblBillingAdjustments>(jsonObj.get("tblBillingAdjustments").toString(), TblBillingAdjustments::class.java))
-                FacilityDataModelOrg.getInstance().tblBillingAdjustments.add(Gson().fromJson<TblBillingAdjustments>(jsonObj.get("tblBillingAdjustments").toString(), TblBillingAdjustments::class.java))
+                FacilityDataModel.getInstance().tblBillingAdjustments.add(Gson().fromJson<TblBillingAdjustments>(jsonObj.get("BillingAdjustments").toString(), TblBillingAdjustments::class.java))
+                FacilityDataModelOrg.getInstance().tblBillingAdjustments.add(Gson().fromJson<TblBillingAdjustments>(jsonObj.get("BillingAdjustments").toString(), TblBillingAdjustments::class.java))
             }
         }
 
@@ -929,6 +929,16 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
             FacilityDataModel.getInstance().tblAAAPortalEmailFacilityRepTable.sortedWith(compareBy{ it.Year}).sortedWith(compareBy { it.Quarter }).sortedWith(compareBy { it.Month })
             FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable.sortedWith(compareBy{ it.Year}).sortedWith(compareBy { it.Quarter }).sortedWith(compareBy { it.Month })
+        }
+
+        if (jsonObj.has("InvoiceInfo")) {
+            if (jsonObj.get("InvoiceInfo").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblInvoiceInfoUpdated = Gson().fromJson<ArrayList<InvoiceInfo>>(jsonObj.get("InvoiceInfo").toString(), object : TypeToken<ArrayList<InvoiceInfo>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblInvoiceInfoUpdated = Gson().fromJson<ArrayList<InvoiceInfo>>(jsonObj.get("InvoiceInfo").toString(), object : TypeToken<ArrayList<InvoiceInfo>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblInvoiceInfoUpdated.add(Gson().fromJson<InvoiceInfo>(jsonObj.get("InvoiceInfo").toString(), InvoiceInfo::class.java))
+                FacilityDataModelOrg.getInstance().tblInvoiceInfoUpdated.add(Gson().fromJson<InvoiceInfo>(jsonObj.get("InvoiceInfo").toString(), InvoiceInfo::class.java))
+            }
         }
 
 
@@ -1229,15 +1239,15 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityPhotos")
         }
 
-        if (jsonObj.has("tblBilling")) {
-            if (!jsonObj.get("tblBilling").toString().equals("")) {
+        if (jsonObj.has("Billing")) {
+            if (!jsonObj.get("Billing").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblBilling")
+                    var result = jsonObj.getJSONArray("Billing")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
-                    jsonObj.remove(("tblBilling"))
-                    jsonObj.put("tblBilling", result)
+                    jsonObj.remove(("Billing"))
+                    jsonObj.put("Billing", result)
                 } catch (e: Exception) {
 
                 }
@@ -1248,23 +1258,23 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
         }
 
-        if (jsonObj.has("tblBillingPlan")) {
-            if (!jsonObj.get("tblBillingPlan").toString().equals("")) {
+        if (jsonObj.has("BillingPlan")) {
+            if (!jsonObj.get("BillingPlan").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblBillingPlan")
+                    var result = jsonObj.getJSONArray("BillingPlan")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
-                    jsonObj.remove(("tblBillingPlan"))
-                    jsonObj.put("tblBillingPlan", result)
+                    jsonObj.remove(("BillingPlan"))
+                    jsonObj.put("BillingPlan", result)
                 } catch (e: Exception) {
 
                 }
             } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblBillingPlan")
+                jsonObj = addOneElementtoKey(jsonObj, "BillingPlan")
             }
         } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblBillingPlan")
+            jsonObj = addOneElementtoKey(jsonObj, "BillingPlan")
         }
 
         if (jsonObj.has("tblFacilityBillingDetail")) {
@@ -1324,23 +1334,23 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj,"tblVisitationTracking")
         }
 
-        if (jsonObj.has("tblVendorRevenue")) {
-            if (!jsonObj.get("tblVendorRevenue").toString().equals("")) {
+        if (jsonObj.has("VendorRevenue")) {
+            if (!jsonObj.get("VendorRevenue").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblVendorRevenue")
+                    var result = jsonObj.getJSONArray("VendorRevenue")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
-                    jsonObj.remove(("tblVendorRevenue"))
-                    jsonObj.put("tblVendorRevenue", result)
+                    jsonObj.remove(("VendorRevenue"))
+                    jsonObj.put("VendorRevenue", result)
                 } catch (e: Exception) {
 
                 }
             } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblVendorRevenue")
+                jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
             }
         } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblVendorRevenue")
+            jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
         }
 
         if (jsonObj.has("tblBillingHistoryReport")) {
@@ -1437,23 +1447,23 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelCertification")
         }
 
-        if (jsonObj.has("tblBillingAdjustments")) {
-            if (!jsonObj.get("tblBillingAdjustments").toString().equals("")) {
+        if (jsonObj.has("BillingAdjustments")) {
+            if (!jsonObj.get("BillingAdjustments").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblBillingAdjustments")
+                    var result = jsonObj.getJSONArray("BillingAdjustments")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
-                    jsonObj.remove(("tblBillingAdjustments"))
-                    jsonObj.put("tblBillingAdjustments", result)
+                    jsonObj.remove(("BillingAdjustments"))
+                    jsonObj.put("BillingAdjustments", result)
                 } catch (e: Exception) {
 
                 }
             } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblBillingAdjustments")
+                jsonObj = addOneElementtoKey(jsonObj, "BillingAdjustments")
             }
         } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblBillingAdjustments")
+            jsonObj = addOneElementtoKey(jsonObj, "BillingAdjustments")
         }
 
         if (jsonObj.has("tblAAAPortalEmailFacilityRepTable")) {
@@ -1473,6 +1483,25 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             }
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblAAAPortalEmailFacilityRepTable")
+        }
+
+        if (jsonObj.has("InvoiceInfo")) {
+            if (!jsonObj.get("InvoiceInfo").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("InvoiceInfo")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("InvoiceInfo"))
+                    jsonObj.put("InvoiceInfo", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "InvoiceInfo")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "InvoiceInfo")
         }
 
         return jsonObj
@@ -1609,20 +1638,18 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.LastUpdateBy=""
             oneArray.LastUpdateDate=""
             jsonObj.put(key, Gson().toJson(oneArray))
-        } else if (key.equals("tblBilling")) {
+        } else if (key.equals("Billing")) {
             var oneArray = TblBilling()
             oneArray.ACHParticipant=0
             oneArray.BillingAmount=0.0
             oneArray.BillingDate=""
             oneArray.BillingID=-1
             oneArray.BillingMonthNumber=0
-            oneArray.BillingPlanID=0
             oneArray.CreditAmountDue=""
             oneArray.FACID=0
             oneArray.PaymentAmount=0.0
             oneArray.PendingAmount=0.0
             oneArray.PaymentDate=""
-            oneArray.ResubmitFlag=0
             oneArray.RevenueSourceID=0
             oneArray.SecondBillDate=""
             oneArray.insertBy=""
@@ -1630,7 +1657,7 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.updateBy=""
             oneArray.updateDate=""
             jsonObj.put(key, Gson().toJson(oneArray))
-        } else if (key.equals("tblBillingPlan")) {
+        } else if (key.equals("BillingPlan")) {
             var oneArray = TblBillingPlan()
             oneArray.BillingPlanCatgID=0
             oneArray.BillingPlanID=-1
@@ -1673,11 +1700,11 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             oneArray.InvoicePrintDate=""
             oneArray.InvoiceStatusId=0
             jsonObj.put(key, Gson().toJson(oneArray))
-        } else if (key.equals("tblVendorRevenue")) {
+        } else if (key.equals("VendorRevenue")) {
             var oneArray = TblVendorRevenue()
-            oneArray.Amount=0.0
+            oneArray.Amount=""
             oneArray.Comments=""
-            oneArray.DateofCheck=""
+            oneArray.DateOfCheck=""
             oneArray.FACID=0
             oneArray.ReceiptDate=""
             oneArray.FACID=0
@@ -1756,13 +1783,17 @@ class AppAdHockVisitationFilterFragment : android.support.v4.app.Fragment() {
             var oneArray = TblPersonnelCertification()
             oneArray.PersonnelID=0
             jsonObj.put(key, Gson().toJson(oneArray))
-        } else if (key.equals("tblBillingAdjustments")) {
+        } else if (key.equals("BillingAdjustments")) {
             var oneArray = TblBillingAdjustments()
             oneArray.AdjustmentId=-1
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblAAAPortalEmailFacilityRepTable")) {
             var oneArray = TblAAAPortalEmailFacilityRepTable()
             oneArray.ContractSID="-1"
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("InvoiceInfo")) {
+            var oneArray = InvoiceInfo()
+            oneArray.InvoiceId="-1"
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

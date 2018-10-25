@@ -8,8 +8,8 @@ import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Debug
-import android.support.v4.app.Fragment
-import android.support.v4.widget.TextViewCompat
+import androidx.fragment.app.Fragment
+import androidx.core.widget.TextViewCompat
 import android.text.Editable
 import android.text.SpannableString
 import android.text.TextWatcher

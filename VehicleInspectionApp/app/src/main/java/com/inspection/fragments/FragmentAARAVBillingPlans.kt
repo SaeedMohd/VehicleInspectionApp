@@ -7,7 +7,7 @@ import android.graphics.Paint
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -234,7 +234,8 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView.layoutParams = rowLayoutParam
                             textView.gravity = Gravity.CENTER_VERTICAL
                             textView.textSize = 18f
-                            textView.text = TypeTablesModel.getInstance().BillingPlanCategoryType.filter { s -> s.BillingPlanCatgTypeID.toInt() == get(it).BillingPlanCatgID }[0].BillingPlanCatgName
+//                            textView.text = TypeTablesModel.getInstance().BillingPlanCategoryType.filter { s -> s.BillingPlanCatgTypeID.toInt() == get(it).BillingPlanCatgID }[0].BillingPlanCatgName
+                            textView.text = get(it).BillingPlanCatgName
                             tableRow.addView(textView)
 
 
@@ -243,7 +244,8 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView.layoutParams = rowLayoutParam1
                             textView.gravity = Gravity.CENTER_VERTICAL
                             textView.textSize = 18f
-                            textView.text = if (TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}.size>0) TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}[0].BillingPlanTypeName else ""
+//                            textView.text = if (TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}.size>0) TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}[0].BillingPlanTypeName else ""
+                            textView.text = get(it).BillingPlanTypeName
                             tableRow.addView(textView)
 
                             textView = TextView(context)
@@ -251,7 +253,8 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView.gravity = Gravity.CENTER_VERTICAL
                             textView.textSize = 18f
                             TableRow.LayoutParams()
-                            textView.text = TypeTablesModel.getInstance().BillingPlanFrequencyType.filter { s -> s.BillingPlanFrequencyTypeID.toInt() == get(it).FrequencyTypeID }[0].BillingPlanFrequencyTypeName
+//                            textView.text = TypeTablesModel.getInstance().BillingPlanFrequencyType.filter { s -> s.BillingPlanFrequencyTypeID.toInt() == get(it).FrequencyTypeID }[0].BillingPlanFrequencyTypeName
+                            textView.text = get(it).BillingPlanFrequencyTypeName
                             tableRow.addView(textView)
 
                             textView = TextView(context)
@@ -272,7 +275,8 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView.layoutParams = rowLayoutParam5
                             textView.gravity = Gravity.CENTER
                             textView.textSize = 18f
-                            textView.text = if (TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}.size>0) TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}[0].Cost else ""
+//                            textView.text = if (TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}.size>0) TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}[0].Cost else ""
+                            textView.text = if (get(it).Cost.isNullOrEmpty()) "" else "%.2f".format(get(it).Cost.toFloat())
                             tableRow.addView(textView)
 
                             textView = TextView(context)

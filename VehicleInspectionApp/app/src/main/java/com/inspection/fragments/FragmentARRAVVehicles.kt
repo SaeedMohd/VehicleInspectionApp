@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -80,6 +80,10 @@ class FragmentARRAVVehicles : Fragment() {
         vehiclesListView!!.adapter = vehiclesArrayAdapter
 
         return view
+        //<VehicleMakesType> : CHevrolet - Buick
+        //<VehicleMakes> Vehicle ID-MakeID-TypeID-CatID
+        //<VehiclesMakesCategoryType>: Asian - Domestic
+        //<VehiclesType>Automobile - Marine
 
     }
 

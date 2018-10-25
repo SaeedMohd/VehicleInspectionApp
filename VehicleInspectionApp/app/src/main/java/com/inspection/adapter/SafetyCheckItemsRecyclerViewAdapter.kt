@@ -7,8 +7,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
-import android.support.v4.content.FileProvider
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.RecyclerView
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -170,7 +171,7 @@ class SafetyCheckItemsRecyclerViewAdapter(private val context: Context, private 
                                     object : DeleteSafetyCheckPhotoTask(context, selectedSafetyCheckReportsID, item.safetyCheckItemID, photoName) {
                                         override fun onTaskCompleted(result: String) {
                                             item.safetyCheckItemPhoto = item.safetyCheckItemPhoto.replace(" " + photoName, "").replace(photoName, "")
-                                            safetyCheckRecyclerView.adapter.notifyDataSetChanged()
+                                            safetyCheckRecyclerView.adapter?.notifyDataSetChanged()
                                         }
                                     }.execute()
                                 }

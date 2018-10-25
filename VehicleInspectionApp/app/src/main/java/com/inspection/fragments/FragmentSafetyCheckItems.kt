@@ -11,8 +11,8 @@ import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -47,8 +47,8 @@ import java.net.MalformedURLException
 import java.net.URL
 import android.app.Activity.RESULT_OK
 import android.content.pm.PackageManager
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.FileProvider
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import android.view.View.GONE
 import android.widget.*
 import com.inspection.MainActivity.Companion.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID
@@ -60,7 +60,7 @@ import kotlinx.android.synthetic.main.fragment_safety_check_view.*
 import java.util.*
 
 
-class FragmentSafetyCheckItems : android.support.v4.app.Fragment() {
+class FragmentSafetyCheckItems : androidx.fragment.app.Fragment() {
     private var view2: View? = null
     var customerName = ""
     var customerEmail = ""

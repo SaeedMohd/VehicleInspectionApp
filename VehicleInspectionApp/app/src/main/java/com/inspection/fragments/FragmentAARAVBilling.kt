@@ -6,7 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -313,12 +313,12 @@ class FragmentAARAVBilling : Fragment() {
                     textView.layoutParams = rowLayoutParam1
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 18f
-                    textView.text = ""
-                    try {
-                        textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
-                    } catch (e: Exception) {
-
-                    }
+                    textView.text = get(it).RevenueSourceName
+//                    try {
+//                        textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
+//                    } catch (e: Exception) {
+//
+//                    }
 
                     tableRow.addView(textView)
 

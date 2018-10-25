@@ -2,10 +2,11 @@ package com.inspection.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.support.v4.app.NavUtils
+//import android.support.design.widget.Snackbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import android.view.MenuItem
+import com.google.android.material.snackbar.Snackbar
 import com.inspection.R
 import kotlinx.android.synthetic.main.activity_item_detail.*
 

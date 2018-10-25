@@ -13,7 +13,7 @@
         <!--android:layout_height="match_parent"-->
         <!--&gt;-->
         <!-- The main contview2view -->
-        <android.support.v4.app.FragmentTabHost
+        <androidx.fragment.app.FragmentTabHost
             android:id="@+id/fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

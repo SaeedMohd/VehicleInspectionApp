@@ -69,6 +69,7 @@ class FacilityDataModelOrg  {
     var tblPersonnelCertification= ArrayList<TblPersonnelCertification>()
     var tblBillingAdjustments = ArrayList<TblBillingAdjustments>()
     var tblAAAPortalEmailFacilityRepTable = ArrayList<TblAAAPortalEmailFacilityRepTable>()
+    var tblInvoiceInfoUpdated = ArrayList<InvoiceInfo>()
 
 //    class TblFacilities {
 //        var isInputsValid = false

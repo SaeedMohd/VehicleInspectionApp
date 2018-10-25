@@ -4,7 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -193,12 +193,12 @@ class FragmentAARAVVendorRevenue : Fragment() {
                     textView.layoutParams = rowLayoutParam1
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 18f
-                    textView.text = ""
-                    try {
-                        textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
-                    } catch (e: Exception) {
-
-                    }
+                    textView.text = get(it).RevenueSourceName
+//                    try {
+//                        textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
+//                    } catch (e: Exception) {
+//
+//                    }
                     tableRow.addView(textView)
 
                     textView = TextView(context)
@@ -206,15 +206,14 @@ class FragmentAARAVVendorRevenue : Fragment() {
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
                     TableRow.LayoutParams()
-                    textView.text = if (get(it).DateofCheck.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DateofCheck.apiToAppFormatMMDDYYYY()
+                    textView.text = if (get(it).DateOfCheck.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DateOfCheck.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = get(it).Amount.toString()
-
+                    textView.text = if (get(it).Amount.isNullOrEmpty()) "" else "%.3f".format(get(it).Amount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)

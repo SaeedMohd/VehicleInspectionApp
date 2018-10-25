@@ -4,23 +4,18 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.view.MenuItemCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
+//import android.support.design.widget.Snackbar
+import com.google.android.material.navigation.NavigationView
+import androidx.core.view.GravityCompat
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.Toast
-import com.inspection.R.drawable.circle
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import com.inspection.R.id.drawer_layout
 import com.inspection.Utils.Utility
 import com.inspection.fragments.*
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
@@ -32,7 +27,6 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_La
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.FacilityDataModel
-import com.inspection.model.HasChangedModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.VisitationTypes
 import kotlinx.android.synthetic.main.activity_forms.*
@@ -54,11 +48,14 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     var currentFragment = ""
     var saveRequired = false
+//    var toolbar = findViewById<Toolbar>(R.id.toolbar)
+//    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
+//    var nav_view = findViewById<NavigationView>(R.id.nav_view)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_forms)
         setSupportActionBar(toolbar)
+
         validationProblemFoundForOtherFragments=true
 
          watcher_LaborMax=""

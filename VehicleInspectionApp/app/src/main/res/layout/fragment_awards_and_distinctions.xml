@@ -93,7 +93,7 @@
         android:background="@color/mainColor"
         android:visibility="gone"
         android:alpha="0.8"/>
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -265,7 +265,7 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <RelativeLayout
         android:id="@+id/scopeOfServicesChangesDialogueLoadingView"

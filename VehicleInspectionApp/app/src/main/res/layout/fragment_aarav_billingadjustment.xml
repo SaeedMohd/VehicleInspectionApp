@@ -174,7 +174,7 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:visibility="gone">
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -368,6 +368,6 @@ tools:context=".fragments.FragmentAARAVBillingAdjustment">
                 />
         </TableLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
     </ScrollView>
 </RelativeLayout>

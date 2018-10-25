@@ -31,6 +31,19 @@
         android:layout_below="@+id/titleTextView"
         />
 
+    <!--<com.inspection.Utils.ExpandableHeightGridView-->
+        <!--android:layout_margin="20dp"-->
+        <!--android:id="@+id/vehicleMakeList"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/titleTextView"-->
+        <!--android:gravity="center"-->
+        <!--android:horizontalSpacing="2dp"-->
+        <!--android:isScrollContainer="false"-->
+        <!--android:numColumns="4"-->
+        <!--android:stretchMode="columnWidth"-->
+        <!--android:verticalSpacing="20dp" />-->
+
     <ProgressBar
         android:id="@+id/progressbarVehicles"
         style="?android:attr/progressBarStyleHorizontal"

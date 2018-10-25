@@ -8,17 +8,13 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Timer
 
-
-import android.support.v4.app.Fragment
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.ActionBarDrawerToggle
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -42,7 +38,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.Settings.Secure
-import android.support.v4.widget.DrawerLayout
+import androidx.drawerlayout.widget.DrawerLayout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -65,10 +61,14 @@ import com.inspection.model.AAAFacilityComplete
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Utility
 
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.inspection.Utils.toast
 import com.inspection.model.AnnualVisitationInspectionFormData
+import kotlinx.android.synthetic.main.activity_main1.*
+import kotlinx.android.synthetic.main.app_bar_forms.*
 
 
 class MainActivity : AppCompatActivity(), LocationListener {
@@ -96,7 +96,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private var repairShopImage: ImageView? = null
     internal lateinit var drawerNavigationListAdapter: DrawerNavigationListAdapter
     private var drawerToggle: ActionBarDrawerToggle? = null
-    var toolbar: Toolbar? = null
+//    var toolbar: Toolbar? = null
+//    var toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+//    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
+//    var nav_view = findViewById<NavigationView>(R.id.nav_view)
     lateinit var saveBtn: Button
     private var mDrawerList: ListView? = null
 
@@ -239,7 +242,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private fun initView() {
 //        mDrawerList = findViewById<View>(R.id.left_drawer) as ListView
 //        //mDrawerList.setOnItemClickListener(activity);
-        toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+//        toolbar = findViewById<View>(R.id.toolbar) as Toolbar
 //        saveBtn = findViewById<View>(R.id.saveBtn) as Button
 //        mDrawerLayout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
 //        drawerNavigationListAdapter = DrawerNavigationListAdapter()
@@ -493,7 +496,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         // Create a new fragment and specify the planet to show based on position
         mDrawerLayout.closeDrawer(mDrawerList!!)
         val fragmentManager = supportFragmentManager
-        //        android.support.v4.app.Fragment f = fragmentManager.findFragmentById(R.id.fragment);
+        //        androidx.appcompat.app.Fragment f = fragmentManager.findFragmentById(R.id.fragment);
         when (position) {
 
             0 -> {

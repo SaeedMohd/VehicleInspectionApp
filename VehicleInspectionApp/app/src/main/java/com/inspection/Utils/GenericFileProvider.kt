@@ -1,6 +1,6 @@
 package com.inspection.Utils
 
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 
 /**
  * Created by sheri on 10/20/2017.

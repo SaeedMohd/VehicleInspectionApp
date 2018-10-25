@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import com.inspection.R;
 import com.inspection.Utils.ApplicationPrefs;
@@ -26,7 +25,7 @@ public class GcmRegistration {
     private final String GCM_URL = "http://www.jet-matics.com/JetComService/JetCom.svc/GCMMobileUserProfile?GCM_Id=%s&MobileUserProfileId=%s&Phone_ID=%s";
 
     private Context context;
-    private GoogleCloudMessaging gcm;
+//    private GoogleCloudMessaging gcm;
     private String regid;
 
 
@@ -35,13 +34,13 @@ public class GcmRegistration {
     public GcmRegistration(Context context){
         this.context = context;
         if (checkPlayServices()) {
-            gcm = GoogleCloudMessaging.getInstance(context);
-            regid = getRegistrationId(context);
-            //Log.dMainActivity.TAG, "reg id saved is: " + regid);
-            //if (regid.isEmpty()) {
-                //Log.dMainActivity.TAG, "regid is empty. start registering with GCM");
-                new RegisterInBackground().execute();
-            // }
+//            gcm = GoogleCloudMessaging.getInstance(context);
+//            regid = getRegistrationId(context);
+//            //Log.dMainActivity.TAG, "reg id saved is: " + regid);
+//            //if (regid.isEmpty()) {
+//                //Log.dMainActivity.TAG, "regid is empty. start registering with GCM");
+//                new RegisterInBackground().execute();
+//            // }
         }
         //Log.dMainActivity.TAG, "Initializing GcmBroadcastReceiver");
         if(!GcmBroadcastReceiver.isStarted) {
@@ -103,35 +102,35 @@ public class GcmRegistration {
         protected String doInBackground(String... params) {
             String msg = "";
             //Log.dMainActivity.TAG,"starting.....");
-            try {
-                //if (gcm == null) {
-                    gcm = GoogleCloudMessaging.getInstance(context);
-                //}
-                regid = gcm.register(context.getString(R.string.push_notifications_project_name));
-                msg = "Device registered, registration ID=" + regid;
-                //Log.dMainActivity.TAG,msg);
-                // You should send the registration ID to your server over HTTP,
-                // so it can use GCM/HTTP or CCS to send messages to your app.
-                // The request to your server should be authenticated if your app
-                // is using accounts.
-
-
-//                sendRegistrationIdToBackend();
-
-
-                // For this demo: we don't need to send it because the device
-                // will send upstream messages to a server that echo back the
-                // message using the 'from' address in the message.
-
-                // Persist the regID - no need to register again.
-                storeRegistrationId(context, regid);
-            } catch (IOException ex) {
-                msg = "Error :" + ex.getMessage();
-                //Log.dMainActivity.TAG,msg);
-                // If there is an error, don't just keep trying to register.
-                // Require the user to click a button again, or perform
-                // exponential back-off.
-            }
+//            try {
+//                //if (gcm == null) {
+//                    gcm = GoogleCloudMessaging.getInstance(context);
+//                //}
+//                regid = gcm.register(context.getString(R.string.push_notifications_project_name));
+//                msg = "Device registered, registration ID=" + regid;
+//                //Log.dMainActivity.TAG,msg);
+//                // You should send the registration ID to your server over HTTP,
+//                // so it can use GCM/HTTP or CCS to send messages to your app.
+//                // The request to your server should be authenticated if your app
+//                // is using accounts.
+//
+//
+////                sendRegistrationIdToBackend();
+//
+//
+//                // For this demo: we don't need to send it because the device
+//                // will send upstream messages to a server that echo back the
+//                // message using the 'from' address in the message.
+//
+//                // Persist the regID - no need to register again.
+//                storeRegistrationId(context, regid);
+//            } catch (IOException ex) {
+//                msg = "Error :" + ex.getMessage();
+//                //Log.dMainActivity.TAG,msg);
+//                // If there is an error, don't just keep trying to register.
+//                // Require the user to click a button again, or perform
+//                // exponential back-off.
+//            }
             return msg;
         }
     }
