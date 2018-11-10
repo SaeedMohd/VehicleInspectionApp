@@ -944,7 +944,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
-        IndicatorsDataModel.getInstance().validateBusinessRules()
+//        IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
     }
 

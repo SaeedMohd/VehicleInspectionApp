@@ -178,9 +178,9 @@ class BillingGroupFragment : Fragment() {
             }
         }
 
-        IndicatorsDataModel.getInstance().validateBillingSection()
+//        IndicatorsDataModel.getInstance().validateBillingSection()
         refreshTabIndicators()
-        (activity as FormsActivity).refreshMenuIndicators()
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
     fun refreshTabIndicators() {

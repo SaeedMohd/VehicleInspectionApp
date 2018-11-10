@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
@@ -82,7 +83,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         val navigationMenu = nav_view.menu
 
-        refreshMenuIndicators()
+        refreshMenuIndicatorsForVisitedScreens()
 
         ////navigationMenu.findItem(R.id.visitation).actionView.setBackgroundResource(R.drawable.red_button_background)
 
@@ -115,7 +116,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
     }
 
-    public fun refreshMenuIndicators() {
+    public fun refreshMenuIndicators() { // Method used to validate that business rules was fulfilled for each screen
         var navigationMenu = nav_view.menu
         var indicatorImage: ImageView;
         var isAllValid = true
@@ -190,12 +191,81 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
 
         indicatorImage = nav_view.getHeaderView(0).findViewById<ImageView>(R.id.mainIndicatorImg)
+        indicatorImage.visibility = View.GONE
         if (isAllValid)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
 
 
+    }
+
+    public fun refreshMenuIndicatorsForVisitedScreens() { // Method used to validate all screens were visited
+        var navigationMenu = nav_view.menu
+        var indicatorImage: ImageView;
+        indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited
+                && IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited
+                && IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited&& IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.visitation).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblVisitation[0].visited)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != VisitationTypes.AdHoc) {
+                indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+            }
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.surveys).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblSurveys[0].visited)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.photos).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblPhotos[0].visited)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.facility).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited && IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited &&
+                IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited && IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.complaints).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblComplaints[0].visited)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+        }
+
+        indicatorImage = (navigationMenu.findItem(R.id.billing).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited && IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited &&
+                IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited && IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited &&
+                IndicatorsDataModel.getInstance().tblBilling[0].PaymentsVisited && IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited)
+            indicatorImage.setBackgroundResource(R.drawable.green_background_button)
+        else {
+            indicatorImage.setBackgroundResource(R.drawable.red_button_background)
+        }
 
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

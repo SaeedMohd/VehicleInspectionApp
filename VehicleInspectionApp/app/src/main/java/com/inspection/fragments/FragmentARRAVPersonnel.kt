@@ -420,9 +420,9 @@ class FragmentARRAVPersonnel : Fragment() {
                                                             FacilityDataModel.getInstance().tblPersonnel.add(item)
                                                             fillPersonnelTableView()
                                                             altTableRow(2)
-                                                            IndicatorsDataModel.getInstance().validateFacilityPersonnel()
-                                                            if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
-                                                            (activity as FormsActivity).refreshMenuIndicators()
+                                                            IndicatorsDataModel.getInstance().validateFacilityPersonnelVisited()
+                                                            if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                                         } else {
                                                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                                             Utility.showSubmitAlertDialog(activity,false,"Contract Signer (Error: "+ errorMessage+" )")
@@ -439,15 +439,15 @@ class FragmentARRAVPersonnel : Fragment() {
                                         FacilityDataModel.getInstance().tblPersonnel.add(item)
                                         fillPersonnelTableView()
                                         altTableRow(2)
-                                        IndicatorsDataModel.getInstance().validateFacilityPersonnel()
-                                        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
-                                        (activity as FormsActivity).refreshMenuIndicators()
+                                        IndicatorsDataModel.getInstance().validateFacilityPersonnelVisited()
+                                        if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                     }
                                     fillPersonnelTableView()
                                     altTableRow(2)
-                                    IndicatorsDataModel.getInstance().validateFacilityPersonnel()
-                                    if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
-                                    (activity as FormsActivity).refreshMenuIndicators()
+                                    IndicatorsDataModel.getInstance().validateFacilityPersonnelVisited()
+                                    if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                     Utility.showSubmitAlertDialog(activity,false,"Personnel (Error: "+ errorMessage+" )")
@@ -1738,9 +1738,9 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 //                                                    child.isEnabled = true
                                                 //                                                }
 
-                                                IndicatorsDataModel.getInstance().validateFacilityPersonnel()
-                                                if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
-                                                (activity as FormsActivity).refreshMenuIndicators()
+                                                IndicatorsDataModel.getInstance().validateFacilityPersonnelVisited()
+                                                if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited) (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#A42600"))
+                                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                             } else {
                                                 //                                                Utility.showSubmitAlertDialog(activity, false, "Personnel")
                                                 var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))

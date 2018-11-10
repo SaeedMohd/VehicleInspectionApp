@@ -1224,7 +1224,7 @@ class VisitationPlanningFragment : Fragment() {
 
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
-        IndicatorsDataModel.getInstance().validateBusinessRules()
+//        IndicatorsDataModel.getInstance().validateAllScreensVisited()
     }
 
     fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {

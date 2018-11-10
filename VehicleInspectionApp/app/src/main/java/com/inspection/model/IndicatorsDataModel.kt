@@ -37,45 +37,66 @@ class IndicatorsDataModel {
 
     class TblBilling {
         var BillingPlan = false
+        var BillingPlanVisited = false
         var Billing = false
+        var BillingVisited = false
         var BillingAdjustments = false
+        var BillingAdjustmentsVisited = false
         var Payments = false
+        var PaymentsVisited = false
         var VendorRevenue = false
+        var VendorRevenueVisited = false
         var BillingHistory = false
+        var BillingHistoryVisited = false
     }
 
     class TblScopeOfServices {
         var GeneralInfo = false
+        var GeneralInfoVisited = false
         var Programs = false
+        var ProgramsVisited = false
         var FacilityServices = false
+        var FacilityServicesVisited = false
         var Affiliations = false
+        var AffiliationsVisited = false
+        var VehicleServicesVisited = false
+        var VehiclesVisited = false
     }
 
     class TblDeffeciencies {
         var Deffeciency= false
+        var visited = false
     }
 
     class TblSurveys {
         var Surveys= false
+        var visited = false
     }
 
     class TblPhotos {
         var Photos = false
+        var visited = false
     }
 
     class TblComplaints {
         var Complaints= false
+        var visited = false
     }
 
     class TblFacility {
-        var GeneralInfo= false
-        var RSP= false
+        var GeneralInfo = false
+        var GeneralInfoVisited = false
+        var RSP = false
+        var RSPVisited = false
         var Location = false
+        var LocationVisited = false
         var Personnel = false
+        var PersonnelVisited = false
     }
 
     class TblVisitation {
         var Visitation= false
+        var visited = false
     }
 
     fun init(){
@@ -83,39 +104,72 @@ class IndicatorsDataModel {
         SoS.GeneralInfo=false;
         SoS.Programs =false;
         SoS.FacilityServices=false;
+        SoS.Affiliations=false
+        SoS.AffiliationsVisited=false
+        SoS.FacilityServicesVisited=false
+        SoS.GeneralInfoVisited = false
+        SoS.ProgramsVisited=false
+        SoS.VehicleServicesVisited= false
+        SoS.VehiclesVisited=false
         tblScopeOfServices.add(0,SoS)
         var Def = TblDeffeciencies()
         Def.Deffeciency=false;
+        Def.visited =false;
         tblDeffeciencies.add(0,Def)
         var Complaints = TblComplaints()
         Complaints.Complaints=true;
+        Complaints.visited=false
         tblComplaints.add(0,Complaints)
 
         var Surveys = TblSurveys()
         Surveys.Surveys=true;
+        Surveys.visited=false
         tblSurveys.add(0,Surveys)
 
         var Photos = TblPhotos()
         Photos.Photos=true;
+        Photos.visited=false
         tblPhotos.add(0,Photos)
 
         var Visitation = TblVisitation()
         Visitation.Visitation=false;
+        Visitation.visited=false
         tblVisitation.add(0,Visitation)
         var Facility= TblFacility()
         Facility.GeneralInfo=false;
+        Facility.GeneralInfoVisited=false
         Facility.RSP=false;
+        Facility.RSPVisited=false
         Facility.Location=false;
+        Facility.LocationVisited=false
         Facility.Personnel=false;
+        Facility.PersonnelVisited=false
         tblFacility.add(0,Facility)
         var Billing = TblBilling()
         Billing.Billing=true;
+        Billing.BillingVisited=false
         Billing.BillingAdjustments=true
+        Billing.BillingAdjustmentsVisited=false
         Billing.BillingHistory=true
+        Billing.BillingHistoryVisited=false
         Billing.BillingPlan=true
+        Billing.BillingPlanVisited=false
         Billing.Payments=true
+        Billing.PaymentsVisited=false
         Billing.VendorRevenue=true
+        Billing.VendorRevenueVisited=false
         tblBilling.add(0,Billing)
+    }
+
+    fun validateAllScreensVisited() {
+        validateSoSSectionVisited()
+        validateDeffecienciesSectionVisited()
+        validateVisitationSectionVisited()
+        validateFacilitySectionVisited()
+        validateComplaintsSectionVisited()
+        validateBillingSectionVisited()
+        validatePhotosSectionVisited()
+        validateSurveysSectionVisited()
     }
 
     fun validateBusinessRules() {
@@ -130,6 +184,15 @@ class IndicatorsDataModel {
 //        refreshIndicatorsView()
     }
 
+    fun validateSoSSectionVisited() {//Scope Of Services
+        validateSoSGeneralVisited()
+        validateSOSProgramsVisited()
+        validateSOSFacilityServicesVisited()
+        validateSOSAffiliationsVisited()
+        validateSOSVehicleVisited()
+        validateSOSVehicleServicesVisited()
+    }
+
     fun validateSoSSection() {//Scope Of Services
         validateSoSGeneral()
         validateSOSPrograms()
@@ -137,20 +200,40 @@ class IndicatorsDataModel {
         validateSOSAffiliations()
     }
 
+    fun validateDeffecienciesSectionVisited() {
+        validateDeffeciencyVisited()
+    }
+
     fun validateDeffecienciesSection() {
         validateDeffeciency()
+    }
+
+    fun validateComplaintsSectionVisited() {
+        validateComplaintsVisited()
     }
 
     fun validateComplaintsSection() {
         validateComplaints()
     }
 
+    fun validateSurveysSectionVisited() {
+        validateSurveysVisited()
+    }
+
     fun validateSurveysSection() {
         validateSurveys()
     }
 
+    fun validatePhotosSectionVisited() {
+        validatePhotosVisited()
+    }
+
     fun validatePhotosSection() {
         validatePhotos()
+    }
+
+    fun validateVisitationSectionVisited() {
+        validateVisitationVisited()
     }
 
     fun validateVisitationSection() {
@@ -160,11 +243,64 @@ class IndicatorsDataModel {
     fun validateBillingSection() {
 
     }
+
+    fun validateBillingSectionVisited() {
+        validateBillingPlanVisited()
+        validateBillingVisited()
+        validateVendorRevenueVisited()
+        validatePaymentsVisited()
+        validateBillingHistoryVisited()
+        validateBillingAdjustmentsVisited()
+    }
+
+    fun validateBillingAdjustmentsVisited() {
+        tblBilling[0].BillingAdjustmentsVisited = true
+    }
+
+    fun validateBillingHistoryVisited() {
+        tblBilling[0].BillingHistoryVisited = true
+    }
+
+    fun validatePaymentsVisited() {
+        tblBilling[0].PaymentsVisited = true
+    }
+
+    fun validateVendorRevenueVisited() {
+        tblBilling[0].VendorRevenueVisited = true
+    }
+
+    fun validateBillingPlanVisited() {
+        tblBilling[0].BillingPlanVisited = true
+    }
+
+    fun validateBillingVisited() {
+        tblBilling[0].BillingVisited = true
+    }
+
+    fun validateFacilitySectionVisited(){
+        validateFacilityGeneralInfoVisited()
+        validateFacilityRSPVisited()
+        validateFacilityLocationVisited()
+        validateFacilityPersonnelVisited()
+    }
+
     fun validateFacilitySection(){
         validateFacilityGeneralInfo()
         validateFacilityRSP()
         validateFacilityLocation()
         validateFacilityPersonnel()
+    }
+
+    fun validateSoSGeneralVisited() {
+        tblScopeOfServices[0].GeneralInfoVisited = true
+    }
+
+    fun validateSOSVehicleServicesVisited() {
+        tblScopeOfServices[0].VehicleServicesVisited = true
+    }
+
+    fun validateSOSVehicleVisited() {
+        tblScopeOfServices[0].VehiclesVisited= true
     }
 
     fun validateSoSGeneral() {
@@ -180,6 +316,10 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].GeneralInfo = isValid
     }
 
+    fun validateSOSProgramsVisited () {
+        tblScopeOfServices[0].ProgramsVisited = true
+    }
+
     fun validateSOSPrograms () {
         var isValid = true
         FacilityDataModel.getInstance().tblPrograms.apply {
@@ -192,6 +332,10 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].Programs = isValid
     }
 
+    fun validateSOSFacilityServicesVisited() {
+        tblScopeOfServices[0].FacilityServicesVisited = true
+    }
+
     fun validateSOSFacilityServices() {
         var isValid = true
         FacilityDataModel.getInstance().tblFacilityServices.apply {
@@ -201,6 +345,10 @@ class IndicatorsDataModel {
             }
         }
         tblScopeOfServices[0].FacilityServices = isValid
+    }
+
+    fun validateSOSAffiliationsVisited() {
+        tblScopeOfServices[0].AffiliationsVisited = true
     }
 
     fun validateSOSAffiliations() {
@@ -215,6 +363,9 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].Affiliations = isValid
     }
 
+    fun validateComplaintsVisited(){
+        tblComplaints[0].visited=true
+    }
     fun validateComplaints(){
 
     }
@@ -223,8 +374,16 @@ class IndicatorsDataModel {
 
     }
 
+    fun validateSurveysVisited(){
+        tblSurveys[0].visited = true
+    }
+
     fun validatePhotos(){
 
+    }
+
+    fun validatePhotosVisited(){
+        tblPhotos[0].visited = true
     }
 
     fun validateDeffeciency(){
@@ -235,6 +394,10 @@ class IndicatorsDataModel {
             }
         }
         tblDeffeciencies[0].Deffeciency= isValid
+    }
+
+    fun validateDeffeciencyVisited(){
+        tblDeffeciencies[0].visited = true
     }
 
     fun validateVisitation() {
@@ -252,6 +415,10 @@ class IndicatorsDataModel {
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility && FacilityDataModel.getInstance().tblVisitationTracking[0].email.equals("")) isValid = false
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations && FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments.equals("")) isValid = false
         tblVisitation[0].Visitation = isValid
+    }
+
+    fun validateVisitationVisited() {
+        tblVisitation[0].visited = true
     }
 
     fun validateFacilityGeneralInfo() {
@@ -272,6 +439,10 @@ class IndicatorsDataModel {
         Log.v("Facility General: --->",isValid.toString())
     }
 
+    fun validateFacilityGeneralInfoVisited() {
+        tblFacility[0].GeneralInfoVisited = true
+    }
+
     fun validateFacilityRSP() {
         var isValid = true
         if (FacilityDataModel.getInstance().tblAARPortalAdmin.size==1 && FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders.equals("-1")) isValid=false
@@ -287,6 +458,10 @@ class IndicatorsDataModel {
         }
         tblFacility[0].RSP= isValid
         Log.v("Facility RSP: --->",isValid.toString());
+    }
+
+    fun validateFacilityRSPVisited() {
+        tblFacility[0].RSPVisited= true
     }
 
     fun validateFacilityLocation() {
@@ -330,6 +505,10 @@ class IndicatorsDataModel {
         Log.v("Facility Location: --->",isValid.toString());
     }
 
+    fun validateFacilityLocationVisited() {
+        tblFacility[0].LocationVisited=true
+    }
+
     fun validateFacilityPersonnel(){
         var isValid = true
         FacilityDataModel.getInstance().tblPersonnel.apply {
@@ -353,5 +532,9 @@ class IndicatorsDataModel {
         }
         tblFacility[0].Personnel= isValid
         Log.v("Facility Personnel: ->",isValid.toString());
+    }
+
+    fun validateFacilityPersonnelVisited(){
+        tblFacility[0].PersonnelVisited = true
     }
 }

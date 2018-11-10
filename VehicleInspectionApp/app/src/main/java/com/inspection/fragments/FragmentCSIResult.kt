@@ -12,12 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TableRow
 import android.widget.TextView
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.monthNoToName
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TblAAAPortalEmailFacilityRepTable
 import kotlinx.android.synthetic.main.fragment_csiresult.*
+import kotlinx.android.synthetic.main.surveys_group_layout.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,6 +60,9 @@ class FragmentCSIResult : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillCSIResultsTableView()
+        IndicatorsDataModel.getInstance().tblSurveys[0].visited = true
+        (activity as FormsActivity).csiResultsButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
     fun fillCSIResultsTableView(){

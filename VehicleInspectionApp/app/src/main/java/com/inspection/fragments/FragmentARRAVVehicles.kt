@@ -19,6 +19,7 @@ import com.google.gson.Gson
 
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.ExpandableHeightGridView
 import com.inspection.Utils.toast
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.interfaces.VehicleServicesListItem
@@ -48,6 +49,8 @@ class FragmentARRAVVehicles : Fragment() {
 
     var vehiclesArrayAdapter: VehicleServicesArrayAdapter? = null
 
+    var vehicleMakeListView: ExpandableHeightGridView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -67,12 +70,8 @@ class FragmentARRAVVehicles : Fragment() {
 
         prepareView()
 
-//        var vehiclesListItems = ArrayList<VehicleServicesListItem>()
+        vehicleMakeListView = vehicleMakeList
 
-//        vehiclesListItems.add(VehicleServiceHeader("Domestic"))
-//        vehiclesListItems.add(VehicleServiceItem("AMC"))
-//        vehiclesListItems.add(VehicleServiceItem("Buick"))
-//        vehiclesListItems.add(VehicleServiceItem("Geo"))
 
 
         var vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehiclesListItems)

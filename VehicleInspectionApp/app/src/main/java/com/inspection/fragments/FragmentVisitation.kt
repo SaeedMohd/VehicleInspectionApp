@@ -83,15 +83,15 @@ class FragmentVisitation : Fragment() {
         setFieldsValues()
         setFieldsListeners()
 
-        if (IndicatorsDataModel.getInstance().tblVisitation[0].Visitation) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
 
 
     }
 
 
     fun checkMarkChangesDone(){
-        IndicatorsDataModel.getInstance().validateVisitationSection()
-        (activity as FormsActivity).refreshMenuIndicators()
+        IndicatorsDataModel.getInstance().validateVisitationSectionVisited()
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 //        FacilityDataModelOrg.getInstance().changeWasDone = false
 //        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
 //        scopeOfServiceChangesWatcher()
@@ -309,9 +309,9 @@ class FragmentVisitation : Fragment() {
         completeButton.setOnClickListener(View.OnClickListener {
             if (validateInputs()) {
 //                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
-                IndicatorsDataModel.getInstance().validateVisitationSection()
-                if (IndicatorsDataModel.getInstance().tblVisitation[0].Visitation) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
-                (activity as FormsActivity).refreshMenuIndicators()
+                IndicatorsDataModel.getInstance().validateVisitationSectionVisited()
+                if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
+                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
             } else
 //                Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
@@ -756,118 +756,118 @@ class FragmentVisitation : Fragment() {
             }
         }
     }
-    fun checkMarkChangesWasDone(){
-
-        IndicatorsDataModel.getInstance().validateVisitationSection()
-        (activity as FormsActivity).refreshMenuIndicators()
-
-        Log.v("dataHandle11",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-
-
-        if (!FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()){
-
-            if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName!=FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName){
-                MarkChangeWasDone()
-                Log.v("dataHandle10",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-
-            }
-        }
-        if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) {
-            MarkChangeWasDone()
-            Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-
-        }
-
-        if (!FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()){
-
-            if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName!=FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName){
-                MarkChangeWasDone()
-                Log.v("dataHandle10",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-
-            }
-        }
-        if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()) {
-            Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-
-            MarkChangeWasDone()
-
-        }
-        if (FacilityDataModel.getInstance().tblFacilityEmail[0].email !=FacilityDataModelOrg.getInstance().tblFacilityEmail[0].email){
-            MarkChangeWasDone()
-            Log.v("dataHandle13",FacilityDataModelOrg.getInstance().tblFacilityEmail[0].email  + "====" + FacilityDataModel.getInstance().tblFacilityEmail[0].email)
-
-
-        }
-
-
-
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility){
-
-            MarkChangeWasDone()
-            Log.v("dataHandle16",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
-
-
-        }
-
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiveVisitations){
-
-            MarkChangeWasDone()
-            Log.v("dataHandle14",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
-
-
-        }
-
-               if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
-
-            MarkChangeWasDone()
-                   Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
-
-
-               }
-
-        if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns
-                !=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
-            MarkChangeWasDone()
-        }
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval !=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
-            MarkChangeWasDone()
-        }
-
-        if ((FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl)
-                && (FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl!=" " )
-        ){
-            MarkChangeWasDone()
-            Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl)
-
-        }
-
-        if ((FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining)
-                && (FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining!=" ")
-        ){
-            Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining)
-
-            MarkChangeWasDone()
-        }
-
-
-
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
-            MarkChangeWasDone()
-        }
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature){
-            MarkChangeWasDone()
-        }
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature){
-            MarkChangeWasDone()
-        }
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature){
-            MarkChangeWasDone()
-        }
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverSignature){
-            MarkChangeWasDone()
-        }
-
-    }
+//    fun checkMarkChangesWasDone(){
+//
+//        IndicatorsDataModel.getInstance().validateVisitationSection()
+//        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//
+//        Log.v("dataHandle11",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+//
+//
+//        if (!FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()){
+//
+//            if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName!=FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName){
+//                MarkChangeWasDone()
+//                Log.v("dataHandle10",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+//
+//            }
+//        }
+//        if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) {
+//            MarkChangeWasDone()
+//            Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+//
+//        }
+//
+//        if (!FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()){
+//
+//            if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName!=FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName){
+//                MarkChangeWasDone()
+//                Log.v("dataHandle10",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+//
+//            }
+//        }
+//        if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()) {
+//            Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
+//
+//            MarkChangeWasDone()
+//
+//        }
+//        if (FacilityDataModel.getInstance().tblFacilityEmail[0].email !=FacilityDataModelOrg.getInstance().tblFacilityEmail[0].email){
+//            MarkChangeWasDone()
+//            Log.v("dataHandle13",FacilityDataModelOrg.getInstance().tblFacilityEmail[0].email  + "====" + FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+//
+//
+//        }
+//
+//
+//
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility){
+//
+//            MarkChangeWasDone()
+//            Log.v("dataHandle16",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+//
+//
+//        }
+//
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiveVisitations){
+//
+//            MarkChangeWasDone()
+//            Log.v("dataHandle14",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+//
+//
+//        }
+//
+//               if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
+//
+//            MarkChangeWasDone()
+//                   Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+//
+//
+//               }
+//
+//        if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns
+//                !=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
+//            MarkChangeWasDone()
+//        }
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval !=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
+//            MarkChangeWasDone()
+//        }
+//
+//        if ((FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl)
+//                && (FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl!=" " )
+//        ){
+//            MarkChangeWasDone()
+//            Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl)
+//
+//        }
+//
+//        if ((FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining)
+//                && (FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining!=" ")
+//        ){
+//            Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining)
+//
+//            MarkChangeWasDone()
+//        }
+//
+//
+//
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
+//            MarkChangeWasDone()
+//        }
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature){
+//            MarkChangeWasDone()
+//        }
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature){
+//            MarkChangeWasDone()
+//        }
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature){
+//            MarkChangeWasDone()
+//        }
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverSignature){
+//            MarkChangeWasDone()
+//        }
+//
+//    }
 
 
     fun emailFormatValidation(target: CharSequence): Boolean {

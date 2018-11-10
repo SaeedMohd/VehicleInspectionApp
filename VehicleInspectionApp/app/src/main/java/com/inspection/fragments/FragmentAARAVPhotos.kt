@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -27,6 +28,7 @@ import com.inspection.R.id.*;
 
 
 import com.inspection.Utils.toast
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_photos.*
 import java.io.File
@@ -126,6 +128,10 @@ class FragmentAARAVPhotos : Fragment() {
             photosPreviewDialog.visibility = View.GONE
             photosLoadingView.visibility = View.GONE
         }
+
+        IndicatorsDataModel.getInstance().tblPhotos[0].visited = true
+        photosTitle.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
 

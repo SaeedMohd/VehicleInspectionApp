@@ -18,6 +18,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.Constants
 import com.inspection.Utils.apiToAppFormat
@@ -61,7 +62,12 @@ class FragmentARRAVComplaints : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
-        if (IndicatorsDataModel.getInstance().tblComplaints[0].Complaints) compTitle.setTextColor(Color.parseColor("#26C3AA")) else compTitle.setTextColor(Color.parseColor("#A42600"))
+//        if (IndicatorsDataModel.getInstance().tblComplaints[0].visited) compTitle.setTextColor(Color.parseColor("#26C3AA")) else compTitle.setTextColor(Color.parseColor("#A42600"))
+
+        IndicatorsDataModel.getInstance().tblComplaints[0].visited = true
+        compTitle.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
         programsChangesMade = false
         // The no os complaints , justified and ratio need to be clarified when all are showed
 //        compeditBtn.setOnClickListener({

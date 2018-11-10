@@ -217,7 +217,7 @@ class FragmentARRAVAffliations : Fragment() {
                                     HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
                                     IndicatorsDataModel.getInstance().validateSOSAffiliations()
                                     if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
-                                    (activity as FormsActivity).refreshMenuIndicators()
+                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                     Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")

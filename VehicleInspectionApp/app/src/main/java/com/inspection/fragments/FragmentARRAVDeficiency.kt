@@ -79,7 +79,7 @@ class FragmentARRAVDeficiency : Fragment() {
         prepareDefSpinners()
         fillDeffTableView()
 
-        if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
         exitDeffeciencyDialogeBtnId.setOnClickListener({
             defeciencyCard.visibility=View.GONE
             visitationFormAlphaBackground.visibility = View.GONE
@@ -256,9 +256,9 @@ class FragmentARRAVDeficiency : Fragment() {
                                     fillDeffTableView()
                                     HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
                                     HasChangedModel.getInstance().changeDoneForDeficiencyDef()
-                                    IndicatorsDataModel.getInstance().validateDeffecienciesSection()
-                                    if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].Deffeciency) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
-                                    (activity as FormsActivity).refreshMenuIndicators()
+                                    IndicatorsDataModel.getInstance().validateDeffecienciesSectionVisited()
+                                    if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
+                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                     Utility.showSubmitAlertDialog(activity, false, "Deficiency (Error: "+errorMessage+" )")

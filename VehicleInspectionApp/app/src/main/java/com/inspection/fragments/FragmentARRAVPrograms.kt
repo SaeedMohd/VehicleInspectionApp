@@ -257,9 +257,9 @@ class FragmentARRAVPrograms : Fragment() {
                                         fillPortalTrackingTableView()
                                         altTableRow(2)
                                         programCard.visibility = View.GONE
-                                        IndicatorsDataModel.getInstance().validateSOSPrograms()
-                                        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Programs) (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#A42600"))
-                                        (activity as FormsActivity).refreshMenuIndicators()
+                                        IndicatorsDataModel.getInstance().validateSOSProgramsVisited()
+                                        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#A42600"))
+                                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                     } else {
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE

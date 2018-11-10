@@ -277,18 +277,18 @@ class ScopeOfServiceGroupFragment : Fragment() {
 //                otherSelectedIndicator.visibility = View.VISIBLE
 //            }
         }
-        IndicatorsDataModel.getInstance().validateSoSSection()
+//        IndicatorsDataModel.getInstance().validateSoSSectionVisited()
         refreshTabIndicators()
-        (activity as FormsActivity).refreshMenuIndicators()
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
     fun refreshTabIndicators() {
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Programs) programsButton.setTextColor(Color.parseColor("#26C3AA")) else programsButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
-        vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA"))
-        vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited) generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited) facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) programsButton.setTextColor(Color.parseColor("#26C3AA")) else programsButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited) vehiclesButton.setTextColor(Color.parseColor("#26C3AA")) else vehiclesButton.setTextColor(Color.parseColor("#A42600"))
 //        promotionsButton.setTextColor(Color.parseColor("#26C3AA"))
 //        awardsAndDistinctionsButton.setTextColor(Color.parseColor("#26C3AA"))
     }

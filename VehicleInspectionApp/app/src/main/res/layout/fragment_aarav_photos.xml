@@ -32,21 +32,36 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:background="@color/white"
             android:elevation="10dp"
             >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Photos"
+                android:id="@+id/photosTitle"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:gravity="center"
+                android:textColor="@color/mainColor"
+                />
 
-        <Button
-            android:background="@drawable/green_background_button"
-            android:textColor="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="right"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="Add New Photo"
-            android:id="@+id/addNewPhoto"
-            />
+            <Button
+                android:background="@drawable/green_background_button"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Add New Photo"
+                android:id="@+id/addNewPhoto"
+                />
+            </RelativeLayout>
 
             <TableLayout
                 android:id="@+id/photosTableLayout"

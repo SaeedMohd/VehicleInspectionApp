@@ -1,15 +1,19 @@
 package com.inspection.fragments
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.facility_group_layout.*
+import kotlinx.android.synthetic.main.fragment_aarav_complaints.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -46,7 +50,7 @@ class ComplaintsGroupFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.facility_group_layout, container, false)
+        return inflater.inflate(R.layout.fragment_aarav_complaints, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,8 +82,14 @@ class ComplaintsGroupFragment : Fragment() {
                     .commit()
         }
 
+        refreshTabIndicators()
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
+
+    fun refreshTabIndicators() {
+        if (IndicatorsDataModel.getInstance().tblComplaints[0].visited) compTitle.setTextColor(Color.parseColor("#26C3AA")) else compTitle.setTextColor(Color.parseColor("#A42600"))
+    }
 
     /**
      * This interface must be implemented by activities that contain this

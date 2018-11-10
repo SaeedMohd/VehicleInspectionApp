@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import com.inspection.R
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.facility_group_layout.*
+import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -80,6 +82,13 @@ class DeficienciesGroupFragment : Fragment() {
                     .commit()
         }
 
+        refreshTabIndicators()
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+    }
+
+
+    fun refreshTabIndicators() {
+        if (IndicatorsDataModel.getInstance().tblComplaints[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
     }
 
 

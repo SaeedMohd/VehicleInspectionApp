@@ -10,9 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
@@ -98,6 +100,13 @@ class SurveysGroupFragment : Fragment() {
 //                softwareSelectedIndicator.visibility = View.VISIBLE
 //            }
 //        }
+        refreshTabIndicators()
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+    }
+
+
+    fun refreshTabIndicators() {
+        if (IndicatorsDataModel.getInstance().tblComplaints[0].visited) csiResultsButton.setTextColor(Color.parseColor("#26C3AA")) else csiResultsButton.setTextColor(Color.parseColor("#A42600"))
     }
 
 

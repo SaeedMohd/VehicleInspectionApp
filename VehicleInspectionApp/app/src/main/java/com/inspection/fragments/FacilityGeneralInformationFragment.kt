@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.R.id.terminationReason_textviewVal
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdatePaymentMethodsData
 import com.inspection.imageloader.Utils
@@ -654,6 +655,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             facValide=false
 
         }
+
         if (facilitytype_textviewVal.selectedItem.toString().isNullOrEmpty()){
             facilitytype_textview.setError("reqiured field")
             facValide=false
@@ -895,7 +897,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         Log.v("Data To Submit", urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString,
                 Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
+                    activity!!.runOnUiThread {
                         Log.v("RESPONSE",response.toString())
                         if (response.toString().contains("returnCode&gt;0&",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility General Information")
@@ -911,14 +913,14 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone=true
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType=true
                             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-                            IndicatorsDataModel.getInstance().validateFacilityGeneralInfo()
-                            if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-                            (activity as FormsActivity).refreshMenuIndicators()
+                            IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
+                            if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+ errorMessage+" )")
                         }
-                    })
+                    }
                 }, Response.ErrorListener {
             Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+it.message+" )")
         }))
@@ -970,9 +972,9 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage+" )")
                         }
-                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfo()
-                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-                        (activity as FormsActivity).refreshMenuIndicators()
+                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
+                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                 })
     }, Response.ErrorListener {
