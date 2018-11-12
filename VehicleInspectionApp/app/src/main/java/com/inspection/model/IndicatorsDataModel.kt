@@ -161,15 +161,8 @@ class IndicatorsDataModel {
         tblBilling.add(0,Billing)
     }
 
-    fun validateAllScreensVisited() {
-        validateSoSSectionVisited()
-        validateDeffecienciesSectionVisited()
-        validateVisitationSectionVisited()
-        validateFacilitySectionVisited()
-        validateComplaintsSectionVisited()
-        validateBillingSectionVisited()
-        validatePhotosSectionVisited()
-        validateSurveysSectionVisited()
+    fun validateAllScreensVisited() : Boolean {
+        return validateSoSSectionVisited() && validateDeffecienciesSectionVisited() && validateVisitationSectionVisited() && validateFacilitySectionVisited() && validateComplaintsSectionVisited() && validateBillingSectionVisited() && validatePhotosSectionVisited() && validateSurveysSectionVisited()
     }
 
     fun validateBusinessRules() {
@@ -184,13 +177,8 @@ class IndicatorsDataModel {
 //        refreshIndicatorsView()
     }
 
-    fun validateSoSSectionVisited() {//Scope Of Services
-        validateSoSGeneralVisited()
-        validateSOSProgramsVisited()
-        validateSOSFacilityServicesVisited()
-        validateSOSAffiliationsVisited()
-        validateSOSVehicleVisited()
-        validateSOSVehicleServicesVisited()
+    fun validateSoSSectionVisited() : Boolean {//Scope Of Services
+        return validateSoSGeneralVisited() && validateSOSProgramsVisited() && validateSOSFacilityServicesVisited() && validateSOSAffiliationsVisited() && validateSOSVehicleVisited() && validateSOSVehicleServicesVisited()
     }
 
     fun validateSoSSection() {//Scope Of Services
@@ -200,40 +188,40 @@ class IndicatorsDataModel {
         validateSOSAffiliations()
     }
 
-    fun validateDeffecienciesSectionVisited() {
-        validateDeffeciencyVisited()
+    fun validateDeffecienciesSectionVisited()  : Boolean {
+        return validateDeffeciencyVisited()
     }
 
     fun validateDeffecienciesSection() {
         validateDeffeciency()
     }
 
-    fun validateComplaintsSectionVisited() {
-        validateComplaintsVisited()
+    fun validateComplaintsSectionVisited()  : Boolean {
+        return validateComplaintsVisited()
     }
 
     fun validateComplaintsSection() {
         validateComplaints()
     }
 
-    fun validateSurveysSectionVisited() {
-        validateSurveysVisited()
+    fun validateSurveysSectionVisited()  : Boolean {
+        return validateSurveysVisited()
     }
 
     fun validateSurveysSection() {
         validateSurveys()
     }
 
-    fun validatePhotosSectionVisited() {
-        validatePhotosVisited()
+    fun validatePhotosSectionVisited()  : Boolean {
+        return validatePhotosVisited()
     }
 
     fun validatePhotosSection() {
         validatePhotos()
     }
 
-    fun validateVisitationSectionVisited() {
-        validateVisitationVisited()
+    fun validateVisitationSectionVisited()  : Boolean {
+        return validateVisitationVisited()
     }
 
     fun validateVisitationSection() {
@@ -244,44 +232,36 @@ class IndicatorsDataModel {
 
     }
 
-    fun validateBillingSectionVisited() {
-        validateBillingPlanVisited()
-        validateBillingVisited()
-        validateVendorRevenueVisited()
-        validatePaymentsVisited()
-        validateBillingHistoryVisited()
-        validateBillingAdjustmentsVisited()
+    fun validateBillingSectionVisited() : Boolean {
+        return validateBillingPlanVisited() && validateBillingVisited() && validateVendorRevenueVisited() && validatePaymentsVisited() && validateBillingHistoryVisited() && validateBillingAdjustmentsVisited()
     }
 
-    fun validateBillingAdjustmentsVisited() {
-        tblBilling[0].BillingAdjustmentsVisited = true
+    fun validateBillingAdjustmentsVisited() : Boolean {
+        return tblBilling[0].BillingAdjustmentsVisited
     }
 
-    fun validateBillingHistoryVisited() {
-        tblBilling[0].BillingHistoryVisited = true
+    fun validateBillingHistoryVisited()  : Boolean {
+        return tblBilling[0].BillingHistoryVisited
     }
 
-    fun validatePaymentsVisited() {
-        tblBilling[0].PaymentsVisited = true
+    fun validatePaymentsVisited()  : Boolean {
+        return tblBilling[0].PaymentsVisited
     }
 
-    fun validateVendorRevenueVisited() {
-        tblBilling[0].VendorRevenueVisited = true
+    fun validateVendorRevenueVisited()  : Boolean {
+        return tblBilling[0].VendorRevenueVisited
     }
 
-    fun validateBillingPlanVisited() {
-        tblBilling[0].BillingPlanVisited = true
+    fun validateBillingPlanVisited()  : Boolean {
+        return tblBilling[0].BillingPlanVisited
     }
 
-    fun validateBillingVisited() {
-        tblBilling[0].BillingVisited = true
+    fun validateBillingVisited()  : Boolean {
+        return tblBilling[0].BillingVisited
     }
 
-    fun validateFacilitySectionVisited(){
-        validateFacilityGeneralInfoVisited()
-        validateFacilityRSPVisited()
-        validateFacilityLocationVisited()
-        validateFacilityPersonnelVisited()
+    fun validateFacilitySectionVisited()  : Boolean {
+        return validateFacilityGeneralInfoVisited() && validateFacilityRSPVisited() && validateFacilityLocationVisited () && validateFacilityPersonnelVisited()
     }
 
     fun validateFacilitySection(){
@@ -291,16 +271,16 @@ class IndicatorsDataModel {
         validateFacilityPersonnel()
     }
 
-    fun validateSoSGeneralVisited() {
-        tblScopeOfServices[0].GeneralInfoVisited = true
+    fun validateSoSGeneralVisited() : Boolean {
+        return tblScopeOfServices[0].GeneralInfoVisited
     }
 
-    fun validateSOSVehicleServicesVisited() {
-        tblScopeOfServices[0].VehicleServicesVisited = true
+    fun validateSOSVehicleServicesVisited() : Boolean {
+        return tblScopeOfServices[0].VehicleServicesVisited
     }
 
-    fun validateSOSVehicleVisited() {
-        tblScopeOfServices[0].VehiclesVisited= true
+    fun validateSOSVehicleVisited() : Boolean {
+        return tblScopeOfServices[0].VehiclesVisited
     }
 
     fun validateSoSGeneral() {
@@ -316,8 +296,8 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].GeneralInfo = isValid
     }
 
-    fun validateSOSProgramsVisited () {
-        tblScopeOfServices[0].ProgramsVisited = true
+    fun validateSOSProgramsVisited () : Boolean {
+        return tblScopeOfServices[0].ProgramsVisited
     }
 
     fun validateSOSPrograms () {
@@ -332,8 +312,8 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].Programs = isValid
     }
 
-    fun validateSOSFacilityServicesVisited() {
-        tblScopeOfServices[0].FacilityServicesVisited = true
+    fun validateSOSFacilityServicesVisited(): Boolean {
+        return tblScopeOfServices[0].FacilityServicesVisited
     }
 
     fun validateSOSFacilityServices() {
@@ -347,8 +327,8 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].FacilityServices = isValid
     }
 
-    fun validateSOSAffiliationsVisited() {
-        tblScopeOfServices[0].AffiliationsVisited = true
+    fun validateSOSAffiliationsVisited() : Boolean {
+        return tblScopeOfServices[0].AffiliationsVisited
     }
 
     fun validateSOSAffiliations() {
@@ -363,8 +343,8 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].Affiliations = isValid
     }
 
-    fun validateComplaintsVisited(){
-        tblComplaints[0].visited=true
+    fun validateComplaintsVisited() : Boolean{
+        return tblComplaints[0].visited
     }
     fun validateComplaints(){
 
@@ -374,16 +354,16 @@ class IndicatorsDataModel {
 
     }
 
-    fun validateSurveysVisited(){
-        tblSurveys[0].visited = true
+    fun validateSurveysVisited() : Boolean{
+        return tblSurveys[0].visited
     }
 
     fun validatePhotos(){
 
     }
 
-    fun validatePhotosVisited(){
-        tblPhotos[0].visited = true
+    fun validatePhotosVisited() : Boolean{
+        return tblPhotos[0].visited
     }
 
     fun validateDeffeciency(){
@@ -396,8 +376,8 @@ class IndicatorsDataModel {
         tblDeffeciencies[0].Deffeciency= isValid
     }
 
-    fun validateDeffeciencyVisited(){
-        tblDeffeciencies[0].visited = true
+    fun validateDeffeciencyVisited() : Boolean{
+        return tblDeffeciencies[0].visited
     }
 
     fun validateVisitation() {
@@ -417,8 +397,8 @@ class IndicatorsDataModel {
         tblVisitation[0].Visitation = isValid
     }
 
-    fun validateVisitationVisited() {
-        tblVisitation[0].visited = true
+    fun validateVisitationVisited() : Boolean{
+        return tblVisitation[0].visited
     }
 
     fun validateFacilityGeneralInfo() {
@@ -439,8 +419,8 @@ class IndicatorsDataModel {
         Log.v("Facility General: --->",isValid.toString())
     }
 
-    fun validateFacilityGeneralInfoVisited() {
-        tblFacility[0].GeneralInfoVisited = true
+    fun validateFacilityGeneralInfoVisited() : Boolean{
+        return tblFacility[0].GeneralInfoVisited
     }
 
     fun validateFacilityRSP() {
@@ -460,8 +440,8 @@ class IndicatorsDataModel {
         Log.v("Facility RSP: --->",isValid.toString());
     }
 
-    fun validateFacilityRSPVisited() {
-        tblFacility[0].RSPVisited= true
+    fun validateFacilityRSPVisited() : Boolean{
+        return tblFacility[0].RSPVisited
     }
 
     fun validateFacilityLocation() {
@@ -505,8 +485,8 @@ class IndicatorsDataModel {
         Log.v("Facility Location: --->",isValid.toString());
     }
 
-    fun validateFacilityLocationVisited() {
-        tblFacility[0].LocationVisited=true
+    fun validateFacilityLocationVisited() : Boolean{
+        return tblFacility[0].LocationVisited
     }
 
     fun validateFacilityPersonnel(){
@@ -534,7 +514,7 @@ class IndicatorsDataModel {
         Log.v("Facility Personnel: ->",isValid.toString());
     }
 
-    fun validateFacilityPersonnelVisited(){
-        tblFacility[0].PersonnelVisited = true
+    fun validateFacilityPersonnelVisited() : Boolean {
+        return tblFacility[0].PersonnelVisited
     }
 }

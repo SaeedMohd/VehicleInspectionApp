@@ -2,24 +2,31 @@ package com.inspection.fragments
 
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.ExpandableHeightGridView
+import com.inspection.adapter.VehicleListAdapter
 import com.inspection.adapter.VehicleTypesListAdapter
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_vehicles_fragment_in_scope_of_services_view.*
+import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
 
 //vehicleType_textviewVal
@@ -31,8 +38,30 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
 
     var DomesticVehiclesListView: ExpandableHeightGridView? = null
-    internal var arrayAdapter: VehicleTypesListAdapter? = null
-        var domesticVehiclesListItems=ArrayList<TypeTablesModel.vehicleMakesType>()
+    var AsianVehiclesListView: ExpandableHeightGridView? = null
+    var EuropeanVehiclesListView: ExpandableHeightGridView? = null
+    var ExoticVehiclesListView: ExpandableHeightGridView? = null
+    var OtherVehiclesListView: ExpandableHeightGridView? = null
+
+    internal var domesticAdapter: VehicleListAdapter? = null
+    internal var asianAdapter: VehicleListAdapter? = null
+    internal var europeanAdapter: VehicleListAdapter? = null
+    internal var exoticAdapter: VehicleListAdapter? = null
+    internal var otherAdapter: VehicleListAdapter? = null
+
+    var domesticListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var asianListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var europeanListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var exoticListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var otherListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+
+
+
+    private var vehicleTypeList = ArrayList<TypeTablesModel.vehiclesType>()
+    private var vehicleTypeArray = ArrayList<String>()
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +73,10 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater!!.inflate(R.layout.fragment_vehicles_fragment_in_scope_of_services_view, container, false)
         DomesticVehiclesListView = view.findViewById(R.id.DomesticVehiclesListView)
+        AsianVehiclesListView = view.findViewById(R.id.AsianVehiclesListView)
+        EuropeanVehiclesListView = view.findViewById(R.id.EuropeanVehiclesListView)
+        ExoticVehiclesListView = view.findViewById(R.id.ExoticVehiclesListView)
+        OtherVehiclesListView = view.findViewById(R.id.otherTypesVehiclesListView)
 
         return view
     }
@@ -54,9 +87,32 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 //        if (progressbarVehicleServices != null) {
 //            progressbarVehicleServices.visibility = View.VISIBLE
 //        }
-        scopeOfServiceChangesWatcher()
-        setServices()
 
+        vehicleTypeList = TypeTablesModel.getInstance().VehiclesType
+        vehicleTypeArray.clear()
+        for (fac in vehicleTypeList) {
+            vehicleTypeArray.add(fac.VehiclesTypeName)
+        }
+
+        var vehicleTypeAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, vehicleTypeArray)
+        vehicleTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vehicleTypeSpinner.adapter = vehicleTypeAdapter
+
+        IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited= true
+        (activity as FormsActivity).vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
+        vehicleTypeSpinner.onItemSelectedListener= object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                setServices()
+            }
+        }
+
+        setServices()
 
     }
 
@@ -64,38 +120,72 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
     private fun setServices() {
 
+        domesticListItems.clear()
+        asianListItems.clear()
+        europeanListItems.clear()
+        exoticListItems.clear()
+        otherListItems.clear()
+        DomesticVehiclesListView?.adapter = null
+        AsianVehiclesListView?.adapter = null
+        EuropeanVehiclesListView?.adapter = null
+        ExoticVehiclesListView?.adapter = null
+        OtherVehiclesListView?.adapter = null
+        DomesticVehiclesListView?.isVisible = false
+        AsianVehiclesListView?.isVisible = false
+        EuropeanVehiclesListView?.isVisible = false
+        ExoticVehiclesListView?.isVisible = false
+        OtherVehiclesListView?.isVisible = false
 
-        for (model in TypeTablesModel.getInstance().VehicleMakesType) {
-
-            for (model2 in TypeTablesModel.getInstance().VehiclesMakesCategoryType){
-
-
-                //****** nothin to relate between two arrays vehicle category and vehicle make name , cuz ids type are not same *****//
-
-
-                if (model.VehMakeTypeId==model2.VehCategoryID){
-
-                    if (model2.VehCategoryName.toString().contains("Domest")) {
-
-                   //     domesticVehiclesListItems.add(model)
-                    }
-
-
-
-                }
+        for (model in TypeTablesModel.getInstance().VehicleMakes.filter { S -> S.VehicleTypeID==TypeTablesModel.getInstance().VehiclesType.filter { S->S.VehiclesTypeName.equals(vehicleTypeSpinner.selectedItem.toString())}[0].VehiclesTypeID.toInt()}) {
+            if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Domestic")}[0].VehCategoryID.toInt()){
+                domesticListItems.add(model)
+            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Asian")}[0].VehCategoryID.toInt()){
+                asianListItems.add(model)
+            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("European")}[0].VehCategoryID.toInt()){
+                europeanListItems.add(model)
+            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Exotic")}[0].VehCategoryID.toInt()){
+                exoticListItems.add(model)
+            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Other Types")}[0].VehCategoryID.toInt()){
+                otherListItems.add(model)
             }
-
         }
 
 
+        if (domesticListItems.count() > 0) {
+            domesticAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", domesticListItems)
+            DomesticVehiclesListView?.adapter = domesticAdapter
+            DomesticVehiclesListView?.isExpanded = true
+            DomesticVehiclesListView?.isVisible = true
+        }
+        if (asianListItems.count() > 0) {
+            asianAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", asianListItems)
+            AsianVehiclesListView?.adapter = asianAdapter
+            AsianVehiclesListView?.isExpanded = true
+            AsianVehiclesListView?.isVisible = true
+        }
+        if (europeanListItems.count() > 0) {
+            europeanAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", europeanListItems)
+            EuropeanVehiclesListView?.adapter = europeanAdapter
+            EuropeanVehiclesListView?.isExpanded = true
+            EuropeanVehiclesListView?.isVisible = true
+        }
+        if (exoticListItems.count() > 0) {
+            exoticAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", exoticListItems)
+            ExoticVehiclesListView?.adapter = exoticAdapter
+            ExoticVehiclesListView?.isExpanded = true
+            ExoticVehiclesListView?.isVisible = true
+        }
+        if (otherListItems.count() > 0) {
+            otherAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", otherListItems)
+            OtherVehiclesListView?.adapter = otherAdapter
+            OtherVehiclesListView?.isExpanded = true
+            OtherVehiclesListView?.isVisible = true
+        }
 
-
-
-
-        arrayAdapter = VehicleTypesListAdapter(context!!, R.layout.vehicle_services_item, domesticVehiclesListItems)
-
-        DomesticVehiclesListView?.adapter = arrayAdapter
-        DomesticVehiclesListView?.isExpanded=true
+        expandablell.visibility = View.VISIBLE
+//
+//        DomesticVehiclesListView?.adapter = arrayAdapter
+//        DomesticVehiclesListView?.isExpanded=true
 
 
 //

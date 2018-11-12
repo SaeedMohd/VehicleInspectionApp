@@ -141,6 +141,10 @@ class FragmentARRAVVehicleServices : Fragment() {
             if (selectedOthersServicesChanged) saveVehicleServiceChanges("5")
 //            Utility.showSubmitAlertDialog(activity, true, saveMessage)
         }
+
+        IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited= true
+        (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
     fun saveVehicleServiceChanges(gridType: String) {
@@ -187,8 +191,8 @@ class FragmentARRAVVehicleServices : Fragment() {
                             (activity as FormsActivity).saveRequired = false
                             HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicleServices()
                             HasChangedModel.getInstance().changeDoneForSoSVehicleServices()
-                            if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
-                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                            if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
+//                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity, false, "Vehicle Services ${saveMessage} (Error: "+ errorMessage+" )")

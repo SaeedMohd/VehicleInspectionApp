@@ -71,7 +71,7 @@ class FacilityDataModel {
     var tblBillingAdjustments = ArrayList<TblBillingAdjustments>()
     var tblAAAPortalEmailFacilityRepTable = ArrayList<TblAAAPortalEmailFacilityRepTable>()
     var tblInvoiceInfoUpdated = ArrayList<InvoiceInfo>()
-
+    var tblFacVehicles = ArrayList<TblFacVehicles>()
 
 //    class TblFacilities {
 //            var isInputsValid = false

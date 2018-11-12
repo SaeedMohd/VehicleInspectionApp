@@ -66,7 +66,11 @@ class FragmentARRAVAffliations : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        scopeOfServiceChangesWatcher()
+
+        IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited = true
+        (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
         edit_afDetails_textviewVal.tag = "0"
 //        var affiliationsArray = arrayOf("ACDelco", "AutoValue", "AutoZone", "Bosch", "Carquest", "DescRepairAffil", "Federated", "Gas Brand", "Mechanical Repair", "NAPA", "Oil", "OtherRepairAffil", "Parts", "PartsPlus", "ProntoVIP", "Quick Lube", "Tire", "Transmission", "WorldPac")
 //        var affiliationsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affiliationsArray)
@@ -215,9 +219,9 @@ class FragmentARRAVAffliations : Fragment() {
                                     altLocationTableRow(2)
                                     HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
                                     HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
-                                    IndicatorsDataModel.getInstance().validateSOSAffiliations()
-                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
-                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                    IndicatorsDataModel.getInstance().validateSOSAffiliations()
+//                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
+//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                     Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
@@ -488,8 +492,8 @@ class FragmentARRAVAffliations : Fragment() {
                                                 altLocationTableRow(2)
                                                 HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
                                                 HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
-                                                IndicatorsDataModel.getInstance().validateSOSAffiliations()
-                                                if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
+//                                                IndicatorsDataModel.getInstance().validateSOSAffiliations()
+//                                                if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].Affiliations) (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
                                             } else {
                                                 var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                                 Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")

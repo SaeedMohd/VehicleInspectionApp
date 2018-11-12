@@ -231,7 +231,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@id/deficienciesCheckBox"
                 android:checked="true"
-                android:text="Pending" />
+                android:text="Not Started" />
 
             <CheckBox
                 android:id="@+id/completedCheckBox"

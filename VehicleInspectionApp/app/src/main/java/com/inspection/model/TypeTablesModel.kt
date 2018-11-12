@@ -79,6 +79,7 @@ class TypeTablesModel {
     var VehicleMakesType = ArrayList<vehicleMakesType>()
     var VehiclesMakesCategoryType = ArrayList<vehiclesMakesCategoryType>()
     var VehiclesType = ArrayList<vehiclesType>()
+    var VehicleMakes = ArrayList<vehicleMakes>()
     var WarrantyPeriodType = ArrayList<warrantyPeriodType>()
 
     class aarDeficiencyType {
@@ -709,6 +710,19 @@ class TypeTablesModel {
         var insertDate = ""
         var updateBy = ""
         var updateDate = ""
+    }
+
+    class vehicleMakes {
+        var VehicleID=-1
+        var VehMakeID=0
+        var MakeName=""
+        var VehicleTypeID=0
+        var VehicleCategoryID=0
+        var insertBy = ""
+        var insertDate = ""
+        var updateBy = ""
+        var updateDate = ""
+        var active=true
     }
 
     class warrantyPeriodType{

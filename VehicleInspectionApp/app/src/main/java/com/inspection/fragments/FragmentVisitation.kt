@@ -83,8 +83,10 @@ class FragmentVisitation : Fragment() {
         setFieldsValues()
         setFieldsListeners()
 
-        if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
-
+//        if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
+        IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
+        (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
     }
 
@@ -306,16 +308,22 @@ class FragmentVisitation : Fragment() {
 
     private fun setFieldsListeners() {
 
-        completeButton.setOnClickListener(View.OnClickListener {
-            if (validateInputs()) {
+        completeButton.setOnClickListener {
+            // Should call validateAllScreensVisited()
+            if (IndicatorsDataModel.getInstance().validateAllScreensVisited()) {
+                if (validateInputs()) {
 //                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
-                IndicatorsDataModel.getInstance().validateVisitationSectionVisited()
-                if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
-                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
-            } else
+                    IndicatorsDataModel.getInstance().validateVisitationSectionVisited()
+                    if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
+                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                } else {
 //                Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
-                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
-        })
+                    Utility.showValidationAlertDialog(activity, "Please fill all required fields")
+                }
+            } else {
+                Utility.showMessageDialog(activity, "Validation ...", "Please check all pages before complete the visitation"   )
+            }
+        }
 
 
         saveButton.setOnClickListener {

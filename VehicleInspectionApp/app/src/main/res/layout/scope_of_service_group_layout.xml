@@ -18,7 +18,7 @@
         <TableRow>
 
             <Button
-                android:id="@+id/generalInformationButton"
+                android:id="@+id/sosgeneralInformationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="General Information"

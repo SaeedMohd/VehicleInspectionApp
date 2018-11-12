@@ -184,12 +184,12 @@ class BillingGroupFragment : Fragment() {
     }
 
     fun refreshTabIndicators() {
-        if (IndicatorsDataModel.getInstance().tblBilling[0].Billing) billingButton.setTextColor(Color.parseColor("#26C3AA")) else billingButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingPlan) billingPlanButton.setTextColor(Color.parseColor("#26C3AA")) else billingPlanButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustments) billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA")) else billingAdjustmentButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingHistory) billingHistoryButton.setTextColor(Color.parseColor("#26C3AA")) else billingHistoryButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].Payments) paymentsButton.setTextColor(Color.parseColor("#26C3AA")) else paymentsButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenue) vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA")) else vendorRevenueButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited) billingButton.setTextColor(Color.parseColor("#26C3AA")) else billingButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited) billingPlanButton.setTextColor(Color.parseColor("#26C3AA")) else billingPlanButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited) billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA")) else billingAdjustmentButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited) billingHistoryButton.setTextColor(Color.parseColor("#26C3AA")) else billingHistoryButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].PaymentsVisited) paymentsButton.setTextColor(Color.parseColor("#26C3AA")) else paymentsButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited) vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA")) else vendorRevenueButton.setTextColor(Color.parseColor("#A42600"))
     }
 
 

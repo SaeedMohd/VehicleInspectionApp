@@ -168,6 +168,12 @@ class FacilityGeneralInformationFragment : Fragment() {
         contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contractTypeValueSpinner.adapter = contractTypesAdapter
 
+        IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited = true
+        (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
+
+
         setFieldsValues()
         ImplementBusinessRules()
         setFieldsListeners()
@@ -913,9 +919,9 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone=true
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType=true
                             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-                            IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
-                            if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                            IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
+//                            if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+//                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+ errorMessage+" )")
@@ -972,9 +978,9 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage+" )")
                         }
-                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
-                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
+//                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+//                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                 })
     }, Response.ErrorListener {

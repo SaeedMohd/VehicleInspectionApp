@@ -1222,6 +1222,16 @@ class VisitationPlanningFragment : Fragment() {
             }
         }
 
+        if (jsonObj.has("tblFacVehicles")) {
+            if (jsonObj.get("tblFacVehicles").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblFacVehicles = Gson().fromJson<ArrayList<TblFacVehicles>>(jsonObj.get("tblFacVehicles").toString(), object : TypeToken<ArrayList<TblFacVehicles>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacVehicles = Gson().fromJson<ArrayList<TblFacVehicles>>(jsonObj.get("tblFacVehicles").toString(), object : TypeToken<ArrayList<TblFacVehicles>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblFacVehicles.add(Gson().fromJson<TblFacVehicles>(jsonObj.get("tblFacVehicles").toString(), TblFacVehicles::class.java))
+                FacilityDataModelOrg.getInstance().tblFacVehicles.add(Gson().fromJson<TblFacVehicles>(jsonObj.get("tblFacVehicles").toString(), TblFacVehicles::class.java))
+            }
+        }
+
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
 //        IndicatorsDataModel.getInstance().validateAllScreensVisited()
@@ -1784,6 +1794,25 @@ class VisitationPlanningFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "InvoiceInfo")
         }
 
+        if (jsonObj.has("tblFacVehicles")) {
+            if (!jsonObj.get("tblFacVehicles").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacVehicles")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacVehicles"))
+                    jsonObj.put("tblFacVehicles", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacVehicles")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacVehicles")
+        }
+//
         return jsonObj
     }
 
@@ -2076,6 +2105,10 @@ class VisitationPlanningFragment : Fragment() {
         } else if (key.equals("InvoiceInfo")) {
             var oneArray = InvoiceInfo()
             oneArray.InvoiceId="-1"
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacVehicles")) {
+            var oneArray = TblFacVehicles()
+            oneArray.VehicleID =-1
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

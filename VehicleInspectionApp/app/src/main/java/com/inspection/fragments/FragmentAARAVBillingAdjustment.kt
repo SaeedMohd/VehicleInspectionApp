@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,11 +14,14 @@ import android.widget.ArrayAdapter
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.billing_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billingadjustment.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -114,6 +118,10 @@ class FragmentAARAVBillingAdjustment : Fragment() {
             addNewBillAdjDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
         })
+
+        IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited = true
+        (activity as FormsActivity).billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
     private var descTypeList = ArrayList<TypeTablesModel.adjustmentDescriptionType>()

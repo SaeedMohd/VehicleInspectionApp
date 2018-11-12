@@ -2,6 +2,7 @@ package com.inspection.fragments
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.Constants
@@ -26,6 +28,7 @@ import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.fragment_arravvehicles.*
+import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 
 /**
  * A simple [Fragment] subclass.
@@ -86,13 +89,22 @@ class FragmentARRAVVehicles : Fragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited = true
+        (activity as FormsActivity).vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
+    }
+
     private fun loadVehicles() {
         if (progressbarVehicles != null) {
             progressbarVehicles.visibility = View.VISIBLE
         }
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVehiclesURL,
                 Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
+                    activity!!.runOnUiThread {
                         isVehiclesLoaded = true
                         vehiclesList = Gson().fromJson(response.toString(), Array<AAAVehiclesModel>::class.java).toCollection(ArrayList())
                         vehiclesListItems.add(VehicleServiceHeader("Automobile"))
@@ -107,7 +119,7 @@ class FragmentARRAVVehicles : Fragment() {
                         if (isPreparingView) {
                             prepareView()
                         }
-                    })
+                    }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnel Types")
             activity!!.toast("Connection Error. Please check the internet connection")

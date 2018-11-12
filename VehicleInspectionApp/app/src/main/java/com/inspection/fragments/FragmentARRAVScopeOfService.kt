@@ -122,6 +122,10 @@ class FragmentARRAVScopeOfService : Fragment() {
         laborRateRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
             handleRadioButtonsSelection()
         }
+
+        IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited= true
+        (activity as FormsActivity).sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
 
@@ -504,9 +508,9 @@ dataChanged=true
                                     setFields()
                                     HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                                     HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                                    IndicatorsDataModel.getInstance().validateSoSGeneral()
-                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                    IndicatorsDataModel.getInstance().validateSoSGeneral()
+//                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                     Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")

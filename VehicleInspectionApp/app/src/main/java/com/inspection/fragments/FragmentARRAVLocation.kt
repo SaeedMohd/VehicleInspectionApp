@@ -80,6 +80,9 @@ class FragmentARRAVLocation : Fragment() {
         fillClosedHoursTableView()
         fillEmailTableView()
 
+        IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited = true
+        (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
         setServices()
 
@@ -765,9 +768,9 @@ class FragmentARRAVLocation : Fragment() {
                                 fillLocationTableView()
                                 HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
                                 HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                                IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
-                                if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
+//                                if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+//                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                             } else {
                                 var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                 Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: "+errorMessage+" )")
@@ -1063,9 +1066,9 @@ class FragmentARRAVLocation : Fragment() {
                                                     FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
                                                     fillPhoneTableView()
                                                     checkIfChangeDone("PHONE")
-                                                    IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
-                                                    if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-                                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                                    IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
+//                                                    if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+//                                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                                 } else {
                                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                                     Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
@@ -1209,9 +1212,9 @@ class FragmentARRAVLocation : Fragment() {
                                                     FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = newChangesEmailText.text.toString()
                                                     fillEmailTableView()
                                                     checkIfChangeDone("EMAIL")
-                                                    IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
-                                                    if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-                                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                                    IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
+//                                                    if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+//                                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                                 } else {
                                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                                     Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
@@ -1725,9 +1728,9 @@ class FragmentARRAVLocation : Fragment() {
                             fillEmailTableView()
                             HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail= true
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                            IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
-                            if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                            IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
+//                            if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+//                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
@@ -1798,9 +1801,9 @@ class FragmentARRAVLocation : Fragment() {
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             refreshButtonsState()
                             Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Nigh Drop")
-                            IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
-                            if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                            IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
+//                            if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+//                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Night Drop (Error: "+errorMessage+" )")
@@ -1834,9 +1837,9 @@ class FragmentARRAVLocation : Fragment() {
                             HasChangedModel.getInstance().checkGeneralInfoTblLanguagesChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             refreshButtonsState()
-                            IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
-                            if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                            IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
+//                            if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+//                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         } else {
 
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
@@ -1926,9 +1929,9 @@ class FragmentARRAVLocation : Fragment() {
                             HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = true
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             fillPhoneTableView()
-                            IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
-                            if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                            IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
+//                            if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+//                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         } else {
 //                            Utility.showSubmitAlertDialog(activity,false,"Facility Phone (Error: "+it.message+" )")
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))

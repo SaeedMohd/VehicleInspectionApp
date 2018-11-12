@@ -56,6 +56,9 @@ class FragmentARRAVFacilityServices : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        scopeOfServiceChangesWatcher()
 
+        IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited= true
+        (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
         exitFC_ServicesDialogeBtnId.setOnClickListener({
             facilityServicesCard.visibility=View.GONE
@@ -182,9 +185,9 @@ class FragmentARRAVFacilityServices : Fragment() {
                                     altFacServiceTableRow(2)
                                     HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices=true
                                     HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
-                                    IndicatorsDataModel.getInstance().validateSOSFacilityServices()
-                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
-                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                    IndicatorsDataModel.getInstance().validateSOSFacilityServices()
+//                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                     Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
@@ -371,9 +374,9 @@ class FragmentARRAVFacilityServices : Fragment() {
                                                     altFacServiceTableRow(2)
                                                     HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices = true
                                                     HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
-                                                    IndicatorsDataModel.getInstance().validateSOSFacilityServices()
-                                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
-                                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                                    IndicatorsDataModel.getInstance().validateSOSFacilityServices()
+//                                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServices) (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+//                                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                                 } else {
                                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                                     Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")

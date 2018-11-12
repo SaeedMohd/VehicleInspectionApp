@@ -3,6 +3,7 @@ package com.inspection.fragments
 import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
@@ -12,13 +13,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.Utils.monthNoToName
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
+import kotlinx.android.synthetic.main.billing_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -178,6 +182,10 @@ class FragmentAARAVBilling : Fragment() {
             addNewBillingDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
         })
+
+        IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited = true
+        (activity as FormsActivity).billingButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
 

@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,10 +12,13 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
+import kotlinx.android.synthetic.main.billing_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billinghistory.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,6 +58,9 @@ class FragmentAARAVBillingHistory : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillBillingHistoryTableView()
+        IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited = true
+        (activity as FormsActivity).billingHistoryButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
     fun fillBillingHistoryTableView() {

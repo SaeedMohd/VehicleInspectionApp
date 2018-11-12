@@ -72,7 +72,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
         (activity as FormsActivity).saveRequired = false
         updateSelectedIndicator(R.id.generalInformationButton)
 
-        generalInformationButton.setOnClickListener {
+        sosgeneralInformationButton.setOnClickListener {
             var fragment = FragmentARRAVScopeOfService.newInstance("","")
             fragmentManager!!.beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
@@ -283,7 +283,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
     }
 
     fun refreshTabIndicators() {
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited) generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited) sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA")) else sosgeneralInformationButton.setTextColor(Color.parseColor("#A42600"))
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited) facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) programsButton.setTextColor(Color.parseColor("#26C3AA")) else programsButton.setTextColor(Color.parseColor("#A42600"))
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))

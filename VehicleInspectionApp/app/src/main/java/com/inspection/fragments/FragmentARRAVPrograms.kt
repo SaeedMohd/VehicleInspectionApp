@@ -74,6 +74,10 @@ class FragmentARRAVPrograms : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited= true
+        (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
         exitProgramDialogeBtnId.setOnClickListener({
             programCard.visibility = View.GONE
             alphaBackgroundForProgramDialogs.visibility = View.GONE
@@ -257,9 +261,9 @@ class FragmentARRAVPrograms : Fragment() {
                                         fillPortalTrackingTableView()
                                         altTableRow(2)
                                         programCard.visibility = View.GONE
-                                        IndicatorsDataModel.getInstance().validateSOSProgramsVisited()
-                                        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#A42600"))
-                                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                        IndicatorsDataModel.getInstance().validateSOSProgramsVisited()
+//                                        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#A42600"))
+//                                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                     } else {
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE

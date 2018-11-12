@@ -78,8 +78,10 @@ class FragmentARRAVDeficiency : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         prepareDefSpinners()
         fillDeffTableView()
+        IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = true
+        deffTitle.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
-        if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
         exitDeffeciencyDialogeBtnId.setOnClickListener({
             defeciencyCard.visibility=View.GONE
             visitationFormAlphaBackground.visibility = View.GONE
@@ -256,9 +258,9 @@ class FragmentARRAVDeficiency : Fragment() {
                                     fillDeffTableView()
                                     HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
                                     HasChangedModel.getInstance().changeDoneForDeficiencyDef()
-                                    IndicatorsDataModel.getInstance().validateDeffecienciesSectionVisited()
-                                    if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
-                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                    IndicatorsDataModel.getInstance().validateDeffecienciesSectionVisited()
+//                                    if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
+//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                     Utility.showSubmitAlertDialog(activity, false, "Deficiency (Error: "+errorMessage+" )")

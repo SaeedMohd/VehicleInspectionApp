@@ -521,3 +521,12 @@ class TblAAAPortalEmailFacilityRepTable {
     var Q8_x0020_Member = ""
     var Q9_x0020_Choose = ""
 }
+
+class TblFacVehicles{
+    var FACID = 0
+    var VehicleID = -1
+    var insertBy = ""
+    var insertDate = ""
+    var updateBy = ""
+    var updateDate = ""
+}

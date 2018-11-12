@@ -57,6 +57,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited = true
+        (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA"))
+        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
         scopeOfServiceChangesWatcher()
         exitRSPDialogeBtnId.setOnClickListener({
 
@@ -280,9 +284,9 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     altLocationTableRow(2)
                                     HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
                                     HasChangedModel.getInstance().changeDoneForFacilityRSP()
-                                    IndicatorsDataModel.getInstance().validateFacilityRSPVisited()
-                                    if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
-                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                    IndicatorsDataModel.getInstance().validateFacilityRSPVisited()
+//                                    if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
+//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
 
                                     var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
@@ -767,9 +771,9 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                                 fillPortalTrackingTableView()
                                                 altLocationTableRow(2)
                                                 HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
-                                                IndicatorsDataModel.getInstance().validateFacilityRSPVisited()
-                                                if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
-                                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                                IndicatorsDataModel.getInstance().validateFacilityRSPVisited()
+//                                                if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
+//                                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                             } else {
                                                 var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                                 Utility.showSubmitAlertDialog(activity,false,"RSP (Error: "+ errorMessage+" )")

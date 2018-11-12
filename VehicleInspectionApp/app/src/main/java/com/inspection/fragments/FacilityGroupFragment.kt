@@ -194,7 +194,7 @@ class FacilityGroupFragment : Fragment() {
 ////                amendmentOrdersTrackingSelectedIndicator.visibility = View.VISIBLE
 //            }
         }
-        IndicatorsDataModel.getInstance().validateFacilitySectionVisited()
+//        IndicatorsDataModel.getInstance().validateFacilitySectionVisited()
         refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }

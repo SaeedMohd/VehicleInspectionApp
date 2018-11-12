@@ -6,6 +6,8 @@
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
+
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,13 +21,54 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
-
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/highll">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Vehicles"
+                    android:textColor="@color/mainColor"
+                    android:textStyle="bold"
+                    android:padding="10dp"
+                    android:textSize="22sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:padding="10dp"
+                        android:text="Vehicle Type:*"
+                        android:textStyle="bold" />
+                    <Spinner
+                        android:id="@+id/vehicleTypeSpinner"
+                        android:layout_width="200dp"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:text="test" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_below="@id/highll"
+                android:id="@+id/expandablell"
+                android:orientation="vertical">
         <androidx.cardview.widget.CardView
-            android:id="@+id/firstLevel"
+            android:id="@+id/domesticContainer"
             android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/highll"
             app:cardBackgroundColor="@color/firstRowColor"
             >
             <LinearLayout
@@ -58,6 +101,7 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
+                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
 
@@ -67,7 +111,7 @@
 
 
         <View
-            android:layout_below="@+id/firstLevel"
+            android:layout_below="@+id/domesticContainer"
             android:layout_width="match_parent"
             android:id="@+id/secondLevel"
             android:layout_height="1dp"
@@ -78,7 +122,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_below="@+id/secondLevel"
-            android:id="@+id/thirdLevel"
+            android:id="@+id/asianContainer"
             android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,6 +156,7 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
+                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
 
@@ -121,17 +166,16 @@
 
         <View
             android:id="@+id/fourthLevel"
-            android:layout_below="@+id/thirdLevel"
+            android:layout_below="@+id/asianContainer"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-
             android:layout_margin="3dp"
             android:background="@color/light_gray" />
 
         <androidx.cardview.widget.CardView
             android:layout_margin="15dp"
             android:layout_below="@+id/fourthLevel"
-            android:id="@+id/fifthLevel"
+            android:id="@+id/europeanContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/firstRowColor"
@@ -164,13 +208,14 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
+                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <View
-            android:layout_below="@+id/fifthLevel"
+            android:layout_below="@+id/europeanContainer"
             android:id="@+id/sixthLevel"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -180,7 +225,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_below="@+id/sixthLevel"
-            android:id="@+id/seventhLevel"
+            android:id="@+id/exoticContainer"
             android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -213,12 +258,13 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
+                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <View
-            android:layout_below="@+id/seventhLevel"
+            android:layout_below="@+id/exoticContainer"
             android:id="@+id/eighthLevel"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -229,7 +275,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_below="@+id/eighthLevel"
-            android:id="@+id/ninethLevel"
+            android:id="@+id/otherContainer"
             android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -262,6 +308,7 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
+                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
             </LinearLayout>
@@ -275,7 +322,7 @@
             android:layout_margin="3dp"
             android:background="@color/light_gray" />
 
-
+            </LinearLayout>
 
         <!--<ProgressBar-->
         <!--android:id="@+id/progressbarVehicleServices"-->

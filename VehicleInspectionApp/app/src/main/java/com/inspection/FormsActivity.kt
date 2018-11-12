@@ -267,6 +267,9 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
         }
 
+        indicatorImage = nav_view.getHeaderView(0).findViewById<ImageView>(R.id.mainIndicatorImg)
+        indicatorImage.visibility = View.GONE
+
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
