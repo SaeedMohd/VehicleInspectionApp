@@ -101,7 +101,6 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
-                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
 
@@ -156,7 +155,6 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
-                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
 
@@ -208,7 +206,6 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
-                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
             </LinearLayout>
@@ -258,7 +255,7 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
-                    android:visibility="gone"
+
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
             </LinearLayout>
@@ -308,7 +305,6 @@
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="4"
-                    android:visibility="gone"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="20dp" />
             </LinearLayout>

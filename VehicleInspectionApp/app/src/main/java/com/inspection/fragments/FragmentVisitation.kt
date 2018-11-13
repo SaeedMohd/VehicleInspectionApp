@@ -83,6 +83,9 @@ class FragmentVisitation : Fragment() {
         setFieldsValues()
         setFieldsListeners()
 
+        // TEST SAEED
+        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+
 //        if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
         IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
         (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
@@ -310,7 +313,7 @@ class FragmentVisitation : Fragment() {
 
         completeButton.setOnClickListener {
             // Should call validateAllScreensVisited()
-            if (IndicatorsDataModel.getInstance().validateAllScreensVisited()) {
+//            if (IndicatorsDataModel.getInstance().validateAllScreensVisited()) {
                 if (validateInputs()) {
 //                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
                     IndicatorsDataModel.getInstance().validateVisitationSectionVisited()
@@ -320,9 +323,9 @@ class FragmentVisitation : Fragment() {
 //                Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
                     Utility.showValidationAlertDialog(activity, "Please fill all required fields")
                 }
-            } else {
-                Utility.showMessageDialog(activity, "Validation ...", "Please check all pages before complete the visitation"   )
-            }
+//            } else {
+//                Utility.showMessageDialog(activity, "Validation ...", "Please check all pages before complete the visitation"   )
+//            }
         }
 
 

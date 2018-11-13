@@ -1360,6 +1360,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView2.layoutParams = rowLayoutParam1
                 textView2.gravity = Gravity.CENTER_VERTICAL
                 textView2.text = get(it).FirstName
+                textView2.tag = get(it).PersonnelID
                 textView2.minimumHeight = 30
                 tableRow.addView(textView2)
 
@@ -1646,20 +1647,36 @@ class FragmentARRAVPersonnel : Fragment() {
 
                     }
 
-                    edit_newCoStartDateBtn.setText("SELECT DATE")
+                    if (FacilityDataModel.getInstance().tblPersonnelSigner.filter { S->S.PersonnelID==textView2.tag}.count()>0){
+                        var model = TblPersonnelSigner()
+                        model = FacilityDataModel.getInstance().tblPersonnelSigner.filter { S->S.PersonnelID==textView2.tag}[0]
+                        edit_newPhoneText.setText(model.Phone)
+                        edit_newZipText.setText(model.ZIP)
+                        edit_newAdd1Text.setText(model.Addr1)
+                        edit_newAdd2Text.setText(model.Addr2)
+                        edit_newCityText.setText(model.CITY)
+                        edit_newZipText2.setText(model.ZIP4)
+                        edit_newEmailText.setText(model.email)
+                        edit_newStateSpinner.setSelection(statesArray.indexOf(model.ST))
+                        if (model.ContractStartDate.isNullOrEmpty() || model.ContractStartDate.equals("01/01/1900")) {
+                            edit_newCoStartDateBtn.setText("SELECT DATE")
+                        } else {
+                            edit_newCoStartDateBtn.setText(model.ContractStartDate.apiToAppFormatMMDDYYYY())
+                        }
+                    } else {
+                        edit_newPhoneText.setText(FacilityDataModel.getInstance().tblPersonnelSigner.filter { S -> S.PersonnelID == textView2.tag }[0].Phone)
+                        edit_newZipText.setText("")
+                        edit_newAdd1Text.setText("")
+                        edit_newAdd2Text.setText("")
+                        edit_newCityText.setText("")
+                        edit_newZipText2.setText("")
+                        edit_newEmailText.setText(textView5.text)
+                        edit_newStateSpinner.setSelection(0)
+                        edit_newCoStartDateBtn.setText("SELECT DATE")
+                    }
                     edit_newCoEndDateBtn.setText("SELECT DATE")
-                    edit_newPhoneText.setText("")
-                    edit_newZipText.setText("")
-                    edit_newAdd1Text.setText("")
-                    edit_newAdd2Text.setText("")
-                    edit_newCityText.setText("")
-                    edit_newZipText2.setText("")
-                    edit_newEmailText.setText(textView5.text)
-                    edit_newStateSpinner.setSelection(0)
                     var i = personTypeArray.indexOf(textView1.text.toString())
                     edit_newPersonnelTypeSpinner.setSelection(i)
-
-
                     edit_newZipText.setError(null)
                     edit_newZipText2.setError(null)
                     edit_newPhoneText.setError(null)

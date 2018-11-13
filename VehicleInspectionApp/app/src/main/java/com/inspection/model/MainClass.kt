@@ -447,19 +447,31 @@ class TblVendorRevenue {
     var updateDate = ""
 }
 
-class TblBillingHistoryReport {
-    var FacID = 0
-    var BillingHistoryReportID = 0
-    var FacNo = 0
-    var FacName = ""
-    var TransactionDate = ""
-    var TransactionType = ""
-    var TransactionDesc = ""
-    var ReferenceNo = ""
-    var Amount = 0.0
+class TblBillingHistory {
+    var InvoiceStatusName = ""
+    var BillingMonthNumber = 0
+    var BillingMonth = ""
+    var BillBalanceDue = ""
+    var BillingAmount = 0.0
+    var AmountReceived = ""
+    var ReceiptDate = ""
+    var FACID = 0
+    var InvoiceId = -1
+    var InvoiceNumber = ""
+    var InvoiceAmount = ""
+    var CreditAmount = 0.0
+    var BillingDueDate = ""
+    var InvoicePrintDate = ""
+    var InvoiceStatusId = 0
+    var ACHParticipant = false
+    var InvoiceFileName = ""
+    var InsertBy = ""
     var insertDate = ""
+    var UpdateBy = ""
     var updateDate = ""
 }
+
+
 
 class TblComments {
     var FACID = 0
@@ -529,4 +541,24 @@ class TblFacVehicles{
     var insertDate = ""
     var updateBy = ""
     var updateDate = ""
+}
+
+
+class TblPersonnelSigner {
+    var PersonnelID = -1
+    var Addr1 = ""
+    var Addr2 = ""
+    var CITY = ""
+    var ST = ""
+    var ZIP = ""
+    var ZIP4 = ""
+    var Phone = ""
+    var email = ""
+    var ContractStartDate = ""
+    var insertBy = ""
+    var insertDate = ""
+    var updateBy = ""
+    var updateDate = ""
+    var FirstName = ""
+    var active = 0
 }

@@ -1136,13 +1136,13 @@ class VisitationPlanningFragment : Fragment() {
             }
         }
 
-        if (jsonObj.has("tblBillingHistoryReport")) {
-            if (jsonObj.get("tblBillingHistoryReport").toString().startsWith("[")) {
-                FacilityDataModel.getInstance().tblBillingHistoryReport = Gson().fromJson<ArrayList<TblBillingHistoryReport>>(jsonObj.get("tblBillingHistoryReport").toString(), object : TypeToken<ArrayList<TblBillingHistoryReport>>() {}.type)
-                FacilityDataModelOrg.getInstance().tblBillingHistoryReport = Gson().fromJson<ArrayList<TblBillingHistoryReport>>(jsonObj.get("tblBillingHistoryReport").toString(), object : TypeToken<ArrayList<TblBillingHistoryReport>>() {}.type)
+        if (jsonObj.has("BillingHistory")) {
+            if (jsonObj.get("BillingHistory").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblBillingHistory = Gson().fromJson<ArrayList<TblBillingHistory>>(jsonObj.get("BillingHistory").toString(), object : TypeToken<ArrayList<TblBillingHistory>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblBillingHistory = Gson().fromJson<ArrayList<TblBillingHistory>>(jsonObj.get("BillingHistory").toString(), object : TypeToken<ArrayList<TblBillingHistory>>() {}.type)
             } else {
-                FacilityDataModel.getInstance().tblBillingHistoryReport.add(Gson().fromJson<TblBillingHistoryReport>(jsonObj.get("tblBillingHistoryReport").toString(), TblBillingHistoryReport::class.java))
-                FacilityDataModelOrg.getInstance().tblBillingHistoryReport.add(Gson().fromJson<TblBillingHistoryReport>(jsonObj.get("tblBillingHistoryReport").toString(), TblBillingHistoryReport::class.java))
+                FacilityDataModel.getInstance().tblBillingHistory.add(Gson().fromJson<TblBillingHistory>(jsonObj.get("BillingHistory").toString(), TblBillingHistory::class.java))
+                FacilityDataModelOrg.getInstance().tblBillingHistory.add(Gson().fromJson<TblBillingHistory>(jsonObj.get("BillingHistory").toString(), TblBillingHistory::class.java))
             }
         }
 
@@ -1229,6 +1229,16 @@ class VisitationPlanningFragment : Fragment() {
             } else {
                 FacilityDataModel.getInstance().tblFacVehicles.add(Gson().fromJson<TblFacVehicles>(jsonObj.get("tblFacVehicles").toString(), TblFacVehicles::class.java))
                 FacilityDataModelOrg.getInstance().tblFacVehicles.add(Gson().fromJson<TblFacVehicles>(jsonObj.get("tblFacVehicles").toString(), TblFacVehicles::class.java))
+            }
+        }
+
+        if (jsonObj.has("tblPersonnelSigner")) {
+            if (jsonObj.get("tblPersonnelSigner").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblPersonnelSigner = Gson().fromJson<ArrayList<TblPersonnelSigner>>(jsonObj.get("tblPersonnelSigner").toString(), object : TypeToken<ArrayList<TblPersonnelSigner>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblPersonnelSigner = Gson().fromJson<ArrayList<TblPersonnelSigner>>(jsonObj.get("tblPersonnelSigner").toString(), object : TypeToken<ArrayList<TblPersonnelSigner>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblPersonnelSigner.add(Gson().fromJson<TblPersonnelSigner>(jsonObj.get("tblPersonnelSigner").toString(), TblPersonnelSigner::class.java))
+                FacilityDataModelOrg.getInstance().tblPersonnelSigner.add(Gson().fromJson<TblPersonnelSigner>(jsonObj.get("tblPersonnelSigner").toString(), TblPersonnelSigner::class.java))
             }
         }
 
@@ -1642,23 +1652,23 @@ class VisitationPlanningFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
         }
 
-        if (jsonObj.has("tblBillingHistoryReport")) {
-            if (!jsonObj.get("tblBillingHistoryReport").toString().equals("")) {
+        if (jsonObj.has("BillingHistory")) {
+            if (!jsonObj.get("BillingHistory").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblBillingHistoryReport")
+                    var result = jsonObj.getJSONArray("BillingHistory")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
-                    jsonObj.remove(("tblBillingHistoryReport"))
-                    jsonObj.put("tblBillingHistoryReport", result)
+                    jsonObj.remove(("BillingHistory"))
+                    jsonObj.put("BillingHistory", result)
                 } catch (e: Exception) {
 
                 }
             } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblBillingHistoryReport")
+                jsonObj = addOneElementtoKey(jsonObj, "BillingHistory")
             }
         } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblBillingHistoryReport")
+            jsonObj = addOneElementtoKey(jsonObj, "BillingHistory")
         }
 
         if (jsonObj.has("tblComments")) {
@@ -1811,6 +1821,25 @@ class VisitationPlanningFragment : Fragment() {
             }
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacVehicles")
+        }
+
+        if (jsonObj.has("tblPersonnelSigner")) {
+            if (!jsonObj.get("tblPersonnelSigner").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblPersonnelSigner")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblPersonnelSigner"))
+                    jsonObj.put("tblPersonnelSigner", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelSigner")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelSigner")
         }
 //
         return jsonObj
@@ -2028,19 +2057,9 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.StateRevenueAcct=""
             oneArray.VendorRevenueID=-1
             jsonObj.put(key, Gson().toJson(oneArray))
-        } else if (key.equals("tblBillingHistoryReport")) {
-            var oneArray = TblBillingHistoryReport()
-            oneArray.Amount=0.0
-            oneArray.BillingHistoryReportID=-1
-            oneArray.FacID=0
-            oneArray.FacName=""
-            oneArray.FacNo=0
-            oneArray.ReferenceNo=""
-            oneArray.TransactionDate=""
-            oneArray.TransactionDesc=""
-            oneArray.insertDate=""
-            oneArray.TransactionType=""
-            oneArray.updateDate=""
+        } else if (key.equals("BillingHistory")) {
+            var oneArray = TblBillingHistory()
+            oneArray.InvoiceId = -1
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblOfficeType")) {
             var oneArray = TblOfficeType()
@@ -2109,6 +2128,10 @@ class VisitationPlanningFragment : Fragment() {
         } else if (key.equals("tblFacVehicles")) {
             var oneArray = TblFacVehicles()
             oneArray.VehicleID =-1
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblPersonnelSigner")) {
+            var oneArray = TblPersonnelSigner()
+            oneArray.PersonnelID = -1
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

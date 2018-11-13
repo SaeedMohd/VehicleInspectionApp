@@ -63,7 +63,7 @@ class FacilityDataModelOrg  {
     var tblFacilityBillingDetail = ArrayList<TblFacilityBillingDetail>()
     var tblInvoiceInfo = ArrayList<TblInvoiceInfo>()
     var tblVendorRevenue = ArrayList<TblVendorRevenue>()
-    var tblBillingHistoryReport = ArrayList<TblBillingHistoryReport>()
+    var tblBillingHistory = ArrayList<TblBillingHistory>()
     var tblComments = ArrayList<TblComments>()
     var tblVehicleServices= ArrayList<TblVehicleServices>()
     var tblPersonnelCertification= ArrayList<TblPersonnelCertification>()
@@ -71,6 +71,7 @@ class FacilityDataModelOrg  {
     var tblAAAPortalEmailFacilityRepTable = ArrayList<TblAAAPortalEmailFacilityRepTable>()
     var tblInvoiceInfoUpdated = ArrayList<InvoiceInfo>()
     var tblFacVehicles = ArrayList<TblFacVehicles>()
+    var tblPersonnelSigner = ArrayList<TblPersonnelSigner>()
 
 //    class TblFacilities {
 //        var isInputsValid = false

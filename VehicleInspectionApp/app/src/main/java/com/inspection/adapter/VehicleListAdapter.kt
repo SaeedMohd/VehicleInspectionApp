@@ -52,7 +52,7 @@ class VehicleListAdapter(internal var context: Context, internal var recource: I
 //                updateSelectedLists(namesList.get(position).VehMakeTypeId.toInt(),0,true)
             }
             //FacilityDataModel.getInstance().tblLanguage = langArray
-            (context as FormsActivity).saveRequired = true
+//            (context as FormsActivity).saveRequired = true
 //            parentFragment.refreshButtonsState()
         }
         return view

@@ -117,7 +117,7 @@ class FragmentAARAVBillingHistory : Fragment() {
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
-        FacilityDataModel.getInstance().tblInvoiceInfoUpdated.apply {
+        FacilityDataModel.getInstance().tblBillingHistory.apply {
             (0 until size).forEach {
 
                 if (!get(it).InvoiceId.equals("-1")) {
@@ -176,7 +176,7 @@ class FragmentAARAVBillingHistory : Fragment() {
                     textView.layoutParams = rowLayoutParam6
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 18f
-                    textView.text = if (get(it).InvoicePrintDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
+                    textView.text = if (get(it).ReceiptDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     billHistoryResultsTbl.addView(tableRow)
