@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.inspection.R.id.drawer_layout
 import com.inspection.Utils.Utility
@@ -32,6 +33,12 @@ import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.VisitationTypes
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
+import kotlinx.android.synthetic.main.fragment_aarav_location.*
+import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
+import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
+import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
+import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
+import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 
 enum class fragmentsNames {
     FacilityGeneralInfo, FacilityContactInfo,FacilityRSP,FacilityPersonnel,FacilityAmedndmentsOrderTracking,
@@ -49,6 +56,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     var currentFragment = ""
     var saveRequired = false
+    var overrideBackButton = false
 //    var toolbar = findViewById<Toolbar>(R.id.toolbar)
 //    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
 //    var nav_view = findViewById<NavigationView>(R.id.nav_view)
@@ -111,6 +119,31 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
+        } else if (overrideBackButton) {
+            if (editEmailDialog != null) editEmailDialog.visibility = View.GONE
+            if (addNewPhoneDialog != null) addNewPhoneDialog.visibility = View.GONE
+            if (editLocationDialog != null) editLocationDialog.visibility = View.GONE
+            if (editPhoneDialog != null) editPhoneDialog.visibility = View.GONE
+            if (addNewEmailDialog != null) addNewEmailDialog.visibility = View.GONE
+            if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
+            if (alphaBackgroundForDialogs != null) alphaBackgroundForDialogs.visibility = View.GONE
+            if (alphaBackgroundForAffilliationsDialogs != null) alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+            if (defeciencyCard != null) defeciencyCard.visibility = View.GONE
+            if (signatureDialog != null) signatureDialog.visibility = View.GONE
+            if (affiliationsCard != null) affiliationsCard.visibility = View.GONE
+            if (edit_affiliationsCard != null) edit_affiliationsCard.visibility = View.GONE
+            if (facilityServicesCard != null) facilityServicesCard.visibility = View.GONE
+            if (editFacilityServicesCard != null) editFacilityServicesCard.visibility = View.GONE
+            if (programCard != null) programCard.visibility = View.GONE
+            if (edit_programCard != null) edit_programCard.visibility = View.GONE
+            if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
+            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
+            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
+            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
+            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
+            overrideBackButton = false
+        }else if (preventNavigation()){
+            Utility.showSaveOrCancelAlertDialog(this)
         } else {
             super.onBackPressed()
         }

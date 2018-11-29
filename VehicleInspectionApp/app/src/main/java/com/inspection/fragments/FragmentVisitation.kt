@@ -83,11 +83,10 @@ class FragmentVisitation : Fragment() {
         setFieldsValues()
         setFieldsListeners()
 
-        // TEST SAEED
+        IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
+
         completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
-//        if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
-        IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
         (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
@@ -312,31 +311,18 @@ class FragmentVisitation : Fragment() {
     private fun setFieldsListeners() {
 
         completeButton.setOnClickListener {
-            // Should call validateAllScreensVisited()
-//            if (IndicatorsDataModel.getInstance().validateAllScreensVisited()) {
-                if (validateInputs()) {
-//                Toast.makeText(context, "inputs validated", Toast.LENGTH_SHORT).show()
-                    IndicatorsDataModel.getInstance().validateVisitationSectionVisited()
-                    if (IndicatorsDataModel.getInstance().tblVisitation[0].visited) visitationTitle.setTextColor(Color.parseColor("#26C3AA")) else visitationTitle.setTextColor(Color.parseColor("#A42600"))
-                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
-                } else {
-//                Toast.makeText(context, "missing required fields", Toast.LENGTH_SHORT).show()
-                    Utility.showValidationAlertDialog(activity, "Please fill all required fields")
-                }
-//            } else {
-//                Utility.showMessageDialog(activity, "Validation ...", "Please check all pages before complete the visitation"   )
-//            }
+            if (validateInputs()) {
+                submitVisitationData()
+            } else {
+                Utility.showValidationAlertDialog(activity, "Please fill all required fields")
+            }
         }
 
 
-        saveButton.setOnClickListener {
-//            if (validateInputs()) {
-//                progressBarTextVal.text = "Saving ..."
-//                dialogueLoadingView.visibility = View.VISIBLE
-//            } else {
-//                Utility.showValidationAlertDialog(activity,"Please fill the required fields")
-//            }
-        }
+
+
+
+
 
 
 
@@ -383,6 +369,7 @@ class FragmentVisitation : Fragment() {
             }
 
         }
+
         automotiveSpecialistSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
@@ -411,6 +398,12 @@ class FragmentVisitation : Fragment() {
             }
 
         }
+//      UpdateVisitationTrackingData(string facNum, string clubCode, string visitationId, string performedBy, string datePerformed, string dateReceived, string insertBy, string insertDate, string updateBy
+//            , string updateDate)
+
+//        UpdateVisitationDetailsData
+//        getUpdateVisitationDetailsDataString(string facNum, string clubCode, string staffTraining, string qualityControl, string aarSigns, string certificateOfApproval,
+//                string memberBenefitPoster, string insertBy, string insertDate, string updateBy, string updateDate)
 
 
         facilityRepresentativeSignatureButton.setOnClickListener {
@@ -767,119 +760,70 @@ class FragmentVisitation : Fragment() {
             }
         }
     }
-//    fun checkMarkChangesWasDone(){
-//
-//        IndicatorsDataModel.getInstance().validateVisitationSection()
-//        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
-//
-//        Log.v("dataHandle11",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-//
-//
-//        if (!FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()){
-//
-//            if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName!=FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName){
-//                MarkChangeWasDone()
-//                Log.v("dataHandle10",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-//
-//            }
-//        }
-//        if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) {
-//            MarkChangeWasDone()
-//            Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-//
-//        }
-//
-//        if (!FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()){
-//
-//            if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName!=FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName){
-//                MarkChangeWasDone()
-//                Log.v("dataHandle10",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-//
-//            }
-//        }
-//        if (FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()&&!FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName.isNullOrBlank()) {
-//            Log.v("dataHandle12",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistName)
-//
-//            MarkChangeWasDone()
-//
-//        }
-//        if (FacilityDataModel.getInstance().tblFacilityEmail[0].email !=FacilityDataModelOrg.getInstance().tblFacilityEmail[0].email){
-//            MarkChangeWasDone()
-//            Log.v("dataHandle13",FacilityDataModelOrg.getInstance().tblFacilityEmail[0].email  + "====" + FacilityDataModel.getInstance().tblFacilityEmail[0].email)
-//
-//
-//        }
-//
-//
-//
-//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility){
-//
-//            MarkChangeWasDone()
-//            Log.v("dataHandle16",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
-//
-//
-//        }
-//
-//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiveVisitations){
-//
-//            MarkChangeWasDone()
-//            Log.v("dataHandle14",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
-//
-//
-//        }
-//
-//               if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments){
-//
-//            MarkChangeWasDone()
-//                   Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverComments  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
-//
-//
-//               }
-//
-//        if (FacilityDataModelOrg.getInstance().tblVisitationTracking.size > 0 && FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns
-//                !=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].AARSigns){
-//            MarkChangeWasDone()
-//        }
-//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval !=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].CertificateOfApproval){
-//            MarkChangeWasDone()
-//        }
-//
-//        if ((FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl)
-//                && (FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl!=" " )
-//        ){
-//            MarkChangeWasDone()
-//            Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].QualityControl  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl)
-//
-//        }
-//
-//        if ((FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining)
-//                && (FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining!=" ")
-//        ){
-//            Log.v("dataHandle15",FacilityDataModelOrg.getInstance().tblVisitationTracking[0].StaffTraining  + "====" + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining)
-//
-//            MarkChangeWasDone()
-//        }
-//
-//
-//
-//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].MemberBenefitPoster){
-//            MarkChangeWasDone()
-//        }
-//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature){
-//            MarkChangeWasDone()
-//        }
-//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature){
-//            MarkChangeWasDone()
-//        }
-//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature){
-//            MarkChangeWasDone()
-//        }
-//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature!=FacilityDataModelOrg.getInstance().tblVisitationTracking[0].waiverSignature){
-//            MarkChangeWasDone()
-//        }
-//
-//    }
 
+    fun submitVisitationData(){
+        var visitationID = 0
+        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+        val clubCode =FacilityDataModel.getInstance().clubCode
+        val insertDate = Date().toApiSubmitFormat()
+        val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+        val updateDate = Date().toApiSubmitFormat()
+        val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+        val aarSign = if (aarSignEditText.text.isNullOrEmpty()) "" else aarSignEditText.text
+        val qa = if (qualityControlProcessEditText.text.isNullOrEmpty()) "" else qualityControlProcessEditText.text
+        val staffTraining = if (staffTrainingProcessEditText.text.isNullOrEmpty()) "" else staffTrainingProcessEditText.text
+        val memberBenefits = if (memberBenefitsPosterEditText.text.isNullOrEmpty()) "" else memberBenefitsPosterEditText.text
+        val certificateOfApproval = if (certificateOfApprovalEditText.text.isNullOrEmpty()) "" else certificateOfApprovalEditText.text
+        val performedBy = if (automotiveSpecialistSpinner.selectedItem.toString().contains("Select")) "" else automotiveSpecialistSpinner.selectedItem.toString()
+        var dialogMsg = ""
+
+        progressBarTextVal.text = "Saving ..."
+        dialogueLoadingView.visibility = View.VISIBLE
+        var urlString = facilityNo+"&clubcode="+clubCode+"&visitationID="+visitationID+"&performedBy="+performedBy+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate
+        Log.v("VT REQUEST ||||| ", urlString)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationTrackingData + urlString,
+                Response.Listener { response ->
+                    activity!!.runOnUiThread {
+                        Log.v("VT RESPONSE ||| ",response.toString())
+                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                            visitationID = response.toString().substring(response.toString().indexOf(";visitationID")+17,response.toString().indexOf("&lt;/visitationID")).toInt()
+                            dialogMsg = "New Visitation with ID (${visitationID}) created succesfully"
+                            (activity as FormsActivity).saveRequired = false
+                            urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString,
+                                    Response.Listener { response ->
+                                        activity!!.runOnUiThread {
+                                            Log.v("VT RESPONSE ||| ",response.toString())
+                                            if (response.toString().contains("returnCode&gt;0&",false)) {
+                                                Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
+                                                (activity as FormsActivity).saveRequired = false
+                                            } else {
+                                            dialogueLoadingView.visibility = View.GONE
+                                            progressBarTextVal.text = "Loading ..."
+                                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                            Utility.showSubmitAlertDialog(activity,false,dialogMsg + " ..... Visitation Details (Error: "+ errorMessage+" )")
+                                            }
+                                        }
+                                    }, Response.ErrorListener {
+                                    dialogueLoadingView.visibility = View.GONE
+                                    progressBarTextVal.text = "Loading ..."
+                                    Utility.showSubmitAlertDialog(activity,false,"Visitation Details (Error: "+it.message+" )")
+                                }))
+                            dialogueLoadingView.visibility = View.GONE
+                            progressBarTextVal.text = "Loading ..."
+                        } else {
+                            dialogueLoadingView.visibility = View.GONE
+                            progressBarTextVal.text = "Loading ..."
+                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                            Utility.showSubmitAlertDialog(activity,false,"Visitation Tracking (Error: "+ errorMessage+" )")
+                        }
+                    }
+                }, Response.ErrorListener {
+                dialogueLoadingView.visibility = View.GONE
+                progressBarTextVal.text = "Loading ..."
+                Utility.showSubmitAlertDialog(activity,false,"Visitation Tracking (Error: "+it.message+" )")
+        }))
+    }
 
     fun emailFormatValidation(target: CharSequence): Boolean {
 
@@ -1010,6 +954,11 @@ class FragmentVisitation : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        completeButton.isEnabled = true//IndicatorsDataModel.getInstance().validateAllScreensVisited()
+    }
+
 
     fun validateInputs(): Boolean {
 
@@ -1108,7 +1057,7 @@ class FragmentVisitation : Fragment() {
 
     fun handleCancelButtonClick() {
 
-        cancelButton.setOnClickListener(View.OnClickListener {
+        cancelButton.setOnClickListener({
 
 
             val alertDialogBuilder = AlertDialog.Builder(

@@ -62,11 +62,13 @@ class FragmentARRAVFacilityServices : Fragment() {
 
         exitFC_ServicesDialogeBtnId.setOnClickListener({
             facilityServicesCard.visibility=View.GONE
+            (activity as FormsActivity).overrideBackButton = false
             alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
         })
 
         edit_exitFC_ServicesDialogeBtnId.setOnClickListener({
             editFacilityServicesCard.visibility=View.GONE
+            (activity as FormsActivity).overrideBackButton = false
             alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
         })
 
@@ -77,6 +79,7 @@ class FragmentARRAVFacilityServices : Fragment() {
             fc_services_textviewVal.setSelection(0)
             comments_editTextVal.setError(null)
             fceffective_date_textviewVal.setError(null)
+            (activity as FormsActivity).overrideBackButton = true
             facilityServicesCard.visibility=View.VISIBLE
             alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
         })
@@ -174,7 +177,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                 item.expDate = if (fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else fcexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                 item.Comments=comments_editTextVal.text.toString()
 
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -194,6 +197,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                                 }
                                 facilityServicesCard.visibility = View.GONE
                                 FC_LoadingView.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
                                 progressBarText.text = "Loading ..."
                                 alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                             }
@@ -201,6 +205,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                     Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
                         facilityServicesCard.visibility = View.GONE
                         FC_LoadingView.visibility = View.GONE
+                    (activity as FormsActivity).overrideBackButton = false
                         progressBarText.text = "Loading ..."
                         alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                 }))
@@ -344,11 +349,13 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                         var i = servicesArray.indexOf(textView1.text)
                         edit_fc_services_textviewVal.setSelection(i)
+                        (activity as FormsActivity).overrideBackButton = true
                         editFacilityServicesCard.visibility = View.VISIBLE
                         alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
                         edit_submitNewserviceButton.setOnClickListener {
                             if (edit_validateInputs()) {
                                 editFacilityServicesCard.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
                                 progressBarText.text = "Saving ..."
                                 FC_LoadingView.visibility = View.VISIBLE
                                 var item = TblFacilityServices()
@@ -361,7 +368,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                                 item.Comments = edit_comments_editTextVal.text.toString()
                                 item.FacilityServicesID = FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].FacilityServicesID
 
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=E110997&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat(),
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat(),
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread {
                                                 if (response.toString().contains("returnCode&gt;0&", false)) {
@@ -382,6 +389,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                                                     Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
                                                 }
                                                 FC_LoadingView.visibility = View.GONE
+                                                (activity as FormsActivity).overrideBackButton = false
                                                 progressBarText.text = "Loading ..."
                                                 alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                                             }
@@ -389,6 +397,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                                     Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
                                     editFacilityServicesCard.visibility = View.GONE
                                     FC_LoadingView.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
                                     progressBarText.text = "Loading ..."
                                     alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                                 }))

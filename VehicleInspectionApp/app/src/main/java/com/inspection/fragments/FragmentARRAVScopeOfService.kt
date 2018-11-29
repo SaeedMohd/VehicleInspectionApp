@@ -35,10 +35,7 @@ import com.inspection.MainActivity
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.MainActivity.Companion.handler
 import com.inspection.R.id.numberOfLiftsEditText
-import com.inspection.Utils.MarkChangeWasDone
-import com.inspection.Utils.Utility
-import com.inspection.Utils.hideKeyboard
-import com.inspection.Utils.toApiSubmitFormat
+import com.inspection.Utils.*
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
@@ -478,7 +475,7 @@ dataChanged=true
 
                 progressBarText.text = "Saving ..."
                 scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=sa&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {

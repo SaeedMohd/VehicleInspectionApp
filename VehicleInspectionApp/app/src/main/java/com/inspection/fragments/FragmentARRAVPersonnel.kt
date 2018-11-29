@@ -90,26 +90,18 @@ class FragmentARRAVPersonnel : Fragment() {
 //        AddNewCertBtn.isEnabled=false
 
         exitDialogeBtnId.setOnClickListener {
-
-
-
+            (activity as FormsActivity).overrideBackButton = false
             addNewPersonnelDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
-
-
         }
         edit_exitDialogeBtnId.setOnClickListener {
-
-
-
+            (activity as FormsActivity).overrideBackButton = false
             edit_addNewPersonnelDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
-
-
         }
 
         exitCertificateDialogeBtnId.setOnClickListener {
-
+            (activity as FormsActivity).overrideBackButton = false
             addNewCertificateDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
 
@@ -126,6 +118,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 newCertDescText.setText("")
                 newCertStartDateBtn.setError(null)
                 certTypeTextView.setError(null)
+                (activity as FormsActivity).overrideBackButton = true
                 addNewCertificateDialogue.visibility = View.VISIBLE
                 alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
             }
@@ -159,6 +152,7 @@ class FragmentARRAVPersonnel : Fragment() {
             onlyOneContractSignerLogic()
             addNewPersonnelDialogue.visibility=View.VISIBLE
             alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
+            (activity as FormsActivity).overrideBackButton = true
         }
 
 
@@ -307,8 +301,10 @@ class FragmentARRAVPersonnel : Fragment() {
             if (validateCertificationInputs()) {
                 addNewCertificateDialogue.visibility=View.GONE
                 alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+                (activity as FormsActivity).overrideBackButton = false
                 personnelLoadingText.text = "Saving ..."
                 personnelLoadingView.visibility = View.VISIBLE
+
 
                 var item = TblPersonnelCertification()
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
@@ -324,7 +320,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 var urlString = "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&PersonnelID=${selectedPersonnelID}"+
                         "&certID=&CertificationTypeId=${item.CertificationTypeId}&CertificationDate=${item.CertificationDate}&ExpirationDate=${item.ExpirationDate}"+
-                        "&certDesc=${item.CertDesc}&insertBy=sa&insertDate=${Date().toApiSubmitFormat()}&updateBy=sa&updateDate=${Date().toApiSubmitFormat()}&active=1"
+                        "&certDesc=${item.CertDesc}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&active=1"
                 Log.v("Data To Submit", urlString)
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdatePersonnelCertification + urlString,
                         Response.Listener { response ->
@@ -360,7 +356,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 alphaBackgroundForPersonnelDialogs.visibility = View.GONE
                 personnelLoadingText.text = "Saving ..."
                 personnelLoadingView.visibility = View.VISIBLE
-
+                (activity as FormsActivity).overrideBackButton = false
 
                 var PersonnelTypeId=""
 
@@ -382,7 +378,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
 
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -416,7 +412,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                         item.email= if (newEmailText.text.equals("SELECT DATE")) "" else newEmailText.text.toString()
                                         item.ContractStartDate = if (newCoStartDateBtn.text.equals("SELECT DATE")) "" else newCoStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                         item.ContractStartDate = if (newCoEndDateBtn.text.equals("SELECT DATE")) "" else newCoEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelSignerData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&addr1=%22test%22&addr2=%22test%22&city=%22123&st=%22123%22&phone=%22123%22&email=%22123%22&zip=&zip4=&contractStartDate=&contractEndDate=&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
+                                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelSignerData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&addr1=%22test%22&addr2=%22test%22&city=%22123&st=%22123%22&phone=%22123%22&email=%22123%22&zip=&zip4=&contractStartDate=&contractEndDate=&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                                                 Response.Listener { response ->
                                                     activity!!.runOnUiThread {
                                                         if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -1691,12 +1687,14 @@ class FragmentARRAVPersonnel : Fragment() {
 
                     edit_newACSCheck.isChecked = checkBox11.isChecked
                     edit_addNewPersonnelDialogue.visibility=View.VISIBLE
+                    (activity as FormsActivity).overrideBackButton = true
                     alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
                     edit_submitNewPersnRecordBtn.setOnClickListener {
 
                         if (edit_validateInputs()){
                             edit_addNewPersonnelDialogue.visibility=View.GONE
                             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+                            (activity as FormsActivity).overrideBackButton = false
                             personnelLoadingText.text = "Saving ..."
                             personnelLoadingView.visibility = View.VISIBLE
 
@@ -1721,7 +1719,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var personnelID = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID
 
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityPersonnelData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode&gt;0&",false)) {

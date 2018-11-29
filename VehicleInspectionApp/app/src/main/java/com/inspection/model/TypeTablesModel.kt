@@ -734,4 +734,6 @@ class TypeTablesModel {
         var updateBy = ""
         var updateDate = ""
     }
+
+
 }

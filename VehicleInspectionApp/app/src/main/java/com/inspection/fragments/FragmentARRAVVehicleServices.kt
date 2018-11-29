@@ -16,10 +16,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
 import com.inspection.R
-import com.inspection.Utils.Constants
-import com.inspection.Utils.ExpandableHeightGridView
-import com.inspection.Utils.Utility
-import com.inspection.Utils.toApiSubmitFormat
+import com.inspection.Utils.*
 import com.inspection.adapter.DatesListAdapter
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.model.*
@@ -181,7 +178,7 @@ class FragmentARRAVVehicleServices : Fragment() {
         scopeServiceId = scopeServiceId.replace("[","")
         scopeServiceId = scopeServiceId.replace("]","")
 
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=e107369",
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode&gt;0&",false)) {

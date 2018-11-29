@@ -95,29 +95,27 @@ class VisitationPlanningFragment : Fragment() {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
                                 Response.Listener { response ->
-                                    activity!!.runOnUiThread(Runnable {
-
+                                    activity!!.runOnUiThread {
                                         var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                                         if (specialistName != null && specialistName.size > 0) {
                                             requiredSpecialistName = specialistName[0].specialistname
-
+                                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistName[0].accspecid
                                             for (sn in specialistName){
                                                 specialistClubCodes.add(sn.clubcode)
                                             }
-
-                                            visitationSpecialistName.setText(requiredSpecialistName)
-
+//                                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
+//                                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
+//                                            var reformattedName = firstName + " " + lastName
+//                                            visitationSpecialistName.setText(reformattedName)
+//                                            visitationSpecialistName.setText(requiredSpecialistName)
                                         }
-
                                         loadSpecialistName()
-                                    })
-
-
+//                                        loadClubCodes()
+                                    }
                                 }, Response.ErrorListener {
                             Log.v("error while loading", "error while loading facilities")
                             Log.v("Loading error", "" + it.message)
                         }))
-
                     }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading specialists")
@@ -203,7 +201,7 @@ class VisitationPlanningFragment : Fragment() {
 
         })
 
-        visitationSpecialistName.setOnClickListener(View.OnClickListener {
+        visitationSpecialistName.setOnClickListener {
             var personnelNames = ArrayList<String>()
             (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
                 personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
@@ -220,22 +218,22 @@ class VisitationPlanningFragment : Fragment() {
                 }
                 //reloadVisitationsList()
             }
-        })
+        }
 
-        clubCodeEditText.setOnClickListener(View.OnClickListener {
+        clubCodeEditText.setOnClickListener {
             var searchDialog = SearchDialog(context, allClubCodes)
             searchDialog.show()
             searchDialog.setOnDismissListener {
                 clubCodeEditText.setText(searchDialog.selectedString)
                 //reloadVisitationsList()
             }
-        })
+        }
 
-        facilityNameButton.setOnClickListener(View.OnClickListener {
+        facilityNameButton.setOnClickListener {
             recordsProgressView.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                     Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
+                        activity!!.runOnUiThread {
                             recordsProgressView.visibility = View.INVISIBLE
                             var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                             var facilityNames = ArrayList<String>()
@@ -254,16 +252,16 @@ class VisitationPlanningFragment : Fragment() {
                                 }
                                 //reloadVisitationsList()
                             }
-                        })
+                        }
                     }, Response.ErrorListener {
 
-//                context!!.toast("Connection Error")
+                //                context!!.toast("Connection Error")
                 Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Facilities - " + it.message)
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
                 it.printStackTrace()
             }))
-        })
+        }
 
         annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
            // reloadVisitationsList()
@@ -328,13 +326,12 @@ class VisitationPlanningFragment : Fragment() {
                     //TODO added to void specialist value until they let us know how we will use it
                     try {
                         var specialistName = visitationSpecialistName.text
+                        var specialistId =  CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname.equals(specialistName.toString()) }[0].accspecid
 //                        var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
-                        var firstName = specialistName.substring(specialistName.indexOf(",")+2,specialistName.length)
-                        var lastName = specialistName.substring(0,specialistName.indexOf(","))
-                        var reformattedName = firstName + " " + lastName
 //                        Utility.showMessageDialog(activity,"TEST",reformattedName)
 //                        append("specialist=" + CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == visitationSpecialistName.text.toString() }[0].accspecid)
-                        append("specialist=" + CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == reformattedName }[0].accspecid)
+//                        append("specialist=" + CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == reformattedName }[0].accspecid)
+                        append("specialist=" + specialistId)
                         append("&")
                     } catch (exp: Exception) {
                         append("specialist=")
@@ -452,13 +449,13 @@ class VisitationPlanningFragment : Fragment() {
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call?, e: IOException?) {
                     Log.v("failure http", "failed with exception : " + e!!.message)
-                    activity!!.runOnUiThread(Runnable {
+                    activity!!.runOnUiThread {
                         //                        activity!!.toast("Error while loading large data")
                         Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
                         recordsProgressView.visibility = View.INVISIBLE
 
 
-                    })
+                    }
                 }
 
                 override fun onResponse(call: Call?, response: okhttp3.Response?) {
@@ -561,15 +558,17 @@ class VisitationPlanningFragment : Fragment() {
     private fun loadSpecialistName() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
                 Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
-
+                    activity!!.runOnUiThread {
                         specialistArrayModel = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
                             requiredSpecialistName = specialistArrayModel[0].specialistname
-                            visitationSpecialistName.setText(requiredSpecialistName)
+                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
+                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
+                            var reformattedName = firstName + " " + lastName
+                            visitationSpecialistName.setText(reformattedName)
                         }
                         loadClubCodes()
-                    })
+                    }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading facilities")
             Log.v("Loading error", "" + it.message)

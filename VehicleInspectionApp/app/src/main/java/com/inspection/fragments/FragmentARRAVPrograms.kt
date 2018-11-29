@@ -80,12 +80,14 @@ class FragmentARRAVPrograms : Fragment() {
 
         exitProgramDialogeBtnId.setOnClickListener({
             programCard.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
             alphaBackgroundForProgramDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
 
         })
         edit_exitProgramDialogeBtnId.setOnClickListener({
             edit_programCard.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
             alphaBackgroundForProgramDialogs.visibility = View.GONE
             enableAllAddButnsAndDialog()
         })
@@ -100,6 +102,7 @@ class FragmentARRAVPrograms : Fragment() {
             effective_date_textviewVal.setError(null)
             expiration_date_textviewVal.setError(null)
             programCard.visibility = View.VISIBLE
+            (activity as FormsActivity).overrideBackButton = true
             alphaBackgroundForProgramDialogs.visibility = View.VISIBLE
         })
 
@@ -244,13 +247,14 @@ class FragmentARRAVPrograms : Fragment() {
                     //  BuildProgramsList()
 
 
-                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
                             Response.Listener { response ->
                                 activity!!.runOnUiThread({
                                     if (response.toString().contains("returnCode&gt;0&",false)) {
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE
                                         alphaBackgroundForProgramDialogs.visibility = View.GONE
+                                        (activity as FormsActivity).overrideBackButton = false
                                         // collect program id
                                         Utility.showSubmitAlertDialog(activity,true,"Program")
                                         item.ProgramID= response.toString().substring(response.toString().indexOf(";programID")+14,response.toString().indexOf("&lt;/programID"))
@@ -435,7 +439,7 @@ class FragmentARRAVPrograms : Fragment() {
                     updateButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(updateButton)
 
-                    updateButton.setOnClickListener(View.OnClickListener {
+                    updateButton.setOnClickListener {
 
                         var currentTableRowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
                         var currentfacilityDataModelIndex = currentTableRowIndex - 1
@@ -449,8 +453,9 @@ class FragmentARRAVPrograms : Fragment() {
 
                         edit_programCard.visibility = View.VISIBLE
                         alphaBackgroundForProgramDialogs.visibility = View.VISIBLE
+                        (activity as FormsActivity).overrideBackButton = true
 
-                        edit_submitNewProgramButton.setOnClickListener(View.OnClickListener {
+                        edit_submitNewProgramButton.setOnClickListener {
 
 
                             var currentRowDataModel = FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex]
@@ -499,13 +504,13 @@ class FragmentARRAVPrograms : Fragment() {
 
 
                                                         } else
-//                                                            Toast.makeText(context, "1st this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                                        //                                                            Toast.makeText(context, "1st this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
                                                             Utility.showValidationAlertDialog(activity, "This program is already active within the same dates")
                                                         validProgram = false
 
 
                                                     } else
-//                                                        Toast.makeText(context, "2nd this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+                                                    //                                                        Toast.makeText(context, "2nd this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
                                                         Utility.showValidationAlertDialog(activity, "This program is already active within the same dates")
 
                                                     validProgram = false
@@ -539,9 +544,9 @@ class FragmentARRAVPrograms : Fragment() {
                                     }
 
 
-                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&programId=${currentRowDataModel.ProgramID}&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=sa&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat(),
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&programId=${currentRowDataModel.ProgramID}&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat(),
                                             Response.Listener { response ->
-                                                activity!!.runOnUiThread(Runnable {
+                                                activity!!.runOnUiThread {
                                                     if (response.toString().contains("returnCode&gt;0&", false)) {
                                                         Utility.showSubmitAlertDialog(activity, true, "Program")
                                                         HasChangedModel.getInstance().groupSoSPrograms[0].SoSPrograms = true
@@ -554,17 +559,19 @@ class FragmentARRAVPrograms : Fragment() {
                                                     edit_programCard.visibility = View.GONE
                                                     edit_programsLoadingView.visibility = View.GONE
                                                     alphaBackgroundForProgramDialogs.visibility = View.GONE
+                                                    (activity as FormsActivity).overrideBackButton = false
                                                     enableAllAddButnsAndDialog()
-                                                })
+                                                }
                                             }, Response.ErrorListener {
                                         //                                    Log.v("error while loading", "error while loading program record")
                                         Utility.showSubmitAlertDialog(activity, true, "Program")
                                         edit_programCard.visibility = View.GONE
                                         edit_programsLoadingView.visibility = View.GONE
                                         alphaBackgroundForProgramDialogs.visibility = View.GONE
+                                        (activity as FormsActivity).overrideBackButton = false
                                         enableAllAddButnsAndDialog()
 
-//                                    Toast.makeText(context,"error while submitting new program",Toast.LENGTH_SHORT).show()
+                                        //                                    Toast.makeText(context,"error while submitting new program",Toast.LENGTH_SHORT).show()
 
                                     }))
 
@@ -572,14 +579,14 @@ class FragmentARRAVPrograms : Fragment() {
                                 }
 
                             } else {
-//                            Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
+                                //                            Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
                                 Utility.showValidationAlertDialog(activity, "Please fill all required fields")
                             }
 
-                        })
+                        }
 
 
-                    })
+                    }
 
                     var childViewCount = aarPortalTrackingTableLayout.getChildCount();
 

@@ -23,6 +23,7 @@ public class UserProfileModel {
 	String Zip;
     String SocialMedia;
     String SocialMediaID;
+//	String AccSpecID;
 	
 	public UserProfileModel(){
 		
@@ -34,7 +35,7 @@ public class UserProfileModel {
 							String email, String email2, String email3, String userName,
 							String firstName, String lastName, int mobileUserProfileId,
 							String phoneNumber, String phone2, String phone3, String facebook,
-							String address, String sT, String city, String zip, String socialMedia, String socialMediaID) {
+							String address, String sT, String city, String zip, String socialMedia, String socialMediaID) {//String accSpecID) {
 		super();
 		AccountID = accountID;
 		DeviceID = deviceID;
@@ -56,6 +57,7 @@ public class UserProfileModel {
 		Zip = zip;
         SocialMedia = socialMedia;
         SocialMediaID = socialMediaID;
+//		AccSpecID = accSpecID;
 	}
 
 
@@ -221,6 +223,14 @@ public class UserProfileModel {
     public void setSocialMediaID(String socialMediaID) {
         SocialMediaID = socialMediaID;
     }
+
+//	public String getAccSpecID() {
+//		return AccSpecID;
+//	}
+//
+//	public void setAccSpecID(String accSpecID) {
+//		AccSpecID = accSpecID;
+//	}
 
 	public boolean isShop() {
 		return IsShop;

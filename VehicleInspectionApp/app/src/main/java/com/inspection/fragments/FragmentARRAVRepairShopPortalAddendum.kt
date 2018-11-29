@@ -61,13 +61,14 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
-        scopeOfServiceChangesWatcher()
+
         exitRSPDialogeBtnId.setOnClickListener({
 
             fillPortalTrackingTableView()
             altLocationTableRow(2)
             Add_AAR_PortalTrackingEntryCard.visibility=View.GONE
             alphaBackgroundForRSPDialogs.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
 
         })
 
@@ -77,7 +78,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             altLocationTableRow(2)
             edit_AAR_PortalTrackingEntryCard.visibility=View.GONE
             alphaBackgroundForRSPDialogs.visibility = View.GONE
-
+            (activity as FormsActivity).overrideBackButton = false
 
         })
 
@@ -100,7 +101,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             startDateButton.setError(null)
             addendumSignedDateButton.setError(null)
             inspectionDateButton.setError(null)
-
+            (activity as FormsActivity).overrideBackButton = true
             Add_AAR_PortalTrackingEntryCard.visibility=View.VISIBLE
             alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
 
@@ -263,7 +264,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 portalTrackingEntry.NumberUnacknowledgedTows = numberOfUnacknowledgedRecords.toString()
                 portalTrackingEntry.active="1"
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&startDate=${startDate}&endDate=${endDate}&addendumSigned=${signedDate}&" +
-                        "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=E642707&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+
+                        "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
                         "&TrackingID=0&PortalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
@@ -296,6 +297,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 rspLoadingText.text = "Loading ..."
                                 alphaBackgroundForRSPDialogs.visibility = View.GONE
                                 Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
                             }
                         }, Response.ErrorListener {
                     Utility.showSubmitAlertDialog(activity, false, "RSP (Error: "+it.message+" )")
@@ -304,6 +306,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     rspLoadingText.text = "Loading ..."
                     alphaBackgroundForRSPDialogs.visibility = View.GONE
                     Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                    (activity as FormsActivity).overrideBackButton = false
                 }))
             } else {
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
@@ -337,101 +340,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
     }
 
-    fun checkMarkChangesWasDone() {
-//        val dateFormat1 = SimpleDateFormat("dd MMM yyyy")
-//
-//        var itemOrgArray = FacilityDataModelOrg.getInstance().tblAARPortalAdmin
-//        var itemArray = FacilityDataModel.getInstance().tblAARPortalAdmin
-//        if (itemOrgArray.size == itemArray.size) {
-//            for (i in 0 until itemOrgArray.size){
-//                var startDate= try {
-//                    dateFormat1.parse(itemArray[i].startDate.apiToAppFormat())
-//                } catch (e: Exception) {
-//                    dateFormat1.parse(itemArray[i].startDate)
-//                }
-//                var assignedDate= try {
-//                    dateFormat1.parse(itemArray[i].AddendumSigned.apiToAppFormat())
-//                } catch (e: Exception) {
-//                    dateFormat1.parse(itemArray[i].AddendumSigned)
-//
-//                }
-//                var portalDate= try {
-//                    dateFormat1.parse(itemArray[i].PortalInspectionDate.apiToAppFormat())
-//                } catch (e: Exception) {
-//                    dateFormat1.parse(itemArray[i].PortalInspectionDate)
-//
-//                }
-//
-//                if (
-//                        itemOrgArray[i].PortalInspectionDate.isNullOrBlank()&&!itemArray[i].PortalInspectionDate.isNullOrBlank()||
-//                        itemOrgArray[i].startDate.isNullOrBlank()&&!itemArray[i].startDate.isNullOrBlank()||
-//                        itemOrgArray[i].AddendumSigned.isNullOrBlank()&&!itemArray[i].AddendumSigned.isNullOrBlank()
-//
-//
-//                ) {
-//
-//                    MarkChangeWasDone()
-//                }
-//                else
-//                    if (
-//                            itemOrgArray[i].PortalInspectionDate.isNullOrBlank()&&itemArray[i].PortalInspectionDate.isNullOrBlank()||
-//                            itemOrgArray[i].startDate.isNullOrBlank()&&itemArray[i].startDate.isNullOrBlank()||
-//                            itemOrgArray[i].AddendumSigned.isNullOrBlank()&&itemArray[i].AddendumSigned.isNullOrBlank()
-//
-//                    ) {
-//                        if (
-//
-//                                itemOrgArray[i].LoggedIntoPortal != itemArray[i].LoggedIntoPortal ||
-//                                itemOrgArray[i].InProgressTows != itemArray[i].InProgressTows ||
-//                                itemOrgArray[i].InProgressWalkIns != itemArray[i].InProgressWalkIns ||
-//                                itemOrgArray[i].NumberUnacknowledgedTows != itemArray[i].NumberUnacknowledgedTows
-//                        ) {
-//
-//
-//                            MarkChangeWasDone()
-////                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-//                            Log.v("checkkk", itemOrgArray[i].LoggedIntoPortal + "=="+ itemArray[i].LoggedIntoPortal)
-//                            Log.v("checkkk", itemOrgArray[i].InProgressTows + "=="+ itemArray[i].InProgressTows)
-//                            Log.v("checkkk", itemOrgArray[i].InProgressWalkIns + "=="+ itemArray[i].InProgressWalkIns)
-//                            Log.v("checkkk", itemOrgArray[i].NumberUnacknowledgedTows + "=="+ itemArray[i].NumberUnacknowledgedTows)
-//
-//                        }
-//                    }
-//
-//                    else
-//                        if (
-//
-//                                itemOrgArray[i].LoggedIntoPortal != itemArray[i].LoggedIntoPortal ||
-//                                itemOrgArray[i].InProgressTows != itemArray[i].InProgressTows ||
-//                                itemOrgArray[i].InProgressWalkIns != itemArray[i].InProgressWalkIns ||
-//                                itemOrgArray[i].NumberUnacknowledgedTows != itemArray[i].NumberUnacknowledgedTows ||
-//                                dateFormat1.parse(itemOrgArray[i].AddendumSigned.apiToAppFormat()) != assignedDate ||
-//                                dateFormat1.parse(itemOrgArray[i].startDate.apiToAppFormat()) != startDate ||
-//                                dateFormat1.parse(itemOrgArray[i].PortalInspectionDate.apiToAppFormat()) != portalDate)
-//
-//                {
-//
-//
-//
-//                            MarkChangeWasDone()
-////                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
-//                    Log.v("checkkk", itemOrgArray[i].LoggedIntoPortal + "=="+ itemArray[i].LoggedIntoPortal)
-//                    Log.v("checkkk", itemOrgArray[i].InProgressTows + "=="+ itemArray[i].InProgressTows)
-//                    Log.v("checkkk", itemOrgArray[i].InProgressWalkIns + "=="+ itemArray[i].InProgressWalkIns)
-//                    Log.v("checkkk", itemOrgArray[i].NumberUnacknowledgedTows + "=="+ itemArray[i].NumberUnacknowledgedTows)
-//                    Log.v("checkkk", itemOrgArray[i].AddendumSigned + "=="+ itemArray[i].AddendumSigned)
-//                    Log.v("checkkk", itemOrgArray[i].startDate + "=="+ itemArray[i].startDate)
-//                    Log.v("checkkk", itemOrgArray[i].PortalInspectionDate + "=="+ itemArray[i].PortalInspectionDate)
-//
-//
-//                }
-//            }
-//        }else{
-//            MarkChangeWasDone()
-//            Log.v("checkkk", "2ndddd")
-//
-//        }
-    }
 
     fun validateInputs() : Boolean {
 
@@ -673,7 +581,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     updateButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(updateButton)
 
-                    updateButton.setOnClickListener(View.OnClickListener {
+                    updateButton.setOnClickListener {
                         rowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
                         edit_numberOfUnacknowledgedRecordsEditText.setText(textView2.text)
                         edit_numberOfInProgressTwoIns.setText(textView3.text)
@@ -711,31 +619,31 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
                         edit_AAR_PortalTrackingEntryCard.visibility = View.VISIBLE
                         alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
+                        (activity as FormsActivity).overrideBackButton = true
 
 
 
+            //                        for (i in 0 until mainViewLinearId.childCount) {
+            //                            val child = mainViewLinearId.getChildAt(i)
+            //                            child.isEnabled = false
+            //                        }
+            //
+            //                        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+            //
+            //                        for (i in 1..childViewCount - 1) {
+            //                            var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+            //
+            //                            for (j in 0..row.getChildCount() - 1) {
+            //
+            //                                var tv: TextView = row.getChildAt(j) as TextView
+            //                                tv.isEnabled = false
+            //
+            //                            }
+            //
+            //                        }
 
-//                        for (i in 0 until mainViewLinearId.childCount) {
-//                            val child = mainViewLinearId.getChildAt(i)
-//                            child.isEnabled = false
-//                        }
-//
-//                        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
-//
-//                        for (i in 1..childViewCount - 1) {
-//                            var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
-//
-//                            for (j in 0..row.getChildCount() - 1) {
-//
-//                                var tv: TextView = row.getChildAt(j) as TextView
-//                                tv.isEnabled = false
-//
-//                            }
-//
-//                        }
 
-
-                    })
+                    }
                     edit_submitNewAAR_PortalTracking.setOnClickListener {
                         if (validateInputsForUpdate()) {
                             rspLoadingText.text = "Saving ..."
@@ -752,7 +660,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                             var trackingID = FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex-1].TrackingID
 
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
-                                    "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&TrackingID=${trackingID}&PortalInspectionDate=${inspectionDate}&insertBy=E642707&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=SumA&updateDate=" + Date().toApiSubmitFormat() +
+                                    "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&TrackingID=${trackingID}&PortalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
                                     "&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
@@ -781,6 +689,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                             RSP_LoadingView.visibility = View.GONE
                                             alphaBackgroundForRSPDialogs.visibility = View.GONE
                                             edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                            (activity as FormsActivity).overrideBackButton = false
 
                                         }
                                     }, Response.ErrorListener {
@@ -789,6 +698,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 rspLoadingText.text = "Loading ..."
                                 alphaBackgroundForRSPDialogs.visibility = View.GONE
                                 edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
 
                             }))
 
@@ -807,84 +717,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     }
 
-//    fun addTheLatestRowOfPortalAdmin(){
-//        val rowLayoutParam = TableRow.LayoutParams()
-//        rowLayoutParam.weight = 1F
-//        rowLayoutParam.column = 0
-//
-//        val rowLayoutParam1 = TableRow.LayoutParams()
-//        rowLayoutParam1.weight = 1F
-//        rowLayoutParam1.column = 1
-//
-//        val rowLayoutParam2 = TableRow.LayoutParams()
-//        rowLayoutParam2.weight = 1F
-//        rowLayoutParam2.column = 2
-//
-//        val rowLayoutParam3 = TableRow.LayoutParams()
-//        rowLayoutParam3.weight = 1F
-//        rowLayoutParam3.column = 3
-//
-//        val rowLayoutParam4 = TableRow.LayoutParams()
-//        rowLayoutParam4.weight = 1F
-//        rowLayoutParam4.column = 4
-//
-//        val rowLayoutParam5 = TableRow.LayoutParams()
-//        rowLayoutParam5.weight = 1F
-//        rowLayoutParam5.column = 5
-//        FacilityDataModel.getInstance().tblAARPortalAdmin[FacilityDataModel.getInstance().tblAARPortalAdmin.size-1].apply {
-//
-//
-//            var tableRow = TableRow(context)
-//
-//            var textView = TextView(context)
-//            textView.layoutParams = rowLayoutParam
-//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//            try {
-//                textView.text = PortalInspectionDate.appToApiSubmitFormatMMDDYYYY()
-//            } catch (e: Exception) {
-//                textView.text = PortalInspectionDate
-//
-//            }
-//            tableRow.addView(textView)
-//
-//            textView = TextView(context)
-//            textView.layoutParams = rowLayoutParam1
-//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//            textView.text = LoggedIntoPortal
-//            tableRow.addView(textView)
-//
-//            textView = TextView(context)
-//            textView.layoutParams = rowLayoutParam2
-//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//            TableRow.LayoutParams()
-//            textView.text = NumberUnacknowledgedTows
-//            tableRow.addView(textView)
-//
-//            textView = TextView(context)
-//            textView.layoutParams = rowLayoutParam3
-//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//            textView.text = InProgressTows
-//            tableRow.addView(textView)
-//
-//            textView = TextView(context)
-//            textView.layoutParams = rowLayoutParam4
-//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-//            textView.text = InProgressWalkIns
-//            tableRow.addView(textView)
-//
-//
-//            val updateButton = Button(context)
-//            updateButton.layoutParams = rowLayoutParam5
-//            updateButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-//            updateButton.text = "update"
-//            tableRow.addView(updateButton)
-//
-//
-//            aarPortalTrackingTableLayout.addView(tableRow)
-//
-//        }
-//        altLocationTableRow(2)
-//    }
+
     fun altLocationTableRow(alt_row : Int) {
         var childViewCount = aarPortalTrackingTableLayout.getChildCount();
 
@@ -902,113 +735,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         }
     }
-    fun scopeOfServiceChangesWatcher() {
-//        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
-//
-//            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
-//
-//
-//                if (FragmentARRAVScopeOfService.dataChanged) {
-//
-//                    val builder = AlertDialog.Builder(context)
-//
-//                    // Set the alert dialog title
-//                    builder.setTitle("Changes made confirmation")
-//
-//                    // Display a message on alert dialog
-//                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-//
-//                    // Set a positive button and its click listener on alert dialog
-//                    builder.setPositiveButton("YES") { dialog, which ->
-//
-//                        RSP_LoadingView.visibility = View.VISIBLE
-//
-//
-//
-//                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
-//                                Response.Listener { response ->
-//                                    activity!!.runOnUiThread(Runnable {
-//                                        Log.v("RESPONSE", response.toString())
-//                                        RSP_LoadingView.visibility = View.GONE
-//
-//                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-//                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-//                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
-//
-//                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-//                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-//                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-//                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-//                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-//                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-//
-//                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-//
-//                                                FragmentARRAVScopeOfService.dataChanged = false
-//
-//                                            }
-//
-//                                        }
-//
-//                                    })
-//                                }, Response.ErrorListener {
-//                            Log.v("error while loading", "error while loading personnal record")
-//                            Toast.makeText(context!!, "error while saving page", Toast.LENGTH_SHORT).show()
-//                            RSP_LoadingView.visibility = View.GONE
-//
-//
-//                        }))
-//
-//
-//                    }
-//
-//
-//                    // Display a negative button on alert dialog
-//                    builder.setNegativeButton("No") { dialog, which ->
-//                        FragmentARRAVScopeOfService.dataChanged = false
-//                        RSP_LoadingView.visibility = View.GONE
-//
-//                    }
-//
-//
-//                    // Finally, make the alert dialog using builder
-//                    val dialog: AlertDialog = builder.create()
-//                    dialog.setCanceledOnTouchOutside(false)
-//                    // Display the alert dialog on app interface
-//                    dialog.show()
-//
-//                }
-//
-//            } else {
-//
-//
-//                val builder = AlertDialog.Builder(context)
-//
-//                // Set the alert dialog title
-//                builder.setTitle("Changes made Warning")
-//
-//                // Display a message on alert dialog
-//                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
-//
-//                // Set a positive button and its click listener on alert dialog
-//                builder.setPositiveButton("Ok") { dialog, which ->
-//
-//                    FragmentARRAVScopeOfService.dataChanged = false
-//
-//                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
-//
-//                }
-//
-//
-//                val dialog: AlertDialog = builder.create()
-//                dialog.setCanceledOnTouchOutside(false)
-//                dialog.show()
-//
-//            }
-//
-//        }
 
-    }
 
 
     override fun onAttach(context: Context?) {

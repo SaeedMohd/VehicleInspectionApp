@@ -140,12 +140,21 @@
                 android:text="Contract Status "
                 android:textStyle="bold" />
 
+            <Spinner
+                android:id="@+id/contractStatusTypeSpinner"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/contractStatusTextView"
+                android:ems="8"
+                android:entries="@array/contractTypesEntries" />
+
             <RadioGroup
                 android:id="@+id/contractStatusRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/contractStatusTextView"
+                android:layout_toRightOf="@id/contractStatusTypeSpinner"
                 android:orientation="horizontal">
 
                 <RadioButton

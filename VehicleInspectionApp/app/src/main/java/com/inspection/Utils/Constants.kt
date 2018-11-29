@@ -85,6 +85,8 @@ object Constants {
     val UpdateFacilityVehicles="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateFacilityVehicles?facnum="
     val UpdateVehicleServices="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateVehicleServices?facnum="
     val UpdatePersonnelCertification="https://dev.facilityappointment.com/ACEAPI.asmx/UpdatePersonnelCertification?facnum="
+    val UpdateVisitationDetailsData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateVisitationDetailsData?facnum="
+    val UpdateVisitationTrackingData="https://dev.facilityappointment.com/ACEAPI.asmx/UpdateVisitationTrackingData?facnum="
 
     val getSpecialistIdsForClubCode = "http://144.217.24.163:5000/getSpecialistsForClubCode?"
 }

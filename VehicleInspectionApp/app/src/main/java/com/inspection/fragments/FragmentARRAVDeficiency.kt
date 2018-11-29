@@ -84,6 +84,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
         exitDeffeciencyDialogeBtnId.setOnClickListener({
             defeciencyCard.visibility=View.GONE
+            (activity as FormsActivity).overrideBackButton = false
             visitationFormAlphaBackground.visibility = View.GONE
         })
 
@@ -98,12 +99,14 @@ class FragmentARRAVDeficiency : Fragment() {
             signatureDateBtn.setError(null)
             facilityRepresentativeDeficienciesSignatureButton.setError(null)
             defeciencyCard.visibility=View.VISIBLE
+            (activity as FormsActivity).overrideBackButton = true
             visitationFormAlphaBackground.visibility = View.VISIBLE
 
 
             facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
                 signatureDialog.visibility = View.VISIBLE
 //                visitationFormAlphaBackground.visibility = View.VISIBLE
+                (activity as FormsActivity).overrideBackButton = true
                 selectedSignature = requestedSignature.representativeDeficiency
                 if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
                     signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
@@ -118,6 +121,7 @@ class FragmentARRAVDeficiency : Fragment() {
             signatureCancelButton.setOnClickListener {
                 signatureInkView.clear()
                 signatureDialog.visibility = View.GONE
+                (activity as FormsActivity).overrideBackButton = false
             }
 
             signatureConfirmButton.setOnClickListener {
@@ -139,6 +143,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 signatureInkView.clear()
 //                visitationFormAlphaBackground.visibility = View.GONE
                 signatureDialog.visibility = View.GONE
+                (activity as FormsActivity).overrideBackButton = false
             }
 
             try {
@@ -161,6 +166,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 signatureInkView.clear()
                 visitationFormAlphaBackground.visibility = View.GONE
                 signatureDialog.visibility = View.GONE
+                (activity as FormsActivity).overrideBackButton = false
             } catch (e: Exception) {
             }
 
@@ -247,7 +253,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 item.Comments = if (comments_editTextVal.text.isNullOrEmpty())  "" else comments_editTextVal.text.toString()
 
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
-                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=MoritzM02&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SamA&updateDate="+Date().toApiSubmitFormat(),
+                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread(Runnable {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -268,6 +274,7 @@ class FragmentARRAVDeficiency : Fragment() {
                                 DeffLoadingView.visibility = View.GONE
                                 progressBarText.text = "Loading ..."
                                 defeciencyCard.visibility=View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
                                 visitationFormAlphaBackground.visibility = View.GONE
                             })
                         }, Response.ErrorListener {
@@ -275,6 +282,7 @@ class FragmentARRAVDeficiency : Fragment() {
                     DeffLoadingView.visibility = View.GONE
                     progressBarText.text = "Loading ..."
                     defeciencyCard.visibility=View.GONE
+                    (activity as FormsActivity).overrideBackButton = false
                     visitationFormAlphaBackground.visibility = View.GONE
                 }))
 

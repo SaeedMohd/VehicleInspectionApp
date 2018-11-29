@@ -115,6 +115,7 @@ class FragmentARRAVAffliations : Fragment() {
 
         exitAffDialogeBtnId.setOnClickListener({
             affiliationsCard.visibility=View.GONE
+            (activity as FormsActivity).overrideBackButton = false
             alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
         })
 
@@ -122,6 +123,7 @@ class FragmentARRAVAffliations : Fragment() {
             fillAffTableView()
             altLocationTableRow(2)
             edit_affiliationsCard.visibility=View.GONE
+            (activity as FormsActivity).overrideBackButton = false
             alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
         })
 //        addNewAffil.isEnabled = false
@@ -132,6 +134,7 @@ class FragmentARRAVAffliations : Fragment() {
             afDtlsexpiration_date_textviewVal.text = "SELECT DATE"
             affcomments_editTextVal.setText("")
             affiliationsCard.visibility=View.VISIBLE
+            (activity as FormsActivity).overrideBackButton = true
             alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
         }
 
@@ -208,7 +211,7 @@ class FragmentARRAVAffliations : Fragment() {
                 affiliationItem.comment = affcomments_editTextVal.text.toString()
                 affiliationItem.AffiliationTypeDetailID = TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(afDetails_textviewVal.selectedItem.toString()) }[0].AffiliationTypeDetailID.toInt()
                 affiliationItem.AffiliationTypeID= TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(affiliations_textviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID.toInt()
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=sa&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat(),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -227,6 +230,7 @@ class FragmentARRAVAffliations : Fragment() {
                                     Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
                                 }
                                 affLoadingView.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
                                 progressBarText.text = "Loading ..."
                                 affiliationsCard.visibility = View.GONE
                                 alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
@@ -234,6 +238,7 @@ class FragmentARRAVAffliations : Fragment() {
                         }, Response.ErrorListener {
                     Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
                     affLoadingView.visibility = View.GONE
+                    (activity as FormsActivity).overrideBackButton = false
                     affiliationsCard.visibility = View.GONE
                     alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                 }))
@@ -439,6 +444,7 @@ class FragmentARRAVAffliations : Fragment() {
                         edit_afDetails_textviewVal.tag=textView1.text.toString()
                         edit_afDtlseffective_date_textviewVal.setError(null)
                         edit_affiliationsCard.visibility = View.VISIBLE
+                        (activity as FormsActivity).overrideBackButton = true
                         alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
 
 //                        for (i in 0 until mainViewLinearId.childCount) {
@@ -476,7 +482,7 @@ class FragmentARRAVAffliations : Fragment() {
                             var affiliationID = if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID>-1) FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID else ""
                             indexToRemove = rowIndex
 
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=sa&insertDate=2014-07-23T22:15:44.150&updateBy=SumA&updateDate=2014-07-23T22:15:44.150",
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -499,12 +505,14 @@ class FragmentARRAVAffliations : Fragment() {
                                                 Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
                                             }
                                             affLoadingView.visibility = View.GONE
+                                            (activity as FormsActivity).overrideBackButton = false
                                             edit_affiliationsCard.visibility = View.GONE
                                             alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                                         }
                                     }, Response.ErrorListener {
                                 Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
                                 affLoadingView.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
                                 edit_affiliationsCard.visibility = View.GONE
                                 alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                             }))

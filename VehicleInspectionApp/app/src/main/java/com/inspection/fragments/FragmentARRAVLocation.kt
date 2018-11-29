@@ -15,10 +15,7 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.UnderlineSpan
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
@@ -97,7 +94,12 @@ class FragmentARRAVLocation : Fragment() {
         cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
+
+
+
     fun setFieldsListeners(){
+
+
 
         cancelButton.setOnClickListener {
             cancelButton.hideKeyboard()
@@ -370,12 +372,14 @@ class FragmentARRAVLocation : Fragment() {
             addNewEmailDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
 //            enableAllAddButnsAndDialog()
+            (activity as FormsActivity).overrideBackButton = false
         })
 
 
         exitUpdateEmailDialogeBtnId.setOnClickListener({
             editEmailDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
         })
 
@@ -388,16 +392,19 @@ class FragmentARRAVLocation : Fragment() {
         exitEditLocationDialogeBtnId.setOnClickListener({
             editLocationDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
         })
         exitUpdatePhoneDialogeBtnId.setOnClickListener({
             alphaBackgroundForDialogs.visibility = View.GONE
             editPhoneDialog.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
         })
         exitAddPhoneDialogeBtnId.setOnClickListener({
             addNewPhoneDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
         })
 
@@ -409,11 +416,13 @@ class FragmentARRAVLocation : Fragment() {
 
         addNewPhoneButton.setOnClickListener({
 //            disableAllAddButnsAndDialog()
+            (activity as FormsActivity).overrideBackButton = true
             showPhoneDialog()
         })
 
         addNewEmailButton.setOnClickListener {
 //            disableAllAddButnsAndDialog()
+            (activity as FormsActivity).overrideBackButton = true
             showEmailDialog()
         }
 
@@ -719,9 +728,10 @@ class FragmentARRAVLocation : Fragment() {
 //    }
 
     private fun showLocationDialog(index: Int) {
-
+        (activity as FormsActivity).overrideBackButton = true
         alphaBackgroundForDialogs.visibility = View.VISIBLE
         editLocationDialog.visibility = View.VISIBLE
+        (activity as FormsActivity).overrideBackButton = true
 
         newLocLatText.setText(FacilityDataModel.getInstance().tblAddress[index].LATITUDE)
         newLocLongText.setText(FacilityDataModel.getInstance().tblAddress[index].LONGITUDE)
@@ -731,15 +741,16 @@ class FragmentARRAVLocation : Fragment() {
             contactInfoLoadingView.visibility = View.VISIBLE
             editLocationDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
 //            var rowIndex=phoneTbl.indexOfChild(tableRow)
 //            var phoneFacilityChangedIndex= rowIndex-1
 
 
             val insertDate = Date().toAppFormatMMDDYYYY()
-            val insertBy = "sa"
+            val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
             val updateDate = Date().toAppFormatMMDDYYYY()
-            val updateBy = "sa"
+            val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
             val LocationTypeID = TypeTablesModel.getInstance().LocationType.filter { s->s.LocTypeName.equals("Physical") }[0].LocTypeID
             val facAddr1 = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr1
             val facAddr2 = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr2
@@ -760,7 +771,7 @@ class FragmentARRAVLocation : Fragment() {
             Log.v("LOCATION Data To Submit", Constants.submitContactInfoAddress + urlString)
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString,
                     Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
+                        activity!!.runOnUiThread {
                             if (response.toString().contains("returnCode&gt;0&",false)) {
                                 Utility.showSubmitAlertDialog(activity, true, "Facility Location")
                                 FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
@@ -768,17 +779,14 @@ class FragmentARRAVLocation : Fragment() {
                                 fillLocationTableView()
                                 HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
                                 HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-//                                IndicatorsDataModel.getInstance().validateFacilityLocationVisited()
-//                                if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-//                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                             } else {
                                 var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                                 Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: "+errorMessage+" )")
                             }
                             contactInfoLoadingView.visibility = View.GONE
                             contactInfoLoadingText.text = "Loading ..."
-//                            enableAllAddButnsAndDialog()
-                        })
+                //                            enableAllAddButnsAndDialog()
+                        }
                     }, Response.ErrorListener {
 
                         Utility.showSubmitAlertDialog(activity,true,"Facility Location (Error: "+it.message+" )")
@@ -824,6 +832,7 @@ class FragmentARRAVLocation : Fragment() {
     private fun showPhoneDialog() {
         alphaBackgroundForDialogs.visibility = View.VISIBLE
         addNewPhoneDialog.visibility = View.VISIBLE
+
         phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
         phoneTypeArray.clear()
         for (fac in phoneTypeList) {
@@ -1012,6 +1021,7 @@ class FragmentARRAVLocation : Fragment() {
                         newChangesPhoneNoText.text.clear()
                         alphaBackgroundForDialogs.visibility = View.VISIBLE
                         editPhoneDialog.visibility = View.VISIBLE
+                        (activity as FormsActivity).overrideBackButton = true
                         phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
                         phoneTypeArray.clear()
                         for (fac in phoneTypeList) {
@@ -1043,9 +1053,9 @@ class FragmentARRAVLocation : Fragment() {
                                     }
                                 }
                                 val insertDate = Date().toAppFormatMMDDYYYY()
-                                val insertBy = "sa"
+                                val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
                                 val updateDate = Date().toAppFormatMMDDYYYY()
-                                val updateBy = "sa"
+                                val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
                                 val activeVal = "0"
 
                                 val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -1057,7 +1067,7 @@ class FragmentARRAVLocation : Fragment() {
                                 contactInfoLoadingView.visibility = View.VISIBLE
                                 editPhoneDialog.visibility = View.GONE
                                 alphaBackgroundForDialogs.visibility = View.GONE
-
+                                (activity as FormsActivity).overrideBackButton = false
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread(Runnable {
@@ -1158,6 +1168,7 @@ class FragmentARRAVLocation : Fragment() {
 //                        disableAllAddButnsAndDialog()
                         newChangesEmailText.text.clear()
                         alphaBackgroundForDialogs.visibility = View.VISIBLE
+                        (activity as FormsActivity).overrideBackButton = true
                         editEmailDialog.visibility = View.VISIBLE
                         emailTypeList = TypeTablesModel.getInstance().EmailType
                         emailTypeArray.clear()
@@ -1204,6 +1215,7 @@ class FragmentARRAVLocation : Fragment() {
                                 contactInfoLoadingView.visibility = View.VISIBLE
                                 editEmailDialog.visibility = View.GONE
                                 alphaBackgroundForDialogs.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread(Runnable {
@@ -1695,9 +1707,9 @@ class FragmentARRAVLocation : Fragment() {
         val emailTypeID = TypeTablesModel.getInstance().EmailType.filter { s -> s.EmailName==newEmailTypeSpinner.selectedItem.toString()}[0].EmailID
         val email = if (newEmailAddrText.text.isNullOrEmpty())  "" else newEmailAddrText.text
         val insertDate = Date().toAppFormatMMDDYYYY()
-        val insertBy ="sa"
+        val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val updateDate = Date().toAppFormatMMDDYYYY()
-        val updateBy ="sa"
+        val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode = FacilityDataModel.getInstance().clubCode
@@ -1712,6 +1724,7 @@ class FragmentARRAVLocation : Fragment() {
         contactInfoLoadingView.visibility = View.VISIBLE
         addNewEmailDialog.visibility = View.GONE
         alphaBackgroundForDialogs.visibility = View.GONE
+        (activity as FormsActivity).overrideBackButton = false
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
                 Response.Listener { response ->
@@ -1768,15 +1781,15 @@ class FragmentARRAVLocation : Fragment() {
         val satOpen = satOpenSpinner.selectedItem.toString()
         val facAvail = "1"
 
-        Log.v("SUBMIT HOURS ---->" , Constants.submitFacilityHours + "&clubcode=${FacilityDataModel.getInstance().clubCode}&MonOpen=${monOpen}&TueOpen=${tueOpen}&WedOpen=${wedOpen}&ThuOpen=${thuOpen}" +
-                "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
-                "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=SumA&insertDate="+Date().toApiSubmitFormat()+
-                "&updateBy=SumA&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=")
+//        Log.v("SUBMIT HOURS ---->" , Constants.submitFacilityHours + "&clubcode=${FacilityDataModel.getInstance().clubCode}&MonOpen=${monOpen}&TueOpen=${tueOpen}&WedOpen=${wedOpen}&ThuOpen=${thuOpen}" +
+//                "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
+//                "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=SumA&insertDate="+Date().toApiSubmitFormat()+
+//                "&updateBy=SumA&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=")
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&MonOpen=${monOpen}&TueOpen=${tueOpen}&WedOpen=${wedOpen}&ThuOpen=${thuOpen}" +
                 "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
-                "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=SumA&insertDate="+Date().toApiSubmitFormat()+
-                "&updateBy=SumA&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=",
+                "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
+                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=",
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -1811,7 +1824,7 @@ class FragmentARRAVLocation : Fragment() {
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error submitting hours")
-            Utility.showSubmitAlertDialog(activity,false,"Facility Hours / Nigh Drop (Error: "+it.message+" )")
+            Utility.showSubmitAlertDialog(activity,false,"Facility Hours / Night Drop (Error: "+it.message+" )")
         }))
 
     }
@@ -1828,7 +1841,7 @@ class FragmentARRAVLocation : Fragment() {
             Log.v("ERROR --- >",e.message)
         }
 //$facNo&clubCode=004
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=SumA&insertDate="+Date().toAppFormatMMDDYYYY(),
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toAppFormatMMDDYYYY(),
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {
                         if (response.toString().contains("returnCode&gt;0&",false)) {
@@ -1859,9 +1872,9 @@ class FragmentARRAVLocation : Fragment() {
 
     fun submitFacilityAddress(){
         val insertDate = Date().toAppFormatMMDDYYYY()
-        val insertBy ="sa"
+        val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val updateDate = Date().toAppFormatMMDDYYYY()
-        val updateBy ="sa"
+        val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode ="004"
@@ -1899,9 +1912,9 @@ class FragmentARRAVLocation : Fragment() {
         val phoneTypeID = TypeTablesModel.getInstance().LocationPhoneType.filter { s -> s.LocPhoneName==newPhoneTypeSpinner.selectedItem.toString()}[0].LocPhoneID
         val phoneNo = if (newPhoneNoText.text.isNullOrEmpty())  "" else newPhoneNoText.text
         val insertDate = Date().toAppFormatMMDDYYYY()
-        val insertBy ="sa"
+        val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val updateDate = Date().toAppFormatMMDDYYYY()
-        val updateBy ="sa"
+        val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val activeVal = "0"
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode = FacilityDataModel.getInstance().clubCode
@@ -1914,7 +1927,7 @@ class FragmentARRAVLocation : Fragment() {
         contactInfoLoadingView.visibility = View.VISIBLE
         addNewPhoneDialog.visibility = View.GONE
         alphaBackgroundForDialogs.visibility = View.GONE
-
+        (activity as FormsActivity).overrideBackButton = false
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {

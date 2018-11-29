@@ -65,6 +65,7 @@ public class ApplicationPrefs {
     public static final String IS_SAFETY_CHECK_SMS_NOTIFICATIONS_ENABLED = "isSafetyCheckSMSNotificationsEnabled";
     public static final String SafetyCheckProgramName = "safetyCheckProgramName";
     public static final String loggedInUserEmail = "loggedInUserEmail";
+    public static final String loggedInUserID = "loggedInUserID";
 
 
 
@@ -709,6 +710,22 @@ public class ApplicationPrefs {
                 .getSharedPreferences(PREFS_NAME, 0);
 
         return settings.getString(loggedInUserEmail, "");
+    }
+
+    public void setLoggedInUserID(String userID) {
+        SharedPreferences settings = context
+                .getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(loggedInUserID, userID);
+        editor.commit();
+
+    }
+
+    public String getLoggedInUserID() {
+        SharedPreferences settings = context
+                .getSharedPreferences(PREFS_NAME, 0);
+
+        return settings.getString(loggedInUserID, "");
     }
 
 }

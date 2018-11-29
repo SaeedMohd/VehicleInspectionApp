@@ -252,7 +252,6 @@ class FacilityGeneralInformationFragment : Fragment() {
                 dba_textviewVal.text = tblFacilities[0].BusinessName
                 entity_textviewVal.text = tblFacilities[0].EntityName
                 bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
-
                 timeZoneSpinner.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
                 timeZoneSpinner.tag = timeZoneSpinner.selectedItemPosition
                 website_textviewVal.setText(tblFacilities[0].WebSite)
@@ -279,9 +278,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
 
                 inspectionMonthsTextViewVal.text=inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth)-1]
-
                 if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
-
                     inspectionCycleTextViewVal.text="1"
                 }
                 if (inspectionMonthsTextViewVal.text==inspectionMonths[1]||inspectionMonthsTextViewVal.text==inspectionMonths[4]||inspectionMonthsTextViewVal.text==inspectionMonths[7]||inspectionMonthsTextViewVal.text==inspectionMonths[10]){
@@ -319,13 +316,12 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         saveButton.setOnClickListener {
             if (validateInputs()){
-                progressBarText.text = "Saving ..."
-                scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+
 //                if (HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType || HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone || HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneral )
-                    submitFacilityGeneralInfo()
+                if (submitPaymentRequired) submitPaymentMethods()
+                if (submitGeneralInfoRequired) submitFacilityGeneralInfo()
 //                if (HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods)
 
-                    submitPaymentMethods()
         }else
             {
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
@@ -351,6 +347,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             setFieldsValues()
             (activity as FormsActivity).saveRequired = false
             refreshButtonsState()
+            submitGeneralInfoRequired=false
             submitPaymentRequired=false
 //            var payMethodText = ""
 //            for (i in 0..FacilityDataModel.getInstance().tblPaymentMethods.size-1) {
@@ -425,8 +422,8 @@ class FacilityGeneralInformationFragment : Fragment() {
                 //                if (FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate!=FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate) MarkChangeWasDone()
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                 HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-                    (activity as FormsActivity).saveRequired = true
-
+                (activity as FormsActivity).saveRequired = true
+                submitGeneralInfoRequired = true
                 refreshButtonsState()
             }, year, month, day)
             dpd.show()
@@ -450,6 +447,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                 HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                 (activity as FormsActivity).saveRequired = true
+                submitGeneralInfoRequired = true
                 refreshButtonsState()
             }, year, month, day)
             dpd.show()
@@ -472,6 +470,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                         HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                     }
                     (activity as FormsActivity).saveRequired = true
+                    submitGeneralInfoRequired = true
                     refreshButtonsState()
                 }
             }
@@ -484,6 +483,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                 HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                 (activity as FormsActivity).saveRequired = true
+                submitGeneralInfoRequired = true
                 refreshButtonsState()
             }
 
@@ -503,6 +503,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
             (activity as FormsActivity).saveRequired = true
+            submitGeneralInfoRequired = true
             refreshButtonsState()
         }
 
@@ -513,6 +514,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                     HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                     (activity as FormsActivity).saveRequired = true
+                    submitGeneralInfoRequired = true
                     refreshButtonsState()
                 }
             }
@@ -540,6 +542,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                     HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
 
                     (activity as FormsActivity).saveRequired = true
+                    submitGeneralInfoRequired = true
                     refreshButtonsState()
                 }
 //                if (FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability !=FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability ) MarkChangeWasDone()
@@ -565,6 +568,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                     HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
 
                     (activity as FormsActivity).saveRequired = true
+                    submitGeneralInfoRequired = true
 
                     refreshButtonsState()
                 }
@@ -887,9 +891,9 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         val terminationReasonID = TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID
         val terminationComments = if (terminationCommentEditText.text.isNullOrEmpty())  "" else terminationCommentEditText.text
         val insertDate = Date().toApiSubmitFormat()
-        val insertBy ="sa"
+        val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val updateDate = Date().toApiSubmitFormat()
-        val updateBy ="sa"
+        val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val activeVal = "0"
         val insuranceExpDate = if (InsuranceExpDate_textviewVal.text.equals("")) "" else InsuranceExpDate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
         val contractType = TypeTablesModel.getInstance().ContractType.filter { s -> s.ContractTypeName==contractTypeValueSpinner.selectedItem.toString()}[0].ContractTypeID
@@ -898,7 +902,8 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode =FacilityDataModel.getInstance().clubCode
         FacilityDataModel.getInstance().tblFacilities[0]
-        //https://dev.facilityappointment.com/ACEAPI.asmx/updateFacilityInfo?facNum=155&clubcode=&businessName=De Lillo Chevrolet&busTypeId=1&entityName=De Lillo Chevrolet Co.&assignToId=Jeffrey Moss&officeId=0&taxIdNumber=95-1496182&facilityRepairOrderCount=12000&facilityAnnualInspectionMonth=4&inspectionCycle=1&timeZoneId=6&svcAvailability=1&facilityTypeId=1&automotiveRepairNumber=AA001515&automotiveRepairExpDate=2018-01-31T00:00:00&contractCurrentDate=2015-05-14T00:00:00&contractInitialDate=1979-04-27T00:00:00&billingMonth=10&billingAmount=495&internetAccess=1&webSite=www.delillo.com&terminationDate=&terminationId=1&terminationComments=&insertBy=sa&insertDate=2018-08-25T10:00:05&updateBy=sa&updateDate=2018-08-25T10:00:05&active=0&achParticipant=0&insuranceExpDate=2018-07-01T00:00:00&contractTypeId=1
+        progressBarText.text = "Saving ..."
+        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
         var urlString = facilityNo+"&clubcode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
         Log.v("Data To Submit", urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString,
@@ -915,6 +920,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
                             FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
                             (activity as FormsActivity).saveRequired = false
+                            submitGeneralInfoRequired = false
                             HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone=true
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType=true
@@ -922,12 +928,19 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
 //                            IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
 //                            if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
 //                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
+                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            progressBarText.text = "Loading ..."
                         } else {
+                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            progressBarText.text = "Loading ..."
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+ errorMessage+" )")
                         }
                     }
                 }, Response.ErrorListener {
+            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+            progressBarText.text = "Loading ..."
             Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+it.message+" )")
         }))
     }
@@ -950,8 +963,8 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
 
          var paymentMethods= arrayOf(visa,mastercard,americanexpress,discover,paypal,debit,cash,check,goodyear)
         var paymentMethodArray = ArrayList<String>()
-
-
+        progressBarText.text = "Saving ..."
+        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
         var payments : String? =""
 
         for (pm in paymentMethods){
@@ -964,12 +977,13 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode =FacilityDataModel.getInstance().clubCode
 //        Log.v("Paymemnt URL -----> ",UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}")
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=GurovichY&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}",
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}",
                 Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
+                    activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode&gt;0&",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Payment Methods")
                             (activity as FormsActivity).saveRequired = false
+
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods = true
                             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                             refreshButtonsState()
@@ -978,14 +992,16 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
                             var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
                             Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage+" )")
                         }
-//                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
-//                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-//                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+            //                        IndicatorsDataModel.getInstance().validateFacilityGeneralInfoVisited()
+            //                        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+            //                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                })
-    }, Response.ErrorListener {
+                        progressBarText.text = "Loading ..."
+                    }
+                }, Response.ErrorListener {
         Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+it.message+" )")
             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+            progressBarText.text = "Loading ..."
         }))
 
 //                            (activity as FormsActivity).saveRequired = false
@@ -994,113 +1010,7 @@ if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityD
 //                            refreshButtonsState()
 
     }
-    fun scopeOfServiceChangesWatcher() {
-//        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
-//
-//            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
-//
-//
-//                if (FragmentARRAVScopeOfService.dataChanged) {
-//
-//                    val builder = AlertDialog.Builder(context)
-//
-//                    // Set the alert dialog title
-//                    builder.setTitle("Changes made confirmation")
-//
-//                    // Display a message on alert dialog
-//                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-//
-//                    // Set a positive button and its click listener on alert dialog
-//                    builder.setPositiveButton("YES") { dialog, which ->
-//
-//                        progressBarText.text = "Loading ..."
-//                        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-//
-//
-//                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
-//                                Response.Listener { response ->
-//                                    activity!!.runOnUiThread(Runnable {
-//                                        Log.v("RESPONSE", response.toString())
-//
-////                                        Toast.makeText(context!!, "done", Toast.LENGTH_SHORT).show()
-//                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-//                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
-//                                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-//
-//                                                LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-//                                                LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-//                                                FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-//                                                DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-//                                                NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-//                                                NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-//
-//                                                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-//
-//                                                FragmentARRAVScopeOfService.dataChanged = false
-//
-//                                            }
-//
-//                                        }
-//
-//                                    })
-//                                }, Response.ErrorListener {
-//
-//                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-//
-//                        }))
-//
-//
-//                    }
-//
-//
-//                    // Display a negative button on alert dialog
-//                    builder.setNegativeButton("No") { dialog, which ->
-//                        FragmentARRAVScopeOfService.dataChanged = false
-//                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-//
-//
-//                    }
-//
-//
-//                    // Finally, make the alert dialog using builder
-//                    val dialog: AlertDialog = builder.create()
-//                    dialog.setCanceledOnTouchOutside(false)
-//                    // Display the alert dialog on app interface
-//                    dialog.show()
-//
-//                }
-//
-//            } else {
-//
-//
-//                val builder = AlertDialog.Builder(context)
-//
-//                // Set the alert dialog title
-//                builder.setTitle("Changes made Warning")
-//
-//                // Display a message on alert dialog
-//                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
-//
-//                // Set a positive button and its click listener on alert dialog
-//                builder.setPositiveButton("Ok") { dialog, which ->
-//
-//                    FragmentARRAVScopeOfService.dataChanged = false
-//                    FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = true
-//                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
-//
-//
-//                }
-//
-//
-//                val dialog: AlertDialog = builder.create()
-//                dialog.setCanceledOnTouchOutside(false)
-//                dialog.show()
-//
-//            }
-//
-//        }
 
-    }
 
     fun refreshButtonsState(){
 
