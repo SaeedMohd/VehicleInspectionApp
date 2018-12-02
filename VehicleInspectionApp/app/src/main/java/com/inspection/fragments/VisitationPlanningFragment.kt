@@ -87,7 +87,22 @@ class VisitationPlanningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         visitationfacilityListView.visibility = View.GONE
 
+        var visitationYearFilterSpinnerEntries = mutableListOf<String>()
+        var currentYear = Calendar.getInstance().get(Calendar.YEAR)
+//        visitationYearFilterSpinnerEntries.add    ("Any")
+        (currentYear - 30..currentYear).forEach {
+            visitationYearFilterSpinnerEntries.add("" + it)
+        }
+        visitationYearFilterSpinnerEntries.sortDescending()
+        visitationYearFilterSpinnerEntries.add(0, "Any")
+        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
+        visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
+        visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
 
+        searchVisitaionsButton.setOnClickListener({
+            reloadVisitationsList()
+            it.hideKeyboard()
+        })
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
                 Response.Listener { response ->
                     Log.v("****response", response)
@@ -147,21 +162,12 @@ class VisitationPlanningFragment : Fragment() {
 
         prepareInitialStateForFilters()
 
-        var visitationYearFilterSpinnerEntries = mutableListOf<String>()
-        var currentYear = Calendar.getInstance().get(Calendar.YEAR)
-//        visitationYearFilterSpinnerEntries.add    ("Any")
-        (currentYear - 30..currentYear).forEach {
-            visitationYearFilterSpinnerEntries.add("" + it)
-        }
-        visitationYearFilterSpinnerEntries.sortDescending()
-        visitationYearFilterSpinnerEntries.add(0, "Any")
-        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
-        visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
+
 
         visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
         visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
-        visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
+
         visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
         progressBarRecords.indeterminateDrawable.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -311,7 +317,7 @@ class VisitationPlanningFragment : Fragment() {
                 }
             } else {
                 with(parametersString) {
-                    append("clubCode=004")
+                    append("clubCode=252")
                     append("&")
                 }
             }
@@ -541,6 +547,7 @@ class VisitationPlanningFragment : Fragment() {
 
     private fun loadClubCodes() {
         Log.v("url*******", ""+ Constants.getClubCodes)
+
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
                 Response.Listener { response ->
                     var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
@@ -1890,7 +1897,7 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.email=""
             oneArray.emailVisitationPdfToFacility=false
             oneArray.facilityRepresentativeDeficienciesSignature=null
-            oneArray.performedBy=""
+            oneArray.performedBy="00"
             oneArray.visitationType=null
             oneArray.waiveVisitations=false
             oneArray.waiverComments=""

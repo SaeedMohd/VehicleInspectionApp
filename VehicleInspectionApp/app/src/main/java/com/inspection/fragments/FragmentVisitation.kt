@@ -82,7 +82,7 @@ class FragmentVisitation : Fragment() {
         initializeFields()
         setFieldsValues()
         setFieldsListeners()
-
+        fillTrackingData()
         IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
 
         completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
@@ -93,42 +93,82 @@ class FragmentVisitation : Fragment() {
     }
 
 
+    fun fillTrackingData(){
+
+        if (trackingTableLayout.childCount>1) {
+            for (i in trackingTableLayout.childCount - 1 downTo 1) {
+                trackingTableLayout.removeViewAt(i)
+            }
+        }
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.leftMargin = 10
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 2F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
+
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        FacilityDataModel.getInstance().tblVisitationTracking.apply {
+            (0 until size).forEach {
+                if (!get(it).performedBy.equals("00")) {
+                    val tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
+                    if (it % 2 == 0) {
+                        tableRow.setBackgroundResource(R.drawable.alt_row_color)
+                    }
+
+                    val textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.textSize = 18f
+                    textView.minimumHeight = 30
+                    textView.text = get(it).performedBy
+                    tableRow.addView(textView)
+
+                    val textView1 = TextView(context)
+                    textView1.layoutParams = rowLayoutParam1
+                    textView1.gravity = Gravity.CENTER_VERTICAL
+                    textView1.textSize = 18f
+                    textView1.minimumHeight = 30
+                    textView1.text = if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY()
+                    tableRow.addView(textView1)
+
+                    trackingTableLayout.addView(tableRow)
+                }
+            }
+        }
+
+    }
+
+
+
     fun checkMarkChangesDone(){
         IndicatorsDataModel.getInstance().validateVisitationSectionVisited()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
-//        FacilityDataModelOrg.getInstance().changeWasDone = false
-//        fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
-//        scopeOfServiceChangesWatcher()
-//        FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
-//        FragmentARRAVPrograms().checkMarkChangesWasDone()
-//        FragmentARRAVRepairShopPortalAddendum().checkMarkChangesWasDone()
-//        FragmentARRAVPersonnel().checkMarkChangesWasDoneForPersonnel()
-//        FragmentARRAVFacilityServices().checkMarkChangesWasDone()
-//        FragmentARRAVDeficiency().checkMarkChangesWasDone()
-//        FragmentARRAVAmOrderTracking().checkMarkChangesWasDone()
-//        FragmentARRAVLocation().checkMarkChangesWasDoneForAddressTable()
-//        FragmentARRAVLocation().checkMarkChangesWasDoneForEmailTable()
-//        FragmentARRAVLocation().checkMarkChangesWasDoneForPhoneTable()
-//        FragmentARRAVLocation().checkMarkChangesWasDoneForlanguageContactInfoFacilityTab()
-//        FacilityGeneralInformationFragment().checkMarkChangesWasDoneForFacilityGeneralInfo()
-//        checkMarkChangesWasDone()
-//
-//        dataChangeHandling()
-
-
     }
-    fun dataChangeHandling(){
 
+    fun dataChangeHandling(){
         if (HasChangedModel.getInstance().checkIfChangeWasDoneforVisitation()){
             dataChangedYesRadioButton.isChecked=true
             dataChangedNoRadioButton.isChecked=false
-        }else{
+        } else {
             dataChangedNoRadioButton.isChecked=true
             dataChangedYesRadioButton.isChecked=false
         }
     }
 
     private fun initializeFields() {
+
         annualVisitationType.isClickable = false
         annualVisitationType.isEnabled = false
 
@@ -140,26 +180,20 @@ class FragmentVisitation : Fragment() {
 
         adhocVisitationType.isEnabled = false
 
-
         dateOfVisitationButton.isClickable = false
         dataChangedNoRadioButton.isClickable = false
         clubCodeEditText.isClickable = false
-
-
 
         visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons).sorted())
 
         clubCodeEditText.isEnabled = false
         facilityNumberEditText.isEnabled = false
 
-
         if (annualVisitationType.isChecked) {
             visitationReasonDropListId.setSelection(6)
-
         }
         if (quarterlyVisitationType.isChecked) {
             visitationReasonDropListId.setSelection(7)
-
         }
         if (adhocVisitationType.isChecked) {
             visitationReasonDropListId.setSelection(0)
@@ -173,16 +207,12 @@ class FragmentVisitation : Fragment() {
             visitationReasonDropListId.isClickable = false
         }
 
-
-
         handleCancelButtonClick()
 
         altDeffVisitationTableRow(2)
-
     }
 
     private fun setFieldsValues() {
-
 
         facilityRepresentativeNames.clear()
         facilityRepresentativeNames.add("please select a representative")
@@ -192,14 +222,9 @@ class FragmentVisitation : Fragment() {
         }
 
         annualVisitationType.isChecked = true
-
         dateOfVisitationButton.text = Date().toAppFormatMMDDYYYY()
-
         clubCodeEditText.setText(FacilityDataModel.getInstance().clubCode)
-
-
         facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
-
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
             aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
         }
