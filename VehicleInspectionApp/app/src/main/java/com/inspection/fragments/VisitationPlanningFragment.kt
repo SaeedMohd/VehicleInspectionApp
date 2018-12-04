@@ -363,6 +363,10 @@ class VisitationPlanningFragment : Fragment() {
                 }
             }
 
+
+
+
+            
             if (visitationYearFilterSpinner.selectedItem != "Any") {
                 with(parametersString) {
                     append("inspectionYear=" + visitationYearFilterSpinner.selectedItem)
