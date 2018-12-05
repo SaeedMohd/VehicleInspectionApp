@@ -188,11 +188,13 @@ class FacilityGeneralInformationFragment : Fragment() {
         FacilityDataModel.getInstance().apply {
 //            try {
 
-                if(tblFacilities[0].ACTIVE==1){
-                    activeRadioButton.isChecked = true
-                }else{
-                    inActiveRadioButton.isChecked = true
-                }
+//                if(tblFacilities[0].ACTIVE==1){
+//                    activeRadioButton.isChecked = true
+//                }else{
+//                    inActiveRadioButton.isChecked = true
+//                }
+            contractStatusTextViewVal.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s -> s.FacilityStatusID .toInt() == tblFacilities[0].ContractTypeID }[0].FacilityStatusName
+            contractStatusTextViewVal.setTextColor(Color.BLUE)
 
                         for (provider in tblFacilityServiceProvider) {
                             when(provider.SrvProviderId){
@@ -200,7 +202,6 @@ class FacilityGeneralInformationFragment : Fragment() {
                                     aarCheckBox.isChecked = true
                                     aarEditText.setText(""+provider.ProviderNum)
                                 }
-
                                 "AABِ" -> {
                                     aabCheckBox.isChecked = true
                                     aabEditText.setText(provider.ProviderNum)
@@ -251,16 +252,32 @@ class FacilityGeneralInformationFragment : Fragment() {
                 assignedto_textviewVal.text = tblFacilities[0].AssignedTo
                 dba_textviewVal.text = tblFacilities[0].BusinessName
                 entity_textviewVal.text = tblFacilities[0].EntityName
-                bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
-                timeZoneSpinner.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
+                if (tblBusinessType.size>0) {
+                    bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
+                } else {
+                    bustype_textviewVal.setSelection(0)
+                }
+                if (tblTimezoneType.size>0) {
+                    timeZoneSpinner.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
+                } else {
+                    timeZoneSpinner.setSelection(0)
+                }
                 timeZoneSpinner.tag = timeZoneSpinner.selectedItemPosition
                 website_textviewVal.setText(tblFacilities[0].WebSite)
                 wifiAvailableCheckBox.isChecked = tblFacilities[0].InternetAccess
                 taxno_textviewVal.text = tblFacilities[0].TaxIDNumber
                 repairorder_textviewVal.setText("" + tblFacilities[0].FacilityRepairOrderCount)
-                availability_textviewVal.setSelection(svcAvailabilityArray.indexOf(TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID==tblFacilities[0].SvcAvailability}[0].SrvAvaName))
+                if (TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID==tblFacilities[0].SvcAvailability}.size > 0) {
+                    availability_textviewVal.setSelection(svcAvailabilityArray.indexOf(TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID == tblFacilities[0].SvcAvailability }[0].SrvAvaName))
+                } else {
+                    availability_textviewVal.setSelection(0)
+                }
                 availability_textviewVal.tag = availability_textviewVal.selectedItemPosition
-                facilitytype_textviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
+                if (tblFacilityType.size>0) {
+                    facilitytype_textviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
+                } else {
+                    facilitytype_textviewVal.setSelection(0)
+                }
                 facilitytype_textviewVal.tag = facilitytype_textviewVal.selectedItemPosition
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
                 ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY()
@@ -276,19 +293,25 @@ class FacilityGeneralInformationFragment : Fragment() {
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
 
+                if (tblFacilities[0].FacilityAnnualInspectionMonth>0) {
+                    inspectionMonthsTextViewVal.text = inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth) - 1]
+                    if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
+                        inspectionCycleTextViewVal.text="1"
+                    }
+                    if (inspectionMonthsTextViewVal.text==inspectionMonths[1]||inspectionMonthsTextViewVal.text==inspectionMonths[4]||inspectionMonthsTextViewVal.text==inspectionMonths[7]||inspectionMonthsTextViewVal.text==inspectionMonths[10]){
 
-                inspectionMonthsTextViewVal.text=inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth)-1]
-                if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
-                    inspectionCycleTextViewVal.text="1"
-                }
-                if (inspectionMonthsTextViewVal.text==inspectionMonths[1]||inspectionMonthsTextViewVal.text==inspectionMonths[4]||inspectionMonthsTextViewVal.text==inspectionMonths[7]||inspectionMonthsTextViewVal.text==inspectionMonths[10]){
+                        inspectionCycleTextViewVal.text="2"
+                    }
+                    if (inspectionMonthsTextViewVal.text==inspectionMonths[2]||inspectionMonthsTextViewVal.text==inspectionMonths[5]||inspectionMonthsTextViewVal.text==inspectionMonths[8]||inspectionMonthsTextViewVal.text==inspectionMonths[11]){
 
-                    inspectionCycleTextViewVal.text="2"
+                        inspectionCycleTextViewVal.text="3"
+                    }
+                } else {
+                    inspectionMonthsTextViewVal.text = ""
+                    inspectionCycleTextViewVal.text = ""
                 }
-                if (inspectionMonthsTextViewVal.text==inspectionMonths[2]||inspectionMonthsTextViewVal.text==inspectionMonths[5]||inspectionMonthsTextViewVal.text==inspectionMonths[8]||inspectionMonthsTextViewVal.text==inspectionMonths[11]){
 
-                    inspectionCycleTextViewVal.text="3"
-                }
+
 
                 for(paymentMethod in tblPaymentMethods){
 

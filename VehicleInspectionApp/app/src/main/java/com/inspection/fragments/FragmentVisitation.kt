@@ -253,9 +253,9 @@ class FragmentVisitation : Fragment() {
 
 
             facilitySpecialistNames.add("Select Specialist")
-            for (specialist in CsiSpecialistSingletonModel.getInstance().csiSpecialists){
+            for (specialist in TypeTablesModel.getInstance().EmployeeList){
 
-                facilitySpecialistNames.add(specialist.specialistname)
+                facilitySpecialistNames.add(specialist.FullName)
             }
             facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
             //   automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
@@ -309,7 +309,8 @@ class FragmentVisitation : Fragment() {
 
             if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
                 if (FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.isNotEmpty()) {
-                    facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+//                    facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
+                    facilityRepresentativesSpinner.setSelection(TypeTablesModel.getInstance().EmployeeList.map { s -> s.FullName}.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
                 }
             }
 

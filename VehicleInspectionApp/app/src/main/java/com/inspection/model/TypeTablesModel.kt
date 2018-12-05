@@ -81,6 +81,25 @@ class TypeTablesModel {
     var VehiclesType = ArrayList<vehiclesType>()
     var VehicleMakes = ArrayList<vehicleMakes>()
     var WarrantyPeriodType = ArrayList<warrantyPeriodType>()
+    var EmployeeList = ArrayList<employeeList>()
+
+    class employeeList {
+        var NTLogin = ""
+        var UserID = ""
+        var FirstName = ""
+        var LastName = ""
+        var FullName = ""
+        var SupervisorFirstName = ""
+        var Email = ""
+        var Phone = ""
+        var EmpRoleID = ""
+        var officeID = 0
+        var active = ""
+        var insertBy = ""
+        var insertDate = ""
+        var updateBy = ""
+        var updateDate = ""
+    }
 
     class aarDeficiencyType {
         var DeficiencyTypeID = ""

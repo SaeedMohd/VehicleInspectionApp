@@ -60,7 +60,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     var allClubCodes = ArrayList<String>()
     var requiredSpecialistName = ""
     var clubCode = ""
-    var specialistArrayModel = ArrayList<CsiSpecialist>()
+    var specialistArrayModel = ArrayList<TypeTablesModel.employeeList>()
     private var contractStatusList = ArrayList<TypeTablesModel.facilityStatusType>()
     private var contractStatusArray = ArrayList<String>()
 
@@ -100,6 +100,12 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 //            Log.v("Loading error", "" + it.message)
 //        }))
 
+
+        firstLoading = false
+    }
+
+
+    fun loadSpecialists() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
                 Response.Listener { response ->
                     Log.v("****response", response)
@@ -130,9 +136,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             Log.v("Loading error", "" + it.message)
         }))
 
-        firstLoading = false
     }
-
     private fun setFieldsListeners() {
         adHocFacilityNameButton.setOnClickListener(View.OnClickListener {
             recordsProgressView.visibility = View.VISIBLE
@@ -168,43 +172,44 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         })
 
 
-        adHocFacilitySpecialistButton.setOnClickListener(View.OnClickListener {
+        adHocFacilitySpecialistButton.setOnClickListener {
             var personnelNames = ArrayList<String>()
 
             if (clubCodeEditText.text.isNotEmpty() && false) {
                 var specialistIds = StringBuilder()
-                (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
-                    specialistIds.append("" + CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].id + ", ")
+                (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
+                    //                personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].LastName + " " + TypeTablesModel.getInstance().EmployeeList[it].FirstName)
+                    personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].FullName)
                 }
 
                 var specialistIdsString = specialistIds.trim().removeSuffix(",").toString()
 
                 Log.v("requesting........****", Constants.getSpecialistIdsForClubCode + "specialistIds=" + specialistIdsString + "&clubCode=" + clubCodeEditText.text.toString())
 
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistIdsForClubCode + "specialistIds=" + URLEncoder.encode(specialistIdsString, "UTF-8") + "&clubCode=" + clubCodeEditText.text.toString(),
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                Log.v("responsingg******.....", response)
-
-                            })
-                        }, Response.ErrorListener {
-                    //                    Log.v("error while loading", "error while loading facilities")
-                    Log.v("Loading error", "" + it.message)
-                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Specialists Names' - " + it.message)
-                }))
-
-//                if (CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].clubcode == clubCodeEditText.text.toString()) {
+//                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistIdsForClubCode + "specialistIds=" + URLEncoder.encode(specialistIdsString, "UTF-8") + "&clubCode=" + clubCodeEditText.text.toString(),
+//                        Response.Listener { response ->
+//                            activity!!.runOnUiThread(Runnable {
+//                                Log.v("responsingg******.....", response)
 //
-//                    personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
-//                }
+//                            })
+//                        }, Response.ErrorListener {
+//                    //                    Log.v("error while loading", "error while loading facilities")
+//                    Log.v("Loading error", "" + it.message)
+//                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Specialists Names' - " + it.message)
+//                }))
+//
+////                if (CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].clubcode == clubCodeEditText.text.toString()) {
+////
+////                    personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
+////                }
 
             } else {
-                (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
-                    personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
+                (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
+                    personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].FullName)
                 }
             }
 
-            Log.v("peronnel Names size......", "" + personnelNames.size)
+            Log.v("peronnel size......", "" + personnelNames.size)
             personnelNames.sort()
             personnelNames.add(0, "Any")
             var searchDialog = SearchDialog(context, personnelNames)
@@ -216,7 +221,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     adHocFacilitySpecialistButton.setText(searchDialog.selectedString)
                 }
             }
-        })
+        }
 
         clubCodeEditText.setOnClickListener {
             var searchDialog = SearchDialog(context, allClubCodes)
@@ -274,7 +279,8 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
         if (!adHocFacilitySpecialistButton.text.contains("Select") && adHocFacilitySpecialistButton.text.length > 1) {
             with(parametersString) {
-                append("assignedSpecialist=" + CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname == adHocFacilitySpecialistButton.text.toString() }[0].id)
+                var specialistId =  TypeTablesModel.getInstance().EmployeeList.filter { s -> s.FullName.equals(adHocFacilitySpecialistButton.text.toString()) }[0].NTLogin
+                append("assignedSpecialist=" + specialistId)
                 append("&")
             }
         } else {
@@ -306,25 +312,22 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             if (contractStatusTypeSpinner.selectedItemPosition>0){
                 append("contractStatus="+TypeTablesModel.getInstance().FacilityStatusType.filter { S->S.FacilityStatusName.equals(contractStatusTypeSpinner.selectedItem.toString())}[0].FacilityStatusID+"&")
             } else {
-                append("contractStatus=0&") // NO "ALL" AVAILABLE IN THE WEB SERVICE
+                append("contractStatus=&") // NO "ALL" AVAILABLE IN THE WEB SERVICE
             }
         }
 
-
         Log.v("requesting....", Constants.getFacilitiesWithFilters + parametersString)
+        Utility.showMessageDialog(activity,"TEST",parametersString.toString())
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
-
                         facilitiesList = Gson().fromJson(response, Array<CsiFacility>::class.java).toCollection(ArrayList())
-
                         if (facilitiesList.size == 0) {
                             noRecordsFoundTextView.visibility = View.VISIBLE
                         } else {
                             noRecordsFoundTextView.visibility = View.GONE
                         }
-
                         facilitiesListView.visibility = View.VISIBLE
                         var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
                         facilitiesListView.adapter = visitationPlanningAdapter
@@ -355,24 +358,12 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 //    }
 
     private fun loadSpecialistName() {
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread {
-                        specialistArrayModel = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                        if (specialistArrayModel != null && specialistArrayModel.size > 0) {
-                            requiredSpecialistName = specialistArrayModel[0].specialistname
-                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
-                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
-                            var reformattedName = firstName + " " + lastName
-                            adHocFacilitySpecialistButton.setText(reformattedName)
-                        }
-                        loadClubCodes()
-                    }
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading facilities")
-            Log.v("Loading error", "" + it.message)
-        }))
-
+            specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
+            if (specialistArrayModel != null && specialistArrayModel.size > 0) {
+                requiredSpecialistName = specialistArrayModel.filter { s->s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase())}[0].FullName
+                adHocFacilitySpecialistButton.setText(requiredSpecialistName)
+            }
+            loadClubCodes()
     }
 
     fun onButtonPressed(uri: Uri) {
@@ -471,6 +462,9 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                     var jsonObj = obj.getJSONObject("responseXml")
                     TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
+                    (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
+                        TypeTablesModel.getInstance().EmployeeList[it].FullName = TypeTablesModel.getInstance().EmployeeList[it].FirstName + " " + TypeTablesModel.getInstance().EmployeeList[it].LastName
+                    }
                     contractStatusList = TypeTablesModel.getInstance().FacilityStatusType
                     contractStatusArray.clear()
                     contractStatusArray.add("All")
@@ -482,7 +476,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     activity!!.runOnUiThread {
                         contractStatusTypeSpinner.adapter = coStatusAdapter
+//                        loadSpecialists()
+                        loadSpecialistName()
                     }
+
 
                 }
             }
@@ -1659,6 +1656,26 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelSigner")
         }
 
+
+        if (jsonObj.has("tblHours")) {
+            if (!jsonObj.get("tblHours").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblHours")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblHours"))
+                    jsonObj.put("tblHours", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblHours")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblHours")
+        }
+
         return jsonObj
     }
 
@@ -1947,6 +1964,9 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         } else if (key.equals("tblPersonnelSigner")) {
             var oneArray = TblPersonnelSigner()
             oneArray.PersonnelID = -1
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblHours")) {
+            var oneArray = TblHours()
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

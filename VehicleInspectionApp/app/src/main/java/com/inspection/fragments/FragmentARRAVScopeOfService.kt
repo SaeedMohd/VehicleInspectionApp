@@ -393,6 +393,7 @@ dataChanged=true
                 temp_numberOfLiftsEditText_ = numberOfLiftsEditText.text.toString()
                 temp_laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
                 temp_laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
+                warrantyPeriodVal.tag=0
                 for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
                     for (facWarranty in FacilityDataModel.getInstance().tblScopeofService) {
                         if (facWarranty.WarrantyTypeID == typeWarranty.WarrantyTypeID) {

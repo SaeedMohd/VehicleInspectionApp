@@ -44,6 +44,7 @@ class TblFacilities {
     var BillingMonth = 0
     var BillingAmount = 0
     var InsuranceExpDate = ""
+    var ContractTypeID = 0
 }
 
 class TblBusinessType {
