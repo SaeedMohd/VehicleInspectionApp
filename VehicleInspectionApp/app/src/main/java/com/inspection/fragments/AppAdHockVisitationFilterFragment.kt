@@ -317,7 +317,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         }
 
         Log.v("requesting....", Constants.getFacilitiesWithFilters + parametersString)
-        Utility.showMessageDialog(activity,"TEST",parametersString.toString())
+//        Utility.showMessageDialog(activity,"TEST",parametersString.toString())
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -331,6 +331,8 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                         facilitiesListView.visibility = View.VISIBLE
                         var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
                         facilitiesListView.adapter = visitationPlanningAdapter
+                        var totalFacilities= facilitiesList.size
+                        Utility.showMessageDialog(activity,"Filter Result"," " + totalFacilities + " Facilities Filtered ...")
                     }
                 }, Response.ErrorListener {
             recordsProgressView.visibility = View.INVISIBLE

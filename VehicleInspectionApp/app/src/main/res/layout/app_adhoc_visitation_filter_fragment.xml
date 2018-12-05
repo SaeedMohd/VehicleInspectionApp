@@ -93,6 +93,7 @@
                     android:background="@drawable/textview_background"
                     android:drawableRight="@drawable/downarrow"
                     android:focusable="false"
+                    android:textSize="12sp"
                     android:gravity="center"
                     android:hint="Select Specialist"
                     android:paddingRight="10dp" />
