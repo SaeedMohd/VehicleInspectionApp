@@ -483,11 +483,12 @@ class VisitationPlanningFragment : Fragment() {
                     //  activity!!.toast("success!!!")
                     //     recordsProgressView.visibility = View.INVISIBLE
 
-                    if (responseString.toString().contains("returnCode&gt;1&",false)) {
-                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message")+12,responseString.indexOf("&lt;/message")))
+                    if (responseString.toString().contains("returnCode>1<",false)) {
+                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message")+9,responseString.indexOf("</message")))
                     } else {
-                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                    var jsonObj = obj.getJSONObject("responseXml")
+//                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
+                        var jsonObj = obj.getJSONObject("responseXml")
 
 
                     visitationsModel = parseVisitationsData(jsonObj)
@@ -509,12 +510,13 @@ class VisitationPlanningFragment : Fragment() {
         } else {
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                     Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
+                        activity!!.runOnUiThread {
                             var responseString = response.toString()
-                            if (responseString.toString().contains("returnCode&gt;1&",false)) {
-                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message")+12,responseString.indexOf("&lt;/message")))
+                            if (responseString.toString().contains("returnCode>1<",false)) {
+                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message")+9,responseString.indexOf("</message")))
                             } else {
-                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                //                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                                var obj = XML.toJSONObject(response.substring(response.indexOf("<responseXml"), response.indexOf("<returnCode")))
                                 var jsonObj = obj.getJSONObject("responseXml")
                                 var visitationsModel = parseVisitationsData(jsonObj)
                                 recordsProgressView.visibility = View.GONE
@@ -522,7 +524,7 @@ class VisitationPlanningFragment : Fragment() {
                                 var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                                 visitationfacilityListView.adapter = visitationPlanningAdapter
                             }
-                        })
+                        }
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading visitation records")
                 Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Visitation records - " + it.message)
@@ -586,6 +588,7 @@ class VisitationPlanningFragment : Fragment() {
                         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
                             requiredSpecialistName = specialistArrayModel.filter { s->s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase())}[0].FullName
                             visitationSpecialistName.setText(requiredSpecialistName)
+                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s->s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase())}[0].NTLogin
                         }
                         loadClubCodes()
 //                    }
@@ -709,13 +712,14 @@ class VisitationPlanningFragment : Fragment() {
             override fun onResponse(call: Call?, response: okhttp3.Response?) {
 
                 var responseString = response!!.body()!!.string()
-                if (responseString.toString().contains("returnCode&gt;1&", false)) {
+                if (responseString.toString().contains("returnCode>1<", false)) {
                     activity!!.runOnUiThread {
-                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
+                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
                         recordsProgressView.visibility = View.GONE
                     }
                 } else {
-                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+//                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
                     var jsonObj = obj.getJSONObject("responseXml")
                     TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
                     (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
@@ -768,16 +772,16 @@ class VisitationPlanningFragment : Fragment() {
                 Log.v("GetFacilityData replied", "GetFacilityData replied")
                 var responseString = response!!.body()!!.string()
                 activity!!.runOnUiThread {
-                    Log.v("POPOOriginal", responseString)
                     recordsProgressView.visibility = View.GONE
                     if (!responseString.contains("FacID not found")) {
-                        if (responseString.toString().contains("returnCode&gt;1&", false)) {
-                            activity!!.runOnUiThread(Runnable {
-                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
-                            })
+                        if (responseString.toString().contains("returnCode>1<", false)) {
+                            activity!!.runOnUiThread {
+                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+                            }
                         } else {
-                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+//                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+//                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                             var jsonObj = obj.getJSONObject("responseXml")
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
@@ -785,9 +789,9 @@ class VisitationPlanningFragment : Fragment() {
                             startActivity(intent)
                         }
                     } else {
-                        activity!!.runOnUiThread(Runnable {
+                        activity!!.runOnUiThread {
                             Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
-                        })
+                        }
                     }
                 }
             }

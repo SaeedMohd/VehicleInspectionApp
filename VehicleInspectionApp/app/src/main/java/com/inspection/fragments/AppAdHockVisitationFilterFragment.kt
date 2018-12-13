@@ -87,20 +87,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         setFieldsListeners()
 
         recordsProgressView.visibility = View.VISIBLE
-//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
-//                Response.Listener { response ->
-//                    activity!!.runOnUiThread {
-//                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-//                        loadClubCodes()
-//                    }
-//                }, Response.ErrorListener {
-//            Log.v("error while loading", "error while loading facilities")
-//
-//            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Specialists - " + it.message)
-//            Log.v("Loading error", "" + it.message)
-//        }))
-
-
         firstLoading = false
     }
 
@@ -137,13 +123,13 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         }))
 
     }
+
     private fun setFieldsListeners() {
-        adHocFacilityNameButton.setOnClickListener(View.OnClickListener {
+        adHocFacilityNameButton.setOnClickListener {
             recordsProgressView.visibility = View.VISIBLE
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                     Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
-
+                        activity!!.runOnUiThread {
                             recordsProgressView.visibility = View.INVISIBLE
                             var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                             var facilityNames = ArrayList<String>()
@@ -161,15 +147,14 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                     adHocFacilityNameButton.setText(searchDialog.selectedString)
                                 }
                             }
-                        })
+                        }
                     }, Response.ErrorListener {
-                //                context!!.toast("Connection Error")
                 Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
                 recordsProgressView.visibility = View.INVISIBLE
                 Log.v("error while loading", "error while loading facilities")
                 Log.v("Loading error", "" + it.message)
             }))
-        })
+        }
 
 
         adHocFacilitySpecialistButton.setOnClickListener {
@@ -178,38 +163,16 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             if (clubCodeEditText.text.isNotEmpty() && false) {
                 var specialistIds = StringBuilder()
                 (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
-                    //                personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].LastName + " " + TypeTablesModel.getInstance().EmployeeList[it].FirstName)
                     personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].FullName)
                 }
-
                 var specialistIdsString = specialistIds.trim().removeSuffix(",").toString()
-
                 Log.v("requesting........****", Constants.getSpecialistIdsForClubCode + "specialistIds=" + specialistIdsString + "&clubCode=" + clubCodeEditText.text.toString())
-
-//                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistIdsForClubCode + "specialistIds=" + URLEncoder.encode(specialistIdsString, "UTF-8") + "&clubCode=" + clubCodeEditText.text.toString(),
-//                        Response.Listener { response ->
-//                            activity!!.runOnUiThread(Runnable {
-//                                Log.v("responsingg******.....", response)
-//
-//                            })
-//                        }, Response.ErrorListener {
-//                    //                    Log.v("error while loading", "error while loading facilities")
-//                    Log.v("Loading error", "" + it.message)
-//                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Specialists Names' - " + it.message)
-//                }))
-//
-////                if (CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].clubcode == clubCodeEditText.text.toString()) {
-////
-////                    personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
-////                }
-
             } else {
                 (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
                     personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].FullName)
                 }
             }
 
-            Log.v("peronnel size......", "" + personnelNames.size)
             personnelNames.sort()
             personnelNames.add(0, "Any")
             var searchDialog = SearchDialog(context, personnelNames)
@@ -304,11 +267,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
 
         with(parametersString) {
-//            if (contractStatusActiveRadioButton.isChecked) {
-//                append("contractStatus=1&")
-//            } else {
-//                append("contractStatus=0&")
-//            }
             if (contractStatusTypeSpinner.selectedItemPosition>0){
                 append("contractStatus="+TypeTablesModel.getInstance().FacilityStatusType.filter { S->S.FacilityStatusName.equals(contractStatusTypeSpinner.selectedItem.toString())}[0].FacilityStatusID+"&")
             } else {
@@ -317,7 +275,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         }
 
         Log.v("requesting....", Constants.getFacilitiesWithFilters + parametersString)
-//        Utility.showMessageDialog(activity,"TEST",parametersString.toString())
+
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -336,34 +294,17 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     }
                 }, Response.ErrorListener {
             recordsProgressView.visibility = View.INVISIBLE
-//            context!!.toast("Error while loading facilities")
             Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities List - " + it.message)
             Log.v("error while loading", "error while loading visitation records")
         }))
     }
-//
-//    fun loadSpecialistName() {
-//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-//                Response.Listener { response ->
-//                    activity!!.runOnUiThread(Runnable {
-//
-//                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-//                        if (specialistName != null && specialistName.size > 0) {
-//                            requiredSpecialistName = specialistName[0].specialistname
-//                            facilityDbaButton.setText(requiredSpecialistName)
-//                        }
-//                    })
-//                }, Response.ErrorListener {
-//            Log.v("error while loading", "error while loading facilities")
-//            Log.v("Loading error", "" + it.message)
-//        }))
-//    }
 
     private fun loadSpecialistName() {
             specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
             if (specialistArrayModel != null && specialistArrayModel.size > 0) {
                 requiredSpecialistName = specialistArrayModel.filter { s->s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase())}[0].FullName
                 adHocFacilitySpecialistButton.setText(requiredSpecialistName)
+                ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s->s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase())}[0].NTLogin
             }
             loadClubCodes()
     }
@@ -376,16 +317,11 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            mListener = context
-//        } else {
-//            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
-//        }
     }
 
     override fun onDetach() {
         super.onDetach()
-//        mListener = null
+
     }
 
     inner class AdhocAdapter : BaseAdapter {
@@ -415,7 +351,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].facnum
             vh.adHocClubCodeValueTextView?.text = facilitiesArrayList[position].clubcode
             vh.loadFacilityButton!!.setOnClickListener {
-                Log.v("required facility number", facilitiesArrayList[position].facnum + " " + facilitiesArrayList[position].clubcode)
                 getFullFacilityDataFromAAA(facilitiesArrayList[position].facnum.toInt(), facilitiesArrayList[position].clubcode)
             }
             return view
@@ -445,23 +380,22 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {
                 Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
-                activity!!.runOnUiThread(Runnable {
-                    //                    context!!.toast("Connection Error. Please check internet connection")
+                activity!!.runOnUiThread {
                     Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facility Data - " + e.message)
-                })
+                }
             }
 
             override fun onResponse(call: Call?, response: okhttp3.Response?) {
 
                 var responseString = response!!.body()!!.string()
-                Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
-                if (responseString.toString().contains("returnCode&gt;1&", false)) {
-                    activity!!.runOnUiThread(Runnable {
-                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
+                Log.v("getTypeTables retrieved", "GetTYpeTables retrieved")
+                if (responseString.toString().contains("returnCode>1<", false)) {
+                    activity!!.runOnUiThread {
+                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
                         recordsProgressView.visibility = View.GONE
-                    })
+                    }
                 } else {
-                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
+                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
                     var jsonObj = obj.getJSONObject("responseXml")
                     TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
                     (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
@@ -478,113 +412,58 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     activity!!.runOnUiThread {
                         contractStatusTypeSpinner.adapter = coStatusAdapter
-//                        loadSpecialists()
                         loadSpecialistName()
                     }
-
-
                 }
             }
         })
     }
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String) {
-
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(40, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
         var client = clientBuilder.build()
-        var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, clubCode)).build()
         this.clubCode = clubCode
-
-
         recordsProgressView.visibility = View.VISIBLE
-//        client.newCall(request).enqueue(object : Callback {
-//            override fun onFailure(call: Call?, e: IOException?) {
-//                Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
-//                activity!!.runOnUiThread(Runnable {
-////                    context!!.toast("Connection Error. Please check internet connection")
-//                    Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Facility Data - " + e.message)
-//                })
-//            }
-//
-//            override fun onResponse(call: Call?, response: okhttp3.Response?) {
-//
-//                var responseString = response!!.body()!!.string()
-//                Log.v("getTypeTables retrieved", "GetTupeTables retrieved")
-//                if (responseString.toString().contains("returnCode&gt;1&",false)) {
-//                    activity!!.runOnUiThread(Runnable {
-//                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
-//                        recordsProgressView.visibility = View.GONE
-//                    })
-//                } else {
-//                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-//                    var jsonObj = obj.getJSONObject("responseXml")
-//                    TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
-//
-//                    Log.v("requesting=========>", request2.url().toString());
-//                    Log.v("time out valueeeeee", "" + client.connectTimeoutMillis() / 1000)
-//                    Log.v("read time out valuee", "" + client.readTimeoutMillis() / 1000)
-
         client.newCall(request2).enqueue(object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {
-                activity!!.runOnUiThread(Runnable {
-                    Log.v("******eerrrrrror", "" + e!!.message)
-                    activity!!.runOnUiThread(Runnable {
-                        Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e.message)
-                        recordsProgressView.visibility = View.GONE
-                    })
-//                            context!!.toast("")
-                })
+                activity!!.runOnUiThread {
+                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e?.message)
+                    recordsProgressView.visibility = View.GONE
+                }
             }
 
             override fun onResponse(call: Call?, response: okhttp3.Response?) {
-                Log.v("GetFacilityData replied", "GetFacilityData replied")
                 var responseString = response!!.body()!!.string()
-                activity!!.runOnUiThread(Runnable {
-                    Log.v("POPOOriginal", responseString)
+                activity!!.runOnUiThread {
                     recordsProgressView.visibility = View.GONE
                     if (!responseString.contains("FacID not found")) {
                         if (responseString.toString().contains("returnCode&gt;1&", false)) {
-                            activity!!.runOnUiThread(Runnable {
+                            activity!!.runOnUiThread {
                                 Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
-                            })
-
+                            }
                         } else {
                             var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
                                     .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                             var jsonObj = obj.getJSONObject("responseXml")
-
                             jsonObj = removeEmptyJsonTags(jsonObj)
-
                             parseFacilityDataJsonToObject(jsonObj)
-
                             if (FacilityDataModel.getInstance().tblVisitationTracking.size == 0) {
                                 FacilityDataModel.getInstance().tblVisitationTracking.add(TblVisitationTracking())
                             }
                             FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = VisitationTypes.AdHoc
-
-
                             var intent = Intent(context, com.inspection.FormsActivity::class.java)
-//                                                var intent = Intent(context, com.inspection.fragments.ItemListActivity::class.java)
                             startActivity(intent)
                         }
                     } else {
-                        activity!!.runOnUiThread(Runnable {
+                        activity!!.runOnUiThread {
                             Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
-                        })
+                        }
                     }
-                })
+                }
             }
-
-
         })
-
     }
-//}
-
-        //})
-  //  }
-
 
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
         FacilityDataModel.getInstance().clear()
@@ -1060,8 +939,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
-//        IndicatorsDataModel.getInstance().validateAllScreensVisited()
-
     }
 
     fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {

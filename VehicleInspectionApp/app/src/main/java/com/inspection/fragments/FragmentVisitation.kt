@@ -44,12 +44,12 @@ import com.inspection.model.*
  * create an instance of this fragment.
  */
 class FragmentVisitation : Fragment() {
-    var specialistWatcher=""
+//    var specialistWatcher=""
 
     var isFacilityRepresentativeSignatureInitialized = false
     var isAutomotiveSpecialistSignatureInitialized = false
-    var isWaiverSignatureInitialized = false
-    var isFacilityRepresentativeDeficiencySignatureInitialized = false
+//    var isWaiverSignatureInitialized = false
+//    var isFacilityRepresentativeDeficiencySignatureInitialized = false
 
     var facilityRepresentativeNames = ArrayList<String>()
     var facilitySpecialistNames = ArrayList<String>()
@@ -363,20 +363,6 @@ class FragmentVisitation : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
-//                if (p2 == 0){
-//                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName =""
-//
-//                }else if (p2 > 0) {
-//                    if(isFacilityRepresentativeSignatureInitialized){
-//                        isFacilityRepresentativeSignatureInitialized = false
-//                    }else {
-//                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilityRepresentativeNames[p2]
-//                        facilityRepresentativeSignatureImageView.setImageBitmap(null)
-//                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
-//                    }
-//                }
-
                 if (p2>0) {
                     if (isFacilityRepresentativeSignatureInitialized) {
                         isFacilityRepresentativeSignatureInitialized = false
@@ -401,16 +387,10 @@ class FragmentVisitation : Fragment() {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
-
-
-                Log.v("dataHandle9",automotiveSpecialistSpinner.selectedItemPosition.toString() + "====" + p2.toString())
-
-
                 if (p2>0) {
                     if (isAutomotiveSpecialistSignatureInitialized) {
                         isAutomotiveSpecialistSignatureInitialized = false
                     } else {
-                        //FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }[p2]
                         FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilitySpecialistNames[p2]
                         FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature= null
                         automotiveSpecialistSignatureImageView.setImageBitmap(null)
@@ -424,12 +404,6 @@ class FragmentVisitation : Fragment() {
             }
 
         }
-//      UpdateVisitationTrackingData(string facNum, string clubCode, string visitationId, string performedBy, string datePerformed, string dateReceived, string insertBy, string insertDate, string updateBy
-//            , string updateDate)
-
-//        UpdateVisitationDetailsData
-//        getUpdateVisitationDetailsDataString(string facNum, string clubCode, string staffTraining, string qualityControl, string aarSigns, string certificateOfApproval,
-//                string memberBenefitPoster, string insertBy, string insertDate, string updateBy, string updateDate)
 
 
         facilityRepresentativeSignatureButton.setOnClickListener {
@@ -811,8 +785,9 @@ class FragmentVisitation : Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         Log.v("VT RESPONSE ||| ",response.toString())
-                        if (response.toString().contains("returnCode&gt;0&",false)) {
-                            visitationID = response.toString().substring(response.toString().indexOf(";visitationID")+17,response.toString().indexOf("&lt;/visitationID")).toInt()
+                        if (response.toString().contains("returnCode>0<",false)) {
+                            visitationID = response.toString().substring(response.toString().indexOf("<visitationID")+14,response.toString().indexOf("" +
+                                    "</visitationID")).toInt()
                             dialogMsg = "New Visitation with ID (${visitationID}) created succesfully"
                             (activity as FormsActivity).saveRequired = false
                             urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate
@@ -820,13 +795,13 @@ class FragmentVisitation : Fragment() {
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             Log.v("VT RESPONSE ||| ",response.toString())
-                                            if (response.toString().contains("returnCode&gt;0&",false)) {
+                                            if (response.toString().contains("returnCode>0<",false)) {
                                                 Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
                                                 (activity as FormsActivity).saveRequired = false
                                             } else {
                                             dialogueLoadingView.visibility = View.GONE
                                             progressBarTextVal.text = "Loading ..."
-                                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                             Utility.showSubmitAlertDialog(activity,false,dialogMsg + " ..... Visitation Details (Error: "+ errorMessage+" )")
                                             }
                                         }
@@ -840,7 +815,7 @@ class FragmentVisitation : Fragment() {
                         } else {
                             dialogueLoadingView.visibility = View.GONE
                             progressBarTextVal.text = "Loading ..."
-                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity,false,"Visitation Tracking (Error: "+ errorMessage+" )")
                         }
                     }
@@ -861,38 +836,27 @@ class FragmentVisitation : Fragment() {
     }
 
     fun emailValidation() {
-        if (emailPdfCheckBox.isChecked == true) {
 
-            emailEditText.isEnabled = true
-        } else emailEditText.isEnabled = false
+        emailEditText.isEnabled = emailPdfCheckBox.isChecked
 
-        emailPdfCheckBox.setOnClickListener(View.OnClickListener {
-            if (emailPdfCheckBox.isChecked == true) {
-
-                emailEditText.isEnabled = true
-            } else emailEditText.isEnabled = false
-        })
+        emailPdfCheckBox.setOnClickListener {
+            emailEditText.isEnabled = emailPdfCheckBox.isChecked
+//            if (emailPdfCheckBox.isChecked) {
+//                emailEditText.isEnabled = true
+//            } else emailEditText.isEnabled = false
+        }
 
     }
 
     fun waiverValidation() {
-        if (waiveVisitationCheckBox.isChecked == true) {
 
-            waiverCommentsEditText.isEnabled = true
-            waiverConditionedEnablingLayout.isEnabled = true
-        } else
-            waiverCommentsEditText.isEnabled = false
-        waiverConditionedEnablingLayout.isEnabled = false
+        waiverCommentsEditText.isEnabled = waiveVisitationCheckBox.isChecked
+        waiverConditionedEnablingLayout.isEnabled = waiveVisitationCheckBox.isChecked
 
-        waiveVisitationCheckBox.setOnClickListener(View.OnClickListener {
-            if (waiveVisitationCheckBox.isChecked == true) {
-
-                waiverCommentsEditText.isEnabled = true
-                waiverConditionedEnablingLayout.isEnabled = true
-            } else
-                waiverCommentsEditText.isEnabled = false
-            waiverConditionedEnablingLayout.isEnabled = false
-        })
+        waiveVisitationCheckBox.setOnClickListener {
+            waiverCommentsEditText.isEnabled = waiveVisitationCheckBox.isChecked
+            waiverConditionedEnablingLayout.isEnabled = waiveVisitationCheckBox.isChecked
+        }
 
     }
 
@@ -996,86 +960,68 @@ class FragmentVisitation : Fragment() {
 
         if (adhocVisitationType.isChecked) {
             if (visitationReasonDropListId.selectedItem.toString() == visitationReasonDropListId.setSelection(0).toString()) {
-
                 isInputValid = false
                 Utility.showValidationAlertDialog(activity,"Please select visitation reason")
-//                Toast.makeText(context, "please select a visitation reason", Toast.LENGTH_LONG).show()
-
             }
 
-        } else
+        } else {
 
             if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature") {
-
                 isInputValid = false
                 facilityRepresentativeSignatureButton.setError("Required field")
+            }
+            if (facilityRepresentativesSpinner.selectedItem.toString().contains("please")) {
+                isInputValid = false
+
+                facilityRepresentativeTextView.setError("Required Field")
+            }
+
+            if (automotiveSpecialistSignatureButton.text.toString() == "Add Signature") {
+
+                isInputValid = false
+                automotiveSpecialistSignatureButton.setError("Required field")
 
             }
 
-//        if (facilityRepresentativeSignatureBitmap==null) {
-//            isInputValid = false
-//            facilityRepresentativeSignatureButton.setError("Required Field")
-//        }
+            if (emailPdfCheckBox.isChecked) {
 
-        if (facilityRepresentativesSpinner.selectedItem.toString().contains("please")) {
-            isInputValid = false
-
-            facilityRepresentativeTextView.setError("Required Field")
-        }
-
-        if (automotiveSpecialistSignatureButton.text.toString() == "Add Signature") {
-
-            isInputValid = false
-            automotiveSpecialistSignatureButton.setError("Required field")
-
-        }
-
-//        if (automotiveSpecialistSignatureBitmap==null) {
-//            isInputValid = false
-//            automotiveSpecialistSignatureButton.setError("Required Field")
-//        }
-        if (emailPdfCheckBox.isChecked == true) {
-
-            if (emailEditText.text.toString().isNullOrEmpty()) {
-
-                isInputValid = false
-                emailEditText.setError("required field")
-            }
-
-
-        } else {
-            emailEditText.setError(null)
-        }
-
-        if (waiveVisitationCheckBox.isChecked == true) {
-
-            if (waiverCommentsEditText.text.toString().isNullOrEmpty() || waiversSignatureButton.text.toString().isNullOrEmpty()) {
-
-                isInputValid = false
-                waiverCommentsEditText.setError("required field")
-                waiversSignatureButton.setError("required field")
-            }
-
-        } else {
-            waiverCommentsEditText.setError(null)
-            waiversSignatureButton.setError(null)
-        }
-
-
-        if (emailPdfCheckBox.isChecked == true) {
-            if (!emailFormatValidation(emailEditText.text.toString())) {
-                isInputValid = false
-                emailEditText.setError("please type your email correctly")
-
-
+                if (emailEditText.text.toString().isNullOrEmpty()) {
+                    isInputValid = false
+                    emailEditText.setError("required field")
+                }
             } else {
                 emailEditText.setError(null)
             }
-        } else {
-            emailEditText.setError(null)
+
+            if (waiveVisitationCheckBox.isChecked) {
+
+                if (waiverCommentsEditText.text.toString().isNullOrEmpty() || waiversSignatureButton.text.toString().isNullOrEmpty()) {
+
+                    isInputValid = false
+                    waiverCommentsEditText.setError("required field")
+                    waiversSignatureButton.setError("required field")
+                }
+
+            } else {
+                waiverCommentsEditText.setError(null)
+                waiversSignatureButton.setError(null)
+            }
+
+
+            if (emailPdfCheckBox.isChecked) {
+                if (!emailFormatValidation(emailEditText.text.toString())) {
+                    isInputValid = false
+                    emailEditText.setError("please type your email correctly")
+
+
+                } else {
+                    emailEditText.setError(null)
+                }
+            } else {
+                emailEditText.setError(null)
+            }
+
         }
-
-
 
 
         return isInputValid
@@ -1083,7 +1029,7 @@ class FragmentVisitation : Fragment() {
 
     fun handleCancelButtonClick() {
 
-        cancelButton.setOnClickListener({
+        cancelButton.setOnClickListener {
 
 
             val alertDialogBuilder = AlertDialog.Builder(
@@ -1112,178 +1058,10 @@ class FragmentVisitation : Fragment() {
 
             // show it
             alertDialog.show()
-        })
+        }
     }
-    fun fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService(){
-
-        FragmentARRAVScopeOfService.dataChanged =false
-
-        FragmentARRAVScopeOfService.fixedLaborRate = if (FragmentARRAVScopeOfService.watcher_FixedLaborRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate else FragmentARRAVScopeOfService.watcher_FixedLaborRate
-        FragmentARRAVScopeOfService.diagnosticLaborRate =  if (FragmentARRAVScopeOfService.watcher_DiagnosticsRate.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate else FragmentARRAVScopeOfService.watcher_DiagnosticsRate
-        FragmentARRAVScopeOfService.laborRateMatrixMax =  if (FragmentARRAVScopeOfService.watcher_LaborMax.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMax else FragmentARRAVScopeOfService.watcher_LaborMax
-        FragmentARRAVScopeOfService.laborRateMatrixMin =  if (FragmentARRAVScopeOfService.watcher_LaborMin.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].LaborMin else FragmentARRAVScopeOfService.watcher_LaborMin
-        FragmentARRAVScopeOfService.numberOfBaysEditText_ =  if (FragmentARRAVScopeOfService.watcher_NumOfBays.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays else FragmentARRAVScopeOfService.watcher_NumOfBays
-        FragmentARRAVScopeOfService.numberOfLiftsEditText_ =  if (FragmentARRAVScopeOfService.watcher_NumOfLifts.isNullOrBlank()) FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts else FragmentARRAVScopeOfService.watcher_NumOfLifts
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!= FragmentARRAVScopeOfService.laborRateMatrixMax){
-
-            Log.v("compare111", laborRateMatrixMax  +  "  ===>"  +  FacilityDataModel.getInstance().tblScopeofService[0].LaborMax)
-
-            FragmentARRAVScopeOfService.dataChanged =true
-        }
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!= FragmentARRAVScopeOfService.laborRateMatrixMin){
-
-            FragmentARRAVScopeOfService.dataChanged =true
-        }
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!= FragmentARRAVScopeOfService.fixedLaborRate){
-
-            Log.v("compare222", fixedLaborRate  +  "  ===>"  +  FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate)
-
-            FragmentARRAVScopeOfService.dataChanged =true
-        }
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!= FragmentARRAVScopeOfService.diagnosticLaborRate){
-
-
-            FragmentARRAVScopeOfService.dataChanged =true
-        }
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!= FragmentARRAVScopeOfService.numberOfBaysEditText_){
-
-
-            FragmentARRAVScopeOfService.dataChanged =true
-        }
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!= FragmentARRAVScopeOfService.numberOfLiftsEditText_){
-
-
-            FragmentARRAVScopeOfService.dataChanged =true
-        }
-
-    }
-
-    fun scopeOfServiceChangesWatcher() {
-
-//        if (!FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments) {
-//
-//            if (FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest) {
-//
-//                if (FragmentARRAVScopeOfService.dataChanged) {
-//
-//                    val builder = AlertDialog.Builder(context)
-//
-//                    // Set the alert dialog title
-//                    builder.setTitle("Changes made confirmation")
-//
-//                    // Display a message on alert dialog
-//                    builder.setMessage("You've Just Changed Data in General Information Page, Do you want to keep those changes?")
-//
-//                    // Set a positive button and its click listener on alert dialog
-//                    builder.setPositiveButton("YES") { dialog, which ->
-//
-//                        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-//
-//
-//
-//                        Volley.newRequestQueue(context!!).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=004&laborRateId=1&fixedLaborRate=${FragmentARRAVScopeOfService.fixedLaborRate}&laborMin=${FragmentARRAVScopeOfService.laborRateMatrixMin}&laborMax=${FragmentARRAVScopeOfService.laborRateMatrixMax}&diagnosticRate=${FragmentARRAVScopeOfService.diagnosticLaborRate}&numOfBays=${FragmentARRAVScopeOfService.numberOfBaysEditText_}&numOfLifts=${FragmentARRAVScopeOfService.numberOfLiftsEditText_}&warrantyTypeId=3&active=1&insertBy=sa&insertDate=2013-04-24T13:40:15.773&updateBy=SumA&updateDate=2015-04-24T13:40:15.773",
-//                                Response.Listener { response ->
-//                                    activity!!.runOnUiThread(Runnable {
-//                                        Log.v("RESPONSE", response.toString())
-//                                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-//
-//                                        if (response.toString().contains("returnCode&gt;0&",false)) {
-//                                            Utility.showSubmitAlertDialog(activity, true, "Visitation")
-//                                            if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-//                                                FacilityDataModel.getInstance().tblScopeofService[0].apply {
-//
-//                                                    LaborMax = if (FragmentARRAVScopeOfService.laborRateMatrixMax.isNullOrBlank()) LaborMax else FragmentARRAVScopeOfService.laborRateMatrixMax
-//                                                    LaborMin = if (FragmentARRAVScopeOfService.laborRateMatrixMin.isNullOrBlank()) LaborMin else FragmentARRAVScopeOfService.laborRateMatrixMin
-//                                                    FixedLaborRate = if (FragmentARRAVScopeOfService.fixedLaborRate.isNullOrBlank()) FixedLaborRate else FragmentARRAVScopeOfService.fixedLaborRate
-//                                                    DiagnosticsRate = if (FragmentARRAVScopeOfService.diagnosticLaborRate.isNullOrBlank()) DiagnosticsRate else FragmentARRAVScopeOfService.diagnosticLaborRate
-//                                                    NumOfBays = if (FragmentARRAVScopeOfService.numberOfBaysEditText_.isNullOrBlank()) NumOfBays else FragmentARRAVScopeOfService.numberOfBaysEditText_
-//                                                    NumOfLifts = if (FragmentARRAVScopeOfService.numberOfLiftsEditText_.isNullOrBlank()) NumOfLifts else FragmentARRAVScopeOfService.numberOfLiftsEditText_
-//                                                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = FragmentARRAVScopeOfService.typeIdCompare
-//                                                    FragmentARRAVScopeOfService.dataChanged = false
-//                                                    FragmentARRAVScopeOfService().checkMarkChangeWasDoneForScopeOfServiceGeneralInfo()
-//                                                    dataChangeHandling()
-//                                                }
-//                                            }
-//                                        } else {
-//                                            Utility.showSubmitAlertDialog(activity,false,"Visitation")
-//                                        }
-//
-//                                    })
-//                                }, Response.ErrorListener {
-//                            Log.v("error while loading", "error while loading personnal record")
-//                            Utility.showSubmitAlertDialog(activity,false,"Visitation")
-//                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-//
-//
-//                        }))
-//
-//
-//                    }
-//
-//
-//                    // Display a negative button on alert dialog
-//                    builder.setNegativeButton("No") { dialog, which ->
-//                        FragmentARRAVScopeOfService.dataChanged = false
-//                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-//
-//                    }
-//
-//
-//                    // Finally, make the alert dialog using builder
-//                    val dialog: AlertDialog = builder.create()
-//                    dialog.setCanceledOnTouchOutside(false)
-//                    // Display the alert dialog on app interface
-//                    dialog.show()
-//
-//                }
-//
-//            } else {
-//
-//
-//                val builder = AlertDialog.Builder(context)
-//
-//                // Set the alert dialog title
-//                builder.setTitle("Changes made Warning")
-//
-//                // Display a message on alert dialog
-//                builder.setMessage("We can't save Data changed in General Information Scope Of Service Page, due to blank required fields found")
-//
-//                // Set a positive button and its click listener on alert dialog
-//                builder.setPositiveButton("Ok") { dialog, which ->
-//
-//                    FragmentARRAVScopeOfService.dataChanged = false
-//
-//                    FragmentARRAVScopeOfService.validationProblemFoundForOtherFragments = true
-//
-//                }
-//
-//
-//                val dialog: AlertDialog = builder.create()
-//                dialog.setCanceledOnTouchOutside(false)
-//                dialog.show()
-//
-//            }
-//
-//        }
-
-
-    }
-
 }
 
-
-//FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName = CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }[p2]
 
 
 

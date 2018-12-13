@@ -62,28 +62,23 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
 
-        exitRSPDialogeBtnId.setOnClickListener({
-
+        exitRSPDialogeBtnId.setOnClickListener {
             fillPortalTrackingTableView()
             altLocationTableRow(2)
             Add_AAR_PortalTrackingEntryCard.visibility=View.GONE
             alphaBackgroundForRSPDialogs.visibility = View.GONE
             (activity as FormsActivity).overrideBackButton = false
+        }
 
-        })
-
-        edit_exitRSPDialogeBtnId.setOnClickListener({
-
+        edit_exitRSPDialogeBtnId.setOnClickListener {
             fillPortalTrackingTableView()
             altLocationTableRow(2)
             edit_AAR_PortalTrackingEntryCard.visibility=View.GONE
             alphaBackgroundForRSPDialogs.visibility = View.GONE
             (activity as FormsActivity).overrideBackButton = false
-
-        })
+        }
 
         addNewAarButton.setOnClickListener {
-
             numberOfCardsReaderEditText.setText("")
             numberOfUnacknowledgedRecordsEditText.setText("")
             numberOfInProgressTwoIns.setText("")
@@ -92,8 +87,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             endDateButton.setText("SELECT DATE")
             addendumSignedDateButton.setText("SELECT DATE")
             inspectionDateButton.setText("SELECT DATE")
-
-
             numberOfCardsReaderEditText.setError(null)
             numberOfUnacknowledgedRecordsEditText.setError(null)
             numberOfInProgressTwoIns.setError(null)
@@ -120,13 +113,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     var tv : TextView= row.getChildAt(j) as TextView
                     tv.isEnabled=false
                 }
-
             }
-
-
-
         }
-
 
         startDateButton.setOnClickListener {
             val c = Calendar.getInstance()
@@ -268,29 +256,20 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         "&TrackingID=0&PortalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                if (response.toString().contains("returnCode>0<",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "RSP")
-                    //                                    if (FacilityDataModel.getInstance().tblAARPortalAdmin.size==1 && FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders.equals("-1")){
-                    //                                        FacilityDataModel.getInstance().tblAARPortalAdmin.removeAt(0)
-                    //                                        FacilityDataModelOrg.getInstance().tblAARPortalAdmin.removeAt(0)
-                    //                                    }
-                                    portalTrackingEntry.TrackingID= response.toString().substring(response.toString().indexOf(";TrackingID")+15,response.toString().indexOf("&lt;/TrackingID"))
+                                    portalTrackingEntry.TrackingID= response.toString().substring(response.toString().indexOf("<TrackingID")+12,response.toString().indexOf("</TrackingID"))
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate=portalAdminEntry.endDate
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate=portalAdminEntry.startDate
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders=portalAdminEntry.CardReaders
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned=portalAdminEntry.AddendumSigned
                                     FacilityDataModel.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
-//                                    FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
                                     fillPortalTrackingTableView()
                                     altLocationTableRow(2)
                                     HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
                                     HasChangedModel.getInstance().changeDoneForFacilityRSP()
-//                                    IndicatorsDataModel.getInstance().validateFacilityRSPVisited()
-//                                    if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
-//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
-
-                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                     Utility.showSubmitAlertDialog(activity,false,"RSP (Error: "+ errorMessage+" )")
                                 }
                                 RSP_LoadingView.visibility = View.GONE
@@ -301,7 +280,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                             }
                         }, Response.ErrorListener {
                     Utility.showSubmitAlertDialog(activity, false, "RSP (Error: "+it.message+" )")
-
                     RSP_LoadingView.visibility = View.GONE
                     rspLoadingText.text = "Loading ..."
                     alphaBackgroundForRSPDialogs.visibility = View.GONE
@@ -326,24 +304,9 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     }
 
-    fun fillData(){
-        FacilityDataModel.getInstance().tblAARPortalAdmin[0].apply {
-            // startDateButton.text = startDate
-//            endDateButton.text = PortalInspectionDate
-            //   addendumSignedDateButton.text = AddendumSigned
-            //   numberOfCardsReaderEditText.setText(CardReaders)
-//            inspectionDateButton.text = PortalInspectionDate
-//            numberOfUnacknowledgedRecordsEditText.setText(NumberUnacknowledgedTows)
-//            numberOfInProgressTwoIns.setText(InProgressTows)
-//            numberOfInProgressWalkIns.setText(InProgressWalkIns)
-
-        }
-    }
-
-
     fun validateInputs() : Boolean {
 
-        var portalValide= TblAARPortalAdmin().isInputsValid
+        var portalValide: Boolean
         portalValide = true
 
         startDateButton.setError(null)
@@ -461,8 +424,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
     fun fillPortalTrackingTableView(){
 
         mainViewLinearId.isEnabled=true
-
-        //val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
@@ -594,21 +555,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         } catch (e: Exception) {
 
                         }
-
                         edit_numberOfCardsReaderEditText.setText(FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders)
-
-                        if (textView1.text.toString().contains("true")) {
-
-                            edit_loggedIntoRspButton.isChecked = true
-                        } else {
-                            edit_loggedIntoRspButton.isChecked = false
-
-                        }
-
-
-
-
-
+                        edit_loggedIntoRspButton.isChecked = textView1.text.toString().contains("true")
                         edit_numberOfCardsReaderEditText.setError(null)
                         edit_numberOfUnacknowledgedRecordsEditText.setError(null)
                         edit_numberOfInProgressTwoIns.setError(null)
@@ -616,34 +564,11 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         edit_startDateButton.setError(null)
                         edit_addendumSignedDateButton.setError(null)
                         edit_inspectionDateButton.setError(null)
-
                         edit_AAR_PortalTrackingEntryCard.visibility = View.VISIBLE
                         alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
                         (activity as FormsActivity).overrideBackButton = true
-
-
-
-            //                        for (i in 0 until mainViewLinearId.childCount) {
-            //                            val child = mainViewLinearId.getChildAt(i)
-            //                            child.isEnabled = false
-            //                        }
-            //
-            //                        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
-            //
-            //                        for (i in 1..childViewCount - 1) {
-            //                            var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
-            //
-            //                            for (j in 0..row.getChildCount() - 1) {
-            //
-            //                                var tv: TextView = row.getChildAt(j) as TextView
-            //                                tv.isEnabled = false
-            //
-            //                            }
-            //
-            //                        }
-
-
                     }
+
                     edit_submitNewAAR_PortalTracking.setOnClickListener {
                         if (validateInputsForUpdate()) {
                             rspLoadingText.text = "Saving ..."
@@ -664,7 +589,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     "&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
-                                            if (response.toString().contains("returnCode&gt;0&", false)) {
+                                            if (response.toString().contains("returnCode>0<", false)) {
                                                 Utility.showSubmitAlertDialog(activity, true, "RSP")
                                                 FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = edit_startDateButton.text.toString()
                                                 FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate= endDate
@@ -675,15 +600,11 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                                 FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
                                                 FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
                                                 FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = edit_addendumSignedDateButton.text.toString()
-//                                                FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate.apiToAppFormatMMDDYYYY()})
                                                 fillPortalTrackingTableView()
                                                 altLocationTableRow(2)
                                                 HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
-//                                                IndicatorsDataModel.getInstance().validateFacilityRSPVisited()
-//                                                if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited) (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#A42600"))
-//                                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                             } else {
-                                                var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                                 Utility.showSubmitAlertDialog(activity,false,"RSP (Error: "+ errorMessage+" )")
                                             }
                                             RSP_LoadingView.visibility = View.GONE
@@ -703,14 +624,11 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                             }))
 
                         } else
-//                            Toast.makeText(context, "please fill all required field", Toast.LENGTH_SHORT).show()
                             Utility.showValidationAlertDialog(activity,"Please fill all required fields")
 
                     }
 
                     aarPortalTrackingTableLayout.addView(tableRow)
-                    // Toast.makeText(context,indexToRemove.toString(),Toast.LENGTH_SHORT).show()
-
                 }
             }
         }
@@ -725,11 +643,11 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
-                row.setBackground(getResources().getDrawable(
-                        R.drawable.alt_row_color));
+                row.background = getResources().getDrawable(
+                        R.drawable.alt_row_color);
             } else {
-                row.setBackground(getResources().getDrawable(
-                        R.drawable.row_color));
+                row.background = getResources().getDrawable(
+                        R.drawable.row_color);
             }
 
 
