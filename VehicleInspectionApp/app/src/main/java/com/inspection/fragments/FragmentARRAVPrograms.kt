@@ -183,16 +183,11 @@ class FragmentARRAVPrograms : Fragment() {
 
 
         submitNewProgramButton.setOnClickListener {
-
             if (validateInputs()) {
-
                 var validProgram = true
                 var valid_validProgram = false
-
-
                 for (fac in TypeTablesModel.getInstance().ProgramsType) {
                     if (program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName)) {
-                        //   Toast.makeText(context,"spinner match",Toast.LENGTH_SHORT).show()
                         for (item1 in FacilityDataModel.getInstance().tblPrograms)
                             if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
                                 val dateFormat = SimpleDateFormat("MM/dd/yyyy")
@@ -215,17 +210,13 @@ class FragmentARRAVPrograms : Fragment() {
                                         validProgram = true
                                         valid_validProgram=true
                                     } else
-//                                        Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
                                         Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
                                     validProgram = false
                                 } else
-//                                    Toast.makeText(context, "this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
                                     Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
                                 validProgram = false
 
-
                             }
-
                     }
 
 
@@ -244,20 +235,18 @@ class FragmentARRAVPrograms : Fragment() {
                     item.effDate = if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                     item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                     item.Comments = comments_editTextVal.text.toString()
-                    //  BuildProgramsList()
-
 
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
                             Response.Listener { response ->
-                                activity!!.runOnUiThread({
-                                    if (response.toString().contains("returnCode&gt;0&",false)) {
+                                activity!!.runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<",false)) {
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE
                                         alphaBackgroundForProgramDialogs.visibility = View.GONE
                                         (activity as FormsActivity).overrideBackButton = false
                                         // collect program id
                                         Utility.showSubmitAlertDialog(activity,true,"Program")
-                                        item.ProgramID= response.toString().substring(response.toString().indexOf(";programID")+14,response.toString().indexOf("&lt;/programID"))
+                                        item.ProgramID= response.toString().substring(response.toString().indexOf("<programID")+11,response.toString().indexOf("</programID"))
                                         FacilityDataModel.getInstance().tblPrograms.add(item)
                                         Utility.showMessageDialog(activity,"Program ID",item.ProgramID)
                                         HasChangedModel.getInstance().groupSoSPrograms[0].SoSPrograms= true
@@ -265,20 +254,17 @@ class FragmentARRAVPrograms : Fragment() {
                                         fillPortalTrackingTableView()
                                         altTableRow(2)
                                         programCard.visibility = View.GONE
-//                                        IndicatorsDataModel.getInstance().validateSOSProgramsVisited()
-//                                        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#A42600"))
-//                                        (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                     } else {
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE
-                                        var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                         Utility.showSubmitAlertDialog(activity, false, "Program (Error: "+errorMessage+" )")
 
                                     }
                                     enableAllAddButnsAndDialog()
 
 
-                                })
+                                }
                             }, Response.ErrorListener {
                         Utility.showSubmitAlertDialog(activity, false, "Program (Error: "+it.message+" )")
                         enableAllAddButnsAndDialog()
@@ -294,18 +280,11 @@ class FragmentARRAVPrograms : Fragment() {
         }
         prepareProgramTypes()
         fillPortalTrackingTableView();
-
         altTableRow(2)
-
-
-
-
-
     }
 
 
     fun prepareProgramTypes() {
-//        programTypesArray.add("select program")
 
         for (fac in TypeTablesModel.getInstance().ProgramsType) {
             programTypesArray.add(fac.ProgramTypeName)
@@ -547,13 +526,13 @@ class FragmentARRAVPrograms : Fragment() {
                                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&programId=${currentRowDataModel.ProgramID}&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat(),
                                             Response.Listener { response ->
                                                 activity!!.runOnUiThread {
-                                                    if (response.toString().contains("returnCode&gt;0&", false)) {
+                                                    if (response.toString().contains("returnCode>0<", false)) {
                                                         Utility.showSubmitAlertDialog(activity, true, "Program")
                                                         HasChangedModel.getInstance().groupSoSPrograms[0].SoSPrograms = true
                                                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSPrograms()
                                                         fillPortalTrackingTableView()
                                                     } else {
-                                                        var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                                         Utility.showSubmitAlertDialog(activity, false, "Program (Error: "+ errorMessage+" )")
                                                     }
                                                     edit_programCard.visibility = View.GONE
@@ -563,32 +542,22 @@ class FragmentARRAVPrograms : Fragment() {
                                                     enableAllAddButnsAndDialog()
                                                 }
                                             }, Response.ErrorListener {
-                                        //                                    Log.v("error while loading", "error while loading program record")
-                                        Utility.showSubmitAlertDialog(activity, true, "Program")
+                                        Utility.showSubmitAlertDialog(activity, false, "Program (Error: "+it.message+" )")
                                         edit_programCard.visibility = View.GONE
                                         edit_programsLoadingView.visibility = View.GONE
                                         alphaBackgroundForProgramDialogs.visibility = View.GONE
                                         (activity as FormsActivity).overrideBackButton = false
                                         enableAllAddButnsAndDialog()
-
-                                        //                                    Toast.makeText(context,"error while submitting new program",Toast.LENGTH_SHORT).show()
-
                                     }))
-
-
                                 }
-
                             } else {
                                 //                            Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
                                 Utility.showValidationAlertDialog(activity, "Please fill all required fields")
                             }
-
                         }
-
-
                     }
 
-                    var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+//                    var childViewCount = aarPortalTrackingTableLayout.getChildCount();
 
 //                for (i in 1..childViewCount - 1) {
 //                    var noOfEmpty = 0
@@ -633,172 +602,18 @@ class FragmentARRAVPrograms : Fragment() {
             var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
-                row.setBackground(getResources().getDrawable(
-                        R.drawable.alt_row_color));
+                row.background = getResources().getDrawable(
+                        R.drawable.alt_row_color);
             } else {
-                row.setBackground(getResources().getDrawable(
-                        R.drawable.row_color));
+                row.background = getResources().getDrawable(
+                        R.drawable.row_color);
             }
 
         }
     }
-
-
-    fun addTheLatestRowOfPortalAdmin() {
-
-
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-
-        val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
-        rowLayoutParam1.column = 1
-
-        val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 2
-
-        val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
-        rowLayoutParam3.column = 3
-
-        val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
-        rowLayoutParam4.column = 4
-
-        val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
-        rowLayoutParam5.column = 5
-
-        var i = 1
-        FacilityDataModel.getInstance().tblPrograms[FacilityDataModel.getInstance().tblPrograms.size - 1].apply {
-
-            var tableRow = TableRow(context)
-            if (i % 2 == 0) {
-                tableRow.setBackgroundResource(R.drawable.alt_row_color)
-                i++
-            }
-
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            for (fac in TypeTablesModel.getInstance().ProgramsType) {
-                if (ProgramTypeID.equals(fac.ProgramTypeID))
-
-                    textView.text = fac.ProgramTypeName
-            }
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            try {
-                textView.text = effDate.apiToAppFormatMMDDYYYY()
-            } catch (e: Exception) {
-                textView.text = effDate
-            }
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            try {
-                textView.text = expDate.apiToAppFormatMMDDYYYY()
-            } catch (e: Exception) {
-                textView.text = expDate
-            }
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = Comments
-            tableRow.addView(textView)
-
-            val updateButton = Button(context)
-            updateButton.layoutParams = rowLayoutParam4
-            updateButton.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            updateButton.text = "Update"
-            tableRow.addView(updateButton)
-
-
-            aarPortalTrackingTableLayout.addView(tableRow)
-
-        }
-//        altTableRow(2)
-    }
-
-//    fun drawProgramsTable () {
-//        programsTableLayout.removeAllViews()
-//        var separatorView = View (context)
-//        separatorView.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, 1)
-//        separatorView.setBackgroundColor(Color.rgb(51, 51, 51))
-//        var tableRow = LayoutInflater.from(context).inflate(R.layout.tablerow5cols, null, false)
-//        tableRow.programid.setText("ID")
-//        tableRow.programname.setText("Current Programs")
-//        tableRow.effdate.setText("Effective Date")
-//        programsTableLayout.addView(tableRow)
-//        programsTableLayout.addView(separatorView)
-//        for (fac in facilityProgramsList) {
-//            tableRow = LayoutInflater.from(context).inflate(R.layout.tablerow5cols, null, false)
-//            tableRow.effdate.setText(fac.effdate)
-//            tableRow.programid.setText(fac.programid.toString())
-//            tableRow.effdate.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL")) "No Date Provided" else {
-//                if (fac.effdate.length>11 ) appFormat.format(dbFormat.parse(fac.effdate)) else fac.effdate
-//            }
-//            tableRow.programname.setText(fac.programtypename)
-//            tableRow.setOnClickListener({
-//                program_name_textviewVal.setSelection(programTypesArray.indexOf(fac.programtypename))
-//                effective_date_textviewVal.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL") || fac.effdate.equals("") || fac.effdate.equals("No Date Provided")) "No Date Provided" else  {
-//                    if (fac.effdate.length>11 ) appFormat.format(dbFormat.parse(fac.effdate)) else fac.effdate
-//                }
-//                expiration_date_textviewVal.text = if (fac.expdate.isNullOrEmpty() || fac.expdate.equals("NULL") || fac.expdate.equals("") || fac.expdate.equals("No Date Provided")) "No Date Provided" else   {
-//                    if (fac.expdate.length>11 ) appFormat.format(dbFormat.parse(fac.expdate)) else fac.expdate
-//                }
-//                comments_editTextVal.setText(fac.comments)
-//            })
-//            programsTableLayout.addView(tableRow)
-//            var rowseparatorView = View (context)
-//            rowseparatorView .layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, 1)
-//            rowseparatorView .setBackgroundColor(Color.rgb(51, 51, 51))
-//            programsTableLayout.addView(rowseparatorView )
-//        }
-//    }
-//
-//    fun BuildProgramsList() {
-//        val inflater = activity!!
-//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-//        val parentLayout = programsListLL
-//        parentLayout.removeAllViews()
-//        for (fac in facilityProgramsList) {
-//            val vProgramRow = inflater.inflate(R.layout.custom_program_list_item, parentLayout, false)
-//            val prId= vProgramRow.findViewById(R.id.programItemId) as TextView
-//            val prName= vProgramRow.findViewById(R.id.programItemName) as TextView
-//            val prEffDate= vProgramRow.findViewById(R.id.programItemEffDate) as TextView
-//            val prExpDate= vProgramRow.findViewById(R.id.programItemExpDate) as TextView
-//            prId.text = fac.programid.toString()
-//            prName.text = fac.programtypename
-//            prEffDate.text = if (fac.effdate.length>11 ) appFormat.format(dbFormat.parse(fac.effdate)) else fac.effdate
-//            prExpDate.text = if (fac.expdate.length>11 ) appFormat.format(dbFormat.parse(fac.expdate)) else fac.expdate
-//            vProgramRow.setOnClickListener({
-//                program_name_textviewVal.setSelection(programTypesArray.indexOf(fac.programtypename))
-//                effective_date_textviewVal.text = if (fac.effdate.isNullOrEmpty() || fac.effdate.equals("NULL") || fac.effdate.equals("") || fac.effdate.equals("No Date Provided")) "No Date Provided" else  {
-//                    if (fac.effdate.length>11 ) appFormat.format(dbFormat.parse(fac.effdate)) else fac.effdate
-//                }
-//                expiration_date_textviewVal.text = if (fac.expdate.isNullOrEmpty() || fac.expdate.equals("NULL") || fac.expdate.equals("") || fac.expdate.equals("No Date Provided")) "No Date Provided" else   {
-//                    if (fac.expdate.length>11 ) appFormat.format(dbFormat.parse(fac.expdate)) else fac.expdate
-//                }
-//                comments_editTextVal.setText(fac.comments)
-//            })
-//            parentLayout.addView(vProgramRow)
-//        }
-//    }
 
 
     fun disableAllAddButnsAndDialog(){
-
 
         for (i in 0 until mainViewLinearId.childCount)
     {
@@ -853,18 +668,12 @@ class FragmentARRAVPrograms : Fragment() {
 
         effective_date_textviewVal.setError(null)
         comments_editTextVal.setError(null)
-//        program_name_textviewToCheckSpinner.setError(null)
 
 
         if (effective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             programValide = false
             effective_date_textviewVal.setError("Required Field")
         }
-
-//        if (program_name_textviewVal.selectedItem.toString().contains("select")) {
-//            isInputsValid = false
-//            program_name_textviewToCheckSpinner.setError("Required Field")
-//        }
 
         if (comments_editTextVal.text.toString().isNullOrEmpty()) {
             programValide = false

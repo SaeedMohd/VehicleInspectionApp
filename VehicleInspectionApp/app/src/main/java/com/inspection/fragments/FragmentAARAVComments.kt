@@ -1,23 +1,16 @@
 package com.inspection.fragments
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 
 import com.inspection.R
-import com.inspection.Utils.apiToAppFormat
+
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
@@ -66,20 +59,17 @@ class FragmentAARAVComments : Fragment() {
 
 
         startDateBtn.setOnClickListener {
-//            if (startDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
                     startDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
-//            }
         }
 
         endDateBtn.setOnClickListener {

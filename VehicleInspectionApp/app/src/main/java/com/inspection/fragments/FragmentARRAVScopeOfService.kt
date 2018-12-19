@@ -36,6 +36,7 @@ import com.inspection.MainActivity.Companion.activity
 import com.inspection.MainActivity.Companion.handler
 import com.inspection.R.id.numberOfLiftsEditText
 import com.inspection.Utils.*
+import com.inspection.Utils.Constants.UpdateScopeofServiceData
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
@@ -110,7 +111,6 @@ class FragmentARRAVScopeOfService : Fragment() {
         warrantyPeriodVal.adapter = warrantyAdapter
 
         saveBtnPressed()
-//        prepareScopePage()
         setFields()
         handleRadioButtonsSelection()
         setFieldsListener()
@@ -123,60 +123,6 @@ class FragmentARRAVScopeOfService : Fragment() {
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited= true
         (activity as FormsActivity).sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
-    }
-
-
-    fun fillFieldsIntoVariables(){
-
-
-         fixedLaborRate = fixedLaborRateEditText.text.toString()
-         diagnosticLaborRate = diagnosticRateEditText.text.toString()
-         laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
-         laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
-         numberOfBaysEditText_ = numberOfBaysEditText.text.toString()
-         numberOfLiftsEditText_ = numberOfLiftsEditText.text.toString()
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMax!=laborRateMatrixMax){
-
-
-dataChanged=true
-        }
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].LaborMin!=laborRateMatrixMin){
-
-            dataChanged=true
-        }
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate!=fixedLaborRate){
-
-
-            dataChanged=true
-        }
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate!=diagnosticLaborRate){
-
-
-            dataChanged=true
-        }
-
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!=numberOfBaysEditText_){
-
-
-            dataChanged=true
-        }
-
-        if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!=numberOfLiftsEditText_){
-
-
-            dataChanged=true
-        }
-        fillMethodCalled = true
-
     }
 
     fun refreshButtonsState(){
@@ -347,29 +293,12 @@ dataChanged=true
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeName.equals(warrantyPeriodVal.selectedItem.toString()) }[0].WarrantyTypeID
-//                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
-//                    if(typeWarranty.WarrantyTypeName==warrantyPeriodVal.selectedItem){
-//                       typeIdCompare=typeWarranty.WarrantyTypeID
-//                        if (typeIdCompare!= FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID){
-//                            MarkChangeWasDone()
-//                        }
-//                        if (typeIdCompare!= FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID){
-//                            dataChanged=true
-//                        }
-//                    }
-//                }
 
                 if (!warrantyPeriodVal.tag.equals(position) || warrantyPeriodVal.tag.equals("-1")) {
                     warrantyPeriodVal.tag = "-1"
                     FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = warrantyArray[position]
-//                    if (FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID != FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) {
-                        HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
-                        HasChangedModel.getInstance().changeDoneForSoSGeneral()
-//                    } else {
-//                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone = false
-//                        HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-//                    }
+                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                    HasChangedModel.getInstance().changeDoneForSoSGeneral()
                     (activity as FormsActivity).saveRequired = true
                     refreshButtonsState()
                 }
@@ -411,16 +340,10 @@ dataChanged=true
             }
         }
 
-
-         //   for (facWarranty in FacilityDataModel.getInstance().tblScopeofService){
-
-           //     if (facWarranty.WarrantyTypeID==typeWarranty.WarrantyTypeID){
-
     }
 
     fun handleRadioButtonsSelection (){
-//        fixedLaborRateEditText.isVisible = fixedLaborRadioButton.isChecked
-//        fixedLaborRateTextView.isVisible = fixedLaborRadioButton.isChecked
+
         if (fixedLaborRadioButton.isChecked) {
             fixedLaborRateTextView.visibility = View.INVISIBLE
             fixedLaborRateEditText.visibility = View.INVISIBLE
@@ -436,33 +359,6 @@ dataChanged=true
 
     var isFirstRun = true
 
-//    fun prepareScopePage () {
-//            isFirstRun = false
-//            progressbarScope.visibility = View.VISIBLE
-//
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.facilityScopeOfSvcURL+AnnualVisitationSingleton.getInstance().facilityId,
-//                    Response.Listener { response ->
-//                        activity!!.runOnUiThread(Runnable {
-//                            var facScopeOfSvcList = Gson().fromJson(response.toString(), Array<AAAScopeOfServices>::class.java).toCollection(ArrayList())
-//                            for (fac in facScopeOfSvcList ) {
-//                                fixedLaborRateEditText.setText(fac.fixedlaborrate.toString())
-//                                //commented out code below cuz i commented out the refrenced view from xml cuz
-//                                // i cant find the refrenced this view in the pdf > sherif yousry
-//                        //        laborRateMatrixMinEditText.setText(fac.labormin.toString())
-//                          //      laborRateMatrixMaxEditText.setText(fac.labormax.toString())
-//                                diagnosticRateEditText.setText(fac.diagnosticsrate.toString())
-//                                numberOfBaysEditText.setText(fac.numofbays.toString())
-//                                numberOfLiftsEditText.setText(fac.numoflifts.toString())
-//                                warrantyPeriodVal.setSelection(fac.warrantytypeid)
-//
-//                            }
-//                            progressbarScope.visibility = View.INVISIBLE
-//                        })
-//                    }, Response.ErrorListener {
-//                Log.v("error while loading", "error while loading Scope Of Services")
-//                activity!!.toast("Connection Error. Please check the internet connection")
-//            }))
-//    }
 
     fun saveBtnPressed() {
         saveBtnId.setOnClickListener {
@@ -476,10 +372,10 @@ dataChanged=true
 
                 progressBarText.text = "Saving ..."
                 scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://dev.facilityappointment.com/ACEAPI.asmx/UpdateScopeofServiceData?facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                                if (response.toString().contains("returnCode>0<",false)) {
                                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
                                     progressBarText.text = "Loading ..."
                                     Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
@@ -499,18 +395,13 @@ dataChanged=true
 
                                         }
                                     }
-                    //                                    }
-                    //                                    Utility.showValidationAlertDialog(activity,FacilityDataModel.getInstance().tblScopeofService.equals(FacilityDataModelOrg.getInstance().tblScopeofService).toString())
                                     (activity as FormsActivity).saveRequired = false
                                     refreshButtonsState()
                                     setFields()
                                     HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                                     HasChangedModel.getInstance().changeDoneForSoSGeneral()
-//                                    IndicatorsDataModel.getInstance().validateSoSGeneral()
-//                                    if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfo) (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                     Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")
                                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
                                     progressBarText.text = "Loading ..."
@@ -525,28 +416,6 @@ dataChanged=true
                 Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
             }
         }
-    }
-
-    fun checkMarkChangeWasDoneForScopeOfServiceGeneralInfo(){
-//        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax != FacilityDataModel.getInstance().tblScopeofService[0].LaborMax) {
-//            MarkChangeWasDone()
-//        }
-//        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin != FacilityDataModel.getInstance().tblScopeofService[0].LaborMin) {
-//            MarkChangeWasDone()
-//        }
-//
-//        if (FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate != FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate) {
-//            MarkChangeWasDone()
-//        }
-//            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate != FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate) {
-//                MarkChangeWasDone()
-//            }
-//            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays != FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays) {
-//                MarkChangeWasDone()
-//            }
-//            if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts != FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts) {
-//                MarkChangeWasDone()
-//            }
     }
 
     fun validateInputs(): Boolean {
@@ -580,34 +449,7 @@ dataChanged=true
         return scopeOfServiceValide
 
     }
-    fun validateInputsForOtherFragmentAloneNotInGroups(): Boolean {
 
-
-
-        scopeOfServiceValideForOtherFragmentToTest = true
-
-
-        if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
-            scopeOfServiceValideForOtherFragmentToTest = false
-        }
-
-        if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
-            scopeOfServiceValideForOtherFragmentToTest = false
-        }
-
-
-        if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
-            scopeOfServiceValideForOtherFragmentToTest = false
-        }
-
-        if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
-            scopeOfServiceValideForOtherFragmentToTest = false
-        }
-
-
-        return scopeOfServiceValideForOtherFragmentToTest
-
-    }
 
 
     override fun onAttach(context: Context?) {
@@ -618,15 +460,12 @@ dataChanged=true
 
 
     override fun onPause() {
-//        validateInputsForOtherFragmentAloneNotInGroups()
-//        fillFieldsIntoVariables()
-
         super.onPause()
 
     }
 
     override fun onStop() {
-    //    Toast.makeText(context!!,"stop",Toast.LENGTH_SHORT).show()
+
 
         super.onStop()
     }

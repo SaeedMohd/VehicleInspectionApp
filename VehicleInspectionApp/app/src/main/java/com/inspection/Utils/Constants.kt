@@ -69,7 +69,7 @@ object Constants {
     val submitContactInfoAddress = permanentURL + "UpdateFacilityAddressData?facnum="
     val submitFacilityGeneralInfo = permanentURL + "updateFacilityInfo?facNum="
     val submitFacilityHours = permanentURL + "updateFacilityHoursData?facnum="
-    val submitFacilityEmail = permanentURL + "pdateFacilityEmailData?facnum="
+    val submitFacilityEmail = permanentURL + "updateFacilityEmailData?facnum="
 
     val submitFacilityPhone = permanentURL + "updateFacilityPhoneData?facNum="
     //AAA APIs WebServices
@@ -88,10 +88,14 @@ object Constants {
     val UpdateFacilityServicesData = permanentURL + "updateFacilityServicesData?facNum="
     val UpdateAffiliationsData= permanentURL + "updateAffiliationsData?facNum="
     val UpdatePaymentMethodsData=permanentURL + "updatePaymentMethodsData?facnum="
+
     val UpdateFacilityLanguageData=permanentURL + "updateFacilityLanguageData?facNum="
     val UpdateFacilityVehicles= permanentURL + "updateFacilityVehicles?facnum="
     val UpdateVehicleServices=permanentURL + "updateVehicleServices?facnum="
     val UpdatePersonnelCertification=permanentURL + "updatePersonnelCertification?facnum="
+    val UpdateFacilityPersonnelData=permanentURL + "updateFacilityPersonnelData?facnum="
+    val UpdateFacilityPersonnelSignerData=permanentURL + "updateFacilityPersonnelSignerData?facnum="
+    val UpdateScopeofServiceData =permanentURL + "updateScopeofServiceData?facnum="
     val UpdateVisitationDetailsData=permanentURL + "updateVisitationDetailsData?facnum="
     val UpdateVisitationTrackingData=permanentURL + "updateVisitationTrackingData?facnum="
 

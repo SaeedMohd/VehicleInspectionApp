@@ -82,13 +82,13 @@ class FragmentARRAVDeficiency : Fragment() {
         deffTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
-        exitDeffeciencyDialogeBtnId.setOnClickListener({
+        exitDeffeciencyDialogeBtnId.setOnClickListener {
             defeciencyCard.visibility=View.GONE
             (activity as FormsActivity).overrideBackButton = false
             visitationFormAlphaBackground.visibility = View.GONE
-        })
+        }
 
-        showNewDeffDialogueBtn.setOnClickListener(View.OnClickListener {
+        showNewDeffDialogueBtn.setOnClickListener {
             comments_editTextVal.setText("")
             newVisitationDateBtn.setText("SELECT DATE")
             signatureDateBtn.setText("SELECT DATE")
@@ -105,7 +105,6 @@ class FragmentARRAVDeficiency : Fragment() {
 
             facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
                 signatureDialog.visibility = View.VISIBLE
-//                visitationFormAlphaBackground.visibility = View.VISIBLE
                 (activity as FormsActivity).overrideBackButton = true
                 selectedSignature = requestedSignature.representativeDeficiency
                 if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
@@ -171,11 +170,11 @@ class FragmentARRAVDeficiency : Fragment() {
             }
 
 
-        })
+        }
 
-        loadDefButton.setOnClickListener({
+        loadDefButton.setOnClickListener {
             fillDeffTableView()
-        })
+        }
 
 
         newClearedDateBtn.setOnClickListener {
@@ -223,22 +222,7 @@ class FragmentARRAVDeficiency : Fragment() {
             dpd.show()
         }
 
-//        newUpdatedByDateBtn.setOnClickListener {
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH)
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                // Display Selected date in textbox
-//                val myFormat = "MM/dd/yyy" // mention the format you need
-//                val sdf = SimpleDateFormat(myFormat, Locale.US)
-//                c.set(year,monthOfYear,dayOfMonth)
-//                newUpdatedByDateBtn!!.text = sdf.format(c.time)
-//            }, year, month, day)
-//            dpd.show()
-//        }
-        submitNewDeffNewBtn.setOnClickListener({
-
+        submitNewDeffNewBtn.setOnClickListener {
             if (validateInputs()){
                 progressBarText.text = "Saving ..."
                 DeffLoadingView.visibility = View.VISIBLE
@@ -255,20 +239,17 @@ class FragmentARRAVDeficiency : Fragment() {
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
                         "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
                         Response.Listener { response ->
-                            activity!!.runOnUiThread(Runnable {
-                                if (response.toString().contains("returnCode&gt;0&",false)) {
+                            activity!!.runOnUiThread {
+                                if (response.toString().contains("returnCode>0<",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Deficiency")
-                                    item.DefID = response.toString().substring(response.toString().indexOf(";DefID")+10,response.toString().indexOf("&lt;/DefID"))
+                                    item.DefID = response.toString().substring(response.toString().indexOf("<DefID")+7,response.toString().indexOf("</DefID"))
                                     Utility.showMessageDialog(activity,"DEF ID",item.DefID)
                                     FacilityDataModel.getInstance().tblDeficiency.add(item)
                                     fillDeffTableView()
                                     HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
                                     HasChangedModel.getInstance().changeDoneForDeficiencyDef()
-//                                    IndicatorsDataModel.getInstance().validateDeffecienciesSectionVisited()
-//                                    if (IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
-//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                 } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                     Utility.showSubmitAlertDialog(activity, false, "Deficiency (Error: "+errorMessage+" )")
                                 }
                                 DeffLoadingView.visibility = View.GONE
@@ -276,7 +257,7 @@ class FragmentARRAVDeficiency : Fragment() {
                                 defeciencyCard.visibility=View.GONE
                                 (activity as FormsActivity).overrideBackButton = false
                                 visitationFormAlphaBackground.visibility = View.GONE
-                            })
+                            }
                         }, Response.ErrorListener {
                     Utility.showSubmitAlertDialog(activity, false, "Deficiency")
                     DeffLoadingView.visibility = View.GONE
@@ -287,94 +268,8 @@ class FragmentARRAVDeficiency : Fragment() {
                 }))
 
             } else {
-            Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
             }
-            // Toast.makeText(context,"please fill all required fields",Toast.LENGTH_SHORT).show()
-        })
-        altDeffTableRow(2)
-    }
-
-    fun addTheLatestRowOfPortalAdmin() {
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-
-        val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
-        rowLayoutParam1.column = 1
-
-        val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 2
-
-        val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
-        rowLayoutParam3.column = 3
-
-        val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
-        rowLayoutParam4.column = 4
-        FacilityDataModel.getInstance().tblDeficiency[FacilityDataModel.getInstance().tblDeficiency.size - 1].apply {
-
-
-            var tableRow = TableRow(context)
-
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
-                if (DefTypeID.equals(fac.DeficiencyTypeID))
-
-                    textView.text =fac.DeficiencyName
-            }
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-
-            try {
-                textView.text = VisitationDate.apiToAppFormatMMDDYYYY()
-            } catch (e: Exception) {
-                textView.text = VisitationDate
-            }
-
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-
-            try {
-                textView.text = EnteredDate.apiToAppFormatMMDDYYYY()
-            } catch (e: Exception) {
-                textView.text = EnteredDate
-            }
-
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-
-            try {
-                textView.text = ClearedDate.apiToAppFormatMMDDYYYY()
-            } catch (e: Exception) {
-                textView.text = ClearedDate
-            }
-
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = Comments
-            tableRow.addView(textView)
-
-
-            DeffResultsTbl.addView(tableRow)
-
         }
         altDeffTableRow(2)
     }
@@ -386,12 +281,10 @@ class FragmentARRAVDeficiency : Fragment() {
             var row : TableRow= DeffResultsTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
-                row.setBackground(getResources().getDrawable(
-                        R.drawable.alt_row_color));
-            } else {
-                row.setBackground(getResources().getDrawable(
-                        R.drawable.row_color));
-            }
+                row.background = getResources().getDrawable(
+                        R.drawable.alt_row_color);
+            } else row.background = getResources().getDrawable(
+                    R.drawable.row_color)
 
         }
     }
@@ -421,10 +314,6 @@ class FragmentARRAVDeficiency : Fragment() {
         for (fac in commentesTypeList) {
             commentesTypeArray.add(fac.WarrantyTypeName)
         }
-
-//        var commentesTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, commentesTypeArray)
-//        commentesTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        newCommentSpinner.adapter = commentesTypeAdapter
     }
 
     fun getDefTypeName(typeID: String): String {
@@ -490,9 +379,6 @@ class FragmentARRAVDeficiency : Fragment() {
                     var tableRow = TableRow(context)
                     tableRow.layoutParams = rowLayoutParamRow
                     tableRow.minimumHeight = 30
-//                    if (it % 2 == 0) {
-//                        tableRow.setBackgroundResource(R.drawable.alt_row_color)
-//                    }
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
@@ -549,9 +435,6 @@ class FragmentARRAVDeficiency : Fragment() {
                     }
                     tableRow.addView(textView)
 
-
-
-
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
                     textView.gravity = Gravity.CENTER_VERTICAL
@@ -576,11 +459,11 @@ class FragmentARRAVDeficiency : Fragment() {
             var row : TableRow= DeffResultsTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
-                row.setBackground(getResources().getDrawable(
-                        R.drawable.alt_row_color));
+                row.background = getResources().getDrawable(
+                        R.drawable.alt_row_color);
             } else {
-                row.setBackground(getResources().getDrawable(
-                        R.drawable.row_color));
+                row.background = getResources().getDrawable(
+                        R.drawable.row_color);
             }
 
 
@@ -613,11 +496,6 @@ class FragmentARRAVDeficiency : Fragment() {
                     signatureDateBtn.setError("Required Field")
                 }
 
-//                if (facilityRepresentativeDeficienciesSignatureBitmap==null) {
-//                    isInputsValid = false
-//                    facilityRepresentativeDeficienciesSignatureButton.setError("Required Field")
-//                }
-
                 if (facilityRepresentativeDeficienciesSignatureButton.text.toString() == "ADD SIGNATURE" ||
                         facilityRepresentativeDeficienciesSignatureButton.text.toString() =="Add Signature") {
 
@@ -645,7 +523,6 @@ class FragmentARRAVDeficiency : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-         //    Toast.makeText(context,"attach",Toast.LENGTH_SHORT).show()
 
 
     }

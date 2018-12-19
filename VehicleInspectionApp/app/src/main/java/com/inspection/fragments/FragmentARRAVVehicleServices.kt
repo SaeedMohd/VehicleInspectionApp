@@ -40,8 +40,6 @@ class FragmentARRAVVehicleServices : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
 
-    private var isServicesLoaded = false
-
     var selectedVehicleServices = ArrayList<String>()
     var selectedAutoBodyServices= ArrayList<String>()
     var selectedMarineServices = ArrayList<String>()
@@ -124,19 +122,12 @@ class FragmentARRAVVehicleServices : Fragment() {
         saveButton.setOnClickListener {
             progressBarText.text = "Saving ..."
             scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-//            if (selectedVehicleServices.size> 0) saveVehicleServiceChanges("0")
-//            if (selectedAutoBodyServices.size>0) saveVehicleServiceChanges("1")
-//            if (selectedMarineServices.size>0) saveVehicleServiceChanges("2")
-//            if (selectedRecreationServices.size>0) saveVehicleServiceChanges("3")
-//            if (selectedAutoGlassServices.size>0) saveVehicleServiceChanges("4")
-//            if (selectedOthersServices.size>0) saveVehicleServiceChanges("5")
             if (selectedVehicleServicesChanged) saveVehicleServiceChanges("0")
             if (selectedAutoBodyServicesChanged) saveVehicleServiceChanges("1")
             if (selectedMarineServicesChanged) saveVehicleServiceChanges("2")
             if (selectedRecreationServicesChanged) saveVehicleServiceChanges("3")
             if (selectedAutoGlassServicesChanged) saveVehicleServiceChanges("4")
             if (selectedOthersServicesChanged) saveVehicleServiceChanges("5")
-//            Utility.showSubmitAlertDialog(activity, true, saveMessage)
         }
 
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited= true
@@ -174,24 +165,21 @@ class FragmentARRAVVehicleServices : Fragment() {
             saveMessage = "(Other Status)"
         }
 
-//        scopeServiceId = scopeServiceId.removeSuffix(",")
         scopeServiceId = scopeServiceId.replace("[","")
         scopeServiceId = scopeServiceId.replace("]","")
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
-                        if (response.toString().contains("returnCode&gt;0&",false)) {
+                        if (response.toString().contains("returnCode>0<",false)) {
                             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                             progressBarText.text = "Loading ..."
                             Utility.showSubmitAlertDialog(activity, true, "Vehicle Services ${saveMessage}")
                             (activity as FormsActivity).saveRequired = false
                             HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicleServices()
                             HasChangedModel.getInstance().changeDoneForSoSVehicleServices()
-//                            if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
-//                            (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                         } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
+                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity, false, "Vehicle Services ${saveMessage} (Error: "+ errorMessage+" )")
                             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                             progressBarText.text = "Loading ..."
