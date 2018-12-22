@@ -473,7 +473,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 //                        }
                 //                    });
                 //                } else {
-                toast("Press back button again to leave the app")
+                toast("Press back button again to return to the main menu")
                 object : Thread() {
                     override fun run() {
                         try {
@@ -652,8 +652,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
                     openSafetyCheckFragment()
                 }
                 return
-
-            }//                    && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            }
+            else if (requestCode ==100){
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "Permission has been denied by user")
+                } else {
+                    Log.i(TAG, "Permission has been granted by user")
+                }
+            }
         }
 
     }

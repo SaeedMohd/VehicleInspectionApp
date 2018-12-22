@@ -23,6 +23,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.setPadding
 import com.android.volley.Request
 import com.android.volley.Response
@@ -90,11 +91,10 @@ class FragmentVisitation : Fragment() {
         (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
+
     }
 
-
     fun fillTrackingData(){
-
         if (trackingTableLayout.childCount>1) {
             for (i in trackingTableLayout.childCount - 1 downTo 1) {
                 trackingTableLayout.removeViewAt(i)
@@ -946,7 +946,7 @@ class FragmentVisitation : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        completeButton.isEnabled = true//IndicatorsDataModel.getInstance().validateAllScreensVisited()
+//        completeButton.isEnabled = true//IndicatorsDataModel.getInstance().validateAllScreensVisited()
     }
 
 

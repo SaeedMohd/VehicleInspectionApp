@@ -81,6 +81,7 @@ dependencies {
     implementation 'org.json:json:20180130'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.simplify:ink:1.0.1'
+    implementation 'com.itextpdf:itextg:5.5.10'
 }
 repositories {
     mavenCentral()

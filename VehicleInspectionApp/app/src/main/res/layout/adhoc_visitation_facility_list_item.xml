@@ -35,66 +35,83 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/adHocClubCode"
-                android:text="Club Code"
-                android:textStyle="bold"
-                android:textColor="@color/black"
+            <TableLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/loadFacilityButton"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:stretchColumns="*"
+                >
 
-            <TextView
-                android:id="@+id/adHocClubCodeValueTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/loadFacilityButton"
-                android:layout_toRightOf="@id/adHocClubCode" />
+                <TableRow android:layout_marginTop="5dp">
+                    <TextView
+                        android:text="Club Code"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        />
+                    <TextView
+                        android:id="@+id/adHocClubCodeValueTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        />
+                    <TextView
+                        android:text="Contract Status"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        />
+                    <TextView
+                        android:id="@+id/adHocCoStatusValueTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+                        />
+                </TableRow>
 
-            <TextView
-                android:id="@+id/facilityNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/adHocClubCode"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:text="Facility Name: "
-                android:textColor="@color/black"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@id/facilityNameValueTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/loadFacilityButton"
-                android:layout_toRightOf="@id/facilityNameTextView"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/adHocClubCodeValueTextView"/>
-
-
-            <TextView
-                android:id="@+id/facilityNumberTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/facilityNameTextView"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:text="Facility Number"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/facilityNumberValueTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/facilityNameValueTextView"
-                android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@id/loadFacilityButton"
-                android:layout_toRightOf="@id/facilityNumberTextView"
-                />
+                <TableRow android:layout_marginTop="5dp">
+                    <TextView
+                        android:text="Facility Name: "
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        />
+                    <TextView
+                        android:id="@id/facilityNameValueTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_span="3"
+                        />
+                </TableRow>
+                <TableRow android:layout_marginTop="5dp">
+                    <TextView
+                        android:text="Facility Number"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        />
+                    <TextView
+                        android:id="@+id/facilityNumberValueTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_span="3"
+                        />
+                </TableRow>
+            </TableLayout>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

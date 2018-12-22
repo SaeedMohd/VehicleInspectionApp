@@ -264,7 +264,9 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
 
         indicatorImage = (navigationMenu.findItem(R.id.visitation).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-        if (IndicatorsDataModel.getInstance().tblVisitation[0].visited)
+
+//        if (IndicatorsDataModel.getInstance().tblVisitation[0].visited)
+        if (IndicatorsDataModel.getInstance().validateAllScreensVisited())
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else {
             if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != VisitationTypes.AdHoc) {

@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.fragment.app.FragmentActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -21,6 +22,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.inspection.R
 import com.inspection.Utils.*
+import com.inspection.imageloader.Utils
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
 import okhttp3.Call
@@ -280,6 +282,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
+                        var sortedList = ArrayList<CsiFacility>()
                         facilitiesList = Gson().fromJson(response, Array<CsiFacility>::class.java).toCollection(ArrayList())
                         if (facilitiesList.size == 0) {
                             noRecordsFoundTextView.visibility = View.VISIBLE
@@ -287,9 +290,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                             noRecordsFoundTextView.visibility = View.GONE
                         }
                         facilitiesListView.visibility = View.VISIBLE
-                        var visitationPlanningAdapter = AdhocAdapter(context, facilitiesList)
+                        facilitiesList.sortedWith(compareBy { it.facnum }).toCollection(sortedList)
+                        var visitationPlanningAdapter = AdhocAdapter(context, sortedList)
                         facilitiesListView.adapter = visitationPlanningAdapter
-                        var totalFacilities= facilitiesList.size
+                        var totalFacilities= sortedList.size
                         Utility.showMessageDialog(activity,"Filter Result"," " + totalFacilities + " Facilities Filtered ...")
                     }
                 }, Response.ErrorListener {
@@ -297,6 +301,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities List - " + it.message)
             Log.v("error while loading", "error while loading visitation records")
         }))
+        createPDF(true)
     }
 
     private fun loadSpecialistName() {

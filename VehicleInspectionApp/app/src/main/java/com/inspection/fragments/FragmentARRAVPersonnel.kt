@@ -1420,7 +1420,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             edit_newCoStartDateBtn.setText(model.ContractStartDate.apiToAppFormatMMDDYYYY())
                         }
                     } else {
-                        edit_newPhoneText.setText(FacilityDataModel.getInstance().tblPersonnelSigner.filter { S -> S.PersonnelID == textView2.tag }[0].Phone)
+                        edit_newPhoneText.setText("")
                         edit_newZipText.setText("")
                         edit_newAdd1Text.setText("")
                         edit_newAdd2Text.setText("")
