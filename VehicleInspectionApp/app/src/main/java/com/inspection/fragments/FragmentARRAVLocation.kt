@@ -80,11 +80,9 @@ class FragmentARRAVLocation : Fragment() {
         IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited = true
         (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
-
         setServices()
-
-
         setFieldsListeners()
+        (activity as FormsActivity).saveRequired = false
         refreshButtonsState()
 
     }

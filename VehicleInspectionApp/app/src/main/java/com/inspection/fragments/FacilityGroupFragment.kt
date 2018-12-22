@@ -13,9 +13,7 @@ import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.Utility
 import com.inspection.fragmentsNames
-import com.inspection.model.HasChangedModel
-import com.inspection.model.IndicatorsDataModel
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import java.util.*
@@ -69,13 +67,17 @@ class FacilityGroupFragment : Fragment() {
         (activity as FormsActivity).saveRequired = false
 
         generalInformationButton.setOnClickListener {
-            var fragment = FacilityGeneralInformationFragment.newInstance(false)
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment=fragmentsNames.FacilityGeneralInfo.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.generalInformationButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FacilityGeneralInformationFragment.newInstance(false)
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.generalInformationButton)
+            }
         }
 
         rspButton.setOnClickListener {
@@ -207,10 +209,10 @@ class FacilityGroupFragment : Fragment() {
 //        if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) facRSPIndicator.setBackgroundResource(R.drawable.green_background_button) else facRSPIndicator.setBackgroundResource(R.drawable.red_button_background)
 //        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) facPersonnelIndicator.setBackgroundResource(R.drawable.green_background_button) else facPersonnelIndicator.setBackgroundResource(R.drawable.red_button_background)
 //        if (IndicatorsDataModel.getInstance().tblFacility[0].Location) facLocationIndicator.setBackgroundResource(R.drawable.green_background_button) else facLocationIndicator.setBackgroundResource(R.drawable.red_button_background)
-        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited) generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited) rspButton.setTextColor(Color.parseColor("#26C3AA")) else rspButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited) personnelButton.setTextColor(Color.parseColor("#26C3AA")) else personnelButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited) contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) rspButton.setTextColor(Color.parseColor("#26C3AA")) else rspButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) personnelButton.setTextColor(Color.parseColor("#26C3AA")) else personnelButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else contactInfoButton.setTextColor(Color.parseColor("#A42600"))
 //        amendmentOrdersTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
     }
 

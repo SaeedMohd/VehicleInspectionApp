@@ -236,6 +236,24 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     public fun refreshMenuIndicatorsForVisitedScreens() { // Method used to validate all screens were visited
         var navigationMenu = nav_view.menu
         var indicatorImage: ImageView;
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) {
+            indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+            indicatorImage.visibility = View.GONE
+            indicatorImage = (navigationMenu.findItem(R.id.visitation).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+            indicatorImage.visibility = View.GONE
+            indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+            indicatorImage.visibility = View.GONE
+            indicatorImage = (navigationMenu.findItem(R.id.surveys).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+            indicatorImage.visibility = View.GONE
+            indicatorImage = (navigationMenu.findItem(R.id.photos).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+            indicatorImage.visibility = View.GONE
+            indicatorImage = (navigationMenu.findItem(R.id.facility).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+            indicatorImage.visibility = View.GONE
+            indicatorImage = (navigationMenu.findItem(R.id.complaints).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+            indicatorImage.visibility = View.GONE
+            indicatorImage = (navigationMenu.findItem(R.id.billing).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+            indicatorImage.visibility = View.GONE
+        }
         indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited
                 && IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited

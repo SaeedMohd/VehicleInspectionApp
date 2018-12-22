@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
+import com.inspection.model.VisitationTypes
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import java.util.*
@@ -88,7 +90,7 @@ class DeficienciesGroupFragment : Fragment() {
 
 
     fun refreshTabIndicators() {
-        if (IndicatorsDataModel.getInstance().tblComplaints[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
     }
 
 

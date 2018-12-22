@@ -6,6 +6,8 @@ import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.Gravity
@@ -61,6 +63,75 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
+        addcancelButton.setOnClickListener {
+            addcancelButton.hideKeyboard()
+            FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders= FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders
+            FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate= FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate
+            FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate= FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate
+            FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned= FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned
+            fillData()
+            (activity as FormsActivity).saveRequired = false
+            refreshButtonsState()
+            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+        }
+
+
+        addstartDateButton.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                addstartDateButton!!.text = sdf.format(c.time)
+                FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate= sdf.format(c.time)
+                HasChangedModel.getInstance().checkRSPFacilityChange()
+                HasChangedModel.getInstance().changeDoneForFacilityRSP()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
+            }, year, month, day)
+            dpd.show()
+        }
+
+        addendDateButton.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                addendDateButton!!.text = sdf.format(c.time)
+                FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate= sdf.format(c.time)
+                HasChangedModel.getInstance().checkRSPFacilityChange()
+                HasChangedModel.getInstance().changeDoneForFacilityRSP()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
+            }, year, month, day)
+            dpd.show()
+        }
+
+        addsignDateButton.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                addsignDateButton!!.text = sdf.format(c.time)
+                FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = sdf.format(c.time)
+                HasChangedModel.getInstance().checkRSPFacilityChange()
+                HasChangedModel.getInstance().changeDoneForFacilityRSP()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
+            }, year, month, day)
+            dpd.show()
+        }
 
         exitRSPDialogeBtnId.setOnClickListener {
             fillPortalTrackingTableView()
@@ -79,20 +150,14 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
 
         addNewAarButton.setOnClickListener {
-            numberOfCardsReaderEditText.setText("")
+
             numberOfUnacknowledgedRecordsEditText.setText("")
             numberOfInProgressTwoIns.setText("")
             numberOfInProgressWalkIns.setText("")
-            startDateButton.setText("SELECT DATE")
-            endDateButton.setText("SELECT DATE")
-            addendumSignedDateButton.setText("SELECT DATE")
             inspectionDateButton.setText("SELECT DATE")
-            numberOfCardsReaderEditText.setError(null)
             numberOfUnacknowledgedRecordsEditText.setError(null)
             numberOfInProgressTwoIns.setError(null)
             numberOfInProgressWalkIns.setError(null)
-            startDateButton.setError(null)
-            addendumSignedDateButton.setError(null)
             inspectionDateButton.setError(null)
             (activity as FormsActivity).overrideBackButton = true
             Add_AAR_PortalTrackingEntryCard.visibility=View.VISIBLE
@@ -116,86 +181,20 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             }
         }
 
-        startDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "MM/dd/yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                startDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-        edit_startDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "MM/dd/yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                edit_startDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
+        addnumberOfCardsReaderEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders= p0.toString()
+                HasChangedModel.getInstance().checkRSPFacilityChange()
+                HasChangedModel.getInstance().changeDoneForFacilityRSP()
+                (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
 
-        endDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "MM/dd/yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                endDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-        edit_endDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "MM/dd/yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                edit_endDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
-        addendumSignedDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "MM/dd/yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                addendumSignedDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-        edit_addendumSignedDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "MM/dd/yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                edit_addendumSignedDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
 
         inspectionDateButton.setOnClickListener {
             val c = Calendar.getInstance()
@@ -230,20 +229,16 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 rspLoadingText.text = "Saving ..."
                 RSP_LoadingView.visibility = View.VISIBLE
 
-                var startDate = if (startDateButton.text.equals("SELECT DATE")) "" else startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                var endDate = if (endDateButton.text.equals("SELECT DATE")) "" else endDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                var signedDate = if (addendumSignedDateButton.text.equals("SELECT DATE")) "" else addendumSignedDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+
                 val isLoggedInRsp = loggedIntoRspButton.isChecked
                 val numberOfUnacknowledgedRecords = numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
                 val numberOfInProgressTwoInsvalue = numberOfInProgressTwoIns.text.toString().toInt()
                 val numberOfInProgressWalkInsValue = numberOfInProgressWalkIns.text.toString().toInt()
                 var portalTrackingEntry = TblAARPortalTracking()
                 var portalAdminEntry = TblAARPortalAdmin()
-                if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                portalAdminEntry.startDate = if (startDateButton.text.equals("SELECT DATE")) "" else startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                portalAdminEntry.endDate = if (endDateButton.text.equals("SELECT DATE")) "" else endDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                portalAdminEntry.CardReaders = numberOfCardsReaderEditText.text.toString()
-                portalAdminEntry.AddendumSigned = addendumSignedDateButton.text.toString()
+                var readersCount = "1"
+
+
                 portalTrackingEntry.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID.toString()
                 portalTrackingEntry.InProgressTows = numberOfInProgressTwoInsvalue.toString()
                 portalTrackingEntry.InProgressWalkIns = numberOfInProgressWalkInsValue.toString()
@@ -251,18 +246,18 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 portalTrackingEntry.PortalInspectionDate = if (inspectionDateButton.text.equals("SELECT DATE")) "" else inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                 portalTrackingEntry.NumberUnacknowledgedTows = numberOfUnacknowledgedRecords.toString()
                 portalTrackingEntry.active="1"
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&startDate=${startDate}&endDate=${endDate}&addendumSigned=${signedDate}&" +
-                        "cardReaders=${numberOfCardsReaderEditText.text.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+
+                        "cardReaders=${readersCount}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
                         "&TrackingID=0&PortalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "RSP")
-                                    portalTrackingEntry.TrackingID= response.toString().substring(response.toString().indexOf("<TrackingID")+12,response.toString().indexOf("</TrackingID"))
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate=portalAdminEntry.endDate
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate=portalAdminEntry.startDate
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders=portalAdminEntry.CardReaders
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned=portalAdminEntry.AddendumSigned
+                                    portalTrackingEntry.TrackingID = response.toString().substring(response.toString().indexOf("<TrackingID")+12,response.toString().indexOf("</TrackingID"))
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
                                     FacilityDataModel.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
                                     fillPortalTrackingTableView()
                                     altLocationTableRow(2)
@@ -289,59 +284,45 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             } else {
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
             }
-
-//            RSP_LoadingView.visibility = View.GONE
-
-//                Toast.makeText(context,"please fill all required field",Toast.LENGTH_SHORT).show()
-
-
-
         }
 
-        //  fillData()
+        fillData()
         fillPortalTrackingTableView()
         altLocationTableRow(2)
-
+        (activity as FormsActivity).saveRequired = false
+        refreshButtonsState()
     }
+
+    fun fillData() {
+        FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
+            (0 until size).forEach {
+                if (!get(it).CardReaders.equals("-1")) {
+                    addsignDateButton.text = if (get(it).AddendumSigned.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).AddendumSigned.apiToAppFormatMMDDYYYY()
+                    addstartDateButton.text = if (get(it).startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startDate.apiToAppFormatMMDDYYYY()
+                    addendDateButton.text = if (get(it).endDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).endDate.apiToAppFormatMMDDYYYY()
+                    addnumberOfCardsReaderEditText.setText(get(it).CardReaders)
+                }
+            }
+        }
+    }
+
+
 
     fun validateInputs() : Boolean {
 
         var portalValide: Boolean
         portalValide = true
 
-        startDateButton.setError(null)
-        endDateButton.setError(null)
-        addendumSignedDateButton.setError(null)
-        numberOfCardsReaderEditText.setError(null)
         inspectionDateButton.setError(null)
         loggedIntoRspButton.setError(null)
         numberOfUnacknowledgedRecordsEditText.setError(null)
         numberOfInProgressTwoIns.setError(null)
         numberOfInProgressWalkIns.setError(null)
 
-        if (!startDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-
-            if (addendumSignedDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-                portalValide = false
-                addendumSignedDateButton.setError("Required Field")
-            }
-
-
-            if (numberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
-                portalValide = false
-                numberOfCardsReaderEditText.setError("Required Field")
-            }
-
-        }
-
-
-
-
         if (inspectionDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
             portalValide = false
             inspectionDateButton.setError("Required Field")
         }
-
 
         if (numberOfUnacknowledgedRecordsEditText.text.toString().isNullOrEmpty()) {
             portalValide = false
@@ -364,33 +345,11 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
     fun validateInputsForUpdate() : Boolean {
         var isInputsValid = true
 
-        edit_startDateButton.setError(null)
-        edit_endDateButton.setError(null)
-        edit_addendumSignedDateButton.setError(null)
-        edit_numberOfCardsReaderEditText.setError(null)
         edit_inspectionDateButton.setError(null)
         edit_loggedIntoRspButton.setError(null)
         edit_numberOfUnacknowledgedRecordsEditText.setError(null)
         edit_numberOfInProgressTwoIns.setError(null)
         edit_numberOfInProgressWalkIns.setError(null)
-
-        if (!edit_startDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-
-            if (edit_addendumSignedDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-                isInputsValid = false
-                edit_addendumSignedDateButton.setError("Required Field")
-            }
-
-
-            if (edit_numberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
-                isInputsValid = false
-                edit_numberOfCardsReaderEditText.setError("Required Field")
-            }
-
-        }
-
-
-
 
         if (edit_inspectionDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid = false
@@ -548,21 +507,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         edit_numberOfInProgressTwoIns.setText(textView3.text)
                         edit_numberOfInProgressWalkIns.setText(textView4.text)
                         edit_inspectionDateButton.setText(textView.text)
-                        try {
-                            edit_startDateButton.setText(if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate.isNullOrEmpty()) "SELECT DATE" else FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate.apiToAppFormatMMDDYYYY())
-                            edit_endDateButton.setText(if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate.isNullOrEmpty()) "SELECT DATE" else FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate.apiToAppFormatMMDDYYYY())
-                            edit_addendumSignedDateButton.setText(if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned.isNullOrEmpty()) "SELECT DATE" else FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned.apiToAppFormatMMDDYYYY())
-                        } catch (e: Exception) {
-
-                        }
-                        edit_numberOfCardsReaderEditText.setText(FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders)
                         edit_loggedIntoRspButton.isChecked = textView1.text.toString().contains("true")
-                        edit_numberOfCardsReaderEditText.setError(null)
                         edit_numberOfUnacknowledgedRecordsEditText.setError(null)
                         edit_numberOfInProgressTwoIns.setError(null)
                         edit_numberOfInProgressWalkIns.setError(null)
-                        edit_startDateButton.setError(null)
-                        edit_addendumSignedDateButton.setError(null)
                         edit_inspectionDateButton.setError(null)
                         edit_AAR_PortalTrackingEntryCard.visibility = View.VISIBLE
                         alphaBackgroundForRSPDialogs.visibility = View.VISIBLE
@@ -578,28 +526,22 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                             var numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
                             var numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
                             var numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
-                            var startDate = if (edit_startDateButton.text.equals("SELECT DATE")) "" else edit_startDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                            var endDate = if (edit_endDateButton.text.equals("SELECT DATE")) "" else edit_endDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                            var signedDate = if (edit_addendumSignedDateButton.text.equals("SELECT DATE")) "" else edit_addendumSignedDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var inspectionDate = if (edit_inspectionDateButton.text.equals("SELECT DATE")) "" else edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var trackingID = FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex-1].TrackingID
 
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
-                                    "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&TrackingID=${trackingID}&PortalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +// "&startDate=${startDate.toString()}&endDate=${endDate.toString()}&addendumSigned=${signedDate.toString()}&" +
+//                                    "cardReaders=${edit_numberOfCardsReaderEditText.text.toString()}&TrackingID=${trackingID}&PortalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
                                     "&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode>0<", false)) {
                                                 Utility.showSubmitAlertDialog(activity, true, "RSP")
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = edit_startDateButton.text.toString()
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate= endDate
+
                                                 FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
                                                 FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
                                                 FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
                                                 FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
                                                 FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = edit_numberOfCardsReaderEditText.text.toString()
-                                                FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = edit_addendumSignedDateButton.text.toString()
                                                 fillPortalTrackingTableView()
                                                 altLocationTableRow(2)
                                                 HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
@@ -635,13 +577,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     }
 
-
     fun altLocationTableRow(alt_row : Int) {
         var childViewCount = aarPortalTrackingTableLayout.getChildCount();
-
         for ( i in 1..childViewCount-1) {
             var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
-
             if (i % alt_row != 0) {
                 row.background = getResources().getDrawable(
                         R.drawable.alt_row_color);
@@ -649,12 +588,14 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 row.background = getResources().getDrawable(
                         R.drawable.row_color);
             }
-
-
         }
     }
 
+    fun refreshButtonsState(){
 
+        addsaveButton.isEnabled = (activity as FormsActivity).saveRequired
+        addcancelButton.isEnabled = (activity as FormsActivity).saveRequired
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

@@ -17,6 +17,7 @@ import com.inspection.R
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
+import com.inspection.model.VisitationTypes
 import kotlinx.android.synthetic.main.billing_group_layout.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
@@ -184,12 +185,12 @@ class BillingGroupFragment : Fragment() {
     }
 
     fun refreshTabIndicators() {
-        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited) billingButton.setTextColor(Color.parseColor("#26C3AA")) else billingButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited) billingPlanButton.setTextColor(Color.parseColor("#26C3AA")) else billingPlanButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited) billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA")) else billingAdjustmentButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited) billingHistoryButton.setTextColor(Color.parseColor("#26C3AA")) else billingHistoryButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].PaymentsVisited) paymentsButton.setTextColor(Color.parseColor("#26C3AA")) else paymentsButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited) vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA")) else vendorRevenueButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited) billingButton.setTextColor(Color.parseColor("#26C3AA")) else billingButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited) billingPlanButton.setTextColor(Color.parseColor("#26C3AA")) else billingPlanButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited) billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA")) else billingAdjustmentButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited) billingHistoryButton.setTextColor(Color.parseColor("#26C3AA")) else billingHistoryButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].PaymentsVisited) paymentsButton.setTextColor(Color.parseColor("#26C3AA")) else paymentsButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited) vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA")) else vendorRevenueButton.setTextColor(Color.parseColor("#A42600"))
     }
 
 

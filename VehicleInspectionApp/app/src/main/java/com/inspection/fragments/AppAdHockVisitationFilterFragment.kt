@@ -438,13 +438,14 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 activity!!.runOnUiThread {
                     recordsProgressView.visibility = View.GONE
                     if (!responseString.contains("FacID not found")) {
-                        if (responseString.toString().contains("returnCode&gt;1&", false)) {
+                        if (responseString.toString().contains("returnCode>1<", false)) {
                             activity!!.runOnUiThread {
-                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf(";message") + 12, responseString.indexOf("&lt;/message")))
+                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
                             }
                         } else {
-                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
-                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+//                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+//                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                             var jsonObj = obj.getJSONObject("responseXml")
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)

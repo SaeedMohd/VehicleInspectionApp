@@ -764,10 +764,6 @@ class FacilityGeneralInformationFragment : Fragment() {
             progressBarText.text = "Loading ..."
         }))
 
-//                            (activity as FormsActivity).saveRequired = false
-//                            HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods = true
-//                            HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-//                            refreshButtonsState()
 
     }
 

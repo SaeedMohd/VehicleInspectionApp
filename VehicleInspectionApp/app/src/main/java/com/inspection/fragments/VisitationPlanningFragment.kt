@@ -769,7 +769,7 @@ class VisitationPlanningFragment : Fragment() {
             }
 
             override fun onResponse(call: Call?, response: okhttp3.Response?) {
-                Log.v("GetFacilityData replied", "GetFacilityData replied")
+                Log.v("GetFaciliTblAARPortalAdmintyData replied", "GetFacilityData replied")
                 var responseString = response!!.body()!!.string()
                 activity!!.runOnUiThread {
                     recordsProgressView.visibility = View.GONE

@@ -18,6 +18,7 @@ import com.inspection.fragmentsNames
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
+import com.inspection.model.VisitationTypes
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
@@ -283,12 +284,12 @@ class ScopeOfServiceGroupFragment : Fragment() {
     }
 
     fun refreshTabIndicators() {
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited) sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA")) else sosgeneralInformationButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited) facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) programsButton.setTextColor(Color.parseColor("#26C3AA")) else programsButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited) vehiclesButton.setTextColor(Color.parseColor("#26C3AA")) else vehiclesButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited) sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA")) else sosgeneralInformationButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited) facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) programsButton.setTextColor(Color.parseColor("#26C3AA")) else programsButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited) vehiclesButton.setTextColor(Color.parseColor("#26C3AA")) else vehiclesButton.setTextColor(Color.parseColor("#A42600"))
 //        promotionsButton.setTextColor(Color.parseColor("#26C3AA"))
 //        awardsAndDistinctionsButton.setTextColor(Color.parseColor("#26C3AA"))
     }

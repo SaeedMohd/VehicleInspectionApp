@@ -323,6 +323,14 @@ class HasChangedModel {
         }
     }
 
+    fun checkRSPFacilityChange () {
+        var changeWasDone = false
+        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders!=FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate!=FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate!=FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned!=FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned) changeWasDone = true
+        groupFacilityRSP[0].FacilityRSP = changeWasDone
+    }
 
     fun checkGeneralInfoTblFacilitiesChange () {
         var changeWasDone = false
