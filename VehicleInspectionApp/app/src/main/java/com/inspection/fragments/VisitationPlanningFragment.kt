@@ -2,11 +2,13 @@ package com.inspection.fragments
 
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -34,6 +36,7 @@ import okhttp3.Callback
 import okhttp3.OkHttpClient
 import org.json.JSONObject
 import org.json.XML
+import java.io.File
 import java.io.IOException
 import java.net.URLEncoder
 import java.util.*
@@ -652,7 +655,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationTypeValueTextView.text = "Not Started"
                 vh.visitationTypeTextView.text = "Status:"
                 vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)
+                    getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode,false)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].BusinessName
@@ -664,7 +667,7 @@ class VisitationPlanningFragment : Fragment() {
                 //visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode)
+                    getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode,true)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].BusinessName
@@ -674,7 +677,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.initialContractDateTextView.text = "Deficiency Due Date:"
                 vh.visitationTypeTextView.text = "Type:"
                 vh.loadBtn.setOnClickListener({
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode)
+                    getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode,false)
                 })
             }
             return view
@@ -750,7 +753,7 @@ class VisitationPlanningFragment : Fragment() {
         })
     }
 
-    fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String) {
+    fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String,isCompleted : Boolean) {
 
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
         var client = clientBuilder.build()
@@ -785,8 +788,24 @@ class VisitationPlanningFragment : Fragment() {
                             var jsonObj = obj.getJSONObject("responseXml")
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
-                            var intent = Intent(context, com.inspection.FormsActivity::class.java)
-                            startActivity(intent)
+                            if (isCompleted) {
+                                createPDF(true)
+                                val target = Intent(Intent.ACTION_VIEW)
+                                val file = File(Environment.getExternalStorageDirectory().path+"/test.pdf")
+
+                                target.setDataAndType(Uri.fromFile(file), "application/pdf")
+                                target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+
+                                val intent = Intent.createChooser(target, "Open File")
+                                try {
+                                    startActivity(intent)
+                                } catch (e: ActivityNotFoundException) {
+                                    // Instruct the user to install a PDF reader here, or something
+                                }
+                            } else {
+                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
+                                startActivity(intent)
+                            }
                         }
                     } else {
                         activity!!.runOnUiThread {
@@ -1896,6 +1915,63 @@ class VisitationPlanningFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblHours")
         }
+
+        if (jsonObj.has("tblTerminationCodeType")) {
+            if (!jsonObj.get("tblTerminationCodeType").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblTerminationCodeType")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblTerminationCodeType"))
+                    jsonObj.put("tblTerminationCodeType", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblTerminationCodeType")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblTerminationCodeType")
+        }
+
+        if (jsonObj.has("tblBusinessType")) {
+            if (!jsonObj.get("tblBusinessType").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblBusinessType")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblBusinessType"))
+                    jsonObj.put("tblBusinessType", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblBusinessType")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblBusinessType")
+        }
+
+        if (jsonObj.has("tblFacilityClosure")) {
+            if (!jsonObj.get("tblFacilityClosure").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityClosure")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityClosure"))
+                    jsonObj.put("tblFacilityClosure", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
+        }
 //
         return jsonObj
     }
@@ -2142,6 +2218,7 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.LastName=""
             oneArray.PersonnelTypeID=0
             oneArray.Phone=""
+            oneArray.PersonnelID = -1
             oneArray.PrimaryMailRecipient=false
             oneArray.RSP_Email=""
             oneArray.RSP_UserName=""
@@ -2190,6 +2267,15 @@ class VisitationPlanningFragment : Fragment() {
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblHours")) {
             var oneArray = TblHours()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblBusinessType")) {
+            var oneArray = TblBusinessType()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblTerminationCodeType")) {
+            var oneArray = TblBusinessType()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityClosure")) {
+            var oneArray = TblFacilityClosure()
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

@@ -23,6 +23,7 @@ class TblFacilities {
     var BusinessName = ""
     var EntityName = ""
     var ACTIVE = 1
+    var BusTypeID = 0
     var TerminationComments = ""
     var TerminationDate = ""
     var FacilityAnnualInspectionMonth = 0

@@ -228,7 +228,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                 dba_textviewVal.text = tblFacilities[0].BusinessName
                 entity_textviewVal.text = tblFacilities[0].EntityName
                 if (tblBusinessType.size>0) {
-                    bustype_textviewVal.setSelection(busTypeArray.indexOf(tblBusinessType[0].BusTypeName))
+                    bustype_textviewVal.setSelection(busTypeArray.indexOf(tblFacilities[0].BusTypeID.toString()))
                 } else {
                     bustype_textviewVal.setSelection(0)
                 }
@@ -267,24 +267,25 @@ class FacilityGeneralInformationFragment : Fragment() {
                 currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormatMMDDYYYY()
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
+                inspectionCycleTextViewVal.text = if (tblFacilities[0].InspectionCycle.isNullOrEmpty()) "" else tblFacilities[0].InspectionCycle
+                inspectionMonthsTextViewVal.text = tblFacilities[0].FacilityAnnualInspectionMonth.monthNoToName()
+//                if (tblFacilities[0].FacilityAnnualInspectionMonth>0) {
+//                    if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
+//                        inspectionCycleTextViewVal.text="1"
+//                    }
+//                    if (inspectionMonthsTextViewVal.text==inspectionMonths[1]||inspectionMonthsTextViewVal.text==inspectionMonths[4]||inspectionMonthsTextViewVal.text==inspectionMonths[7]||inspectionMonthsTextViewVal.text==inspectionMonths[10]){
+//
+//                        inspectionCycleTextViewVal.text="2"
+//                    }
+//                    if (inspectionMonthsTextViewVal.text==inspectionMonths[2]||inspectionMonthsTextViewVal.text==inspectionMonths[5]||inspectionMonthsTextViewVal.text==inspectionMonths[8]||inspectionMonthsTextViewVal.text==inspectionMonths[11]){
+//
+//                        inspectionCycleTextViewVal.text="3"
 
-                if (tblFacilities[0].FacilityAnnualInspectionMonth>0) {
-                    inspectionMonthsTextViewVal.text = inspectionMonths[(tblFacilities[0].FacilityAnnualInspectionMonth) - 1]
-                    if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
-                        inspectionCycleTextViewVal.text="1"
-                    }
-                    if (inspectionMonthsTextViewVal.text==inspectionMonths[1]||inspectionMonthsTextViewVal.text==inspectionMonths[4]||inspectionMonthsTextViewVal.text==inspectionMonths[7]||inspectionMonthsTextViewVal.text==inspectionMonths[10]){
-
-                        inspectionCycleTextViewVal.text="2"
-                    }
-                    if (inspectionMonthsTextViewVal.text==inspectionMonths[2]||inspectionMonthsTextViewVal.text==inspectionMonths[5]||inspectionMonthsTextViewVal.text==inspectionMonths[8]||inspectionMonthsTextViewVal.text==inspectionMonths[11]){
-
-                        inspectionCycleTextViewVal.text="3"
-                    }
-                } else {
-                    inspectionMonthsTextViewVal.text = ""
-                    inspectionCycleTextViewVal.text = ""
-                }
+//                    }
+//                } else {
+//                    inspectionMonthsTextViewVal.text = ""
+//                    inspectionCycleTextViewVal.text = ""
+//                }
 
 
 

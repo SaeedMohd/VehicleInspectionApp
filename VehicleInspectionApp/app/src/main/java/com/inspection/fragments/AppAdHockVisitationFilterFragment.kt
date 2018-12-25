@@ -1,9 +1,11 @@
 package com.inspection.fragments
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.android.volley.Request
 import com.android.volley.Response
@@ -32,6 +35,7 @@ import okhttp3.OkHttpClient
 
 import org.json.JSONObject
 import org.json.XML
+import java.io.File
 import java.io.IOException
 import java.net.URLEncoder
 import java.util.*
@@ -301,7 +305,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities List - " + it.message)
             Log.v("error while loading", "error while loading visitation records")
         }))
-        createPDF(true)
+
     }
 
     private fun loadSpecialistName() {
@@ -1560,6 +1564,62 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblHours")
         }
+        if (jsonObj.has("tblTerminationCodeType")) {
+            if (!jsonObj.get("tblTerminationCodeType").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblTerminationCodeType")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblTerminationCodeType"))
+                    jsonObj.put("tblTerminationCodeType", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblTerminationCodeType")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblTerminationCodeType")
+        }
+
+        if (jsonObj.has("tblBusinessType")) {
+            if (!jsonObj.get("tblBusinessType").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblBusinessType")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblBusinessType"))
+                    jsonObj.put("tblBusinessType", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblBusinessType")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblBusinessType")
+        }
+
+        if (jsonObj.has("tblFacilityClosure")) {
+            if (!jsonObj.get("tblFacilityClosure").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityClosure")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityClosure"))
+                    jsonObj.put("tblFacilityClosure", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
+        }
 
         return jsonObj
     }
@@ -1804,6 +1864,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.LastName=""
             oneArray.PersonnelTypeID=0
             oneArray.Phone=""
+            oneArray.PersonnelID = -1
             oneArray.PrimaryMailRecipient=false
             oneArray.RSP_Email=""
             oneArray.RSP_UserName=""
@@ -1852,6 +1913,15 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblHours")) {
             var oneArray = TblHours()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblBusinessType")) {
+            var oneArray = TblBusinessType()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblTerminationCodeType")) {
+            var oneArray = TblBusinessType()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityClosure")) {
+            var oneArray = TblFacilityClosure()
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 
