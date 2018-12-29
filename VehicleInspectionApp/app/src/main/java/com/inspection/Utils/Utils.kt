@@ -22,9 +22,6 @@ import android.os.Environment
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.itextpdf.text.*
-import com.itextpdf.text.pdf.PdfPCell
-import com.itextpdf.text.pdf.PdfPTable
-import com.itextpdf.text.pdf.PdfWriter
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import android.content.ActivityNotFoundException
@@ -34,6 +31,7 @@ import android.graphics.Color
 import android.net.Uri
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
+import com.itextpdf.text.pdf.*
 import java.io.File
 import java.lang.Exception
 
@@ -162,13 +160,19 @@ fun createPDF(isSpecialist : Boolean ){
     val document = Document()
 
     //output file path
-    var outpath = Environment.getExternalStorageDirectory().path+"/test.pdf"
+    var outpath = Environment.getExternalStorageDirectory().path+"/VisitationDetails.pdf"
 
     try {
-        PdfWriter.getInstance(document, FileOutputStream(outpath))
+        var writer = PdfWriter.getInstance(document, FileOutputStream(outpath))
+        val event = HeaderFooterPageEvent()
+        writer.pageEvent = event
         document.open()
+
+
         // Left
         document.addTitle("Visitation Details")
+
+
         var paragraph = Paragraph("Vistation Details")
         paragraph.alignment = Element.ALIGN_CENTER
         addEmptyLine(paragraph,2)
@@ -199,17 +203,19 @@ private fun createTable() : PdfPTable {
     val titleFont = FontFactory.getFont(FontFactory.HELVETICA,10F,BaseColor.BLUE)
     val normalFont = FontFactory.getFont(FontFactory.HELVETICA,8F,BaseColor.BLACK)
     table.setWidthPercentage(100F);
+
     // Visitation Section
     var c1 = PdfPCell(Paragraph("Visitation", titleFont))
     c1.horizontalAlignment = Element.ALIGN_CENTER
     c1.verticalAlignment = Element.ALIGN_MIDDLE
     c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan = 2
     table.addCell(c1);
     var c2 = PdfPCell(Paragraph("Details" , titleFont));
     c2.horizontalAlignment = Element.ALIGN_CENTER
     c2.verticalAlignment = Element.ALIGN_MIDDLE
     c2.backgroundColor = BaseColor.LIGHT_GRAY
-    table.addCell(c2);
+//    table.addCell(c2);
 
 //    table.setHeaderRows(1)
     // Facility Number
@@ -246,7 +252,7 @@ private fun createTable() : PdfPTable {
 
     c3 = PdfPCell(Paragraph("Vendor Revenue (past 12 months)", normalFont));
     c3.horizontalAlignment = Element.ALIGN_LEFT
-    c3.rowspan = if (FacilityDataModel.getInstance().tblVendorRevenue.size >5) 5 else FacilityDataModel.getInstance().tblVendorRevenue.size
+    c3.rowspan = FacilityDataModel.getInstance().tblVendorRevenue.size
     c3.verticalAlignment = Element.ALIGN_MIDDLE
     table.addCell(c3)
 //    FacilityDataModel.getInstance().tblVendorRevenue.filter { s->s. }
@@ -297,12 +303,13 @@ private fun createTable() : PdfPTable {
     c1.horizontalAlignment = Element.ALIGN_CENTER
     c1.verticalAlignment = Element.ALIGN_MIDDLE
     c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan = 2
     table.addCell(c1);
-    c2 = PdfPCell(Paragraph("Details" , titleFont));
-    c2.horizontalAlignment = Element.ALIGN_CENTER
-    c2.verticalAlignment = Element.ALIGN_MIDDLE
-    c2.backgroundColor = BaseColor.LIGHT_GRAY
-    table.addCell(c2);
+//    c2 = PdfPCell(Paragraph("Details" , titleFont));
+//    c2.horizontalAlignment = Element.ALIGN_CENTER
+//    c2.verticalAlignment = Element.ALIGN_MIDDLE
+//    c2.backgroundColor = BaseColor.LIGHT_GRAY
+//    table.addCell(c2);
     addDataCell(table,"DBA",FacilityDataModel.getInstance().tblFacilities[0].BusinessName,normalFont,false)
     addDataCell(table,"Entity Name",FacilityDataModel.getInstance().tblFacilities[0].EntityName,normalFont,false)
     addDataCell(table,"Business Type",TypeTablesModel.getInstance().BusinessType.filter { s->s.BusTypeID.equals(FacilityDataModel.getInstance().tblFacilities[0].BusTypeID.toString())}[0].BusTypeName,normalFont,false)
@@ -350,12 +357,13 @@ private fun createTable() : PdfPTable {
     c1.horizontalAlignment = Element.ALIGN_CENTER
     c1.verticalAlignment = Element.ALIGN_MIDDLE
     c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan = 2
     table.addCell(c1);
-    c2 = PdfPCell(Paragraph("Details" , titleFont));
-    c2.horizontalAlignment = Element.ALIGN_CENTER
-    c2.verticalAlignment = Element.ALIGN_MIDDLE
-    c2.backgroundColor = BaseColor.LIGHT_GRAY
-    table.addCell(c2);
+//    c2 = PdfPCell(Paragraph("Details" , titleFont));
+//    c2.horizontalAlignment = Element.ALIGN_CENTER
+//    c2.verticalAlignment = Element.ALIGN_MIDDLE
+//    c2.backgroundColor = BaseColor.LIGHT_GRAY
+//    table.addCell(c2);
 
     FacilityDataModel.getInstance().tblAddress.apply {
         (0 until size).forEach {
@@ -429,26 +437,28 @@ private fun createTable() : PdfPTable {
     c1.horizontalAlignment = Element.ALIGN_CENTER
     c1.verticalAlignment = Element.ALIGN_MIDDLE
     c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan = 2
     table.addCell(c1);
-    c2 = PdfPCell(Paragraph("Details" , titleFont));
-    c2.horizontalAlignment = Element.ALIGN_CENTER
-    c2.verticalAlignment = Element.ALIGN_MIDDLE
-    c2.backgroundColor = BaseColor.LIGHT_GRAY
-    table.addCell(c2);
+//    c2 = PdfPCell(Paragraph("Details" , titleFont));
+//    c2.horizontalAlignment = Element.ALIGN_CENTER
+//    c2.verticalAlignment = Element.ALIGN_MIDDLE
+//    c2.backgroundColor = BaseColor.LIGHT_GRAY
+//    table.addCell(c2);
 
     FacilityDataModel.getInstance().tblPersonnel.apply {
         (0 until size).forEach {
             if (!get(it).PersonnelID.equals("-1")) {
-                c1 = PdfPCell(Paragraph(TypeTablesModel.getInstance().PersonnelType.filter { s -> s.PersonnelTypeID.toInt() == get(it).PersonnelTypeID }[0].PersonnelTypeName, normalFont))
+                c1 = PdfPCell(Paragraph(TypeTablesModel.getInstance().PersonnelType.filter { s -> s.PersonnelTypeID.toInt() == get(it).PersonnelTypeID }[0].PersonnelTypeName + ":  " + get(it).FirstName + " " + get(it).LastName, normalFont))
                 c1.horizontalAlignment = Element.ALIGN_CENTER
                 c1.verticalAlignment = Element.ALIGN_MIDDLE
                 c1.backgroundColor = BaseColor.LIGHT_GRAY
+                c1.colspan = 2
                 table.addCell(c1);
-                c2 = PdfPCell(Paragraph(get(it).FirstName + " " + get(it).LastName, normalFont));
-                c2.horizontalAlignment = Element.ALIGN_CENTER
-                c2.verticalAlignment = Element.ALIGN_MIDDLE
-                c2.backgroundColor = BaseColor.LIGHT_GRAY
-                table.addCell(c2);
+//                c2 = PdfPCell(Paragraph(get(it).FirstName + " " + get(it).LastName, normalFont));
+//                c2.horizontalAlignment = Element.ALIGN_CENTER
+//                c2.verticalAlignment = Element.ALIGN_MIDDLE
+//                c2.backgroundColor = BaseColor.LIGHT_GRAY
+//                table.addCell(c2);
 //                addDataCell(table, "Personnel Type", TypeTablesModel.getInstance().PersonnelType.filter { s -> s.PersonnelTypeID.toInt() == get(it).PersonnelTypeID }[0].PersonnelTypeName, normalFont)
 //                addDataCell(table, "First Name", get(it).FirstName, normalFont)
 //                addDataCell(table, "Last Name", get(it).LastName, normalFont)
@@ -491,12 +501,13 @@ private fun createTable() : PdfPTable {
     c1.horizontalAlignment = Element.ALIGN_CENTER
     c1.verticalAlignment = Element.ALIGN_MIDDLE
     c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan = 2
     table.addCell(c1);
-    c2 = PdfPCell(Paragraph("Details", titleFont));
-    c2.horizontalAlignment = Element.ALIGN_CENTER
-    c2.verticalAlignment = Element.ALIGN_MIDDLE
-    c2.backgroundColor = BaseColor.LIGHT_GRAY
-    table.addCell(c2)
+//    c2 = PdfPCell(Paragraph("Details", titleFont));
+//    c2.horizontalAlignment = Element.ALIGN_CENTER
+//    c2.verticalAlignment = Element.ALIGN_MIDDLE
+//    c2.backgroundColor = BaseColor.LIGHT_GRAY
+//    table.addCell(c2)
 
     if (!FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders.equals("-1")) {
         addDataCell(table, "Start Date", if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate.apiToAppFormatMMDDYYYY(), normalFont,false)
@@ -549,12 +560,13 @@ private fun createTable() : PdfPTable {
     c1.horizontalAlignment = Element.ALIGN_CENTER
     c1.verticalAlignment = Element.ALIGN_MIDDLE
     c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan = 2
     table.addCell(c1);
-    c2 = PdfPCell(Paragraph("Details", titleFont));
-    c2.horizontalAlignment = Element.ALIGN_CENTER
-    c2.verticalAlignment = Element.ALIGN_MIDDLE
-    c2.backgroundColor = BaseColor.LIGHT_GRAY
-    table.addCell(c2)
+//    c2 = PdfPCell(Paragraph("Details", titleFont));
+//    c2.horizontalAlignment = Element.ALIGN_CENTER
+//    c2.verticalAlignment = Element.ALIGN_MIDDLE
+//    c2.backgroundColor = BaseColor.LIGHT_GRAY
+//    table.addCell(c2)
 
     FacilityDataModel.getInstance().tblScopeofService[0].apply {
         addDataCell(table, "Fixed Labor Rate",if (FixedLaborRate.isNullOrEmpty()) "0" else FixedLaborRate, normalFont,false)
@@ -570,12 +582,13 @@ private fun createTable() : PdfPTable {
     c1.horizontalAlignment = Element.ALIGN_CENTER
     c1.verticalAlignment = Element.ALIGN_MIDDLE
     c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan = 2
     table.addCell(c1);
-    c2 = PdfPCell(Paragraph("Details", titleFont));
-    c2.horizontalAlignment = Element.ALIGN_CENTER
-    c2.verticalAlignment = Element.ALIGN_MIDDLE
-    c2.backgroundColor = BaseColor.LIGHT_GRAY
-    table.addCell(c2)
+//    c2 = PdfPCell(Paragraph("Details", titleFont));
+//    c2.horizontalAlignment = Element.ALIGN_CENTER
+//    c2.verticalAlignment = Element.ALIGN_MIDDLE
+//    c2.backgroundColor = BaseColor.LIGHT_GRAY
+//    table.addCell(c2)
 
     // Vehicle Services
     var vehicleTypeID=""
@@ -596,6 +609,173 @@ private fun createTable() : PdfPTable {
             }
         }
     }
+
+    c1 = PdfPCell(Paragraph("Vehicles", titleFont))
+    c1.horizontalAlignment = Element.ALIGN_CENTER
+    c1.verticalAlignment = Element.ALIGN_MIDDLE
+    c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan = 2
+    table.addCell(c1);
+//    c2 = PdfPCell(Paragraph("Details", titleFont));
+//    c2.horizontalAlignment = Element.ALIGN_CENTER
+//    c2.verticalAlignment = Element.ALIGN_MIDDLE
+//    c2.backgroundColor = BaseColor.LIGHT_GRAY
+//    table.addCell(c2)
+
+    // Vehicles
+    vehicleTypeID="1"
+    TypeTablesModel.getInstance().VehiclesMakesCategoryType.apply {
+        (0 until size).forEach {
+            addDataCell(table,get(it).VehCategoryName,"",titleFont,true)
+//            if (TypeTablesModel.getInstance().VehicleMakes.filter { s->s.VehicleTypeID.equals(vehicleTypeID) && s.VehicleCategoryID.equals(get(it).VehCategoryID)}.isNotEmpty()) {
+            TypeTablesModel.getInstance().VehicleMakes.filter { s->s.VehicleTypeID==vehicleTypeID.toInt() && s.VehicleCategoryID==get(it).VehCategoryID.toInt()}.apply {
+                (0 until size).forEach {vMakeIt ->
+                    addDataCell(table, get(vMakeIt).MakeName, if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==get(vMakeIt).VehicleID}.isNotEmpty()) "X" else "", normalFont, true)
+                }
+            }
+        }
+    }
+
+    c1 = PdfPCell(Paragraph("Programs", titleFont))
+    c1.horizontalAlignment = Element.ALIGN_CENTER
+    c1.verticalAlignment = Element.ALIGN_MIDDLE
+    c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan=2
+    table.addCell(c1);
+
+    // Programs
+    c3 = PdfPCell(Paragraph("Programs", normalFont));
+    c3.horizontalAlignment = Element.ALIGN_LEFT
+    try {
+        c3.rowspan = FacilityDataModel.getInstance().tblPrograms.size
+    } catch (e:Exception) {
+        c3.rowspan=1
+    }
+    c3.verticalAlignment = Element.ALIGN_MIDDLE
+    table.addCell(c3)
+    var strPrograms = ""
+    FacilityDataModel.getInstance().tblPrograms.apply {
+        (0 until size).forEach {
+            if (!get(it).ProgramID.equals("-1")) {
+                strPrograms = "Program Name: " + get(it).programtypename
+                strPrograms += "\nEffective Date: " + if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY() + " - Expiration Date: " + if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY()
+                strPrograms += "\nComments: " + get(it).Comments
+                table.addCell(Paragraph(strPrograms, normalFont))
+            } else {
+                table.addCell(Paragraph("", normalFont))
+            }
+        }
+    }
+
+    if (strPrograms.equals("")) table.addCell(Paragraph("", normalFont))
+
+    c1 = PdfPCell(Paragraph("Facility Services", titleFont))
+    c1.horizontalAlignment = Element.ALIGN_CENTER
+    c1.verticalAlignment = Element.ALIGN_MIDDLE
+    c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan=2
+    table.addCell(c1);
+
+    // Facility Services
+    c3 = PdfPCell(Paragraph("Facility Services", normalFont));
+    c3.horizontalAlignment = Element.ALIGN_LEFT
+    try {
+        c3.rowspan = FacilityDataModel.getInstance().tblFacilityServices.size
+    } catch (e:Exception) {
+        c3.rowspan=1
+    }
+    c3.verticalAlignment = Element.ALIGN_MIDDLE
+    table.addCell(c3)
+    var strFacServices = ""
+    FacilityDataModel.getInstance().tblFacilityServices.apply {
+        (0 until size).forEach {
+            if (!get(it).FacilityServicesID.equals("-1")) {
+                strFacServices = "Service Name: " + TypeTablesModel.getInstance().ServicesType.filter { s->s.ServiceTypeID.equals(get(it).ServiceID) }[0].ServiceTypeName
+                strFacServices += "\nEffective Date: " + if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY() + " - Expiration Date: " + if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY()
+                strFacServices += "\nComments: " + get(it).Comments
+                table.addCell(Paragraph(strFacServices, normalFont))
+            } else {
+                table.addCell(Paragraph("", normalFont))
+            }
+        }
+    }
+
+    if (strFacServices.equals("")) table.addCell(Paragraph("", normalFont))
+
+    c1 = PdfPCell(Paragraph("Affiliations", titleFont))
+    c1.horizontalAlignment = Element.ALIGN_CENTER
+    c1.verticalAlignment = Element.ALIGN_MIDDLE
+    c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan=2
+    table.addCell(c1);
+
+    // Affiliations
+    c3 = PdfPCell(Paragraph("Affiliations", normalFont));
+    c3.horizontalAlignment = Element.ALIGN_LEFT
+    try {
+        c3.rowspan = FacilityDataModel.getInstance().tblAffiliations.size
+    } catch (e:Exception) {
+        c3.rowspan=1
+    }
+    c3.verticalAlignment = Element.ALIGN_MIDDLE
+    table.addCell(c3)
+    var strAffiliation= ""
+    FacilityDataModel.getInstance().tblAffiliations.apply {
+        (0 until size).forEach {
+            if (!(get(it).AffiliationID==-1)) {
+                strAffiliation = "Affiliation Name: " + if (get(it).AffiliationTypeID>0) TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AARAffiliationTypeID.toInt()==get(it).AffiliationTypeID}[0].AffiliationTypeName else ""
+                strAffiliation += "\nAffiliation Details: " + if (get(it).AffiliationTypeDetailID>0) TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationTypeDetailID.toInt()==get(it).AffiliationTypeDetailID}[0].AffiliationDetailTypeName else ""
+                strAffiliation += "\nEffective Date: " + if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY() + " - Expiration Date: " + if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY()
+                strAffiliation += "\nComments: " + get(it).comment
+                table.addCell(Paragraph(strAffiliation, normalFont))
+            } else {
+                table.addCell(Paragraph("", normalFont))
+            }
+        }
+    }
+
+    if (strAffiliation.equals("")) table.addCell(Paragraph("", normalFont))
+
+    // Complaints
+
+    c1 = PdfPCell(Paragraph("Complaints", titleFont))
+    c1.horizontalAlignment = Element.ALIGN_CENTER
+    c1.verticalAlignment = Element.ALIGN_MIDDLE
+    c1.backgroundColor = BaseColor.LIGHT_GRAY
+    c1.colspan=2
+    table.addCell(c1);
+
+    c3 = PdfPCell(Paragraph("Complaints", normalFont));
+    c3.horizontalAlignment = Element.ALIGN_LEFT
+    try {
+        c3.rowspan = FacilityDataModel.getInstance().tblComplaintFiles.size
+    } catch (e:Exception) {
+        c3.rowspan=1
+    }
+    c3.verticalAlignment = Element.ALIGN_MIDDLE
+    table.addCell(c3)
+    var strComplaints= ""
+    FacilityDataModel.getInstance().tblComplaintFiles.apply {
+        (0 until size).forEach {
+            if (!get(it).ComplaintID.equals("")) {
+                strComplaints = "Complaint ID: " + get(it).ComplaintID
+                strComplaints += "\nFirst Name: " + get(it).FirstName
+                strComplaints += "\nLastName: " + get(it).LastName
+                strComplaints += "\nReceived Date: " + if (get(it).ReceivedDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ReceivedDate.apiToAppFormatMMDDYYYY()
+                strComplaints += "\nComplaints Reason: " + get(it).ComplaintReasonName
+                strComplaints += "\nComplaints Resolution: " + get(it).ComplaintResolutionName
+                table.addCell(Paragraph(strComplaints, normalFont))
+            } else {
+                table.addCell(Paragraph("", normalFont))
+            }
+        }
+    }
+
+//    if (strComplaints.equals("")) table.addCell(Paragraph("", normalFont))
+
+    addDataCell(table,"Number of Complaints during previous 12 months",FacilityDataModel.getInstance().NumberofComplaints[0].NumberofComplaintslast12months,normalFont,true)
+    addDataCell(table,"Number of Justified Complaints during previous 12 months",FacilityDataModel.getInstance().NumberofJustifiedComplaints[0].NumberofJustifiedComplaintslast12months,normalFont,true)
+    addDataCell(table,"Justified Complaints Ratio",FacilityDataModel.getInstance().JustifiedComplaintRatio[0].JustifiedComplaintRatio,normalFont,true)
 
     return table
 }
@@ -646,3 +826,22 @@ fun verifyStoragePermissions(activity: FragmentActivity) {
         createPDF(true)
     }
 }
+
+class HeaderFooterPageEvent : PdfPageEventHelper() {
+
+    var ffont = Font(Font.FontFamily.HELVETICA, 8F, Font.NORMAL)
+
+    override fun onStartPage(writer: PdfWriter?, document: Document?) {
+//        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_CENTER, Phrase("Date: "+Date().toAppFormatMMDDYYYY(),ffont),((document!!.right()-document.left()) / 2 + document.leftMargin()),
+//               document!!.bottom().minus(10), 0F)
+//        ColumnText.showTextAligned(writer.directContent, Element.ALIGN_CENTER, Phrase("Top Right"), 550f, 820f, 0f)
+    }
+
+    override fun onEndPage(writer: PdfWriter?, document: Document?) {
+//        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_CENTER, Phrase("http://www.xxxx-your_example.com/"), 110f, 30f, 0f)
+        ColumnText.showTextAligned(writer?.directContent, Element.ALIGN_CENTER, Phrase("Page " + document!!.pageNumber,ffont), 550f, 20f, 0f)
+        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_LEFT, Phrase("Date Printed: "+Date().toAppFormatMMDDYYYY(),ffont),35f, 20f, 0f)
+    }
+
+}
+
