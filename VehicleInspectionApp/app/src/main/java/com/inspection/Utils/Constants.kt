@@ -67,9 +67,12 @@ object Constants {
     val getSpecialistNameFromEmail = permanentURL + "getSpecialistNameFromEmail?specialistEmail="
 
     val submitContactInfoAddress = permanentURL + "UpdateFacilityAddressData?facnum="
-    val submitFacilityGeneralInfo = permanentURL + "updateFacilityInfo?facNum="
+    val submitFacilityGeneralInfo = permanentURL + "updateFacilityData?facNum="
     val submitFacilityHours = permanentURL + "updateFacilityHoursData?facnum="
     val submitFacilityEmail = permanentURL + "updateFacilityEmailData?facnum="
+    val authenticateUrl = permanentURL + "authenticate?email="
+    val resetPassword = permanentURL + "resetPassword?email="
+    val changePassword = permanentURL + "changePassword?email="
 
     val submitFacilityPhone = permanentURL + "updateFacilityPhoneData?facNum="
     //AAA APIs WebServices
@@ -80,8 +83,8 @@ object Constants {
     val getVisitations = permanentURL + "getVisitations?"
     val getFacilitiesWithFilters = permanentURL + "getFacilitiesWithFilters?"
 
-
     val UpdateAARPortalAdminData = permanentURL + "updateAARPortalAdminData?facNum="
+    val UpdateAARPortalTrackingData = permanentURL + "updateAARPortalTracking?facNum="
     val UpdateAmendmentOrderTrackingData = permanentURL + "updateAmendmentOrderTrackingData?facNum="
     val UpdateDeficiencyData = permanentURL + "updateDeficiencyData?facNum="
     val UpdateProgramsData = permanentURL + "updateProgramsData?facNum="
@@ -90,7 +93,7 @@ object Constants {
     val UpdatePaymentMethodsData=permanentURL + "updatePaymentMethodsData?facnum="
 
     val UpdateFacilityLanguageData=permanentURL + "updateFacilityLanguageData?facNum="
-    val UpdateFacilityVehicles= permanentURL + "updateFacilityVehicles?facnum="
+    val UpdateFacilityVehicles= permanentURL + "updateVehicles?facnum="
     val UpdateVehicleServices=permanentURL + "updateVehicleServices?facnum="
     val UpdatePersonnelCertification=permanentURL + "updatePersonnelCertification?facnum="
     val UpdateFacilityPersonnelData=permanentURL + "updateFacilityPersonnelData?facnum="

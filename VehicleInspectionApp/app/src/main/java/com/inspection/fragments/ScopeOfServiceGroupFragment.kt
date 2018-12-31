@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.inspection.FormsActivity
 import com.inspection.R
+import com.inspection.Utils.Utility
 import com.inspection.fragmentsNames
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
@@ -74,63 +75,87 @@ class ScopeOfServiceGroupFragment : Fragment() {
         updateSelectedIndicator(R.id.generalInformationButton)
 
         sosgeneralInformationButton.setOnClickListener {
-            var fragment = FragmentARRAVScopeOfService.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSGeneralInfo.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.generalInformationButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVScopeOfService.newInstance("", "")
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.SoSGeneralInfo.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.generalInformationButton)
+            }
         }
 
         vehicleServicesButton.setOnClickListener {
-            var fragment = FragmentARRAVVehicleServices.newInstance("", "")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSVehicleServices.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.vehicleServicesButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVVehicleServices.newInstance("", "")
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.SoSVehicleServices.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.vehicleServicesButton)
+            }
         }
 
         programsButton.setOnClickListener {
-            var fragment = FragmentARRAVPrograms.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSPrograms.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.programsButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVPrograms.newInstance("", "")
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.SoSPrograms.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.programsButton)
+            }
         }
 
         facilityServicesButton.setOnClickListener {
-            var fragment = FragmentARRAVFacilityServices.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSFacilityServices.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.facilityServicesButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVFacilityServices.newInstance("", "")
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.SoSFacilityServices.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.facilityServicesButton)
+            }
         }
 
         vehiclesButton.setOnClickListener {
-            var fragment = VehiclesFragmentInScopeOfServicesView.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSVehicles.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.vehiclesButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = VehiclesFragmentInScopeOfServicesView.newInstance("", "")
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.SoSVehicles.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.vehiclesButton)
+            }
         }
 
         AffiliationsButton.setOnClickListener {
-            var fragment = FragmentARRAVAffliations.newInstance("","")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            (activity as FormsActivity).currentFragment= fragmentsNames.SoSAffiliations.toString()
-            (activity as FormsActivity).saveRequired = false
-            updateSelectedIndicator(R.id.AffiliationsButton)
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentARRAVAffliations.newInstance("", "")
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.SoSAffiliations.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.AffiliationsButton)
+            }
         }
 
 //        promotionsButton.setOnClickListener {

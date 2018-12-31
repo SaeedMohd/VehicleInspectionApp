@@ -252,6 +252,16 @@ class HasChangedModel {
         }
     }
 
+    fun changeDoneForSoSVehicles() : Boolean {
+        if (groupSoSVehicles[0].SoSVehicles) {
+            groupSoS[0].SoSVehicles=true
+            return true
+        } else {
+            groupSoS[0].SoSVehicles=false
+            return false
+        }
+    }
+
     fun changeDoneForSoSPrograms() : Boolean {
         if (groupSoSPrograms[0].SoSPrograms) {
             groupSoS[0].SoSPrograms=true
@@ -383,6 +393,14 @@ class HasChangedModel {
     fun checkIfChangeWasDoneforSoSVehicleServices() : Boolean{
         var changeWasDone = false
         if (changeDoneForSoSVehicleServices()){
+            changeWasDone = true
+        }
+        return changeWasDone
+    }
+
+    fun checkIfChangeWasDoneforSoSVehicles() : Boolean{
+        var changeWasDone = false
+        if (changeDoneForSoSVehicles()){
             changeWasDone = true
         }
         return changeWasDone

@@ -19,12 +19,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
 import com.inspection.R
-import com.inspection.Utils.ExpandableHeightGridView
+import com.inspection.Utils.*
 import com.inspection.adapter.VehicleListAdapter
 import com.inspection.adapter.VehicleTypesListAdapter
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.IndicatorsDataModel
-import com.inspection.model.TypeTablesModel
+import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_vehicles_fragment_in_scope_of_services_view.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
@@ -54,6 +52,8 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     var europeanListItems=ArrayList<TypeTablesModel.vehicleMakes>()
     var exoticListItems=ArrayList<TypeTablesModel.vehicleMakes>()
     var otherListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+
+    var selectedVehicles = ArrayList<String>()
 
 
 
@@ -97,6 +97,7 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         var vehicleTypeAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, vehicleTypeArray)
         vehicleTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         vehicleTypeSpinner.adapter = vehicleTypeAdapter
+        vehicleTypeSpinner.setSelection(vehicleTypeArray.indexOf("Automobile"))
 
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited= true
         (activity as FormsActivity).vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
@@ -114,6 +115,84 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
         setServices()
 
+
+        cancelButton.setOnClickListener {
+            progressBarText.text = "Cancelling ..."
+            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+            FacilityDataModel.getInstance().tblFacVehicles.clear()
+            for (i in 0..FacilityDataModelOrg.getInstance().tblFacVehicles.size-1) {
+                var vehicleServiceItem = TblFacVehicles()
+                vehicleServiceItem.FACID= FacilityDataModelOrg.getInstance().tblFacVehicles[i].FACID
+                vehicleServiceItem.VehicleID = FacilityDataModelOrg.getInstance().tblFacVehicles[i].VehicleID
+                vehicleServiceItem.insertBy= FacilityDataModelOrg.getInstance().tblFacVehicles[i].insertBy
+                vehicleServiceItem.updateBy= FacilityDataModelOrg.getInstance().tblFacVehicles[i].updateBy
+                vehicleServiceItem.insertDate = FacilityDataModelOrg.getInstance().tblFacVehicles[i].insertDate
+                vehicleServiceItem.updateDate= FacilityDataModelOrg.getInstance().tblFacVehicles[i].updateDate
+                FacilityDataModel.getInstance().tblFacVehicles.add(vehicleServiceItem)
+            }
+            (activity as FormsActivity).saveRequired = false
+            vehicleTypeSpinner.setSelection(vehicleTypeArray.indexOf("Automobile"))
+            setServices()
+            refreshButtonsState()
+            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+            progressBarText.text = "Loading ..."
+        }
+
+        saveButton.setOnClickListener {
+            progressBarText.text = "Saving ..."
+            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+            saveVehicleChanges()
+
+        }
+
+
+    }
+
+    fun saveVehicleChanges() {
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread {
+                        if (response.toString().contains("returnCode>0<",false)) {
+                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            progressBarText.text = "Loading ..."
+                            FacilityDataModelOrg.getInstance().tblFacVehicles.clear()
+                            for (i in 0..FacilityDataModel.getInstance().tblFacVehicles.size-1) {
+                                var vehicleServiceItem = TblFacVehicles()
+                                vehicleServiceItem.FACID= FacilityDataModel.getInstance().tblFacVehicles[i].FACID
+                                vehicleServiceItem.VehicleID = FacilityDataModel.getInstance().tblFacVehicles[i].VehicleID
+                                vehicleServiceItem.insertBy= FacilityDataModel.getInstance().tblFacVehicles[i].insertBy
+                                vehicleServiceItem.updateBy= FacilityDataModel.getInstance().tblFacVehicles[i].updateBy
+                                vehicleServiceItem.insertDate = FacilityDataModel.getInstance().tblFacVehicles[i].insertDate
+                                vehicleServiceItem.updateDate= FacilityDataModel.getInstance().tblFacVehicles[i].updateDate
+                                FacilityDataModelOrg.getInstance().tblFacVehicles.add(vehicleServiceItem)
+                            }
+                            Utility.showSubmitAlertDialog(activity, true, "Vehicles")
+                            (activity as FormsActivity).saveRequired = false
+                            HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicles()
+                            HasChangedModel.getInstance().changeDoneForSoSVehicles()
+                        } else {
+                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                            Utility.showSubmitAlertDialog(activity, false, "Vehicles (Error: "+ errorMessage+" )")
+                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            progressBarText.text = "Loading ..."
+                        }
+                    }
+                }, Response.ErrorListener {
+            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+            progressBarText.text = "Loading ..."
+            Utility.showSubmitAlertDialog(activity,false,"Vehicles (Error: "+it.message+" )")
+        }))
+    }
+
+
+
+
+
+
+
+    fun refreshButtonsState(){
+        saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
 
@@ -181,9 +260,9 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             OtherVehiclesListView?.isExpanded = true
             OtherVehiclesListView?.isVisible = true
         }
-
+        refreshButtonsState()
         expandablell.visibility = View.VISIBLE
-//
+        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 //        DomesticVehiclesListView?.adapter = arrayAdapter
 //        DomesticVehiclesListView?.isExpanded=true
 

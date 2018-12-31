@@ -28,6 +28,8 @@ import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAARPortalAdminData
+import com.inspection.Utils.Constants.UpdateAARPortalTrackingData
+import com.inspection.Utils.Constants.UpdateAmendmentOrderTrackingData
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 
@@ -73,6 +75,58 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             (activity as FormsActivity).saveRequired = false
             refreshButtonsState()
             Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+        }
+
+
+        addsaveButton.setOnClickListener {
+            if (validateAdminInputs()) {
+                rspLoadingText.text = "Saving ..."
+                RSP_LoadingView.visibility = View.VISIBLE
+                var portalAdminEntry = TblAARPortalAdmin()
+
+                portalAdminEntry.startDate = if (addstartDateButton.text.equals("SELECT DATE")) "" else addstartDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                portalAdminEntry.endDate = if (addendDateButton.text.equals("SELECT DATE")) "" else addendDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                portalAdminEntry.AddendumSigned = if (addsignDateButton.text.equals("SELECT DATE")) "" else addsignDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                portalAdminEntry.CardReaders = addnumberOfCardsReaderEditText.text.toString()
+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+
+                        "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
+                        "&startDate=${portalAdminEntry.startDate}&endDate=${portalAdminEntry.endDate}&AddendumSigned=${portalAdminEntry.AddendumSigned}&cardReaders=${portalAdminEntry.CardReaders}&active=1",
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread {
+                                if (response.toString().contains("returnCode>0<",false)) {
+                                    Utility.showSubmitAlertDialog(activity, true, "RSP Admin")
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
+                                    FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
+                                    FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
+                                    FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
+                                    FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
+                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
+                                    HasChangedModel.getInstance().changeDoneForFacilityRSP()
+                                } else {
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                    Utility.showSubmitAlertDialog(activity,false,"RSP Admin (Error: "+ errorMessage+" )")
+                                }
+                                RSP_LoadingView.visibility = View.GONE
+                                rspLoadingText.text = "Loading ..."
+                                alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
+                            }
+                        }, Response.ErrorListener {
+                    Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: "+it.message+" )")
+                    RSP_LoadingView.visibility = View.GONE
+                    rspLoadingText.text = "Loading ..."
+                    alphaBackgroundForRSPDialogs.visibility = View.GONE
+                    Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                    (activity as FormsActivity).overrideBackButton = false
+                }))
+            } else {
+                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+            }
         }
 
 
@@ -246,9 +300,9 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 portalTrackingEntry.PortalInspectionDate = if (inspectionDateButton.text.equals("SELECT DATE")) "" else inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                 portalTrackingEntry.NumberUnacknowledgedTows = numberOfUnacknowledgedRecords.toString()
                 portalTrackingEntry.active="1"
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalTrackingData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+
                         "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
-                        "&TrackingID=0&PortalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
+                        "&trackingId=0&portalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {
@@ -306,6 +360,37 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         }
     }
 
+    fun validateAdminInputs() : Boolean {
+
+        var portalValide: Boolean
+        portalValide = true
+
+        addstartDateButton.setError(null)
+        addendDateButton.setError(null)
+        addsignDateButton.setError(null)
+        addnumberOfCardsReaderEditText.setError(null)
+
+        if (addstartDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+            portalValide = false
+            addstartDateButton.setError("Required Field")
+        }
+
+        if (addendDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+            portalValide = false
+            addendDateButton.setError("Required Field")
+        }
+
+        if (addsignDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+            portalValide = false
+            addsignDateButton.setError("Required Field")
+        }
+
+        if (addnumberOfCardsReaderEditText.text.toString().isNullOrEmpty()) {
+            portalValide = false
+            addnumberOfCardsReaderEditText.setError("Required Field")
+        }
+        return portalValide
+    }
 
 
     fun validateInputs() : Boolean {
@@ -444,10 +529,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         rowLayoutParam.height = 30
 
 
-        FacilityDataModel.getInstance().tblAARPortalTracking.apply {
-
-
-
+        FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate }).apply {
             (0 until size).forEach {
                 if ( !get(it).TrackingID.equals("-1") ) {
                     val tableRow = TableRow(context)
@@ -529,9 +611,9 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                             var inspectionDate = if (edit_inspectionDateButton.text.equals("SELECT DATE")) "" else edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var trackingID = FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex-1].TrackingID
 
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
-                                    "&TrackingID=${trackingID}&PortalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
-                                    "&LoggedIntoPortal=${isLoggedInRsp}&NumberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&InProgressTows=${numberOfInProgressTwoInsvalue}&InProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalTrackingData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
+                                    "&trackingId=${trackingID}&portalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
+                                    "&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode>0<", false)) {

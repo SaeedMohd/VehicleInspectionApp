@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background_image_dark">
-
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,6 +12,9 @@
         android:alpha="0.92"
         />
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/loginLinearLayout"
         android:layout_width="wrap_content"
@@ -20,11 +22,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.5"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent">-->
 
         <EditText
             android:id="@+id/loginEmailEditText"
@@ -87,12 +91,12 @@
             />
 
         <Button
-            android:id="@+id/signUpButton"
+            android:id="@+id/changePasswordButton"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:background="@color/transparent"
             android:layout_marginTop="15dp"
-            android:text="SIGN UP"
+            android:text="CHANGE PASSWORD"
             android:textColor="@color/white"
             />
 
@@ -103,8 +107,140 @@
             android:layout_marginTop="15dp"
             android:alpha="0.6"
             />
-
-
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/recordsProgressView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:clickable="true"
+        android:background="@color/mainColor"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:layout_centerHorizontal="true"
+            android:text="Logging In..."
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <ScrollView
+        android:id="@+id/changePassDialog"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:clickable="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:weightSum="2"
+                >
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Change Password Dialog"
+                        android:textSize="20sp"
+                        android:textColor="@color/dark_gray"
+                        android:layout_column="0"
+                        android:layout_weight="1"
+                        />
+                </TableRow>
+                <TableRow android:layout_marginTop="20dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_column="0"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray"/>
+                </TableRow>
+                <TableRow android:layout_marginTop="20dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="New Password"
+                        android:layout_marginRight="10dp"
+                        android:gravity="left"
+                        android:layout_weight="1"
+                        android:layout_column="0"
+                        />
+                    <EditText
+                        android:id="@+id/chgPasswordEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:inputType="textPassword"
+                        android:layout_weight="1"
+                        android:layout_column="1"
+                        android:gravity="center"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+                <TableRow android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Confirm Password"
+                        android:layout_weight="1"
+                        android:layout_marginRight="10dp"
+                        android:gravity="left"
+                        android:layout_column="0"
+                        />
+                    <EditText
+                        android:id="@+id/chgPasswordConfirmEditText"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:inputType="textPassword"
+                        android:layout_column="1"
+                        android:gravity="center"
+                        android:background="@drawable/textview_background"
+                        />
+                </TableRow>
+                <TableRow android:layout_marginTop="20dp">
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:text="Change Password"
+                        android:id="@+id/chgPasswordButtoninDialog"
+                        android:textColor="@color/white"
+                        android:layout_column="0"
+                        android:layout_weight="2"
+                        android:background="@drawable/green_background_button"
+                        android:layout_gravity="center"/>
+                </TableRow>
+            </TableLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+</RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

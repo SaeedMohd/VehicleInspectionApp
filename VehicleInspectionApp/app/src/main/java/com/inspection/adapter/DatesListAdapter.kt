@@ -61,8 +61,14 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         checkBoxItem.setOnClickListener{
             if (checkBoxItem.isChecked == true) {
                 updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),1,true)
+                val newVehicle = TblVehicleServices()
+                newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                newVehicle.ScopeServiceID = namesList.get(position).ScopeServiceID.toInt()
+                newVehicle.VehiclesTypeID = vehicleIDRef
+                FacilityDataModel.getInstance().tblVehicleServices.add(newVehicle)
             } else {
                 updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),0,true)
+                FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ScopeServiceID==namesList.get(position).ScopeServiceID.toInt() && s.VehiclesTypeID==vehicleIDRef}
             }
             //FacilityDataModel.getInstance().tblLanguage = langArray
             (context as FormsActivity).saveRequired = true

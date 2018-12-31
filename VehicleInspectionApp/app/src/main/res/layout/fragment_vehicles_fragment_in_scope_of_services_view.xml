@@ -16,11 +16,15 @@
         android:paddingBottom="10dp"
         android:layout_margin="10dp"
         android:paddingTop="5dp"
-        android:background="@color/white"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/mainLayout"
+            android:layout_height="match_parent"
+            android:background="@color/white">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -332,8 +336,37 @@
         <!--android:indeterminateTint="#1a09d6"-->
         <!--android:visibility="invisible"-->
         <!--android:layout_marginTop="-10dp"/>-->
-        </RelativeLayout>
 
+
+
+        </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:elevation="5dp"
+                android:layout_below="@id/mainLayout"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                android:padding="30dp">
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:background="@drawable/grey_background_button"
+                    android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/green_background_button"
+                    android:text="Save" />
+            </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
     <RelativeLayout
         android:id="@+id/scopeOfServicesChangesDialogueLoadingView"
@@ -356,6 +389,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/progressBarRecords"
             android:layout_centerHorizontal="true"
+            android:id="@+id/progressBarText"
             android:text="Loading..."
             android:textColor="@color/white"
             android:textSize="26sp"

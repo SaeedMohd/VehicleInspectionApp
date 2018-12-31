@@ -174,6 +174,16 @@ class FragmentARRAVVehicleServices : Fragment() {
                         if (response.toString().contains("returnCode>0<",false)) {
                             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                             progressBarText.text = "Loading ..."
+                            FacilityDataModelOrg.getInstance().tblVehicleServices.clear()
+                            for (i in 0..FacilityDataModel.getInstance().tblVehicleServices.size-1) {
+                                var vehicleServiceItem = TblVehicleServices()
+                                vehicleServiceItem.FACID= FacilityDataModel.getInstance().tblVehicleServices[i].FACID
+                                vehicleServiceItem.ScopeServiceID = FacilityDataModel.getInstance().tblVehicleServices[i].ScopeServiceID
+                                vehicleServiceItem.VehiclesTypeID = FacilityDataModel.getInstance().tblVehicleServices[i].VehiclesTypeID
+                                vehicleServiceItem.insertBy = FacilityDataModel.getInstance().tblVehicleServices[i].insertBy
+                                vehicleServiceItem.insertDate = FacilityDataModel.getInstance().tblVehicleServices[i].insertDate
+                                FacilityDataModelOrg.getInstance().tblVehicleServices.add(vehicleServiceItem)
+                            }
                             Utility.showSubmitAlertDialog(activity, true, "Vehicle Services ${saveMessage}")
                             (activity as FormsActivity).saveRequired = false
                             HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicleServices()

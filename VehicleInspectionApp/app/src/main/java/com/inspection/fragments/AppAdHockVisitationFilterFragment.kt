@@ -87,7 +87,8 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getTypeTableData()
+        //getTypeTableData()
+        loadSpecialistName()
 
 
         setFieldsListeners()
@@ -309,13 +310,23 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     }
 
     private fun loadSpecialistName() {
-            specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
-            if (specialistArrayModel != null && specialistArrayModel.size > 0) {
-                requiredSpecialistName = specialistArrayModel.filter { s->s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase())}[0].FullName
-                adHocFacilitySpecialistButton.setText(requiredSpecialistName)
-                ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s->s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase())}[0].NTLogin
-            }
-            loadClubCodes()
+        contractStatusList = TypeTablesModel.getInstance().FacilityStatusType
+        contractStatusArray.clear()
+        contractStatusArray.add("All")
+        for (fac in contractStatusList) {
+            contractStatusArray.add(fac.FacilityStatusName)
+        }
+
+        var coStatusAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractStatusArray)
+        coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contractStatusTypeSpinner.adapter = coStatusAdapter
+        specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
+        if (specialistArrayModel != null && specialistArrayModel.size > 0) {
+            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
+            adHocFacilitySpecialistButton.setText(requiredSpecialistName)
+            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].NTLogin
+        }
+        loadClubCodes()
     }
 
     fun onButtonPressed(uri: Uri) {
