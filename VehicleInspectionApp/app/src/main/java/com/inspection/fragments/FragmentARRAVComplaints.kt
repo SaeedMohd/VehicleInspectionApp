@@ -365,7 +365,7 @@ class FragmentARRAVComplaints : Fragment() {
 
 
     fun prepareComplaints(boolAll: Boolean) {
-
+        Log.v("Complaints --- ",Constants.getFacilityComplaintsURL + AnnualVisitationSingleton.getInstance().facilityId + "&all=" + boolAll.toString())
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityComplaintsURL + AnnualVisitationSingleton.getInstance().facilityId + "&all=" + boolAll.toString(),
                 Response.Listener { response ->
                     activity!!.runOnUiThread(Runnable {

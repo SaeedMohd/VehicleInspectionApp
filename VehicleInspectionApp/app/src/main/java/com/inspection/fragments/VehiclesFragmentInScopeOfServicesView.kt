@@ -149,6 +149,7 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     }
 
     fun saveVehicleChanges() {
+        Log.v("Vehicle Changes --- ",Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -168,6 +169,7 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
                             }
                             Utility.showSubmitAlertDialog(activity, true, "Vehicles")
                             (activity as FormsActivity).saveRequired = false
+                            refreshButtonsState()
                             HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicles()
                             HasChangedModel.getInstance().changeDoneForSoSVehicles()
                         } else {

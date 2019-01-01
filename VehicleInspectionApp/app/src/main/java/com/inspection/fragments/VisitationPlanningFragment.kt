@@ -251,6 +251,7 @@ class VisitationPlanningFragment : Fragment() {
 
         facilityNameButton.setOnClickListener {
             recordsProgressView.visibility = View.VISIBLE
+            Log.v("VISITATION FAC NAME --- ",Constants.getAllFacilities + "")
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                     Response.Listener { response ->
                         activity!!.runOnUiThread {
@@ -511,6 +512,7 @@ class VisitationPlanningFragment : Fragment() {
 
 
         } else {
+            Log.v("VISITATION GET --- ",Constants.getVisitations + parametersString)
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                     Response.Listener { response ->
                         activity!!.runOnUiThread {
@@ -567,7 +569,7 @@ class VisitationPlanningFragment : Fragment() {
 
     private fun loadClubCodes() {
         Log.v("url*******", ""+ Constants.getClubCodes)
-
+        Log.v("VISITATION CLUB --- ",Constants.getClubCodes)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
                 Response.Listener { response ->
                     var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)

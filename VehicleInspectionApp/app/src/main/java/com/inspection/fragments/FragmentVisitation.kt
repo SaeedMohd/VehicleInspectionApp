@@ -780,7 +780,7 @@ class FragmentVisitation : Fragment() {
         progressBarTextVal.text = "Saving ..."
         dialogueLoadingView.visibility = View.VISIBLE
         var urlString = facilityNo+"&clubcode="+clubCode+"&visitationID="+visitationID+"&performedBy="+performedBy+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate
-        Log.v("VT REQUEST ||||| ", urlString)
+        Log.v("Visitation Tracking -- ",Constants.UpdateVisitationTrackingData + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationTrackingData + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -791,6 +791,7 @@ class FragmentVisitation : Fragment() {
                             dialogMsg = "New Visitation with ID (${visitationID}) created succesfully"
                             (activity as FormsActivity).saveRequired = false
                             urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate
+                            Log.v("Visitation Details --- ",Constants.UpdateVisitationDetailsData + urlString)
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString,
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {

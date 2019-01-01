@@ -99,11 +99,13 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
 
     fun loadSpecialists() {
+        Log.v("ADHOC ALL SPECIAL --- ",Constants.getAllSpecialists + "")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
                 Response.Listener { response ->
                     Log.v("****response", response)
                     activity!!.runOnUiThread {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+
                         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread {
@@ -134,6 +136,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     private fun setFieldsListeners() {
         adHocFacilityNameButton.setOnClickListener {
             recordsProgressView.visibility = View.VISIBLE
+            Log.v("ADHOC: "+ "GET FACILITIES- ",Constants.getAllFacilities)
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                     Response.Listener { response ->
                         activity!!.runOnUiThread {
@@ -208,7 +211,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     }
 
     private fun loadClubCodes() {
-        Log.v("url*******", "" + Constants.getClubCodes)
+        Log.v("ADHOC CLUB--- ",Constants.getClubCodes)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -281,8 +284,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
         }
 
-        Log.v("requesting....", Constants.getFacilitiesWithFilters + parametersString)
-
+        Log.v("ADHOC FACWITHFILTERS--- ",Constants.getFacilitiesWithFilters + parametersString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {

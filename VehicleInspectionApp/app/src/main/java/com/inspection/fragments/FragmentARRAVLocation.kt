@@ -766,6 +766,7 @@ class FragmentARRAVLocation : Fragment() {
 
             val clubCode = FacilityDataModel.getInstance().clubCode
             var urlString = facilityNo + "&clubcode=" + clubCode +"&BranchName=" + facBranchName + "&LATITUDE=" + Latitude+"&LONGITUDE=" + Longitude +  "&BranchNumber=" + facBranchNo +  "&LocationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1"
+            Log.v("Location Address --- ",Constants.submitContactInfoAddress + urlString)
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString,
                     Response.Listener { response ->
                         activity!!.runOnUiThread {
@@ -1046,13 +1047,14 @@ class FragmentARRAVLocation : Fragment() {
                                 val activeVal = "0"
                                 val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
                                 val clubCode = FacilityDataModel.getInstance().clubCode
-                                var urlString = facilityNo + "&clubcode=" + clubCode + "&phoneTypeId=" + phoneTypeID + "&phoneNumber=" + phoneNo + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&phoneId=${FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneID}&active=1"
+                                var urlString = facilityNo + "&clubCode=" + clubCode + "&phoneTypeId=" + phoneTypeID + "&phoneNumber=" + phoneNo + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&phoneId=${FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneID}&active=1"
                                 Log.v("Data To Submit", urlString)
                                 contactInfoLoadingText.text = "Saving ..."
                                 contactInfoLoadingView.visibility = View.VISIBLE
                                 editPhoneDialog.visibility = View.GONE
                                 alphaBackgroundForDialogs.visibility = View.GONE
                                 (activity as FormsActivity).overrideBackButton = false
+                                Log.v("Phone Edit --- ",Constants.submitFacilityPhone + urlString)
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread {
@@ -1187,6 +1189,7 @@ class FragmentARRAVLocation : Fragment() {
                                 editEmailDialog.visibility = View.GONE
                                 alphaBackgroundForDialogs.visibility = View.GONE
                                 (activity as FormsActivity).overrideBackButton = false
+                                Log.v("Email Edit --- ",Constants.submitFacilityEmail + urlString)
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread {
@@ -1515,7 +1518,7 @@ class FragmentARRAVLocation : Fragment() {
         addNewEmailDialog.visibility = View.GONE
         alphaBackgroundForDialogs.visibility = View.GONE
         (activity as FormsActivity).overrideBackButton = false
-
+        Log.v("Email ADD --- ",Constants.submitFacilityEmail + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -1566,6 +1569,10 @@ class FragmentARRAVLocation : Fragment() {
         val satOpen = satOpenSpinner.selectedItem.toString()
         val facAvail = "1"
 
+        Log.v("Hours --- ",Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&MonOpen=${monOpen}&TueOpen=${tueOpen}&WedOpen=${wedOpen}&ThuOpen=${thuOpen}" +
+                "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
+                "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
+                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&MonOpen=${monOpen}&TueOpen=${tueOpen}&WedOpen=${wedOpen}&ThuOpen=${thuOpen}" +
                 "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
                 "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
@@ -1616,8 +1623,8 @@ class FragmentARRAVLocation : Fragment() {
         } catch (e: Exception){
             Log.v("ERROR --- >",e.message)
         }
-
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat(),
+        Log.v("LANGUAGES --- ",UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat())
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat(),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
@@ -1654,13 +1661,14 @@ class FragmentARRAVLocation : Fragment() {
         val newPhone = TblPhone()
         newPhone.PhoneNumber = phoneNo.toString()
         newPhone.PhoneTypeID= phoneTypeID
-        var urlString = facilityNo+"&clubcode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
+        var urlString = facilityNo+"&clubCode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
         Log.v("Data To Submit", urlString)
         contactInfoLoadingText.text = "Saving ..."
         contactInfoLoadingView.visibility = View.VISIBLE
         addNewPhoneDialog.visibility = View.GONE
         alphaBackgroundForDialogs.visibility = View.GONE
         (activity as FormsActivity).overrideBackButton = false
+        Log.v("PHONE ADD --- ",Constants.submitFacilityPhone + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {

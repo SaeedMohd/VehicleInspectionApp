@@ -102,6 +102,7 @@ class LoginActivity : Activity(){
                 builder.setCancelable(false)
                 builder.setPositiveButton("YES") { dialog, which ->
                     val userEmail = loginEmailEditText.text.toString()//URLEncoder.encode(loginEmailEditText.text.toString(), "UTF-8");
+                    Log.v("LOGIN : "+ "RESET PASS  -- ",Constants.resetPassword + userEmail)
                     Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.resetPassword + userEmail,
                             Response.Listener { response ->
                                 Log.v("asd", "asd")
@@ -225,6 +226,7 @@ class LoginActivity : Activity(){
         private fun executeLogin() {
             val userEmail = URLEncoder.encode(loginEmailEditText.text.toString(), "UTF-8");
             val userPass = URLEncoder.encode(loginPasswordEditText.text.toString(), "UTF-8");
+            Log.v("LOGIN : "+ "EXEC LOGIN -- ",Constants.authenticateUrl + userEmail + "&password=" + userPass)
             Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.authenticateUrl + userEmail + "&password=" + userPass,
                     Response.Listener { response ->
                         activity!!.runOnUiThread {
@@ -260,6 +262,7 @@ class LoginActivity : Activity(){
             } else {
                 val userEmail = URLEncoder.encode(loginEmailEditText.text.toString(), "UTF-8");
                 val userPass = URLEncoder.encode(chgPasswordEditText.text.toString(), "UTF-8");
+                Log.v("LOGIN : "+ "CHG PASS -- ",Constants.changePassword + userEmail +"&password="+userPass)
                 Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.changePassword + userEmail +"&password="+userPass,
                         Response.Listener { response ->
                             activity!!.runOnUiThread {

@@ -102,6 +102,7 @@ class FragmentARRAVVehicles : Fragment() {
         if (progressbarVehicles != null) {
             progressbarVehicles.visibility = View.VISIBLE
         }
+        Log.v("Vehicles --- ",Constants.getVehiclesURL+"")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVehiclesURL,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -122,7 +123,6 @@ class FragmentARRAVVehicles : Fragment() {
                     }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading personnel Types")
-            activity!!.toast("Connection Error. Please check the internet connection")
         }))
     }
 
