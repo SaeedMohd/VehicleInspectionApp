@@ -1573,10 +1573,10 @@ class FragmentARRAVLocation : Fragment() {
                 "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
                 "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
                 "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=")
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&MonOpen=${monOpen}&TueOpen=${tueOpen}&WedOpen=${wedOpen}&ThuOpen=${thuOpen}" +
-                "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
-                "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
-                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=",
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&monOpen=${monOpen}&tueOpen=${tueOpen}&wedOpen=${wedOpen}&thuOpen=${thuOpen}" +
+                "&friOpen=${friOpen}&satOpen=${satOpen}&sunOpen=${sunOpen}&monClose=${monClose}&tueClose=${tueClose}&wedClose=${wedClose}&thuClose=${thuClose}&friClose=${friClose}" +
+                "&satClose=${satClose}&sunClose=${sunClose}&nightDrop=${nightDrop}&nightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
+                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&facAvailability=${facAvail}&availEffDate=&availExpDate=",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {

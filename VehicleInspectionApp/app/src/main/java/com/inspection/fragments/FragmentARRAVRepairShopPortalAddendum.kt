@@ -105,8 +105,11 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
                                     FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
                                     FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
+                                    (activity as FormsActivity).saveRequired = false
+                                    refreshButtonsState()
                                     HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
                                     HasChangedModel.getInstance().changeDoneForFacilityRSP()
+
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                     Utility.showSubmitAlertDialog(activity,false,"RSP Admin (Error: "+ errorMessage+" )")

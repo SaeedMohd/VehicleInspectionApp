@@ -68,7 +68,7 @@ object Constants {
 
     val submitContactInfoAddress = permanentURL + "updateFacilityAddressData?facnum="
     val submitFacilityGeneralInfo = permanentURL + "updateFacilityData?facNum="
-    val submitFacilityHours = permanentURL + "updateFacilityHoursData?facnum="
+    val submitFacilityHours = permanentURL + "updateFacilityHoursData?facNum="
     val submitFacilityEmail = permanentURL + "updateFacilityEmailData?facnum="
     val authenticateUrl = permanentURL + "authenticate?email="
     val resetPassword = permanentURL + "resetPassword?email="
@@ -95,10 +95,10 @@ object Constants {
     val UpdateFacilityLanguageData=permanentURL + "updateFacilityLanguageData?facNum="
     val UpdateFacilityVehicles= permanentURL + "updateVehicles?facnum="
     val UpdateVehicleServices=permanentURL + "updateVehicleServices?facnum="
-    val UpdatePersonnelCertification=permanentURL + "updatePersonnelCertification?facnum="
-    val UpdateFacilityPersonnelData=permanentURL + "updateFacilityPersonnelData?facnum="
-    val UpdateFacilityPersonnelSignerData=permanentURL + "updateFacilityPersonnelSignerData?facnum="
-    val UpdateScopeofServiceData =permanentURL + "updateScopeofServiceData?facnum="
+    val UpdatePersonnelCertification=permanentURL + "updatePersonnelCertification?facNum="
+    val UpdateFacilityPersonnelData=permanentURL + "updateFacilityPersonnelData?facNum="
+    val UpdateFacilityPersonnelSignerData=permanentURL + "updateFacilityPersonnelSignerData?facNum="
+    val UpdateScopeofServiceData =permanentURL + "updateScopeOfServiceData?facNum="
     val UpdateVisitationDetailsData=permanentURL + "updateVisitationDetailsData?facnum="
     val UpdateVisitationTrackingData=permanentURL + "updateVisitationTrackingData?facnum="
 

@@ -339,6 +339,8 @@ class FragmentARRAVScopeOfService : Fragment() {
                 }
             }
         }
+        (activity as FormsActivity).saveRequired = false
+        refreshButtonsState()
 
     }
 
