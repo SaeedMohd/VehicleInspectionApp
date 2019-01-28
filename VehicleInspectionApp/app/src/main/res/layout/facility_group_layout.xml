@@ -41,7 +41,7 @@
                 android:layout_column="1"
                 android:textSize="18sp"
                 android:background="@color/transparent"
-                android:text="RSP" />
+                android:text="RSP TRACKING" />
 
             <!--<ImageView-->
                 <!--android:id="@+id/facRSPIndicator"-->

@@ -34,7 +34,10 @@ import com.inspection.model.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import org.w3c.dom.CDATASection
+import org.w3c.dom.CharacterData
 import org.w3c.dom.Text
+import java.net.URI
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
@@ -637,7 +640,9 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     fun submitFacilityGeneralInfo(){
         var busName =  if (dba_textviewVal.text.isNullOrEmpty())  "" else dba_textviewVal.text
-        busName = URLEncoder.encode(busName.toString() , "UTF-8");
+
+
+//        busName = URLEncoder.encode(busName.toString() , "UTF-8");
         val busType = TypeTablesModel.getInstance().BusinessType.filter { s -> s.BusTypeName==bustype_textviewVal.selectedItem.toString()}[0].BusTypeID
         var entityName =  if (entity_textviewVal.text.isNullOrEmpty())  "" else entity_textviewVal.text
         entityName = URLEncoder.encode(entityName.toString() , "UTF-8");
@@ -674,6 +679,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         progressBarText.text = "Saving ..."
         scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
         var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
+
         Log.v("Facility General --- ",Constants.submitFacilityGeneralInfo + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString,
                 Response.Listener { response ->

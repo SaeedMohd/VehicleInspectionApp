@@ -369,7 +369,8 @@ class VisitationPlanningFragment : Fragment() {
 
             if (!facilityNameButton.text.contains("Select") && facilityNameButton.text.length > 1) {
                 with(parametersString) {
-                    append(("dba=" + URLEncoder.encode(facilityNameButton.text.toString(), "UTF-8")))
+//                    append(("dba=" + URLEncoder.encode(facilityNameButton.text.toString(), "UTF-8")))
+                    append("dba=![CDATA[" + facilityNameButton.text.toString()+"]")
                     append("&")
                 }
             } else {
@@ -791,9 +792,9 @@ class VisitationPlanningFragment : Fragment() {
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
                             if (isCompleted) {
-                                createPDF(true)
+                                createPDF(true,activity as MainActivity)
                                 val target = Intent(Intent.ACTION_VIEW)
-                                val file = File(Environment.getExternalStorageDirectory().path+"/test.pdf")
+                                val file = File(Environment.getExternalStorageDirectory().path+"/VisitationDetails.pdf")
 
                                 target.setDataAndType(Uri.fromFile(file), "application/pdf")
                                 target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY

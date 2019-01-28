@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat.startActivity
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import com.inspection.MainActivity
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
 import com.itextpdf.text.pdf.*
@@ -156,43 +157,49 @@ fun Int.monthNoToName(): String {
     return monthName
 }
 
-fun createPDF(isSpecialist : Boolean ){
+fun createPDF(isSpecialist : Boolean,activity : MainActivity ){
     val document = Document()
 
     //output file path
     var outpath = Environment.getExternalStorageDirectory().path+"/VisitationDetails.pdf"
-
-    try {
-        var writer = PdfWriter.getInstance(document, FileOutputStream(outpath))
-        val event = HeaderFooterPageEvent()
-        writer.pageEvent = event
-        document.open()
-
-
-        // Left
-        document.addTitle("Visitation Details")
+    if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+        // Permission is not granted
+    } else {
+        try {
 
 
-        var paragraph = Paragraph("Vistation Details")
-        paragraph.alignment = Element.ALIGN_CENTER
-        addEmptyLine(paragraph,2)
-        document.add(paragraph)
+            var writer = PdfWriter.getInstance(document, FileOutputStream(outpath))
+            val event = HeaderFooterPageEvent()
+            writer.pageEvent = event
+            document.open()
 
 
-        paragraph = Paragraph("")
+            // Left
+            document.addTitle("Visitation Details")
 
-        paragraph.add(createTable())
 
-        document.add(paragraph)
+            var paragraph = Paragraph("Vistation Details")
+            paragraph.alignment = Element.ALIGN_CENTER
+            addEmptyLine(paragraph, 2)
+            document.add(paragraph)
 
-        document.close()
 
-    } catch (e: FileNotFoundException) {
-        // TODO Auto-generated catch block
-        e.printStackTrace()
-    } catch (e: DocumentException) {
-        // TODO Auto-generated catch block
-        e.printStackTrace()
+            paragraph = Paragraph("")
+
+            paragraph.add(createTable())
+
+            document.add(paragraph)
+
+            document.close()
+
+        } catch (e: FileNotFoundException) {
+            // TODO Auto-generated catch block
+            e.printStackTrace()
+        } catch (e: DocumentException) {
+            // TODO Auto-generated catch block
+            e.printStackTrace()
+        }
     }
 }
 
@@ -801,31 +808,31 @@ private fun addEmptyLine(paragraph: Paragraph, number: Int) {
     }
 }
 
-fun verifyStoragePermissions(activity: FragmentActivity) {
-    // Check if we have write permission
-    if (ContextCompat.checkSelfPermission(activity,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-        // Should we show an explanation?
-//        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//fun verifyStoragePermissions(activity: FragmentActivity) {
+//    // Check if we have write permission
+//    if (ContextCompat.checkSelfPermission(activity,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 //
-//            // Show an expanation to the user *asynchronously* -- don't block
-//            // this thread waiting for the user's response! After the user
-//            // sees the explanation, try again to request the permission.
+//        // Should we show an explanation?
+////        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+////                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+////
+////            // Show an expanation to the user *asynchronously* -- don't block
+////            // this thread waiting for the user's response! After the user
+////            // sees the explanation, try again to request the permission.
+////
+////        } else {
+////            // No explanation needed, we can request the permission.
+//            ActivityCompat.requestPermissions(activity,
+//                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),
+//                    100)
+////        }
 //
-//        } else {
-//            // No explanation needed, we can request the permission.
-            ActivityCompat.requestPermissions(activity,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    100)
-//        }
-
-
-    } else {
-        createPDF(true)
-    }
-}
+//
+//    } else {
+//        createPDF(true,act)
+//    }
+//}
 
 class HeaderFooterPageEvent : PdfPageEventHelper() {
 

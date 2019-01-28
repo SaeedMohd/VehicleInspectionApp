@@ -126,6 +126,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             if (editPhoneDialog != null) editPhoneDialog.visibility = View.GONE
             if (addNewEmailDialog != null) addNewEmailDialog.visibility = View.GONE
             if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
+            if (addNewCertificateDialogue != null) addNewCertificateDialogue.visibility = View.GONE
+            if (alphaBackgroundForPersonnelDialogs != null) alphaBackgroundForPersonnelDialogs.visibility = View.GONE
             if (alphaBackgroundForDialogs != null) alphaBackgroundForDialogs.visibility = View.GONE
             if (alphaBackgroundForAffilliationsDialogs != null) alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
             if (defeciencyCard != null) defeciencyCard.visibility = View.GONE
@@ -138,9 +140,9 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             if (edit_programCard != null) edit_programCard.visibility = View.GONE
             if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
             if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
-            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
-            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
-            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
+            if (personnelLoadingView != null) personnelLoadingView.visibility = View.GONE
+//            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
+//            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
             overrideBackButton = false
         }else if (preventNavigation()){
             Utility.showSaveOrCancelAlertDialog(this)
