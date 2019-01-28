@@ -212,7 +212,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             numberOfUnacknowledgedRecordsEditText.setText("")
             numberOfInProgressTwoIns.setText("")
             numberOfInProgressWalkIns.setText("")
-            inspectionDateButton.setText("SELECT DATE")
+            inspectionDateButton.setText(Date().toAppFormatMMDDYYYY())
             numberOfUnacknowledgedRecordsEditText.setError(null)
             numberOfInProgressTwoIns.setError(null)
             numberOfInProgressWalkIns.setError(null)
@@ -254,32 +254,32 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         })
 
 
-        inspectionDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "MM/dd/yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                inspectionDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-        edit_inspectionDateButton.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val myFormat = "MM/dd/yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                edit_inspectionDateButton!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
+//        inspectionDateButton.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                val myFormat = "MM/dd/yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year,monthOfYear,dayOfMonth)
+//                inspectionDateButton!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//        edit_inspectionDateButton.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                val myFormat = "MM/dd/yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year,monthOfYear,dayOfMonth)
+//                edit_inspectionDateButton!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
 
         submitNewAAR_PortalTracking.setOnClickListener {
 

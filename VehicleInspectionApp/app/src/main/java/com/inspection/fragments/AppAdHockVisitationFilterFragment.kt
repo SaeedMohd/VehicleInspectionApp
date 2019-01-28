@@ -1634,6 +1634,25 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
         }
 
+        if (jsonObj.has("tblFacilityManagers")) {
+            if (!jsonObj.get("tblFacilityManagers").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityManagers")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityManagers"))
+                    jsonObj.put("tblFacilityManagers", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
+        }
+
         return jsonObj
     }
 
@@ -1935,6 +1954,9 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblFacilityClosure")) {
             var oneArray = TblFacilityClosure()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityManagers")) {
+            var oneArray = TblFacilityManagers()
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

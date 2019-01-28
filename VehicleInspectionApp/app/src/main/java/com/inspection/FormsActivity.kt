@@ -92,28 +92,17 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val navigationMenu = nav_view.menu
 
         refreshMenuIndicatorsForVisitedScreens()
-
-        ////navigationMenu.findItem(R.id.visitation).actionView.setBackgroundResource(R.drawable.red_button_background)
-
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) {
-            navigationMenu.findItem(R.id.visitation).isEnabled = false
-            navigationMenu.findItem(R.id.visitation).isVisible = false
-            currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
-            this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
-//            toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-
-        }else{
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) {
+//            navigationMenu.findItem(R.id.visitation).isEnabled = false
+//            navigationMenu.findItem(R.id.visitation).isVisible = false
+//            currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
+//            this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
+//        }else{
             navigationMenu.findItem(R.id.visitation).isEnabled = true
             navigationMenu.findItem(R.id.visitation).isVisible = true
             currentFragment = fragmentsNames.Visitation.toString()
             this.onNavigationItemSelected(navigationMenu.findItem(R.id.visitation))
-//            Log.v("visitationtype is******", "Annual")
-//            supportFragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.fragment, FragmentVisitation())
-//                    .commit()
-//            toolbar.title = "Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
-        }
+//        }
     }
 
     override fun onBackPressed() {

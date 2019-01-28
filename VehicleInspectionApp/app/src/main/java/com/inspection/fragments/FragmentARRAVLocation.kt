@@ -765,7 +765,7 @@ class FragmentARRAVLocation : Fragment() {
             val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
 
             val clubCode = FacilityDataModel.getInstance().clubCode
-            var urlString = facilityNo + "&clubcode=" + clubCode +"&BranchName=" + facBranchName + "&LATITUDE=" + Latitude+"&LONGITUDE=" + Longitude +  "&BranchNumber=" + facBranchNo +  "&LocationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1"
+            var urlString = facilityNo + "&clubcode=" + clubCode +"&BranchName=" + facBranchName + "&LATITUDE=" + Latitude+"&LONGITUDE=" + Longitude +  "&BranchNumber=" + facBranchNo +  "&locationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1"
             Log.v("Location Address --- ",Constants.submitContactInfoAddress + urlString)
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString,
                     Response.Listener { response ->

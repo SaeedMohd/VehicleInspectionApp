@@ -653,7 +653,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="Add New AAR Portal Tracking"
+                        android:text="Add New Portal Tracking"
                         android:textSize="20sp"
                         android:textColor="@color/dark_gray"
                         android:layout_column="0"
@@ -766,6 +766,7 @@
                         android:gravity="center"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
+                        android:enabled="false"
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/blue"
                         android:textSize="12dp" />

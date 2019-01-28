@@ -608,7 +608,7 @@ class FragmentARRAVComplaints : Fragment() {
 //        }
         for (com in FacilityDataModel.getInstance().JustifiedComplaintRatio){
 
-            justComRatio=com.JustifiedComplaintRatio
+            justComRatio="%.2f".format(com.JustifiedComplaintRatio.removeSuffix("%").toFloat())
 
         }
 

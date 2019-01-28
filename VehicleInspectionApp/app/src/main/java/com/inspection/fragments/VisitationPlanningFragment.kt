@@ -159,7 +159,7 @@ class VisitationPlanningFragment : Fragment() {
     }
 
     fun prepareInitialStateForFilters(){
-//        clubCodeEditText.setText(specialistArrayModel.sortedWith(compareBy { it.LastName })[0].clubcode)
+        clubCodeEditText.setText("252")
 //        clubCodeEditText.setText(specialistArrayModel.sortedWith(compareBy { it.clubcode })[0].clubcode)
 
 
@@ -792,18 +792,14 @@ class VisitationPlanningFragment : Fragment() {
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
                             if (isCompleted) {
-                                createPDF(true,activity as MainActivity)
-                                val target = Intent(Intent.ACTION_VIEW)
-                                val file = File(Environment.getExternalStorageDirectory().path+"/VisitationDetails.pdf")
-
-                                target.setDataAndType(Uri.fromFile(file), "application/pdf")
-                                target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-
-                                val intent = Intent.createChooser(target, "Open File")
-                                try {
-                                    startActivity(intent)
-                                } catch (e: ActivityNotFoundException) {
-                                    // Instruct the user to install a PDF reader here, or something
+                                if (!(activity as MainActivity).checkPermission()) {
+                                    (activity as MainActivity).generateAndOpenPDF()
+                                } else {
+                                    if ((activity as MainActivity).checkPermission()) {
+                                        (activity as MainActivity).requestPermissionAndContinue();
+                                    } else {
+                                        (activity as MainActivity).generateAndOpenPDF()
+                                    }
                                 }
                             } else {
                                 var intent = Intent(context, com.inspection.FormsActivity::class.java)
@@ -1975,6 +1971,26 @@ class VisitationPlanningFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
         }
+
+        if (jsonObj.has("tblFacilityManagers")) {
+            if (!jsonObj.get("tblFacilityManagers").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityManagers")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityManagers"))
+                    jsonObj.put("tblFacilityManagers", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
+        }
+
 //
         return jsonObj
     }
@@ -2279,6 +2295,9 @@ class VisitationPlanningFragment : Fragment() {
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblFacilityClosure")) {
             var oneArray = TblFacilityClosure()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityManagers")) {
+            var oneArray = TblFacilityManagers()
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

@@ -239,7 +239,7 @@ private fun createTable() : PdfPTable {
     addDataCell(table,"Automotive Specialist","",normalFont,false)
     addDataCell(table,"Automotive Specialist Signature","",normalFont,false)
 
-    var c3 = PdfPCell(Paragraph("Deffeciencies", normalFont));
+    var c3 = PdfPCell(Paragraph("Deficiencies", normalFont));
     c3.horizontalAlignment = Element.ALIGN_LEFT
     c3.rowspan = FacilityDataModel.getInstance().tblDeficiency.size
     c3.verticalAlignment = Element.ALIGN_MIDDLE
@@ -252,10 +252,12 @@ private fun createTable() : PdfPTable {
                 strDef += "\nComments: " + get(it).Comments
                 table.addCell(Paragraph(strDef, normalFont))
             } else {
-                table.addCell("NA")
+                table.addCell(Paragraph("NA", normalFont))
             }
         }
     }
+
+    addDataCell(table,"Facility Representative's Signature (Deficiencies)","",normalFont,false)
 
     c3 = PdfPCell(Paragraph("Vendor Revenue (past 12 months)", normalFont));
     c3.horizontalAlignment = Element.ALIGN_LEFT
@@ -276,27 +278,33 @@ private fun createTable() : PdfPTable {
         }
     }
 
-    addDataCell(table,"Facility Representative's Signature (Deficiencies)","",normalFont,false)
+
 
     c3 = PdfPCell(Paragraph("Visitation Tracking (past 12 months)", normalFont));
     c3.horizontalAlignment = Element.ALIGN_LEFT
-    try {
-        c3.rowspan = FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.size
-    } catch (e:Exception) {
-        c3.rowspan=1
-    }
+
+
+//    try {
+        c3.rowspan = if (FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.size>0) FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.size else 1
+//    } catch (e:Exception) {
+//        c3.rowspan=1
+//    }
     c3.verticalAlignment = Element.ALIGN_MIDDLE
     table.addCell(c3)
     var strDef = ""
-    FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.apply {
+    FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.sortedWith(compareByDescending { it.DatePerformed }).apply {
+//    FacilityDataModel.getInstance().tblVisitationTracking.sortedWith(compareByDescending { it.DatePerformed }).apply {
         (0 until size).forEach {
             if (!get(it).performedBy.equals("00")) {
                 strDef = "Performed By: " + get(it).performedBy + " - Date Performed: " + get(it).DatePerformed.apiToAppFormatMMDDYYYY()
-                strDef += "\nAAR Sign: " + get(it).AARSigns
-                strDef += "\nCertificate of Approval: " + get(it).CertificateOfApproval
-                strDef += "\nMember Benefits Poster(s): " + get(it).MemberBenefitPoster
-                strDef += "\nQuality Control Process: " + get(it).QualityControl
-                strDef += "\nStaff Training Process: " + get(it).StaffTraining
+                strDef += "\nVisitation Type: " + get(it).visitationType
+                if (it==0) {
+                    strDef += "\nAAR Sign: " + get(it).AARSigns
+                    strDef += "\nCertificate of Approval: " + get(it).CertificateOfApproval
+                    strDef += "\nMember Benefits Poster(s): " + get(it).MemberBenefitPoster
+                    strDef += "\nQuality Control Process: " + get(it).QualityControl
+                    strDef += "\nStaff Training Process: " + get(it).StaffTraining
+                }
                 table.addCell(Paragraph(strDef, normalFont))
             } else {
                 table.addCell(Paragraph("", normalFont))
@@ -537,11 +545,11 @@ private fun createTable() : PdfPTable {
 
         c3 = PdfPCell(Paragraph("RSP Tracking (past 12 months)", normalFont));
         c3.horizontalAlignment = Element.ALIGN_LEFT
-        try {
-            c3.rowspan = FacilityDataModel.getInstance().tblAARPortalTracking.filter { s -> (Date().time - s.PortalInspectionDate.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.size
-        } catch (e: Exception) {
-            c3.rowspan = 1
-        }
+//        try {
+            c3.rowspan = if (FacilityDataModel.getInstance().tblAARPortalTracking.filter { s -> (Date().time - s.PortalInspectionDate.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.size > 0) FacilityDataModel.getInstance().tblAARPortalTracking.filter { s -> (Date().time - s.PortalInspectionDate.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.size else 1
+//        } catch (e: Exception) {
+//            c3.rowspan = 1
+//        }
         c3.verticalAlignment = Element.ALIGN_MIDDLE
         table.addCell(c3)
 
@@ -653,11 +661,11 @@ private fun createTable() : PdfPTable {
     // Programs
     c3 = PdfPCell(Paragraph("Programs", normalFont));
     c3.horizontalAlignment = Element.ALIGN_LEFT
-    try {
-        c3.rowspan = FacilityDataModel.getInstance().tblPrograms.size
-    } catch (e:Exception) {
-        c3.rowspan=1
-    }
+//    try {
+        c3.rowspan = if (FacilityDataModel.getInstance().tblPrograms.size > 0) FacilityDataModel.getInstance().tblPrograms.size else 1
+//    } catch (e:Exception) {
+//        c3.rowspan=1
+//    }
     c3.verticalAlignment = Element.ALIGN_MIDDLE
     table.addCell(c3)
     var strPrograms = ""
@@ -686,11 +694,11 @@ private fun createTable() : PdfPTable {
     // Facility Services
     c3 = PdfPCell(Paragraph("Facility Services", normalFont));
     c3.horizontalAlignment = Element.ALIGN_LEFT
-    try {
-        c3.rowspan = FacilityDataModel.getInstance().tblFacilityServices.size
-    } catch (e:Exception) {
-        c3.rowspan=1
-    }
+//    try {
+        c3.rowspan = if (FacilityDataModel.getInstance().tblFacilityServices.size>0) FacilityDataModel.getInstance().tblFacilityServices.size else 1
+//    } catch (e:Exception) {
+//        c3.rowspan=1
+//    }
     c3.verticalAlignment = Element.ALIGN_MIDDLE
     table.addCell(c3)
     var strFacServices = ""
@@ -719,11 +727,11 @@ private fun createTable() : PdfPTable {
     // Affiliations
     c3 = PdfPCell(Paragraph("Affiliations", normalFont));
     c3.horizontalAlignment = Element.ALIGN_LEFT
-    try {
-        c3.rowspan = FacilityDataModel.getInstance().tblAffiliations.size
-    } catch (e:Exception) {
-        c3.rowspan=1
-    }
+//    try {
+        c3.rowspan = if (FacilityDataModel.getInstance().tblAffiliations.size>0) FacilityDataModel.getInstance().tblAffiliations.size else 1
+//    } catch (e:Exception) {
+//        c3.rowspan=1
+//    }
     c3.verticalAlignment = Element.ALIGN_MIDDLE
     table.addCell(c3)
     var strAffiliation= ""
@@ -754,11 +762,11 @@ private fun createTable() : PdfPTable {
 
     c3 = PdfPCell(Paragraph("Complaints", normalFont));
     c3.horizontalAlignment = Element.ALIGN_LEFT
-    try {
-        c3.rowspan = FacilityDataModel.getInstance().tblComplaintFiles.size
-    } catch (e:Exception) {
-        c3.rowspan=1
-    }
+//    try {
+        c3.rowspan = if (FacilityDataModel.getInstance().tblComplaintFiles.size>0) FacilityDataModel.getInstance().tblComplaintFiles.size else 1
+//    } catch (e:Exception) {
+//        c3.rowspan=1
+//    }
     c3.verticalAlignment = Element.ALIGN_MIDDLE
     table.addCell(c3)
     var strComplaints= ""
@@ -812,25 +820,15 @@ private fun addEmptyLine(paragraph: Paragraph, number: Int) {
 //    // Check if we have write permission
 //    if (ContextCompat.checkSelfPermission(activity,
 //                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//
-//        // Should we show an explanation?
-////        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-////                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-////
-////            // Show an expanation to the user *asynchronously* -- don't block
-////            // this thread waiting for the user's response! After the user
-////            // sees the explanation, try again to request the permission.
-////
-////        } else {
-////            // No explanation needed, we can request the permission.
+//        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//        } else {
 //            ActivityCompat.requestPermissions(activity,
 //                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),
 //                    100)
-////        }
-//
-//
+//        }
 //    } else {
-//        createPDF(true,act)
+////        createPDF(true,act)
 //    }
 //}
 

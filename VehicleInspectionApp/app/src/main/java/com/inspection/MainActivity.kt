@@ -1,5 +1,7 @@
 package com.inspection
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -9,13 +11,13 @@ import java.util.Date
 import java.util.Timer
 
 import android.app.ProgressDialog
-import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlertDialog
 
@@ -23,9 +25,7 @@ import android.app.NotificationManager
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
@@ -33,6 +33,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
@@ -51,11 +52,6 @@ import com.google.android.gms.plus.Plus
 import com.inspection.GCM.GcmBroadcastReceiver
 import com.inspection.GCM.GcmRegistration
 
-import com.inspection.fragments.FragmentForms
-import com.inspection.fragments.FragmentSafetyCheckInitial
-import com.inspection.fragments.FragmentSafetyCheckItems
-import com.inspection.fragments.FragmentSafetyCheckReports
-
 import com.inspection.imageloader.ImageLoader
 import com.inspection.model.AAAFacilityComplete
 import com.inspection.Utils.ApplicationPrefs
@@ -64,8 +60,12 @@ import com.inspection.Utils.Utility
 import androidx.viewpager.widget.ViewPager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import com.inspection.Utils.createPDF
 import com.inspection.Utils.toast
+import com.inspection.fragments.*
 import com.inspection.model.AnnualVisitationInspectionFormData
 import kotlinx.android.synthetic.main.activity_main1.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
@@ -621,6 +621,50 @@ class MainActivity : AppCompatActivity(), LocationListener {
         //mDrawerList.setAdapter(new DrawerNavigationListAdapter());
     }
 
+    fun checkPermission() : Boolean {
+        return ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+    }
+
+    fun requestPermissionAndContinue() {
+        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_EXTERNAL_STORAGE)
+                    && ActivityCompat.shouldShowRequestPermissionRationale(this, READ_EXTERNAL_STORAGE)) {
+                var alertBuilder = AlertDialog.Builder(this);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle("Permission Required")
+                alertBuilder.setMessage("Storage permission is required to create generate the completed visitation PDF, ");
+                alertBuilder.setPositiveButton("YES") { dialog, which ->
+                    ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), 350);
+                }
+                val alert = alertBuilder.create();
+                alert.show();
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), 350);
+            }
+        } else {
+            generateAndOpenPDF()
+        }
+    }
+
+    fun generateAndOpenPDF(){
+        createPDF(true,this)
+        val target = Intent(Intent.ACTION_VIEW)
+        val file = File(Environment.getExternalStorageDirectory().path+"/VisitationDetails.pdf")
+
+//        target.setDataAndType(Uri.fromFile(file), "application/pdf")
+        target.setDataAndType(FileProvider.getUriForFile(this,"com.inspection.android.fileprovider",file), "application/pdf")
+
+        target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+
+        val intent = Intent.createChooser(target, "Open File")
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            // Instruct the user to install a PDF reader here, or something
+        }
+    }
 
     // Saeed Mostafa - 02092017 - CallBack to check the permissions [START]
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
