@@ -792,10 +792,10 @@ class VisitationPlanningFragment : Fragment() {
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
                             if (isCompleted) {
-                                if (!(activity as MainActivity).checkPermission()) {
+                                if ((activity as MainActivity).checkPermission()) {
                                     (activity as MainActivity).generateAndOpenPDF()
                                 } else {
-                                    if ((activity as MainActivity).checkPermission()) {
+                                    if (!(activity as MainActivity).checkPermission()) {
                                         (activity as MainActivity).requestPermissionAndContinue();
                                     } else {
                                         (activity as MainActivity).generateAndOpenPDF()

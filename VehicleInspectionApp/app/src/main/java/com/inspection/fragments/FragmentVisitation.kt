@@ -223,9 +223,9 @@ class FragmentVisitation : Fragment() {
 
 
 
-        annualVisitationType.isChecked = (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual))
-        adhocVisitationType.isChecked = (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual))
-        quarterlyVisitationType.isChecked = !(annualVisitationType.isChecked || adhocVisitationType.isChecked)
+//        annualVisitationType.isChecked = (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual))
+//        adhocVisitationType.isChecked = (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual))
+//        quarterlyVisitationType.isChecked = !(annualVisitationType.isChecked || adhocVisitationType.isChecked)
 
         dateOfVisitationButton.text = Date().toAppFormatMMDDYYYY()
         clubCodeEditText.setText(FacilityDataModel.getInstance().clubCode)

@@ -145,9 +145,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         ActivityCompat.requestPermissions(mContext,
-                arrayOf("android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE"),
+                arrayOf("android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE"),
                 123)
-
         initView()
 
         if (toolbar != null) {
@@ -628,9 +627,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     fun requestPermissionAndContinue() {
         if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                || ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_EXTERNAL_STORAGE)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(this, READ_EXTERNAL_STORAGE)) {
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, READ_EXTERNAL_STORAGE)) {
                 var alertBuilder = AlertDialog.Builder(this);
                 alertBuilder.setCancelable(true);
                 alertBuilder.setTitle("Permission Required")
@@ -657,7 +656,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         target.setDataAndType(FileProvider.getUriForFile(this,"com.inspection.android.fileprovider",file), "application/pdf")
 
         target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-
+//        target.addFlags()
+//        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         val intent = Intent.createChooser(target, "Open File")
         try {
             startActivity(intent)
@@ -667,7 +668,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     // Saeed Mostafa - 02092017 - CallBack to check the permissions [START]
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun  onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             if (grantResults.size > 0) {
@@ -702,6 +703,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
                     Log.i(TAG, "Permission has been denied by user")
                 } else {
                     Log.i(TAG, "Permission has been granted by user")
+                }
+            }
+            else if (requestCode ==350){
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "Permission has been denied by user")
+                } else {
+                    generateAndOpenPDF()
                 }
             }
         }
