@@ -34,6 +34,7 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.widget.CheckBox
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.inspection.MainActivity
@@ -41,7 +42,10 @@ import com.inspection.R
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
 import com.itextpdf.text.pdf.*
+import com.itextpdf.text.pdf.PdfName.TEXT
 import com.itextpdf.text.pdf.draw.LineSeparator
+import org.w3c.dom.Text
+import java.awt.font.TextAttribute.FONT
 
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -55,10 +59,13 @@ import java.nio.file.Paths
  */
 
 val MaintitleFont = FontFactory.getFont(FontFactory.HELVETICA,12F,BaseColor.BLUE)
+val SubtitleFont = FontFactory.getFont(FontFactory.HELVETICA,10F,BaseColor.DARK_GRAY)
 val titleFont = FontFactory.getFont(FontFactory.HELVETICA,10F,BaseColor.BLUE)
 val normalFont = FontFactory.getFont(FontFactory.HELVETICA,8F,BaseColor.BLACK)
-val normalFont7 = FontFactory.getFont(FontFactory.HELVETICA,7F,BaseColor.BLACK)
+val normalFontMissing = FontFactory.getFont(FontFactory.HELVETICA,8F,BaseColor.RED)
 
+val normalFont7 = FontFactory.getFont(FontFactory.HELVETICA,7F,BaseColor.BLACK)
+val symbolsFont = FontFactory.getFont(FontFactory.ZAPFDINGBATS,8F,BaseColor.BLACK)
 private val apiFormat = SimpleDateFormat("yyyy-MM-dd")
 private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
@@ -212,6 +219,17 @@ fun createPDF(isSpecialist : Boolean,activity : MainActivity ) {
     paragraph.add(drawFacilitySection())
     document.add(paragraph)
     addEmptyLine(document, 1)
+
+    paragraph = Paragraph("")
+    paragraph.add(drawAddressOverallSection())
+    document.add(paragraph)
+
+
+//    paragraph = Paragraph("")
+//    paragraph.add(drawPaymentSection())
+//    document.add(paragraph)
+
+    addEmptyLine(document, 1)
     paragraph = Paragraph("")
     paragraph.add(drawAddressSection())
     document.add(paragraph)
@@ -271,6 +289,131 @@ fun createPDF(isSpecialist : Boolean,activity : MainActivity ) {
     document.add(paragraph)
     addEmptyLine(document, 1)
 
+
+    paragraph = Paragraph("Scope of Service", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawSoSSection())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
+    paragraph = Paragraph("Vehicle Services", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+
+    var vehicleTypeID = ""
+
+    TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeName.equals("Automobile") }.apply {
+        (0 until size).forEach {
+            vehicleTypeID = get(it).VehiclesTypeID
+            paragraph = Paragraph(get(it).VehiclesTypeName, MaintitleFont)
+            paragraph.alignment = Element.ALIGN_LEFT
+            document.add(paragraph)
+            document.add(LineSeparator(0.5f, 95f, BaseColor.BLACK, 0, -5f))
+            addEmptyLine(document, 1)
+            paragraph = Paragraph("")
+            paragraph.add(drawVehicleServicesSection(vehicleTypeID))
+            document.add(paragraph)
+            addEmptyLine(document, 1)
+        }
+    }
+
+    paragraph = Paragraph("Vehicles", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+
+//    var VehCategoryName = ""
+
+
+    paragraph = Paragraph(TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeID.toInt()==1 }[0].VehiclesTypeName, SubtitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 95f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    TypeTablesModel.getInstance().VehiclesMakesCategoryType.apply {
+        (0 until size).forEach {
+            paragraph = Paragraph(get(it).VehCategoryName, titleFont)
+            paragraph.alignment = Element.ALIGN_LEFT
+            document.add(paragraph)
+            document.add(LineSeparator(0.5f, 95f, BaseColor.BLACK, 0, -5f))
+            addEmptyLine(document, 1)
+            paragraph = Paragraph("")
+            paragraph.add(drawVehiclesSection(get(it).VehCategoryID))
+            document.add(paragraph)
+            addEmptyLine(document, 1)
+        }
+    }
+
+
+    paragraph = Paragraph("Programs", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawProgramsSection())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
+    paragraph = Paragraph("Facility Services", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawFacServicesSection())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
+    paragraph = Paragraph("Affiliations", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawAffiliationSection())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
+    paragraph = Paragraph("Deficiencies", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawDeficienciesSection())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
+    paragraph = Paragraph("Signature: ", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("I acknowledge all current deficiencies.", titleFont)
+    paragraph.alignment = Element.ALIGN_CENTER
+    document.add(paragraph)
+
+
+    paragraph = Paragraph("Complaints", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawComplaintsSection())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
+
 //    paragraph.add(createTable())
 
 //    document.add(paragraph)
@@ -311,6 +454,22 @@ private fun drawAARHeaderSection() : PdfPTable {
     return table
 }
 
+
+private fun drawAddressOverallSection() : PdfPTable {
+    val columnWidths = floatArrayOf(5f, 1f,5f, 1f,10f)
+    val table = PdfPTable(columnWidths)
+    table.setWidthPercentage(100f)
+    table.addCell(addTableInCell(drawPaymentSection(),1,true));
+    table.addCell(addCell("",1,true));
+    table.addCell(addTableInCell(drawLanguageSection(),1,true));
+    table.addCell(addCell("",1,true));
+
+    table.addCell(addTableInCell(drawHoursSection(),1,true));
+
+
+    return table
+}
+
 private fun drawAARTrackingSection() : PdfPTable {
     val table = PdfPTable(7)
     table.setWidthPercentage(100f)
@@ -336,6 +495,127 @@ private fun drawAARTrackingSection() : PdfPTable {
     }
     return table
 
+}
+
+private fun drawProgramsSection() : PdfPTable {
+    val table = PdfPTable(6)
+    table.setWidthPercentage(80f)
+    table.horizontalAlignment = Element.ALIGN_LEFT
+    table.addCell(addCellWithBorder("Program Name", 2,false))
+    table.addCell(addCellWithBorder("Effective Date", 1,true))
+    table.addCell(addCellWithBorder("Expiration Date", 1,true))
+    table.addCell(addCellWithBorder("Comments", 2,false))
+    FacilityDataModel.getInstance().tblPrograms.apply {
+        (0 until size).forEach {
+            if ( !get(it).ProgramID.equals("-1") ) {
+                if (TypeTablesModel.getInstance().ProgramsType.filter { s->s.ProgramTypeID.equals(get(it).ProgramTypeID)}.isNotEmpty()) {
+                    table.addCell(addCellWithBorder(TypeTablesModel.getInstance().ProgramsType.filter { s -> s.ProgramTypeID.equals(get(it).ProgramTypeID) }[0].ProgramTypeName, 2, false))
+                    table.addCell(addCellWithBorder(if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY(), 1, true))
+                    table.addCell(addCellWithBorder(if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY(), 1, true))
+                    table.addCell(addCellWithBorder(get(it).Comments, 2, false))
+                }
+            }
+        }
+    }
+    return table
+}
+
+private fun drawComplaintsSection() : PdfPTable {
+    val table = PdfPTable(9)
+    table.setWidthPercentage(100f)
+    table.horizontalAlignment = Element.ALIGN_LEFT
+    table.addCell(addCellWithBorder("Complaint ID", 2,false))
+    table.addCell(addCellWithBorder("First Name", 1,true))
+    table.addCell(addCellWithBorder("Last Name", 1,true))
+    table.addCell(addCellWithBorder("Receieved Date", 1,false))
+    table.addCell(addCellWithBorder("Complaint Reasone", 2,false))
+    table.addCell(addCellWithBorder("Complaint Resolution", 2,false))
+    FacilityDataModel.getInstance().tblComplaintFiles.apply {
+        (0 until size).forEach {
+            if (!get(it).ComplaintID.isNullOrEmpty()) {
+                table.addCell(addCellWithBorder(get(it).ComplaintID, 2, false))
+                table.addCell(addCellWithBorder(get(it).FirstName, 1, false))
+                table.addCell(addCellWithBorder(get(it).LastName, 1, false))
+                table.addCell(addCellWithBorder(if (get(it).ReceivedDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ReceivedDate.apiToAppFormatMMDDYYYY(), 1, true))
+                table.addCell(addCellWithBorder(get(it).ComplaintReasonName, 2, false))
+                table.addCell(addCellWithBorder(get(it).ComplaintResolutionName, 2, false))
+            }
+        }
+    }
+    return table
+}
+
+
+private fun drawDeficienciesSection() : PdfPTable {
+    val table = PdfPTable(9)
+    table.setWidthPercentage(100f)
+    table.horizontalAlignment = Element.ALIGN_LEFT
+    table.addCell(addCell("", 2,false))
+    table.addCell(addCell("Deficient", 1,true))
+    table.addCell(addCell("", 2,false))
+    table.addCell(addCell("Deficient", 1,true))
+    table.addCell(addCell("", 2,false))
+    table.addCell(addCell("Deficient", 1,true))
+    TypeTablesModel.getInstance().AARDeficiencyType.apply {
+        (0 until size).forEach {
+            table.addCell(addCell(get(it).DeficiencyName,2,false))
+            table.addCell(addCell(" ",1,true))
+
+            }
+        }
+    return table
+}
+
+private fun drawFacServicesSection() : PdfPTable {
+    val table = PdfPTable(6)
+    table.setWidthPercentage(80f)
+    table.horizontalAlignment = Element.ALIGN_LEFT
+    table.addCell(addCellWithBorder("Service Name", 2,false))
+    table.addCell(addCellWithBorder("Effective Date", 1,true))
+    table.addCell(addCellWithBorder("Expiration Date", 1,true))
+    table.addCell(addCellWithBorder("Comments", 2,false))
+    FacilityDataModel.getInstance().tblFacilityServices.apply {
+        (0 until size).forEach {
+            if ( !get(it).FacilityServicesID.equals("-1") ) {
+                if (TypeTablesModel.getInstance().ServicesType.filter { s->s.ServiceTypeID.equals(get(it).ServiceID)}.isNotEmpty()) {
+                    table.addCell(addCellWithBorder(TypeTablesModel.getInstance().ServicesType.filter { s -> s.ServiceTypeID.equals(get(it).ServiceID) }[0].ServiceTypeName, 2, false))
+                    table.addCell(addCellWithBorder(if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY(), 1, true))
+                    table.addCell(addCellWithBorder(if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY(), 1, true))
+                    table.addCell(addCellWithBorder(get(it).Comments, 2, false))
+                }
+            }
+        }
+    }
+    return table
+}
+
+private fun drawAffiliationSection() : PdfPTable {
+    val table = PdfPTable(8)
+    table.setWidthPercentage(80f)
+    table.horizontalAlignment = Element.ALIGN_LEFT
+    table.addCell(addCellWithBorder("Affiliation Name", 2,false))
+    table.addCell(addCellWithBorder("Affiliation Details", 2,false))
+    table.addCell(addCellWithBorder("Effective Date", 1,true))
+    table.addCell(addCellWithBorder("Expiration Date", 1,true))
+    table.addCell(addCellWithBorder("Comments", 2,false))
+    FacilityDataModel.getInstance().tblAffiliations.apply {
+        (0 until size).forEach {
+            if ( !get(it).AffiliationID.equals("-1") ) {
+                if (TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AARAffiliationTypeID.equals(get(it).AffiliationTypeID)}.isNotEmpty()) {
+                    table.addCell(addCellWithBorder(TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.equals(get(it).AffiliationTypeID) }[0].AffiliationTypeName, 2, false))
+                    if (TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.equals(get(it).AffiliationTypeDetailID) }.isNotEmpty()) {
+                        table.addCell(addCellWithBorder(TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.equals(get(it).AffiliationTypeDetailID) }[0].AffiliationDetailTypeName, 2, false))
+                    } else {
+                        table.addCell(addCellWithBorder("", 2, false))
+                    }
+                    table.addCell(addCellWithBorder(if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY(), 1, true))
+                    table.addCell(addCellWithBorder(if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY(), 1, true))
+                    table.addCell(addCellWithBorder(get(it).comment, 2, false))
+                }
+            }
+        }
+    }
+    return table
 }
 
 private fun drawVisitationTrackingSection() : PdfPTable {
@@ -367,10 +647,26 @@ private fun drawVisitationTrackingSection() : PdfPTable {
 }
 
 
+private fun drawSoSSection() : PdfPTable {
+    val table = PdfPTable(4)
+    table.setWidthPercentage(100f)
+    table.addCell(addCell("Fixed Labor Rate\n$" + FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate ,1,true));
+    table.addCell(addCell("Diagnostic Rate\n$" + FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate,1,true));
+    table.addCell(addCell("Labor Rate Matrix Min\n$" + FacilityDataModel.getInstance().tblScopeofService[0].LaborMin ,1,true));
+    table.addCell(addCell("Labor Rate Matrix Min\n$" + FacilityDataModel.getInstance().tblScopeofService[0].LaborMax,1,true));
+    table.addCell(addCell("# of Bays: "+FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays,1,true));
+    table.addCell(addCell("# of Lifts: "+FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts,1,true));
+    table.addCell(addCell("Warranty Period: "+if (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID)}.size>0) TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName else "",1,true));
+    table.addCell(addCell("",1,true));
+    return table
+}
+
+
+
 private fun drawFacilitySection() : PdfPTable {
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
-    table.addCell(addCell("Contract Number: " ,1,true));
+    table.addCell(addCell("Contract Number: " ,1,false));
     table.addCell(addCell("Contract Type: "+FacilityDataModel.getInstance().tblContractType[0].ContractTypeName,1,false));
     table.addCell(addCell("Office: "+FacilityDataModel.getInstance().tblOfficeType[0].OfficeName,1,false));
     table.addCell(addCell("Assigned To: "+ FacilityDataModel.getInstance().tblFacilities[0].AssignedTo,1,false));
@@ -388,15 +684,149 @@ private fun drawFacilitySection() : PdfPTable {
     table.addCell(addCell("Facility Type: "+ FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName,1,false));
     table.addCell(addCell("ARD Number: "+ FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairNumber,1,false));
     table.addCell(addCell("ARD Expiration Date: "+ if (FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY(),1,false));
-    table.addCell(addCell("Provider Type: "+ FacilityDataModel.getInstance().tblFacilityServiceProvider[0].SrvProviderId,1,false));
+    table.addCell(addCell("Provider Type: "+ if (!FacilityDataModel.getInstance().tblFacilityServiceProvider[0].SrvProviderId.equals("-1")) FacilityDataModel.getInstance().tblFacilityServiceProvider[0].SrvProviderId else "",1,false));
     table.addCell(addCell("Shop Management System: ",1,false));
     table.addCell(addCell("Current Contract Date: "+ FacilityDataModel.getInstance().tblFacilities[0].ContractCurrentDate.apiToAppFormatMMDDYYYY(),1,false));
     table.addCell(addCell("Initial Contract Date: "+ FacilityDataModel.getInstance().tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY(),1,false));
     table.addCell(addCell("Billing Month: "+ FacilityDataModel.getInstance().tblFacilities[0].BillingMonth.monthNoToName(),1,false));
     table.addCell(addCell("Billing Amount: $"+ "%.3f".format(FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toFloat()),1,false));
     table.addCell(addCell("Insurance Expiration Date: "+ if (FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY(),2,false));
+    table.addCell(addCell("",2,false))
     return table
 }
+
+private fun drawHoursSection() : PdfPTable {
+    val table = PdfPTable(4)
+    table.setWidthPercentage(100f)
+    val hoursTable = PdfPTable(4)
+    hoursTable.setWidthPercentage(100f)
+    hoursTable.addCell(addCell("HOURS",1,false))
+    hoursTable.addCell(addCell("Open Time",1,false))
+    hoursTable.addCell(addCell("Close Time",1,false))
+    hoursTable.addCell(addCell("Night Drop:",1,false))
+    FacilityDataModel.getInstance().tblHours[0].apply {
+        hoursTable.addCell(addCell("Sun",1,false))
+        hoursTable.addCell(addCell(if (SunOpen.isNullOrEmpty()) "Closed" else SunOpen,1,false))
+        hoursTable.addCell(addCell(if (SunClose.isNullOrEmpty()) "Closed" else SunClose,1,false))
+        hoursTable.addCell(addCell(if (NightDrop) "True" else "False",1,false))
+        hoursTable.addCell(addCell("Mon",1,false))
+        hoursTable.addCell(addCell(if (MonOpen.isNullOrEmpty()) "Closed" else MonOpen,1,false))
+        hoursTable.addCell(addCell(if (MonClose.isNullOrEmpty()) "Closed" else MonClose,1,false))
+        hoursTable.addCell(addCell(" ",1,false))
+        hoursTable.addCell(addCell("Tue",1,false))
+        hoursTable.addCell(addCell(if (TueOpen.isNullOrEmpty()) "Closed" else TueOpen,1,false))
+        hoursTable.addCell(addCell(if (TueClose.isNullOrEmpty()) "Closed" else TueClose,1,false))
+        val cell = PdfPCell(Paragraph(("Nigh Drop Instuctions:" + if (NightDropInstr.isNullOrEmpty()) "" else NightDropInstr), normalFont));
+        cell.colspan=1
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.rowspan = 5
+        hoursTable.addCell(cell)
+        hoursTable.addCell(addCell("Wed",1,false))
+        hoursTable.addCell(addCell(if (WedOpen.isNullOrEmpty()) "Closed" else WedOpen,1,false))
+        hoursTable.addCell(addCell(if (WedClose.isNullOrEmpty()) "Closed" else WedClose,1,false))
+        hoursTable.addCell(addCell("Thu",1,false))
+        hoursTable.addCell(addCell(if (ThuOpen.isNullOrEmpty()) "Closed" else ThuOpen,1,false))
+        hoursTable.addCell(addCell(if (ThuClose.isNullOrEmpty()) "Closed" else ThuClose,1,false))
+        hoursTable.addCell(addCell("Fri",1,false))
+        hoursTable.addCell(addCell(if (FriOpen.isNullOrEmpty()) "Closed" else FriOpen,1,false))
+        hoursTable.addCell(addCell(if (FriClose.isNullOrEmpty()) "Closed" else FriClose,1,false))
+        hoursTable.addCell(addCell("Sat",1,false))
+        hoursTable.addCell(addCell(if (SatOpen.isNullOrEmpty()) "Closed" else SatOpen,1,false))
+        hoursTable.addCell(addCell(if (SatClose.isNullOrEmpty()) "Closed" else SatClose,1,false))
+    }
+    table.addCell(addTableInCell(hoursTable,4,false))
+    table.addCell(addCell(" ",4,true))
+    table.addCell(addTableInCell(drawEmailSection(),4,false))
+    table.addCell(addCell(" ",4,true))
+    table.addCell(addTableInCell(drawPhoneSection(),2,false))
+    table.addCell(addCell("",2,true))
+    return table
+}
+
+private fun drawPaymentSection() : PdfPTable {
+    val table = PdfPTable(3)
+    table.setWidthPercentage(100f)
+    table.addCell(addCellWithBorder("Payment Methods", 2,false))
+    table.addCell(addCellWithBorder("Accepted", 1,true))
+    TypeTablesModel.getInstance().PaymentMethodsType.apply {
+        (0 until size).forEach {
+            table.addCell(addCellWithBorder(get(it).PmtMethodName, 2,false))
+            if (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.equals(get(it).PmtMethodID)}.size>0) {
+                table.addCell(addTick(true,true))
+            } else {
+                table.addCell(addCellWithBorder(" ", 1,true))
+            }
+        }
+    }
+    var noOfRowsToBeAdded = TypeTablesModel.getInstance().LanguageType.size - TypeTablesModel.getInstance().PaymentMethodsType.size
+    if (FacilityDataModel.getInstance().tblPhone.size >1) noOfRowsToBeAdded += FacilityDataModel.getInstance().tblPhone.size - 1
+    if (FacilityDataModel.getInstance().tblFacilityEmail.size >1) noOfRowsToBeAdded += FacilityDataModel.getInstance().tblFacilityEmail.size - 1
+
+    for (i in 1.. noOfRowsToBeAdded){
+        table.addCell(addCell(" ", 3,true))
+    }
+    return table
+}
+
+private fun drawPhoneSection() : PdfPTable {
+    val table = PdfPTable(2)
+    table.setWidthPercentage(100f)
+    table.addCell(addCellWithBorder("Phone Type", 1,false))
+    table.addCell(addCellWithBorder("Phone", 1,true))
+    FacilityDataModel.getInstance().tblPhone.apply {
+        (0 until size).forEach {
+            if (!get(it).PhoneID.equals("-1")) {
+                table.addCell(addCellWithBorder(TypeTablesModel.getInstance().LocationPhoneType.filter { s->s.LocPhoneID.equals(get(it).PhoneTypeID)}[0].LocPhoneName, 1, false))
+                table.addCell(addCellWithBorder(get(it).PhoneNumber, 2, false))
+            }
+        }
+    }
+    return table
+}
+
+private fun drawEmailSection() : PdfPTable {
+    val table = PdfPTable(4)
+    table.setWidthPercentage(100f)
+    table.addCell(addCellWithBorder("Email Type", 1,false))
+    table.addCell(addCellWithBorder("Email", 3,true))
+    FacilityDataModel.getInstance().tblFacilityEmail.apply {
+        (0 until size).forEach {
+            if (!get(it).emailID.equals("-1")) {
+                table.addCell(addCellWithBorder(TypeTablesModel.getInstance().EmailType.filter { s->s.EmailID.equals(get(it).emailTypeId)}[0].EmailName, 1, false))
+                table.addCell(addCellWithBorder(get(it).email, 3, false))
+            }
+        }
+    }
+    return table
+}
+
+private fun drawLanguageSection() : PdfPTable {
+    val table = PdfPTable(3)
+    table.setWidthPercentage(100f)
+    table.addCell(addCellWithBorder("Language(s)", 2,false))
+    table.addCell(addCellWithBorder("Spoken", 1,true))
+    TypeTablesModel.getInstance().LanguageType.apply {
+        (0 until size).forEach {
+            table.addCell(addCellWithBorder(get(it).LangTypeName, 2,false))
+            if (FacilityDataModel.getInstance().tblLanguage.filter { s->s.LangTypeID.equals(get(it).LangTypeID)}.size>0) {
+                table.addCell(addTick(true,true))
+            } else {
+                table.addCell(addCellWithBorder(" ", 1,true))
+            }
+        }
+    }
+
+    var noOfRowsToBeAdded = 0
+    if (FacilityDataModel.getInstance().tblPhone.size >1) noOfRowsToBeAdded += FacilityDataModel.getInstance().tblPhone.size - 1
+    if (FacilityDataModel.getInstance().tblFacilityEmail.size >1) noOfRowsToBeAdded += FacilityDataModel.getInstance().tblFacilityEmail.size - 1
+
+    for (i in 1.. noOfRowsToBeAdded){
+        table.addCell(addCell(" ", 3,true))
+    }
+
+    return table
+}
+
 
 private fun drawAddressSection() : PdfPTable {
     val table = PdfPTable(17)
@@ -432,7 +862,50 @@ private fun drawAddressSection() : PdfPTable {
         }
     }
     return table
+}
 
+private fun drawVehiclesSection(vehicleCatID : String) : PdfPTable {
+    val columnWidths = floatArrayOf(1f, 4f,1f, 4f,1f, 4f,1f, 4f,1f, 4f,1f, 4f,1f, 4f,1f, 4f)
+    val table = PdfPTable(columnWidths)
+    val vehicleTypeID=1
+    table.widthPercentage = 100f
+    TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleTypeID == vehicleTypeID.toInt() && s.VehicleCategoryID == vehicleCatID.toInt() }.apply {
+        (0 until size).forEach { vMakeIt ->
+            if (FacilityDataModel.getInstance().tblFacVehicles.filter { s -> s.VehicleID == get(vMakeIt).VehicleID }.isNotEmpty()) {
+                table.addCell(addTick(false,false))
+                table.addCell(addCell(get(vMakeIt).MakeName, 1, false))
+            } else {
+                table.addCell(addCell(" ", 1, false))
+                table.addCell(addCell(get(vMakeIt).MakeName, 1, false))
+            }
+        }
+    }
+
+    return table
+}
+
+private fun drawVehicleServicesSection(vehicleTypeID: String) : PdfPTable {
+    val columnWidths = floatArrayOf(1f, 4f,1f, 4f,1f, 4f)
+    val table = PdfPTable(columnWidths)
+    table.widthPercentage = 100f
+//    val p = Paragraph("This is a tick box character: ");
+//    p.add(Chunk("4", symbolsFont));
+//    table.addCell(p)
+
+    if (TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.VehiclesTypeID.equals(vehicleTypeID)}.isNotEmpty()) {
+        TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.VehiclesTypeID.equals(vehicleTypeID) }.apply {
+            (0 until size).forEach { innerIt ->
+                if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehicleTypeID.toInt() && s.ScopeServiceID == get(innerIt).ScopeServiceID.toInt() }.isNotEmpty()) {
+                    table.addCell(addTick(false,false))
+                    table.addCell(addCell(get(innerIt).ScopeServiceName,1,false))
+                } else {
+                    table.addCell(addCell(" ",1,false))
+                    table.addCell(addCell(get(innerIt).ScopeServiceName,1,false))
+                }
+            }
+        }
+    }
+    return table
 }
 
 private fun drawPersonnelSection () : PdfPTable {
@@ -608,10 +1081,34 @@ fun addCell(strValue : String, colSpan : Int,alignCenter: Boolean) : PdfPCell {
     return cell
 }
 
+fun addTableInCell(theTable : PdfPTable, colSpan : Int,alignCenter: Boolean) : PdfPCell {
+    val cell = PdfPCell(theTable);
+    cell.colspan=colSpan
+    cell.setBorder(Rectangle.NO_BORDER);
+    if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
+    return cell
+}
+
 fun addCellWithBorder(strValue : String, colSpan : Int,alignCenter : Boolean ) : PdfPCell {
     val cell = PdfPCell(Paragraph(strValue, normalFont7));
     cell.colspan=colSpan
     if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
+    return cell
+}
+
+fun addTick(alignCenter: Boolean, withBorder: Boolean) : PdfPCell {
+    val tick = Chunk("4", symbolsFont)
+    var p = Paragraph(tick)
+    val cell = PdfPCell(p);
+    cell.colspan=1
+    if (alignCenter) {
+        cell.horizontalAlignment = Element.ALIGN_CENTER
+    } else {
+        cell.horizontalAlignment = Element.ALIGN_RIGHT
+    }
+    if (!withBorder) {
+        cell.setBorder(Rectangle.NO_BORDER);
+    }
     return cell
 }
 
@@ -1214,9 +1711,6 @@ private fun addDataCell(table: PdfPTable,title: String,data: String,font : Font,
     c2.verticalAlignment = Element.ALIGN_MIDDLE
     c2.left = 2F
     table.addCell(c2)
-
-//    table.addCell(Paragraph(title, font))
-//    table.addCell(Paragraph(data, font))
 }
 
 private fun addEmptyLine(document: Document, number: Int) {

@@ -36,7 +36,6 @@ android {
             debuggable false
             signingConfig signingConfigs.signConfig
         }
-
         debug {
             debuggable true
             signingConfig signingConfigs.signConfig

@@ -763,7 +763,11 @@ class VisitationPlanningFragment : Fragment() {
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, clubCode)).build()
         this.clubCode = clubCode
-
+        if (isCompleted) {
+            progressBarText.text = "Generating PDF ..."
+        } else {
+            progressBarText.text = "Loading ..."
+        }
         recordsProgressView.visibility = View.VISIBLE
 
         client.newCall(request2).enqueue(object : Callback {
@@ -771,6 +775,7 @@ class VisitationPlanningFragment : Fragment() {
                 activity!!.runOnUiThread {
                     Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e?.message)
                     recordsProgressView.visibility = View.GONE
+                    progressBarText.text = "Loading ..."
                 }
             }
 
@@ -779,6 +784,7 @@ class VisitationPlanningFragment : Fragment() {
                 var responseString = response!!.body()!!.string()
                 activity!!.runOnUiThread {
                     recordsProgressView.visibility = View.GONE
+                    progressBarText.text = "Loading ..."
                     if (!responseString.contains("FacID not found")) {
                         if (responseString.toString().contains("returnCode>1<", false)) {
                             activity!!.runOnUiThread {
@@ -1991,6 +1997,25 @@ class VisitationPlanningFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
         }
 
+        if (jsonObj.has("tblFacilityServiceProvider")) {
+            if (!jsonObj.get("tblFacilityServiceProvider").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityServiceProvider")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityServiceProvider"))
+                    jsonObj.put("tblFacilityServiceProvider", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
+        }
+
 //
         return jsonObj
     }
@@ -2298,6 +2323,10 @@ class VisitationPlanningFragment : Fragment() {
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblFacilityManagers")) {
             var oneArray = TblFacilityManagers()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityServiceProvider")) {
+            var oneArray = TblFacilityServiceProvider()
+            oneArray.SrvProviderId="-1"
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

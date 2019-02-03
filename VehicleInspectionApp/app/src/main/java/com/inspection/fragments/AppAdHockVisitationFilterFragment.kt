@@ -1652,6 +1652,24 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
         }
+        if (jsonObj.has("tblFacilityServiceProvider")) {
+            if (!jsonObj.get("tblFacilityServiceProvider").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityServiceProvider")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityServiceProvider"))
+                    jsonObj.put("tblFacilityServiceProvider", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
+        }
 
         return jsonObj
     }
@@ -1771,7 +1789,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             var oneArray = TblPrograms()
             oneArray.Comments=""
             oneArray.ProgramID = "-1"
-            oneArray.ProgramID=""
             oneArray.effDate=""
             oneArray.expDate=""
             oneArray.programtypename=""
@@ -1957,6 +1974,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblFacilityManagers")) {
             var oneArray = TblFacilityManagers()
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityServiceProvider")) {
+            var oneArray = TblFacilityServiceProvider()
+            oneArray.SrvProviderId="-1"
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 
