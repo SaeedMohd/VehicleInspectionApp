@@ -51,6 +51,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.lang.Exception
 import java.net.URI
+import java.net.URL
 import java.nio.file.Paths
 
 
@@ -182,11 +183,58 @@ fun Int.monthNoToName(): String {
     return monthName
 }
 
-fun createPDF(isSpecialist : Boolean,activity : MainActivity ) {
+fun createPDF(){
+    createPDFForSpecialist()
+    createPDFForShop()
+}
+
+
+fun createPDFForShop() {
     val document = Document()
 
     //output file path
-    val file = File(Environment.getExternalStorageDirectory().path + "/VisitationDetails.pdf")
+    val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
+    var writer = PdfWriter.getInstance(document, FileOutputStream(file))
+    val event = HeaderFooterPageEvent()
+    writer.pageEvent = event
+    document.open()
+
+    document.addTitle("AAR Visitation")
+    // Headewr Section
+    var paragraph = Paragraph("AAR Visitation", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_CENTER
+    document.add(paragraph)
+
+    paragraph = Paragraph("Facility " + FacilityDataModel.getInstance().tblFacilities[0].FACNo + " - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName, MaintitleFont)
+    paragraph.alignment = Element.ALIGN_CENTER
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+
+    // Visitation Section
+    paragraph = Paragraph("")
+    paragraph.add(drawVisitaionSectionForShop())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
+    paragraph = Paragraph("Deficiencies", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawDeficiencySectionForShop())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
+    document.close()
+}
+
+fun createPDFForSpecialist() {
+    val document = Document()
+
+    //output file path
+    val file = File(Environment.getExternalStorageDirectory().path + "/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
     var writer = PdfWriter.getInstance(document, FileOutputStream(file))
     val event = HeaderFooterPageEvent()
     writer.pageEvent = event
@@ -420,7 +468,27 @@ fun createPDF(isSpecialist : Boolean,activity : MainActivity ) {
 
     document.close()
 
+//    Utility.uploadImage(file,activity)
+
+//    Utility.imageUpload(Environment.getExternalStorageDirectory().path + "/VisitationDetails.pdf",activity)
+
 }
+
+private fun drawVisitaionSectionForShop() : PdfPTable {
+    val table = PdfPTable(4)
+    table.setWidthPercentage(100f)
+    table.addCell(addCell("Facility Representative's Name:",1,false));
+    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName,1,false));
+    table.addCell(addCell("Automotive Specialist:",1,false));
+    table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));
+    table.addCell(addCell("Visitation Type: " ,1,false));
+    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
+    table.addCell(addCell("Date of Visitation: ",1,false));
+    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].DatePerformed.apiToAppFormatMMDDYYYY(),1,false));
+    table.addCell(addCell("Data Changes Made: "+"",4,false));
+    return table
+}
+
 
 private fun drawVisitaionSection() : PdfPTable {
     val table = PdfPTable(4)
@@ -432,7 +500,7 @@ private fun drawVisitaionSection() : PdfPTable {
     table.addCell(addCell("Facility Representative's Name:",1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
-    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName,1,false));
+    table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));
     table.addCell(addCell("Facility Representative's Signature:",1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature.toString(),1,false));
     table.addCell(addCell("Specialist's Signature:",1,false));
@@ -827,6 +895,29 @@ private fun drawLanguageSection() : PdfPTable {
     return table
 }
 
+
+private fun drawDeficiencySectionForShop() : PdfPTable {
+    val table = PdfPTable(3)
+    table.setWidthPercentage(100f)
+    table.addCell(addCellWithBorder("Deficiency", 1,true))
+    table.addCell(addCellWithBorder("Inspection Date", 1,true))
+    table.addCell(addCellWithBorder("Due Date", 1,true))
+//    var c3 = PdfPCell(Paragraph("Deficiencies", normalFont));
+//    c3.horizontalAlignment = Element.ALIGN_LEFT
+//    c3.rowspan = FacilityDataModel.getInstance().tblDeficiency.size
+//    c3.verticalAlignment = Element.ALIGN_MIDDLE
+//    table.addCell(c3)
+    FacilityDataModel.getInstance().tblDeficiency.apply {
+        (0 until size).forEach {
+            if (!get(it).DefTypeID.equals("-1")) {
+                table.addCell(addCellWithBorder(TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.toString() == get(it).DefTypeID }[0].DeficiencyName,1,true))
+                table.addCell(addCellWithBorder(if (get(it).VisitationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).VisitationDate.apiToAppFormatMMDDYYYY(),1,true));
+                table.addCell(addCellWithBorder("",1,true));
+            }
+        }
+    }
+    return table
+}
 
 private fun drawAddressSection() : PdfPTable {
     val table = PdfPTable(17)
@@ -1717,7 +1808,11 @@ private fun addEmptyLine(document: Document, number: Int) {
     for (i in 0 until number) {
         document.add(Paragraph(" "))
     }
+
 }
+
+
+
 
 //fun verifyStoragePermissions(activity: FragmentActivity) {
 //    // Check if we have write permission

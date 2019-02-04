@@ -5,6 +5,16 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.inspection.Utils.*;
 import android.app.DatePickerDialog;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
@@ -25,12 +35,14 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.provider.*;
 import android.util.Log;
-import android.widget.DatePicker;
-import android.widget.Toast;
 import android.provider.ContactsContract.*;
+import android.widget.Toast;
 
-import com.inspection.MainActivity;
+import com.inspection.adapter.MultipartRequest;
 import com.inspection.model.VehicleProfileModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +51,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.HttpURLConnection;
@@ -659,50 +672,20 @@ public class Utility {
         alertDialog.show();
     }
 
-//    public static VinResolvedObject resolveVin(String VIN) {
-//        Utility.VehiclePofileData = new ArrayList<VehicleProfileModel>();
-//        String result = null;
-//
-//        //Log.dMainActivity.TAG, "with VIN value = " + VIN);
-//
-//        String getServerPath = "http://api.edmunds.com/v1/api/toolsrepository/vindecoder?";
-//        try {
-//            ContentValues values=new ContentValues();
-//
-//            if (VIN == null || VIN.equalsIgnoreCase("null")
-//                    || VIN.equalsIgnoreCase("")) {
-//                values.put("vin", String
-//                        .valueOf("NODATA"));
-//            } else {
-//                values.put("vin", String
-//                        .valueOf(VIN));
-//            }
-//            values.put("fmt", String
-//                    .valueOf("json"));
-//
-//            values.put("api_key", String
-//                    .valueOf("e7yfyg8y7w9yr7rs3a2qr4ba"));
-//
-//            result = Utility.postRequest(getServerPath, values);
-//            // ------------------------------------Parsing
-//            if (result.toString().contains("styleHolder")) {
-//                JSONObject jObject = new JSONObject(result.toString());
-//
-//                JSONArray j1 = jObject.getJSONArray("styleHolder");
-//                JSONObject j2 = j1.getJSONObject(0);
-//
-//                return (new VinResolvedObject(VIN, j2.getString("year"), j2.getString("makeName"), j2.getString("modelName")));
-//
-//
-//            } else {
-//                return null;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//
-//    }
 
+
+//    public static void imageUpload(final String imagePath,Activity activity) {
+//        SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, "http://144.217.24.163:5000/uploadFile",
+//                response -> {
+//                    Log.d("Response", response);
+//                        String message = response.toString();
+//                },
+//                error -> {
+//
+//                });
+//        smr.addFile("file", imagePath);
+//        RequestQueue mRequestQueue = Volley.newRequestQueue(activity);
+//        mRequestQueue.add(smr);
+//    }
 
 }

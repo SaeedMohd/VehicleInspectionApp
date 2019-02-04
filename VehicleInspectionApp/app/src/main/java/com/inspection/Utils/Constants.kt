@@ -77,6 +77,7 @@ object Constants {
     val submitFacilityPhone = permanentURL + "updateFacilityPhoneData?facNum="
     //AAA APIs WebServices
     val getClubCodes = permanentURL + "getClubCodes?clubCode="
+    val uploadFile = permanentURL + "uploadFile?email="
     val getFacilityData = permanentURL + "getFacilityData?facnum=%d&clubcode=%s"
 
     val getTypeTables = permanentURL + "getTableTypes"

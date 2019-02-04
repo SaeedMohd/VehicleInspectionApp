@@ -2,10 +2,6 @@ package com.inspection
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Timer
@@ -54,8 +50,6 @@ import com.inspection.GCM.GcmRegistration
 
 import com.inspection.imageloader.ImageLoader
 import com.inspection.model.AAAFacilityComplete
-import com.inspection.Utils.ApplicationPrefs
-import com.inspection.Utils.Utility
 
 import androidx.viewpager.widget.ViewPager
 import android.widget.*
@@ -63,12 +57,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import com.inspection.Utils.createPDF
-import com.inspection.Utils.toast
+import com.android.volley.*
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.inspection.Utils.*
+import com.inspection.adapter.MultipartRequest
 import com.inspection.fragments.*
 import com.inspection.model.AnnualVisitationInspectionFormData
+import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.activity_main1.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
+import kotlinx.android.synthetic.main.fragment_visitation_form.*
+import okio.Utf8
+import java.io.*
 
 
 class MainActivity : AppCompatActivity(), LocationListener {
@@ -648,23 +649,40 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     fun generateAndOpenPDF(){
-        createPDF(true,this)
-        val target = Intent(Intent.ACTION_VIEW)
-        val file = File(Environment.getExternalStorageDirectory().path+"/VisitationDetails.pdf")
+        createPDF()
+//        val target = Intent(Intent.ACTION_VIEW)
+        val file = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
+        val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForShop.pdf")
+        uploadImage(file,"Specialist")
+        uploadImage(fileShop,"Shop")
+//        target.setDataAndType(FileProvider.getUriForFile(this,"com.inspection.android.fileprovider",file), "application/pdf")
+//        target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+//        target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        val intent = Intent.createChooser(target, "Open File")
+//        try {
+//            startActivity(intent)
+//        } catch (e: ActivityNotFoundException) {
+//            // Instruct the user to install a PDF reader here, or something
+//        }
+    }
 
-//        target.setDataAndType(Uri.fromFile(file), "application/pdf")
-        target.setDataAndType(FileProvider.getUriForFile(this,"com.inspection.android.fileprovider",file), "application/pdf")
+    fun uploadImage(file: File,type: String) {
+//        val multipartRequest = MultipartRequest(Constants.uploadFile+ApplicationPrefs.getInstance(activity).loggedInUserEmail, null, file, Response.Listener { response ->
+        val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
+            try {
+//                println("Networkonse " + String(response.data, Utf8)
+            } catch (e: UnsupportedEncodingException) {
+                e.printStackTrace()
+            }
 
-        target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-//        target.addFlags()
-//        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        val intent = Intent.createChooser(target, "Open File")
-        try {
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            // Instruct the user to install a PDF reader here, or something
-        }
+            //                Toast.makeText(context, "Upload successfully!", Toast.LENGTH_SHORT).show();
+        }, Response.ErrorListener {
+            //                Toast.makeText(context, "Upload failed!\r\n" + error.toString(), Toast.LENGTH_SHORT).show();
+        })
+        val socketTimeout = 30000//30 seconds - change to what you want
+        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        multipartRequest.retryPolicy = policy
+        Volley.newRequestQueue(applicationContext).add(multipartRequest)
     }
 
     // Saeed Mostafa - 02092017 - CallBack to check the permissions [START]
