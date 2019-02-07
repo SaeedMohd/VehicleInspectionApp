@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -21,16 +22,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.inspection.FormsActivity
 import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.R.id.*;
+import com.inspection.Utils.Constants
+import com.inspection.Utils.Utility
 
 
 import com.inspection.Utils.toast
 import com.inspection.model.IndicatorsDataModel
+import com.inspection.model.TblFacilityPhotos
 import com.inspection.model.TypeTablesModel
 import kotlinx.android.synthetic.main.fragment_aarav_photos.*
+import org.json.XML
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -54,7 +66,7 @@ class FragmentAARAVPhotos : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
-
+    var tblFacilityPhotos = ArrayList<TblFacilityPhotos>()
     var photoBitmap: Bitmap? = null
     var photoThumbnailBitmap: Bitmap? = null
 
@@ -78,6 +90,8 @@ class FragmentAARAVPhotos : Fragment() {
 //        browseBtn.setOnClickListener {
 //            dispatchTakePictureIntent()
 //        }
+
+        loadFacilityPhotos()
 
         addNewPhoto.setOnClickListener {
             photosLoadingView.visibility = View.VISIBLE
@@ -135,19 +149,47 @@ class FragmentAARAVPhotos : Fragment() {
     }
 
 
-    fun addTableRow() {
-        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+    fun loadFacilityPhotos(){
+//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos,
+//                Response.Listener { response ->
+//                    Log.v("asd","asdsa")
+//                    activity!!.runOnUiThread {
+//                        Log.v("VT RESPONSE ||| ", response.toString())
+////                        if (!response.toString().contains("[ ]", false)) {
+////                            var obj = XML.toJSONObject(response.toString())
+//////                            var jsonObj = obj.getJSONObject("responseXml")
+////                            tblFacilityPhotos = Gson().fromJson<ArrayList<TblFacilityPhotos>>(obj.toString(), object : TypeToken<ArrayList<TblFacilityPhotos>>() {}.type)
+////                        } else {
+////                            var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+////                            Utility.showSubmitAlertDialog(activity, false, "Visitation Tracking (Error: " + errorMessage + " )")
+////                        }
+//                    }
+//                }, Response.ErrorListener {
+//            Utility.showSubmitAlertDialog(activity,false,"Visitation Tracking (Error: "+it.message+" )")
+//        }))
 
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + "",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread {
+                        tblFacilityPhotos = Gson().fromJson(response.toString(), Array<TblFacilityPhotos>::class.java).toCollection(ArrayList())
+                    }
+                }, Response.ErrorListener {
+                Log.v("Loading error", "" + it.message)
+                it.printStackTrace()
+        }))
+    }
+
+
+    
+    fun addTableRow() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
-
-
         var tableRow = TableRow(context)
-
         var imageView = ImageView(context)
         imageView.setImageBitmap(photoThumbnailBitmap)
+        Glide.with(this).load(Constants.getImages).into(imageView);
         imageView.setOnClickListener {
 //            photosLoadingView.visibility = View.VISIBLE
 //            photosPreviewDialog.visibility = View.VISIBLE

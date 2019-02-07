@@ -902,11 +902,6 @@ private fun drawDeficiencySectionForShop() : PdfPTable {
     table.addCell(addCellWithBorder("Deficiency", 1,true))
     table.addCell(addCellWithBorder("Inspection Date", 1,true))
     table.addCell(addCellWithBorder("Due Date", 1,true))
-//    var c3 = PdfPCell(Paragraph("Deficiencies", normalFont));
-//    c3.horizontalAlignment = Element.ALIGN_LEFT
-//    c3.rowspan = FacilityDataModel.getInstance().tblDeficiency.size
-//    c3.verticalAlignment = Element.ALIGN_MIDDLE
-//    table.addCell(c3)
     FacilityDataModel.getInstance().tblDeficiency.apply {
         (0 until size).forEach {
             if (!get(it).DefTypeID.equals("-1")) {

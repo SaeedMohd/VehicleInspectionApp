@@ -564,3 +564,18 @@ class TblPersonnelSigner {
     var FirstName = ""
     var active = 0
 }
+
+class PRGFacilityPhotos {
+    var filedescription = ""
+    var seqnum = 0
+    var filename = ""
+    var approvedby = ""
+    var approvalrequested = false
+    var approveddate = ""
+    var facid = 0
+    var lastupdatedate = ""
+    var lastupdateby = ""
+    var approved = false
+    var photoid = 0
+    var primaryphoto = false
+}
