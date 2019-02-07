@@ -179,7 +179,6 @@ class FragmentAARAVPhotos : Fragment() {
         }))
     }
 
-
     
     fun addTableRow() {
         val rowLayoutParam = TableRow.LayoutParams()
