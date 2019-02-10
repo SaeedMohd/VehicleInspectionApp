@@ -78,12 +78,13 @@ object Constants {
     //AAA APIs WebServices
     val getClubCodes = permanentURL + "getClubCodes?clubCode="
     val uploadFile = permanentURL + "uploadFile?email="
+    val uploadPhoto = permanentURL + "uploadPhoto?facId="
     val getFacilityData = permanentURL + "getFacilityData?facnum=%d&clubcode=%s"
 
     val getTypeTables = permanentURL + "getTableTypes"
     val getVisitations = permanentURL + "getVisitations?"
     val getFacilitiesWithFilters = permanentURL + "getFacilitiesWithFilters?"
-    val getImages = permanentURL + "getImage?file=IMG_0060.PNG"
+    val getImages = permanentURL + "getImage?file="
     val getFacilityPhotos = permanentURL + "getFacilityPhotos?facId=1"
 
     val UpdateAARPortalAdminData = permanentURL + "updateAARPortalAdminData?facNum="

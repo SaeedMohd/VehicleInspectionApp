@@ -653,8 +653,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
 //        val target = Intent(Intent.ACTION_VIEW)
         val file = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
         val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForShop.pdf")
-        uploadImage(file,"Specialist")
-        uploadImage(fileShop,"Shop")
+        uploadPDF(file,"Specialist")
+        uploadPDF(fileShop,"Shop")
 //        target.setDataAndType(FileProvider.getUriForFile(this,"com.inspection.android.fileprovider",file), "application/pdf")
 //        target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
 //        target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -666,7 +666,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 //        }
     }
 
-    fun uploadImage(file: File,type: String) {
+    fun uploadPDF(file: File,type: String) {
 //        val multipartRequest = MultipartRequest(Constants.uploadFile+ApplicationPrefs.getInstance(activity).loggedInUserEmail, null, file, Response.Listener { response ->
         val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
             try {
@@ -684,6 +684,21 @@ class MainActivity : AppCompatActivity(), LocationListener {
         multipartRequest.retryPolicy = policy
         Volley.newRequestQueue(applicationContext).add(multipartRequest)
     }
+
+    fun uploadPhoto(file: File,facId : String) {
+        val multipartRequest = MultipartRequest(Constants.uploadPhoto+facId, null, file, Response.Listener { response ->
+            try {
+            } catch (e: UnsupportedEncodingException) {
+                e.printStackTrace()
+            }
+        }, Response.ErrorListener {
+        })
+        val socketTimeout = 30000//30 seconds - change to what you want
+        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        multipartRequest.retryPolicy = policy
+        Volley.newRequestQueue(applicationContext).add(multipartRequest)
+    }
+
 
     // Saeed Mostafa - 02092017 - CallBack to check the permissions [START]
     override fun  onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

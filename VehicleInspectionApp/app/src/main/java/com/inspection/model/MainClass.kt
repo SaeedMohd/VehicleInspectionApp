@@ -565,9 +565,10 @@ class TblPersonnelSigner {
     var active = 0
 }
 
+
 class PRGFacilityPhotos {
     var filedescription = ""
-    var seqnum = 0
+    var downstreamapps = ""
     var filename = ""
     var approvedby = ""
     var approvalrequested = false
@@ -577,5 +578,4 @@ class PRGFacilityPhotos {
     var lastupdateby = ""
     var approved = false
     var photoid = 0
-    var primaryphoto = false
 }

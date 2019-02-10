@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:tools="http://schemas.android.com/tools"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:background="@color/light_gray"
-tools:context=".fragments.FragmentAARAVPhotos">
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_gray"
+    tools:context=".fragments.FragmentAARAVPhotos">
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -29,6 +28,7 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="5dp"
             android:background="@color/white"
             android:elevation="10dp"
             >
@@ -70,113 +70,136 @@ tools:context=".fragments.FragmentAARAVPhotos">
                 android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
                 android:layout_marginBottom="20dp"
+                android:stretchColumns="*"
                 >
                 <TableRow
                     android:background="@color/mainColor"
-                    android:padding="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:minHeight="30dp"
                     >
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
                         android:text="Thumbnail"
                         android:textStyle="bold"
                         android:layout_column="0"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
                         android:text="File Name"
                         android:textStyle="bold"
-                        android:layout_column="0"
+                        android:layout_column="1"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
                         android:text="File Description"
                         android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
+                        android:layout_column="2"
+                        android:layout_weight="1.5"
                         android:gravity="center_vertical"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
                         android:text="Update By"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="3"
                         android:layout_weight="1"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
                         android:text="Update Date"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="4"
                         android:layout_weight="1"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
                         android:text="Approval Requested"
                         android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
+                        android:layout_column="5"
+                        android:layout_weight="0.8"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         />
 
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
                         android:text="Approved"
                         android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
+                        android:layout_column="6"
+                        android:layout_weight="0.8"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
                         android:text="Approved By"
                         android:textStyle="bold"
-                        android:layout_column="1"
+                        android:layout_column="7"
                         android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:text="Approved Date"
+                        android:textStyle="bold"
+                        android:layout_column="8"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:text="Downstream Apps"
+                        android:textStyle="bold"
+                        android:layout_column="9"
+                        android:layout_weight="1.5"
                         android:gravity="center_vertical"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:text="Approved Date"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:text="Options"
                         android:textStyle="bold"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
+                        android:layout_column="10"
+                        android:layout_weight="0.8"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         />
-
-
                 </TableRow>
             </TableLayout>
 
@@ -214,7 +237,7 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:layout_height="wrap_content"
             >
 
-            <TableRow>r
+            <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -230,8 +253,8 @@ tools:context=".fragments.FragmentAARAVPhotos">
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text=""
+                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
                     android:layout_column="1"
-                    android:ems="8"
                     android:background="@drawable/textview_background"
                     android:textStyle="bold"
                     />
@@ -241,7 +264,7 @@ tools:context=".fragments.FragmentAARAVPhotos">
                     android:layout_margin="5dp"
                     android:text="File Description:"
                     android:textStyle="bold"
-                    android:layout_column="4"
+                    android:layout_column="2"
                     />
                 <EditText
                     android:id="@+id/fileDescText"
@@ -249,8 +272,8 @@ tools:context=".fragments.FragmentAARAVPhotos">
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text=""
-                    android:ems="8"
-                    android:layout_column="5"
+                    android:layout_span="2"
+                    android:layout_column="3"
                     android:background="@drawable/textview_background"
                     android:textStyle="bold"
                     />
@@ -262,79 +285,59 @@ tools:context=".fragments.FragmentAARAVPhotos">
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_margin="5dp"
-                    android:text="Last Update Date:"
+                    android:text="Downstream\nApps:"
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
-                <EditText
-                    android:id="@+id/lastUpdateDateText"
+                <CheckBox
                     android:layout_width="wrap_content"
+                    android:id="@+id/clubCHeck"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text=""
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="Last Updated By:"
+                    android:text="Club Hub/MRM"
+                    android:textStyle="bold"
+                    android:layout_column="1"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/envCheck"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="Envision"
+                    android:textStyle="bold"
+                    android:layout_column="2"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/modCheck"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="MOD"
+                    android:textStyle="bold"
+                    android:layout_column="3"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/irasCheck"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    android:text="IRAS"
                     android:textStyle="bold"
                     android:layout_column="4"
                     />
-                <EditText
-                    android:id="@+id/lastUpdatedByText"
+                <CheckBox
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="8"
-                    android:layout_column="5"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
-
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/rspCheck"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_margin="5dp"
-                    android:text="Last Approved Date:"
-                    android:layout_column="0"
+                    android:text="RSP"
                     android:textStyle="bold"
-                    />
-                <Button
-                    android:id="@+id/lastApprovedDateBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_column="1"
-                    android:background="@color/transparent"
-                    android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Last Approved By:"
-                    android:textStyle="bold"
-                    android:layout_column="4"
-                    />
-                <EditText
-                    android:id="@+id/lastApprovedByText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="8"
                     android:layout_column="5"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
                     />
             </TableRow>
 
@@ -352,19 +355,11 @@ tools:context=".fragments.FragmentAARAVPhotos">
                     android:textStyle="bold"
                     android:layout_column="0"
                     />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/approvedCheck"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Approved"
-                    android:textStyle="bold"
-                    android:layout_column="0"
-                    />
+
             </TableRow>
 
         </TableLayout>
+
 
         <Button
             android:id="@+id/addNewPhotoConfirmButton"
@@ -372,12 +367,12 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:layout_height="30dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/green_background_button"
-            android:layout_below="@id/newPhotoInputFieldsTableLayout"
+            android:layout_below="@id/addNewPhotoPickPhotoButton"
             android:textColor="@color/white"
-            android:text="confirm"
+            android:text="        Submit        "
             android:paddingRight="15dp"
+            android:layout_toRightOf="@id/addNewPhotoCancelButton"
             android:paddingLeft="15dp"
-            android:layout_alignParentRight="true"
             />
 
         <Button
@@ -386,10 +381,9 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:layout_height="30dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/green_background_button"
-            android:layout_below="@id/newPhotoInputFieldsTableLayout"
+            android:layout_below="@id/addNewPhotoCapturePhotoButton"
             android:textColor="@color/white"
-            android:text="Cancel"
-            android:layout_toLeftOf="@id/addNewPhotoConfirmButton"
+            android:text="        Cancel         "
             android:paddingRight="15dp"
             android:paddingLeft="15dp"
             android:layout_marginRight="10dp"
@@ -418,13 +412,22 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:background="@drawable/green_background_button"
             android:layout_below="@id/newPhotoInputFieldsTableLayout"
             android:textColor="@color/white"
-            android:text="Pick Photo"
+            android:text="     Pick Photo   "
             android:paddingRight="15dp"
             android:paddingLeft="15dp"
             android:layout_toRightOf="@id/addNewPhotoCapturePhotoButton"
             android:layout_marginLeft="10dp"
             />
-
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/newPhotoInputFieldsTableLayout"
+                android:id="@+id/loadedImage"
+                android:scaleType="fitXY"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/black_border"
+                />
     </RelativeLayout>
 
     <RelativeLayout
@@ -453,10 +456,75 @@ tools:context=".fragments.FragmentAARAVPhotos">
             android:paddingLeft="15dp"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"
-            android:text="close"
+            android:text="Close"
             android:layout_below="@id/photosPreviewImageView"
 
             />
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="50dp"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/photosEnlargeDialog"
+        android:visibility="gone"
+        android:background="@drawable/black_border"
+        app:cardElevation="10dp">
+
+        <ImageView
+            android:id="@+id/photosEnlargeImageView"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/profile_photo"
+            />
+        <ImageView
+            android:id="@+id/closeImageView"
+            android:layout_width="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="top|right"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/close"
+            android:scaleType="fitXY"/>
+        />
+
+
+
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/photoLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:clickable="true"
+        android:background="@color/mainColor"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/progressBarText"
+            android:text="Loading..."
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 </RelativeLayout>

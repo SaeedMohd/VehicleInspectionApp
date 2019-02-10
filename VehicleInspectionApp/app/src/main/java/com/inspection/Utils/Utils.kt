@@ -22,8 +22,6 @@ import android.os.Environment
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.itextpdf.text.*
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
 import android.content.ActivityNotFoundException
 import androidx.core.content.ContextCompat.startActivity
 import android.content.Intent
@@ -37,8 +35,12 @@ import android.net.Uri
 import android.widget.CheckBox
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
 import com.inspection.MainActivity
 import com.inspection.R
+import com.inspection.adapter.MultipartRequest
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
 import com.itextpdf.text.pdf.*
@@ -46,9 +48,8 @@ import com.itextpdf.text.pdf.PdfName.TEXT
 import com.itextpdf.text.pdf.draw.LineSeparator
 import org.w3c.dom.Text
 import java.awt.font.TextAttribute.FONT
+import java.io.*
 
-import java.io.ByteArrayOutputStream
-import java.io.File
 import java.lang.Exception
 import java.net.URI
 import java.net.URL
@@ -89,6 +90,10 @@ fun String.apiToAppFormat(): String {
 
 fun String.apiToAppFormatMMDDYYYY(): String {
     return if (this.equals("")) "" else appFormatMMDDYYYY.format(apiFormat.parse(this.split("T")[0]))
+}
+
+fun String.apiToAppFormatMMDDYYYYDelimitSpace(): String {
+    return if (this.equals("")) "" else appFormatMMDDYYYY.format(apiFormat.parse(this.split(" ")[0]))
 }
 
 fun String.appToApiFormat(): String = if (this.equals("")) "" else apiFormat.format(appFormat.parse(this))
