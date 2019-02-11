@@ -685,19 +685,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         Volley.newRequestQueue(applicationContext).add(multipartRequest)
     }
 
-    fun uploadPhoto(file: File,facId : String) {
-        val multipartRequest = MultipartRequest(Constants.uploadPhoto+facId, null, file, Response.Listener { response ->
-            try {
-            } catch (e: UnsupportedEncodingException) {
-                e.printStackTrace()
-            }
-        }, Response.ErrorListener {
-        })
-        val socketTimeout = 30000//30 seconds - change to what you want
-        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        multipartRequest.retryPolicy = policy
-        Volley.newRequestQueue(applicationContext).add(multipartRequest)
-    }
+
 
 
     // Saeed Mostafa - 02092017 - CallBack to check the permissions [START]

@@ -7,6 +7,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -14,7 +15,11 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.Selection
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -24,6 +29,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -37,6 +43,8 @@ import com.inspection.R
 import com.inspection.R.id.*;
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.uploadPhoto
+import com.inspection.Utils.Utility.getPath
+import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
 
 
@@ -44,6 +52,7 @@ import kotlinx.android.synthetic.main.fragment_aarav_photos.*
 import org.json.XML
 import java.io.File
 import java.io.IOException
+import java.io.UnsupportedEncodingException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,6 +78,8 @@ class FragmentAARAVPhotos : Fragment() {
     var tblFacilityPhotos = ArrayList<PRGFacilityPhotos>()
     var photoBitmap: Bitmap? = null
     var photoThumbnailBitmap: Bitmap? = null
+    var fileSuffix = ""
+    var fileprefix = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +97,7 @@ class FragmentAARAVPhotos : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        fileprefix = "FACID" + FacilityDataModel.getInstance().tblFacilities[0].FACNo
 //        browseBtn.setOnClickListener {
 //            dispatchTakePictureIntent()
 //        }
@@ -94,11 +105,39 @@ class FragmentAARAVPhotos : Fragment() {
         loadFacilityPhotos()
 
 
+        fileNameText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                fileNameTitle.text = fileprefix + p0 + fileSuffix
+            }
+        })
 
         addNewPhoto.setOnClickListener {
+            (activity as FormsActivity).overrideBackButton = true
+            enableControls(false)
+            fileDescText.setText("")
+            fileNameText.setText("")
+            fileNameTitle.text = ""
+            clubCHeck.isChecked = false
+            commCheck.isChecked = false
+            modCheck.isChecked = false
+            irasCheck.isChecked = false
+            rspCheck.isChecked = false
+            envCheck.isChecked = false
+            approvalReqCheck.isChecked = false
+            loadedImage.setImageBitmap(null)
             photosLoadingView.visibility = View.VISIBLE
             addNewPhotoDialog.visibility = View.VISIBLE
         }
+
+
 
         addNewPhotoPickPhotoButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission((activity as FormsActivity),
@@ -130,22 +169,37 @@ class FragmentAARAVPhotos : Fragment() {
         }
 
         addNewPhotoConfirmButton.setOnClickListener {
-            addNewPhotoDialog.visibility = View.GONE
-            photosLoadingView.visibility = View.GONE
             val file = File(loadedImage.tag.toString())
-            (activity as MainActivity).uploadPhoto(file,"1")
+//            (activity as FormsActivity).
+            if (validateInputs()) {
+                progressBarText.text = "Uploading Photo ..."
+                photoLoadingView.visibility = View.VISIBLE
+                uploadPhoto(file, fileNameTitle.text.toString())
+//                photosLoadingView.visibility = View.GONE
+            } else {
+                Utility.showValidationAlertDialog(activity, "Please fill all the required activity")
+            }
+
         }
 
         addNewPhotoCancelButton.setOnClickListener {
+            (activity as FormsActivity).overrideBackButton = false
             addNewPhotoDialog.visibility = View.GONE
             photosLoadingView.visibility = View.GONE
         }
 
+        editPhotoCancelButton.setOnClickListener {
+            (activity as FormsActivity).overrideBackButton = false
+            editPhotoDialog.visibility = View.GONE
+            photosLoadingView.visibility = View.GONE
+        }
 
         photosPreviewDialogCloseButton.setOnClickListener {
+            (activity as FormsActivity).overrideBackButton = false
             photosPreviewDialog.visibility = View.GONE
             photosLoadingView.visibility = View.GONE
         }
+
 
         IndicatorsDataModel.getInstance().tblPhotos[0].visited = true
         photosTitle.setTextColor(Color.parseColor("#26C3AA"))
@@ -153,7 +207,7 @@ class FragmentAARAVPhotos : Fragment() {
     }
 
 
-    fun loadFacilityPhotos(){
+    fun loadFacilityPhotos() {
 //        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos,
 //                Response.Listener { response ->
 //                    Log.v("asd","asdsa")
@@ -172,16 +226,17 @@ class FragmentAARAVPhotos : Fragment() {
 //            Utility.showSubmitAlertDialog(activity,false,"Visitation Tracking (Error: "+it.message+" )")
 //        }))
         photoLoadingView.visibility = View.VISIBLE
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + "",
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
+//                        Utility.showMessageDialog(context,"ajshd","COUNT ---> "+tblFacilityPhotos.size)
                         fillPhotosTableView()
                     }
                 }, Response.ErrorListener {
-                Log.v("Loading error", "" + it.message)
-                photoLoadingView.visibility = View.GONE
-                it.printStackTrace()
+            Log.v("Loading error", "" + it.message)
+            photoLoadingView.visibility = View.GONE
+            it.printStackTrace()
         }))
     }
 
@@ -196,13 +251,13 @@ class FragmentAARAVPhotos : Fragment() {
         imageView.setImageBitmap(photoThumbnailBitmap)
         Glide.with(this).load(Constants.getImages).into(imageView);
         imageView.setOnClickListener {
-//            photosLoadingView.visibility = View.VISIBLE
+            //            photosLoadingView.visibility = View.VISIBLE
 //            photosPreviewDialog.visibility = View.VISIBLE
 //
 //
 //            photosPreviewImageView.setImageBitmap(imageView.toBitmap())
         }
-        tableRow.setPadding(0,4,0,4)
+        tableRow.setPadding(0, 4, 0, 4)
         tableRow.addView(imageView)
 
         var textView = TextView(context)
@@ -295,6 +350,9 @@ class FragmentAARAVPhotos : Fragment() {
 //            addNewPhotoDialog.visibility = View.GONE
             loadedImage.setImageBitmap(photoBitmap)
             loadedImage.tag = mCurrentPhotoPath
+            fileSuffix = loadedImage.tag.toString().substring(loadedImage.tag.toString().lastIndexOf("."))
+            fileNameTitle.text = fileprefix + fileNameText.text + fileSuffix
+            enableControls(true)
 //            photosPreviewDialog.visibility = View.VISIBLE
 //            addTableRow()
 //            uploadPhotoTask(mCurrentPhotoPath, false).execute()
@@ -320,23 +378,61 @@ class FragmentAARAVPhotos : Fragment() {
             context!!.toast("Image picked successfully")
             var uri = data!!.data
 
-        try {
-            var bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, uri);
-            // Log.d(TAG, String.valueOf(bitmap));
-            photoBitmap = bitmap
-            photoThumbnailBitmap = bitmap
+            try {
+                var bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, uri);
+
+                // Log.d(TAG, String.valueOf(bitmap));
+                photoBitmap = bitmap
+                photoThumbnailBitmap = bitmap
 //            addNewPhotoDialog.visibility = View.GONE
-            loadedImage.setImageBitmap(photoBitmap)
-            loadedImage.tag = uri
+                loadedImage.setImageBitmap(photoBitmap)
+//                loadedImage.tag = getPathFromURI(uri)
+                loadedImage.tag = getPath(context,uri)
+                fileSuffix = loadedImage.tag.toString().substring(loadedImage.tag.toString().lastIndexOf("."))
+                fileNameTitle.text = fileprefix + fileNameText.text + fileSuffix
+                enableControls(true)
 //            photosPreviewDialog.visibility = View.VISIBLE
 //            addTableRow()
-        } catch (e : IOException) {
-            e.printStackTrace();
-        }
+            } catch (e: IOException) {
+                e.printStackTrace();
+            }
         }
 
     }
 
+    fun enableControls(enable: Boolean) {
+        fileNameText.isEnabled = enable
+        fileDescText.isEnabled = enable
+        clubCHeck.isEnabled = enable
+        commCheck.isEnabled = enable
+        modCheck.isEnabled = enable
+        envCheck.isEnabled = enable
+        irasCheck.isEnabled = enable
+        rspCheck.isEnabled = enable
+        approvalReqCheck.isEnabled = enable
+    }
+
+    fun getPathFromURI(contentUri: Uri): String {
+        var res = ""
+        val wholeID = DocumentsContract.getDocumentId(contentUri);
+        // Split at colon, use second item in the array
+
+        val id = wholeID.split(":")[1];
+        val column = arrayOf(MediaStore.Images.Media.DATA)
+        val sel = MediaStore.Images.Media._ID + "=?";
+//        val cursor = context!!.contentResolver.query(contentUri, proj, null, null, null);
+        val cursor = context!!.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, arrayOf(id), null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            res = contentUri.getPath();
+        } else {
+            if (cursor.moveToFirst()) {
+                var column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                res = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        return res
+    }
 
     private fun getBitmapWithPath(path: String, isThumb: Boolean): Bitmap? {
         val bounds = BitmapFactory.Options()
@@ -355,8 +451,15 @@ class FragmentAARAVPhotos : Fragment() {
     }
 
 
-    fun fillPhotosTableView(){
+    fun fillPhotosTableView() {
+
         photoLoadingView.visibility = View.VISIBLE
+        if (photosTableLayout.childCount > 1) {
+            for (i in photosTableLayout.childCount - 1 downTo 1) {
+                photosTableLayout.removeViewAt(i)
+            }
+        }
+
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
@@ -439,13 +542,13 @@ class FragmentAARAVPhotos : Fragment() {
 
         tblFacilityPhotos.apply {
             (0 until size).forEach {
-                if (get(it).photoid>0) {
+                if (get(it).photoid > 0) {
 
                     val tableRow = TableRow(context)
                     tableRow.layoutParams = rowLayoutParamRow
                     if (get(it).filename.isNullOrEmpty())
-                    tableRow.minimumHeight = if (get(it).filename.isNullOrEmpty()) 30 else 60
-                    tableRow.setPadding(0,4,0,4)
+                        tableRow.minimumHeight = if (get(it).filename.isNullOrEmpty()) 30 else 60
+                    tableRow.setPadding(0, 4, 0, 4)
 
                     if (it % 2 == 0) {
                         tableRow.setBackgroundResource(R.drawable.alt_row_color)
@@ -454,10 +557,10 @@ class FragmentAARAVPhotos : Fragment() {
 
                     val imageView = ImageView(context)
                     imageView.layoutParams = rowLayoutParam
-                    imageView.setPadding(10,0,10,0)
+                    imageView.setPadding(10, 0, 10, 0)
                     imageView.scaleType = ImageView.ScaleType.FIT_XY
                     imageView.isClickable = true
-                    Glide.with(this@FragmentAARAVPhotos).load(Constants.getImages+get(it).filename).into(imageView);
+                    Glide.with(this@FragmentAARAVPhotos).load(Constants.getImages + get(it).filename).into(imageView);
                     if (!get(it).filename.isNullOrEmpty()) {
                         imageView.setOnClickListener { innerIt ->
                             Glide.with(this@FragmentAARAVPhotos).load(Constants.getImages + get(it).filename).into(photosEnlargeImageView);
@@ -543,85 +646,184 @@ class FragmentAARAVPhotos : Fragment() {
                     editButton.setTextColor(Color.BLUE)
                     editButton.text = "EDIT"
                     editButton.minimumHeight = 30
-                    editButton.isEnabled=true
+                    editButton.isEnabled = true
                     editButton.gravity = Gravity.CENTER
                     editButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(editButton)
 
 
                     editButton.setOnClickListener {
-//                        edit_afDtlseffective_date_textviewVal.setText(if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.equals("") || FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "SELECT DATE" else  FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.apiToAppFormatMMDDYYYY())
-//                        edit_afDtlsexpiration_date_textviewVal.setText(if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.equals("") || FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "SELECT DATE" else  FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.apiToAppFormatMMDDYYYY())
-//                        edit_affcomments_editTextVal.setText(FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment)
-//                        edit_affiliations_textviewVal.setSelection(edit_affTypesArray.indexOf(textView.text.toString()))
-//                        if (textView1.text.isNotEmpty()) {
-//                            edit_afDetails_textviewVal.setSelection(edit_affTypesDetailsArray.indexOf(textView1.text.toString()))
-//                        }
-//                        edit_afDetails_textviewVal.tag=textView1.text.toString()
-//                        edit_afDtlseffective_date_textviewVal.setError(null)
-//                        edit_affiliationsCard.visibility = View.VISIBLE
-//                        (activity as FormsActivity).overrideBackButton = true
-//                        alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
-//
-//                        var childViewCount = mainAffTableLayout.getChildCount();
-//
+                        (activity as FormsActivity).overrideBackButton = true
+                        editFileDescText.setText(textView2.text)
+                        editFileNameText.setText(textView1.text)
+                        editFileNameTitle.text = ""
+                        editClubCHeck.isChecked = textView7.text.contains("Club Hub/MRM")
+                        editCommCHeck.isChecked = textView7.text.contains("eComm")
+                        editModCheck.isChecked = textView7.text.contains("Envision")
+                        editIrasCheck.isChecked = textView7.text.contains("MOD")
+                        editRspCheck.isChecked = textView7.text.contains("IRAS")
+                        editEnvCheck.isChecked = textView7.text.contains("RSP")
+                        editApprovalReqCheck.isChecked = checkBox1.isChecked
+                        photosLoadingView.visibility = View.VISIBLE
+                        editPhotoDialog.visibility = View.VISIBLE
+                        var currentTableRowIndex = photosTableLayout.indexOfChild(tableRow)
+                        var currentPhotoIndex = currentTableRowIndex - 1
+
+
+
+                        editPhotoConfirmButton.setOnClickListener {
+
+                            if (validateEditsInputs()) {
+                                progressBarText.text = "Saving ..."
+                                photoLoadingView.visibility = View.VISIBLE
+                                progressBarText.text = "Saving Photo Details ..."
+                                photoLoadingView.visibility = View.VISIBLE
+                                var photoID = tblFacilityPhotos[currentPhotoIndex].photoid
+                                var fileDescStr = editFileDescText.text.toString()
+                                var approvalReq = if (editApprovalReqCheck.isChecked) 1 else 0
+                                var downstreamStr = ""
+                                if (editClubCHeck.isChecked) downstreamStr += clubCHeck.text.toString() + ", "
+                                if (editCommCHeck.isChecked) downstreamStr += commCheck.text.toString() + ", "
+                                if (editEnvCheck.isChecked) downstreamStr += envCheck.text.toString() + ", "
+                                if (editModCheck.isChecked) downstreamStr += modCheck.text.toString() + ", "
+                                if (editIrasCheck.isChecked) downstreamStr += irasCheck.text.toString() + ", "
+                                if (editRspCheck.isChecked) downstreamStr += rspCheck.text.toString() + ", "
+                                downstreamStr = downstreamStr.removeSuffix(", ")
+
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&operation=EDIT&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}",
+                                        Response.Listener { response ->
+                                            activity!!.runOnUiThread {
+                                                if (response.toString().contains("Success", false)) {
+                                                    Utility.showSubmitAlertDialog(activity, true, "Photos")
+                                                    photoLoadingView.visibility = View.GONE
+                                                    progressBarText.text = "Loading ..."
+                                                    loadFacilityPhotos()
+//                                HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations = true
+//                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + errorMessage + " )")
+                                                }
+                                                photoLoadingView.visibility = View.GONE
+                                                progressBarText.text = "Loading ..."
+                                                editPhotoDialog.visibility = View.GONE
+                                                (activity as FormsActivity).overrideBackButton = false
+                                            }
+                                        }, Response.ErrorListener {
+                                    Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: " + it.message + " )")
+                                    editPhotoDialog.visibility = View.GONE
+                                    photoLoadingView.visibility = View.GONE
+                                    progressBarText.text = "Loading ..."
+                                    (activity as FormsActivity).overrideBackButton = false
+
+                                }))
+                            } else
+                                Utility.showValidationAlertDialog(activity, "Please fill all the required activity")
+                        }
+
                     }
-//                    edit_submitNewAffil.setOnClickListener {
-//
-//                        if (validateInputsForUpdate()) {
-//                            progressBarText.text = "Saving ..."
-//                            affLoadingView.visibility = View.VISIBLE
-//                            var startDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-//                            var endDate = if (edit_afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlsexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-//                            var comment = edit_affcomments_editTextVal.text.toString()
-////
-//                            var affTypeID = TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(edit_affiliations_textviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID
-//                            var affDetailID = if (edit_afDetails_textviewVal.selectedItem != null) TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(edit_afDetails_textviewVal.selectedItem.toString()) }[0].AffiliationTypeDetailID else "0"
-//                            var affiliationID = if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID>-1) FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID else ""
-//                            indexToRemove = rowIndex
-//                            Log.v("AFFILIATION EDIT --- ", Constants.UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}")
-//                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}",
-//                                    Response.Listener { response ->
-//                                        activity!!.runOnUiThread {
-//                                            if (response.toString().contains("returnCode>0<",false)) {
-//                                                Utility.showSubmitAlertDialog(activity, true, "Affiliation")
-//                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
-//                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
-//                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
-//                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
-//                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment= comment
-//                                                affLoadingView.visibility = View.GONE
-//                                                progressBarText.text = "Loading ..."
-//                                                fillAffTableView()
-//                                                altLocationTableRow(2)
-//                                                HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
-//                                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
-//                                            } else {
-//                                                var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-//                                                Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
-//                                            }
-//                                            affLoadingView.visibility = View.GONE
-//                                            (activity as FormsActivity).overrideBackButton = false
-//                                            edit_affiliationsCard.visibility = View.GONE
-//                                            alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-//                                        }
-//                                    }, Response.ErrorListener {
-//                                Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
-//                                affLoadingView.visibility = View.GONE
-//                                (activity as FormsActivity).overrideBackButton = false
-//                                edit_affiliationsCard.visibility = View.GONE
-//                                alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-//                            }))
-//                        } else
-//                            Utility.showValidationAlertDialog(activity,"Please fill all the required activity")
-//                    }
                     photosTableLayout.addView(tableRow)
                 }
             }
+            photoLoadingView.visibility = View.GONE
+
         }
-        photoLoadingView.visibility = View.GONE
+    }
+
+    fun uploadPhoto(file: File, fileName: String) {
+        val multipartRequest = MultipartRequest(uploadPhoto + fileName, null, file, Response.Listener { response ->
+            try {
+                submitPhotoDetails()
+            } catch (e: UnsupportedEncodingException) {
+                e.printStackTrace()
+            }
+        }, Response.ErrorListener {
+            Utility.showMessageDialog(context, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
+            Log.v("Upload Photo Error : ", it.message)
+        })
+        val socketTimeout = 30000//30 seconds - change to what you want
+        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        multipartRequest.retryPolicy = policy
+        Volley.newRequestQueue((activity as FormsActivity).applicationContext).add(multipartRequest)
+    }
+
+    fun validateInputs() : Boolean {
+        fileNameText.setError(null)
+        fileDescText.setError(null)
+
+        var isValid = true
+
+        if (fileNameText.text.toString().isNullOrEmpty()) {
+            isValid = false
+            fileNameText.setError("Required Field")
+        }
+        if (fileDescText.text.toString().isNullOrEmpty()) {
+            isValid = false
+            fileDescText.setError("Required Field")
+        }
+        return isValid
+    }
+
+    fun validateEditsInputs() : Boolean {
+
+        editFileDescText.setError(null)
+
+        var isValid = true
+
+        if (editFileDescText.text.toString().isNullOrEmpty()) {
+            isValid = false
+            editFileDescText.setError("Required Field")
+        }
+        return isValid
+    }
+
+
+    fun submitPhotoDetails() {
+
+        progressBarText.text = "Saving Photo Details ..."
+        photoLoadingView.visibility = View.VISIBLE
+        var fileNameStr = fileNameTitle.text.toString()
+        var fileDescStr = fileDescText.text.toString()
+        var approvalReq = if (approvalReqCheck.isChecked) 1 else 0
+        var downstreamStr = ""
+        if (clubCHeck.isChecked) downstreamStr += clubCHeck.text.toString() + ", "
+        if (commCheck.isChecked) downstreamStr += commCheck.text.toString() + ", "
+        if (envCheck.isChecked) downstreamStr += envCheck.text.toString() + ", "
+        if (modCheck.isChecked) downstreamStr += modCheck.text.toString() + ", "
+        if (irasCheck.isChecked) downstreamStr += irasCheck.text.toString() + ", "
+        if (rspCheck.isChecked) downstreamStr += rspCheck.text.toString() + ", "
+        downstreamStr = downstreamStr.removeSuffix(", ")
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&operation=ADD&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=&approvalRequested=${approvalReq}",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread {
+                        if (response.toString().contains("Success", false)) {
+                            Utility.showSubmitAlertDialog(activity, true, "Photos")
+                            photoLoadingView.visibility = View.GONE
+                            progressBarText.text = "Loading ..."
+                            loadFacilityPhotos()
+//                                HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations = true
+//                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
+                        } else {
+                            var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                            Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + errorMessage + " )")
+                        }
+                        photoLoadingView.visibility = View.GONE
+                        addNewPhotoDialog.visibility = View.GONE
+                        progressBarText.text = "Loading ..."
+                        (activity as FormsActivity).overrideBackButton = false
+                    }
+                }, Response.ErrorListener {
+            Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: " + it.message + " )")
+            photoLoadingView.visibility = View.GONE
+            addNewPhotoDialog.visibility = View.GONE
+            progressBarText.text = "Loading ..."
+            (activity as FormsActivity).overrideBackButton = false
+
+        }))
 
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

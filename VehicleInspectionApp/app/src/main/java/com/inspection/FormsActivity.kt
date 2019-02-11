@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
+import android.util.Log
 //import android.support.design.widget.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
@@ -17,8 +18,13 @@ import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
 import com.inspection.R.id.drawer_layout
+import com.inspection.Utils.Constants
 import com.inspection.Utils.Utility
+import com.inspection.adapter.MultipartRequest
 import com.inspection.fragments.*
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
@@ -35,10 +41,13 @@ import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
+import kotlinx.android.synthetic.main.fragment_aarav_photos.*
 import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
+import java.io.File
+import java.io.UnsupportedEncodingException
 
 enum class fragmentsNames {
     FacilityGeneralInfo, FacilityContactInfo,FacilityRSP,FacilityPersonnel,FacilityAmedndmentsOrderTracking,
@@ -130,6 +139,13 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
             if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
             if (personnelLoadingView != null) personnelLoadingView.visibility = View.GONE
+            if (photoLoadingView != null) photoLoadingView.visibility = View.GONE
+            if (addNewPhotoDialog != null) addNewPhotoDialog.visibility = View.GONE
+            if (photosPreviewDialog != null) photosPreviewDialog.visibility = View.GONE
+            if (editPhotoDialog != null) editPhotoDialog.visibility = View.GONE
+
+
+
 //            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
 //            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
             overrideBackButton = false
@@ -489,6 +505,23 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun uploadPhoto(file: File, fileName : String) {
+        val multipartRequest = MultipartRequest(Constants.uploadPhoto+fileName, null, file, Response.Listener { response ->
+            try {
+
+            } catch (e: UnsupportedEncodingException) {
+                e.printStackTrace()
+            }
+        }, Response.ErrorListener {
+            Utility.showMessageDialog(this,"Uploading File","Uploading File Failed with error ("+it.message+")")
+            Log.v("Upload Photo Error : ", it.message)
+        })
+        val socketTimeout = 30000//30 seconds - change to what you want
+        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        multipartRequest.retryPolicy = policy
+        Volley.newRequestQueue(applicationContext).add(multipartRequest)
     }
 
     fun preventNavigation() : Boolean{
