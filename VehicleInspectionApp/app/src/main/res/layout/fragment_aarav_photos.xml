@@ -383,9 +383,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text=""
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                     android:layout_column="1"
+                    android:maxLength="10"
                     android:enabled="false"
+                    android:layout_span="2"
                     android:background="@drawable/textview_background"
                     android:textStyle="bold"
                     />
@@ -397,6 +399,7 @@
                     android:id="@+id/fileNameTitle"
                     android:textStyle="bold"
                     android:layout_column="3"
+                    android:layout_span="2"
                     android:layout_margin="5dp"
                     />
                 <CheckBox
@@ -430,6 +433,8 @@
                     android:layout_marginTop="5dp"
                     android:text=""
                     android:enabled="false"
+                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                    android:maxLength="200"
                     android:layout_span="2"
                     android:layout_column="1"
                     android:background="@drawable/textview_background"
@@ -593,8 +598,10 @@
                         android:layout_marginTop="5dp"
                         android:text=""
                         android:enabled="false"
-                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+                        android:maxLength="10"
                         android:layout_column="1"
+                        android:layout_span="2"
                         android:background="@drawable/textview_background"
                         android:textStyle="bold"
                         />
@@ -606,6 +613,7 @@
                         android:id="@+id/editFileNameTitle"
                         android:textStyle="bold"
                         android:layout_column="3"
+                        android:layout_span="2"
                         android:layout_margin="5dp"
                         />
                     <CheckBox
@@ -637,6 +645,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text=""
+                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                        android:maxLength="200"
                         android:layout_span="2"
                         android:layout_column="1"
                         android:background="@drawable/textview_background"

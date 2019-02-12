@@ -500,14 +500,14 @@ class FragmentAARAVPhotos : Fragment() {
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
-        rowLayoutParam5.gravity = Gravity.CENTER
+        rowLayoutParam5.gravity = Gravity.CENTER_HORIZONTAL
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 0.8F
         rowLayoutParam6.column = 6
         rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
-        rowLayoutParam6.gravity = Gravity.CENTER
+        rowLayoutParam6.gravity = Gravity.CENTER_HORIZONTAL
 
         val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
@@ -613,10 +613,10 @@ class FragmentAARAVPhotos : Fragment() {
 
                     val checkBox2 = CheckBox(context)
                     checkBox2.layoutParams = rowLayoutParam6
-                    checkBox2.gravity = Gravity.CENTER_HORIZONTAL
+                    checkBox2.gravity = Gravity.CENTER
                     checkBox2.minimumHeight = 30
                     checkBox2.isChecked = get(it).approved
-                    checkBox1.isClickable = false
+                    checkBox2.isClickable = false
                     tableRow.addView(checkBox2)
 
                     val textView5 = TextView(context)
@@ -695,16 +695,15 @@ class FragmentAARAVPhotos : Fragment() {
                                             activity!!.runOnUiThread {
                                                 if (response.toString().contains("Success", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Photos")
-                                                    photoLoadingView.visibility = View.GONE
-                                                    progressBarText.text = "Loading ..."
                                                     loadFacilityPhotos()
-//                                HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations = true
-//                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
+                                                    HasChangedModel.getInstance().groupPhoto[0].Photos= true
+                                                    HasChangedModel.getInstance().changeDoneForPhotoDef()
                                                 } else {
                                                     var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
                                                     Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + errorMessage + " )")
                                                 }
                                                 photoLoadingView.visibility = View.GONE
+                                                photosLoadingView.visibility = View.GONE
                                                 progressBarText.text = "Loading ..."
                                                 editPhotoDialog.visibility = View.GONE
                                                 (activity as FormsActivity).overrideBackButton = false
@@ -713,6 +712,7 @@ class FragmentAARAVPhotos : Fragment() {
                                     Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: " + it.message + " )")
                                     editPhotoDialog.visibility = View.GONE
                                     photoLoadingView.visibility = View.GONE
+                                    photosLoadingView.visibility = View.GONE
                                     progressBarText.text = "Loading ..."
                                     (activity as FormsActivity).overrideBackButton = false
 
@@ -802,13 +802,14 @@ class FragmentAARAVPhotos : Fragment() {
                             photoLoadingView.visibility = View.GONE
                             progressBarText.text = "Loading ..."
                             loadFacilityPhotos()
-//                                HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations = true
-//                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
+                            HasChangedModel.getInstance().groupPhoto[0].Photos= true
+                            HasChangedModel.getInstance().changeDoneForPhotoDef()
                         } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                            var errorMessage = response.toString()
                             Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + errorMessage + " )")
                         }
                         photoLoadingView.visibility = View.GONE
+                        photosLoadingView.visibility = View.GONE
                         addNewPhotoDialog.visibility = View.GONE
                         progressBarText.text = "Loading ..."
                         (activity as FormsActivity).overrideBackButton = false
@@ -816,6 +817,7 @@ class FragmentAARAVPhotos : Fragment() {
                 }, Response.ErrorListener {
             Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: " + it.message + " )")
             photoLoadingView.visibility = View.GONE
+            photosLoadingView.visibility = View.GONE
             addNewPhotoDialog.visibility = View.GONE
             progressBarText.text = "Loading ..."
             (activity as FormsActivity).overrideBackButton = false

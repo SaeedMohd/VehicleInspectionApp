@@ -158,13 +158,8 @@ class FragmentVisitation : Fragment() {
     }
 
     fun dataChangeHandling(){
-        if (HasChangedModel.getInstance().checkIfChangeWasDoneforVisitation()){
-            dataChangedYesRadioButton.isChecked=true
-            dataChangedNoRadioButton.isChecked=false
-        } else {
-            dataChangedNoRadioButton.isChecked=true
-            dataChangedYesRadioButton.isChecked=false
-        }
+            dataChangedYesRadioButton.isChecked= HasChangedModel.getInstance().changeWasMadeFroAny()
+            dataChangedNoRadioButton.isChecked= ! dataChangedYesRadioButton.isChecked
     }
 
     private fun initializeFields() {

@@ -284,7 +284,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
         }
 
-        Log.v("ADHOC FACWITHFILTERS--- ",Constants.getFacilitiesWithFilters + parametersString)
+        Log.v("ADHOC FACWITHFILTERS--",Constants.getFacilitiesWithFilters + parametersString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -372,6 +372,11 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             vh.facilityNameValueTextView?.text = facilitiesArrayList[position].facname
             vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].facnum
             vh.adHocClubCodeValueTextView?.text = facilitiesArrayList[position].clubcode
+            if (TypeTablesModel.getInstance().FacilityStatusType.filter { s->s.FacilityStatusID.equals(facilitiesArrayList[position].status)}.isNotEmpty())
+                vh.adHocStatusValueTextView?.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s->s.FacilityStatusID.equals(facilitiesArrayList[position].status)}[0].FacilityStatusName
+            else
+                vh.adHocStatusValueTextView?.text = ""
+
             vh.loadFacilityButton!!.setOnClickListener {
                 getFullFacilityDataFromAAA(facilitiesArrayList[position].facnum.toInt(), facilitiesArrayList[position].clubcode)
             }
@@ -1671,6 +1676,25 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
         }
 
+        if (jsonObj.has("VendorRevenue")) {
+            if (!jsonObj.get("VendorRevenue").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("VendorRevenue")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("VendorRevenue"))
+                    jsonObj.put("VendorRevenue", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
+        }
+
         return jsonObj
     }
 
@@ -1988,6 +2012,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         var facilityNameValueTextView: TextView? = null
         var facilityNumberValueTextView: TextView? = null
         var adHocClubCodeValueTextView: TextView? = null
+        var adHocStatusValueTextView: TextView? = null
         var loadFacilityButton: Button? = null
 
         init {
@@ -1995,6 +2020,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             this.facilityNumberValueTextView = view?.findViewById(R.id.facilityNumberValueTextView) as TextView
             this.adHocClubCodeValueTextView = view?.findViewById(R.id.adHocClubCodeValueTextView)
             this.loadFacilityButton = view?.findViewById(R.id.loadFacilityButton) as Button
+            this.adHocStatusValueTextView = view?.findViewById(R.id.adHocCoStatusValueTextView) as TextView
         }
 
     }

@@ -40,10 +40,15 @@ class HasChangedModel {
 
 
     var groupDeficiency = ArrayList<GroupDeficiency>()
+    var groupPhoto= ArrayList<GroupPhoto>()
     var groupDeficiencyDef = ArrayList<GroupDefeciencyDef>()
 
     class GroupDeficiency {
         var DeficiencyDef = false
+    }
+
+    class GroupPhoto {
+        var Photos = false
     }
 
     class GroupDefeciencyDef {
@@ -197,12 +202,21 @@ class HasChangedModel {
         groupSoS.add(SOS)
 
 
+        var photoDef = GroupPhoto()
+        photoDef.Photos=false
+        groupPhoto.add(photoDef)
+
         var DeficiencyDef= GroupDefeciencyDef()
         DeficiencyDef.DeficiencyDef=false
         groupDeficiencyDef.add(DeficiencyDef)
         var Deficiency = GroupDeficiency()
         Deficiency.DeficiencyDef = false
         groupDeficiency.add(Deficiency)
+    }
+
+
+    fun changeWasMadeFroAny () : Boolean {
+        return (changeDoneForFacilityGeneralGroup() || changeDoneForSoSGroup() || changeDoneForPhotoDef() || changeDoneForDeficiencyDef())
     }
 
     fun changeDoneForFacilityGeneralGroup() : Boolean{
@@ -299,6 +313,16 @@ class HasChangedModel {
             return true
         } else {
             groupDeficiency[0].DeficiencyDef=false
+            return false
+        }
+    }
+
+    fun changeDoneForPhotoDef() : Boolean {
+        if (groupPhoto[0].Photos) {
+            groupPhoto[0].Photos=true
+            return true
+        } else {
+            groupPhoto[0].Photos==false
             return false
         }
     }

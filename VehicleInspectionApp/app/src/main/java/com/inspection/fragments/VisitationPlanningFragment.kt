@@ -2016,6 +2016,25 @@ class VisitationPlanningFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
         }
 
+        if (jsonObj.has("VendorRevenue")) {
+            if (!jsonObj.get("VendorRevenue").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("VendorRevenue")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("VendorRevenue"))
+                    jsonObj.put("VendorRevenue", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
+        }
+
 //
         return jsonObj
     }

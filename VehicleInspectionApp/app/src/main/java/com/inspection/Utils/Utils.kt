@@ -232,6 +232,16 @@ fun createPDFForShop() {
     document.add(paragraph)
     addEmptyLine(document, 1)
 
+    paragraph = Paragraph("Vendor Revenue (past 12 months)", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawVendorRevenueSectionForShop())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
     document.close()
 }
 
@@ -317,7 +327,7 @@ fun createPDFForSpecialist() {
     document.add(paragraph)
     addEmptyLine(document, 1)
 
-    paragraph = Paragraph("AAR Portal", MaintitleFont)
+    paragraph = Paragraph("RSP", MaintitleFont)
     paragraph.alignment = Element.ALIGN_LEFT
     document.add(paragraph)
     document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
@@ -546,8 +556,8 @@ private fun drawAddressOverallSection() : PdfPTable {
 private fun drawAARTrackingSection() : PdfPTable {
     val table = PdfPTable(7)
     table.setWidthPercentage(100f)
-    table.addCell(addCellWithBorder("Portal Inspection Date", 1,true))
-    table.addCell(addCellWithBorder("Logged Into Portal", 1,true))
+    table.addCell(addCellWithBorder("RSP Inspection Date", 1,true))
+    table.addCell(addCellWithBorder("Logged Into RSP", 1,true))
     table.addCell(addCellWithBorder("# Unacknowledged Tows", 1,true))
     table.addCell(addCellWithBorder("In Progress Tows", 1,true))
     table.addCell(addCellWithBorder("In Progress Walk Ins", 1,true))
@@ -692,27 +702,33 @@ private fun drawAffiliationSection() : PdfPTable {
 }
 
 private fun drawVisitationTrackingSection() : PdfPTable {
-    val table = PdfPTable(8)
+    val table = PdfPTable(9)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Date Performed", 1,true))
+    table.addCell(addCellWithBorder("Visitation Type", 1,true))
+    table.addCell(addCellWithBorder("Deficiency (Yes/No)", 1,true))
     table.addCell(addCellWithBorder("Performed By", 1,true))
-    table.addCell(addCellWithBorder("Date Received", 1,true))
-    table.addCell(addCellWithBorder("Date Entered", 1,true))
-    table.addCell(addCellWithBorder("Entered By", 1,true))
-    table.addCell(addCell("", 1,true))
-    table.addCell(addCell("", 1,true))
-    table.addCell(addCell("", 1,true))
-    FacilityDataModel.getInstance().tblVisitationTracking.sortedWith(compareByDescending { it.DatePerformed}).apply {
-        (0 until size).forEach {
-            if (!get(it).performedBy.equals("00")) {
-                table.addCell(addCellWithBorder(if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY(),1,true));
-                table.addCell(addCellWithBorder(get(it).performedBy,1,true))
-                table.addCell(addCellWithBorder("",1,false));
-                table.addCell(addCellWithBorder("",1,false));
-                table.addCell(addCellWithBorder("",1,true))
-                table.addCell(addCell("",1,true))
-                table.addCell(addCell("",1,true))
-                table.addCell(addCell("",1,true))
+    table.addCell(addCellWithBorder("AAR Sign", 1,true))
+    table.addCell(addCellWithBorder("Certificate of Approval", 1,true))
+    table.addCell(addCellWithBorder("Member Benefits Poster(s)", 1,true))
+    table.addCell(addCellWithBorder("Quality Control Process", 1,true))
+    table.addCell(addCellWithBorder("Staff Training Process", 1,true))
+    if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals("00")) {
+        if (FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 3650 }.isNotEmpty()) {
+            FacilityDataModel.getInstance().tblVisitationTracking.sortedWith(compareByDescending { it.DatePerformed }).apply {
+                (0 until size).forEach {
+                    if (!get(it).performedBy.equals("00")) {
+                        table.addCell(addCellWithBorder(if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY(), 1, true));
+                        table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(), 1, true));
+                        table.addCell(addCellWithBorder("", 1, true));
+                        table.addCell(addCellWithBorder(get(it).performedBy, 1, true))
+                        table.addCell(addCellWithBorder(get(it).AARSigns, 1, false))
+                        table.addCell(addCellWithBorder(get(it).CertificateOfApproval, 1, false))
+                        table.addCell(addCellWithBorder(get(it).MemberBenefitPoster, 1, false))
+                        table.addCell(addCellWithBorder(get(it).QualityControl, 1, false))
+                        table.addCell(addCellWithBorder(get(it).StaffTraining, 1, false))
+                    }
+                }
             }
         }
     }
@@ -916,6 +932,34 @@ private fun drawDeficiencySectionForShop() : PdfPTable {
             }
         }
     }
+    return table
+}
+
+
+private fun drawVendorRevenueSectionForShop() : PdfPTable {
+    val table = PdfPTable(6)
+    table.setWidthPercentage(100f)
+    table.addCell(addCellWithBorder("Revenue ID", 1,true))
+    table.addCell(addCellWithBorder("Revenue Source", 1,true))
+    table.addCell(addCellWithBorder("Date of Check", 1,true))
+    table.addCell(addCellWithBorder("Amount", 1,true))
+    table.addCell(addCell("", 2,true))
+    if (FacilityDataModel.getInstance().tblVendorRevenue[0].VendorRevenueID>0) {
+        if (FacilityDataModel.getInstance().tblVendorRevenue.filter { s -> (Date().time - s.DateOfCheck.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 3650 }.isNotEmpty()) {
+            FacilityDataModel.getInstance().tblVendorRevenue.apply {
+                (0 until size).forEach {
+                    if (get(it).VendorRevenueID > 0) {
+                        table.addCell(addCellWithBorder(get(it).VendorRevenueID.toString(), 1, true))
+                        table.addCell(addCellWithBorder(get(it).RevenueSourceName, 1, true))
+                        table.addCell(addCellWithBorder(if (get(it).DateOfCheck.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DateOfCheck.apiToAppFormatMMDDYYYY(), 1, true));
+                        table.addCell(addCellWithBorder("%.3f".format(get(it).Amount.toFloat()), 1, true));
+                        table.addCell(addCell("", 2, true))
+                    }
+                }
+            }
+        }
+    }
+
     return table
 }
 

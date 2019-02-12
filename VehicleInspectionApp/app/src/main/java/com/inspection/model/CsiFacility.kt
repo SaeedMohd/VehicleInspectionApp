@@ -42,6 +42,7 @@ class CsiFacility {
     var specialistid = ""
     var club = ""
     var state = ""
+    var status = ""
     var manageremail = ""
     var ownerlast = ""
     var ownername = ""
