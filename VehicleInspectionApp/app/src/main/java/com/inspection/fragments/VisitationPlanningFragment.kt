@@ -649,7 +649,7 @@ class VisitationPlanningFragment : Fragment() {
             }
 
 
-
+            vh.loadBtn.text = "LOAD VISITATION"
             if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].FACNo
@@ -667,6 +667,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationTypeValueTextView.text = "Completed"
                 vh.initialContractDateTextView.text = "Visitation Date:"
                 vh.visitationTypeTextView.text = "Status:"
+                vh.loadBtn.text = "SEND PDF"
                 //visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 vh.loadBtn.setOnClickListener({
@@ -765,6 +766,7 @@ class VisitationPlanningFragment : Fragment() {
         this.clubCode = clubCode
         if (isCompleted) {
             progressBarText.text = "Generating PDF ..."
+
         } else {
             progressBarText.text = "Loading ..."
         }
