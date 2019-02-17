@@ -32,20 +32,27 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.transition.Transition
 import android.widget.CheckBox
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.toUri
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
-import com.inspection.MainActivity
-import com.inspection.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Glide.get
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.inspection.MainActivity.Companion.activity
 import com.inspection.adapter.MultipartRequest
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
 import com.itextpdf.text.pdf.*
 import com.itextpdf.text.pdf.PdfName.TEXT
 import com.itextpdf.text.pdf.draw.LineSeparator
+import org.jetbrains.anko.doAsync
 import org.w3c.dom.Text
 import java.awt.font.TextAttribute.FONT
 import java.io.*
@@ -54,6 +61,7 @@ import java.lang.Exception
 import java.net.URI
 import java.net.URL
 import java.nio.file.Paths
+import javax.sql.DataSource
 
 
 /**
@@ -188,9 +196,9 @@ fun Int.monthNoToName(): String {
     return monthName
 }
 
-fun createPDF(){
-    createPDFForSpecialist()
-    createPDFForShop()
+fun createPDF(activity: Activity){
+    createPDFForSpecialist(activity)
+//    createPDFForShop(activity)
 }
 
 
@@ -245,7 +253,7 @@ fun createPDFForShop() {
     document.close()
 }
 
-fun createPDFForSpecialist() {
+fun createPDFForSpecialist(activity: Activity) {
     val document = Document()
 
     //output file path
@@ -476,18 +484,45 @@ fun createPDFForSpecialist() {
     document.add(paragraph)
     addEmptyLine(document, 1)
 
+    var imageView = ImageView(activity.applicationContext)
+            .doAsync {
 
-//    paragraph.add(createTable())
+                for (i in 1..3) {
+                    val bmp = Glide.with(activity)
+                            .asBitmap()
+                            .load(Constants.getImages + "FACID1.png")
+                            .apply(RequestOptions().override(30, 30))
+                            .submit()
+                            .get()
+                    val baos = ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    val imageInByte = baos.toByteArray();
+                    val image = Image.getInstance(imageInByte)
+                    paragraph.add(image)
+                    document.add(paragraph)
+                }
 
-//    document.add(paragraph)
-
-    document.close()
-
-//    Utility.uploadImage(file,activity)
-
-//    Utility.imageUpload(Environment.getExternalStorageDirectory().path + "/VisitationDetails.pdf",activity)
-
+                document.close()
+                uploadPDF(activity, file, "Specialist")
+            }
 }
+
+fun uploadPDF(activity: Activity,file: File,type: String) {
+//        val multipartRequest = MultipartRequest(Constants.uploadFile+ApplicationPrefs.getInstance(activity).loggedInUserEmail, null, file, Response.Listener { response ->
+    val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
+        try {
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
+    }, Response.ErrorListener {
+    })
+    val socketTimeout = 30000//30 seconds - change to what you want
+    val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+    multipartRequest.retryPolicy = policy
+    Volley.newRequestQueue(activity).add(multipartRequest)
+}
+
+
 
 private fun drawVisitaionSectionForShop() : PdfPTable {
     val table = PdfPTable(4)

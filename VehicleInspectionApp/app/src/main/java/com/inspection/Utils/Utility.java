@@ -14,6 +14,9 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.inspection.Utils.*;
 import android.app.DatePickerDialog;
 import android.content.ContentProviderOperation;
@@ -27,6 +30,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
@@ -38,10 +42,12 @@ import android.os.PowerManager;
 import android.provider.*;
 import android.util.Log;
 import android.provider.ContactsContract.*;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.inspection.adapter.MultipartRequest;
 import com.inspection.model.VehicleProfileModel;
+import com.itextpdf.text.Image;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +55,7 @@ import org.json.JSONObject;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -566,6 +573,24 @@ public class Utility {
 //            }
         }
     }
+
+
+//    public byte[] convertImageToByte(Uri uri){
+//        byte[] data = null;
+//        try {
+//            ContentResolver cr = activity.getContentResolver();
+//            InputStream inputStream = cr.openInputStream(uri);
+//            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//            data = baos.toByteArray();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return data;
+//    }
+
+
 
     public static boolean isPhoneNumberExisting(String phoneNumber) {
         boolean isExist = false;

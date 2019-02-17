@@ -649,12 +649,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     fun generateAndOpenPDF(){
-        createPDF()
+        createPDF(this)
 //        val target = Intent(Intent.ACTION_VIEW)
         val file = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
         val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForShop.pdf")
-        uploadPDF(file,"Specialist")
-        uploadPDF(fileShop,"Shop")
+//        uploadPDF(file,"Specialist")
+//        uploadPDF(fileShop,"Shop")
 //        target.setDataAndType(FileProvider.getUriForFile(this,"com.inspection.android.fileprovider",file), "application/pdf")
 //        target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
 //        target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
