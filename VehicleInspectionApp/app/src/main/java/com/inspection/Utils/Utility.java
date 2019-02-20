@@ -96,6 +96,10 @@ public class Utility {
     }
 
 
+    public static String getLoggingParameters(Activity activity,int intAction,String strChanges){
+        return "&dataChanged="+strChanges+"&changeAction="+intAction+"&sessionId="+ApplicationPrefs.getInstance(activity).getSessionID()+"&userId="+ApplicationPrefs.getInstance(activity).getLoggedInUserID();
+    }
+
     public static void cLog(Context mContext, String msg) {
         if (DEBUG == true) {
             //Log.e(mContext.getString(R.string.app_name), msg);

@@ -638,6 +638,33 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     }
 
+    fun getGeneralInfoChanges() : String {
+        var strChanges = ""
+        if (FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount != FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount) {
+            strChanges += "Repair order count changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount + ") to ("+FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount+") - "
+        }
+        if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName) {
+            strChanges += "Time Zone changed from (" + FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName + ") to ("+FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName+") - "
+        }
+        if (FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability != FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability) {
+            strChanges += "Service Availability changed from (" + TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s->s.SrvAvaID.equals(FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability)}[0].SrvAvaName + ") to ("+TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s->s.SrvAvaID.equals(FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability)}[0].SrvAvaName+") - "
+        }
+        if (FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate != FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate) {
+            strChanges += "ARD Expiration date changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY() + ") to ("+FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate+") - "
+        }
+        if (FacilityDataModel.getInstance().tblFacilities[0].WebSite != FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite) {
+            strChanges += "Website URL changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite + ") to ("+FacilityDataModel.getInstance().tblFacilities[0].WebSite+") - "
+        }
+        if (FacilityDataModel.getInstance().tblFacilities[0].InternetAccess != FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess) {
+            strChanges += "Wi-Fi Availability changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess + ") to ("+FacilityDataModel.getInstance().tblFacilities[0].InternetAccess+") - "
+        }
+        if (FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName != FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName) {
+            strChanges += "Facility Type changed from (" + FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName + ") to ("+FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName+") - "
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
+
     fun submitFacilityGeneralInfo(){
         var busName =  if (dba_textviewVal.text.isNullOrEmpty())  "" else dba_textviewVal.text
 
@@ -679,9 +706,10 @@ class FacilityGeneralInformationFragment : Fragment() {
         progressBarText.text = "Saving ..."
         scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
         var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
+//        UUID.randomUUID().toString()
 
         Log.v("Facility General --- ",Constants.submitFacilityGeneralInfo + urlString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString +Utility.getLoggingParameters(activity,0,getGeneralInfoChanges()),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         Log.v("RESPONSE",response.toString())
@@ -694,6 +722,13 @@ class FacilityGeneralInformationFragment : Fragment() {
                             FacilityDataModel.getInstance().tblFacilities[0].WebSite = webSite.toString()
                             FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
                             FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
+                            FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName = timeZoneSpinner.selectedItem.toString()
+                            FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
+                            FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
+                            FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
+                            FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite = webSite.toString()
+                            FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
+                            FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
                             (activity as FormsActivity).saveRequired = false
                             submitGeneralInfoRequired = false
                             HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
@@ -715,6 +750,80 @@ class FacilityGeneralInformationFragment : Fragment() {
             Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+it.message+" )")
         }))
     }
+
+
+    fun getPaymentDataChanges() : String {
+        var strChanges = ""
+        var strPrefix = "Payment method(s) ("
+        var strAdded = ""
+        var strRemoved = ""
+        if (visa_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==1 }.isEmpty()) {
+            strAdded += "VISA - "
+        }
+        if (mastercard_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==2 }.isEmpty()) {
+            strAdded += "Master Card - "
+        }
+        if (americanexpress_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==3 }.isEmpty()) {
+            strAdded += "American Express - "
+        }
+        if (discover_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==4 }.isEmpty()) {
+            strAdded += "Discover - "
+        }
+        if (paypal_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==5 }.isEmpty()) {
+            strAdded += "PayPal - "
+        }
+        if (debit_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==6 }.isEmpty()) {
+            strAdded += "Debit - "
+        }
+        if (cash_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==7 }.isEmpty()) {
+            strAdded += "Cash - "
+        }
+        if (check_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==8 }.isEmpty()) {
+            strAdded += "Check - "
+        }
+        if (goodyear_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.isEmpty()) {
+            strAdded += "Goodyear Credit Card - "
+        }
+        if (!strAdded.isNullOrEmpty()) {
+            strChanges += strPrefix + strAdded.removeSuffix(" - ") + ") added"
+        }
+        // REMOVED
+        if (!visa_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==1 }.isNotEmpty()) {
+            strRemoved += "VISA - "
+        }
+        if (!mastercard_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==2 }.isNotEmpty()) {
+            strRemoved += "Master Card - "
+        }
+        if (!americanexpress_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==3 }.isNotEmpty()) {
+            strRemoved += "American Express - "
+        }
+        if (!discover_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==4 }.isNotEmpty()) {
+            strRemoved += "Discover - "
+        }
+        if (!paypal_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==5 }.isNotEmpty()) {
+            strRemoved += "PayPal - "
+        }
+        if (!debit_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==6 }.isNotEmpty()) {
+            strRemoved += "Debit - "
+        }
+        if (!cash_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==7 }.isNotEmpty()) {
+            strRemoved += "Cash - "
+        }
+        if (!check_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==8 }.isNotEmpty()) {
+            strRemoved += "Check - "
+        }
+        if (!goodyear_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.isNotEmpty()) {
+            strRemoved += "Goodyear Credit Card - "
+        }
+        if (!strRemoved.isNullOrEmpty()) {
+            if (strAdded.isNotEmpty()) strChanges += " | "
+            strChanges += strPrefix + strRemoved.removeSuffix(" - ") + ") removed"
+        }
+
+        return strChanges
+    }
+
+
     fun submitPaymentMethods(){
 
 
@@ -748,12 +857,18 @@ class FacilityGeneralInformationFragment : Fragment() {
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode =FacilityDataModel.getInstance().clubCode
         Log.v("Facility Payments --- ",UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}")
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}",
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}"+Utility.getLoggingParameters(activity,0,getPaymentDataChanges()),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Payment Methods")
                             (activity as FormsActivity).saveRequired = false
+                            FacilityDataModelOrg.getInstance().tblPaymentMethods.clear()
+                            for (i in 0..FacilityDataModel.getInstance().tblPaymentMethods.size-1) {
+                                var payMethod = TblPaymentMethods()
+                                payMethod.PmtMethodID = FacilityDataModel.getInstance().tblPaymentMethods[i].PmtMethodID
+                                FacilityDataModelOrg.getInstance().tblPaymentMethods.add(payMethod)
+                            }
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods = true
                             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                             refreshButtonsState()

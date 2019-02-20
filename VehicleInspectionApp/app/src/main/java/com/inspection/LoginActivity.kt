@@ -47,8 +47,8 @@ import org.json.JSONObject
 import org.json.XML
 import java.io.IOException
 import java.net.URLEncoder
+import java.util.*
 
-import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
 class LoginActivity : Activity(){
@@ -202,6 +202,7 @@ class LoginActivity : Activity(){
                                 ApplicationPrefs.getInstance(activity).loggedInUserPass = loginPasswordEditText!!.text.toString()
                                 ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
                                 ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].FullName
+                                ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
                                 userIsLoggedInGotoMainActivity()
                             } else {
                                 Utility.showMessageDialog(activity, "Login Failed...", "This email is not listed in specialists list")

@@ -8,8 +8,6 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.FacilityDataModelOrg
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.core.app.ActivityCompat
@@ -39,16 +37,20 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.get
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.adapter.MultipartRequest
-import com.inspection.model.TypeTablesModel
-import com.inspection.model.VisitationTypes
+import com.inspection.model.*
 import com.itextpdf.text.pdf.*
 import com.itextpdf.text.pdf.PdfName.TEXT
 import com.itextpdf.text.pdf.draw.LineSeparator
@@ -198,11 +200,11 @@ fun Int.monthNoToName(): String {
 
 fun createPDF(activity: Activity){
     createPDFForSpecialist(activity)
-//    createPDFForShop(activity)
+    createPDFForShop(activity)
 }
 
 
-fun createPDFForShop() {
+fun createPDFForShop(activity: Activity) {
     val document = Document()
 
     //output file path
@@ -250,7 +252,19 @@ fun createPDFForShop() {
     document.add(paragraph)
     addEmptyLine(document, 1)
 
+
+    paragraph = Paragraph("CHanges Made", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+    paragraph.add(drawDataChangedSectionForShop())
+    document.add(paragraph)
+    addEmptyLine(document, 1)
+
     document.close()
+    uploadPDF(activity,file,"Shop")
 }
 
 fun createPDFForSpecialist(activity: Activity) {
@@ -484,27 +498,99 @@ fun createPDFForSpecialist(activity: Activity) {
     document.add(paragraph)
     addEmptyLine(document, 1)
 
-    var imageView = ImageView(activity.applicationContext)
-            .doAsync {
 
-                for (i in 1..3) {
-                    val bmp = Glide.with(activity)
-                            .asBitmap()
-                            .load(Constants.getImages + "FACID1.png")
-                            .apply(RequestOptions().override(30, 30))
-                            .submit()
-                            .get()
-                    val baos = ByteArrayOutputStream();
-                    bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    val imageInByte = baos.toByteArray();
-                    val image = Image.getInstance(imageInByte)
-                    paragraph.add(image)
-                    document.add(paragraph)
+    paragraph = Paragraph("Photos", MaintitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+    paragraph = Paragraph("")
+
+    // Load Faciloty Photos from PRG DB
+    val table = PdfPTable(13)
+    table.setWidthPercentage(100f)
+    table.addCell(addCellWithBorder("Thumbnail", 2,true))
+    table.addCell(addCellWithBorder("File Name", 1,true))
+    table.addCell(addCellWithBorder("File Description", 2,true))
+    table.addCell(addCellWithBorder("Approval Requested", 1,true))
+    table.addCell(addCellWithBorder("Approved", 1,true))
+    table.addCell(addCellWithBorder("Apporved By", 1,true))
+    table.addCell(addCellWithBorder("Apporved Date", 1,true))
+    table.addCell(addCellWithBorder("Updated By", 1,true))
+    table.addCell(addCellWithBorder("Updated Date", 1,true))
+    table.addCell(addCellWithBorder("Downstream Apps", 2,true))
+    var tblFacilityPhotos = ArrayList<PRGFacilityPhotos>()
+    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+            Response.Listener { response ->
+                activity!!.runOnUiThread {
+                    tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
+                    if (tblFacilityPhotos.size==0) {
+                        document.add(table)
+                        addEmptyLine(document, 1)
+                        document.close()
+                        uploadPDF(activity, file, "Specialist")
+                    } else {
+                        var imageView = ImageView(activity.applicationContext)
+                                .doAsync {
+                                    tblFacilityPhotos.apply {
+                                        (0 until size).forEach {
+                                            if (get(it).photoid > 0) {
+                                                try {
+                                                    val bmp = Glide.with(activity)
+                                                            .asBitmap()
+                                                            .load(Constants.getImages + get(it).filename)
+                                                            .apply(RequestOptions().dontTransform())
+                                                            .submit()
+                                                            .get()
+
+                                                    val baos = ByteArrayOutputStream();
+                                                    bmp.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+                                                    val imageInByte = baos.toByteArray();
+                                                    var image = Image.getInstance(imageInByte)
+                                                    image.scaleToFit(30F,30F)
+                                                    table.addCell(addImageWithBorder(image, 2, true))
+                                                } catch (e: Exception){
+                                                    table.addCell(addCellWithBorder("", 2, true))
+                                                }
+                                                table.addCell(addCellWithBorder(get(it).filename, 1, true))
+                                                table.addCell(addCellWithBorder(get(it).filedescription, 2, true))
+                                                if (get(it).approvalrequested) {
+                                                    table.addCell(addTick(true, true))
+                                                } else {
+                                                    table.addCell(addCellWithBorder(" ", 1, true))
+                                                }
+                                                if (get(it).approved) {
+                                                    table.addCell(addTick(true, true))
+                                                } else {
+                                                    table.addCell(addCellWithBorder(" ", 1, true))
+                                                }
+                                                table.addCell(addCellWithBorder(get(it).approvedby, 1, true))
+                                                table.addCell(addCellWithBorder(if (get(it).approveddate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).approveddate.apiToAppFormatMMDDYYYY(), 1, true))
+                                                table.addCell(addCellWithBorder(get(it).lastupdateby, 1, true))
+                                                table.addCell(addCellWithBorder(if (get(it).lastupdatedate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).lastupdatedate.apiToAppFormatMMDDYYYY(), 1, true))
+                                                table.addCell(addCellWithBorder(get(it).downstreamapps, 2, true))
+                                                if (it == size - 1) {
+                                                    document.add(table)
+                                                    addEmptyLine(document, 1)
+                                                    document.close()
+                                                    uploadPDF(activity, file, "Specialist")
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                    }
                 }
+            }, Response.ErrorListener {
+        Log.v("Loading error", "" + it.message)
+        it.printStackTrace()
+        document.add(table)
+        addEmptyLine(document, 1)
+        document.close()
+        uploadPDF(activity, file, "Specialist")
+    }))
 
-                document.close()
-                uploadPDF(activity, file, "Specialist")
-            }
+
 }
 
 fun uploadPDF(activity: Activity,file: File,type: String) {
@@ -998,6 +1084,45 @@ private fun drawVendorRevenueSectionForShop() : PdfPTable {
     return table
 }
 
+
+private fun drawDataChangedSectionForShop() : PdfPTable {
+    val table = PdfPTable(11)
+    table.setWidthPercentage(100f)
+    table.addCell(addCellWithBorder("User ID", 1,true))
+    table.addCell(addCellWithBorder("Group Name", 1,true))
+    table.addCell(addCellWithBorder("Screen Name", 1,true))
+    table.addCell(addCellWithBorder("Section Name", 1,true))
+    table.addCell(addCellWithBorder("Action", 1,true))
+    table.addCell(addCellWithBorder("Change Date", 1,true))
+    table.addCell(addCellWithBorder("Changes Made", 5,false))
+//    if (FacilityDataModel.getInstance().tblVendorRevenue[0].VendorRevenueID>0) {
+//        if (FacilityDataModel.getInstance().tblVendorRevenue.filter { s -> (Date().time - s.DateOfCheck.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 3650 }.isNotEmpty()) {
+//            FacilityDataModel.getInstance().tblVendorRevenue.apply {
+//                (0 until size).forEach {
+//                    if (get(it).VendorRevenueID > 0) {
+                        table.addCell(addCellWithBorder("E645768", 1, true))
+                        table.addCell(addCellWithBorder("Facility", 1, true))
+                        table.addCell(addCellWithBorder("General Information", 1, true));
+                        table.addCell(addCellWithBorder("Main", 1, true));
+                        table.addCell(addCellWithBorder("EDIT", 1, true));
+                        table.addCell(addCellWithBorder("2019-02-20", 1, true));
+                        table.addCell(addCellWithBorder("- "+"Repair order count changed from (275) to (2755) - Time Zone changed from (Central Time) to (Mountain Time) - Service Availability changed from (Fixed-Site Service Only) to (Mobile Service Only) - ARD Expiration date changed from (01/01/2020) to (02/21/2019) - Website URL changed from (www.colonyoneauto.com) to (www.colonyoneauto.comz) - Wi-Fi Availability changed from (true) to (false) - Facility Type changed from (Independent) to (Specialty)".replace(" - ","\n- "), 5, false));
+                    table.addCell(addCellWithBorder("E645768", 1, true))
+                    table.addCell(addCellWithBorder("Facility", 1, true))
+                    table.addCell(addCellWithBorder("RSP Tracking", 1, true));
+                    table.addCell(addCellWithBorder("ADMIN", 1, true));
+                    table.addCell(addCellWithBorder("EDIT", 1, true));
+                    table.addCell(addCellWithBorder("2019-02-19", 1, true));
+                    table.addCell(addCellWithBorder("Number of card readers changed from (1) to (5)", 5, false));
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    return table
+}
+
 private fun drawAddressSection() : PdfPTable {
     val table = PdfPTable(17)
     table.setWidthPercentage(100f)
@@ -1247,6 +1372,7 @@ fun addCell(strValue : String, colSpan : Int,alignCenter: Boolean) : PdfPCell {
     val cell = PdfPCell(Paragraph(strValue, normalFont));
     cell.colspan=colSpan
     cell.setBorder(Rectangle.NO_BORDER);
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
     if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
     return cell
 }
@@ -1255,6 +1381,7 @@ fun addTableInCell(theTable : PdfPTable, colSpan : Int,alignCenter: Boolean) : P
     val cell = PdfPCell(theTable);
     cell.colspan=colSpan
     cell.setBorder(Rectangle.NO_BORDER);
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
     if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
     return cell
 }
@@ -1262,6 +1389,16 @@ fun addTableInCell(theTable : PdfPTable, colSpan : Int,alignCenter: Boolean) : P
 fun addCellWithBorder(strValue : String, colSpan : Int,alignCenter : Boolean ) : PdfPCell {
     val cell = PdfPCell(Paragraph(strValue, normalFont7));
     cell.colspan=colSpan
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
+    if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
+    return cell
+}
+
+fun addImageWithBorder(image : Image, colSpan : Int,alignCenter : Boolean ) : PdfPCell {
+    val cell = PdfPCell(image);
+    cell.colspan=colSpan
+    cell.setPadding(5F)
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
     if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
     return cell
 }
@@ -1271,6 +1408,7 @@ fun addTick(alignCenter: Boolean, withBorder: Boolean) : PdfPCell {
     var p = Paragraph(tick)
     val cell = PdfPCell(p);
     cell.colspan=1
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
     if (alignCenter) {
         cell.horizontalAlignment = Element.ALIGN_CENTER
     } else {
