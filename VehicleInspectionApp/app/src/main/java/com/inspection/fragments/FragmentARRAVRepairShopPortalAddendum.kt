@@ -87,15 +87,15 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                 portalAdminEntry.endDate = if (addendDateButton.text.equals("SELECT DATE")) "" else addendDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                 portalAdminEntry.AddendumSigned = if (addsignDateButton.text.equals("SELECT DATE")) "" else addsignDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
                 portalAdminEntry.CardReaders = addnumberOfCardsReaderEditText.text.toString()
-                Log.v("ARR PORTAL SAVE --- ",UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+
-                        "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
+                Log.v("ARR PORTAL SAVE --- ", UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
+                        "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
                         "&startDate=${portalAdminEntry.startDate}&endDate=${portalAdminEntry.endDate}&AddendumSigned=${portalAdminEntry.AddendumSigned}&cardReaders=${portalAdminEntry.CardReaders}&active=1")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+
-                        "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
-                        "&startDate=${portalAdminEntry.startDate}&endDate=${portalAdminEntry.endDate}&AddendumSigned=${portalAdminEntry.AddendumSigned}&cardReaders=${portalAdminEntry.CardReaders}&active=1",
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
+                        "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
+                        "&startDate=${portalAdminEntry.startDate}&endDate=${portalAdminEntry.endDate}&AddendumSigned=${portalAdminEntry.AddendumSigned}&cardReaders=${portalAdminEntry.CardReaders}&active=1" + Utility.getLoggingParameters(activity, 0, getRSPChanges()),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode>0<",false)) {
+                                if (response.toString().contains("returnCode>0<", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "RSP Admin")
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
@@ -111,8 +111,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     HasChangedModel.getInstance().changeDoneForFacilityRSP()
 
                                 } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                    Utility.showSubmitAlertDialog(activity,false,"RSP Admin (Error: "+ errorMessage+" )")
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                    Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: " + errorMessage + " )")
                                 }
                                 RSP_LoadingView.visibility = View.GONE
                                 rspLoadingText.text = "Loading ..."
@@ -121,7 +121,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                 (activity as FormsActivity).overrideBackButton = false
                             }
                         }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: "+it.message+" )")
+                    Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: " + it.message + " )")
                     RSP_LoadingView.visibility = View.GONE
                     rspLoadingText.text = "Loading ..."
                     alphaBackgroundForRSPDialogs.visibility = View.GONE
@@ -284,64 +284,70 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         submitNewAAR_PortalTracking.setOnClickListener {
 
             if (validateInputs()) {
-                rspLoadingText.text = "Saving ..."
-                RSP_LoadingView.visibility = View.VISIBLE
-
-
-                val isLoggedInRsp = loggedIntoRspButton.isChecked
-                val numberOfUnacknowledgedRecords = numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
-                val numberOfInProgressTwoInsvalue = numberOfInProgressTwoIns.text.toString().toInt()
-                val numberOfInProgressWalkInsValue = numberOfInProgressWalkIns.text.toString().toInt()
-                var portalTrackingEntry = TblAARPortalTracking()
-                var portalAdminEntry = TblAARPortalAdmin()
-                var readersCount = "1"
-
-
-                portalTrackingEntry.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID.toString()
-                portalTrackingEntry.InProgressTows = numberOfInProgressTwoInsvalue.toString()
-                portalTrackingEntry.InProgressWalkIns = numberOfInProgressWalkInsValue.toString()
-                portalTrackingEntry.LoggedIntoPortal = isLoggedInRsp.toString()
-                portalTrackingEntry.PortalInspectionDate = if (inspectionDateButton.text.equals("SELECT DATE")) "" else inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                portalTrackingEntry.NumberUnacknowledgedTows = numberOfUnacknowledgedRecords.toString()
-                portalTrackingEntry.active="1"
-                Log.v("ARR PORTAL SUBMIT --- ",UpdateAARPortalTrackingData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+
-                        "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
-                        "&trackingId=0&portalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalTrackingData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+
-                        "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+
-                        "&trackingId=0&portalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode>0<",false)) {
-                                    Utility.showSubmitAlertDialog(activity, true, "RSP")
-                                    portalTrackingEntry.TrackingID = response.toString().substring(response.toString().indexOf("<TrackingID")+12,response.toString().indexOf("</TrackingID"))
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
-                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
-                                    FacilityDataModel.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
-                                    fillPortalTrackingTableView()
-                                    altLocationTableRow(2)
-                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
-                                    HasChangedModel.getInstance().changeDoneForFacilityRSP()
-                                } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                    Utility.showSubmitAlertDialog(activity,false,"RSP (Error: "+ errorMessage+" )")
-                                }
-                                RSP_LoadingView.visibility = View.GONE
-                                rspLoadingText.text = "Loading ..."
-                                alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
-                                (activity as FormsActivity).overrideBackButton = false
-                            }
-                        }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity, false, "RSP (Error: "+it.message+" )")
+                if (getRSPTrackingChanges(0).isNullOrEmpty()) {
                     RSP_LoadingView.visibility = View.GONE
                     rspLoadingText.text = "Loading ..."
                     alphaBackgroundForRSPDialogs.visibility = View.GONE
                     Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
                     (activity as FormsActivity).overrideBackButton = false
-                }))
+                } else {
+                    rspLoadingText.text = "Saving ..."
+                    RSP_LoadingView.visibility = View.VISIBLE
+                    val isLoggedInRsp = loggedIntoRspButton.isChecked
+                    val numberOfUnacknowledgedRecords = numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
+                    val numberOfInProgressTwoInsvalue = numberOfInProgressTwoIns.text.toString().toInt()
+                    val numberOfInProgressWalkInsValue = numberOfInProgressWalkIns.text.toString().toInt()
+                    var portalTrackingEntry = TblAARPortalTracking()
+                    var portalAdminEntry = TblAARPortalAdmin()
+                    var readersCount = "1"
+
+
+                    portalTrackingEntry.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID.toString()
+                    portalTrackingEntry.InProgressTows = numberOfInProgressTwoInsvalue.toString()
+                    portalTrackingEntry.InProgressWalkIns = numberOfInProgressWalkInsValue.toString()
+                    portalTrackingEntry.LoggedIntoPortal = isLoggedInRsp.toString()
+                    portalTrackingEntry.PortalInspectionDate = if (inspectionDateButton.text.equals("SELECT DATE")) "" else inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    portalTrackingEntry.NumberUnacknowledgedTows = numberOfUnacknowledgedRecords.toString()
+                    portalTrackingEntry.active = "1"
+                    Log.v("THE CHANGES", getRSPTrackingChanges(0))
+
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalTrackingData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
+                            "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
+                            "&trackingId=0&portalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1" + Utility.getLoggingParameters(activity, 1, getRSPTrackingChanges(0)),
+                            Response.Listener { response ->
+                                activity!!.runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<", false)) {
+                                        Utility.showSubmitAlertDialog(activity, true, "RSP")
+                                        portalTrackingEntry.TrackingID = response.toString().substring(response.toString().indexOf("<TrackingID") + 12, response.toString().indexOf("</TrackingID"))
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
+                                        FacilityDataModel.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
+                                        FacilityDataModelOrg.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
+                                        fillPortalTrackingTableView()
+                                        altLocationTableRow(2)
+                                        HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
+                                        HasChangedModel.getInstance().changeDoneForFacilityRSP()
+                                    } else {
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                        Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + errorMessage + " )")
+                                    }
+                                    RSP_LoadingView.visibility = View.GONE
+                                    rspLoadingText.text = "Loading ..."
+                                    alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                    Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                }
+                            }, Response.ErrorListener {
+                        Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + it.message + " )")
+                        RSP_LoadingView.visibility = View.GONE
+                        rspLoadingText.text = "Loading ..."
+                        alphaBackgroundForRSPDialogs.visibility = View.GONE
+                        Add_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                        (activity as FormsActivity).overrideBackButton = false
+                    }))
+                }
             } else {
                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")
             }
@@ -607,58 +613,70 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     }
 
                     edit_submitNewAAR_PortalTracking.setOnClickListener {
-                        if (validateInputsForUpdate()) {
-                            rspLoadingText.text = "Saving ..."
-                            RSP_LoadingView.visibility = View.VISIBLE
-                            val date = edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                            val isLoggedInRsp = edit_loggedIntoRspButton.isChecked
-                            var numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
-                            var numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
-                            var numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
-                            var inspectionDate = if (edit_inspectionDateButton.text.equals("SELECT DATE")) "" else edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-                            var trackingID = FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex-1].TrackingID
-                            Log.v("ARR PORTAL EDIT --- ",UpdateAARPortalTrackingData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
-                                    "&trackingId=${trackingID}&portalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
-                                    "&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1")
-                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalTrackingData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
-                                    "&trackingId=${trackingID}&portalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
-                                    "&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1",
-                                    Response.Listener { response ->
-                                        activity!!.runOnUiThread {
-                                            if (response.toString().contains("returnCode>0<", false)) {
-                                                Utility.showSubmitAlertDialog(activity, true, "RSP")
-
-                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
-                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
-                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                                                FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                                                fillPortalTrackingTableView()
-                                                altLocationTableRow(2)
-                                                HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
-                                            } else {
-                                                var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                Utility.showSubmitAlertDialog(activity,false,"RSP (Error: "+ errorMessage+" )")
-                                            }
-                                            RSP_LoadingView.visibility = View.GONE
-                                            alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                            edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
-                                            (activity as FormsActivity).overrideBackButton = false
-
-                                        }
-                                    }, Response.ErrorListener {
-                                Utility.showSubmitAlertDialog(activity, false, "RSP (Error: "+it.message+" )")
+                        if (validateInputsForUpdate() ) {
+                            if (getRSPTrackingChanges(1).isNullOrEmpty()) {
                                 RSP_LoadingView.visibility = View.GONE
                                 rspLoadingText.text = "Loading ..."
                                 alphaBackgroundForRSPDialogs.visibility = View.GONE
                                 edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
                                 (activity as FormsActivity).overrideBackButton = false
+                            } else {
+                                rspLoadingText.text = "Saving ..."
+                                RSP_LoadingView.visibility = View.VISIBLE
+                                val date = edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                val isLoggedInRsp = edit_loggedIntoRspButton.isChecked
+                                var numberOfUnacknowledgedRecords = edit_numberOfUnacknowledgedRecordsEditText.text.toString().toInt()
+                                var numberOfInProgressTwoInsvalue = edit_numberOfInProgressTwoIns.text.toString().toInt()
+                                var numberOfInProgressWalkInsValue = edit_numberOfInProgressWalkIns.text.toString().toInt()
+                                var inspectionDate = if (edit_inspectionDateButton.text.equals("SELECT DATE")) "" else edit_inspectionDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                var trackingID = FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].TrackingID
+                                Log.v("ARR PORTAL EDIT --- ", UpdateAARPortalTrackingData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
+                                        "&trackingId=${trackingID}&portalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
+                                        "&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1")
+                                Log.v("THE CHANGES", getRSPTrackingChanges(1))
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalTrackingData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
+                                        "&trackingId=${trackingID}&portalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
+                                        "&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1" + Utility.getLoggingParameters(activity, 0, getRSPTrackingChanges(1)),
+                                        Response.Listener { response ->
+                                            activity!!.runOnUiThread {
+                                                if (response.toString().contains("returnCode>0<", false)) {
+                                                    Utility.showSubmitAlertDialog(activity, true, "RSP")
 
-                            }))
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                                    fillPortalTrackingTableView()
+                                                    altLocationTableRow(2)
+                                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + errorMessage + " )")
+                                                }
+                                                RSP_LoadingView.visibility = View.GONE
+                                                alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                                edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                                (activity as FormsActivity).overrideBackButton = false
 
+                                            }
+                                        }, Response.ErrorListener {
+                                    Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + it.message + " )")
+                                    RSP_LoadingView.visibility = View.GONE
+                                    rspLoadingText.text = "Loading ..."
+                                    alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                    edit_AAR_PortalTrackingEntryCard.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+
+                                }))
+                            }
                         } else
                             Utility.showValidationAlertDialog(activity,"Please fill all required fields")
-
                     }
 
                     aarPortalTrackingTableLayout.addView(tableRow)
@@ -666,6 +684,59 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             }
         }
 
+    }
+
+    fun getRSPChanges() : String {
+        var strChanges = ""
+        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate) {
+            strChanges += "RSP Admin end date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate.apiToAppFormatMMDDYYYY() + ") to ("+FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate+") - "
+        }
+        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned) {
+            strChanges += "RSP Admin addendum signed date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned.apiToAppFormatMMDDYYYY() + ") to ("+FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned+") - "
+        }
+        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate) {
+            strChanges += "RSP Admin start date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate.apiToAppFormatMMDDYYYY() + ") to ("+FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate+") - "
+        }
+        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders) {
+            strChanges += "RSP Admin card readers changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders + ") to ("+FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders+") - "
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return if (strChanges.isNullOrEmpty()) "No Changes" else strChanges
+    }
+
+    fun getRSPTrackingChanges(action : Int) : String { // 0: Add 1: Edit
+        var strChanges = ""
+        if (action==0) {
+            strChanges = "RSP Tracking added with "
+            if (loggedIntoRspButton.isChecked) {
+                strChanges += "logged into portal (true) - "
+            }
+            if (!loggedIntoRspButton.isChecked) {
+                strChanges += "logged into portal (false) - "
+            }
+            strChanges += "Number of In Progress Tows changed (" + numberOfInProgressTwoIns.text.toString() + ") - "
+            strChanges += "Number of In Progress Walk-Ins changed (" + numberOfInProgressWalkIns.text.toString() + ") - "
+            strChanges += "Number of Unacknowledged tows (" + numberOfUnacknowledgedRecordsEditText.text.toString() + ") - "
+        }
+        if (action==1) {
+            if (edit_loggedIntoRspButton.isChecked && (FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].LoggedIntoPortal.equals("false") )) {
+                strChanges += "RSP Tracking logged into portal changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].LoggedIntoPortal + ") to (true) - "
+            }
+            if (!edit_loggedIntoRspButton.isChecked && (FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].LoggedIntoPortal.equals("true") )) {
+                strChanges += "RSP Tracking logged into portal changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].LoggedIntoPortal + ") to (false) - "
+            }
+            if (edit_numberOfInProgressTwoIns.text.toString() != FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].InProgressTows) {
+                strChanges += "RSP Tracking Number of In Progress Tows changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].InProgressTows + ") to (" + edit_numberOfInProgressTwoIns.text.toString() + ") - "
+            }
+            if (edit_numberOfInProgressWalkIns.text.toString() != FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].InProgressWalkIns) {
+                strChanges += "RSP Tracking Number of In Progress Walk-Ins changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].InProgressWalkIns + ") to (" + edit_numberOfInProgressWalkIns.text.toString() + ") - "
+            }
+            if (edit_numberOfUnacknowledgedRecordsEditText.text.toString() != FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].NumberUnacknowledgedTows) {
+                strChanges += "RSP Tracking Number of Unacknowledged tows from (" + FacilityDataModelOrg.getInstance().tblAARPortalTracking[0].NumberUnacknowledgedTows + ") to (" + edit_numberOfUnacknowledgedRecordsEditText.text.toString() + ") - "
+            }
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
     }
 
     fun altLocationTableRow(alt_row : Int) {

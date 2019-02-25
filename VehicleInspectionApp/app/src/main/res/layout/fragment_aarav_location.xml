@@ -1161,6 +1161,8 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/textview_background"
                         android:ems="8"
+                        android:digits="0123456789."
+                        android:inputType="numberDecimal"
                         android:text=""
                         android:textStyle="bold" />
                 </TableRow>
@@ -1182,6 +1184,8 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/textview_background"
                         android:ems="8"
+                        android:digits="0123456789."
+                        android:inputType="numberDecimal"
                         android:text=""
                         android:textStyle="bold" />
                 </TableRow>

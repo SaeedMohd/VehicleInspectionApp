@@ -662,7 +662,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             strChanges += "Facility Type changed from (" + FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName + ") to ("+FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName+") - "
         }
         strChanges = strChanges.removeSuffix(" - ")
-        return strChanges
+        return if (strChanges.isNullOrEmpty()) "No Changes" else strChanges
     }
 
     fun submitFacilityGeneralInfo(){

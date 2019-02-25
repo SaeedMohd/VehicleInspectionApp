@@ -725,8 +725,143 @@ class FragmentARRAVLocation : Fragment() {
 //
 //    }
 
+
+    fun getAddressChanges() : String {
+        var strChanges = ""
+        if (newLocLatText.text.toString() != FacilityDataModelOrg.getInstance().tblAddress[0].LATITUDE) {
+            strChanges += "Lattitude changed from (" + FacilityDataModelOrg.getInstance().tblAddress[0].LATITUDE + ") to ("+newLocLatText.text.toString()+") - "
+        }
+        if (newLocLongText.text.toString() != FacilityDataModelOrg.getInstance().tblAddress[0].LONGITUDE) {
+            strChanges += "Longitude changed from (" + FacilityDataModelOrg.getInstance().tblAddress[0].LONGITUDE + ") to ("+newLocLongText.text.toString()+") - "
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
+
+
+    fun getEmailChanges(action : Int,rowId: Int) : String {
+        var strChanges = ""
+        if (action==0) {
+            strChanges += "New entry added as Email (" + newEmailAddrText.text.toString() + ") and type (" + newEmailTypeSpinner.selectedItem.toString() + ")"
+        } else {
+            if (newChangesEmailText.text.toString() != FacilityDataModelOrg.getInstance().tblFacilityEmail[rowId].email) {
+                strChanges += "Email changed from (" + FacilityDataModelOrg.getInstance().tblFacilityEmail[rowId].email + ") to (" + newChangesEmailText.text.toString() + ") - "
+            }
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
+
+
+    fun getHoursChanges() : String {
+        var strChanges = ""
+        val sunClose = sunCloseSpinner.selectedItem.toString()
+        val monClose = monCloseSpinner.selectedItem.toString()
+        val tueClose = tueCloseSpinner.selectedItem.toString()
+        val wedClose = wedCloseSpinner.selectedItem.toString()
+        val thuClose = thuCloseSpinner.selectedItem.toString()
+        val friClose = friCloseSpinner.selectedItem.toString()
+        val satClose = satCloseSpinner.selectedItem.toString()
+        val sunOpen = sunOpenSpinner.selectedItem.toString()
+        val monOpen = monOpenSpinner.selectedItem.toString()
+        val tueOpen = tueOpenSpinner.selectedItem.toString()
+        val wedOpen = wedOpenSpinner.selectedItem.toString()
+        val thuOpen = thuOpenSpinner.selectedItem.toString()
+        val friOpen = friOpenSpinner.selectedItem.toString()
+        val satOpen = satOpenSpinner.selectedItem.toString()
+        // HAVE TO HANDLE CLOSED AMND OR 00:00:01
+        if (sunClose != FacilityDataModelOrg.getInstance().tblHours[0].SunClose) {
+            strChanges += "Sunday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunClose + ") to (" + sunClose + ") - "
+        }
+        if (monClose != FacilityDataModelOrg.getInstance().tblHours[0].MonClose) {
+            strChanges += "Monday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].MonClose + ") to (" + monClose + ") - "
+        }
+        if (tueClose != FacilityDataModelOrg.getInstance().tblHours[0].TueClose) {
+            strChanges += "Tuesday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].TueClose + ") to (" + tueClose + ") - "
+        }
+        if (wedClose != FacilityDataModelOrg.getInstance().tblHours[0].WedClose) {
+            strChanges += "Wednesday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].WedClose+ ") to (" + wedClose + ") - "
+        }
+        if (thuClose != FacilityDataModelOrg.getInstance().tblHours[0].ThuClose) {
+            strChanges += "Thursday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].ThuClose + ") to (" + thuClose + ") - "
+        }
+        if (friClose != FacilityDataModelOrg.getInstance().tblHours[0].FriClose) {
+            strChanges += "Friday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].FriClose + ") to (" + friClose + ") - "
+        }
+        if (satClose != FacilityDataModelOrg.getInstance().tblHours[0].SatClose) {
+            strChanges += "Saturday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SatClose + ") to (" + satClose + ") - "
+        }
+
+        if (sunOpen != FacilityDataModelOrg.getInstance().tblHours[0].SunOpen) {
+            strChanges += "Sunday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunOpen + ") to (" + sunOpen + ") - "
+        }
+        if (monOpen != FacilityDataModelOrg.getInstance().tblHours[0].MonOpen) {
+            strChanges += "Monday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].MonOpen + ") to (" + monOpen + ") - "
+        }
+        if (tueOpen != FacilityDataModelOrg.getInstance().tblHours[0].TueOpen) {
+            strChanges += "Tuesday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].TueOpen + ") to (" + tueOpen + ") - "
+        }
+        if (wedOpen != FacilityDataModelOrg.getInstance().tblHours[0].WedOpen) {
+            strChanges += "Wednesday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].WedOpen + ") to (" + wedOpen + ") - "
+        }
+        if (thuOpen != FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen) {
+            strChanges += "Thursday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen + ") to (" + thuOpen + ") - "
+        }
+        if (friOpen != FacilityDataModelOrg.getInstance().tblHours[0].FriOpen) {
+            strChanges += "Friday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].FriOpen + ") to (" + friOpen + ") - "
+        }
+        if (satOpen != FacilityDataModelOrg.getInstance().tblHours[0].SatOpen) {
+            strChanges += "Saturday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SatOpen + ") to (" + satOpen + ") - "
+        }
+        if (nightDropCheck.isChecked != FacilityDataModelOrg.getInstance().tblHours[0].NightDrop) {
+            strChanges += "Night Drop availability changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].NightDrop + ") to (" + nightDropCheck.isChecked + ") - "
+        }
+        if (nightDropInstText.text.toString() != FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr) {
+            strChanges += "Night Drop instructions changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr + ") to (" + nightDropInstText.text.toString() + ") - "
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
+
+    fun getLanguageChanges() : String {
+        var strChanges = ""
+        if (FacilityDataModel.getInstance().tblLanguage.size != FacilityDataModelOrg.getInstance().tblLanguage.size) {
+            strChanges += "Facility Languages changed from ("
+            FacilityDataModelOrg.getInstance().tblLanguage.apply {
+                (0 until size).forEach {
+                    strChanges += TypeTablesModel.getInstance().LanguageType.filter { s->s.LangTypeID.equals(get(it).LangTypeID)}[0].LangTypeName + " - "
+                }
+            }
+            strChanges = strChanges.removeSuffix(" - ")
+            strChanges += ") to ("
+            FacilityDataModel.getInstance().tblLanguage.apply {
+                (0 until size).forEach {
+                    strChanges += TypeTablesModel.getInstance().LanguageType.filter { s->s.LangTypeID.equals(get(it).LangTypeID)}[0].LangTypeName + " - "
+                }
+            }
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        strChanges += ")"
+        return strChanges
+    }
+
+
+
+    fun getPhoneChanges(action : Int,rowId: Int) : String {
+        var strChanges = ""
+        if (action==0) {
+            strChanges += "New entry added as Phone Number (" + newPhoneNoText.text.toString() + ") and type (" + newPhoneTypeSpinner.selectedItem.toString() + ")"
+        } else {
+            if (newChangesPhoneNoText.text.toString() != FacilityDataModelOrg.getInstance().tblPhone[rowId].PhoneNumber) {
+                strChanges += "Phone Number  changed from (" + FacilityDataModelOrg.getInstance().tblPhone[rowId].PhoneNumber + ") to (" + newChangesPhoneNoText.text.toString() + ") - "
+            }
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
+
+
     private fun showLocationDialog(index: Int) {
-        (activity as FormsActivity).overrideBackButton = true
         alphaBackgroundForDialogs.visibility = View.VISIBLE
         editLocationDialog.visibility = View.VISIBLE
         (activity as FormsActivity).overrideBackButton = true
@@ -735,65 +870,74 @@ class FragmentARRAVLocation : Fragment() {
         newLocLongText.setText(FacilityDataModel.getInstance().tblAddress[index].LONGITUDE)
 
         locationSubmitButton.setOnClickListener {
-            contactInfoLoadingText.text = "Saving ..."
-            contactInfoLoadingView.visibility = View.VISIBLE
-            editLocationDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
-            (activity as FormsActivity).overrideBackButton = false
+            if (getAddressChanges().isNullOrEmpty()) {
+                contactInfoLoadingView.visibility = View.GONE
+                editLocationDialog.visibility = View.GONE
+                alphaBackgroundForDialogs.visibility = View.GONE
+                contactInfoLoadingText.text = "Loading ..."
+                (activity as FormsActivity).overrideBackButton = false
+            } else {
+                contactInfoLoadingText.text = "Saving ..."
+                contactInfoLoadingView.visibility = View.VISIBLE
+                editLocationDialog.visibility = View.GONE
+                alphaBackgroundForDialogs.visibility = View.GONE
+                (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
 //            var rowIndex=phoneTbl.indexOfChild(tableRow)
 //            var phoneFacilityChangedIndex= rowIndex-1
 
 
-            val insertDate = Date().toApiSubmitFormat()
-            val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
-            val updateDate = Date().toApiSubmitFormat()
-            val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
-            val LocationTypeID = TypeTablesModel.getInstance().LocationType.filter { s->s.LocTypeName.equals("Physical") }[0].LocTypeID
-            val facAddr1 = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr1
-            val facAddr2 = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr2
-            val facCity = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].CITY
-            val facCountry= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].County
-            val facST = FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].ST
-            val facZip= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].ZIP
-            val facZip4= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].ZIP4
-            val facBranchName= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].BranchName
-            val facBranchNo= FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals(LocationTypeID) }[0].BranchNumber
-            val Latitude = newLocLatText.text.toString()
-            val Longitude = newLocLongText.text.toString()
+                val insertDate = Date().toApiSubmitFormat()
+                val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+                val updateDate = Date().toApiSubmitFormat()
+                val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+                val LocationTypeID = TypeTablesModel.getInstance().LocationType.filter { s -> s.LocTypeName.equals("Physical") }[0].LocTypeID
+                val facAddr1 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr1
+                val facAddr2 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr2
+                val facCity = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].CITY
+                val facCountry = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].County
+                val facST = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ST
+                val facZip = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ZIP
+                val facZip4 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ZIP4
+                val facBranchName = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchName
+                val facBranchNo = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchNumber
+                val Latitude = newLocLatText.text.toString()
+                val Longitude = newLocLongText.text.toString()
 
-            val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
 
-            val clubCode = FacilityDataModel.getInstance().clubCode
-            var urlString = facilityNo + "&clubcode=" + clubCode +"&BranchName=" + facBranchName + "&LATITUDE=" + Latitude+"&LONGITUDE=" + Longitude +  "&BranchNumber=" + facBranchNo +  "&locationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1"
-            Log.v("Location Address --- ",Constants.submitContactInfoAddress + urlString)
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString,
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread {
-                            if (response.toString().contains("returnCode>0<",false)) {
-                                Utility.showSubmitAlertDialog(activity, true, "Facility Location")
-                                FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
-                                FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
-                                fillLocationTableView()
-                                HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
-                                HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                            } else {
-                                var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: "+errorMessage+" )")
+                val clubCode = FacilityDataModel.getInstance().clubCode
+                var urlString = facilityNo + "&clubcode=" + clubCode + "&BranchName=" + facBranchName + "&LATITUDE=" + Latitude + "&LONGITUDE=" + Longitude + "&BranchNumber=" + facBranchNo + "&locationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1"
+                Log.v("Location Address --- ", Constants.submitContactInfoAddress + urlString)
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString + Utility.getLoggingParameters(activity, 0, getAddressChanges()),
+                        Response.Listener { response ->
+                            activity!!.runOnUiThread {
+                                if (response.toString().contains("returnCode>0<", false)) {
+                                    Utility.showSubmitAlertDialog(activity, true, "Facility Location")
+                                    FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
+                                    FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+                                    FacilityDataModelOrg.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
+                                    FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+                                    fillLocationTableView()
+                                    HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
+                                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                                } else {
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: " + errorMessage + " )")
+                                }
+                                contactInfoLoadingView.visibility = View.GONE
+                                contactInfoLoadingText.text = "Loading ..."
+                                //                            enableAllAddButnsAndDialog()
                             }
-                            contactInfoLoadingView.visibility = View.GONE
-                            contactInfoLoadingText.text = "Loading ..."
-                //                            enableAllAddButnsAndDialog()
-                        }
-                    }, Response.ErrorListener {
+                        }, Response.ErrorListener {
 
-                        Utility.showSubmitAlertDialog(activity,true,"Facility Location (Error: "+it.message+" )")
-                        contactInfoLoadingView.visibility = View.GONE
-                        contactInfoLoadingText.text = "Loading ..."
+                    Utility.showSubmitAlertDialog(activity, true, "Facility Location (Error: " + it.message + " )")
+                    contactInfoLoadingView.visibility = View.GONE
+                    contactInfoLoadingText.text = "Loading ..."
 //                        enableAllAddButnsAndDialog()
-                        Log.v("error while submitting", "LOCATION Details")
-            }))
-
+                    Log.v("error while submitting", "LOCATION Details")
+                }))
+            }
         }
     }
 
@@ -1055,12 +1199,13 @@ class FragmentARRAVLocation : Fragment() {
                                 alphaBackgroundForDialogs.visibility = View.GONE
                                 (activity as FormsActivity).overrideBackButton = false
                                 Log.v("Phone Edit --- ",Constants.submitFacilityPhone + urlString)
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(1,phoneFacilityChangedIndex)),
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread {
                                                 if (response.toString().contains("returnCode>0<", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
                                                     FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
+                                                    FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
                                                     fillPhoneTableView()
                                                     checkIfChangeDone("PHONE")
                                                 } else {
@@ -1190,12 +1335,13 @@ class FragmentARRAVLocation : Fragment() {
                                 alphaBackgroundForDialogs.visibility = View.GONE
                                 (activity as FormsActivity).overrideBackButton = false
                                 Log.v("Email Edit --- ",Constants.submitFacilityEmail + urlString)
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString+ Utility.getLoggingParameters(activity, 0, getEmailChanges(1,emailFacilityChangedIndex)),
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread {
                                                 if (response.toString().contains("returnCode>0<", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Facility Email")
                                                     FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = newChangesEmailText.text.toString()
+                                                    FacilityDataModelOrg.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = newChangesEmailText.text.toString()
                                                     fillEmailTableView()
                                                     checkIfChangeDone("EMAIL")
                                                 } else {
@@ -1519,7 +1665,7 @@ class FragmentARRAVLocation : Fragment() {
         alphaBackgroundForDialogs.visibility = View.GONE
         (activity as FormsActivity).overrideBackButton = false
         Log.v("Email ADD --- ",Constants.submitFacilityEmail + urlString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString + Utility.getLoggingParameters(activity, 0, getEmailChanges(0,0)),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
@@ -1530,6 +1676,7 @@ class FragmentARRAVLocation : Fragment() {
                             }
                             newEmail.emailID = response.toString().substring(response.toString().indexOf("<emailID")+8,response.toString().indexOf("</emailID"))
                             FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
+                            FacilityDataModelOrg.getInstance().tblFacilityEmail.add(newEmail)
                             fillEmailTableView()
                             HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail= true
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
@@ -1553,30 +1700,26 @@ class FragmentARRAVLocation : Fragment() {
 
         val nightDrop= if (nightDropCheck.isChecked) "1" else "0"
         val nightDropInstructions=nightDropInstText.text
-        val sunClose = sunCloseSpinner.selectedItem.toString()
-        val monClose = monCloseSpinner.selectedItem.toString()
-        val tueClose = tueCloseSpinner.selectedItem.toString()
-        val wedClose = wedCloseSpinner.selectedItem.toString()
-        val thuClose = thuCloseSpinner.selectedItem.toString()
-        val friClose = friCloseSpinner.selectedItem.toString()
-        val satClose = satCloseSpinner.selectedItem.toString()
-        val sunOpen = sunOpenSpinner.selectedItem.toString()
-        val monOpen = monOpenSpinner.selectedItem.toString()
-        val tueOpen = tueOpenSpinner.selectedItem.toString()
-        val wedOpen = wedOpenSpinner.selectedItem.toString()
-        val thuOpen = thuOpenSpinner.selectedItem.toString()
-        val friOpen = friOpenSpinner.selectedItem.toString()
-        val satOpen = satOpenSpinner.selectedItem.toString()
+        val sunClose = if (sunCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else sunCloseSpinner.selectedItem.toString()
+        val monClose = if (monCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else monCloseSpinner.selectedItem.toString()
+        val tueClose = if (tueCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else tueCloseSpinner.selectedItem.toString()
+        val wedClose = if (wedCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else wedCloseSpinner.selectedItem.toString()
+        val thuClose = if (thuCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else thuCloseSpinner.selectedItem.toString()
+        val friClose = if (friCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else friCloseSpinner.selectedItem.toString()
+        val satClose = if (satCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else satCloseSpinner.selectedItem.toString()
+        val sunOpen = if (sunOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else sunOpenSpinner.selectedItem.toString()
+        val monOpen = if (monOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else monOpenSpinner.selectedItem.toString()
+        val tueOpen = if (tueOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else tueOpenSpinner.selectedItem.toString()
+        val wedOpen = if (wedOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else wedOpenSpinner.selectedItem.toString()
+        val thuOpen = if (thuOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else thuOpenSpinner.selectedItem.toString()
+        val friOpen = if (friOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else friOpenSpinner.selectedItem.toString()
+        val satOpen = if (satOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else satOpenSpinner.selectedItem.toString()
         val facAvail = "1"
 
-        Log.v("Hours --- ",Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&MonOpen=${monOpen}&TueOpen=${tueOpen}&WedOpen=${wedOpen}&ThuOpen=${thuOpen}" +
-                "&FriOpen=${friOpen}&SatOpen=${satOpen}&SunOpen=${sunOpen}&MonClose=${monClose}&TueClose=${tueClose}&WedClose=${wedClose}&ThuClose=${thuClose}&FriClose=${friClose}" +
-                "&SatClose=${satClose}&SunClose=${sunClose}&NightDrop=${nightDrop}&NightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
-                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&FacAvailability=${facAvail}&AvailEffDate=&AvailExpDate=")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&monOpen=${monOpen}&tueOpen=${tueOpen}&wedOpen=${wedOpen}&thuOpen=${thuOpen}" +
                 "&friOpen=${friOpen}&satOpen=${satOpen}&sunOpen=${sunOpen}&monClose=${monClose}&tueClose=${tueClose}&wedClose=${wedClose}&thuClose=${thuClose}&friClose=${friClose}" +
                 "&satClose=${satClose}&sunClose=${sunClose}&nightDrop=${nightDrop}&nightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
-                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&facAvailability=${facAvail}&availEffDate=&availExpDate=",
+                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&facAvailability=${facAvail}&availEffDate=${Date().toApiSubmitFormat()}&availExpDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getHoursChanges()),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
@@ -1596,6 +1739,22 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModel.getInstance().tblHours[0].TueOpen = tueOpen
                             FacilityDataModel.getInstance().tblHours[0].NightDrop= nightDropCheck.isChecked
                             FacilityDataModel.getInstance().tblHours[0].NightDropInstr = nightDropInstText.text.toString()
+                            FacilityDataModelOrg.getInstance().tblHours[0].MonClose = monClose
+                            FacilityDataModelOrg.getInstance().tblHours[0].SunClose = sunClose
+                            FacilityDataModelOrg.getInstance().tblHours[0].SatClose = satClose
+                            FacilityDataModelOrg.getInstance().tblHours[0].FriClose = friClose
+                            FacilityDataModelOrg.getInstance().tblHours[0].ThuClose = thuClose
+                            FacilityDataModelOrg.getInstance().tblHours[0].WedClose = wedClose
+                            FacilityDataModelOrg.getInstance().tblHours[0].TueClose = tueClose
+                            FacilityDataModelOrg.getInstance().tblHours[0].MonOpen = monOpen
+                            FacilityDataModelOrg.getInstance().tblHours[0].SunOpen = sunOpen
+                            FacilityDataModelOrg.getInstance().tblHours[0].SatOpen = satOpen
+                            FacilityDataModelOrg.getInstance().tblHours[0].FriOpen = friOpen
+                            FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen = thuOpen
+                            FacilityDataModelOrg.getInstance().tblHours[0].WedOpen = wedOpen
+                            FacilityDataModelOrg.getInstance().tblHours[0].TueOpen = tueOpen
+                            FacilityDataModelOrg.getInstance().tblHours[0].NightDrop= nightDropCheck.isChecked
+                            FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr = nightDropInstText.text.toString()
                             (activity as FormsActivity).saveRequired = false
                             HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
@@ -1624,12 +1783,21 @@ class FragmentARRAVLocation : Fragment() {
             Log.v("ERROR --- >",e.message)
         }
         Log.v("LANGUAGES --- ",UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat())
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat(),
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getLanguageChanges()),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility Languages")
                             (activity as FormsActivity).saveRequired = false
+                            FacilityDataModelOrg.getInstance().tblLanguage.clear()
+                            FacilityDataModel.getInstance().tblLanguage.apply {
+                                (0 until size).forEach {
+                                    var langItem = TblLanguage()
+                                    langItem.LangTypeID = get(it).LangTypeID
+                                    FacilityDataModelOrg.getInstance().tblLanguage.add(langItem)
+                                }
+                            }
+
                             HasChangedModel.getInstance().checkGeneralInfoTblLanguagesChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             refreshButtonsState()
@@ -1669,7 +1837,7 @@ class FragmentARRAVLocation : Fragment() {
         alphaBackgroundForDialogs.visibility = View.GONE
         (activity as FormsActivity).overrideBackButton = false
         Log.v("PHONE ADD --- ",Constants.submitFacilityPhone + urlString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(0,0)),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<", false)) {
