@@ -361,6 +361,44 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     var isFirstRun = true
 
+    fun getSoSChanges() : String {
+        var strChanges =""
+        val fixedLaborRate = fixedLaborRateEditText.text.toString()
+        val diagnosticLaborRate = diagnosticRateEditText.text.toString()
+        val laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
+        val laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
+        val numberOfBays = numberOfBaysEditText.text.toString()
+        val numberOfLifts = numberOfLiftsEditText.text.toString()
+
+        if (fixedLaborRate != FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate) {
+            strChanges += "Fixed Labor Rate changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate + ") to (" + fixedLaborRate + ") - "
+        }
+        if (diagnosticLaborRate != FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate) {
+            strChanges += "Diagnostic Labor Rate changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate + ") to (" + diagnosticLaborRate + ") - "
+        }
+        if (laborRateMatrixMax != FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax) {
+            strChanges += "Labor Rate Max ($) changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax + ") to (" + laborRateMatrixMax + ") - "
+        }
+        if (laborRateMatrixMin != FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin) {
+            strChanges += "Labor Rate Min ($) changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin + ") to (" + laborRateMatrixMin + ") - "
+        }
+        if (numberOfBays != FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays) {
+            strChanges += "Number of Bays changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays + ") to (" + numberOfBays + ") - "
+        }
+        if (numberOfLifts != FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts) {
+            strChanges += "Number of Lifts changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts + ") to (" + numberOfLifts + ") - "
+        }
+        if (warrantyPeriodVal.getSelectedItem().toString() != (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName)) {
+            strChanges += "Warranty Period changed from (" + TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName + ") to (" + warrantyPeriodVal.getSelectedItem().toString() + ") - "
+        }
+
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
+
+
+
+
 
     fun saveBtnPressed() {
         saveBtnId.setOnClickListener {
@@ -375,7 +413,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 progressBarText.text = "Saving ..."
                 scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
                 Log.v("SOS GENERAL --- ",UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=3&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, getSoSChanges()),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {

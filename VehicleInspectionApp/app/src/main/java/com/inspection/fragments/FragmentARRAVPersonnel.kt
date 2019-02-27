@@ -306,7 +306,6 @@ class FragmentARRAVPersonnel : Fragment() {
                 var item = TblPersonnelCertification()
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
                     if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
-
                         item.CertificationTypeId = fac.PersonnelCertID
                 }
 
@@ -319,13 +318,14 @@ class FragmentARRAVPersonnel : Fragment() {
                         "&certId=&certificationTypeId=${item.CertificationTypeId}&certificationDate=${item.CertificationDate}&expirationDate=${item.ExpirationDate}"+
                         "&certDesc=${item.CertDesc}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&active=1"
                 Log.v("CERTIFICATION ADD --- ",Constants.UpdatePersonnelCertification + urlString)
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdatePersonnelCertification + urlString,
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdatePersonnelCertification + urlString + Utility.getLoggingParameters(activity, 0, getCertificationChanges(0,selectedPersonnelID)),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Certification")
                                     item.CertID= response.toString().substring(response.toString().indexOf("<CertID")+8,response.toString().indexOf("</CertID"))
                                     FacilityDataModel.getInstance().tblPersonnelCertification.add(item)
+                                    FacilityDataModelOrg.getInstance().tblPersonnelCertification.add(item)
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                     fillCertificationTableView(selectedPersonnelID)
@@ -376,7 +376,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
 
                 Log.v("PERSONNEL ADD --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0,0)),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {
@@ -469,6 +469,67 @@ class FragmentARRAVPersonnel : Fragment() {
         altCertTableRow(2)
     }
 
+    fun getCertificationChanges(action : Int,personnelId: Int) : String {
+        var strChanges = ""
+        if (action==0) {
+            strChanges += "New Certification for personnel id ("+personnelId+") added as: Certification Type (" + newCertTypeSpinner.selectedItem.toString() + ") , Description (" + newCertDescText.text.toString() + "), Start Date (" + newCertStartDateBtn.text.toString() + ") and End Date (" + newCertEndDateBtn.text.toString() + ")"
+        }
+//        else { // personnelID for Edit is the rowID
+//            if (edit_.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnelCertification[personnelId].CertID) {
+//                strChanges += "Email changed from (" + FacilityDataModelOrg.getInstance().tblFacilityEmail[rowId].email + ") to (" + newChangesEmailText.text.toString() + ") - "
+//            }
+//        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
+
+    fun getPersonnelChanges(action : Int,rowId: Int) : String {
+        var strChanges = ""
+        if (action==0) {
+            strChanges += "New personnel added with first name (" + if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString() + ") , last name (" + if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+            strChanges += "), position (" + newPersonnelTypeSpinner.getSelectedItem().toString() + ") and start date (" + if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
+            strChanges += "), end date (" + if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString() + ") and certification ID # (" + if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+            strChanges += "), siniority date (" + if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString() + ") and contract signer (" + if (newSignerCheck.isChecked==true) "true" else "false"
+            strChanges += ") and primary mail recipient (" + if (newACSCheck.isChecked==true) "true" else "false" + ")"
+        }
+        else {
+            if (edit_newFirstNameText.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].FirstName) {
+                strChanges += "First Name changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].FirstName + ") to (" + edit_newFirstNameText.text.toString() + ") - "
+            }
+            if (edit_newLastNameText.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].LastName) {
+                strChanges += "Last Name changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].LastName + ") to (" + edit_newLastNameText.text.toString() + ") - "
+            }
+            if (edit_newPersonnelTypeSpinner.getSelectedItem().toString() != (TypeTablesModel.getInstance().PersonnelType.filter { s->s.PersonnelTypeID.toInt().equals(FacilityDataModelOrg.getInstance().tblPersonnel[rowId].PersonnelTypeID)}[0].PersonnelTypeName) ) {
+                strChanges += "Position changed from (" + TypeTablesModel.getInstance().PersonnelType.filter { s->s.PersonnelTypeID.equals(FacilityDataModelOrg.getInstance().tblPersonnel[rowId].PersonnelTypeID)}[0].PersonnelTypeName + ") to (" + edit_newPersonnelTypeSpinner.getSelectedItem().toString() + ") - "
+            }
+            if (!edit_newStartDateBtn.text.toString().equals("SELECT DATE")) {
+                if (edit_newStartDateBtn.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].startDate.apiToAppFormatMMDDYYYY()) {
+                    strChanges += "Start Date changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].startDate.apiToAppFormatMMDDYYYY() + ") to (" + edit_newStartDateBtn.text.toString() + ") - "
+                }
+            }
+            if (!edit_newEndDateBtn.text.toString().equals("SELECT DATE")) {
+                if (edit_newEndDateBtn.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ExpirationDate.apiToAppFormatMMDDYYYY()) {
+                    strChanges += "End Date changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ExpirationDate.apiToAppFormatMMDDYYYY() + ") to (" + edit_newEndDateBtn.text.toString() + ") - "
+                }
+            }
+            if (!edit_newSeniorityDateBtn.text.toString().equals("SELECT DATE")) {
+                if (edit_newSeniorityDateBtn.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].SeniorityDate.apiToAppFormatMMDDYYYY()) {
+                    strChanges += "End Date changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].SeniorityDate.apiToAppFormatMMDDYYYY() + ") to (" + edit_newSeniorityDateBtn.text.toString() + ") - "
+                }
+            }
+            if (edit_newSignerCheck.isChecked != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ContractSigner) {
+                strChanges += "Contract Signer flag changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ContractSigner + ") to (" + edit_newSignerCheck.isChecked + ") - "
+            }
+            if (edit_newACSCheck.isChecked != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].PrimaryMailRecipient) {
+                strChanges += "Contract Signer flag changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].PrimaryMailRecipient + ") to (" + edit_newACSCheck.isChecked + ") - "
+            }
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
+
+//    var ContractSigner=
+//    var PrimaryMailRecipient=
 
     var isFirstRun: Boolean = true
 
@@ -1488,7 +1549,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var personnelID = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID
 //                            Log.v("PERSONNEL EDIT --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}",
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,0)),
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode>0<",false)) {
@@ -1521,7 +1582,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                     val coemail= edit_newEmailText.text.toString()
                                                     val coContractStartDate = if (edit_newCoStartDateBtn.text.equals("SELECT DATE")) "" else edit_newCoStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                                     val coContractEndDate = if (edit_newCoEndDateBtn.text.equals("SELECT DATE")) "" else edit_newCoEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelSignerData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${item.PersonnelID}&addr1=${coAddr1}&addr2=${coAddr2}&city=${coCITY}&st=${coST}&phone=${coPhone}&email=${coemail}&zip=${coZIP}&zip4=${coZIP4}&contractStartDate=${coContractStartDate}&contractEndDate=${coContractEndDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1",
+                                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelSignerData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${item.PersonnelID}&addr1=${coAddr1}&addr2=${coAddr2}&city=${coCITY}&st=${coST}&phone=${coPhone}&email=${coemail}&zip=${coZIP}&zip4=${coZIP4}&contractStartDate=${coContractStartDate}&contractEndDate=${coContractEndDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1" ,
                                                             Response.Listener { response ->
                                                                 activity!!.runOnUiThread {
                                                                     if (response.toString().contains("returnCode>0<",false)) {
@@ -1570,6 +1631,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
                                                 } else {
                                                     FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
+                                                    FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
+                                                    FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
                                                     fillPersonnelTableView()
                                                     altTableRow(2)
                                                 }

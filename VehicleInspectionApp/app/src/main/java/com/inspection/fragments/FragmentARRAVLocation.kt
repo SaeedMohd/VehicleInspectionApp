@@ -70,6 +70,40 @@ class FragmentARRAVLocation : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        FacilityDataModel.getInstance().tblHours[0].apply {
+            if (SunClose.equals("00:00:01 AM")) SunClose="Closed"
+            if (MonClose.equals("00:00:01 AM")) MonClose="Closed"
+            if (TueClose.equals("00:00:01 AM")) TueClose="Closed"
+            if (WedClose.equals("00:00:01 AM")) WedClose="Closed"
+            if (ThuClose.equals("00:00:01 AM")) ThuClose="Closed"
+            if (FriClose.equals("00:00:01 AM")) FriClose="Closed"
+            if (SatClose.equals("00:00:01 AM")) SatClose="Closed"
+            if (SunOpen.equals("00:00:01 AM")) SunOpen="Closed"
+            if (MonOpen.equals("00:00:01 AM")) MonOpen="Closed"
+            if (TueOpen.equals("00:00:01 AM")) TueOpen="Closed"
+            if (WedOpen.equals("00:00:01 AM")) WedOpen="Closed"
+            if (ThuOpen.equals("00:00:01 AM")) ThuOpen="Closed"
+            if (FriOpen.equals("00:00:01 AM")) FriOpen="Closed"
+            if (SatOpen.equals("00:00:01 AM")) SatOpen="Closed"
+        }
+        FacilityDataModelOrg.getInstance().tblHours[0].apply {
+            if (SunClose.equals("00:00:01 AM")) SunClose="Closed"
+            if (MonClose.equals("00:00:01 AM")) MonClose="Closed"
+            if (TueClose.equals("00:00:01 AM")) TueClose="Closed"
+            if (WedClose.equals("00:00:01 AM")) WedClose="Closed"
+            if (ThuClose.equals("00:00:01 AM")) ThuClose="Closed"
+            if (FriClose.equals("00:00:01 AM")) FriClose="Closed"
+            if (SatClose.equals("00:00:01 AM")) SatClose="Closed"
+            if (SunOpen.equals("00:00:01 AM")) SunOpen="Closed"
+            if (MonOpen.equals("00:00:01 AM")) MonOpen="Closed"
+            if (TueOpen.equals("00:00:01 AM")) TueOpen="Closed"
+            if (WedOpen.equals("00:00:01 AM")) WedOpen="Closed"
+            if (ThuOpen.equals("00:00:01 AM")) ThuOpen="Closed"
+            if (FriOpen.equals("00:00:01 AM")) FriOpen="Closed"
+            if (SatOpen.equals("00:00:01 AM")) SatOpen="Closed"
+        }
+
+
         hoursArray = resources.getStringArray(R.array.officeTimes)
         fillLocationTableView()
         fillPhoneTableView()
@@ -769,7 +803,7 @@ class FragmentARRAVLocation : Fragment() {
         val thuOpen = thuOpenSpinner.selectedItem.toString()
         val friOpen = friOpenSpinner.selectedItem.toString()
         val satOpen = satOpenSpinner.selectedItem.toString()
-        // HAVE TO HANDLE CLOSED AMND OR 00:00:01
+        // HAVE TO HANDLE CLOSED AND OR 00:00:01
         if (sunClose != FacilityDataModelOrg.getInstance().tblHours[0].SunClose) {
             strChanges += "Sunday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunClose + ") to (" + sunClose + ") - "
         }
@@ -839,9 +873,9 @@ class FragmentARRAVLocation : Fragment() {
                     strChanges += TypeTablesModel.getInstance().LanguageType.filter { s->s.LangTypeID.equals(get(it).LangTypeID)}[0].LangTypeName + " - "
                 }
             }
+            strChanges = strChanges.removeSuffix(" - ")
+            strChanges += ")"
         }
-        strChanges = strChanges.removeSuffix(" - ")
-        strChanges += ")"
         return strChanges
     }
 
@@ -1797,7 +1831,6 @@ class FragmentARRAVLocation : Fragment() {
                                     FacilityDataModelOrg.getInstance().tblLanguage.add(langItem)
                                 }
                             }
-
                             HasChangedModel.getInstance().checkGeneralInfoTblLanguagesChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             refreshButtonsState()

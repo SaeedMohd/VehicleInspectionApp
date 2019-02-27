@@ -182,6 +182,7 @@ class FragmentARRAVPrograms : Fragment() {
 
 
 
+
         submitNewProgramButton.setOnClickListener {
             if (validateInputs()) {
                 var validProgram = true
@@ -236,7 +237,7 @@ class FragmentARRAVPrograms : Fragment() {
                     item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
                     item.Comments = comments_editTextVal.text.toString()
                     Log.v("PROGRAMS ADD --- ",UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
-                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&programId=&programTypeId=${item.ProgramTypeID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getProgramChanges(0,0)),
                             Response.Listener { response ->
                                 activity!!.runOnUiThread {
                                     if (response.toString().contains("returnCode>0<",false)) {
@@ -283,6 +284,36 @@ class FragmentARRAVPrograms : Fragment() {
         altTableRow(2)
     }
 
+    fun getProgramChanges(action : Int, rowId: Int) : String { // 0: Add 1: Edit
+        var strChanges = ""
+        if (action==0) {
+            strChanges = "Program added with "
+            strChanges += "Type (" + program_name_textviewVal.getSelectedItem().toString()+ ") - "
+            strChanges += "Effective Date (" + if (effective_date_textviewVal.text.equals("SELECT DATE")) "" else effective_date_textviewVal.text.toString() + ") - "
+            strChanges += "Expiration Date (" + if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString() + ") - "
+            strChanges += "Comments (" + comments_editTextVal.text.toString() + ")"
+        }
+        val Comments = edit_comments_editTextVal.text.toString()
+        val effDate = if (edit_effective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_effective_date_textviewVal.text.toString()
+        val expDate = if (edit_expiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_expiration_date_textviewVal.text.toString()
+        val programName = edit_program_name_textviewVal.selectedItem.toString()
+        if (action==1) {
+            if (Comments != FacilityDataModelOrg.getInstance().tblPrograms[rowId].Comments) {
+                strChanges += "Program comments changed from (" + FacilityDataModelOrg.getInstance().tblPrograms[rowId].Comments+ ") to (${Comments}) - "
+            }
+            if (effDate != FacilityDataModelOrg.getInstance().tblPrograms[rowId].effDate.apiToAppFormatMMDDYYYY()) {
+                strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblPrograms[rowId].effDate.apiToAppFormatMMDDYYYY() + ") to (" + effDate + ") - "
+            }
+            if (expDate != FacilityDataModelOrg.getInstance().tblPrograms[rowId].expDate.apiToAppFormatMMDDYYYY()) {
+                strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblPrograms[rowId].expDate.apiToAppFormatMMDDYYYY() + ") to (" + expDate + ") - "
+            }
+            if (programName != (TypeTablesModel.getInstance().ProgramsType.filter { s->s.ProgramTypeID.equals(FacilityDataModelOrg.getInstance().tblPrograms[rowId].ProgramTypeID)}[0].ProgramTypeName)) {
+                strChanges += "Program Type changed from (" + TypeTablesModel.getInstance().ProgramsType.filter { s->s.ProgramTypeID.equals(FacilityDataModelOrg.getInstance().tblPrograms[rowId].ProgramTypeID)}[0].ProgramTypeName + ") to (" + programName + ") - "
+            }
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
 
     fun prepareProgramTypes() {
 
@@ -523,7 +554,7 @@ class FragmentARRAVPrograms : Fragment() {
                                     }
 
                                     Log.v("PROGRAMS EDIT --- ",UpdateProgramsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&programId=${currentRowDataModel.ProgramID}&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat())
-                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&programId=${currentRowDataModel.ProgramID}&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat(),
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateProgramsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&programId=${currentRowDataModel.ProgramID}&programTypeId=${currentRowDataModel.ProgramTypeID}&effDate=$effdateForSubmit&expDate=$expdateForSubmit&comments=${currentRowDataModel.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, getProgramChanges(1,currentfacilityDataModelIndex)),
                                             Response.Listener { response ->
                                                 activity!!.runOnUiThread {
                                                     if (response.toString().contains("returnCode>0<", false)) {

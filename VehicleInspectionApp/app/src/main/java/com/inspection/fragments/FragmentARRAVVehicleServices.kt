@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
 
 import kotlinx.android.synthetic.main.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -46,6 +47,13 @@ class FragmentARRAVVehicleServices : Fragment() {
     var selectedRecreationServices = ArrayList<String>()
     var selectedAutoGlassServices = ArrayList<String>()
     var selectedOthersServices = ArrayList<String>()
+
+    var selectedVehicleServicesNames = ArrayList<String>()
+    var selectedAutoBodyServicesNames = ArrayList<String>()
+    var selectedMarineServicesNames  = ArrayList<String>()
+    var selectedRecreationServicesNames  = ArrayList<String>()
+    var selectedAutoGlassServicesNames  = ArrayList<String>()
+    var selectedOthersServicesNames  = ArrayList<String>()
 
     var selectedVehicleServicesChanged = false
     var selectedAutoBodyServicesChanged = false
@@ -135,40 +143,90 @@ class FragmentARRAVVehicleServices : Fragment() {
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
+    fun getVehicleServices(selectedServices: String,orgServices: String) : String {
+        var strChanges = " Vehcile Services changed from"
+        return strChanges
+    }
+
+
     fun saveVehicleServiceChanges(gridType: String) {
         var vehiclesTypeId=""
         var scopeServiceId=""
         var saveMessage=""
+        var orgSelectedServices = ""
+        var dataChanges = ""
         if (gridType.equals("0")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Autom") }[0].VehiclesTypeID
+            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
+                (0 until size).forEach {
+                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                }
+            }
             scopeServiceId = selectedVehicleServices.toString()
+            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
             saveMessage = "(Auto Mobile)"
+            dataChanges = "Auto Mobile Vehicle Services changed from " + orgSelectedServices + " to " + selectedVehicleServicesNames
         } else if (gridType.equals("1")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Body") }[0].VehiclesTypeID
             scopeServiceId = selectedAutoBodyServices.toString()
+            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
+                (0 until size).forEach {
+                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                }
+            }
+            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
             saveMessage = "(Auto Body)"
+            dataChanges = "Auto Body Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoBodyServicesNames
         }else if (gridType.equals("2")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Marin") }[0].VehiclesTypeID
             scopeServiceId = selectedMarineServices.toString()
+            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
+                (0 until size).forEach {
+                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                }
+            }
+            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
             saveMessage = "(Marine Status)"
+            dataChanges = "Marine Vehicle Services changed from " + orgSelectedServices + " to " + selectedMarineServicesNames
         }else if (gridType.equals("3")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("RV") }[0].VehiclesTypeID
             scopeServiceId = selectedRecreationServices.toString()
+            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
+                (0 until size).forEach {
+                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                }
+            }
+            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
             saveMessage = "(Recreation Status)"
+            dataChanges = "Recreation Vehicle Services changed from " + orgSelectedServices + " to " + selectedRecreationServicesNames
         }else if (gridType.equals("4")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Auto Glass") }[0].VehiclesTypeID
             scopeServiceId = selectedAutoGlassServices.toString()
+            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
+                (0 until size).forEach {
+                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                }
+            }
+            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
             saveMessage = "(Auto Glass)"
+            dataChanges = "Auto Glass Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoGlassServicesNames
         }else if (gridType.equals("5")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Other") }[0].VehiclesTypeID
             scopeServiceId = selectedOthersServices.toString()
+            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
+                (0 until size).forEach {
+                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                }
+            }
+            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
             saveMessage = "(Other Status)"
+            dataChanges = "Other Vehicle Services changed from " + orgSelectedServices + " to " + selectedOthersServicesNames
         }
 
         scopeServiceId = scopeServiceId.replace("[","")
         scopeServiceId = scopeServiceId.replace("]","")
         Log.v("Vehcile Services --- ",Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}")
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}",
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}" + Utility.getLoggingParameters(activity, 0, dataChanges),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {

@@ -51,7 +51,7 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         if (FacilityDataModel.getInstance().tblVehicleServices[0].VehiclesTypeID!=-1) {
             if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.ScopeServiceID == namesList.get(position).ScopeServiceID.toInt()}.filter { s -> s.VehiclesTypeID == vehicleIDRef}.isNotEmpty()){
                 checkBoxItem.isChecked = true
-                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(), 1,false)
+                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(), 1,false,namesList.get(position).ScopeServiceName)
             }
         }
 
@@ -60,14 +60,14 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         }
         checkBoxItem.setOnClickListener{
             if (checkBoxItem.isChecked == true) {
-                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),1,true)
+                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),1,true,namesList.get(position).ScopeServiceName)
                 val newVehicle = TblVehicleServices()
                 newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
                 newVehicle.ScopeServiceID = namesList.get(position).ScopeServiceID.toInt()
                 newVehicle.VehiclesTypeID = vehicleIDRef
                 FacilityDataModel.getInstance().tblVehicleServices.add(newVehicle)
             } else {
-                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),0,true)
+                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),0,true,namesList.get(position).ScopeServiceName)
                 FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ScopeServiceID==namesList.get(position).ScopeServiceID.toInt() && s.VehiclesTypeID==vehicleIDRef}
             }
             //FacilityDataModel.getInstance().tblLanguage = langArray
@@ -76,61 +76,74 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         }
         return view
     }
-    fun updateSelectedLists(value : Int, action :  Int, isChanged: Boolean) { //1:add,0:remove
+    fun updateSelectedLists(value : Int, action :  Int, isChanged: Boolean, valueName: String) { //1:add,0:remove
 
         if (gridType.equals("Autom")) {
             parentFragment.selectedVehicleServicesChanged = isChanged
             if (action==1) {
                 if (!parentFragment.selectedVehicleServices.contains(value.toString())) parentFragment.selectedVehicleServices.add(value.toString())
+                if (!parentFragment.selectedVehicleServicesNames.contains(valueName)) parentFragment.selectedVehicleServicesNames.add(valueName)
             }
-            else
+            else {
                 parentFragment.selectedVehicleServices.remove(value.toString())
+                parentFragment.selectedVehicleServicesNames.remove(valueName)
+            }
         }
         if (gridType.equals("Body")) {
             parentFragment.selectedAutoBodyServicesChanged = isChanged
             if (action==1) {
-                if (!parentFragment.selectedAutoBodyServices.contains(value.toString()))
-                    parentFragment.selectedAutoBodyServices.add(value.toString())
+                if (!parentFragment.selectedAutoBodyServices.contains(value.toString())) parentFragment.selectedAutoBodyServices.add(value.toString())
+                if (!parentFragment.selectedAutoBodyServicesNames.contains(valueName)) parentFragment.selectedAutoBodyServicesNames.add(valueName)
             }
-            else
+            else {
                 parentFragment.selectedAutoBodyServices.remove(value.toString())
+                parentFragment.selectedAutoBodyServicesNames.remove(valueName)
+            }
         }
         if (gridType.equals("Marin")) {
             parentFragment.selectedMarineServicesChanged = isChanged
             if (action==1) {
-                if (!parentFragment.selectedMarineServices.contains(value.toString()))
-                    parentFragment.selectedMarineServices.add(value.toString())
+                if (!parentFragment.selectedMarineServices.contains(value.toString())) parentFragment.selectedMarineServices.add(value.toString())
+                if (!parentFragment.selectedMarineServicesNames.contains(valueName)) parentFragment.selectedMarineServicesNames.add(valueName)
             }
-            else
+            else {
                 parentFragment.selectedMarineServices.remove(value.toString())
+                parentFragment.selectedMarineServicesNames.remove(valueName)
+            }
         }
         if (gridType.equals("RV")) {
             parentFragment.selectedRecreationServicesChanged = isChanged
             if (action==1) {
-                if (!parentFragment.selectedRecreationServices.contains(value.toString()))
-                    parentFragment.selectedRecreationServices.add(value.toString())
+                if (!parentFragment.selectedRecreationServices.contains(value.toString())) parentFragment.selectedRecreationServices.add(value.toString())
+                if (!parentFragment.selectedRecreationServicesNames.contains(valueName)) parentFragment.selectedRecreationServicesNames.add(valueName)
             }
-            else
+            else {
                 parentFragment.selectedRecreationServices.remove(value.toString())
+                parentFragment.selectedRecreationServicesNames.remove(valueName)
+            }
         }
         if (gridType.equals("Auto Glass")) {
             parentFragment.selectedAutoGlassServicesChanged= isChanged
             if (action==1) {
-                if (!parentFragment.selectedAutoGlassServices.contains(value.toString()))
-                    parentFragment.selectedAutoGlassServices.add(value.toString())
+                if (!parentFragment.selectedAutoGlassServices.contains(value.toString())) parentFragment.selectedAutoGlassServices.add(value.toString())
+                if (!parentFragment.selectedAutoGlassServicesNames.contains(valueName)) parentFragment.selectedAutoGlassServicesNames.add(valueName)
             }
-            else
+            else {
                 parentFragment.selectedAutoGlassServices.remove(value.toString())
+                parentFragment.selectedAutoGlassServicesNames.remove(valueName)
+            }
         }
 
         if (gridType.equals("Other")) {
             parentFragment.selectedOthersServicesChanged= isChanged
             if (action==1) {
-                if (!parentFragment.selectedOthersServices.contains(value.toString()))
-                    parentFragment.selectedOthersServices.add(value.toString())
+                if (!parentFragment.selectedOthersServices.contains(value.toString())) parentFragment.selectedOthersServices.add(value.toString())
+                if (!parentFragment.selectedOthersServicesNames.contains(valueName)) parentFragment.selectedOthersServicesNames.add(valueName)
             }
-            else
+            else {
                 parentFragment.selectedOthersServices.remove(value.toString())
+                parentFragment.selectedOthersServicesNames.remove(valueName)
+            }
         }
 
     }
