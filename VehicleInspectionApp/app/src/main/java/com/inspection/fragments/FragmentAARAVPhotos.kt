@@ -97,7 +97,7 @@ class FragmentAARAVPhotos : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fileprefix = "FACID" + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+        fileprefix = "FACID" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "CC" + FacilityDataModel.getInstance().clubCode
 //        browseBtn.setOnClickListener {
 //            dispatchTakePictureIntent()
 //        }
@@ -226,7 +226,7 @@ class FragmentAARAVPhotos : Fragment() {
 //            Utility.showSubmitAlertDialog(activity,false,"Visitation Tracking (Error: "+it.message+" )")
 //        }))
         photoLoadingView.visibility = View.VISIBLE
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
@@ -690,7 +690,7 @@ class FragmentAARAVPhotos : Fragment() {
                                 if (editRspCheck.isChecked) downstreamStr += rspCheck.text.toString() + ", "
                                 downstreamStr = downstreamStr.removeSuffix(", ")
 
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&operation=EDIT&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}",
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&operation=EDIT&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 1, getPhotosChanges(1,currentPhotoIndex)),
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread {
                                                 if (response.toString().contains("Success", false)) {
@@ -699,8 +699,8 @@ class FragmentAARAVPhotos : Fragment() {
                                                     HasChangedModel.getInstance().groupPhoto[0].Photos= true
                                                     HasChangedModel.getInstance().changeDoneForPhotoDef()
                                                 } else {
-                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
-                                                    Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + errorMessage + " )")
+//                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + response.toString() + " )")
                                                 }
                                                 photoLoadingView.visibility = View.GONE
                                                 photosLoadingView.visibility = View.GONE
@@ -709,7 +709,7 @@ class FragmentAARAVPhotos : Fragment() {
                                                 (activity as FormsActivity).overrideBackButton = false
                                             }
                                         }, Response.ErrorListener {
-                                    Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: " + it.message + " )")
+                                    Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + it.message + " )")
                                     editPhotoDialog.visibility = View.GONE
                                     photoLoadingView.visibility = View.GONE
                                     photosLoadingView.visibility = View.GONE
@@ -777,6 +777,55 @@ class FragmentAARAVPhotos : Fragment() {
         return isValid
     }
 
+    fun getPhotosChanges(action : Int, rowId: Int) : String { // 0: Add 1: Edit
+        var strChanges = ""
+        if (action==0) {
+            var fileNameStr = fileNameTitle.text.toString()
+            var fileDescStr = fileDescText.text.toString()
+            var approvalReq = approvalReqCheck.isChecked
+            var downstreamStr = ""
+            if (clubCHeck.isChecked) downstreamStr += clubCHeck.text.toString() + ", "
+            if (commCheck.isChecked) downstreamStr += commCheck.text.toString() + ", "
+            if (envCheck.isChecked) downstreamStr += envCheck.text.toString() + ", "
+            if (modCheck.isChecked) downstreamStr += modCheck.text.toString() + ", "
+            if (irasCheck.isChecked) downstreamStr += irasCheck.text.toString() + ", "
+            if (rspCheck.isChecked) downstreamStr += rspCheck.text.toString() + ", "
+            downstreamStr = downstreamStr.removeSuffix(", ")
+            strChanges = "Photo added with "
+            strChanges += "File Name (" + fileNameStr + ") - "
+            strChanges += "Description (" + fileDescStr + ") - "
+            strChanges += "Approval Requested (" + approvalReq.toString()+ ") - "
+            if (!downstreamStr.isNullOrEmpty()) {
+                strChanges += "Downstream Apps ("+downstreamStr+") - "
+            }
+        }
+        if (action==1) {
+            var fileDescStr = editFileDescText.text.toString()
+            var approvalReq = editApprovalReqCheck.isChecked
+            var downstreamStr = ""
+            if (editClubCHeck.isChecked) downstreamStr += clubCHeck.text.toString() + ", "
+            if (editCommCHeck.isChecked) downstreamStr += commCheck.text.toString() + ", "
+            if (editEnvCheck.isChecked) downstreamStr += envCheck.text.toString() + ", "
+            if (editModCheck.isChecked) downstreamStr += modCheck.text.toString() + ", "
+            if (editIrasCheck.isChecked) downstreamStr += irasCheck.text.toString() + ", "
+            if (editRspCheck.isChecked) downstreamStr += rspCheck.text.toString() + ", "
+            downstreamStr = downstreamStr.removeSuffix(", ")
+            if (approvalReq && (!tblFacilityPhotos[rowId].approvalrequested)) {
+                strChanges += "Approval requested flag changed from (False) to (True) - "
+            }
+            if (!approvalReq && (tblFacilityPhotos[rowId].approvalrequested)) {
+                strChanges += "Approval requested flag changed from (True) to (False) - "
+            }
+            if (fileDescStr!= tblFacilityPhotos[rowId].filedescription) {
+                strChanges += "File Description changed from (" + tblFacilityPhotos[rowId].filedescription + ") to (" + fileDescStr + ") - "
+            }
+            if (downstreamStr != tblFacilityPhotos[rowId].downstreamapps) {
+                strChanges += "Downstream Apps changed from (" + tblFacilityPhotos[rowId].downstreamapps+ ") to (" + downstreamStr+ ") - "
+            }
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
 
     fun submitPhotoDetails() {
 
@@ -794,7 +843,7 @@ class FragmentAARAVPhotos : Fragment() {
         if (rspCheck.isChecked) downstreamStr += rspCheck.text.toString() + ", "
         downstreamStr = downstreamStr.removeSuffix(", ")
 
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&operation=ADD&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=&approvalRequested=${approvalReq}",
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&operation=ADD&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("Success", false)) {

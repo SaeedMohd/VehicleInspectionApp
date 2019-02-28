@@ -249,6 +249,7 @@ class FragmentARRAVPrograms : Fragment() {
                                         Utility.showSubmitAlertDialog(activity,true,"Program")
                                         item.ProgramID= response.toString().substring(response.toString().indexOf("<programID")+11,response.toString().indexOf("</programID"))
                                         FacilityDataModel.getInstance().tblPrograms.add(item)
+                                        FacilityDataModelOrg.getInstance().tblPrograms.add(item)
                                         Utility.showMessageDialog(activity,"Program ID",item.ProgramID)
                                         HasChangedModel.getInstance().groupSoSPrograms[0].SoSPrograms= true
                                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSPrograms()
@@ -305,7 +306,7 @@ class FragmentARRAVPrograms : Fragment() {
                 strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblPrograms[rowId].effDate.apiToAppFormatMMDDYYYY() + ") to (" + effDate + ") - "
             }
             if (expDate != FacilityDataModelOrg.getInstance().tblPrograms[rowId].expDate.apiToAppFormatMMDDYYYY()) {
-                strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblPrograms[rowId].expDate.apiToAppFormatMMDDYYYY() + ") to (" + expDate + ") - "
+                strChanges += "Expiration Date changed from (" + FacilityDataModelOrg.getInstance().tblPrograms[rowId].expDate.apiToAppFormatMMDDYYYY() + ") to (" + expDate + ") - "
             }
             if (programName != (TypeTablesModel.getInstance().ProgramsType.filter { s->s.ProgramTypeID.equals(FacilityDataModelOrg.getInstance().tblPrograms[rowId].ProgramTypeID)}[0].ProgramTypeName)) {
                 strChanges += "Program Type changed from (" + TypeTablesModel.getInstance().ProgramsType.filter { s->s.ProgramTypeID.equals(FacilityDataModelOrg.getInstance().tblPrograms[rowId].ProgramTypeID)}[0].ProgramTypeName + ") to (" + programName + ") - "
@@ -561,6 +562,16 @@ class FragmentARRAVPrograms : Fragment() {
                                                         Utility.showSubmitAlertDialog(activity, true, "Program")
                                                         HasChangedModel.getInstance().groupSoSPrograms[0].SoSPrograms = true
                                                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSPrograms()
+                                                        FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex].Comments = currentRowDataModel.Comments
+                                                        FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex].expDate = currentRowDataModel.expDate
+                                                        FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex].effDate= currentRowDataModel.effDate
+                                                        FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex].ProgramTypeID = currentRowDataModel.ProgramTypeID
+
+                                                        FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].Comments = currentRowDataModel.Comments
+                                                        FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].expDate = currentRowDataModel.expDate
+                                                        FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].effDate= currentRowDataModel.effDate
+                                                        FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].ProgramTypeID = currentRowDataModel.ProgramTypeID
+
                                                         fillPortalTrackingTableView()
                                                     } else {
                                                         var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))

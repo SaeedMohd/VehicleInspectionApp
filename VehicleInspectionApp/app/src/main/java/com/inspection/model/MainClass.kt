@@ -574,6 +574,7 @@ class PRGFacilityPhotos {
     var approvalrequested = false
     var approveddate = ""
     var facid = 0
+    var clubCode = 0
     var lastupdatedate = ""
     var lastupdateby = ""
     var approved = false

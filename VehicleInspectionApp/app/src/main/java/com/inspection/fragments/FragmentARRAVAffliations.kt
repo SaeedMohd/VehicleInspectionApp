@@ -214,13 +214,14 @@ class FragmentARRAVAffliations : Fragment() {
 
                 affiliationItem.AffiliationTypeID= TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(affiliations_textviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID.toInt()
                 Log.v("Affiliations ADD --- ",UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getAffiliationChanges(0,0)),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Affiliation")
                                     affiliationItem.AffiliationID = response.toString().substring(response.toString().indexOf("<AffiliationID")+15,response.toString().indexOf("</AffiliationID")).toInt()
                                     FacilityDataModel.getInstance().tblAffiliations.add(affiliationItem)
+                                    FacilityDataModelOrg.getInstance().tblAffiliations.add(affiliationItem)
                                     fillAffTableView()
                                     altLocationTableRow(2)
                                     HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
@@ -249,6 +250,45 @@ class FragmentARRAVAffliations : Fragment() {
         prepareAffiliations()
     }
 
+    fun getAffiliationChanges(action : Int, rowId: Int) : String { // 0: Add 1: Edit
+        var strChanges = ""
+        if (action==0) {
+            strChanges = "Affiliations added with "
+            strChanges += "Type (" + affiliations_textviewVal.getSelectedItem().toString()+ ") - "
+            if (afDetails_textviewVal.selectedItem != null) {
+                strChanges += "Type Detail (" + afDetails_textviewVal.getSelectedItem().toString() + ") - "
+            }
+            strChanges += "Effective Date (" + if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY() + ") - "
+            strChanges += "Expiration Date (" + if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY() + ") - "
+            strChanges += "Comments (" + affcomments_editTextVal.text.toString() + ")"
+        }
+        if (action==1) {
+            val Comments = edit_affcomments_editTextVal.text.toString()
+            val effDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+            val expDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+            val afType = edit_affiliations_textviewVal.selectedItem.toString()
+            val afTypeDetail = if (edit_afDetails_textviewVal.selectedItem == null) "" else edit_afDetails_textviewVal.selectedItem.toString()
+            if (Comments != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].comment) {
+                strChanges += "Comments changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].comment+ ") to (${Comments}) - "
+            }
+            if (effDate != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].effDate.apiToAppFormatMMDDYYYY()) {
+                strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].effDate.apiToAppFormatMMDDYYYY() + ") to (" + effDate + ") - "
+            }
+            if (expDate != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].expDate.apiToAppFormatMMDDYYYY()) {
+                strChanges += "Expiration Date changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].expDate.apiToAppFormatMMDDYYYY() + ") to (" + expDate + ") - "
+            }
+            if (afType != (TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AARAffiliationTypeID.toInt()==FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID}[0].AffiliationTypeName)) {
+                strChanges += "Affiliation Type changed from (" + TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AARAffiliationTypeID.toInt()==FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID}[0].AffiliationTypeName + ") to (" + afType + ") - "
+            }
+            if (afTypeDetail.isNotEmpty()) {
+                if (afTypeDetail != (TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName)) {
+                    strChanges += "Affiliation Type Detail changed from (" + TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName + ") to (" + afTypeDetail + ") - "
+                }
+            }
+        }
+        strChanges = strChanges.removeSuffix(" - ")
+        return strChanges
+    }
 
     fun prepareAffiliations () {
 
@@ -445,7 +485,7 @@ class FragmentARRAVAffliations : Fragment() {
                             var affiliationID = if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID>-1) FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID else ""
                             indexToRemove = rowIndex
                             Log.v("AFFILIATION EDIT --- ",UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}",
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, getAffiliationChanges(1,rowIndex-1)),
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode>0<",false)) {
@@ -455,6 +495,13 @@ class FragmentARRAVAffliations : Fragment() {
                                                 FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
                                                 FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
                                                 FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment= comment
+
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].comment= comment
+
                                                 affLoadingView.visibility = View.GONE
                                                 progressBarText.text = "Loading ..."
                                                 fillAffTableView()

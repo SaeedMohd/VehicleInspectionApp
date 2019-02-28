@@ -26,6 +26,7 @@ import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_vehicles_fragment_in_scope_of_services_view.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 //vehicleType_textviewVal
 
@@ -55,14 +56,8 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
     var selectedVehicles = ArrayList<String>()
 
-
-
     private var vehicleTypeList = ArrayList<TypeTablesModel.vehiclesType>()
     private var vehicleTypeArray = ArrayList<String>()
-
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,8 +144,44 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     }
 
     fun saveVehicleChanges() {
-        Log.v("Vehicle Changes --- ",Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}")
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}",
+        var orgVehicles = ""
+        var addedData = ""
+        var removedData = ""
+        var totalDataChanges = ""
+        var removedVehicles = ArrayList<String>()
+        var addedVehicles = ArrayList<String>()
+
+        for (i in 0..FacilityDataModelOrg.getInstance().tblFacVehicles.size-1) {
+            if (!selectedVehicles.contains(FacilityDataModelOrg.getInstance().tblFacVehicles[i].VehicleID.toString())){
+                removedVehicles.add(FacilityDataModelOrg.getInstance().tblFacVehicles[i].VehicleID.toString())
+            }
+        }
+        for (i in 0..selectedVehicles.size-1) {
+            if (FacilityDataModelOrg.getInstance().tblFacVehicles.filter { s->s.VehicleID==selectedVehicles[i].toInt()}.isEmpty()){
+                addedVehicles.add(selectedVehicles[i])
+            }
+        }
+
+        addedData += "Added Vehicle(s): "
+        for (i in 0 until addedVehicles.size) {
+            var item = TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==addedVehicles[i].toInt()}[0]
+            addedData += "Type ("+ TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeID.toInt()==item.VehicleTypeID}[0].VehiclesTypeName + ")"
+            addedData += ", Category ("+ TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s->s.VehCategoryID.toInt()==item.VehicleCategoryID}[0].VehCategoryName + ")"
+            addedData += ", Make ("+ item.MakeName +") - "
+        }
+
+        removedData += "Removed Vehicle(s): "
+        for (i in 0 until removedVehicles.size) {
+            var item = TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==removedVehicles[i].toInt()}[0]
+            removedData += "Type ("+ TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeID.toInt()==item.VehicleTypeID}[0].VehiclesTypeName + ")"
+            removedData += ", Category ("+ TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s->s.VehCategoryID.toInt()==item.VehicleCategoryID}[0].VehCategoryName + ")"
+            removedData += ", Make ("+ item.MakeName +") - "
+        }
+        removedData = removedData.removeSuffix(" - ")
+        addedData = addedData.removeSuffix(" - ")
+        totalDataChanges = addedData + " - " + removedData
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, totalDataChanges),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
