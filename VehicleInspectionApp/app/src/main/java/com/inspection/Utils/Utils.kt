@@ -48,6 +48,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
+import com.inspection.FormsActivity
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
@@ -199,14 +200,61 @@ fun Int.monthNoToName(): String {
 }
 
 fun createPDF(activity: Activity){
-    createPDFForSpecialist(activity)
     createPDFForShop(activity)
+
+    var imageView = ImageView(activity.applicationContext)
+            .doAsync {
+                val imageNameRep = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_RepSignature.png"
+                val imageNameSpec = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_SpecSignature.png"
+                val imageNameDef = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_DefSignature.png"
+                val bmpRep = Glide.with(activity)
+                        .asBitmap()
+                        .load(Constants.getImages + imageNameRep)
+                        .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE))
+                        .submit()
+                        .get()
+                var baos = ByteArrayOutputStream();
+                bmpRep.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                var imageInByte = baos.toByteArray();
+                val imageRepSignature = Image.getInstance(imageInByte)
+                imageRepSignature.scaleToFit(5F, 5F)
+
+                val bmpSpec = Glide.with(activity)
+                        .asBitmap()
+                        .load(Constants.getImages + imageNameSpec)
+                        .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE))
+                        .submit()
+                        .get()
+                baos = ByteArrayOutputStream();
+                bmpSpec.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                imageInByte = baos.toByteArray();
+                var imageSpecSignature = Image.getInstance(imageInByte)
+                imageSpecSignature.scaleToFit(10F, 10F)
+
+                val bmpDef = Glide.with(activity)
+                        .asBitmap()
+                        .load(Constants.getImages + imageNameDef)
+                        .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE))
+                        .submit()
+                        .get()
+                baos = ByteArrayOutputStream();
+                bmpDef.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                imageInByte = baos.toByteArray();
+                var imageDefSignature = Image.getInstance(imageInByte)
+                imageDefSignature.scaleToFit(10F, 10F)
+
+
+                createPDFForSpecialist(activity,imageRepSignature,imageSpecSignature,imageDefSignature)
+            }
+
 }
 
 
 fun createPDFForShop(activity: Activity) {
     val document = Document()
-
     //output file path
     val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
     var writer = PdfWriter.getInstance(document, FileOutputStream(file))
@@ -253,7 +301,7 @@ fun createPDFForShop(activity: Activity) {
     addEmptyLine(document, 1)
 
 
-    paragraph = Paragraph("CHanges Made", MaintitleFont)
+    paragraph = Paragraph("Changes Made", MaintitleFont)
     paragraph.alignment = Element.ALIGN_LEFT
     document.add(paragraph)
     document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
@@ -267,7 +315,7 @@ fun createPDFForShop(activity: Activity) {
     uploadPDF(activity,file,"Shop")
 }
 
-fun createPDFForSpecialist(activity: Activity) {
+fun createPDFForSpecialist(activity: Activity,imageRep: Image,imageSpec: Image,imageDef: Image) {
     val document = Document()
 
     //output file path
@@ -291,7 +339,7 @@ fun createPDFForSpecialist(activity: Activity) {
 
     // Visitation Section
     paragraph = Paragraph("")
-    paragraph.add(drawVisitaionSection())
+    paragraph.add(drawVisitaionSection(imageRep,imageSpec))
     document.add(paragraph)
 
 
@@ -477,9 +525,16 @@ fun createPDFForSpecialist(activity: Activity) {
     document.add(paragraph)
     addEmptyLine(document, 1)
 
-    paragraph = Paragraph("Signature: ", MaintitleFont)
-    paragraph.alignment = Element.ALIGN_LEFT
-    document.add(paragraph)
+    val defSignTable = PdfPTable(2)
+    defSignTable.addCell(addTitleCell("Signature: ",1,true,MaintitleFont))
+    imageDef.scaleAbsolute(50F,50F)
+    val e = PdfPCell(imageDef)
+    e.border = Rectangle.NO_BORDER
+    e.horizontalAlignment = Element.ALIGN_CENTER
+    e.rowspan = 3
+    defSignTable.addCell(e)
+
+    document.add(defSignTable)
     addEmptyLine(document, 1)
     document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
     addEmptyLine(document, 1)
@@ -520,7 +575,7 @@ fun createPDFForSpecialist(activity: Activity) {
     table.addCell(addCellWithBorder("Updated Date", 1,true))
     table.addCell(addCellWithBorder("Downstream Apps", 2,true))
     var tblFacilityPhotos = ArrayList<PRGFacilityPhotos>()
-    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
             Response.Listener { response ->
                 activity!!.runOnUiThread {
                     tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
@@ -626,7 +681,7 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
 }
 
 
-private fun drawVisitaionSection() : PdfPTable {
+private fun drawVisitaionSection(imageRep: Image,imageSpec: Image) : PdfPTable {
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
     table.addCell(addCell("Type of Inspection: " + FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
@@ -637,9 +692,25 @@ private fun drawVisitaionSection() : PdfPTable {
     table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));
-    table.addCell(addCell("Facility Representative's Signature:",1,false));
-    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature.toString(),1,false));
-    table.addCell(addCell("Specialist's Signature:",1,false));
+    table.addCell(addCell("Facility Representative's Signature:",2,true));
+    table.addCell(addCell("Specialist's Signature:",2,true));
+//    table.addCell(imageRep)
+//    table.addCell(imageSpec);
+    imageRep.scaleAbsolute(50F,50F)
+    val c = PdfPCell(imageRep)
+    c.colspan = 2
+    c.border = Rectangle.NO_BORDER
+    c.horizontalAlignment = Element.ALIGN_CENTER
+    c.rowspan = 3
+    table.addCell(c)
+    imageSpec.scaleAbsolute(50F,50F)
+    val d = PdfPCell(imageSpec)
+    d.colspan = 2
+    d.border = Rectangle.NO_BORDER
+    d.horizontalAlignment = Element.ALIGN_CENTER
+    d.rowspan = 3
+    table.addCell(d)
+
     table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature.toString(),1,false));
     return table
 }
@@ -1368,6 +1439,15 @@ private fun drawFacilityGISection() : PdfPTable {
     return table
 }
 
+fun addTitleCell(strValue : String, colSpan : Int,alignCenter: Boolean,font: Font) : PdfPCell {
+    val cell = PdfPCell(Paragraph(strValue, font));
+    cell.colspan=colSpan
+    cell.setBorder(Rectangle.NO_BORDER);
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
+    if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
+    return cell
+}
+
 fun addCell(strValue : String, colSpan : Int,alignCenter: Boolean) : PdfPCell {
     val cell = PdfPCell(Paragraph(strValue, normalFont));
     cell.colspan=colSpan
@@ -1400,6 +1480,15 @@ fun addImageWithBorder(image : Image, colSpan : Int,alignCenter : Boolean ) : Pd
     cell.setPadding(5F)
     cell.verticalAlignment = Element.ALIGN_MIDDLE
     if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
+    return cell
+}
+
+fun addSignatures(image : Image) : PdfPCell {
+    val cell = PdfPCell(image);
+    cell.setPadding(5F)
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
+    cell.horizontalAlignment = Element.ALIGN_CENTER
+    cell.setBorder(Rectangle.NO_BORDER);
     return cell
 }
 
@@ -2046,6 +2135,8 @@ private fun addEmptyLine(document: Document, number: Int) {
 ////        createPDF(true,act)
 //    }
 //}
+
+
 
 class HeaderFooterPageEvent : PdfPageEventHelper() {
 

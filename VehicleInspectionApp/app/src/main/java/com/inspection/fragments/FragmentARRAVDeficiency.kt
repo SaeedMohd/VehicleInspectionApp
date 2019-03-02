@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.Gravity
@@ -15,14 +16,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
+import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateDeficiencyData
+import com.inspection.adapter.MultipartRequest
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.dataChanged
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.diagnosticLaborRate
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
@@ -39,6 +43,8 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_Nu
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -129,6 +135,7 @@ class FragmentARRAVDeficiency : Fragment() {
                 var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
                 when (selectedSignature) {
                     requestedSignature.representativeDeficiency -> {
+//                        saveBmpAsFile(bitmap,"Def")
                         facilityRepresentativeDeficienciesSignatureBitmap = bitmap
                         if (!isEmpty){
                             facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
@@ -149,9 +156,8 @@ class FragmentARRAVDeficiency : Fragment() {
                 var bitmap = signatureInkView.bitmap
                 var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
                 when (selectedSignature) {
-
-
                     requestedSignature.representativeDeficiency -> {
+//                        saveBmpAsFile(bitmap,"Def")
                         facilityRepresentativeDeficienciesSignatureBitmap = bitmap
                         if (!isEmpty){
                             facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
@@ -244,7 +250,7 @@ class FragmentARRAVDeficiency : Fragment() {
                                 if (response.toString().contains("returnCode>0<",false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Deficiency")
                                     item.DefID = response.toString().substring(response.toString().indexOf("<DefID")+7,response.toString().indexOf("</DefID"))
-                                    Utility.showMessageDialog(activity,"DEF ID",item.DefID)
+//                                    Utility.showMessageDialog(activity,"DEF ID",item.DefID)
                                     FacilityDataModel.getInstance().tblDeficiency.add(item)
                                     fillDeffTableView()
                                     HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
@@ -471,7 +477,33 @@ class FragmentARRAVDeficiency : Fragment() {
         }
     }
 
-
+//    fun saveBmpAsFile(bmp : Bitmap,type: String) {
+//        var strPrefix = "DefSignature"
+//        var fileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+strPrefix+".png"
+//        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_"+strPrefix+".png")
+//        val fOut = FileOutputStream(file);
+//        bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+//        fOut.flush();
+//        fOut.close();
+//        uploadSignature(file,fileName)
+//    }
+//
+//    fun uploadSignature(file: File, fileName: String) {
+//        val multipartRequest = MultipartRequest(Constants.uploadPhoto + fileName, null, file, Response.Listener { response ->
+//            //            try {
+////                submitPhotoDetails()
+////            } catch (e: UnsupportedEncodingException) {
+////                e.printStackTrace()
+////            }
+//        }, Response.ErrorListener {
+//            Utility.showMessageDialog(context, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
+//            Log.v("Upload Signature Error:", it.message)
+//        })
+//        val socketTimeout = 30000//30 seconds - change to what you want
+//        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+//        multipartRequest.retryPolicy = policy
+//        Volley.newRequestQueue((activity as FormsActivity).applicationContext).add(multipartRequest)
+//    }
 
     fun validateInputs() : Boolean {
 

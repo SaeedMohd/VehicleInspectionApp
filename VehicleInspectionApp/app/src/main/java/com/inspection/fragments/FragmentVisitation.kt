@@ -1,10 +1,12 @@
 package com.inspection.fragments
 
 import android.app.AlertDialog
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
 import android.text.TextWatcher
@@ -24,14 +26,21 @@ import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.setPadding
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
+import com.inspection.MainActivity
 import com.inspection.Utils.*
+import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.UnsupportedEncodingException
 
 
 /**
@@ -464,7 +473,7 @@ class FragmentVisitation : Fragment() {
             when (selectedSignature) {
                 requestedSignature.representative -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = bitmap
-
+                    saveBmpAsFile(bitmap,"Rep")
                     if (!isEmpty) {
                         facilityRepresentativeSignatureButton.text = "Edit Signature"
                         facilityRepresentativeSignatureImageView.setImageBitmap(bitmap)
@@ -478,6 +487,7 @@ class FragmentVisitation : Fragment() {
 
                 requestedSignature.specialist -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = bitmap
+                    saveBmpAsFile(bitmap,"Spec")
                     if (!isEmpty) {
                         automotiveSpecialistSignatureButton.text = "Edit Signature"
                         automotiveSpecialistSignatureImageView.setImageBitmap(bitmap)
@@ -491,6 +501,7 @@ class FragmentVisitation : Fragment() {
 
                 requestedSignature.representativeDeficiency -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature = bitmap
+                    saveBmpAsFile(bitmap,"Def")
                     if (!isEmpty) {
                         facilityRepresentativeDeficienciesSignatureButton.text = "Edit Signature"
                         facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
@@ -762,6 +773,35 @@ class FragmentVisitation : Fragment() {
     }
 
 
+    fun saveBmpAsFile(bmp : Bitmap,type: String) {
+        var strPrefix = if (type.equals("Rep")) "RepSignature" else if (type.equals("Rep")) "SpecSignature" else "DefSignature"
+        var fileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+strPrefix+".png"
+        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_"+strPrefix+".png")
+        val fOut = FileOutputStream(file);
+//        bmp.toDrawable(resources).bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+        bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+        fOut.flush();
+        fOut.close();
+        uploadSignature(file,fileName)
+    }
+
+    fun uploadSignature(file: File, fileName: String) {
+        val multipartRequest = MultipartRequest(Constants.uploadPhoto + fileName, null, file, Response.Listener { response ->
+            //            try {
+//                submitPhotoDetails()
+//            } catch (e: UnsupportedEncodingException) {
+//                e.printStackTrace()
+//            }
+        }, Response.ErrorListener {
+            Utility.showMessageDialog(context, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
+            Log.v("Upload Signature Error:", it.message)
+        })
+        val socketTimeout = 30000//30 seconds - change to what you want
+        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        multipartRequest.retryPolicy = policy
+        Volley.newRequestQueue((activity as FormsActivity).applicationContext).add(multipartRequest)
+    }
+
     fun getVisitationChanges() : String {
         var strChanges = ""
 //        if (FacilityDataModel.getInstance().tblVisitationTracking[0].FacilityRepairOrderCount != FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount) {
@@ -788,6 +828,9 @@ class FragmentVisitation : Fragment() {
 //        strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
+
+
+
 
     fun submitVisitationData(){
         var visitationID = 0
