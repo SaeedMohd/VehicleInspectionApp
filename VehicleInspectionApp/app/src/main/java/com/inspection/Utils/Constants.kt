@@ -87,6 +87,7 @@ object Constants {
     val getImages = permanentURL + "getImage?file="
     val getFacilityPhotos = permanentURL + "getFacilityPhotos?facId="
     val updateFacilityPhotos = permanentURL + "updateFacilityPhotos?facId="
+    val getLoggedActions = permanentURL + "getLoggedActions?facNum="
     val UpdateAARPortalAdminData = permanentURL + "updateAARPortalAdminData?facNum="
     val UpdateAARPortalTrackingData = permanentURL + "updateAARPortalTracking?facNum="
     val UpdateAmendmentOrderTrackingData = permanentURL + "updateAmendmentOrderTrackingData?facNum="

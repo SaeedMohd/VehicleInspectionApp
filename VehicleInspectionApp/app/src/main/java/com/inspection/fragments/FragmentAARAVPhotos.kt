@@ -102,7 +102,9 @@ class FragmentAARAVPhotos : Fragment() {
 //            dispatchTakePictureIntent()
 //        }
 
-        loadFacilityPhotos()
+//        loadFacilityPhotos()
+        tblFacilityPhotos = PRGDataModel.getInstance().tblPRGFacilitiesPhotos
+        fillPhotosTableView()
 
 
         fileNameText.addTextChangedListener(object : TextWatcher {
@@ -542,7 +544,7 @@ class FragmentAARAVPhotos : Fragment() {
 
         tblFacilityPhotos.apply {
             (0 until size).forEach {
-                if (get(it).photoid > 0) {
+                if (get(it).photoid > -1) {
 
                     val tableRow = TableRow(context)
                     tableRow.layoutParams = rowLayoutParamRow
@@ -678,6 +680,7 @@ class FragmentAARAVPhotos : Fragment() {
                                 photoLoadingView.visibility = View.VISIBLE
                                 progressBarText.text = "Saving Photo Details ..."
                                 photoLoadingView.visibility = View.VISIBLE
+
                                 var photoID = tblFacilityPhotos[currentPhotoIndex].photoid
                                 var fileDescStr = editFileDescText.text.toString()
                                 var approvalReq = if (editApprovalReqCheck.isChecked) 1 else 0
@@ -689,13 +692,21 @@ class FragmentAARAVPhotos : Fragment() {
                                 if (editIrasCheck.isChecked) downstreamStr += irasCheck.text.toString() + ", "
                                 if (editRspCheck.isChecked) downstreamStr += rspCheck.text.toString() + ", "
                                 downstreamStr = downstreamStr.removeSuffix(", ")
-
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&operation=EDIT&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 1, getPhotosChanges(1,currentPhotoIndex)),
                                         Response.Listener { response ->
                                             activity!!.runOnUiThread {
                                                 if (response.toString().contains("Success", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Photos")
-                                                    loadFacilityPhotos()
+//                                                    PRGDataModel.getInstance().tblPRGFacilitiesPhotos[currentPhotoIndex].filedescription = fileDescStr
+//                                                    PRGDataModel.getInstance().tblPRGFacilitiesPhotos[currentPhotoIndex].approvalrequested = editApprovalReqCheck.isChecked
+//                                                    PRGDataModel.getInstance().tblPRGFacilitiesPhotos[currentPhotoIndex].downstreamapps = downstreamStr
+//                                                    PRGDataModel.getInstance().tblPRGFacilitiesPhotos[currentPhotoIndex].lastupdatedate= Date().toApiSubmitFormat()
+                                                    tblFacilityPhotos[currentPhotoIndex].filedescription = fileDescStr
+                                                    tblFacilityPhotos[currentPhotoIndex].approvalrequested = editApprovalReqCheck.isChecked
+                                                    tblFacilityPhotos[currentPhotoIndex].downstreamapps = downstreamStr
+                                                    tblFacilityPhotos[currentPhotoIndex].lastupdatedate= Date().toApiSubmitFormat()
+//                                                    loadFacilityPhotos()
+                                                    fillPhotosTableView()
                                                     HasChangedModel.getInstance().groupPhoto[0].Photos= true
                                                     HasChangedModel.getInstance().changeDoneForPhotoDef()
                                                 } else {
@@ -842,7 +853,17 @@ class FragmentAARAVPhotos : Fragment() {
         if (irasCheck.isChecked) downstreamStr += irasCheck.text.toString() + ", "
         if (rspCheck.isChecked) downstreamStr += rspCheck.text.toString() + ", "
         downstreamStr = downstreamStr.removeSuffix(", ")
-
+        var item = PRGFacilityPhotos()
+        item.filename = fileNameStr
+        item.filedescription = fileDescStr
+        item.approvalrequested = approvalReqCheck.isChecked
+        item.downstreamapps = downstreamStr
+        item.approved=false
+        item.lastupdatedate= Date().toApiSubmitFormat()
+        item.approveddate= ""
+        item.lastupdateby = ApplicationPrefs.getInstance(activity).loggedInUserID
+        item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+        item.clubCode = FacilityDataModel.getInstance().clubCode.toInt()
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&operation=ADD&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -850,7 +871,9 @@ class FragmentAARAVPhotos : Fragment() {
                             Utility.showSubmitAlertDialog(activity, true, "Photos")
                             photoLoadingView.visibility = View.GONE
                             progressBarText.text = "Loading ..."
-                            loadFacilityPhotos()
+//                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos.add(item)
+                            tblFacilityPhotos.add(item)
+                            fillPhotosTableView()
                             HasChangedModel.getInstance().groupPhoto[0].Photos= true
                             HasChangedModel.getInstance().changeDoneForPhotoDef()
                         } else {

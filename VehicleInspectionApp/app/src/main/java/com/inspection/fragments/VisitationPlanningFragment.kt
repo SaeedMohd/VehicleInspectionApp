@@ -704,6 +704,59 @@ class VisitationPlanningFragment : Fragment() {
         }
     }
 
+    fun launchNextAction(isCompleted : Boolean){
+        if (isCompleted) {
+            if ((activity as MainActivity).checkPermission()) {
+                (activity as MainActivity).generateAndOpenPDF()
+            } else {
+                if (!(activity as MainActivity).checkPermission()) {
+                    (activity as MainActivity).requestPermissionAndContinue();
+                } else {
+                    (activity as MainActivity).generateAndOpenPDF()
+                }
+            }
+        } else {
+            var intent = Intent(context, com.inspection.FormsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    fun getFacilityPRGData(isCompleted : Boolean) {
+        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread {
+                        if (!response.toString().equals("[ ]")) {
+                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
+                        } else {
+                            var item = PRGFacilityPhotos()
+                            item.photoid = -1
+                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos.add(item)
+                        }
+                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread {
+                                        if (!response.toString().equals("[ ]")) {
+                                            PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
+                                        } else {
+                                            var item = PRGLogChanges()
+                                            item.recordid=-1
+                                            PRGDataModel.getInstance().tblPRGLogChanges.add(item)
+                                        }
+                                        launchNextAction(isCompleted)
+                                    }
+                                }, Response.ErrorListener {
+                            Log.v("Loading PRG Data error", "" + it.message)
+                            launchNextAction(isCompleted)
+                            it.printStackTrace()
+                        }))
+
+                    }
+                }, Response.ErrorListener {
+            Log.v("Loading PRG Data error", "" + it.message)
+            it.printStackTrace()
+        }))
+    }
+
     fun getTypeTables() {
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
         var client = clientBuilder.build()
@@ -799,20 +852,7 @@ class VisitationPlanningFragment : Fragment() {
                             var jsonObj = obj.getJSONObject("responseXml")
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
-                            if (isCompleted) {
-                                if ((activity as MainActivity).checkPermission()) {
-                                    (activity as MainActivity).generateAndOpenPDF()
-                                } else {
-                                    if (!(activity as MainActivity).checkPermission()) {
-                                        (activity as MainActivity).requestPermissionAndContinue();
-                                    } else {
-                                        (activity as MainActivity).generateAndOpenPDF()
-                                    }
-                                }
-                            } else {
-                                var intent = Intent(context, com.inspection.FormsActivity::class.java)
-                                startActivity(intent)
-                            }
+                            getFacilityPRGData(isCompleted)
                         }
                     } else {
                         activity!!.runOnUiThread {
@@ -840,8 +880,7 @@ class VisitationPlanningFragment : Fragment() {
                 FacilityDataModelOrg.getInstance().tblFacilities.add(Gson().fromJson<TblFacilities>(jsonObj.get("tblFacilities").toString(), TblFacilities::class.java))
             }
         }
-
-
+        // Load PRG DATA
 
         if (jsonObj.has("tblBusinessType")) {
             if (jsonObj.get("tblBusinessType").toString().startsWith("[")) {

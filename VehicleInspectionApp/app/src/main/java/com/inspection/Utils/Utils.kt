@@ -574,12 +574,12 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image,imageSpec: Image,i
     table.addCell(addCellWithBorder("Updated By", 1,true))
     table.addCell(addCellWithBorder("Updated Date", 1,true))
     table.addCell(addCellWithBorder("Downstream Apps", 2,true))
-    var tblFacilityPhotos = ArrayList<PRGFacilityPhotos>()
-    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
-            Response.Listener { response ->
-                activity!!.runOnUiThread {
-                    tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
-                    if (tblFacilityPhotos.size==0) {
+//    var tblFacilityPhotos = ArrayList<PRGFacilityPhotos>()
+//    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
+//            Response.Listener { response ->
+//                activity!!.runOnUiThread {
+//                    tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
+                    if (PRGDataModel.getInstance().tblPRGFacilitiesPhotos.size==0) {
                         document.add(table)
                         addEmptyLine(document, 1)
                         document.close()
@@ -587,9 +587,9 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image,imageSpec: Image,i
                     } else {
                         var imageView = ImageView(activity.applicationContext)
                                 .doAsync {
-                                    tblFacilityPhotos.apply {
+                                    PRGDataModel.getInstance().tblPRGFacilitiesPhotos.apply {
                                         (0 until size).forEach {
-                                            if (get(it).photoid > 0) {
+                                            if (get(it).photoid > -1) {
                                                 try {
                                                     val bmp = Glide.with(activity)
                                                             .asBitmap()
@@ -635,15 +635,15 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image,imageSpec: Image,i
                                     }
                                 }
                     }
-                }
-            }, Response.ErrorListener {
-        Log.v("Loading error", "" + it.message)
-        it.printStackTrace()
-        document.add(table)
-        addEmptyLine(document, 1)
-        document.close()
-        uploadPDF(activity, file, "Specialist")
-    }))
+//                }
+//            }, Response.ErrorListener {
+//        Log.v("Loading error", "" + it.message)
+//        it.printStackTrace()
+//        document.add(table)
+//        addEmptyLine(document, 1)
+//        document.close()
+//        uploadPDF(activity, file, "Specialist")
+//    }))
 
 
 }
@@ -676,7 +676,7 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
     table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
     table.addCell(addCell("Date of Visitation: ",1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].DatePerformed.apiToAppFormatMMDDYYYY(),1,false));
-    table.addCell(addCell("Data Changes Made: "+"",4,false));
+    table.addCell(addCell("Data Changes Made: "+ if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes" ,4,false));
     return table
 }
 
@@ -694,8 +694,6 @@ private fun drawVisitaionSection(imageRep: Image,imageSpec: Image) : PdfPTable {
     table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));
     table.addCell(addCell("Facility Representative's Signature:",2,true));
     table.addCell(addCell("Specialist's Signature:",2,true));
-//    table.addCell(imageRep)
-//    table.addCell(imageSpec);
     imageRep.scaleAbsolute(50F,50F)
     val c = PdfPCell(imageRep)
     c.colspan = 2
@@ -1157,40 +1155,28 @@ private fun drawVendorRevenueSectionForShop() : PdfPTable {
 
 
 private fun drawDataChangedSectionForShop() : PdfPTable {
-    val table = PdfPTable(11)
+    val table = PdfPTable(10)
     table.setWidthPercentage(100f)
-    table.addCell(addCellWithBorder("User ID", 1,true))
+//    table.addCell(addCellWithBorder("User ID", 1,true))
     table.addCell(addCellWithBorder("Group Name", 1,true))
     table.addCell(addCellWithBorder("Screen Name", 1,true))
     table.addCell(addCellWithBorder("Section Name", 1,true))
     table.addCell(addCellWithBorder("Action", 1,true))
     table.addCell(addCellWithBorder("Change Date", 1,true))
     table.addCell(addCellWithBorder("Changes Made", 5,false))
-//    if (FacilityDataModel.getInstance().tblVendorRevenue[0].VendorRevenueID>0) {
-//        if (FacilityDataModel.getInstance().tblVendorRevenue.filter { s -> (Date().time - s.DateOfCheck.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 3650 }.isNotEmpty()) {
-//            FacilityDataModel.getInstance().tblVendorRevenue.apply {
-//                (0 until size).forEach {
-//                    if (get(it).VendorRevenueID > 0) {
-                        table.addCell(addCellWithBorder("E645768", 1, true))
-                        table.addCell(addCellWithBorder("Facility", 1, true))
-                        table.addCell(addCellWithBorder("General Information", 1, true));
-                        table.addCell(addCellWithBorder("Main", 1, true));
-                        table.addCell(addCellWithBorder("EDIT", 1, true));
-                        table.addCell(addCellWithBorder("2019-02-20", 1, true));
-                        table.addCell(addCellWithBorder("- "+"Repair order count changed from (275) to (2755) - Time Zone changed from (Central Time) to (Mountain Time) - Service Availability changed from (Fixed-Site Service Only) to (Mobile Service Only) - ARD Expiration date changed from (01/01/2020) to (02/21/2019) - Website URL changed from (www.colonyoneauto.com) to (www.colonyoneauto.comz) - Wi-Fi Availability changed from (true) to (false) - Facility Type changed from (Independent) to (Specialty)".replace(" - ","\n- "), 5, false));
-                    table.addCell(addCellWithBorder("E645768", 1, true))
-                    table.addCell(addCellWithBorder("Facility", 1, true))
-                    table.addCell(addCellWithBorder("RSP Tracking", 1, true));
-                    table.addCell(addCellWithBorder("ADMIN", 1, true));
-                    table.addCell(addCellWithBorder("EDIT", 1, true));
-                    table.addCell(addCellWithBorder("2019-02-19", 1, true));
-                    table.addCell(addCellWithBorder("Number of card readers changed from (1) to (5)", 5, false));
-//                    }
-//                }
-//            }
-//        }
-//    }
-
+    PRGDataModel.getInstance().tblPRGLogChanges.apply {
+        (0 until size).forEach {
+            if (get(it).recordid>-1) {
+//                table.addCell(addCellWithBorder(get(it).userid, 1, true))
+                table.addCell(addCellWithBorder(get(it).groupname, 1, true))
+                table.addCell(addCellWithBorder(get(it).screenname, 1, true));
+                table.addCell(addCellWithBorder(get(it).sectionname, 1, true));
+                table.addCell(addCellWithBorder(if (get(it).action) "ADD" else "EDIT", 1, true));
+                table.addCell(addCellWithBorder(get(it).changedate.apiToAppFormatMMDDYYYY(), 1, true));
+                table.addCell(addCellWithBorder(get(it).datachanged, 5, false));
+            }
+        }
+    }
     return table
 }
 

@@ -580,3 +580,17 @@ class PRGFacilityPhotos {
     var approved = false
     var photoid = 0
 }
+
+class PRGLogChanges {
+    var recordid = 0
+    var sessionid = ""
+    var facid = 0
+    var clubcode = 0
+    var userid = ""
+    var groupname = ""
+    var screenname = ""
+    var sectionname = ""
+    var action = false
+    var datachanged = ""
+    var changedate = ""
+}
