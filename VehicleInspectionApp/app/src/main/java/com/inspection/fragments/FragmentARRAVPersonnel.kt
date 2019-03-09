@@ -395,7 +395,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                     item.ContractSigner = if (newSignerCheck.isChecked == true) true else false
                                     item.PrimaryMailRecipient = if (newACSCheck.isChecked == true) true else false
                                     item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                    item.ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                    item.endDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                     item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
@@ -508,8 +508,8 @@ class FragmentARRAVPersonnel : Fragment() {
                 }
             }
             if (!edit_newEndDateBtn.text.toString().equals("SELECT DATE")) {
-                if (edit_newEndDateBtn.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ExpirationDate.apiToAppFormatMMDDYYYY()) {
-                    strChanges += "End Date changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ExpirationDate.apiToAppFormatMMDDYYYY() + ") to (" + edit_newEndDateBtn.text.toString() + ") - "
+                if (edit_newEndDateBtn.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].endDate.apiToAppFormatMMDDYYYY()) {
+                    strChanges += "End Date changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].endDate.apiToAppFormatMMDDYYYY() + ") to (" + edit_newEndDateBtn.text.toString() + ") - "
                 }
             }
             if (!edit_newSeniorityDateBtn.text.toString().equals("SELECT DATE")) {
@@ -1257,11 +1257,11 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView9.layoutParams = rowLayoutParam8
                 textView9.gravity = Gravity.CENTER_VERTICAL
                 textView9.minimumHeight = 30
-                if (!(get(it).ExpirationDate.isNullOrEmpty())) {
+                if (!(get(it).endDate.isNullOrEmpty())) {
                     try {
-                        textView9.text = if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
+                        textView9.text = if (get(it).endDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).endDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-                        textView9.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
+                        textView9.text = get(it).endDate.apiToAppFormatMMDDYYYY()
                     }
                 } else {
                     textView9.text = ""
@@ -1549,7 +1549,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var personnelID = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID
 //                            Log.v("PERSONNEL EDIT --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,0)),
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,currentfacilityDataModelIndex)),
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode>0<",false)) {
@@ -1567,7 +1567,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 item.ContractSigner = ContractSigner.toBoolean()
                                                 item.PrimaryMailRecipient = PrimaryMailRecipient.toBoolean()
                                                 item.startDate = startDate
-                                                item.ExpirationDate = ExpirationDate
+                                                item.endDate = ExpirationDate
                                                 item.SeniorityDate = SeniorityDate
                                                 HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                                 HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
@@ -1795,7 +1795,7 @@ class FragmentARRAVPersonnel : Fragment() {
             textView.layoutParams = rowLayoutParam2
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-                textView.text = ExpirationDate.apiToAppFormatMMDDYYYY()
+                textView.text = endDate.apiToAppFormatMMDDYYYY()
 
             tableRow.addView(textView)
 
@@ -1917,7 +1917,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam8
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ExpirationDate.apiToAppFormatMMDDYYYY()
+            textView.text = endDate.apiToAppFormatMMDDYYYY()
             tableRow.addView(textView)
 
             var checkBox = CheckBox(context)
@@ -2019,7 +2019,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                   //if (itemAr[i].PrimaryMailRecipient.o){itemAr[i].PrimaryMailRecipient=false}
                 if (
-                        ( itemOrgAr[i].ExpirationDate.isNullOrBlank()&&!itemAr[i].ExpirationDate.isNullOrBlank()) ||
+                        ( itemOrgAr[i].endDate.isNullOrBlank()&&!itemAr[i].endDate.isNullOrBlank()) ||
                         ( itemOrgAr[i].startDate.isNullOrBlank()&&!itemAr[i].startDate.isNullOrBlank() )||
                         (  itemOrgAr[i].SeniorityDate.isNullOrBlank()&&!itemAr[i].SeniorityDate.isNullOrBlank())
                 ) {
@@ -2028,7 +2028,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 }
                 else
                     if (
-                            ( itemOrgAr[i].ExpirationDate.isNullOrBlank()&&itemAr[i].ExpirationDate.isNullOrBlank()) ||
+                            ( itemOrgAr[i].endDate.isNullOrBlank()&&itemAr[i].endDate.isNullOrBlank()) ||
                             ( itemOrgAr[i].startDate.isNullOrBlank()&&itemAr[i].startDate.isNullOrBlank() )||
                             (  itemOrgAr[i].SeniorityDate.isNullOrBlank()&&itemAr[i].SeniorityDate.isNullOrBlank())
                     ) {
@@ -2060,7 +2060,6 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                     }
                     else
                         if (
-
                                 itemAr[i].FirstName != itemOrgAr[i].FirstName || itemAr[i].LastName != itemOrgAr[i].LastName ||
                                 itemAr[i].RSP_UserName != itemOrgAr[i].RSP_UserName ||
                                 itemAr[i].RSP_Email != itemOrgAr[i].RSP_Email ||
@@ -2069,10 +2068,8 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                                 itemAr[i].ContractSigner != itemOrgAr[i].ContractSigner ||
                                 itemAr[i].PrimaryMailRecipient != itemOrgAr[i].PrimaryMailRecipient ||
                                 dateFormat1.parse(itemAr[i].startDate.apiToAppFormat()) != dateFormat1.parse(itemOrgAr[i].startDate.apiToAppFormat()) ||
-                                dateFormat1.parse(itemAr[i].ExpirationDate.apiToAppFormat()) != dateFormat1.parse(itemOrgAr[i].ExpirationDate.apiToAppFormat()) ||
+                                dateFormat1.parse(itemAr[i].endDate.apiToAppFormat()) != dateFormat1.parse(itemOrgAr[i].endDate.apiToAppFormat()) ||
                                 dateFormat1.parse(itemAr[i].SeniorityDate.apiToAppFormat()) != dateFormat1.parse(itemOrgAr[i].SeniorityDate.apiToAppFormat())
-
-
                         ) {
                             MarkChangeWasDone()
 //                             Toast.makeText(context, "data submitted", Toast.LENGTH_SHORT).show()
@@ -2085,7 +2082,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                             //Log.v("checkkk", itemOrgAr[i].PrimaryMailRecipient + "=="+ itemAr[i].PrimaryMailRecipient)
                             //Log.v("checkkk", itemOrgAr[i].PersonnelTypeID + "=="+ itemAr[i].PersonnelTypeID)
                             Log.v("checkkk", itemOrgAr[i].startDate + "=="+ itemAr[i].startDate)
-                            Log.v("checkkk", itemOrgAr[i].ExpirationDate + "=="+ itemAr[i].ExpirationDate)
+                            Log.v("checkkk", itemOrgAr[i].endDate + "=="+ itemAr[i].endDate)
                             Log.v("checkkk", itemOrgAr[i].SeniorityDate + "=="+ itemAr[i].SeniorityDate)
 
 

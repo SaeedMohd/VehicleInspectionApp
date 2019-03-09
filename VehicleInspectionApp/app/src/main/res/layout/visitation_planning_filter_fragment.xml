@@ -186,7 +186,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            android:layout_marginLeft="20dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <CheckBox
                 android:id="@+id/annualVisitationCheckBox"
@@ -254,7 +255,6 @@
 
         </RelativeLayout>
 
-
         <ListView
             android:id="@+id/visitationfacilityListView"
             android:divider="@null"
@@ -262,7 +262,6 @@
             android:layout_height="match_parent"
             android:paddingTop="10dp"
             android:background="@color/light_gray"
-
             android:layout_marginTop="10dp" />
     </LinearLayout>
 

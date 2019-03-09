@@ -219,7 +219,7 @@ class TblPersonnel {
     var PrimaryMailRecipient=false
     var CertificationTypeId=""
     var CertificationDate=""
-    var ExpirationDate=""
+    var endDate = ""
     var ContractStartDate=""
     var ContractEndDate=""
 }

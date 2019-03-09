@@ -1285,7 +1285,7 @@ private fun drawPersonnelSection () : PdfPTable {
                 table.addCell(addCellWithBorder(get(it).RSP_Email,2,true))
                 table.addCell(addCellWithBorder(if (get(it).SeniorityDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).SeniorityDate.apiToAppFormatMMDDYYYY(),1,true));
                 table.addCell(addCellWithBorder(if (get(it).startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startDate.apiToAppFormatMMDDYYYY(),1,true));
-                table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(),1,true));
+                table.addCell(addCellWithBorder(if (get(it).endDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).endDate.apiToAppFormatMMDDYYYY(),1,true));
                 table.addCell(addCellWithBorder(if (get(it).ContractSigner) "Yes" else "No",1,true))
                 table.addCell(addCellWithBorder(if (get(it).PrimaryMailRecipient) "Yes" else "No",1,true))
             }

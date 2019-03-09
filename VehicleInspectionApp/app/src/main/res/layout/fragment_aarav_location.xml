@@ -49,24 +49,24 @@
                     />
 
             </RelativeLayout>
-            <ScrollView
-                android:id="@+id/scrollView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1">
+            <!--<ScrollView-->
+                <!--android:id="@+id/scrollView1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal">-->
+            <!--<HorizontalScrollView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:scrollbars="horizontal"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--&gt;-->
                 <!--<LinearLayout-->
                     <!--android:id="@+id/LinearLayout1"-->
                     <!--android:layout_width="match_parent"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:orientation="horizontal">-->
             <TableLayout
-                android:layout_width="1500dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/locationTbl"
                 android:scrollbars="horizontal"
@@ -80,7 +80,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
                         android:layout_weight="0.8"
                         android:layout_gravity="center_vertical"
                         android:text="Location Type"
@@ -202,8 +202,8 @@
 
             </TableLayout>
                 <!--</LinearLayout>-->
-            </HorizontalScrollView>
-            </ScrollView>
+            <!--</HorizontalScrollView>-->
+            <!--</ScrollView>-->
             <RelativeLayout
                 android:id="@+id/mainViewLinearId2"
                 android:layout_width="match_parent"
@@ -224,7 +224,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"
                     android:background="@drawable/green_background_button"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
@@ -250,7 +250,7 @@
                         android:textAlignment="center"
                         android:text="Phone Type"
                         android:layout_column="0"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
@@ -272,7 +272,7 @@
                         android:layout_weight="1"
                         android:text="Options"
                         android:gravity="center"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_column="2"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
@@ -300,7 +300,7 @@
                     android:id="@+id/addNewEmailButton"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/green_background_button"
@@ -326,7 +326,7 @@
                         android:layout_height="30dp"
                         android:layout_gravity="center_vertical"
                         android:layout_column="0"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:text="Email Type"
                         android:layout_weight="1"
                         android:textColor="@color/white"
@@ -644,7 +644,7 @@
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -664,7 +664,7 @@
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
                 </TableRow>
 
                 <TableRow>
@@ -743,7 +743,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/white"
                 android:elevation="5dp"
-                android:gravity="right|center_vertical"
+                android:gravity="end|center_vertical"
                 android:orientation="horizontal"
                 android:padding="30dp">
 

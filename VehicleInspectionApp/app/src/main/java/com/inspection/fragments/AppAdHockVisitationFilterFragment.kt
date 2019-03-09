@@ -1932,7 +1932,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.CertificationNum=""
             oneArray.CertificationTypeId=""
             oneArray.ContractSigner=false
-            oneArray.ExpirationDate=""
+            oneArray.endDate=""
             oneArray.FirstName=""
             oneArray.LastName=""
             oneArray.PersonnelTypeID=0
