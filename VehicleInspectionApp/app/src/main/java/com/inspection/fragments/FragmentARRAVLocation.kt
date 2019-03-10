@@ -1133,38 +1133,46 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
         rowLayoutParam.leftMargin=10
-        rowLayoutParam.height = 30
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = 30
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam1.height = 30
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
 
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
 
         FacilityDataModel.getInstance().tblPhone.apply {
             (0 until size).forEach {
                 if (!get(it).PhoneID.equals("-1")) {
                     var tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
 //                    textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 18f
+                    textView.minimumHeight=30
                     textView.text = getPhoneTypeName(get(it).PhoneTypeID)
                     tableRow.addView(textView)
 
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam1
-//                    textView2.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
                     textView2.gravity = Gravity.CENTER_VERTICAL
                     textView2.textSize = 18f
+                    textView2.minimumHeight=30
                     textView2.text = get(it).PhoneNumber
                     tableRow.addView(textView2)
 
@@ -1183,6 +1191,7 @@ class FragmentARRAVLocation : Fragment() {
                     editPhoneBtn.setTextColor(Color.BLUE)
                     editPhoneBtn.text = "EDIT"
                     editPhoneBtn.textSize = 18f
+                    editPhoneBtn.minimumHeight=30
                     editPhoneBtn.gravity = Gravity.CENTER
                     editPhoneBtn.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(editPhoneBtn)
@@ -1279,17 +1288,17 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
         rowLayoutParam.leftMargin=10
-        rowLayoutParam.height = 30
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = 30
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = 30
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
 
         FacilityDataModel.getInstance().tblFacilityEmail.apply {
             (0 until size).forEach {
@@ -1300,6 +1309,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 18f
+                    textView.minimumHeight = 30
                     textView.text = getEmailTypeName(get(it).emailTypeId)
                     tableRow.addView(textView)
 
@@ -1307,6 +1317,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.layoutParams = rowLayoutParam1
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.text = get(it).email
+                    textView.minimumHeight = 30
                     textView.textSize = 18f
                     tableRow.addView(textView)
 
@@ -1315,6 +1326,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.setTextColor(Color.BLUE)
                     textView.text = "EDIT"
                     textView.textSize = 18f
+                    textView.minimumHeight = 30
                     textView.gravity = Gravity.CENTER
                     textView.setBackgroundColor(Color.TRANSPARENT)
 

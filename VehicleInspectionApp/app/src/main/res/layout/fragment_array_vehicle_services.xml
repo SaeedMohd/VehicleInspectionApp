@@ -41,7 +41,7 @@
             android:id="@+id/subTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
+            android:gravity="center"
             android:text="Automobile"
             android:textStyle="bold"
             android:textColor="@color/mainColor"
@@ -50,20 +50,17 @@
             android:layout_marginTop="20dp"
 
             />
-
-
-
-        <com.inspection.Utils.ExpandableHeightGridView
-            android:layout_margin="20dp"
-            android:id="@+id/vehicleServicesListView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:horizontalSpacing="2dp"
-            android:isScrollContainer="false"
-            android:numColumns="4"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp" />
+                <com.inspection.Utils.ExpandableHeightGridView
+                android:layout_margin="20dp"
+                android:id="@+id/vehicleServicesListView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:horizontalSpacing="2dp"
+                android:isScrollContainer="false"
+                android:numColumns="5"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="20dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
