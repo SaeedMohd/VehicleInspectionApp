@@ -76,6 +76,7 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         }
         return view
     }
+
     fun updateSelectedLists(value : Int, action :  Int, isChanged: Boolean, valueName: String) { //1:add,0:remove
 
         if (gridType.equals("Autom")) {
