@@ -594,3 +594,18 @@ class PRGLogChanges {
     var datachanged = ""
     var changedate = ""
 }
+
+class PRGVisitationHeader {
+    var recordid = 0
+    var sessionid = ""
+    var facid = 0
+    var clubcode = 0
+    var userid = ""
+    var visitationtype = ""
+    var visitationreason = ""
+    var emailpdf = false
+    var emailto = ""
+    var waivevisitation = false
+    var waivecomments = ""
+    var facilityrep = ""
+}

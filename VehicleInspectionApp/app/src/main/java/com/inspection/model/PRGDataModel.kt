@@ -23,4 +23,5 @@ class PRGDataModel {
 
     var tblPRGFacilitiesPhotos = ArrayList<PRGFacilityPhotos>()
     var tblPRGLogChanges = ArrayList<PRGLogChanges>()
+    var tblPRGVisitationHeader= ArrayList<PRGVisitationHeader>()
 }

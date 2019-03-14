@@ -207,45 +207,61 @@ fun createPDF(activity: Activity){
                 val imageNameRep = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_RepSignature.png"
                 val imageNameSpec = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_SpecSignature.png"
                 val imageNameDef = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_DefSignature.png"
-                val bmpRep = Glide.with(activity)
-                        .asBitmap()
-                        .load(Constants.getImages + imageNameRep)
-                        .apply(RequestOptions().dontTransform().skipMemoryCache(true)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE))
-                        .submit()
-                        .get()
-                var baos = ByteArrayOutputStream();
-                bmpRep.compress(Bitmap.CompressFormat.PNG, 70, baos);
-                var imageInByte = baos.toByteArray();
-                val imageRepSignature = Image.getInstance(imageInByte)
-                imageRepSignature.scaleToFit(5F, 5F)
 
-                val bmpSpec = Glide.with(activity)
-                        .asBitmap()
-                        .load(Constants.getImages + imageNameSpec)
-                        .apply(RequestOptions().dontTransform().skipMemoryCache(true)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE))
-                        .submit()
-                        .get()
-                baos = ByteArrayOutputStream();
-                bmpSpec.compress(Bitmap.CompressFormat.PNG, 70, baos);
-                imageInByte = baos.toByteArray();
-                var imageSpecSignature = Image.getInstance(imageInByte)
-                imageSpecSignature.scaleToFit(10F, 10F)
+                var imageRepSignature = Image.getInstance("")
+                var imageSpecSignature = Image.getInstance("")
+                var imageDefSignature = Image.getInstance("")
 
-                val bmpDef = Glide.with(activity)
-                        .asBitmap()
-                        .load(Constants.getImages + imageNameDef)
-                        .apply(RequestOptions().dontTransform().skipMemoryCache(true)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE))
-                        .submit()
-                        .get()
-                baos = ByteArrayOutputStream();
-                bmpDef.compress(Bitmap.CompressFormat.PNG, 70, baos);
-                imageInByte = baos.toByteArray();
-                var imageDefSignature = Image.getInstance(imageInByte)
-                imageDefSignature.scaleToFit(10F, 10F)
+                try {
+                    val bmpRep = Glide.with(activity)
+                            .asBitmap()
+                            .load(Constants.getImages + imageNameRep)
+                            .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE))
+                            .submit()
+                            .get()
+                    var baos = ByteArrayOutputStream();
+                    bmpRep.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                    var imageInByte = baos.toByteArray();
+                    imageRepSignature = Image.getInstance(imageInByte)
+                    imageRepSignature.scaleToFit(5F, 5F)
+                } catch (e : Exception) {
+                    e.printStackTrace();
+                }
 
+                try {
+                    val bmpSpec = Glide.with(activity)
+                            .asBitmap()
+                            .load(Constants.getImages + imageNameSpec)
+                            .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE))
+                            .submit()
+                            .get()
+                    val baos = ByteArrayOutputStream();
+                    bmpSpec.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                    val imageInByte = baos.toByteArray();
+                    imageSpecSignature = Image.getInstance(imageInByte)
+                    imageSpecSignature.scaleToFit(10F, 10F)
+                } catch (e: Exception) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    val bmpDef = Glide.with(activity)
+                            .asBitmap()
+                            .load(Constants.getImages + imageNameDef)
+                            .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE))
+                            .submit()
+                            .get()
+                    val baos = ByteArrayOutputStream();
+                    bmpDef.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                    val imageInByte = baos.toByteArray();
+                    imageDefSignature = Image.getInstance(imageInByte)
+                    imageDefSignature.scaleToFit(10F, 10F)
+                } catch (e: Exception) {
+                    e.printStackTrace();
+                }
 
                 createPDFForSpecialist(activity,imageRepSignature,imageSpecSignature,imageDefSignature)
             }
@@ -669,11 +685,11 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
     table.addCell(addCell("Facility Representative's Name:",1,false));
-    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName,1,false));
+    table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));
     table.addCell(addCell("Visitation Type: " ,1,false));
-    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
+    table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype,1,false));
     table.addCell(addCell("Date of Visitation: ",1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].DatePerformed.apiToAppFormatMMDDYYYY(),1,false));
     table.addCell(addCell("Data Changes Made: "+ if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes" ,4,false));
@@ -684,11 +700,12 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
 private fun drawVisitaionSection(imageRep: Image,imageSpec: Image) : PdfPTable {
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
-    table.addCell(addCell("Type of Inspection: " + FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
-    table.addCell(addCell("Month Due: "+"",1,false));
-    table.addCell(addCell("Changes Made: "+"",1,false));
+//    table.addCell(addCell("Type of Inspection: " + FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
+    table.addCell(addCell("Type of Inspection: " + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype,1,false));
+    table.addCell(addCell("Month Due: "+ FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth.toInt().monthNoToName(),1,false));
+    table.addCell(addCell("Changes Made: "+if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes" ,1,false))
     table.addCell(addCell("Date of Visitation: "+ FacilityDataModel.getInstance().tblVisitationTracking[0].DatePerformed.apiToAppFormatMMDDYYYY(),1,false));
-    table.addCell(addCell("Facility Representative's Name:",1,false));
+    table.addCell(addCell("Facility Representative's Name: " + PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));

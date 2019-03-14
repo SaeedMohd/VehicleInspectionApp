@@ -111,12 +111,12 @@
 
     <string-array name="visitation_reasons">
         <item>Please Select Reason</item>
+        <item>Annual Visitation</item>
+        <item>Battery Tester Replacement</item>
+        <item>Courtesy Visit</item>
         <item>Deficiency Inspection</item>
         <item>Member Complaint</item>
         <item>Motorsport Ticket Delivery</item>
-        <item>Battery Tester Replacement</item>
-        <item>Courtesy Visit</item>
-        <item>Annual Visitation</item>
         <item>Quarterly Visitation</item>
 
     </string-array>

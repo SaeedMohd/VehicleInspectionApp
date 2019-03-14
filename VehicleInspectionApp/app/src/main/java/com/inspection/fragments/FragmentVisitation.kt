@@ -38,6 +38,7 @@ import com.inspection.MainActivity
 import com.inspection.Utils.*
 import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
+import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.UnsupportedEncodingException
@@ -92,7 +93,7 @@ class FragmentVisitation : Fragment() {
         fillTrackingData()
         IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
 
-        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+        completeButton.isEnabled = true //IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
         (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
@@ -183,30 +184,12 @@ class FragmentVisitation : Fragment() {
 
         dateOfVisitationButton.isClickable = false
         dataChangedNoRadioButton.isClickable = false
-        clubCodeEditText.isClickable = false
+//        clubCodeEditText.isClickable = false
 
-        visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons).sorted())
 
-        clubCodeEditText.isEnabled = false
+//        clubCodeEditText.isEnabled = false
         facilityNumberEditText.isEnabled = false
 
-        if (annualVisitationType.isChecked) {
-            visitationReasonDropListId.setSelection(6)
-        }
-        if (quarterlyVisitationType.isChecked) {
-            visitationReasonDropListId.setSelection(7)
-        }
-        if (adhocVisitationType.isChecked) {
-            visitationReasonDropListId.setSelection(0)
-        }
-
-        if (adhocVisitationType.isChecked) {
-            visitationReasonDropListId.isEnabled = true
-            visitationReasonDropListId.isClickable = true
-        } else {
-            visitationReasonDropListId.isEnabled = false
-            visitationReasonDropListId.isClickable = false
-        }
 
         handleCancelButtonClick()
 
@@ -222,14 +205,29 @@ class FragmentVisitation : Fragment() {
             facilityRepresentativeNames.add(fac)
         }
 
+        visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons))
 
 
-//        annualVisitationType.isChecked = (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual))
-//        adhocVisitationType.isChecked = (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual))
-//        quarterlyVisitationType.isChecked = !(annualVisitationType.isChecked || adhocVisitationType.isChecked)
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual)) {
+            annualVisitationType.isChecked = true
+            visitationReasonDropListId.setSelection(1,true)
+            visitationReasonDropListId.isEnabled = false
+            visitationReasonDropListId.isClickable = false
+        } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Quarterly)) {
+            quarterlyVisitationType.isChecked = true
+            visitationReasonDropListId.setSelection(7,true)
+            visitationReasonDropListId.isEnabled = false
+            visitationReasonDropListId.isClickable = false
+        } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
+            adhocVisitationType.isChecked = true
+            visitationReasonDropListId.setSelection(0,true)
+            visitationReasonDropListId.isEnabled = true
+            visitationReasonDropListId.isClickable = true
+        }
+
 
         dateOfVisitationButton.text = Date().toAppFormatMMDDYYYY()
-        clubCodeEditText.setText(FacilityDataModel.getInstance().clubCode)
+        clubCodeEditVal.setText(FacilityDataModel.getInstance().clubCode)
         facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
             aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
@@ -839,6 +837,7 @@ class FragmentVisitation : Fragment() {
         val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val updateDate = Date().toApiSubmitFormat()
         val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+        val facilityRep = facilityRepresentativesSpinner.selectedItem.toString()
         val aarSign = if (aarSignEditText.text.isNullOrEmpty()) "" else aarSignEditText.text
         val qa = if (qualityControlProcessEditText.text.isNullOrEmpty()) "" else qualityControlProcessEditText.text
         val staffTraining = if (staffTrainingProcessEditText.text.isNullOrEmpty()) "" else staffTrainingProcessEditText.text
@@ -846,6 +845,14 @@ class FragmentVisitation : Fragment() {
         val certificateOfApproval = if (certificateOfApprovalEditText.text.isNullOrEmpty()) "" else certificateOfApprovalEditText.text
         val performedBy = if (automotiveSpecialistSpinner.selectedItem.toString().contains("Select")) "" else automotiveSpecialistSpinner.selectedItem.toString()
         var dialogMsg = ""
+        var visitationType = ""
+        if (annualVisitationType.isChecked) {
+            visitationType = VisitationTypes.Annual.toString()
+        } else if (quarterlyVisitationType.isChecked) {
+            visitationType = VisitationTypes.Quarterly.toString()
+        } else {
+            visitationType = VisitationTypes.AdHoc.toString()
+        }
 
         progressBarTextVal.text = "Saving ..."
         dialogueLoadingView.visibility = View.VISIBLE
@@ -860,7 +867,7 @@ class FragmentVisitation : Fragment() {
                                     "</visitationID")).toInt()
                             dialogMsg = "New Visitation with ID (${visitationID}) created succesfully"
                             (activity as FormsActivity).saveRequired = false
-                            urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate
+                            urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep
                             Log.v("Visitation Details --- ",Constants.UpdateVisitationDetailsData + urlString)
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString,
                                     Response.Listener { response ->

@@ -8,8 +8,6 @@
     android:orientation="vertical"
     android:padding="5dp"
     >
-
-
         <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +15,6 @@
         tools:cardElevation="5dp"
         android:layout_margin="10dp"
         >
-
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -25,15 +22,7 @@
                 android:rowCount="3"
                 android:columnCount="6"
                 android:padding="15dp">
-
-
-
-
-
-
-
-
-            </GridLayout>
+   </GridLayout>
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,27 +73,10 @@
                 </TableRow>
                 <TableRow android:layout_marginTop="5dp">
                     <TextView
-                        android:id="@+id/visitationTypeTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Status / Type:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        android:layout_margin="5dp"
-                        android:textColor="@color/black" />
-                    <TextView
-                        android:id="@+id/visitationTypeValueTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_column="1"
-                        android:layout_margin="5dp"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:text="test" />
-                    <TextView
                         android:id="@+id/initialContractDateTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="2"
+                        android:layout_column="0"
                         android:layout_margin="5dp"
                         android:text="Initial Contract Date:"
                         android:textStyle="bold"
@@ -114,10 +86,48 @@
                         android:id="@+id/initialContractDateValueTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="3"
+                        android:layout_column="1"
                         android:textAlignment="center"
                         android:layout_margin="5dp"
                         android:text="" />
+                </TableRow>
+                <TableRow android:layout_marginTop="5dp">
+                    <TextView
+                        android:id="@+id/visitationStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/black" />
+                    <TextView
+                        android:id="@+id/visitationStatusValueTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_column="1"
+                        android:layout_margin="5dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="test" />
+
+
+                    <TextView
+                        android:id="@+id/visitationTypeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Type:"
+                        android:layout_column="2"
+                        android:textStyle="bold"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/black" />
+                    <TextView
+                        android:id="@+id/visitationTypeValueTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_column="3"
+                        android:layout_margin="5dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="test" />
                 </TableRow>
             </TableLayout>
             <Button
