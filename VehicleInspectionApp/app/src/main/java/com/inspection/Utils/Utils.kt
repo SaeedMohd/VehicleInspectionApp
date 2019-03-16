@@ -50,6 +50,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.inspection.FormsActivity
 import com.inspection.MainActivity.Companion.activity
+import com.inspection.R
 import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
 import com.itextpdf.text.pdf.*
@@ -70,6 +71,9 @@ import javax.sql.DataSource
 /**
  * Created by sheri on 3/7/2018.
  */
+
+
+
 
 val MaintitleFont = FontFactory.getFont(FontFactory.HELVETICA,12F,BaseColor.BLUE)
 val SubtitleFont = FontFactory.getFont(FontFactory.HELVETICA,10F,BaseColor.DARK_GRAY)
@@ -208,10 +212,20 @@ fun createPDF(activity: Activity){
                 val imageNameSpec = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_SpecSignature.png"
                 val imageNameDef = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_DefSignature.png"
 
-                var imageRepSignature = Image.getInstance("")
-                var imageSpecSignature = Image.getInstance("")
-                var imageDefSignature = Image.getInstance("")
+//                val bitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_launcher);
+//                var stream = ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100 , stream);
 
+                var imageRepSignature : Image;
+                var imageSpecSignature : Image;
+                var imageDefSignature : Image;
+                val ims = activity.assets.open("nosignatureicon.png");
+                val bmp = BitmapFactory.decodeStream(ims);
+                val stream = ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                imageRepSignature = Image.getInstance(stream.toByteArray());
+                imageSpecSignature = Image.getInstance(stream.toByteArray());
+                imageDefSignature = Image.getInstance(stream.toByteArray());
                 try {
                     val bmpRep = Glide.with(activity)
                             .asBitmap()
@@ -262,6 +276,7 @@ fun createPDF(activity: Activity){
                 } catch (e: Exception) {
                     e.printStackTrace();
                 }
+
 
                 createPDFForSpecialist(activity,imageRepSignature,imageSpecSignature,imageDefSignature)
             }
@@ -331,7 +346,7 @@ fun createPDFForShop(activity: Activity) {
     uploadPDF(activity,file,"Shop")
 }
 
-fun createPDFForSpecialist(activity: Activity,imageRep: Image,imageSpec: Image,imageDef: Image) {
+fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?,imageDef: Image?) {
     val document = Document()
 
     //output file path
@@ -543,7 +558,7 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image,imageSpec: Image,i
 
     val defSignTable = PdfPTable(2)
     defSignTable.addCell(addTitleCell("Signature: ",1,true,MaintitleFont))
-    imageDef.scaleAbsolute(50F,50F)
+    imageDef?.scaleAbsolute(50F,50F)
     val e = PdfPCell(imageDef)
     e.border = Rectangle.NO_BORDER
     e.horizontalAlignment = Element.ALIGN_CENTER
@@ -697,7 +712,7 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
 }
 
 
-private fun drawVisitaionSection(imageRep: Image,imageSpec: Image) : PdfPTable {
+private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?) : PdfPTable {
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
 //    table.addCell(addCell("Type of Inspection: " + FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
@@ -705,20 +720,20 @@ private fun drawVisitaionSection(imageRep: Image,imageSpec: Image) : PdfPTable {
     table.addCell(addCell("Month Due: "+ FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth.toInt().monthNoToName(),1,false));
     table.addCell(addCell("Changes Made: "+if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes" ,1,false))
     table.addCell(addCell("Date of Visitation: "+ FacilityDataModel.getInstance().tblVisitationTracking[0].DatePerformed.apiToAppFormatMMDDYYYY(),1,false));
-    table.addCell(addCell("Facility Representative's Name: " + PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
-    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName,1,false));
+    table.addCell(addCell("Facility Representative's Name: ",1,false));
+    table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
     table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));
     table.addCell(addCell("Facility Representative's Signature:",2,true));
     table.addCell(addCell("Specialist's Signature:",2,true));
-    imageRep.scaleAbsolute(50F,50F)
+    imageRep?.scaleAbsolute(50F,50F)
     val c = PdfPCell(imageRep)
     c.colspan = 2
     c.border = Rectangle.NO_BORDER
     c.horizontalAlignment = Element.ALIGN_CENTER
     c.rowspan = 3
     table.addCell(c)
-    imageSpec.scaleAbsolute(50F,50F)
+    imageSpec?.scaleAbsolute(50F,50F)
     val d = PdfPCell(imageSpec)
     d.colspan = 2
     d.border = Rectangle.NO_BORDER
@@ -848,11 +863,15 @@ private fun drawDeficienciesSection() : PdfPTable {
     table.addCell(addCell("Deficient", 1,true))
     TypeTablesModel.getInstance().AARDeficiencyType.apply {
         (0 until size).forEach {
-            table.addCell(addCell(get(it).DeficiencyName,2,false))
-            table.addCell(addCell(" ",1,true))
-
+            table.addCell(addCell(get(it).DeficiencyName, 2, false))
+            if (FacilityDataModel.getInstance().tblDeficiency.filter { s -> s.DefTypeID.equals(get(it).DeficiencyTypeID) }.filter { s -> s.ClearedDate.isNullOrEmpty() }.isNotEmpty()) {
+                table.addCell(addCell(" X ", 1, true))
+            } else {
+                table.addCell(addCell(" ", 1, true))
             }
+
         }
+    }
     return table
 }
 

@@ -741,7 +741,7 @@ class VisitationPlanningFragment : Fragment() {
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
-                        if (!response.toString().equals("[ ]")) {
+                        if (!response.toString().replace(" ","").equals("[ ]")) {
                             PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
                         } else {
                             var item = PRGFacilityPhotos()
@@ -751,7 +751,7 @@ class VisitationPlanningFragment : Fragment() {
                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
                                 Response.Listener { response ->
                                     activity!!.runOnUiThread {
-                                        if (!response.toString().equals("[ ]")) {
+                                        if (!response.toString().replace(" ","").equals("[]")) {
                                             PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
                                         } else {
                                             var item = PRGLogChanges()
@@ -761,7 +761,7 @@ class VisitationPlanningFragment : Fragment() {
                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getVisitationHeader + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                                                 Response.Listener { response ->
                                                     activity!!.runOnUiThread {
-                                                        if (!response.toString().equals("[ ]")) {
+                                                        if (!response.toString().replace(" ","").equals("[]")) {
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
                                                         } else {
                                                             var item = PRGVisitationHeader()
