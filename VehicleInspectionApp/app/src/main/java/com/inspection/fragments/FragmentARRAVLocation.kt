@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
+import java.net.URLEncoder
 import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -933,7 +934,8 @@ class FragmentARRAVLocation : Fragment() {
                 val facST = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ST
                 val facZip = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ZIP
                 val facZip4 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ZIP4
-                val facBranchName = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchName
+                var facBranchName = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchName
+                facBranchName = URLEncoder.encode(facBranchName.toString() , "UTF-8");
                 val facBranchNo = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchNumber
                 val Latitude = newLocLatText.text.toString()
                 val Longitude = newLocLongText.text.toString()

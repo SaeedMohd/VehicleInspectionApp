@@ -657,7 +657,8 @@ class VisitationPlanningFragment : Fragment() {
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 vh.visitationStatusValueTextView.text = "Not Started"
                 vh.visitationStatusTextView.text = "Status:"
-
+                vh.visitationTypeValueTextView.visibility = View.VISIBLE
+                vh.visitationTypeTextView.visibility = View.VISIBLE
 //                if (Calendar.getInstance().get(Calendar.MONTH) == visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt()){
                 if (visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle.equals("O")) {
                     vh.visitationTypeValueTextView.text = "Annual"
@@ -2111,6 +2112,25 @@ class VisitationPlanningFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
         }
 
+        if (jsonObj.has("tblFacilityType")) {
+            if (!jsonObj.get("tblFacilityType").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityType")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityType"))
+                    jsonObj.put("tblFacilityType", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
+        }
+
 //
         return jsonObj
     }
@@ -2422,6 +2442,10 @@ class VisitationPlanningFragment : Fragment() {
         } else if (key.equals("tblFacilityServiceProvider")) {
             var oneArray = TblFacilityServiceProvider()
             oneArray.SrvProviderId="-1"
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityType")) {
+            var oneArray = TblFacilityType()
+            oneArray.FacilityTypeName="Independent"
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

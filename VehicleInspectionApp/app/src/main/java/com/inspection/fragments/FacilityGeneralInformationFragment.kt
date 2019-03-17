@@ -667,7 +667,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     fun submitFacilityGeneralInfo(){
         var busName =  if (dba_textviewVal.text.isNullOrEmpty())  "" else dba_textviewVal.text
-
+        busName = URLEncoder.encode(busName.toString() , "UTF-8");
 
 //        busName = URLEncoder.encode(busName.toString() , "UTF-8");
         val busType = TypeTablesModel.getInstance().BusinessType.filter { s -> s.BusTypeName==bustype_textviewVal.selectedItem.toString()}[0].BusTypeID
