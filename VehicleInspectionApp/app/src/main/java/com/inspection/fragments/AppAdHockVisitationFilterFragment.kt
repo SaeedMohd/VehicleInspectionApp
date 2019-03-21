@@ -476,12 +476,13 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                             var jsonObj = obj.getJSONObject("responseXml")
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
+                            getFacilityPRGData()
                             if (FacilityDataModel.getInstance().tblVisitationTracking.size == 0) {
                                 FacilityDataModel.getInstance().tblVisitationTracking.add(TblVisitationTracking())
                             }
                             FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = VisitationTypes.AdHoc
-                            var intent = Intent(context, com.inspection.FormsActivity::class.java)
-                            startActivity(intent)
+//                            var intent = Intent(context, com.inspection.FormsActivity::class.java)
+//                            startActivity(intent)
                         }
                     } else {
                         activity!!.runOnUiThread {
@@ -492,6 +493,65 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
         })
     }
+
+    fun launchNextAction(){
+            var intent = Intent(context, com.inspection.FormsActivity::class.java)
+            startActivity(intent)
+    }
+
+    fun getFacilityPRGData() {
+        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
+                Response.Listener { response ->
+                    activity!!.runOnUiThread {
+                        if (!response.toString().replace(" ","").equals("[ ]")) {
+                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
+                        } else {
+                            var item = PRGFacilityPhotos()
+                            item.photoid = -1
+                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos.add(item)
+                        }
+                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
+                                Response.Listener { response ->
+                                    activity!!.runOnUiThread {
+                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                            PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
+                                        } else {
+                                            var item = PRGLogChanges()
+                                            item.recordid=-1
+                                            PRGDataModel.getInstance().tblPRGLogChanges.add(item)
+                                        }
+                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getVisitationHeader + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
+                                                Response.Listener { response ->
+                                                    activity!!.runOnUiThread {
+                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                            PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
+                                                        } else {
+                                                            var item = PRGVisitationHeader()
+                                                            item.recordid=-1
+                                                            PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
+                                                        }
+                                                        launchNextAction()
+                                                    }
+                                                }, Response.ErrorListener {
+                                            Log.v("Loading PRG Data error", "" + it.message)
+                                            launchNextAction()
+                                            it.printStackTrace()
+                                        }))
+//                                        launchNextAction(isCompleted)
+                                    }
+                                }, Response.ErrorListener {
+                            Log.v("Loading PRG Data error", "" + it.message)
+//                            launchNextAction(isCompleted)
+                            it.printStackTrace()
+                        }))
+
+                    }
+                }, Response.ErrorListener {
+            Log.v("Loading PRG Data error", "" + it.message)
+            it.printStackTrace()
+        }))
+    }
+
 
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
         FacilityDataModel.getInstance().clear()

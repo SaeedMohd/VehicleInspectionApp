@@ -161,6 +161,32 @@ class IndicatorsDataModel {
         tblBilling.add(0,Billing)
     }
 
+
+    fun resetAllVisitedFlags(){
+        tblFacility[0].GeneralInfoVisited = false
+        tblFacility[0].LocationVisited = false
+        tblFacility[0].PersonnelVisited = false
+        tblFacility[0].RSPVisited = false
+        tblScopeOfServices[0].AffiliationsVisited = false
+        tblScopeOfServices[0].FacilityServicesVisited = false
+        tblScopeOfServices[0].GeneralInfoVisited = false
+        tblScopeOfServices[0].ProgramsVisited = false
+        tblScopeOfServices[0].VehicleServicesVisited = false
+        tblScopeOfServices[0].VehiclesVisited = false
+        tblBilling[0].BillingAdjustmentsVisited = false
+        tblBilling[0].BillingHistoryVisited = false
+        tblBilling[0].BillingPlanVisited = false
+        tblBilling[0].BillingVisited = false
+        tblBilling[0].PaymentsVisited = false
+        tblBilling[0].VendorRevenueVisited = false
+        tblComplaints[0].visited = false
+        tblDeffeciencies[0].visited = false
+        tblPhotos[0].visited = false
+        tblSurveys[0].visited = false
+        tblVisitation[0].visited = false
+    }
+
+
     fun validateAllScreensVisited() : Boolean {
         return validateSoSSectionVisited() && validateDeffecienciesSectionVisited() && validateVisitationSectionVisited() && validateFacilitySectionVisited() && validateComplaintsSectionVisited() && validateBillingSectionVisited() && validatePhotosSectionVisited() && validateSurveysSectionVisited()
     }

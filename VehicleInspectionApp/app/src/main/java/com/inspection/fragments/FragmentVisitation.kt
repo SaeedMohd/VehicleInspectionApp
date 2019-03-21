@@ -93,7 +93,7 @@ class FragmentVisitation : Fragment() {
         fillTrackingData()
         IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
 
-        completeButton.isEnabled = true //IndicatorsDataModel.getInstance().validateAllScreensVisited()
+        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
         (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
@@ -874,8 +874,34 @@ class FragmentVisitation : Fragment() {
                                         activity!!.runOnUiThread {
                                             Log.v("VT RESPONSE ||| ",response.toString())
                                             if (response.toString().contains("returnCode>0<",false)) {
-                                                Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].clubcode=clubCode.toInt()
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].facid = facilityNo.toInt()
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf = emailPdfCheckBox.isChecked
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto = emailEditText.text.toString()
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep = facilityRep
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].sessionid = ApplicationPrefs.getInstance(activity).sessionID
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].userid = insertBy
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationreason = visitationReasonDropListId.selectedItem.toString()
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype = visitationType.toString()
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments = waiverCommentsEditText.text.toString()
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation = waiveVisitationCheckBox.isChecked
+                                                if ((activity as FormsActivity).checkPermission()) {
+                                                    (activity as FormsActivity).generateAndOpenPDF()
+                                                } else {
+                                                    if (!(activity as FormsActivity).checkPermission()) {
+                                                        (activity as FormsActivity).requestPermissionAndContinue();
+                                                    } else {
+                                                        (activity as FormsActivity).generateAndOpenPDF()
+                                                    }
+                                                }
                                                 (activity as FormsActivity).saveRequired = false
+                                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                                                Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
+                                                IndicatorsDataModel.getInstance().resetAllVisitedFlags()
+
+                                                completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+                                                cancelButton.isEnabled = false
+
                                             } else {
                                             dialogueLoadingView.visibility = View.GONE
                                             progressBarTextVal.text = "Loading ..."

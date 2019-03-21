@@ -341,7 +341,6 @@ fun createPDFForShop(activity: Activity) {
     paragraph.add(drawDataChangedSectionForShop())
     document.add(paragraph)
     addEmptyLine(document, 1)
-
     document.close()
     uploadPDF(activity,file,"Shop")
 }
@@ -680,15 +679,21 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
 }
 
 fun uploadPDF(activity: Activity,file: File,type: String) {
-//        val multipartRequest = MultipartRequest(Constants.uploadFile+ApplicationPrefs.getInstance(activity).loggedInUserEmail, null, file, Response.Listener { response ->
-    val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
+    var email = ApplicationPrefs.getInstance(activity).loggedInUserEmail
+    if (type.equals("Shop")) {
+        if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf && PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto.isNotEmpty()){
+            email = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto
+        }
+    }
+    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail, null, file, Response.Listener { response ->
+//    val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
         try {
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
         }
     }, Response.ErrorListener {
     })
-    val socketTimeout = 30000//30 seconds - change to what you want
+    val socketTimeout = 30000//30 seconds
     val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
     multipartRequest.retryPolicy = policy
     Volley.newRequestQueue(activity).add(multipartRequest)

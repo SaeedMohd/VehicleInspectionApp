@@ -1,9 +1,13 @@
 package com.inspection
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 //import android.support.design.widget.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -15,7 +19,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.android.volley.DefaultRetryPolicy
@@ -24,6 +31,7 @@ import com.android.volley.toolbox.Volley
 import com.inspection.R.id.drawer_layout
 import com.inspection.Utils.Constants
 import com.inspection.Utils.Utility
+import com.inspection.Utils.createPDF
 import com.inspection.adapter.MultipartRequest
 import com.inspection.fragments.*
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
@@ -66,7 +74,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     var currentFragment = ""
     var saveRequired = false
     var overrideBackButton = false
-//    var toolbar = findViewById<Toolbar>(R.id.toolbar)
+    //    var toolbar = findViewById<Toolbar>(R.id.toolbar)
 //    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
 //    var nav_view = findViewById<NavigationView>(R.id.nav_view)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,15 +82,15 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         setContentView(R.layout.activity_forms)
         setSupportActionBar(toolbar)
 
-        validationProblemFoundForOtherFragments=true
+        validationProblemFoundForOtherFragments = true
 
-         watcher_LaborMax=""
-         watcher_LaborMin=""
-         watcher_FixedLaborRate=""
-         watcher_DiagnosticsRate=""
-         watcher_NumOfBays=""
-         watcher_NumOfLifts=""
-         typeIdCompare=""
+        watcher_LaborMax = ""
+        watcher_LaborMin = ""
+        watcher_FixedLaborRate = ""
+        watcher_DiagnosticsRate = ""
+        watcher_NumOfBays = ""
+        watcher_NumOfLifts = ""
+        typeIdCompare = ""
 
 
         val toggle = ActionBarDrawerToggle(
@@ -107,10 +115,10 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 //            currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
 //            this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
 //        }else{
-            navigationMenu.findItem(R.id.visitation).isEnabled = true
-            navigationMenu.findItem(R.id.visitation).isVisible = true
-            currentFragment = fragmentsNames.Visitation.toString()
-            this.onNavigationItemSelected(navigationMenu.findItem(R.id.visitation))
+        navigationMenu.findItem(R.id.visitation).isEnabled = true
+        navigationMenu.findItem(R.id.visitation).isVisible = true
+        currentFragment = fragmentsNames.Visitation.toString()
+        this.onNavigationItemSelected(navigationMenu.findItem(R.id.visitation))
 //        }
     }
 
@@ -145,11 +153,10 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             if (editPhotoDialog != null) editPhotoDialog.visibility = View.GONE
 
 
-
 //            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
 //            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
             overrideBackButton = false
-        }else if (preventNavigation()){
+        } else if (preventNavigation()) {
             Utility.showSaveOrCancelAlertDialog(this)
         } else {
             super.onBackPressed()
@@ -223,7 +230,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         indicatorImage = (navigationMenu.findItem(R.id.billing).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblBilling[0].BillingHistory && IndicatorsDataModel.getInstance().tblBilling[0].Billing &&
                 IndicatorsDataModel.getInstance().tblBilling[0].BillingPlan && IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustments &&
-                IndicatorsDataModel.getInstance().tblBilling[0].Payments&& IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenue)
+                IndicatorsDataModel.getInstance().tblBilling[0].Payments && IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenue)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else {
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
@@ -264,7 +271,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited
                 && IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited
-                && IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited&& IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited)
+                && IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else {
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
@@ -331,6 +338,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         indicatorImage.visibility = View.GONE
 
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         menuInflater.inflate(R.menu.forms, menu)
@@ -347,7 +355,6 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             else -> return super.onOptionsItemSelected(item)
         }
     }
-
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -507,15 +514,15 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
-    fun uploadPhoto(file: File, fileName : String) {
-        val multipartRequest = MultipartRequest(Constants.uploadPhoto+fileName, null, file, Response.Listener { response ->
+    fun uploadPhoto(file: File, fileName: String) {
+        val multipartRequest = MultipartRequest(Constants.uploadPhoto + fileName, null, file, Response.Listener { response ->
             try {
 
             } catch (e: UnsupportedEncodingException) {
                 e.printStackTrace()
             }
         }, Response.ErrorListener {
-            Utility.showMessageDialog(this,"Uploading File","Uploading File Failed with error ("+it.message+")")
+            Utility.showMessageDialog(this, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
             Log.v("Upload Photo Error : ", it.message)
         })
         val socketTimeout = 30000//30 seconds - change to what you want
@@ -524,10 +531,57 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         Volley.newRequestQueue(applicationContext).add(multipartRequest)
     }
 
-    fun preventNavigation() : Boolean{
+    fun preventNavigation(): Boolean {
         if (saveRequired) return true
 //        else if (currentFragment.equals(fragmentsNames.FacilityGeneralInfo.toString()) && HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo() ) return true
         else return false
 
     }
+
+
+    fun checkPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+    }
+
+    fun requestPermissionAndContinue() {
+        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, READ_EXTERNAL_STORAGE)) {
+                var alertBuilder = AlertDialog.Builder(this);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle("Permission Required")
+                alertBuilder.setMessage("Storage permission is required to create generate the completed visitation PDF, ");
+                alertBuilder.setPositiveButton("YES") { dialog, which ->
+                    ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), 350);
+                }
+                val alert = alertBuilder.create();
+                alert.show();
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), 350);
+            }
+        } else {
+            generateAndOpenPDF()
+        }
+    }
+
+    fun generateAndOpenPDF() {
+        createPDF(this)
+        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForSpecialist.pdf")
+        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 350) {
+            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Log.i("Denied", "Permission has been denied by user")
+            } else {
+                generateAndOpenPDF()
+            }
+        }
+    }
+
 }
+
