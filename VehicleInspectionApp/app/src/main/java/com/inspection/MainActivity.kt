@@ -3,10 +3,7 @@ package com.inspection
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Timer
 
-import android.app.ProgressDialog
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
@@ -14,10 +11,10 @@ import androidx.core.app.ActivityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.app.Activity
-import android.app.AlertDialog
+import android.app.*
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
 
-import android.app.NotificationManager
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
@@ -63,6 +60,9 @@ import com.android.volley.toolbox.Volley
 import com.inspection.Utils.*
 import com.inspection.adapter.MultipartRequest
 import com.inspection.fragments.*
+import com.inspection.interfaces.LocationAlarmManager
+import com.inspection.interfaces.LocationJobScheduler
+import com.inspection.interfaces.LocationUpdatesService
 import com.inspection.model.AnnualVisitationInspectionFormData
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.activity_main1.*
@@ -70,6 +70,7 @@ import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import okio.Utf8
 import java.io.*
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), LocationListener {
@@ -132,8 +133,37 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         mContext = this
 
+//        val locationUpdatesIntent = Intent(this,LocationUpdatesService::class.java)
+//        startService(locationUpdatesIntent)
+//        scheduleAlarm()
 
+        Utility.scheduleJob(applicationContext)
+
+//        /val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+
+//        val jobInfo = JobInfo.Builder(12, ComponentName(this@MainActivity, LocationJobScheduler::class.java))
+//                // only add if network access is required
+//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+//                .setMinimumLatency(1000*10)
+//                .setOverrideDeadline(1000*20)
+//                .setPersisted(true)
+//                .build()
+//
+//        jobScheduler.schedule(jobInfo)
     }
+
+    public fun scheduleAlarm() {
+        val intent = Intent(getApplicationContext(), LocationAlarmManager::class.java);
+        val pIntent = PendingIntent.getBroadcast(this, LocationAlarmManager.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        var firstMillis = System.currentTimeMillis()
+        var alarm = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager;
+        var d=Calendar.getInstance()
+        alarm?.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis()+5000,
+                pIntent)
+    }
+
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)

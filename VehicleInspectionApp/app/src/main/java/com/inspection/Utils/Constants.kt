@@ -83,6 +83,7 @@ object Constants {
 
     val getTypeTables = permanentURL + "getTableTypes"
     val getVisitations = permanentURL + "getVisitations?"
+    val logTracking = permanentURL + "logTracking?sessionId="
     val getFacilitiesWithFilters = permanentURL + "getFacilitiesWithFilters?"
     val getImages = permanentURL + "getImage?file="
     val getFacilityPhotos = permanentURL + "getFacilityPhotos?facId="

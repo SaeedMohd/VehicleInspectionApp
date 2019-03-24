@@ -163,6 +163,7 @@ fun MarkChangeWasDone(){
 }
 
 
+
 fun compareFacilityDataModelTable(type : String){
     var isDifferent = false
     if (type.equals("Personnel")){

@@ -69,6 +69,7 @@ public class ApplicationPrefs {
     public static final String loggedInUserID = "loggedInUserID";
     public static final String loggedInUserFullName = "loggedInUserFullName";
     public static final String sessionID = "sessionID";
+    public static final String deviceID = "deviceID";
 
 
 
@@ -778,6 +779,22 @@ public class ApplicationPrefs {
                 .getSharedPreferences(PREFS_NAME, 0);
 
         return settings.getString(sessionID, "");
+    }
+
+    public void setDeviceID(String strDeviceID) {
+        SharedPreferences settings = context
+                .getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(deviceID, strDeviceID);
+        editor.commit();
+
+    }
+
+    public String getDeviceID() {
+        SharedPreferences settings = context
+                .getSharedPreferences(PREFS_NAME, 0);
+
+        return settings.getString(deviceID, "");
     }
 
 }

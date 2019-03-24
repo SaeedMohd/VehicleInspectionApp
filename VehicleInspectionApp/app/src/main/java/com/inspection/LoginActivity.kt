@@ -9,6 +9,8 @@ import android.app.ProgressDialog
 import android.content.*
 import android.os.AsyncTask
 import android.os.Bundle
+import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -203,6 +205,8 @@ class LoginActivity : Activity(){
                                 ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
                                 ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].FullName
                                 ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
+                                ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
+                                        Settings.Secure.ANDROID_ID)
                                 userIsLoggedInGotoMainActivity()
                             } else {
                                 Utility.showMessageDialog(activity, "Login Failed...", "This email is not listed in specialists list")
