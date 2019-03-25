@@ -27,10 +27,8 @@ import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
+import android.os.*
+import android.provider.Settings
 import android.provider.Settings.Secure
 import androidx.drawerlayout.widget.DrawerLayout
 import android.util.Log
@@ -54,15 +52,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import com.inspection.Utils.*
 import com.inspection.adapter.MultipartRequest
 import com.inspection.fragments.*
-import com.inspection.interfaces.LocationAlarmManager
-import com.inspection.interfaces.LocationJobScheduler
-import com.inspection.interfaces.LocationUpdatesService
+import com.inspection.interfaces.*
 import com.inspection.model.AnnualVisitationInspectionFormData
 import com.inspection.model.FacilityDataModel
 import kotlinx.android.synthetic.main.activity_main1.*
@@ -74,82 +74,60 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity(), LocationListener {
-    //    public FragmentVehicleFacility FragmentRequestingPermission;
     var FacilityName = ""
-    var ClubCode = ""
     var FacilityNumber = ""
     var isLoadNewDetailsRequired = false
-    var VisitationID = ""
     var viewPager: ViewPager? = null
-    lateinit var facilitySelected: AAAFacilityComplete
-    internal var wind: Window? = null
-    internal var timer: Timer? = null
-    internal var period = 10000
-    internal var mPref: SharedPreferences? = null
-    internal var sdf: SimpleDateFormat? = null
-    internal var time3: Long = 10000
-    private val mTabHost: TabHost? = null
-    internal var serverResponseCode = 0
 
+    lateinit var facilitySelected: AAAFacilityComplete
+    internal var sdf: SimpleDateFormat? = null
     var fragment: FragmentForms? = null
 
     private var changePasswordDialog: AlertDialog? = null
 
-    private var repairShopImage: ImageView? = null
     internal lateinit var drawerNavigationListAdapter: DrawerNavigationListAdapter
-    private var drawerToggle: ActionBarDrawerToggle? = null
-//    var toolbar: Toolbar? = null
-//    var toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-//    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
-//    var nav_view = findViewById<NavigationView>(R.id.nav_view)
     lateinit var saveBtn: Button
     private var mDrawerList: ListView? = null
 
-    internal lateinit var btnRepairFacility: Button
-    internal lateinit var btnVehicleHealth: Button
-    internal lateinit var btnRepairHistory: Button
-    internal lateinit var signOutButton: ImageView
-    internal lateinit var ivUser: ImageView
-    internal lateinit var ivSetting: ImageView
-    internal var ivSearch: ImageView? = null
-    internal lateinit var ivAbout: ImageView
-    internal lateinit var ivVehicles: ImageView
     internal var isExitFlagReady = false
-    internal var bound = false
-
-    internal var loadingCustomerProgressDialog: ProgressDialog? = null
-
-    private val isDataSynchedToday = false
-
     private var welcomeMessage = ""
 
-    var lastInspection : AnnualVisitationInspectionFormData? = null
+//    private var mLocationRequest: LocationRequest? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main1)
 
         mContext = this
+
 
 //        val locationUpdatesIntent = Intent(this,LocationUpdatesService::class.java)
 //        startService(locationUpdatesIntent)
 //        scheduleAlarm()
 
-        Utility.scheduleJob(applicationContext)
+//        Utility.scheduleJob(applicationContext)
 
-//        /val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        var urlString = ApplicationPrefs.getInstance(activity).sessionID
+        urlString += "&userId=" + ApplicationPrefs.getInstance(activity).loggedInUserID
+        urlString += "&deviceId=" + ApplicationPrefs.getInstance(activity).deviceID
 
-//        val jobInfo = JobInfo.Builder(12, ComponentName(this@MainActivity, LocationJobScheduler::class.java))
-//                // only add if network access is required
-//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-//                .setMinimumLatency(1000*10)
-//                .setOverrideDeadline(1000*20)
-//                .setPersisted(true)
-//                .build()
-//
-//        jobScheduler.schedule(jobInfo)
+        var bundle = PersistableBundle()
+        bundle.putString("urlString", urlString);
+
+        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+
+        val jobInfo = JobInfo.Builder(12, ComponentName(this@MainActivity, LocationLogService::class.java))
+                // only add if network access is required
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setMinimumLatency(1000*60)
+                .setOverrideDeadline(1000*60*2)
+                .setPersisted(true)
+                .setExtras(bundle)
+                .build()
+
+        jobScheduler.schedule(jobInfo)
     }
 
     public fun scheduleAlarm() {
@@ -176,9 +154,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         ActivityCompat.requestPermissions(mContext,
-                arrayOf("android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE"),
+                arrayOf("android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE","android.permission.ACCESS_COARSE_LOCATION","android.permission.ACCESS_FINE_LOCATION"),
                 123)
         initView()
+
+        enableLocation()
+
 
         if (toolbar != null) {
             setSupportActionBar(toolbar)
@@ -261,7 +242,26 @@ class MainActivity : AppCompatActivity(), LocationListener {
 //        drawerToggle!!.syncState()
     }
 
+    fun enableLocation() {
+        var service = getSystemService(LOCATION_SERVICE) as LocationManager
+        var enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
+        if (!enabled) {
+            var alertBuilder = AlertDialog.Builder(this);
+            alertBuilder.setCancelable(true);
+            alertBuilder.setTitle("GPS Location is required")
+            alertBuilder.setMessage("GPS location is required within this app. If you disagree the app will be closed");
+            alertBuilder.setPositiveButton("Agree") { dialog, which ->
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+            alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+                this.finish()
+            }
+            val alert = alertBuilder.create();
+            alert.show();
+        }
+    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -819,7 +819,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         var PHONE_ID = ""
         var Connected: Boolean? = false
         var currentLocation: Location? = null
-        var locationManager: LocationManager? = null
+
         private var Bgimage: ImageView? = null
         internal var latitude: Double = 0.toDouble()
         internal var longitude: Double = 0.toDouble()

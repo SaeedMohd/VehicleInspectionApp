@@ -1,7 +1,6 @@
 package com.inspection
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.Manifest.permission.*
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -543,6 +542,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
     }
+
+
 
     fun requestPermissionAndContinue() {
         if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED

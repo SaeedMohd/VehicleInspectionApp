@@ -1,11 +1,17 @@
 package com.inspection.fragments
 
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import com.inspection.MainActivity
 import com.inspection.R
 import kotlinx.android.synthetic.main.fragment_forms.*
@@ -33,26 +39,63 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         visitationPlanningButton.setOnClickListener {
-            (activity as MainActivity).supportActionBar!!.title = "Visitation Planning"
-            var fragment = VisitationPlanningFragment()
-            fragment!!.isVisitationPlanning = true
+            var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+            var enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            if (!enabled) {
+                var alertBuilder = AlertDialog.Builder(activity);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle("GPS Location is required")
+                alertBuilder.setMessage("GPS location is required within this app. ");
+                alertBuilder.setPositiveButton("Agree") { dialog, which ->
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+                alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+
+                }
+                val alert = alertBuilder.create();
+                alert.show();
+            } else {
+                (activity as MainActivity).supportActionBar!!.title = "Visitation Planning"
+                var fragment = VisitationPlanningFragment()
+                fragment!!.isVisitationPlanning = true
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()
-                ftSC.replace(R.id.fragment,fragment)
+                ftSC.replace(R.id.fragment, fragment)
                 ftSC.addToBackStack("frag")
                 ftSC.commit()
+            }
         }
 
         adHocVisitationButton.setOnClickListener {
-            (activity as MainActivity).supportActionBar!!.title = "APP / Ad Hoc Visitation"
-            var fragment = AppAdHockVisitationFilterFragment()
-            fragment!!.isVisitationPlanning = false
+            var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+            var enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            if (!enabled) {
+                var alertBuilder = AlertDialog.Builder(activity);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle("GPS Location is required")
+                alertBuilder.setMessage("GPS location is required within this app. ");
+                alertBuilder.setPositiveButton("Agree") { dialog, which ->
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+                alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+
+                }
+                val alert = alertBuilder.create();
+                alert.show();
+            } else {
+                (activity as MainActivity).supportActionBar!!.title = "APP / Ad Hoc Visitation"
+                var fragment = AppAdHockVisitationFilterFragment()
+                fragment!!.isVisitationPlanning = false
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()
-                ftSC.replace(R.id.fragment,fragment)
+                ftSC.replace(R.id.fragment, fragment)
                 ftSC.addToBackStack("frag")
                 ftSC.commit()
-//                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
+            }
         }
 
         //button added for fragments testing only > sherif yousry

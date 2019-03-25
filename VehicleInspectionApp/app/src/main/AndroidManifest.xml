@@ -75,21 +75,22 @@
             <!--android:name=".interfaces.LocationUpdatesService"-->
             <!--android:exported="false"></service>-->
 
-        <service android:name=".interfaces.LocationJobScheduler"
-            android:label="Location"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <!--<service android:name=".interfaces.LocationJobScheduler"-->
+            <!--android:label="Location"-->
+            <!--android:permission="android.permission.BIND_JOB_SERVICE"/>-->
 
         <service android:name=".interfaces.LocationLogService"
             android:label="Location Log"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
-        <receiver android:name=".interfaces.LocationUpdatesReciever" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.SCREEN_OFF"/>
-                <action android:name="android.intent.action.SCREEN_ON"/>
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:name=".interfaces.LocationUpdatesReciever" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+                <!--<action android:name="android.intent.action.SCREEN_OFF"/>-->
+                <!--<action android:name="android.intent.action.SCREEN_ON"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
 
 
         <activity
