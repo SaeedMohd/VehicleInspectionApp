@@ -66,6 +66,8 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     var allClubCodes = ArrayList<String>()
     var requiredSpecialistName = ""
     var clubCode = ""
+    var defaultClubCode = ""
+    var defaultFacNumber = ""
     var specialistArrayModel = ArrayList<TypeTablesModel.employeeList>()
     private var contractStatusList = ArrayList<TypeTablesModel.facilityStatusType>()
     private var contractStatusArray = ArrayList<String>()
@@ -133,21 +135,58 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
     }
 
+    private fun loadFacilityNames(){
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
+                Response.Listener { response ->
+                    Log.v("test","testtesttest-----------")
+                    activity!!.runOnUiThread {
+                        recordsProgressView.visibility = View.INVISIBLE
+                        var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+                        (0 until facilities.size).forEach {
+                            facilityNames.add(facilities[it].facname)
+                        }
+                        Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
+//                        if (facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
+////                            defaultFacNumber = facilities.filter { s -> s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID) }.sortedWith(compareBy { it.facnum })[0].facnum
+////                            adHocFacilityIdVal.setText(defaultFacNumber)
+//                            defaultClubCode = facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
+//                            clubCodeEditText.setText(defaultClubCode)
+//                        }
+                        facilityNames.sort()
+                        facilityNames.add(0, "Any")
+                        reloadFacilitiesList()
+//                        var searchDialog = SearchDialog(context, facilityNames)
+//                        searchDialog.show()
+//                        searchDialog.setOnDismissListener {
+//                            if (searchDialog.selectedString == "Any") {
+//                                adHocFacilityNameButton.setText("")
+//                            } else {
+//                                adHocFacilityNameButton.setText(searchDialog.selectedString)
+//                            }
+//                        }
+                    }
+                }, Response.ErrorListener {
+            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
+            recordsProgressView.visibility = View.INVISIBLE
+            Log.v("error while loading", "error while loading facilities")
+            Log.v("Loading error", "" + it.message)
+        }))
+    }
+
     private fun setFieldsListeners() {
         adHocFacilityNameButton.setOnClickListener {
-            recordsProgressView.visibility = View.VISIBLE
-            Log.v("ADHOC: "+ "GET FACILITIES- ",Constants.getAllFacilities)
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread {
-                            recordsProgressView.visibility = View.INVISIBLE
-                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                            var facilityNames = ArrayList<String>()
-                            (0 until facilities.size).forEach {
-                                facilityNames.add(facilities[it].facname)
-                            }
-                            facilityNames.sort()
-                            facilityNames.add(0, "Any")
+//            recordsProgressView.visibility = View.VISIBLE
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
+//                    Response.Listener { response ->
+//                        activity!!.runOnUiThread {
+//                            recordsProgressView.visibility = View.INVISIBLE
+//                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+//                            var facilityNames = ArrayList<String>()
+//                            (0 until facilities.size).forEach {
+//                                facilityNames.add(facilities[it].facname)
+//                            }
+//                            facilityNames.sort()
+//                            facilityNames.add(0, "Any")
                             var searchDialog = SearchDialog(context, facilityNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
@@ -157,13 +196,13 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                     adHocFacilityNameButton.setText(searchDialog.selectedString)
                                 }
                             }
-                        }
-                    }, Response.ErrorListener {
-                Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
-                recordsProgressView.visibility = View.INVISIBLE
-                Log.v("error while loading", "error while loading facilities")
-                Log.v("Loading error", "" + it.message)
-            }))
+//                        }
+//                    }, Response.ErrorListener {
+//                Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
+//                recordsProgressView.visibility = View.INVISIBLE
+//                Log.v("error while loading", "error while loading facilities")
+//                Log.v("Loading error", "" + it.message)
+//            }))
         }
 
 
@@ -222,7 +261,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                         }
                         recordsProgressView.visibility = View.GONE
                     }
-                    reloadFacilitiesList()
+                    loadFacilityNames()
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading club codes")
             Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Club Codes - " + it.message)
@@ -297,7 +336,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                             noRecordsFoundTextView.visibility = View.GONE
                         }
                         facilitiesListView.visibility = View.VISIBLE
-                        facilitiesList.sortedWith(compareBy { it.facnum }).toCollection(sortedList)
+                        facilitiesList.sortedWith(compareBy { it.facname}).toCollection(sortedList)
                         var visitationPlanningAdapter = AdhocAdapter(context, sortedList)
                         facilitiesListView.adapter = visitationPlanningAdapter
                         var totalFacilities= sortedList.size

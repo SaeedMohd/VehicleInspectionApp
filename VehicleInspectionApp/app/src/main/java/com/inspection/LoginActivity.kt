@@ -92,6 +92,9 @@ class LoginActivity : Activity(){
         activity = this
 
 //        signUpButton!!.setOnClickListener { showRegisterDialog() }
+        ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
+        ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID)
 
         forgotPasswordButton!!.setOnClickListener {
             if (loginEmailEditText.text.isNullOrEmpty()) {
@@ -204,9 +207,9 @@ class LoginActivity : Activity(){
                                 ApplicationPrefs.getInstance(activity).loggedInUserPass = loginPasswordEditText!!.text.toString()
                                 ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
                                 ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].FullName
-                                ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
-                                ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
-                                        Settings.Secure.ANDROID_ID)
+//                                ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
+//                                ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
+//                                        Settings.Secure.ANDROID_ID)
                                 userIsLoggedInGotoMainActivity()
                             } else {
                                 Utility.showMessageDialog(activity, "Login Failed...", "This email is not listed in specialists list")

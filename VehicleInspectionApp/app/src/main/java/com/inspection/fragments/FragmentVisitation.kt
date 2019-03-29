@@ -93,7 +93,7 @@ class FragmentVisitation : Fragment() {
         fillTrackingData()
         IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
 
-        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+//        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
         (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
@@ -207,7 +207,7 @@ class FragmentVisitation : Fragment() {
 
         visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons))
 
-
+        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual)) {
             annualVisitationType.isChecked = true
             visitationReasonDropListId.setSelection(1,true)
@@ -223,6 +223,7 @@ class FragmentVisitation : Fragment() {
             visitationReasonDropListId.setSelection(0,true)
             visitationReasonDropListId.isEnabled = true
             visitationReasonDropListId.isClickable = true
+            completeButton.isEnabled = true
         }
 
 
@@ -320,15 +321,21 @@ class FragmentVisitation : Fragment() {
 
             facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(ApplicationPrefs.getInstance(activity).loggedInUserFullName))
 
-            if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
+            if (PRGDataModel.getInstance().tblPRGVisitationHeader.isNotEmpty()){
+                waiveVisitationCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation
+                emailPdfCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf
+                waiverCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments)
+                emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
+            } else if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
                 waiveVisitationCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
                 emailPdfCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility
                 waiverCommentsEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+                if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
+                    emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+                }
             }
 
-            if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
-                emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
-            }
+
 
         }
 
@@ -898,8 +905,11 @@ class FragmentVisitation : Fragment() {
                                                 (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                                 Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
                                                 IndicatorsDataModel.getInstance().resetAllVisitedFlags()
-
-                                                completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+                                                if (visitationType.equals(VisitationTypes.AdHoc)) {
+                                                    completeButton.isEnabled = true
+                                                } else {
+                                                    completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+                                                }
                                                 cancelButton.isEnabled = false
 
                                             } else {
@@ -1060,20 +1070,22 @@ class FragmentVisitation : Fragment() {
         automotiveSpecialistSignatureButton.setError(null)
         facilityRepresentativeSignatureButton.setError(null)
         facilityRepresentativeTextView.setError(null)
-
-
+        visitationReasonTextView.setError("null")
+        waiverCommentsEditText.setError("null")
+        waiversSignatureButton.setError("null")
+        emailEditText.setError("null")
         if (adhocVisitationType.isChecked) {
-            if (visitationReasonDropListId.selectedItem.toString() == visitationReasonDropListId.setSelection(0).toString()) {
+            if (visitationReasonDropListId.selectedItemPosition==0) {
                 isInputValid = false
-                Utility.showValidationAlertDialog(activity,"Please select visitation reason")
+                visitationReasonTextView.setError("Required field")
             }
-
         } else {
-
             if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature") {
                 isInputValid = false
                 facilityRepresentativeSignatureButton.setError("Required field")
             }
+        }
+
             if (facilityRepresentativesSpinner.selectedItem.toString().contains("please")) {
                 isInputValid = false
 
@@ -1125,7 +1137,6 @@ class FragmentVisitation : Fragment() {
                 emailEditText.setError(null)
             }
 
-        }
 
 
         return isInputValid

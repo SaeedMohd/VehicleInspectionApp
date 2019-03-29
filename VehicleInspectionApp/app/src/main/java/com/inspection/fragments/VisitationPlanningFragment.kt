@@ -58,6 +58,7 @@ class VisitationPlanningFragment : Fragment() {
     private var mParam1: String? = null
     private var mParam2: String? = null
     var fragment: Fragment? = null
+    var defaultClubCode = ""
     private var mListener: OnFragmentInteractionListener? = null
     var facilityNames = ArrayList<String>()
     var facilitiesList = ArrayList<AAAFacilityComplete>()
@@ -160,9 +161,8 @@ class VisitationPlanningFragment : Fragment() {
     }
 
     fun prepareInitialStateForFilters(){
-        clubCodeEditText.setText("252")
+//        clubCodeEditText.setText("252")
 //        clubCodeEditText.setText(specialistArrayModel.sortedWith(compareBy { it.clubcode })[0].clubcode)
-
 
     }
 
@@ -251,19 +251,19 @@ class VisitationPlanningFragment : Fragment() {
         }
 
         facilityNameButton.setOnClickListener {
-            recordsProgressView.visibility = View.VISIBLE
-            Log.v("VISITATION FAC NAME --- ",Constants.getAllFacilities + "")
-            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
-                    Response.Listener { response ->
-                        activity!!.runOnUiThread {
-                            recordsProgressView.visibility = View.INVISIBLE
-                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                            var facilityNames = ArrayList<String>()
-                            (0 until facilities.size).forEach {
-                                facilityNames.add(facilities[it].facname)
-                            }
-                            facilityNames.sort()
-                            facilityNames.add(0, "Any")
+//            recordsProgressView.visibility = View.VISIBLE
+//            Log.v("VISITATION FAC NAME --- ",Constants.getAllFacilities + "")
+//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
+//                    Response.Listener { response ->
+//                        activity!!.runOnUiThread {
+//                            recordsProgressView.visibility = View.INVISIBLE
+//                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+//                            var facilityNames = ArrayList<String>()
+//                            (0 until facilities.size).forEach {
+//                                facilityNames.add(facilities[it].facname)
+//                            }
+//                            facilityNames.sort()
+//                            facilityNames.add(0, "Any")
                             var searchDialog = SearchDialog(context, facilityNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
@@ -274,15 +274,15 @@ class VisitationPlanningFragment : Fragment() {
                                 }
                                 //reloadVisitationsList()
                             }
-                        }
-                    }, Response.ErrorListener {
-
-                //                context!!.toast("Connection Error")
-                Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Facilities - " + it.message)
-                Log.v("error while loading", "error while loading facilities")
-                Log.v("Loading error", "" + it.message)
-                it.printStackTrace()
-            }))
+//                        }
+//                    }, Response.ErrorListener {
+//
+//                //                context!!.toast("Connection Error")
+//                Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Facilities - " + it.message)
+//                Log.v("error while loading", "error while loading facilities")
+//                Log.v("Loading error", "" + it.message)
+//                it.printStackTrace()
+//            }))
         }
 
         annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -321,6 +321,39 @@ class VisitationPlanningFragment : Fragment() {
 
         reloadVisitationsList()
     }
+
+
+    private fun loadFacilityNames(){
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
+                Response.Listener { response ->
+                    Log.v("test","testtesttest-----------")
+                    activity!!.runOnUiThread {
+                        recordsProgressView.visibility = View.INVISIBLE
+                        var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+                        (0 until facilities.size).forEach {
+                            facilityNames.add(facilities[it].facname)
+                        }
+                        Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
+                        if (facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
+//                            defaultFacNumber = facilities.filter { s -> s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID) }.sortedWith(compareBy { it.facnum })[0].facnum
+//                            adHocFacilityIdVal.setText(defaultFacNumber)
+                            defaultClubCode = facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
+                            clubCodeEditText.setText(defaultClubCode)
+                        } else {
+                            clubCodeEditText.setText("252")
+                        }
+                        facilityNames.sort()
+                        facilityNames.add(0, "Any")
+                        firstLoadingCompleted()
+                    }
+                }, Response.ErrorListener {
+            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
+            recordsProgressView.visibility = View.INVISIBLE
+            Log.v("error while loading", "error while loading facilities")
+            Log.v("Loading error", "" + it.message)
+        }))
+    }
+
 
     fun reloadVisitationsList() {
 
@@ -578,8 +611,8 @@ class VisitationPlanningFragment : Fragment() {
                     for (cc in clubCodeModels) {
                         allClubCodes.add(cc.clubcode)
                     }
-
-                    firstLoadingCompleted()
+                    loadFacilityNames()
+//                    firstLoadingCompleted()
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading club codes")
         }))
