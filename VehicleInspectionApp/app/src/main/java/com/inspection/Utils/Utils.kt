@@ -708,7 +708,7 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
     table.addCell(addCell("Facility Representative's Name:",1,false));
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
-    table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));
+    table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].automotivespecialist,1,false));
     table.addCell(addCell("Visitation Type: " ,1,false));
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype,1,false));
     table.addCell(addCell("Date of Visitation: ",1,false));
@@ -729,7 +729,7 @@ private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?) : PdfPTable
     table.addCell(addCell("Facility Representative's Name: ",1,false));
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
-    table.addCell(addCell(FacilityDataModel.getInstance().tblFacilities[0].AutomotiveSpecialist,1,false));
+    table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].automotivespecialist,1,false));
     table.addCell(addCell("Facility Representative's Signature:",2,true));
     table.addCell(addCell("Specialist's Signature:",2,true));
     imageRep?.scaleAbsolute(50F,50F)
@@ -1388,72 +1388,168 @@ private fun drawCertificationsSection () : PdfPTable {
     table.addCell(addCellWithBorder("A9", 1,true))
     table.addCell(addCellWithBorder("C1", 1,true))
     table.addCell(addCellWithBorder("L1", 1,true))
-    FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).apply {
+
+    var personnelWithCert = ArrayList<Int>()
+    FacilityDataModel.getInstance().tblPersonnelCertification.apply {
         (0 until size).forEach {
-            if (!get(it).CertificationTypeId.isNullOrEmpty()) {
-                if (FacilityDataModel.getInstance().tblPersonnel.filter { s->s.PersonnelID.equals(get(it).PersonnelID) }.isNotEmpty()) {
-                    table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) }[0].FirstName, 1,true))
-                    table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) }[0].LastName, 1,true))
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A1") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A2") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A3") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A4") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A5") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A6") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A7") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A8") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A9") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("C1") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
-                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("L1") }.isNotEmpty()) {
-                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
-                    } else {
-                        table.addCell(addCellWithBorder("", 1,true))
-                    }
+            if (!personnelWithCert.contains(get(it).PersonnelID)){
+                personnelWithCert.add(get(it).PersonnelID)
+            }
+        }
+    }
+
+    personnelWithCert.apply {
+        (0 until size).forEach {
+            if (FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID.equals(personnelWithCert[it]) }.isNotEmpty()) {
+                table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID.equals(personnelWithCert[it]) }[0].FirstName, 1, true))
+                table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID.equals(personnelWithCert[it]) }[0].LastName, 1, true))
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A1") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A1") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A2") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A2") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A3") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A3") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A4") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A4") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A5") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A5") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A6") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A6") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A7") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A7") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A8") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A8") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A9") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A9") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("C1") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("C1") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
+                }
+
+                if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("L1") }.isNotEmpty()) {
+                    val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("L1") }[0].ExpirationDate
+                    table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
+                } else {
+                    table.addCell(addCellWithBorder("", 1, true))
                 }
 
             }
         }
     }
+
+
+
+//    FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.PersonnelID }).apply {
+//        (0 until size).forEach {
+//            if (!get(it).CertificationTypeId.isNullOrEmpty()) {
+//                if (FacilityDataModel.getInstance().tblPersonnel.filter { s->s.PersonnelID.equals(get(it).PersonnelID) }.isNotEmpty()) {
+//                    table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) }[0].FirstName, 1,true))
+//                    table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) }[0].LastName, 1,true))
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A1") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A2") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A3") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A4") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A5") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A6") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A7") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A8") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("A9") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("C1") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                    if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) && s.CertificationTypeId.equals("L1") }.isNotEmpty()) {
+//                        table.addCell(addCellWithBorder(if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY(), 1,true));
+//                    } else {
+//                        table.addCell(addCellWithBorder("", 1,true))
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
     return table
 }
 

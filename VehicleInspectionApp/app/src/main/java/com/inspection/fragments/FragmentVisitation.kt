@@ -208,22 +208,30 @@ class FragmentVisitation : Fragment() {
         visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons))
 
         completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual)) {
-            annualVisitationType.isChecked = true
-            visitationReasonDropListId.setSelection(1,true)
-            visitationReasonDropListId.isEnabled = false
-            visitationReasonDropListId.isClickable = false
-        } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Quarterly)) {
-            quarterlyVisitationType.isChecked = true
-            visitationReasonDropListId.setSelection(7,true)
-            visitationReasonDropListId.isEnabled = false
-            visitationReasonDropListId.isClickable = false
-        } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType==null){
             adhocVisitationType.isChecked = true
             visitationReasonDropListId.setSelection(0,true)
             visitationReasonDropListId.isEnabled = true
             visitationReasonDropListId.isClickable = true
             completeButton.isEnabled = true
+        } else {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual)) {
+                annualVisitationType.isChecked = true
+                visitationReasonDropListId.setSelection(1, true)
+                visitationReasonDropListId.isEnabled = false
+                visitationReasonDropListId.isClickable = false
+            } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Quarterly)) {
+                quarterlyVisitationType.isChecked = true
+                visitationReasonDropListId.setSelection(7, true)
+                visitationReasonDropListId.isEnabled = false
+                visitationReasonDropListId.isClickable = false
+            } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
+                adhocVisitationType.isChecked = true
+                visitationReasonDropListId.setSelection(0, true)
+                visitationReasonDropListId.isEnabled = true
+                visitationReasonDropListId.isClickable = true
+                completeButton.isEnabled = true
+            }
         }
 
 
@@ -379,9 +387,8 @@ class FragmentVisitation : Fragment() {
                 if (p2>0) {
                     if (isFacilityRepresentativeSignatureInitialized) {
                         isFacilityRepresentativeSignatureInitialized = false
-                    } else if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals(facilitySpecialistNames[p2])) {
-                        FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy = facilitySpecialistNames[p2]
-
+                    } else {//if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals(facilitySpecialistNames[p2])) {
+//                        FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy = facilitySpecialistNames[p2]
                         FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
 
                         automotiveSpecialistSignatureImageView.setImageBitmap(null)
@@ -404,7 +411,7 @@ class FragmentVisitation : Fragment() {
                     if (isAutomotiveSpecialistSignatureInitialized) {
                         isAutomotiveSpecialistSignatureInitialized = false
                     } else {
-                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilitySpecialistNames[p2]
+//                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilitySpecialistNames[p2]
                         FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature= null
                         automotiveSpecialistSignatureImageView.setImageBitmap(null)
 
@@ -845,6 +852,7 @@ class FragmentVisitation : Fragment() {
         val updateDate = Date().toApiSubmitFormat()
         val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val facilityRep = facilityRepresentativesSpinner.selectedItem.toString()
+        val automotiveSpecialist = if (automotiveSpecialistSpinner.selectedItem.toString().contains("Select")) "" else automotiveSpecialistSpinner.selectedItem.toString()
         val aarSign = if (aarSignEditText.text.isNullOrEmpty()) "" else aarSignEditText.text
         val qa = if (qualityControlProcessEditText.text.isNullOrEmpty()) "" else qualityControlProcessEditText.text
         val staffTraining = if (staffTrainingProcessEditText.text.isNullOrEmpty()) "" else staffTrainingProcessEditText.text
@@ -874,7 +882,7 @@ class FragmentVisitation : Fragment() {
                                     "</visitationID")).toInt()
                             dialogMsg = "New Visitation with ID (${visitationID}) created succesfully"
                             (activity as FormsActivity).saveRequired = false
-                            urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep
+                            urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&automotiveSpecialist="+automotiveSpecialist
                             Log.v("Visitation Details --- ",Constants.UpdateVisitationDetailsData + urlString)
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString,
                                     Response.Listener { response ->
@@ -886,6 +894,7 @@ class FragmentVisitation : Fragment() {
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf = emailPdfCheckBox.isChecked
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto = emailEditText.text.toString()
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep = facilityRep
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].automotivespecialist = automotiveSpecialist
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].sessionid = ApplicationPrefs.getInstance(activity).sessionID
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].userid = insertBy
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationreason = visitationReasonDropListId.selectedItem.toString()
@@ -1065,7 +1074,6 @@ class FragmentVisitation : Fragment() {
 
 
     fun validateInputs(): Boolean {
-
         var isInputValid = true
         automotiveSpecialistSignatureButton.setError(null)
         facilityRepresentativeSignatureButton.setError(null)

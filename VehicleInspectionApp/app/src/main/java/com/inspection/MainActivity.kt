@@ -116,18 +116,20 @@ class MainActivity : AppCompatActivity(), LocationListener {
         var bundle = PersistableBundle()
         bundle.putString("urlString", urlString);
 
-        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        if (Constants.enableLocationTracking) {
+            val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
 
-        val jobInfo = JobInfo.Builder(12, ComponentName(this@MainActivity, LocationLogService::class.java))
-                // only add if network access is required
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setMinimumLatency(1000*60)
-                .setOverrideDeadline(1000*60*2)
-                .setPersisted(true)
-                .setExtras(bundle)
-                .build()
+            val jobInfo = JobInfo.Builder(12, ComponentName(this@MainActivity, LocationLogService::class.java))
+                    // only add if network access is required
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setMinimumLatency(1000 * 60)
+                    .setOverrideDeadline(1000 * 60 * 2)
+                    .setPersisted(true)
+                    .setExtras(bundle)
+                    .build()
 
-        jobScheduler.schedule(jobInfo)
+            jobScheduler.schedule(jobInfo)
+        }
     }
 
     public fun scheduleAlarm() {
@@ -157,9 +159,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 arrayOf("android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE","android.permission.ACCESS_COARSE_LOCATION","android.permission.ACCESS_FINE_LOCATION"),
                 123)
         initView()
-
-        enableLocation()
-
+        if (Constants.enableLocationTracking) enableLocation()
 
         if (toolbar != null) {
             setSupportActionBar(toolbar)

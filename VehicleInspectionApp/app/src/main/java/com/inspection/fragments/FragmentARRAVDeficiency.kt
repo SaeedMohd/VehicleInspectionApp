@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.marginLeft
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
@@ -57,7 +58,8 @@ import java.util.*
  * create an instance of this fragment.
  */
 class FragmentARRAVDeficiency : Fragment() {
-
+    var rowIndex = 0
+    var isEditing = false
     private var mListener: OnFragmentInteractionListener? = null
     var facilityRepresentativeDeficienciesSignatureBitmap: Bitmap? = null
     enum class requestedSignature {
@@ -84,7 +86,7 @@ class FragmentARRAVDeficiency : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         prepareDefSpinners()
         fillDeffTableView()
-        IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = true
+        IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = FacilityDataModel.getInstance().tblDeficiency.filter { s->s.ClearedDate.isNullOrEmpty() }.isEmpty()
         deffTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
@@ -94,7 +96,47 @@ class FragmentARRAVDeficiency : Fragment() {
             visitationFormAlphaBackground.visibility = View.GONE
         }
 
+        exitDeffeciencyDialogeBtnIdEdit.setOnClickListener {
+            defeciencyCardEdit.visibility=View.GONE
+            (activity as FormsActivity).overrideBackButton = false
+            visitationFormAlphaBackground.visibility = View.GONE
+        }
+
+        signatureConfirmButton.setOnClickListener {
+
+            var bitmap = signatureInkView.bitmap
+            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+            when (selectedSignature) {
+                requestedSignature.representativeDeficiency -> {
+//                        saveBmpAsFile(bitmap,"Def")
+                    facilityRepresentativeDeficienciesSignatureBitmap = bitmap
+                    if (isEditing){
+                        if (!isEmpty) {
+                            facilityRepresentativeDeficienciesSignatureButtonEdit.text = "Edit Signature"
+                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(bitmap)
+                        } else {
+                            facilityRepresentativeDeficienciesSignatureButtonEdit.text = "Add Signature"
+                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(null)
+                        }
+                    } else {
+                        if (!isEmpty) {
+                            facilityRepresentativeDeficienciesSignatureButton.text = "Edit Signature"
+                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
+                        } else {
+                            facilityRepresentativeDeficienciesSignatureButton.text = "Add Signature"
+                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+                        }
+                    }
+                }
+            }
+            signatureInkView.clear()
+//                visitationFormAlphaBackground.visibility = View.GONE
+            signatureDialog.visibility = View.GONE
+            (activity as FormsActivity).overrideBackButton = false
+        }
+
         showNewDeffDialogueBtn.setOnClickListener {
+            isEditing = false
             comments_editTextVal.setText("")
             newVisitationDateBtn.setText("SELECT DATE")
             signatureDateBtn.setText("SELECT DATE")
@@ -113,9 +155,10 @@ class FragmentARRAVDeficiency : Fragment() {
                 signatureDialog.visibility = View.VISIBLE
                 (activity as FormsActivity).overrideBackButton = true
                 selectedSignature = requestedSignature.representativeDeficiency
-                if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
+                if (facilityRepresentativeDeficienciesSignatureBitmap != null) {
                     signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
                 }
+
             }
 
 
@@ -129,51 +172,29 @@ class FragmentARRAVDeficiency : Fragment() {
                 (activity as FormsActivity).overrideBackButton = false
             }
 
-            signatureConfirmButton.setOnClickListener {
 
-                var bitmap = signatureInkView.bitmap
-                var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
-                when (selectedSignature) {
-                    requestedSignature.representativeDeficiency -> {
-//                        saveBmpAsFile(bitmap,"Def")
-                        facilityRepresentativeDeficienciesSignatureBitmap = bitmap
-                        if (!isEmpty){
-                            facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
-                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
-                        }else{
-                            facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
-                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
-                        }
-                    }
-                }
-                signatureInkView.clear()
+//            try {
+//                var bitmap = signatureInkView.bitmap
+//                var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+//                when (selectedSignature) {
+//                    requestedSignature.representativeDeficiency -> {
+////                        saveBmpAsFile(bitmap,"Def")
+//                        facilityRepresentativeDeficienciesSignatureBitmap = bitmap
+//                        if (!isEmpty){
+//                            facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
+//                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
+//                        }else{
+//                            facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
+//                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+//                        }
+//                    }
+//                }
+//                signatureInkView.clear()
 //                visitationFormAlphaBackground.visibility = View.GONE
-                signatureDialog.visibility = View.GONE
-                (activity as FormsActivity).overrideBackButton = false
-            }
-
-            try {
-                var bitmap = signatureInkView.bitmap
-                var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
-                when (selectedSignature) {
-                    requestedSignature.representativeDeficiency -> {
-//                        saveBmpAsFile(bitmap,"Def")
-                        facilityRepresentativeDeficienciesSignatureBitmap = bitmap
-                        if (!isEmpty){
-                            facilityRepresentativeDeficienciesSignatureButton.text ="Edit Signature"
-                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
-                        }else{
-                            facilityRepresentativeDeficienciesSignatureButton.text ="Add Signature"
-                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
-                        }
-                    }
-                }
-                signatureInkView.clear()
-                visitationFormAlphaBackground.visibility = View.GONE
-                signatureDialog.visibility = View.GONE
-                (activity as FormsActivity).overrideBackButton = false
-            } catch (e: Exception) {
-            }
+//                signatureDialog.visibility = View.GONE
+//                (activity as FormsActivity).overrideBackButton = false
+//            } catch (e: Exception) {
+//            }
 
 
         }
@@ -197,6 +218,37 @@ class FragmentARRAVDeficiency : Fragment() {
             }, year, month, day)
             dpd.show()
         }
+
+        newClearedDateBtnEdit.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                newClearedDateBtnEdit!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        signatureDateBtnEdit.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                signatureDateBtnEdit!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
         signatureDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -212,6 +264,21 @@ class FragmentARRAVDeficiency : Fragment() {
             dpd.show()
         }
 
+
+        newVisitationDateBtnEdit.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year,monthOfYear,dayOfMonth)
+                newVisitationDateBtnEdit!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
 
         newVisitationDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
@@ -316,6 +383,10 @@ class FragmentARRAVDeficiency : Fragment() {
         defTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newDefSpinner.adapter = defTypeAdapter
 
+        var defTypeAdapterEdit = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, defTypeArray)
+        defTypeAdapterEdit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        newDefSpinnerEdit.adapter = defTypeAdapterEdit
+
         commentesTypeList = TypeTablesModel.getInstance().WarrantyPeriodType
         commentesTypeArray.clear()
         for (fac in commentesTypeList) {
@@ -377,6 +448,12 @@ class FragmentARRAVDeficiency : Fragment() {
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
 
+        val rowLayoutParam5 = TableRow.LayoutParams()
+        rowLayoutParam5.weight = 0.6F
+        rowLayoutParam5.column = 5
+        rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam5.width = 0
+
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
@@ -392,73 +469,205 @@ class FragmentARRAVDeficiency : Fragment() {
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 18f
                     textView.minimumHeight = 30
-
                     textView.text = getDefTypeName(get(it).DefTypeID)
                     tableRow.addView(textView)
 
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam1
-                    textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
-                    textView.minimumHeight = 30
+                    var textView1 = TextView(context)
+                    textView1.layoutParams = rowLayoutParam1
+                    textView1.gravity = Gravity.CENTER_VERTICAL
+                    textView1.textSize = 18f
+                    textView1.minimumHeight = 30
 
                     try {
-                        textView.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
+                        textView1.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-                        textView.text = get(it).VisitationDate
+                        textView1.text = get(it).VisitationDate
 
                     }
 
-                    tableRow.addView(textView)
+                    tableRow.addView(textView1)
 
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam2
-                    textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
-                    textView.minimumHeight = 30
-                    TableRow.LayoutParams()
-
+                    var textView2 = TextView(context)
+                    textView2.layoutParams = rowLayoutParam2
+                    textView2.gravity = Gravity.CENTER_VERTICAL
+                    textView2.textSize = 18f
+                    textView2.minimumHeight = 30
+//                    TableRow.LayoutParams()
                     try {
-                        textView.text = get(it).EnteredDate.apiToAppFormatMMDDYYYY()
+                        textView2.text = get(it).EnteredDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-                        textView.text = get(it).EnteredDate
+                        textView2.text = get(it).EnteredDate
 
                     }
 
-                    tableRow.addView(textView)
+                    tableRow.addView(textView2)
 
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam3
-                    textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
-                    textView.minimumHeight = 30
+                    var textView3 = TextView(context)
+                    textView3.layoutParams = rowLayoutParam3
+                    textView3.gravity = Gravity.CENTER_VERTICAL
+                    textView3.textSize = 18f
+                    textView3.minimumHeight = 30
 
 
                     try {
-                        textView.text = if (get(it).ClearedDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ClearedDate.apiToAppFormatMMDDYYYY()
+                        textView3.text = if (get(it).ClearedDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ClearedDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
-                        textView.text = get(it).ClearedDate
+                        textView3.text = get(it).ClearedDate
 
                     }
-                    tableRow.addView(textView)
+                    tableRow.addView(textView3)
 
-                    textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam4
-                    textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
-                    textView.minimumHeight = 30
+                    var textView4 = TextView(context)
+                    textView4.layoutParams = rowLayoutParam4
+                    textView4.gravity = Gravity.CENTER_VERTICAL
+                    textView4.textSize = 18f
+                    textView4.minimumHeight = 30
 
-                    textView.text = get(it).Comments
-                    tableRow.addView(textView)
+                    textView4.text = get(it).Comments
+                    tableRow.addView(textView4)
 
+                    val updateButton = Button(context)
+                    updateButton.layoutParams = rowLayoutParam5
+                    updateButton.setTextColor(Color.BLUE)
+                    updateButton.text = "EDIT"
+                    updateButton.textSize = 18f
+                    updateButton.minimumHeight = 30
+                    updateButton.isEnabled=true
+                    updateButton.gravity = Gravity.CENTER
+                    updateButton.setBackgroundColor(Color.TRANSPARENT)
+                    tableRow.addView(updateButton)
 
                     DeffResultsTbl.addView(tableRow)
+
+                    updateButton.setOnClickListener {
+                        isEditing = true
+                        rowIndex = DeffResultsTbl.indexOfChild(tableRow)
+                        comments_editTextValEdit.setText(textView4.text)
+                        comments_editTextValEdit.isEnabled = false
+                        newVisitationDateBtnEdit.setText(textView1.text)
+                        newVisitationDateBtnEdit.isEnabled = false
+                        signatureDateBtnEdit.setText("SELECT DATE")
+                        facilityRepresentativeDeficienciesSignatureBitmap = null
+                        facilityRepresentativeDeficienciesSignatureButtonEdit.setText("ADD SIGNATURE")
+                        facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(null)
+                        newDefSpinnerEdit.setSelection(defTypeArray.indexOf(textView.text.toString()))
+                        newDefSpinnerEdit.isEnabled = false
+                        newVisitationDateBtnEdit.setError(null)
+                        signatureDateBtnEdit.setError(null)
+                        facilityRepresentativeDeficienciesSignatureButtonEdit.setError(null)
+                        defeciencyCardEdit.visibility=View.VISIBLE
+                        (activity as FormsActivity).overrideBackButton = true
+                        visitationFormAlphaBackground.visibility = View.VISIBLE
+
+
+                        facilityRepresentativeDeficienciesSignatureButtonEdit.setOnClickListener {
+                            signatureDialog.visibility = View.VISIBLE
+                            (activity as FormsActivity).overrideBackButton = true
+                            selectedSignature = requestedSignature.representativeDeficiency
+                            if (facilityRepresentativeDeficienciesSignatureBitmap!=null){
+                                signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
+                            }
+                        }
+
+
+                        signatureClearButton.setOnClickListener {
+                            signatureInkView.clear()
+                        }
+
+                        signatureCancelButton.setOnClickListener {
+                            signatureInkView.clear()
+                            signatureDialog.visibility = View.GONE
+                            (activity as FormsActivity).overrideBackButton = false
+                        }
+
+                        signatureConfirmButton.setOnClickListener {
+
+                            var bitmap = signatureInkView.bitmap
+                            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+                            when (selectedSignature) {
+                                requestedSignature.representativeDeficiency -> {
+//                        saveBmpAsFile(bitmap,"Def")
+                                    facilityRepresentativeDeficienciesSignatureBitmap = bitmap
+                                    if (!isEmpty){
+                                        facilityRepresentativeDeficienciesSignatureButtonEdit.text ="Edit Signature"
+                                        facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(bitmap)
+                                    }else{
+                                        facilityRepresentativeDeficienciesSignatureButtonEdit.text ="Add Signature"
+                                        facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(null)
+                                    }
+                                }
+                            }
+                            signatureInkView.clear()
+//                visitationFormAlphaBackground.visibility = View.GONE
+                            signatureDialog.visibility = View.GONE
+                            (activity as FormsActivity).overrideBackButton = false
+                        }
+                        (activity as FormsActivity).overrideBackButton = true
+                        var childViewCount = DeffResultsTbl.getChildCount();
+
+                        // From here
+//                        submitNewDeffNewBtnEdit.setOnClickListener {
+//                            if (validateInputsEdit()){
+//                                progressBarText.text = "Saving ..."
+//                                DeffLoadingView.visibility = View.VISIBLE
+//                                var item = TblDeficiency()
+//                                for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
+//                                    if (newDefSpinnerEdit.getSelectedItem().toString().equals(fac.DeficiencyName))
+//                                        item.DefTypeID =fac.DeficiencyTypeID
+//                                }
+//                                item.VisitationDate = newVisitationDateBtnEdit.text.toString()
+//                                item.EnteredDate = newVisitationDateBtnEdit.text.toString()
+//                                item.ClearedDate = newClearedDateBtnEdit.text.toString()
+//                                item.Comments = comments_editTextValEdit.text.toString()
+//                                // Complete from here --------
+////                                Log.v("Deficiency--- ",UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
+////                                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
+//                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
+//                                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat(),
+//                                        Response.Listener { response ->
+//                                            activity!!.runOnUiThread {
+//                                                if (response.toString().contains("returnCode>0<",false)) {
+//                                                    Utility.showSubmitAlertDialog(activity, true, "Deficiency")
+//                                                    item.DefID = response.toString().substring(response.toString().indexOf("<DefID")+7,response.toString().indexOf("</DefID"))
+//                                                    FacilityDataModel.getInstance().tblDeficiency.add(item)
+//                                                    fillDeffTableView()
+//                                                    HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
+//                                                    HasChangedModel.getInstance().changeDoneForDeficiencyDef()
+//                                                } else {
+//                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+//                                                    Utility.showSubmitAlertDialog(activity, false, "Deficiency (Error: "+errorMessage+" )")
+//                                                }
+//                                                DeffLoadingView.visibility = View.GONE
+//                                                progressBarText.text = "Loading ..."
+//                                                defeciencyCard.visibility=View.GONE
+//                                                (activity as FormsActivity).overrideBackButton = false
+//                                                visitationFormAlphaBackground.visibility = View.GONE
+//                                            }
+//                                        }, Response.ErrorListener {
+//                                    Utility.showSubmitAlertDialog(activity, false, "Deficiency")
+//                                    DeffLoadingView.visibility = View.GONE
+//                                    progressBarText.text = "Loading ..."
+//                                    defeciencyCard.visibility=View.GONE
+//                                    (activity as FormsActivity).overrideBackButton = false
+//                                    visitationFormAlphaBackground.visibility = View.GONE
+//                                }))
+//
+//                            } else {
+//                                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+//                            }
+//                        }
+
+
+                    }
                 }
             }
         }
+
         altDefTableRow(2)
         DeffLoadingView.visibility = View.GONE
     }
+
+
     fun altDefTableRow(alt_row : Int) {
         var childViewCount = DeffResultsTbl.getChildCount();
 
@@ -540,6 +749,37 @@ class FragmentARRAVDeficiency : Fragment() {
             }
 
         }
+        return  defValide
+
+    }
+
+    fun validateInputsEdit() : Boolean {
+
+        var defValide= TblDeficiency().isInputsValid
+        defValide = true
+
+//        newVisitationDateBtn.setError(null)
+        signatureDateBtnEdit.setError(null)
+        facilityRepresentativeDeficienciesSignatureButton.setError(null)
+
+
+        if (signatureDateBtnEdit.text.toString().toUpperCase().equals("SELECT DATE")) {
+            defValide = false
+            signatureDateBtnEdit.setError("Required Field")
+        }
+
+        if (newClearedDateBtnEdit.text.toString().toUpperCase().equals("SELECT DATE")) {
+            defValide = false
+            newClearedDateBtnEdit.setError("Required Field")
+        }
+
+
+        if (facilityRepresentativeDeficienciesSignatureButtonEdit.text.toString() == "ADD SIGNATURE" ||
+                facilityRepresentativeDeficienciesSignatureButtonEdit.text.toString() =="Add Signature") {
+            defValide = false
+            facilityRepresentativeDeficienciesSignatureButtonEdit.setError("required field")
+        }
+
         return  defValide
 
     }

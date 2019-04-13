@@ -608,4 +608,5 @@ class PRGVisitationHeader {
     var waivevisitation = false
     var waivecomments = ""
     var facilityrep = ""
+    var automotivespecialist = ""
 }

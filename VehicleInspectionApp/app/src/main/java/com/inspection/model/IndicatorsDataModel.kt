@@ -70,17 +70,17 @@ class IndicatorsDataModel {
 
     class TblSurveys {
         var Surveys= false
-        var visited = false
+        var visited = true
     }
 
     class TblPhotos {
         var Photos = false
-        var visited = false
+        var visited = true
     }
 
     class TblComplaints {
         var Complaints= false
-        var visited = false
+        var visited = true
     }
 
     class TblFacility {
@@ -91,7 +91,7 @@ class IndicatorsDataModel {
         var Location = false
         var LocationVisited = false
         var Personnel = false
-        var PersonnelVisited = false
+        var PersonnelVisited = true
     }
 
     class TblVisitation {
@@ -118,17 +118,17 @@ class IndicatorsDataModel {
         tblDeffeciencies.add(0,Def)
         var Complaints = TblComplaints()
         Complaints.Complaints=true;
-        Complaints.visited=false
+        Complaints.visited=true
         tblComplaints.add(0,Complaints)
 
         var Surveys = TblSurveys()
         Surveys.Surveys=true;
-        Surveys.visited=false
+        Surveys.visited=true
         tblSurveys.add(0,Surveys)
 
         var Photos = TblPhotos()
         Photos.Photos=true;
-        Photos.visited=false
+        Photos.visited=true
         tblPhotos.add(0,Photos)
 
         var Visitation = TblVisitation()
@@ -143,21 +143,21 @@ class IndicatorsDataModel {
         Facility.Location=false;
         Facility.LocationVisited=false
         Facility.Personnel=false;
-        Facility.PersonnelVisited=false
+        Facility.PersonnelVisited=true
         tblFacility.add(0,Facility)
         var Billing = TblBilling()
         Billing.Billing=true;
-        Billing.BillingVisited=false
+        Billing.BillingVisited=true
         Billing.BillingAdjustments=true
-        Billing.BillingAdjustmentsVisited=false
+        Billing.BillingAdjustmentsVisited=true
         Billing.BillingHistory=true
-        Billing.BillingHistoryVisited=false
+        Billing.BillingHistoryVisited=true
         Billing.BillingPlan=true
-        Billing.BillingPlanVisited=false
+        Billing.BillingPlanVisited=true
         Billing.Payments=true
-        Billing.PaymentsVisited=false
+        Billing.PaymentsVisited=true
         Billing.VendorRevenue=true
-        Billing.VendorRevenueVisited=false
+        Billing.VendorRevenueVisited=true
         tblBilling.add(0,Billing)
     }
 
@@ -403,7 +403,9 @@ class IndicatorsDataModel {
     }
 
     fun validateDeffeciencyVisited() : Boolean{
-        return tblDeffeciencies[0].visited
+        return FacilityDataModel.getInstance().tblDeficiency.filter { s->s.ClearedDate.isNullOrEmpty() }.isEmpty()
+//        tblDeffeciencies[0].visited
+
     }
 
     fun validateVisitation() {

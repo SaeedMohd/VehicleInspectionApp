@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
 import com.inspection.MainActivity
 import com.inspection.R
+import com.inspection.Utils.Constants
 import kotlinx.android.synthetic.main.fragment_forms.*
 
 class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
@@ -40,7 +41,8 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
         visitationPlanningButton.setOnClickListener {
             var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
-            var enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            var enabled = if (Constants.enableLocationTracking) service.isProviderEnabled(LocationManager.GPS_PROVIDER) else true
 
             if (!enabled) {
                 var alertBuilder = AlertDialog.Builder(activity);
@@ -70,7 +72,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
         adHocVisitationButton.setOnClickListener {
             var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
-            var enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            var enabled = if (Constants.enableLocationTracking) service.isProviderEnabled(LocationManager.GPS_PROVIDER) else true
 
             if (!enabled) {
                 var alertBuilder = AlertDialog.Builder(activity);
