@@ -658,6 +658,8 @@ class VisitationPlanningFragment : Fragment() {
 //        mListener = null
     }
 
+
+
     inner class VisitationPlanningAdapter : BaseAdapter {
 
         private var visitationPlanningModelList = VisitationsModel()
@@ -686,12 +688,25 @@ class VisitationPlanningFragment : Fragment() {
             if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].FACNo
-                vh.initialContractDateTextView.text = "Initial Contract Date:"
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+
+                if (visitationPlanningModelList.completedVisitationsArray.filter { s->s.FacID.equals(visitationPlanningModelList.pendingVisitationsArray[position].FacID) && s.ClubCode.equals(visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)}.isNotEmpty()){
+                    vh.initialContractDateTextView.text = "Last Visitation Date:"
+                    vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray.filter { s->s.FacID.equals(visitationPlanningModelList.pendingVisitationsArray[position].FacID) && s.ClubCode.equals(visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)}.sortedWith(compareByDescending { it.DatePerformed})[0].DatePerformed.apiToAppFormatMMDDYYYY()
+                } else {
+                    vh.initialContractDateTextView.text = "Initial Contract Date:"
+                    vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+                }
                 vh.visitationStatusValueTextView.text = "Not Started"
                 vh.visitationStatusTextView.text = "Status:"
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
+                view?.setOnClickListener {
+                    var strData = "Pending List:"
+                    strData += "\n--------------------------"
+                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth
+                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle
+                    Utility.showMessageDialog(context,"Visitation Data",strData)
+                }
 //                if (Calendar.getInstance().get(Calendar.MONTH) == visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt()){
                 if (visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle.equals("O")) {
                     vh.visitationTypeValueTextView.text = "Annual"
@@ -704,11 +719,18 @@ class VisitationPlanningFragment : Fragment() {
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ContractInitialDate.apiToAppFormatMMDDYYYY()
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].DatePerformed.apiToAppFormatMMDDYYYY()
                 vh.visitationStatusValueTextView.text = "Completed"
                 vh.initialContractDateTextView.text = "Visitation Date:"
                 vh.visitationStatusTextView.text = "Status:"
                 vh.loadBtn.text = "SEND PDF"
+                view?.setOnClickListener {
+                    var strData = "Completed List:"
+                    strData += "\n------------------------------"
+                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
+                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].InspectionCycle
+                    Utility.showMessageDialog(context,"Visitation Data",strData)
+                }
 //                if (visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth.toInt() == 0) {
 //                    vh.visitationTypeValueTextView.text = "Annual"
 //                } else {
@@ -730,6 +752,14 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationStatusTextView.text = "Type:"
                 vh.visitationTypeValueTextView.visibility = View.GONE
                 vh.visitationTypeTextView.visibility = View.GONE
+                view?.setOnClickListener {
+                    var strData = "Deficiency List:"
+                    strData += "\n------------------------------"
+                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FacilityAnnualInspectionMonth
+                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].InspectionCycle
+                    strData += "\nDue Date --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].DueDate.apiToAppFormatMMDDYYYY()
+                    Utility.showMessageDialog(context,"Visitation Data",strData)
+                }
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode,false,"")
                 })

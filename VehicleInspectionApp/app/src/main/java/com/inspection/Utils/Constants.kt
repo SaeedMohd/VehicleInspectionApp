@@ -58,7 +58,7 @@ object Constants {
 //    val getCopyFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=2518&clubcode=004"
 //    var facNo= if (FacilityDataModel.getInstance().tblFacilities.size>0) FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() else "2089"
 
-    val enableLocationTracking = false
+    val enableLocationTracking = true
     val getFacilityComplaintsURL = permanentURL + "getFacilityComplaints?facilityId="
     val getfacilitiesURL = permanentURL + "getFacilities?facilityName="
     val getVehiclesURL = "http://144.217.24.163:5000/getVehicles"
