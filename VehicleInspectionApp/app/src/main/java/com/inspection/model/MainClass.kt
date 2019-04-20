@@ -82,6 +82,10 @@ enum class VisitationTypes {
     Annual, Quarterly, AdHoc
 }
 
+enum class VisitationStatus {
+    NotStarted, Overdue, InProgress
+}
+
 class TblVisitationTracking {
     var DatePerformed = ""
     var performedBy = ""
@@ -609,4 +613,15 @@ class PRGVisitationHeader {
     var waivecomments = ""
     var facilityrep = ""
     var automotivespecialist = ""
+    var visitationid = ""
+}
+
+class PRGCompletedVisitations {
+    var recordid = 0
+    var facid = 0
+    var clubcode = 0
+    var visitationtype = ""
+    var visitationid = ""
+    var completiondate = ""
+    var completionmonth = 0
 }

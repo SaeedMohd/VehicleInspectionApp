@@ -21,6 +21,7 @@ import android.bluetooth.BluetoothSocket
 import android.content.*
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     var FacilityNumber = ""
     var isLoadNewDetailsRequired = false
     var viewPager: ViewPager? = null
-
+    var visitationID : String? = ""
     lateinit var facilitySelected: AAAFacilityComplete
     internal var sdf: SimpleDateFormat? = null
     var fragment: FragmentForms? = null
@@ -91,6 +92,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     internal var isExitFlagReady = false
     private var welcomeMessage = ""
+
+
 
 //    private var mLocationRequest: LocationRequest? = null
 
@@ -681,8 +684,11 @@ class MainActivity : AppCompatActivity(), LocationListener {
     fun generateAndOpenPDF(){
         createPDF(this)
 //        val target = Intent(Intent.ACTION_VIEW)
-        val file = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
-        val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForShop.pdf")
+//        val file = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
+//        val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForShop.pdf")
+        val file = File(Environment.getExternalStorageDirectory().path+"/"+Constants.visitationIDForPDF+"_VisitationDetails_ForSpecialist.pdf")
+        val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+Constants.visitationIDForPDF+"_VisitationDetails_ForShop.pdf")
+
 //        uploadPDF(file,"Specialist")
 //        uploadPDF(fileShop,"Shop")
 //        target.setDataAndType(FileProvider.getUriForFile(this,"com.inspection.android.fileprovider",file), "application/pdf")

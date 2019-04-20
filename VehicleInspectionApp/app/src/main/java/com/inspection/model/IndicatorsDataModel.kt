@@ -187,6 +187,32 @@ class IndicatorsDataModel {
     }
 
 
+    fun getVisitedScreen() : String {
+        var visitedScreens = ""
+        visitedScreens += if (tblVisitation[0].visited) "1" else "0"
+        visitedScreens += if (tblFacility[0].GeneralInfoVisited) "1" else "0"
+        visitedScreens += if (tblFacility[0].RSPVisited) "1" else "0"
+        visitedScreens += if (tblFacility[0].LocationVisited) "1" else "0"
+        visitedScreens += if (tblFacility[0].PersonnelVisited) "1" else "0"
+        visitedScreens += if (tblScopeOfServices[0].GeneralInfoVisited) "1" else "0"
+        visitedScreens += if (tblScopeOfServices[0].VehicleServicesVisited) "1" else "0"
+        visitedScreens += if (tblScopeOfServices[0].ProgramsVisited) "1" else "0"
+        visitedScreens += if (tblScopeOfServices[0].FacilityServicesVisited) "1" else "0"
+        visitedScreens += if (tblScopeOfServices[0].VehiclesVisited) "1" else "0"
+        visitedScreens += if (tblScopeOfServices[0].AffiliationsVisited) "1" else "0"
+        visitedScreens += if (tblDeffeciencies[0].visited) "1" else "0"
+        visitedScreens += if (tblComplaints[0].visited) "1" else "0"
+        visitedScreens += if (tblBilling[0].BillingPlanVisited) "1" else "0"
+        visitedScreens += if (tblBilling[0].BillingVisited) "1" else "0"
+        visitedScreens += if (tblBilling[0].PaymentsVisited) "1" else "0"
+        visitedScreens += if (tblBilling[0].VendorRevenueVisited) "1" else "0"
+        visitedScreens += if (tblBilling[0].BillingHistoryVisited) "1" else "0"
+        visitedScreens += if (tblBilling[0].BillingAdjustmentsVisited) "1" else "0"
+        visitedScreens += if (tblSurveys[0].visited) "1" else "0"
+        visitedScreens += if (tblPhotos[0].visited) "1" else "0"
+        return visitedScreens
+    }
+
     fun validateAllScreensVisited() : Boolean {
         return validateSoSSectionVisited() && validateDeffecienciesSectionVisited() && validateVisitationSectionVisited() && validateFacilitySectionVisited() && validateComplaintsSectionVisited() && validateBillingSectionVisited() && validatePhotosSectionVisited() && validateSurveysSectionVisited()
     }

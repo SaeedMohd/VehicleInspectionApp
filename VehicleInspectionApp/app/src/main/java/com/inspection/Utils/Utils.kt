@@ -217,9 +217,9 @@ fun createPDF(activity: Activity){
 //                var stream = ByteArrayOutputStream();
 //                bitmap.compress(Bitmap.CompressFormat.PNG, 100 , stream);
 
-                var imageRepSignature : Image;
-                var imageSpecSignature : Image;
-                var imageDefSignature : Image;
+                var imageRepSignature: Image;
+                var imageSpecSignature: Image;
+                var imageDefSignature: Image;
                 val ims = activity.assets.open("nosignatureicon.png");
                 val bmp = BitmapFactory.decodeStream(ims);
                 val stream = ByteArrayOutputStream();
@@ -227,58 +227,65 @@ fun createPDF(activity: Activity){
                 imageRepSignature = Image.getInstance(stream.toByteArray());
                 imageSpecSignature = Image.getInstance(stream.toByteArray());
                 imageDefSignature = Image.getInstance(stream.toByteArray());
-                try {
-                    val bmpRep = Glide.with(activity)
-                            .asBitmap()
-                            .load(Constants.getImages + imageNameRep)
-                            .apply(RequestOptions().dontTransform().skipMemoryCache(true)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE))
-                            .submit()
-                            .get()
-                    var baos = ByteArrayOutputStream();
-                    bmpRep.compress(Bitmap.CompressFormat.PNG, 70, baos);
-                    var imageInByte = baos.toByteArray();
-                    imageRepSignature = Image.getInstance(imageInByte)
-                    imageRepSignature.scaleToFit(5F, 5F)
-                } catch (e : Exception) {
-                    e.printStackTrace();
+                if ((activity as FormsActivity).imageRepSignature != null) {
+                    try {
+//                        val bmpRep = Glide.with(activity)
+//                                .asBitmap()
+//                                .load(Constants.getImages + imageNameRep)
+//                                .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+//                                        .diskCacheStrategy(DiskCacheStrategy.NONE))
+//                                .submit()
+//                                .get()
+                        var baos = ByteArrayOutputStream();
+//                        bmpRep.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                        (activity as FormsActivity).imageRepSignature?.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                        var imageInByte = baos.toByteArray();
+                        imageRepSignature = Image.getInstance(imageInByte)
+                        imageRepSignature.scaleToFit(5F, 5F)
+                    } catch (e: Exception) {
+                        e.printStackTrace();
+                    }
                 }
 
-                try {
-                    val bmpSpec = Glide.with(activity)
-                            .asBitmap()
-                            .load(Constants.getImages + imageNameSpec)
-                            .apply(RequestOptions().dontTransform().skipMemoryCache(true)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE))
-                            .submit()
-                            .get()
-                    val baos = ByteArrayOutputStream();
-                    bmpSpec.compress(Bitmap.CompressFormat.PNG, 70, baos);
-                    val imageInByte = baos.toByteArray();
-                    imageSpecSignature = Image.getInstance(imageInByte)
-                    imageSpecSignature.scaleToFit(10F, 10F)
-                } catch (e: Exception) {
-                    e.printStackTrace();
+                if ((activity as FormsActivity).imageSpecSignature != null) {
+                    try {
+//                        val bmpSpec = Glide.with(activity)
+//                                .asBitmap()
+//                                .load(Constants.getImages + imageNameSpec)
+//                                .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+//                                        .diskCacheStrategy(DiskCacheStrategy.NONE))
+//                                .submit()
+//                                .get()
+                        val baos = ByteArrayOutputStream();
+//                        bmpSpec.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                        (activity as FormsActivity).imageSpecSignature?.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                        val imageInByte = baos.toByteArray();
+                        imageSpecSignature = Image.getInstance(imageInByte)
+                        imageSpecSignature.scaleToFit(10F, 10F)
+                    } catch (e: Exception) {
+                        e.printStackTrace();
+                    }
                 }
 
-                try {
-                    val bmpDef = Glide.with(activity)
-                            .asBitmap()
-                            .load(Constants.getImages + imageNameDef)
-                            .apply(RequestOptions().dontTransform().skipMemoryCache(true)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE))
-                            .submit()
-                            .get()
-                    val baos = ByteArrayOutputStream();
-                    bmpDef.compress(Bitmap.CompressFormat.PNG, 70, baos);
-                    val imageInByte = baos.toByteArray();
-                    imageDefSignature = Image.getInstance(imageInByte)
-                    imageDefSignature.scaleToFit(10F, 10F)
-                } catch (e: Exception) {
-                    e.printStackTrace();
+                if ((activity as FormsActivity).imageDefSignature != null) {
+                    try {
+//                    val bmpDef = Glide.with(activity)
+//                            .asBitmap()
+//                            .load(Constants.getImages + imageNameDef)
+//                            .apply(RequestOptions().dontTransform().skipMemoryCache(true)
+//                                    .diskCacheStrategy(DiskCacheStrategy.NONE))
+//                            .submit()
+//                            .get()
+                        val baos = ByteArrayOutputStream();
+//                        bmpDef.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                        (activity as FormsActivity).imageDefSignature?.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                        val imageInByte = baos.toByteArray();
+                        imageDefSignature = Image.getInstance(imageInByte)
+                        imageDefSignature.scaleToFit(10F, 10F)
+                    } catch (e: Exception) {
+                        e.printStackTrace();
+                    }
                 }
-
-
                 createPDFForSpecialist(activity,imageRepSignature,imageSpecSignature,imageDefSignature)
             }
 
@@ -288,7 +295,8 @@ fun createPDF(activity: Activity){
 fun createPDFForShop(activity: Activity) {
     val document = Document()
     //output file path
-    val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
+//    val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
+    val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForShop.pdf")
     var writer = PdfWriter.getInstance(document, FileOutputStream(file))
     val event = HeaderFooterPageEvent()
     writer.pageEvent = event
@@ -350,7 +358,9 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     val document = Document()
 
     //output file path
-    val file = File(Environment.getExternalStorageDirectory().path + "/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
+//    val file = File(Environment.getExternalStorageDirectory().path + "/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
+    val file = File(Environment.getExternalStorageDirectory().path + "/"+Constants.visitationIDForPDF+"_VisitationDetails_ForSpecialist.pdf")
+
     var writer = PdfWriter.getInstance(document, FileOutputStream(file))
     val event = HeaderFooterPageEvent()
     writer.pageEvent = event

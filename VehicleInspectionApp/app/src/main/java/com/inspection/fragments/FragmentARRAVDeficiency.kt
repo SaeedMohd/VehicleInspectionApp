@@ -16,36 +16,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.marginLeft
-import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
-import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateDeficiencyData
 import com.inspection.adapter.MultipartRequest
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.dataChanged
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.diagnosticLaborRate
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.fixedLaborRate
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMax
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.laborRateMatrixMin
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfBaysEditText_
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.numberOfLiftsEditText_
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_DiagnosticsRate
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_FixedLaborRate
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMax
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMin
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
-import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
-import java.io.File
-import java.io.FileOutputStream
+
 import java.text.SimpleDateFormat
 import java.util.*
 

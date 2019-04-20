@@ -58,7 +58,7 @@ object Constants {
 //    val getCopyFacilityData = "https://dev.facilityappointment.com/ACEAPI.asmx/GetFacilityData?facnum=2518&clubcode=004"
 //    var facNo= if (FacilityDataModel.getInstance().tblFacilities.size>0) FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() else "2089"
 
-    val enableLocationTracking = true
+    val enableLocationTracking = false
     val getFacilityComplaintsURL = permanentURL + "getFacilityComplaints?facilityId="
     val getfacilitiesURL = permanentURL + "getFacilities?facilityName="
     val getVehiclesURL = "http://144.217.24.163:5000/getVehicles"
@@ -90,6 +90,10 @@ object Constants {
     val updateFacilityPhotos = permanentURL + "updateFacilityPhotos?facId="
     val getLoggedActions = permanentURL + "getLoggedActions?facNum="
     val getVisitationHeader = permanentURL + "getVisitationHeader?facNum="
+    val getPRGCompletedVisitations = permanentURL + "getPRGCompletedVisitations"
+    val saveVisitedScreens = permanentURL + "saveVisitedScreens?facId="
+
+    val sendCompletedPDF = permanentURL + "sendCompletedPDF?visitationID="
     val UpdateAARPortalAdminData = permanentURL + "updateAARPortalAdminData?facNum="
     val UpdateAARPortalTrackingData = permanentURL + "updateAARPortalTracking?facNum="
     val UpdateAmendmentOrderTrackingData = permanentURL + "updateAmendmentOrderTrackingData?facNum="
@@ -110,4 +114,6 @@ object Constants {
     val UpdateVisitationTrackingData=permanentURL + "updateVisitationTrackingData?facnum="
 
     val getSpecialistIdsForClubCode = permanentURL + "getSpecialistsForClubCode?"
+
+    var visitationIDForPDF = ""
 }

@@ -74,6 +74,7 @@ class VisitationPlanningFragment : Fragment() {
     var specialistClubCodes = ArrayList<String>()
     var specialistArrayModel = ArrayList<TypeTablesModel.employeeList>()
     var clubCode=""
+    var visitationID =""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -510,8 +511,6 @@ class VisitationPlanningFragment : Fragment() {
                     activity!!.runOnUiThread {
                         Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
                         recordsProgressView.visibility = View.INVISIBLE
-
-
                     }
                 }
 
@@ -531,15 +530,41 @@ class VisitationPlanningFragment : Fragment() {
 
                     visitationsModel = parseVisitationsData(jsonObj)
 
+                    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGCompletedVisitations,
+                            Response.Listener { response ->
+                                activity!!.runOnUiThread {
+                                    if (!response.toString().replace(" ","").equals("[]")) {
+                                        PRGDataModel.getInstance().tblPRGCompletedVisitations = Gson().fromJson(response.toString(), Array<PRGCompletedVisitations>::class.java).toCollection(ArrayList())
+                                    } else {
+                                        var item = PRGCompletedVisitations()
+                                        item.recordid=-1
+                                        PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
+                                    }
+                                    activity!!.runOnUiThread {
+                                        recordsProgressView.visibility = View.GONE
+                                        visitationfacilityListView.visibility = View.VISIBLE
+                                        var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                        visitationfacilityListView.adapter = visitationPlanningAdapter
+                                        var totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+                                        Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                                    }
 
-                    activity!!.runOnUiThread {
-                        recordsProgressView.visibility = View.GONE
-                        visitationfacilityListView.visibility = View.VISIBLE
-                        var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                        visitationfacilityListView.adapter = visitationPlanningAdapter
-                        var totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-                        Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
-                    }
+                                }
+                            }, Response.ErrorListener {
+                        Log.v("Loading PRG Data error", "" + it.message)
+                        var item = PRGCompletedVisitations()
+                        item.recordid=-1
+                        PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
+                        activity!!.runOnUiThread {
+                            recordsProgressView.visibility = View.GONE
+                            visitationfacilityListView.visibility = View.VISIBLE
+                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                            visitationfacilityListView.adapter = visitationPlanningAdapter
+                            var totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                        }
+                        it.printStackTrace()
+                    }))
                 }
             }
             })
@@ -659,6 +684,258 @@ class VisitationPlanningFragment : Fragment() {
     }
 
 
+    fun determineVisitationTypeAndStatus (facAnnualMonth : Int,facId:Int, clubCode:Int) : Pair<VisitationTypes,VisitationStatus> {
+        val c = Calendar.getInstance()
+        val month = c.get(Calendar.MONTH)+1
+        when (facAnnualMonth) {
+            1 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    2 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    3 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<3}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    in 4 ..6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    8,9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    11,12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            2 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    3 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    4 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<4}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    in 5 ..7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    9,10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            3 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    4 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    5 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<5}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    in 6..8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    10,11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                }
+            }
+            4 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    5 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    6 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<6}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    in 7..9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    11,12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            5 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    6 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    7 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<7}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    in 8..10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            6 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    7 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    8 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<8}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    in 9..11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                }
+            }
+            7 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    8 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    9 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<9}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    in 10..12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            8 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    9 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    10 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<10}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    in 11..12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            9 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    10 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    11 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<11}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            10 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    11 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    12 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual) && s.completionmonth<12}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                }
+            }
+            11 -> {
+                when(month) {
+                    1 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual)}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    12 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                }
+            }
+            12 -> {
+                when(month) {
+                    2 -> {
+                        if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==facId && s.clubcode==clubCode && s.visitationtype.equals(VisitationTypes.Annual)}.isNotEmpty()) {
+                            return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                        } else {
+                            return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                        }
+                    }
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    1 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                }
+            }
+        }
+        return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+    }
 
     inner class VisitationPlanningAdapter : BaseAdapter {
 
@@ -696,7 +973,6 @@ class VisitationPlanningFragment : Fragment() {
                     vh.initialContractDateTextView.text = "Initial Contract Date:"
                     vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 }
-                vh.visitationStatusValueTextView.text = "Not Started"
                 vh.visitationStatusTextView.text = "Status:"
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
@@ -707,12 +983,9 @@ class VisitationPlanningFragment : Fragment() {
                     strData += "\nInspectionCycle --> "+visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle
                     Utility.showMessageDialog(context,"Visitation Data",strData)
                 }
-//                if (Calendar.getInstance().get(Calendar.MONTH) == visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt()){
-                if (visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle.equals("O")) {
-                    vh.visitationTypeValueTextView.text = "Annual"
-                } else {
-                    vh.visitationTypeValueTextView.text = "Quarterly"
-                }
+                val visitationTypeAndStatus = determineVisitationTypeAndStatus(visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].FacID.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt())
+                vh.visitationTypeValueTextView.text = visitationTypeAndStatus.first.toString()
+                vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not","Not ")
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode,false,if (visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle.equals("O")) "Annual" else "Quarterly")
                 })
@@ -724,9 +997,11 @@ class VisitationPlanningFragment : Fragment() {
                 vh.initialContractDateTextView.text = "Visitation Date:"
                 vh.visitationStatusTextView.text = "Status:"
                 vh.loadBtn.text = "SEND PDF"
+                visitationID = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
                 view?.setOnClickListener {
                     var strData = "Completed List:"
                     strData += "\n------------------------------"
+                    strData += "\nVisitation ID --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
                     strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                     strData += "\nInspectionCycle --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].InspectionCycle
                     Utility.showMessageDialog(context,"Visitation Data",strData)
@@ -736,12 +1011,22 @@ class VisitationPlanningFragment : Fragment() {
 //                } else {
 //                    vh.visitationTypeValueTextView.text = "Quarterly"
 //                }
+
                 vh.visitationTypeValueTextView.visibility = View.GONE
                 vh.visitationTypeTextView.visibility = View.GONE
+                if (PRGDataModel.getInstance().tblPRGCompletedVisitations[0].recordid > -1){
+                    if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.visitationid==visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID }.isNotEmpty()){
+                        vh.visitationTypeValueTextView.visibility = View.VISIBLE
+                        vh.visitationTypeTextView.visibility = View.VISIBLE
+                        vh.visitationTypeValueTextView.text = PRGDataModel.getInstance().tblPRGCompletedVisitations.filter {s->s.visitationid==visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID}.sortedByDescending { it.recordid }[0].visitationtype
+                    }
+                }
+
                 //visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode,true,"")
+//                    getFacilityPRGData(true)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].BusinessName
@@ -786,15 +1071,16 @@ class VisitationPlanningFragment : Fragment() {
 
     fun launchNextAction(isCompleted : Boolean){
         if (isCompleted) {
-            if ((activity as MainActivity).checkPermission()) {
-                (activity as MainActivity).generateAndOpenPDF()
-            } else {
-                if (!(activity as MainActivity).checkPermission()) {
-                    (activity as MainActivity).requestPermissionAndContinue();
-                } else {
-                    (activity as MainActivity).generateAndOpenPDF()
-                }
-            }
+//            if ((activity as MainActivity).checkPermission()) {
+//                (activity as MainActivity).generateAndOpenPDF()
+//            } else {
+//                if (!(activity as MainActivity).checkPermission()) {
+//                    (activity as MainActivity).requestPermissionAndContinue();
+//                } else {
+//                    (activity as MainActivity).generateAndOpenPDF()
+//                }
+//            }
+            sendCompletedPDF()
         } else {
             var intent = Intent(context, com.inspection.FormsActivity::class.java)
             startActivity(intent)
@@ -2516,6 +2802,33 @@ class VisitationPlanningFragment : Fragment() {
 
         return jsonObj;
     }
+
+    fun sendCompletedPDF() {
+        var specialistEmail = ApplicationPrefs.getInstance(activity).loggedInUserEmail
+        var email = ApplicationPrefs.getInstance(activity).loggedInUserEmail
+        if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf && PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto.isNotEmpty()) {
+            email = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto
+        }
+
+        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.sendCompletedPDF + Constants.visitationIDForPDF + "&email=${email}&specialistEmail=${specialistEmail}",
+                Response.Listener { response ->
+//                    activity!!.runOnUiThread {
+//                        if (!response.toString().replace(" ","").equals("[]")) {
+//                            PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
+//                        } else {
+//                            var item = PRGVisitationHeader()
+//                            item.recordid=-1
+//                            PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
+//                        }
+//                        launchNextAction(isCompleted)
+//                    }
+                }, Response.ErrorListener {
+            Log.v("Loading PRG Data error", "" + it.message)
+//            launchNextAction(isCompleted)
+            it.printStackTrace()
+        }))
+    }
+
 
     private class VisitationPlanningViewHolder(view: View?) {
         val facilityNameValueTextView: TextView

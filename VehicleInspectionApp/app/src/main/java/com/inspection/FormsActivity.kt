@@ -3,6 +3,7 @@ package com.inspection
 import android.Manifest.permission.*
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
@@ -73,6 +74,10 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     var currentFragment = ""
     var saveRequired = false
     var overrideBackButton = false
+    var imageRepSignature : Bitmap? = null
+    var imageSpecSignature : Bitmap? = null
+    var imageDefSignature : Bitmap? = null
+    var visitationID : String? = ""
     //    var toolbar = findViewById<Toolbar>(R.id.toolbar)
 //    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
 //    var nav_view = findViewById<NavigationView>(R.id.nav_view)
@@ -569,8 +574,10 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     fun generateAndOpenPDF() {
         createPDF(this)
-        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForSpecialist.pdf")
-        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
+//        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForSpecialist.pdf")
+//        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
+        val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForSpecialist.pdf")
+        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForShop.pdf")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
