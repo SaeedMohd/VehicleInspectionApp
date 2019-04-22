@@ -26,9 +26,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.MainActivity.Companion.activity
 import com.inspection.R.id.drawer_layout
+import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Constants
 import com.inspection.Utils.Utility
 import com.inspection.Utils.createPDF
@@ -73,6 +77,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     var currentFragment = ""
     var saveRequired = false
+    var saveVisitedScreensRequired = false
     var overrideBackButton = false
     var imageRepSignature : Bitmap? = null
     var imageSpecSignature : Bitmap? = null
@@ -141,6 +146,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             if (alphaBackgroundForDialogs != null) alphaBackgroundForDialogs.visibility = View.GONE
             if (alphaBackgroundForAffilliationsDialogs != null) alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
             if (defeciencyCard != null) defeciencyCard.visibility = View.GONE
+            if (defeciencyCardEdit != null) defeciencyCardEdit.visibility = View.GONE
             if (signatureDialog != null) signatureDialog.visibility = View.GONE
             if (affiliationsCard != null) affiliationsCard.visibility = View.GONE
             if (edit_affiliationsCard != null) edit_affiliationsCard.visibility = View.GONE
@@ -162,9 +168,39 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             overrideBackButton = false
         } else if (preventNavigation()) {
             Utility.showSaveOrCancelAlertDialog(this)
+        } else if (saveVisitedScreensRequired) {
+            var cancelProgress = false
+            var alertBuilder = AlertDialog.Builder(this);
+            alertBuilder.setCancelable(true);
+            alertBuilder.setTitle("Permission Required")
+            alertBuilder.setMessage("Do you want to save the visited screens ?");
+            alertBuilder.setPositiveButton("YES") { dialog, which ->
+                updateVisitationProgress(false)
+            }
+            alertBuilder.setNegativeButton("NO") { dialog, which ->
+                updateVisitationProgress(true)
+            }
+            val alert = alertBuilder.create();
+            alert.show();
         } else {
             super.onBackPressed()
         }
+    }
+
+    fun updateVisitationProgress(cancel : Boolean) {
+        var strUrl = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "&clubCode="+FacilityDataModel.getInstance().clubCode+"&sessionId="+ ApplicationPrefs.getInstance(activity).sessionID+"&facAnnualInspectionMonth="+FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth+"&inspectionCycle="+FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle+"&userId="+ ApplicationPrefs.getInstance(activity).loggedInUserID+"&visitedScreens="+IndicatorsDataModel.getInstance().getVisitedScreen()+"&visitationType="+FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType +"&cancelled="
+        if (cancel)
+            strUrl += "1"
+        else
+            strUrl += "0"
+        Log.v("Mark In Progress -> ",Constants.saveVisitedScreens+strUrl)
+        Volley.newRequestQueue(this).add(StringRequest(Request.Method.GET, Constants.saveVisitedScreens+strUrl,
+                Response.Listener { response ->
+                    super.onBackPressed()
+                }, Response.ErrorListener {
+            Log.v("Mark Visitation", "As In Progress Failed --> " + it.message)
+            it.printStackTrace()
+        }))
     }
 
     public fun refreshMenuIndicators() { // Method used to validate that business rules was fulfilled for each screen
@@ -254,7 +290,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     public fun refreshMenuIndicatorsForVisitedScreens() { // Method used to validate all screens were visited
         var navigationMenu = nav_view.menu
         var indicatorImage: ImageView;
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) {
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency) {
             indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
             indicatorImage.visibility = View.GONE
             indicatorImage = (navigationMenu.findItem(R.id.visitation).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
@@ -287,7 +323,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         if (IndicatorsDataModel.getInstance().validateAllScreensVisited())
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else {
-            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != VisitationTypes.AdHoc) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != VisitationTypes.AdHoc && FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != VisitationTypes.Deficiency) {
                 indicatorImage.setBackgroundResource(R.drawable.red_button_background)
             }
         }
@@ -371,6 +407,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     toolbar.title = "Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
+                    saveVisitedScreensRequired = true
                     currentFragment = fragmentsNames.Visitation.toString()
                     var fragment = FragmentVisitation()
                     supportFragmentManager
@@ -387,6 +424,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
+                    saveVisitedScreensRequired = true
                     currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
                     var fragment = FacilityGroupFragment()
                     supportFragmentManager
@@ -402,6 +440,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
+                    saveVisitedScreensRequired = true
                     toolbar.title = "Scope of Services- " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Scope of Services- " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false

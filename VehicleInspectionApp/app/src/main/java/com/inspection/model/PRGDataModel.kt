@@ -25,4 +25,5 @@ class PRGDataModel {
     var tblPRGLogChanges = ArrayList<PRGLogChanges>()
     var tblPRGVisitationHeader= ArrayList<PRGVisitationHeader>()
     var tblPRGCompletedVisitations= ArrayList<PRGCompletedVisitations>()
+    var tblPRGVisitationsLog= ArrayList<PRGVisitationsLog>()
 }

@@ -114,7 +114,7 @@ class IndicatorsDataModel {
         tblScopeOfServices.add(0,SoS)
         var Def = TblDeffeciencies()
         Def.Deffeciency=false;
-        Def.visited =false;
+        Def.visited =true;
         tblDeffeciencies.add(0,Def)
         var Complaints = TblComplaints()
         Complaints.Complaints=true;
@@ -201,16 +201,40 @@ class IndicatorsDataModel {
         visitedScreens += if (tblScopeOfServices[0].VehiclesVisited) "1" else "0"
         visitedScreens += if (tblScopeOfServices[0].AffiliationsVisited) "1" else "0"
         visitedScreens += if (tblDeffeciencies[0].visited) "1" else "0"
-        visitedScreens += if (tblComplaints[0].visited) "1" else "0"
-        visitedScreens += if (tblBilling[0].BillingPlanVisited) "1" else "0"
-        visitedScreens += if (tblBilling[0].BillingVisited) "1" else "0"
-        visitedScreens += if (tblBilling[0].PaymentsVisited) "1" else "0"
-        visitedScreens += if (tblBilling[0].VendorRevenueVisited) "1" else "0"
-        visitedScreens += if (tblBilling[0].BillingHistoryVisited) "1" else "0"
-        visitedScreens += if (tblBilling[0].BillingAdjustmentsVisited) "1" else "0"
-        visitedScreens += if (tblSurveys[0].visited) "1" else "0"
-        visitedScreens += if (tblPhotos[0].visited) "1" else "0"
+        visitedScreens += if (tblComplaints[0].visited) "1" else "1"
+        visitedScreens += if (tblBilling[0].BillingPlanVisited) "1" else "1"
+        visitedScreens += if (tblBilling[0].BillingVisited) "1" else "1"
+        visitedScreens += if (tblBilling[0].PaymentsVisited) "1" else "1"
+        visitedScreens += if (tblBilling[0].VendorRevenueVisited) "1" else "1"
+        visitedScreens += if (tblBilling[0].BillingHistoryVisited) "1" else "1"
+        visitedScreens += if (tblBilling[0].BillingAdjustmentsVisited) "1" else "1"
+        visitedScreens += if (tblSurveys[0].visited) "1" else "1"
+        visitedScreens += if (tblPhotos[0].visited) "1" else "1"
         return visitedScreens
+    }
+
+    fun markVisitedScreen(visitedScreens : String)  {
+        tblVisitation[0].visited = visitedScreens.substring(0,1)=="1"
+        tblFacility[0].GeneralInfoVisited = visitedScreens.substring(1,2)=="1"
+        tblFacility[0].RSPVisited = visitedScreens.substring(2,3)=="1"
+        tblFacility[0].LocationVisited = visitedScreens.substring(3,4)=="1"
+        tblFacility[0].PersonnelVisited = visitedScreens.substring(4,5)=="1"
+        tblScopeOfServices[0].GeneralInfoVisited = visitedScreens.substring(5,6)=="1"
+        tblScopeOfServices[0].VehicleServicesVisited = visitedScreens.substring(6,7)=="1"
+        tblScopeOfServices[0].ProgramsVisited = visitedScreens.substring(7,8)=="1"
+        tblScopeOfServices[0].FacilityServicesVisited = visitedScreens.substring(8,9)=="1"
+        tblScopeOfServices[0].VehiclesVisited = visitedScreens.substring(9,10)=="1"
+        tblScopeOfServices[0].AffiliationsVisited = visitedScreens.substring(10,11)=="1"
+        tblDeffeciencies[0].visited = visitedScreens.substring(11,12)=="1"
+        tblComplaints[0].visited  = visitedScreens.substring(12,13)=="1"
+        tblBilling[0].BillingPlanVisited= visitedScreens.substring(13,14)=="1"
+        tblBilling[0].BillingVisited = visitedScreens.substring(14,15)=="1"
+        tblBilling[0].PaymentsVisited = visitedScreens.substring(15,16)=="1"
+        tblBilling[0].VendorRevenueVisited = visitedScreens.substring(16,17)=="1"
+        tblBilling[0].BillingHistoryVisited = visitedScreens.substring(17,18)=="1"
+        tblBilling[0].BillingAdjustmentsVisited = visitedScreens.substring(18,19)=="1"
+        tblSurveys[0].visited = visitedScreens.substring(19,20)=="1"
+        tblPhotos[0].visited = visitedScreens.substring(20)=="1"
     }
 
     fun validateAllScreensVisited() : Boolean {
@@ -429,7 +453,7 @@ class IndicatorsDataModel {
     }
 
     fun validateDeffeciencyVisited() : Boolean{
-        return FacilityDataModel.getInstance().tblDeficiency.filter { s->s.ClearedDate.isNullOrEmpty() }.isEmpty()
+        return true //FacilityDataModel.getInstance().tblDeficiency.filter { s->s.ClearedDate.isNullOrEmpty() }.isEmpty()
 //        tblDeffeciencies[0].visited
 
     }
@@ -438,7 +462,7 @@ class IndicatorsDataModel {
         var isValid = true
 
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType != null) {
-            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc) || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Deficiency)) {
             } else {
                 if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature == null) isValid = false
             }

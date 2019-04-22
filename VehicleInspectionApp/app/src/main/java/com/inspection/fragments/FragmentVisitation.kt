@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
 import android.text.TextWatcher
@@ -94,17 +95,19 @@ class FragmentVisitation : Fragment() {
         fillTrackingData()
         IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
 
+
 //        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
         (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
-
-        markVisitationInProgress()
+        if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.isEmpty()) {
+            markVisitationInProgress()
+        }
     }
 
 
     fun markVisitationInProgress() { /// Mark visitation as In Progress
-        var strUrl = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "&clubCode="+FacilityDataModel.getInstance().clubCode+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&facAnnualInspectionMonth="+FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth+"&inspectionCycle="+FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle+"&userId="+ApplicationPrefs.getInstance(activity).loggedInUserID+"&visitedScreens="+IndicatorsDataModel.getInstance().getVisitedScreen()+"&visitationtype="+FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType +"&cancelled=0"
+        var strUrl = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "&clubCode="+FacilityDataModel.getInstance().clubCode+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&facAnnualInspectionMonth="+FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth+"&inspectionCycle="+FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle+"&userId="+ApplicationPrefs.getInstance(activity).loggedInUserID+"&visitedScreens="+IndicatorsDataModel.getInstance().getVisitedScreen()+"&visitationType="+FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType +"&cancelled=0"
         Log.v("Mark In Progress -> ",Constants.saveVisitedScreens+strUrl)
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.saveVisitedScreens+strUrl,
                 Response.Listener { response ->
@@ -194,6 +197,7 @@ class FragmentVisitation : Fragment() {
         dataChangedYesRadioButton.isClickable = false
 
         adhocVisitationType.isEnabled = false
+        defVisitationType.isEnabled = false
 
         dateOfVisitationButton.isClickable = false
         dataChangedNoRadioButton.isClickable = false
@@ -243,6 +247,12 @@ class FragmentVisitation : Fragment() {
                 visitationReasonDropListId.setSelection(0, true)
                 visitationReasonDropListId.isEnabled = true
                 visitationReasonDropListId.isClickable = true
+                completeButton.isEnabled = true
+            } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Deficiency)) {
+                defVisitationType.isChecked = true
+                visitationReasonDropListId.setSelection(4, true)
+                visitationReasonDropListId.isEnabled = false
+                visitationReasonDropListId.isClickable = false
                 completeButton.isEnabled = true
             }
         }
@@ -347,6 +357,13 @@ class FragmentVisitation : Fragment() {
                 emailPdfCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf
                 waiverCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments)
                 emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
+                if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.equals("0")) {
+                    staffTrainingProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].stafftraining)
+                    qualityControlProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].qualitycontrol)
+                    aarSignEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].aarsigns)
+                    certificateOfApprovalEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].certificateofapproval)
+                    memberBenefitsPosterEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].memberbenefitposter)
+                }
             } else if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
                 waiveVisitationCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
                 emailPdfCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility
@@ -354,6 +371,11 @@ class FragmentVisitation : Fragment() {
                 if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
                     emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
                 }
+                staffTrainingProcessEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining)
+                qualityControlProcessEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl)
+                aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
+                certificateOfApprovalEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval)
+                memberBenefitsPosterEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster)
             }
 
 
@@ -376,6 +398,61 @@ class FragmentVisitation : Fragment() {
             } else {
                 Utility.showValidationAlertDialog(activity, "Please fill all required fields")
             }
+        }
+
+
+        saveButton.setOnClickListener {
+            var visitationID = 0
+            val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+            val clubCode =FacilityDataModel.getInstance().clubCode
+            val insertDate = Date().toApiSubmitFormat()
+            val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+            val updateDate = Date().toApiSubmitFormat()
+            val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+            val facilityRep = facilityRepresentativesSpinner.selectedItem.toString()
+            val automotiveSpecialist = if (automotiveSpecialistSpinner.selectedItem.toString().contains("Select")) "" else automotiveSpecialistSpinner.selectedItem.toString()
+            val aarSign = if (aarSignEditText.text.isNullOrEmpty()) "" else aarSignEditText.text
+            val qa = if (qualityControlProcessEditText.text.isNullOrEmpty()) "" else qualityControlProcessEditText.text
+            val staffTraining = if (staffTrainingProcessEditText.text.isNullOrEmpty()) "" else staffTrainingProcessEditText.text
+            val memberBenefits = if (memberBenefitsPosterEditText.text.isNullOrEmpty()) "" else memberBenefitsPosterEditText.text
+            val certificateOfApproval = if (certificateOfApprovalEditText.text.isNullOrEmpty()) "" else certificateOfApprovalEditText.text
+            var visitationType = ""
+            if (annualVisitationType.isChecked) {
+                visitationType = VisitationTypes.Annual.toString()
+            } else if (quarterlyVisitationType.isChecked) {
+                visitationType = VisitationTypes.Quarterly.toString()
+            } else if (adhocVisitationType.isChecked) {
+                visitationType = VisitationTypes.AdHoc.toString()
+            } else if (defVisitationType.isChecked) {
+                visitationType = VisitationTypes.Deficiency.toString()
+            }
+            progressBarTextVal.text = "Saving ..."
+            dialogueLoadingView.visibility = View.VISIBLE
+            var urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&automotiveSpecialist="+automotiveSpecialist+"&visitationId="+visitationID
+            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsDataProgress + urlString,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread {
+                            Log.v("VT RESPONSE ||| ",response.toString())
+                            if (response.toString().contains("Success",false)) {
+                                (activity as FormsActivity).saveRequired = false
+                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                                Utility.showMessageDialog(activity,"Confirmation ...", "Visitation Data Saved Successfully")
+                                (activity as FormsActivity).saveVisitedScreensRequired = false
+                                IndicatorsDataModel.getInstance().resetAllVisitedFlags()
+                                cancelButton.isEnabled = false
+                                dialogueLoadingView.visibility = View.GONE
+                                progressBarTextVal.text = "Loading ..."
+                            } else {
+                                dialogueLoadingView.visibility = View.GONE
+                                progressBarTextVal.text = "Loading ..."
+                                Utility.showSubmitAlertDialog(activity,false,"Error saving Visitation Details")
+                            }
+                        }
+                    }, Response.ErrorListener {
+                dialogueLoadingView.visibility = View.GONE
+                progressBarTextVal.text = "Loading ..."
+                Utility.showSubmitAlertDialog(activity,false,"Error saving Visitation Details (Error: "+ it.message+" )")
+            }))
         }
 
 
@@ -498,7 +575,7 @@ class FragmentVisitation : Fragment() {
                 requestedSignature.representative -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = bitmap
                     (activity as FormsActivity).imageRepSignature = bitmap
-                    saveBmpAsFile(bitmap,"Rep")
+//                    saveBmpAsFile(bitmap,"Rep")
                     if (!isEmpty) {
                         facilityRepresentativeSignatureButton.text = "Edit Signature"
                         facilityRepresentativeSignatureImageView.setImageBitmap(bitmap)
@@ -513,7 +590,7 @@ class FragmentVisitation : Fragment() {
                 requestedSignature.specialist -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = bitmap
                     (activity as FormsActivity).imageSpecSignature = bitmap
-                    saveBmpAsFile(bitmap,"Spec")
+//                    saveBmpAsFile(bitmap,"Spec")
                     if (!isEmpty) {
                         automotiveSpecialistSignatureButton.text = "Edit Signature"
                         automotiveSpecialistSignatureImageView.setImageBitmap(bitmap)
@@ -528,7 +605,7 @@ class FragmentVisitation : Fragment() {
                 requestedSignature.representativeDeficiency -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature = bitmap
                     (activity as FormsActivity).imageDefSignature = bitmap
-                    saveBmpAsFile(bitmap,"Def")
+//                    saveBmpAsFile(bitmap,"Def")
                     if (!isEmpty) {
                         facilityRepresentativeDeficienciesSignatureButton.text = "Edit Signature"
                         facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
@@ -881,8 +958,10 @@ class FragmentVisitation : Fragment() {
             visitationType = VisitationTypes.Annual.toString()
         } else if (quarterlyVisitationType.isChecked) {
             visitationType = VisitationTypes.Quarterly.toString()
-        } else {
+        } else if (adhocVisitationType.isChecked) {
             visitationType = VisitationTypes.AdHoc.toString()
+        } else if (defVisitationType.isChecked) {
+            visitationType = VisitationTypes.Deficiency.toString()
         }
 
         progressBarTextVal.text = "Saving ..."
@@ -919,6 +998,7 @@ class FragmentVisitation : Fragment() {
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments = waiverCommentsEditText.text.toString()
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation = waiveVisitationCheckBox.isChecked
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid = visitationID.toString()
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid
                                                 if ((activity as FormsActivity).checkPermission()) {
                                                     (activity as FormsActivity).generateAndOpenPDF()
                                                 } else {
@@ -931,14 +1011,30 @@ class FragmentVisitation : Fragment() {
 
                                                 (activity as FormsActivity).saveRequired = false
                                                 (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
-                                                Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
+                                                (activity as FormsActivity).saveVisitedScreensRequired = false
                                                 IndicatorsDataModel.getInstance().resetAllVisitedFlags()
-                                                if (visitationType.equals(VisitationTypes.AdHoc)) {
+                                                if (visitationType.equals(VisitationTypes.AdHoc) || visitationType.equals(VisitationTypes.Deficiency)) {
                                                     completeButton.isEnabled = true
                                                 } else {
                                                     completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
                                                 }
                                                 cancelButton.isEnabled = false
+                                                Handler().postDelayed({
+                                                    progressBarTextVal.text = "Generating Visitation PDFs ..."
+                                                    Handler().postDelayed({
+                                                        progressBarTextVal.text = "Sending Visitation PDFs ..."
+                                                        Handler().postDelayed({
+                                                            progressBarTextVal.text = "Finalizing completion process ..."
+                                                            Handler().postDelayed({
+                                                                dialogueLoadingView.visibility = View.GONE
+                                                                progressBarTextVal.text = "Loading ..."
+                                                                Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
+                                                            }, 1500)
+                                                        }, 1500)
+                                                    }, 1500)
+                                                }, 1500)
+
+
 
                                             } else {
                                             dialogueLoadingView.visibility = View.GONE
@@ -952,8 +1048,8 @@ class FragmentVisitation : Fragment() {
                                     progressBarTextVal.text = "Loading ..."
                                     Utility.showSubmitAlertDialog(activity,false,"Visitation Details (Error: "+it.message+" )")
                                 }))
-                            dialogueLoadingView.visibility = View.GONE
-                            progressBarTextVal.text = "Loading ..."
+//                            dialogueLoadingView.visibility = View.GONE
+//                            progressBarTextVal.text = "Loading ..."
                         } else {
                             dialogueLoadingView.visibility = View.GONE
                             progressBarTextVal.text = "Loading ..."
@@ -1101,7 +1197,7 @@ class FragmentVisitation : Fragment() {
         waiverCommentsEditText.setError("null")
         waiversSignatureButton.setError("null")
         emailEditText.setError("null")
-        if (adhocVisitationType.isChecked) {
+        if (adhocVisitationType.isChecked || defVisitationType.isChecked ) {
             if (visitationReasonDropListId.selectedItemPosition==0) {
                 isInputValid = false
                 visitationReasonTextView.setError("Required field")

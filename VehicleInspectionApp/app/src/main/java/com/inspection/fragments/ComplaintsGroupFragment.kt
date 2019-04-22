@@ -90,7 +90,7 @@ class ComplaintsGroupFragment : Fragment() {
 
 
     fun refreshTabIndicators() {
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblComplaints[0].visited) compTitle.setTextColor(Color.parseColor("#26C3AA")) else compTitle.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblComplaints[0].visited) compTitle.setTextColor(Color.parseColor("#26C3AA")) else compTitle.setTextColor(Color.parseColor("#A42600"))
     }
 
     /**

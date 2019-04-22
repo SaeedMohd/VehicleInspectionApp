@@ -94,6 +94,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Ad Hoc" />
+
+                            <CheckBox
+                                android:id="@+id/defVisitationType"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Deficiency" />
                         </RadioGroup>
 
                     </RelativeLayout>
@@ -944,14 +950,14 @@
                         android:text="Cancel"
                         />
 
-                    <!--<Button-->
-                        <!--android:id="@+id/saveButton"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="25dp"-->
-                        <!--android:layout_marginRight="10dp"-->
-                        <!--android:background="@drawable/green_background_button"-->
-                        <!--android:text="Save"-->
-                        <!--android:textColor="@color/white" />-->
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/green_background_button"
+                        android:text="Save"
+                        android:textColor="@color/white" />
 
                     <Button
                         android:id="@+id/completeButton"

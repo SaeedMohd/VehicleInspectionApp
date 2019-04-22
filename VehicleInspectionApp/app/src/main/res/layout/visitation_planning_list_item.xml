@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:minHeight="100dp"
         tools:cardElevation="5dp"
+        android:id="@+id/listBkg"
         android:layout_margin="10dp"
         >
             <GridLayout
@@ -21,6 +22,7 @@
                 android:minHeight="100dp"
                 android:rowCount="3"
                 android:columnCount="6"
+                android:visibility="gone"
                 android:padding="15dp">
    </GridLayout>
             <TableLayout

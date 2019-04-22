@@ -79,7 +79,7 @@ class TblTimezoneType {
 }
 
 enum class VisitationTypes {
-    Annual, Quarterly, AdHoc
+    Annual, Quarterly, AdHoc, Deficiency
 }
 
 enum class VisitationStatus {
@@ -610,10 +610,15 @@ class PRGVisitationHeader {
     var emailpdf = false
     var emailto = ""
     var waivevisitation = false
+    var visitationid = ""
     var waivecomments = ""
     var facilityrep = ""
     var automotivespecialist = ""
-    var visitationid = ""
+    var stafftraining = ""
+    var qualitycontrol = ""
+    var aarsigns = ""
+    var certificateofapproval = ""
+    var memberbenefitposter = ""
 }
 
 class PRGCompletedVisitations {
@@ -624,4 +629,20 @@ class PRGCompletedVisitations {
     var visitationid = ""
     var completiondate = ""
     var completionmonth = 0
+}
+
+class PRGVisitationsLog {
+    var recordid = 0
+    var facid = 0
+    var clubcode = 0
+    var visitationtype = ""
+    var sessionid = ""
+    var changedate = ""
+    var changemonth = 0
+    var facannualinspectionmonth = 0
+    var inspectioncycle=""
+    var completed = false
+    var cancelled = false
+    var userid = ""
+    var visitedscreens = ""
 }

@@ -91,6 +91,7 @@ object Constants {
     val getLoggedActions = permanentURL + "getLoggedActions?facNum="
     val getVisitationHeader = permanentURL + "getVisitationHeader?facNum="
     val getPRGCompletedVisitations = permanentURL + "getPRGCompletedVisitations"
+    val getPRGVisitationsLog = permanentURL + "getPRGVisitationsLog"
     val saveVisitedScreens = permanentURL + "saveVisitedScreens?facId="
 
     val sendCompletedPDF = permanentURL + "sendCompletedPDF?visitationID="
@@ -111,6 +112,7 @@ object Constants {
     val UpdateFacilityPersonnelSignerData=permanentURL + "updateFacilityPersonnelSignerData?facNum="
     val UpdateScopeofServiceData =permanentURL + "updateScopeOfServiceData?facNum="
     val UpdateVisitationDetailsData=permanentURL + "updateVisitationDetailsData?facnum="
+    val UpdateVisitationDetailsDataProgress=permanentURL + "updateVisitationDetailsDataProgress?facnum="
     val UpdateVisitationTrackingData=permanentURL + "updateVisitationTrackingData?facnum="
 
     val getSpecialistIdsForClubCode = permanentURL + "getSpecialistsForClubCode?"
