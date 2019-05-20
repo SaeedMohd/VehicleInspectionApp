@@ -722,7 +722,7 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
     table.addCell(addCell("Visitation Type: " ,1,false));
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype,1,false));
     table.addCell(addCell("Date of Visitation: ",1,false));
-    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].DatePerformed.apiToAppFormatMMDDYYYY(),1,false));
+    table.addCell(addCell(Date().toAppFormatMMDDYYYY(),1,false));
     table.addCell(addCell("Data Changes Made: "+ if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes" ,4,false));
     return table
 }
@@ -735,7 +735,7 @@ private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?) : PdfPTable
     table.addCell(addCell("Type of Inspection: " + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype,1,false));
     table.addCell(addCell("Month Due: "+ FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth.toInt().monthNoToName(),1,false));
     table.addCell(addCell("Changes Made: "+if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes" ,1,false))
-    table.addCell(addCell("Date of Visitation: "+ FacilityDataModel.getInstance().tblVisitationTracking[0].DatePerformed.apiToAppFormatMMDDYYYY(),1,false));
+    table.addCell(addCell("Date of Visitation: "+ Date().toAppFormatMMDDYYYY(),1,false));
     table.addCell(addCell("Facility Representative's Name: ",1,false));
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));

@@ -1015,13 +1015,13 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
 
-                view?.setOnClickListener {
-                    var strData = "Pending List:"
-                    strData += "\n--------------------------"
-                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth
-                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle
-                    Utility.showMessageDialog(context,"Visitation Data",strData)
-                }
+//                view?.setOnClickListener {
+//                    var strData = "Pending List:"
+//                    strData += "\n--------------------------"
+//                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth
+//                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle
+//                    Utility.showMessageDialog(context,"Visitation Data",strData)
+//                }
                 val visitationTypeAndStatus = determineVisitationTypeAndStatus(visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].FacID.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt())
                 vh.visitationTypeValueTextView.text = visitationTypeAndStatus.first.toString()
                 if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
@@ -1041,8 +1041,14 @@ class VisitationPlanningFragment : Fragment() {
                     vh.initialContractDateTextView.text = "Last Visitation Date:"
                     vh.initialContractDateValueTextView.text = PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.visitationtype.equals(visitationTypeAndStatus.first.toString())}.sortedByDescending{it.completiondate}[0].completiondate.apiToAppFormatMMDDYYYY()
                 } else {
-                    vh.initialContractDateTextView.text = "Initial Contract Date:"
-                    vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+
+                    if (visitationPlanningModelList.completedVisitationsArray.filter { s->s.FACNo==visitationPlanningModelList.pendingVisitationsArray[position].FACNo && s.ClubCode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode}.isNotEmpty()) {
+                        vh.initialContractDateTextView.text = "Last Visitation Date:"
+                        vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray.filter { s->s.FACNo==visitationPlanningModelList.pendingVisitationsArray[position].FACNo && s.ClubCode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode}[0].DatePerformed.apiToAppFormatMMDDYYYY()
+                    } else {
+                        vh.initialContractDateTextView.text = "Initial Contract Date:"
+                        vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+                    }
                 }
 
                 vh.loadBtn.setOnClickListener({
@@ -1059,14 +1065,14 @@ class VisitationPlanningFragment : Fragment() {
                 vh.loadBtn.text = "SEND PDF"
                 visitationID = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
                 vh.loadBtn.tag = visitationID.toInt()
-                view?.setOnClickListener {
-                    var strData = "Completed List:"
-                    strData += "\n------------------------------"
-                    strData += "\nVisitation ID --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
-                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
-                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].InspectionCycle
-                    Utility.showMessageDialog(context,"Visitation Data",strData)
-                }
+//                view?.setOnClickListener {
+//                    var strData = "Completed List:"
+//                    strData += "\n------------------------------"
+//                    strData += "\nVisitation ID --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
+//                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
+//                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].InspectionCycle
+//                    Utility.showMessageDialog(context,"Visitation Data",strData)
+//                }
                 vh.visitationTypeValueTextView.visibility = View.GONE
                 vh.visitationTypeTextView.visibility = View.GONE
                 if (PRGDataModel.getInstance().tblPRGCompletedVisitations[0].recordid > -1){
@@ -1124,14 +1130,14 @@ class VisitationPlanningFragment : Fragment() {
 //                    vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
 //                }
 
-                view?.setOnClickListener {
-                    var strData = "Deficiency List:"
-                    strData += "\n------------------------------"
-                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FacilityAnnualInspectionMonth
-                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].InspectionCycle
-                    strData += "\nDue Date --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].DueDate.apiToAppFormatMMDDYYYY()
-                    Utility.showMessageDialog(context,"Visitation Data",strData)
-                }
+//                view?.setOnClickListener {
+//                    var strData = "Deficiency List:"
+//                    strData += "\n------------------------------"
+//                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FacilityAnnualInspectionMonth
+//                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].InspectionCycle
+//                    strData += "\nDue Date --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].DueDate.apiToAppFormatMMDDYYYY()
+//                    Utility.showMessageDialog(context,"Visitation Data",strData)
+//                }
                 vh.loadBtn.setOnClickListener {
                     getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode,false,VisitationTypes.Deficiency)
                 }

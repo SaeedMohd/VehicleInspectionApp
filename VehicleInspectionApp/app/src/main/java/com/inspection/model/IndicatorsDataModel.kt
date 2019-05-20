@@ -225,14 +225,21 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].FacilityServicesVisited = visitedScreens.substring(8,9)=="1"
         tblScopeOfServices[0].VehiclesVisited = visitedScreens.substring(9,10)=="1"
         tblScopeOfServices[0].AffiliationsVisited = visitedScreens.substring(10,11)=="1"
-        tblDeffeciencies[0].visited = visitedScreens.substring(11,12)=="1"
+//        tblDeffeciencies[0].visited = visitedScreens.substring(11,12)=="1"
+        tblDeffeciencies[0].visited = true
         tblComplaints[0].visited  = visitedScreens.substring(12,13)=="1"
-        tblBilling[0].BillingPlanVisited= visitedScreens.substring(13,14)=="1"
-        tblBilling[0].BillingVisited = visitedScreens.substring(14,15)=="1"
-        tblBilling[0].PaymentsVisited = visitedScreens.substring(15,16)=="1"
-        tblBilling[0].VendorRevenueVisited = visitedScreens.substring(16,17)=="1"
-        tblBilling[0].BillingHistoryVisited = visitedScreens.substring(17,18)=="1"
-        tblBilling[0].BillingAdjustmentsVisited = visitedScreens.substring(18,19)=="1"
+//        tblBilling[0].BillingPlanVisited= visitedScreens.substring(13,14)=="1"
+//        tblBilling[0].BillingVisited = visitedScreens.substring(14,15)=="1"
+//        tblBilling[0].PaymentsVisited = visitedScreens.substring(15,16)=="1"
+//        tblBilling[0].VendorRevenueVisited = visitedScreens.substring(16,17)=="1"
+//        tblBilling[0].BillingHistoryVisited = visitedScreens.substring(17,18)=="1"
+//        tblBilling[0].BillingAdjustmentsVisited = visitedScreens.substring(18,19)=="1"
+        tblBilling[0].BillingPlanVisited= true
+        tblBilling[0].BillingVisited = true
+        tblBilling[0].PaymentsVisited = true
+        tblBilling[0].VendorRevenueVisited = true
+        tblBilling[0].BillingHistoryVisited = true
+        tblBilling[0].BillingAdjustmentsVisited = true
         tblSurveys[0].visited = visitedScreens.substring(19,20)=="1"
         tblPhotos[0].visited = visitedScreens.substring(20)=="1"
     }

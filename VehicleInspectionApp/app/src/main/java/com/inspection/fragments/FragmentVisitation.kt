@@ -357,12 +357,16 @@ class FragmentVisitation : Fragment() {
                 emailPdfCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf
                 waiverCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments)
                 emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
-                if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.equals("0")) {
-                    staffTrainingProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].stafftraining)
-                    qualityControlProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].qualitycontrol)
-                    aarSignEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].aarsigns)
-                    certificateOfApprovalEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].certificateofapproval)
-                    memberBenefitsPosterEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].memberbenefitposter)
+                if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.isNullOrEmpty()){
+
+                } else {
+                    if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.equals("0")) {
+                        staffTrainingProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].stafftraining)
+                        qualityControlProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].qualitycontrol)
+                        aarSignEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].aarsigns)
+                        certificateOfApprovalEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].certificateofapproval)
+                        memberBenefitsPosterEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].memberbenefitposter)
+                    }
                 }
             } else if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
                 waiveVisitationCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
@@ -1193,10 +1197,10 @@ class FragmentVisitation : Fragment() {
         automotiveSpecialistSignatureButton.setError(null)
         facilityRepresentativeSignatureButton.setError(null)
         facilityRepresentativeTextView.setError(null)
-        visitationReasonTextView.setError("null")
-        waiverCommentsEditText.setError("null")
-        waiversSignatureButton.setError("null")
-        emailEditText.setError("null")
+        visitationReasonTextView.setError(null)
+        waiverCommentsEditText.setError(null)
+        waiversSignatureButton.setError(null)
+        emailEditText.setError(null)
         if (adhocVisitationType.isChecked || defVisitationType.isChecked ) {
             if (visitationReasonDropListId.selectedItemPosition==0) {
                 isInputValid = false
