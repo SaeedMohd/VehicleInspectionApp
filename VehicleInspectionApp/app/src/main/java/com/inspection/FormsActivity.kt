@@ -90,6 +90,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forms)
         setSupportActionBar(toolbar)
+        val theIntent = getIntent(); // gets the previously created intent
+        val createNewVisitation = theIntent.getBooleanExtra("createNewVisitation",true)
 
         validationProblemFoundForOtherFragments = true
 
@@ -119,16 +121,17 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         refreshMenuIndicatorsForVisitedScreens()
 //        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) {
-//            navigationMenu.findItem(R.id.visitation).isEnabled = false
-//            navigationMenu.findItem(R.id.visitation).isVisible = false
-//            currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
-//            this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
-//        }else{
-        navigationMenu.findItem(R.id.visitation).isEnabled = true
-        navigationMenu.findItem(R.id.visitation).isVisible = true
-        currentFragment = fragmentsNames.Visitation.toString()
-        this.onNavigationItemSelected(navigationMenu.findItem(R.id.visitation))
-//        }
+        if (!createNewVisitation){
+            navigationMenu.findItem(R.id.visitation).isEnabled = false
+            navigationMenu.findItem(R.id.visitation).isVisible = false
+            currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
+            this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
+        } else {
+            navigationMenu.findItem(R.id.visitation).isEnabled = true
+            navigationMenu.findItem(R.id.visitation).isVisible = true
+            currentFragment = fragmentsNames.Visitation.toString()
+            this.onNavigationItemSelected(navigationMenu.findItem(R.id.visitation))
+        }
     }
 
     override fun onBackPressed() {

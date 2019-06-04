@@ -535,6 +535,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
     fun launchNextAction(){
             var intent = Intent(context, com.inspection.FormsActivity::class.java)
+            intent.putExtra("createNewVisitation",newVisitationCheckBox.isChecked);
             startActivity(intent)
     }
 

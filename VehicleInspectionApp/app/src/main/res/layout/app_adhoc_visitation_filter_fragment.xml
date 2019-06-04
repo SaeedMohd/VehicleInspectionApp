@@ -150,6 +150,15 @@
                 android:ems="8"
                 />
 
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/newVisitationCheckBox"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/contractStatusTypeSpinner"
+                android:checked="true"
+                android:text="Create New Visitation"/>
+
             <RadioGroup
                 android:id="@+id/contractStatusRadioGroup"
                 android:layout_width="wrap_content"
