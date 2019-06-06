@@ -29,7 +29,16 @@
         <!--app:layout_constraintHorizontal_bias="0.5"-->
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent">-->
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/envText"
+            android:text="PRODUCTION ENVIRONMENT"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:textColor="@color/white"/>
         <EditText
             android:id="@+id/loginEmailEditText"
             android:layout_width="wrap_content"

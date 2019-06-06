@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.widget.ButtonBarLayout
 import com.android.volley.Request
 import com.android.volley.Response
@@ -91,7 +92,19 @@ class LoginActivity : Activity(){
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         activity = this
 
-//        signUpButton!!.setOnClickListener { showRegisterDialog() }
+//        Toast.makeText(this,Constants.permanentURL,Toast.LENGTH_SHORT).show()
+
+        if (BuildConfig.FLAVOR.equals("dev")){
+            envText.visibility = View.VISIBLE
+            envText.text = "DEVELOPMENT ENVIRONMENT"
+        } else if (BuildConfig.FLAVOR.equals("uat")){
+            envText.visibility = View.VISIBLE
+            envText.text = "UAT ENVIRONMENT"
+        } else if (BuildConfig.FLAVOR.equals("production")){
+            envText.visibility = View.GONE
+//            envText.text = "PRODUCTION ENVIRONMENT"
+        }
+
         ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
         ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID)

@@ -1,5 +1,6 @@
 package com.inspection.Utils
 
+import com.inspection.BuildConfig
 import com.inspection.model.FacilityDataModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,7 +13,10 @@ object Constants {
     internal val AUTH_KEY = "wA7By6LqUzWFnrE"
     internal val AUTH_SECRET = "5-cV7pRd-t73fEJ"
     internal val ACCOUNT_KEY = "bk42gqT5SCqr6y1Tuzxp"
-    private val permanentURL = "http://144.217.24.163:5000/"
+    public  val devPort = "5001/"
+    public  val uatPort = "5002/"
+    public val prodPort = "5000/"
+    public var permanentURL = "http://144.217.24.163:" + if (BuildConfig.FLAVOR.equals("dev")) devPort else (if (BuildConfig.FLAVOR.equals("uat")) uatPort else prodPort)
     private val tempURL = "https://dev.facilityappointment.com/ACEAPI.asmx/"
     val VERSION_NUMBER = "1.0"
 
