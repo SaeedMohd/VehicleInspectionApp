@@ -171,7 +171,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             overrideBackButton = false
         } else if (preventNavigation()) {
             Utility.showSaveOrCancelAlertDialog(this)
-        } else if (saveVisitedScreensRequired) {
+        } else if (saveVisitedScreensRequired && !FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
             var cancelProgress = false
             var alertBuilder = AlertDialog.Builder(this);
             alertBuilder.setCancelable(true);
