@@ -105,7 +105,6 @@ class TblVisitationTracking {
     var waiveVisitations = false
     var waiverComments = ""
     var waiverSignature : Bitmap? = null
-
 }
 
 class TblVisitationDetailsData{

@@ -92,7 +92,6 @@ class LoginActivity : Activity(){
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         activity = this
 
-//        Toast.makeText(this,Constants.permanentURL,Toast.LENGTH_SHORT).show()
 
         if (BuildConfig.FLAVOR.equals("dev")){
             envText.visibility = View.VISIBLE

@@ -256,44 +256,44 @@ class FragmentAARAVBilling : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 0.4F
         rowLayoutParam.column = 0
-        rowLayoutParam.height = 30
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.leftMargin = 10
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.height = 30
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 0.6F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.height = 30
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
-        rowLayoutParam3.height = 30
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 0.7F
         rowLayoutParam4.column = 4
-        rowLayoutParam4.height = 30
+        rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 0.7F
         rowLayoutParam5.column = 5
-        rowLayoutParam5.height = 30
+        rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
-        rowLayoutParam6.height = 30
+        rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
 
         val rowLayoutParamRow = TableRow.LayoutParams()
@@ -322,12 +322,6 @@ class FragmentAARAVBilling : Fragment() {
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 18f
                     textView.text = get(it).RevenueSourceName
-//                    try {
-//                        textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
-//                    } catch (e: Exception) {
-//
-//                    }
-
                     tableRow.addView(textView)
 
                     textView = TextView(context)
