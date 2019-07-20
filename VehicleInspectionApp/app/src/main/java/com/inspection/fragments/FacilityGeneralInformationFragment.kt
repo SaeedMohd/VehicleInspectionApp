@@ -272,6 +272,9 @@ class FacilityGeneralInformationFragment : Fragment() {
                 InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
                 inspectionCycleTextViewVal.text = if (tblFacilities[0].InspectionCycle.isNullOrEmpty()) "" else tblFacilities[0].InspectionCycle
                 inspectionMonthsTextViewVal.text = tblFacilities[0].FacilityAnnualInspectionMonth.monthNoToName()
+                manager_textviewVal.text = if (tblFacilityManagers.isNotEmpty()) tblFacilityManagers[0].Manager else ""
+                admin_textviewVal.text = tblFacilities[0].AdminAssistants
+
 //                if (tblFacilities[0].FacilityAnnualInspectionMonth>0) {
 //                    if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
 //                        inspectionCycleTextViewVal.text="1"

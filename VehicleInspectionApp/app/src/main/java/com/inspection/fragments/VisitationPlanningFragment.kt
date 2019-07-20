@@ -334,6 +334,7 @@ class VisitationPlanningFragment : Fragment() {
                     Log.v("test","testtesttest-----------")
                     activity!!.runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
+//                        CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         (0 until facilities.size).forEach {
                             facilityNames.add(facilities[it].facname)

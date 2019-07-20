@@ -1342,6 +1342,161 @@
 
         </TableLayout>
     </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:cardCornerRadius="5dp"
+        android:id="@+id/copyHoursDialog"
+        app:cardElevation="10dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Copy Hours"
+        android:layout_gravity="top|left"
+        android:textSize="18dp"
+        />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:text="Copy"
+        android:id="@+id/copyButtonCV"
+        android:textColor="@color/white"
+        android:background="@drawable/green_background_button"
+        />
+
+
+    <ImageButton
+        android:layout_marginTop="25dp"
+        android:id="@+id/exitCopyDialogeBtnId"
+        android:layout_width="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="20dp"
+        android:background="@drawable/close"
+        android:layout_gravity="top|right"
+        />
+
+
+
+    <TableLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:padding="20dp">
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Copy From:*"
+            android:layout_column="0"
+            android:textStyle="bold"
+            />
+        <Spinner
+            android:id="@+id/fromDaySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="8"
+            android:layout_span="2"
+            android:entries="@array/days"
+            android:layout_column="1"
+            />
+    </TableRow>
+        <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Copy To:*"
+            android:layout_column="0"
+            android:textStyle="bold"
+            />
+        </TableRow>
+        <TableRow>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Sunday"
+                android:id="@+id/toSunCB"
+                android:layout_column="0"
+                android:textStyle="bold"
+                />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Monday"
+                android:id="@+id/toMonCB"
+                android:layout_column="1"
+                android:textStyle="bold"
+                />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Tuesday"
+                android:id="@+id/toTueCB"
+                android:layout_column="2"
+                android:textStyle="bold"
+                />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Wednesday"
+                android:id="@+id/toWedCB"
+                android:layout_column="3"
+                android:textStyle="bold"
+                />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Thursday"
+                android:id="@+id/toThuCB"
+                android:layout_column="4"
+                android:textStyle="bold"
+                />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Friday"
+                android:id="@+id/toFriCB"
+                android:layout_column="5"
+                android:textStyle="bold"
+                />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Saturday"
+                android:id="@+id/toSatCB"
+                android:layout_column="6"
+                android:textStyle="bold"
+                />
+        </TableRow>
+    </TableLayout>
+    </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:layout_width="800dp"
         android:layout_height="wrap_content"

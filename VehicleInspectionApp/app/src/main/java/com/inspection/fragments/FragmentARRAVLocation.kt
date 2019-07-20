@@ -111,6 +111,91 @@ class FragmentARRAVLocation : Fragment() {
         fillOpenHoursTableView()
         fillClosedHoursTableView()
         fillEmailTableView()
+        copyHoursBtn.setOnClickListener {
+            alphaBackgroundForDialogs.visibility = View.VISIBLE
+            copyHoursDialog.visibility = View.VISIBLE
+            (activity as FormsActivity).overrideBackButton = true
+
+            copyButtonCV.setOnClickListener {
+                var openValue = 0
+                var closeValue = 0
+                when (fromDaySpinner.selectedItemPosition) {
+                    0 -> {
+                        openValue = sunOpenSpinner.selectedItemPosition
+                        closeValue = sunCloseSpinner.selectedItemPosition
+                    }
+                    1 -> {
+                        openValue = monOpenSpinner.selectedItemPosition
+                        closeValue = monCloseSpinner.selectedItemPosition
+                    }
+                    2 -> {
+                        openValue = tueOpenSpinner.selectedItemPosition
+                        closeValue = tueCloseSpinner.selectedItemPosition
+                    }
+                    3 -> {
+                        openValue = wedOpenSpinner.selectedItemPosition
+                        closeValue = wedCloseSpinner.selectedItemPosition
+                    }
+                    4 -> {
+                        openValue = thuOpenSpinner.selectedItemPosition
+                        closeValue = thuCloseSpinner.selectedItemPosition
+                    }
+                    5 -> {
+                        openValue = friOpenSpinner.selectedItemPosition
+                        closeValue = friCloseSpinner.selectedItemPosition
+                    }
+                    6 -> {
+                        openValue = satOpenSpinner.selectedItemPosition
+                        closeValue = satCloseSpinner.selectedItemPosition
+                    }
+                }
+                if (toSunCB.isChecked) {
+                    sunOpenSpinner.setSelection(openValue)
+                    sunCloseSpinner.setSelection(closeValue)
+                }
+                if (toMonCB.isChecked) {
+                    monOpenSpinner.setSelection(openValue)
+                    monCloseSpinner.setSelection(closeValue)
+                }
+                if (toTueCB.isChecked) {
+                    tueOpenSpinner.setSelection(openValue)
+                    tueCloseSpinner.setSelection(closeValue)
+                }
+                if (toWedCB.isChecked) {
+                    wedOpenSpinner.setSelection(openValue)
+                    wedCloseSpinner.setSelection(closeValue)
+                }
+                if (toThuCB.isChecked) {
+                    thuOpenSpinner.setSelection(openValue)
+                    thuCloseSpinner.setSelection(closeValue)
+                }
+                if (toFriCB.isChecked) {
+                    friOpenSpinner.setSelection(openValue)
+                    friCloseSpinner.setSelection(closeValue)
+                }
+                if (toSatCB.isChecked) {
+                    satOpenSpinner.setSelection(openValue)
+                    satCloseSpinner.setSelection(closeValue)
+                }
+                exitCopyDialogeBtnId.callOnClick()
+            }
+            fromDaySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    toSunCB.isEnabled = (position!=0)
+                    toMonCB.isEnabled = (position!=1)
+                    toTueCB.isEnabled = (position!=2)
+                    toWedCB.isEnabled = (position!=3)
+                    toThuCB.isEnabled = (position!=4)
+                    toFriCB.isEnabled = (position!=5)
+                    toSatCB.isEnabled = (position!=6)
+                }
+            }
+
+        }
+
 
         IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited = true
         (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA"))
@@ -403,6 +488,13 @@ class FragmentARRAVLocation : Fragment() {
 
         exitAddEmailDialogeBtnId.setOnClickListener({
             addNewEmailDialog.visibility = View.GONE
+            alphaBackgroundForDialogs.visibility = View.GONE
+//            enableAllAddButnsAndDialog()
+            (activity as FormsActivity).overrideBackButton = false
+        })
+
+        exitCopyDialogeBtnId.setOnClickListener({
+            copyHoursDialog.visibility = View.GONE
             alphaBackgroundForDialogs.visibility = View.GONE
 //            enableAllAddButnsAndDialog()
             (activity as FormsActivity).overrideBackButton = false
@@ -894,6 +986,9 @@ class FragmentARRAVLocation : Fragment() {
         strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
+
+
+
 
 
     private fun showLocationDialog(index: Int) {

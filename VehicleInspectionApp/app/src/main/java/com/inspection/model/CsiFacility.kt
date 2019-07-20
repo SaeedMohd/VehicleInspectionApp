@@ -11,6 +11,8 @@ class CsiFacility {
     var applicant = ""
     var nat_facnum = ""
     var aaaappton = ""
+    var admin2name = ""
+    var admin1name = ""
     var valueaddedjoindate = ""
     var wavname = ""
     var numberoftechs = ""
