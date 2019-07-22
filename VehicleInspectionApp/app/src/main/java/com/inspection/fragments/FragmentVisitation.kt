@@ -69,6 +69,17 @@ class FragmentVisitation : Fragment() {
         representative, specialist, representativeDeficiency, waiver
     }
 
+    var waiveVisitationCBPreviousValue = false
+    var  emailPdfCBPreviousValue = false
+    var waiverCommentsPreviousValue = ""
+    var emailEditTextPreviousValue = ""
+    var staffTrainingProcessPreviousValue = ""
+    var qualityControlProcessPreviousValue = ""
+    var aarSignPreviousValue = ""
+    var certificateOfApprovalPreviousValue = ""
+    var memberBenefitsPosterPreviousValue = ""
+
+
     var selectedSignature: requestedSignature? = null
 
     var emailValid = true
@@ -351,35 +362,52 @@ class FragmentVisitation : Fragment() {
 //            }
 
             facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(ApplicationPrefs.getInstance(activity).loggedInUserFullName))
-
             if (PRGDataModel.getInstance().tblPRGVisitationHeader.isNotEmpty()){
                 waiveVisitationCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation
+                waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked
                 emailPdfCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf
+                emailPdfCBPreviousValue = emailPdfCheckBox.isChecked
                 waiverCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments)
+                waiverCommentsPreviousValue = waiverCommentsEditText.text.toString()
                 emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
+                emailEditTextPreviousValue = emailEditText.text.toString()
                 if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.isNullOrEmpty()){
 
                 } else {
                     if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.equals("0")) {
                         staffTrainingProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].stafftraining)
+                        staffTrainingProcessPreviousValue = staffTrainingProcessEditText.text.toString()
                         qualityControlProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].qualitycontrol)
+                        qualityControlProcessPreviousValue = qualityControlProcessEditText.text.toString()
                         aarSignEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].aarsigns)
+                        aarSignPreviousValue = aarSignEditText.text.toString()
                         certificateOfApprovalEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].certificateofapproval)
+                        certificateOfApprovalPreviousValue = certificateOfApprovalEditText.text.toString()
                         memberBenefitsPosterEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].memberbenefitposter)
+                        memberBenefitsPosterPreviousValue = memberBenefitsPosterEditText.text.toString()
                     }
                 }
             } else if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
                 waiveVisitationCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations
+                waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked
                 emailPdfCheckBox.isChecked = FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility
+                emailPdfCBPreviousValue = emailPdfCheckBox.isChecked
                 waiverCommentsEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments)
+                waiverCommentsPreviousValue = waiverCommentsEditText.text.toString()
                 if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
                     emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
                 }
+                emailEditTextPreviousValue = emailEditText.text.toString()
                 staffTrainingProcessEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining)
+                staffTrainingProcessPreviousValue = staffTrainingProcessEditText.text.toString()
                 qualityControlProcessEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl)
+                qualityControlProcessPreviousValue = qualityControlProcessEditText.text.toString()
                 aarSignEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
+                aarSignPreviousValue = aarSignEditText.text.toString()
                 certificateOfApprovalEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval)
+                certificateOfApprovalPreviousValue = certificateOfApprovalEditText.text.toString()
                 memberBenefitsPosterEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster)
+                memberBenefitsPosterPreviousValue = memberBenefitsPosterEditText.text.toString()
             }
 
             if (waiveVisitationCheckBox.isChecked) completeButton.isEnabled = true
@@ -444,6 +472,15 @@ class FragmentVisitation : Fragment() {
                             activity!!.runOnUiThread {
                                 Log.v("VT RESPONSE ||| ", response.toString())
                                 if (response.toString().contains("Success", false)) {
+                                    waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked
+                                    emailPdfCBPreviousValue = emailPdfCheckBox.isChecked
+                                    waiverCommentsPreviousValue = waiverCommentsEditText.text.toString()
+                                    emailEditTextPreviousValue = emailEditText.text.toString()
+                                    staffTrainingProcessPreviousValue = staffTrainingProcessEditText.text.toString()
+                                    qualityControlProcessPreviousValue = qualityControlProcessEditText.text.toString()
+                                    aarSignPreviousValue = aarSignEditText.text.toString()
+                                    certificateOfApprovalPreviousValue = certificateOfApprovalEditText.text.toString()
+                                    memberBenefitsPosterPreviousValue = memberBenefitsPosterEditText.text.toString()
                                     (activity as FormsActivity).saveRequired = false
                                     (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                     Utility.showMessageDialog(activity, "Confirmation ...", "Visitation Data Saved Successfully")
@@ -678,7 +715,7 @@ class FragmentVisitation : Fragment() {
         aarSignEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
-
+                (activity as FormsActivity).saveRequired = true
                 checkMarkChangesDone()
             }
 
@@ -695,7 +732,7 @@ class FragmentVisitation : Fragment() {
         certificateOfApprovalEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
-
+                (activity as FormsActivity).saveRequired = true
                 checkMarkChangesDone()
 
             }
@@ -714,7 +751,7 @@ class FragmentVisitation : Fragment() {
         qualityControlProcessEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
-
+                (activity as FormsActivity).saveRequired = true
                 checkMarkChangesDone()
             }
 
@@ -731,7 +768,7 @@ class FragmentVisitation : Fragment() {
         staffTrainingProcessEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining = p0.toString()
-
+                (activity as FormsActivity).saveRequired = true
                 checkMarkChangesDone()
             }
 
@@ -748,7 +785,7 @@ class FragmentVisitation : Fragment() {
         memberBenefitsPosterEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster = p0.toString()
-
+                (activity as FormsActivity).saveRequired = true
                 checkMarkChangesDone()
             }
 
@@ -765,7 +802,7 @@ class FragmentVisitation : Fragment() {
         waiverCommentsEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments = p0.toString()
-
+                (activity as FormsActivity).saveRequired = true
                 checkMarkChangesDone()
             }
 
@@ -782,7 +819,9 @@ class FragmentVisitation : Fragment() {
 
         emailEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
-                FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
+//                FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
+                (activity as FormsActivity).saveRequired = true
+//                PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf =
                 checkMarkChangesDone()
             }
 
@@ -1108,6 +1147,7 @@ class FragmentVisitation : Fragment() {
 
         emailPdfCheckBox.setOnClickListener {
             emailEditText.isEnabled = emailPdfCheckBox.isChecked
+            (activity as FormsActivity).saveRequired = true
 //            if (emailPdfCheckBox.isChecked) {
 //                emailEditText.isEnabled = true
 //            } else emailEditText.isEnabled = false
@@ -1123,6 +1163,7 @@ class FragmentVisitation : Fragment() {
         waiveVisitationCheckBox.setOnClickListener {
             waiverCommentsEditText.isEnabled = waiveVisitationCheckBox.isChecked
             waiverConditionedEnablingLayout.isEnabled = waiveVisitationCheckBox.isChecked
+            (activity as FormsActivity).saveRequired = true
         }
 
     }
@@ -1310,8 +1351,15 @@ class FragmentVisitation : Fragment() {
                     .setMessage("Are you sure you want to cancel")
                     .setCancelable(false)
                     .setPositiveButton("Yes") { dialog, id ->
-                        // if this button is clicked, close
-                        // current activity
+                        waiveVisitationCheckBox.isChecked = waiveVisitationCBPreviousValue
+                        emailPdfCheckBox.isChecked = emailPdfCBPreviousValue
+                        waiverCommentsEditText.setText(waiverCommentsPreviousValue)
+                        emailEditText.setText(emailEditTextPreviousValue)
+                        staffTrainingProcessEditText.setText(staffTrainingProcessPreviousValue)
+                        qualityControlProcessEditText.setText(qualityControlProcessPreviousValue)
+                        aarSignEditText.setText(aarSignPreviousValue)
+                        certificateOfApprovalEditText.setText(certificateOfApprovalPreviousValue)
+                        memberBenefitsPosterEditText.setText(memberBenefitsPosterPreviousValue)
                         dialog.cancel()
                     }
                     .setNegativeButton("No") { dialog, id ->
