@@ -1948,28 +1948,15 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
-
-
-
-                if (get(it).ContractSigner.equals("true")){
-
-
-
-                    newSignerCheck.isEnabled=false
-                    alreadyContractSignerFound=true
+                if (get(it).ContractSigner) {
+                    newSignerCheck.isEnabled = false
+                    alreadyContractSignerFound = true
                     disablecontractSignerFeilds()
-
-
-
-
-                    }
-
-
+                }
             }
             if (!alreadyContractSignerFound){
                 newSignerCheck.isEnabled=true
-
-
+                disablecontractSignerFeilds()
             }
             newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
 
@@ -2394,12 +2381,12 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         else
             newFirstNameText.setError(null)
 
-        if (newCertNoText.text.toString().isNullOrEmpty()){
-            persn.personnelIsInputsValid=false
-            newCertNoText.setError("required field")
-        }
-        else
-            newCertNoText.setError(null)
+//        if (newCertNoText.text.toString().isNullOrEmpty()){
+//            persn.personnelIsInputsValid=false
+//            newCertNoText.setError("required field")
+//        }
+//        else
+//            newCertNoText.setError(null)
 
         if (newLastNameText.text.toString().isNullOrEmpty()){
 
@@ -2422,15 +2409,17 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         else
             personnelTypeTextViewId.setError(null)
 
+        if (newStartDateBtn.text.toString().contains("SELECT")){
+            persn.personnelIsInputsValid=false
+            newStartDateBtn.setError("required field")
+        }  else
+            newStartDateBtn.setError(null)
 
-
-        if (contractSignatureIsChecked){
+        if (newSignerCheck.isChecked){
 
                 if (newAdd1Text.text.toString().isNullOrEmpty()){
-
                     persn.personnelIsInputsValid=false
                     newAdd1Text.setError("required field")
-
                 }
                 else
                     newAdd1Text.setError(null)
@@ -2556,9 +2545,13 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         else
             edit_personnelTypeTextViewId.setError(null)
 
+        if (edit_newStartDateBtn.text.toString().contains("SELECT")){
+            persn.personnelIsInputsValid=false
+            edit_newStartDateBtn.setError("required field")
+        }  else
+            edit_newStartDateBtn.setError(null)
 
-
-        if (contractSignatureIsChecked){
+        if (edit_newSignerCheck.isChecked){
 
                 if (edit_newAdd1Text.text.toString().isNullOrEmpty()){
 
@@ -2579,12 +2572,9 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 else
                     edit_newCityText.setError(null)
 
-                if (edit_newStateSpinner.selectedItem.toString().contains("select")){
-
+                if (edit_newStateSpinner.selectedItem.toString().contains("Select")){
                     persn.personnelIsInputsValid=false
                     edit_stateTextView.setError("required field")
-
-
                 }
                 else
                     edit_stateTextView.setError(null)

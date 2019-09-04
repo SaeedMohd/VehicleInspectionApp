@@ -300,7 +300,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Add New Defeciency"
+                    android:text="Add New Deficiency"
                     android:textSize="20sp"
                     android:textColor="@color/dark_gray"
                     android:ems="12"
@@ -425,7 +425,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_margin="5dp"
-                    android:text="Cleared Date:*"
+                    android:text="Cleared Date:"
                     android:layout_column="0"
                     android:textStyle="bold"
                     />

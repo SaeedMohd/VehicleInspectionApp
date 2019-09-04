@@ -32,6 +32,7 @@ class TblFacilities {
     var AutomotiveSpecialistSignature = ""
     var InspectionCycle1 = ""
     var AssignedTo = ""
+    var assignedToID = ""
     var AdminAssistants = ""
     var WebSite = ""
     var InternetAccess = true
@@ -46,6 +47,7 @@ class TblFacilities {
     var BillingAmount = 0
     var InsuranceExpDate = ""
     var ContractTypeID = 0
+    var officeID = 0
 }
 
 class TblBusinessType {

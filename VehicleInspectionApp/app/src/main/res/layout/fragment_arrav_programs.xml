@@ -153,13 +153,19 @@
         android:background="@color/mainColor"
         android:visibility="gone"
         android:alpha="0.8"/>
+    <ScrollView
+        android:id="@+id/programCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
         app:cardCornerRadius="5dp"
-        android:id="@+id/programCard"
         app:cardElevation="10dp">
 
         <TableLayout
@@ -312,15 +318,20 @@
 
         </TableLayout>
     </androidx.cardview.widget.CardView>
-
-
+    </ScrollView>
+    <ScrollView
+        android:id="@+id/edit_programCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
         app:cardCornerRadius="5dp"
-        android:id="@+id/edit_programCard"
         app:cardElevation="10dp">
         <TableLayout
             android:layout_width="match_parent"
@@ -472,7 +483,7 @@
 
         </TableLayout>
     </androidx.cardview.widget.CardView>
-
+    </ScrollView>
     <RelativeLayout
         android:id="@+id/programsLoadingView"
         android:layout_width="match_parent"

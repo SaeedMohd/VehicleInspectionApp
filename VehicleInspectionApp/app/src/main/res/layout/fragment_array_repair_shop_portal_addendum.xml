@@ -779,6 +779,7 @@
                         android:layout_marginLeft="10dp"
                         android:gravity="center"
                         android:layout_column="1"
+                        android:nextFocusDown="@id/numberOfInProgressTwoIns"
                         android:background="@drawable/textview_background"
                         />
                 </TableRow>
@@ -810,6 +811,7 @@
                         android:inputType="number"
                         android:layout_marginRight="10dp"
                         android:gravity="center"
+                        android:nextFocusDown="@id/numberOfInProgressWalkIns"
                         android:background="@drawable/textview_background"
                         />
                     <EditText
@@ -947,6 +949,7 @@
                         android:inputType="number"
                         android:layout_marginLeft="10dp"
                         android:gravity="center"
+                        android:nextFocusDown="@id/edit_numberOfInProgressTwoIns"
                         android:layout_column="1"
                         android:background="@drawable/textview_background"
                         />
@@ -982,6 +985,7 @@
                         android:inputType="number"
                         android:layout_marginRight="10dp"
                         android:gravity="center"
+                        android:nextFocusDown="@id/edit_numberOfInProgressWalkIns"
                         android:background="@drawable/textview_background"
                         />
                     <EditText

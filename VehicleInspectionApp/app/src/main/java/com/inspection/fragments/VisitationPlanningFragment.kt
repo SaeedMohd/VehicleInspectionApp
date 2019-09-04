@@ -110,10 +110,16 @@ class VisitationPlanningFragment : Fragment() {
         visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
         visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
 
-        searchVisitaionsButton.setOnClickListener({
-            reloadVisitationsList()
+        searchVisitaionsButton.setOnClickListener {
             it.hideKeyboard()
-        })
+            reloadVisitationsList()
+        }
+
+//        facilityNameButton.onFocusChangeListener = View.OnFocusChangeListener { view: View, b: Boolean ->
+//            if (b) {
+//                view.hideKeyboard()
+//            }
+//        }
 
 //        getTypeTables()
         loadSpecialistName()

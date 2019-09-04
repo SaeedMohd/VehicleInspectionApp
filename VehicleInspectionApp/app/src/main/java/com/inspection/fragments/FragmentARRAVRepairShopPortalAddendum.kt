@@ -388,10 +388,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             addstartDateButton.setError("Required Field")
         }
 
-        if (addendDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
-            portalValide = false
-            addendDateButton.setError("Required Field")
-        }
+//        if (addendDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+//            portalValide = false
+//            addendDateButton.setError("Required Field")
+//        }
 
         if (addsignDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
             portalValide = false

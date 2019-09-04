@@ -555,8 +555,6 @@ class FragmentAARAVPhotos : Fragment() {
                     if (it % 2 == 0) {
                         tableRow.setBackgroundResource(R.drawable.alt_row_color)
                     }
-
-
                     val imageView = ImageView(context)
                     imageView.layoutParams = rowLayoutParam
                     imageView.setPadding(10, 0, 10, 0)

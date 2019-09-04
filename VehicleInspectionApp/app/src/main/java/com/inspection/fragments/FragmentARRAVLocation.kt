@@ -1799,7 +1799,7 @@ class FragmentARRAVLocation : Fragment() {
         val newEmail = TblFacilityEmail()
         newEmail.email = email.toString()
         newEmail.emailTypeId = emailTypeID
-
+//        var seqNo = FacilityDataModel.getInstance().tblFacilityEmail.size+1
         var urlString = facilityNo+"&clubcode="+clubCode+"&emailTypeId="+emailTypeID+"&email="+email+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
         Log.v("Data To Submit", urlString)
         contactInfoLoadingText.text = "Saving ..."
@@ -1971,6 +1971,7 @@ class FragmentARRAVLocation : Fragment() {
         val newPhone = TblPhone()
         newPhone.PhoneNumber = phoneNo.toString()
         newPhone.PhoneTypeID= phoneTypeID
+//        var seqNo = FacilityDataModel.getInstance().tblPhone.size+1
         var urlString = facilityNo+"&clubCode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
         Log.v("Data To Submit", urlString)
         contactInfoLoadingText.text = "Saving ..."

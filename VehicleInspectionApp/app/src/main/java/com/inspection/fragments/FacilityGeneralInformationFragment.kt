@@ -676,8 +676,9 @@ class FacilityGeneralInformationFragment : Fragment() {
         val busType = TypeTablesModel.getInstance().BusinessType.filter { s -> s.BusTypeName==bustype_textviewVal.selectedItem.toString()}[0].BusTypeID
         var entityName =  if (entity_textviewVal.text.isNullOrEmpty())  "" else entity_textviewVal.text
         entityName = URLEncoder.encode(entityName.toString() , "UTF-8");
-        val assignedTo = if (assignedto_textviewVal.text.isNullOrEmpty())  "" else assignedto_textviewVal.text // get the ID
-        val officeID = if (office_textviewVal.text.isNullOrEmpty())  "" else "0" // get The ID
+//        val assignedTo = if (assignedto_textviewVal.text.isNullOrEmpty())  "" else assignedto_textviewVal.text // get the ID
+        val assignedTo = if (assignedto_textviewVal.text.isNullOrEmpty())  "" else FacilityDataModel.getInstance().tblFacilities[0].assignedToID
+        val officeID = if (office_textviewVal.text.isNullOrEmpty())  "" else FacilityDataModel.getInstance().tblFacilities[0].officeID // get The ID
         val taxIDNo = if (taxno_textviewVal.text.isNullOrEmpty())  "" else taxno_textviewVal.text
         val facRepairCnt = if (repairorder_textviewVal.text.isNullOrEmpty())  "" else repairorder_textviewVal.text
         val inspectionMonth = (FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth).toString()

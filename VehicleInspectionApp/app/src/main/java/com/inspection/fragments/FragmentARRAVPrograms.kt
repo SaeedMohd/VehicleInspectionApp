@@ -241,8 +241,6 @@ class FragmentARRAVPrograms : Fragment() {
                             Response.Listener { response ->
                                 activity!!.runOnUiThread {
                                     if (response.toString().contains("returnCode>0<",false)) {
-                                        progressBarTextVal.text = "Loading ..."
-                                        programsLoadingView.visibility = View.GONE
                                         alphaBackgroundForProgramDialogs.visibility = View.GONE
                                         (activity as FormsActivity).overrideBackButton = false
                                         // collect program id
@@ -250,12 +248,14 @@ class FragmentARRAVPrograms : Fragment() {
                                         item.ProgramID= response.toString().substring(response.toString().indexOf("<programID")+11,response.toString().indexOf("</programID"))
                                         FacilityDataModel.getInstance().tblPrograms.add(item)
                                         FacilityDataModelOrg.getInstance().tblPrograms.add(item)
-                                        Utility.showMessageDialog(activity,"Program ID",item.ProgramID)
+//                                        Utility.showMessageDialog(activity,"Program ID",item.ProgramID)
                                         HasChangedModel.getInstance().groupSoSPrograms[0].SoSPrograms= true
                                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSPrograms()
                                         fillPortalTrackingTableView()
                                         altTableRow(2)
                                         programCard.visibility = View.GONE
+                                        progressBarTextVal.text = "Loading ..."
+                                        programsLoadingView.visibility = View.GONE
                                     } else {
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE
