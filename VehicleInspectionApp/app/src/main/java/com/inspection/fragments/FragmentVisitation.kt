@@ -138,15 +138,17 @@ class FragmentVisitation : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.leftMargin = 10
+        rowLayoutParam.leftMargin = 20
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 2F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -163,18 +165,18 @@ class FragmentVisitation : Fragment() {
 
                     val textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 14f
                     textView.minimumHeight = 30
-                    textView.text = get(it).performedBy
+                    textView.text = if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     val textView1 = TextView(context)
                     textView1.layoutParams = rowLayoutParam1
-                    textView1.gravity = Gravity.CENTER_VERTICAL
-                    textView1.textSize = 18f
+                    textView1.gravity = Gravity.CENTER
+                    textView1.textSize = 14f
                     textView1.minimumHeight = 30
-                    textView1.text = if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY()
+                    textView1.text = get(it).performedBy
                     tableRow.addView(textView1)
 
                     trackingTableLayout.addView(tableRow)
@@ -371,6 +373,8 @@ class FragmentVisitation : Fragment() {
                 waiverCommentsPreviousValue = waiverCommentsEditText.text.toString()
                 emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
                 emailEditTextPreviousValue = emailEditText.text.toString()
+                facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep))
+
                 if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.isNullOrEmpty()){
 
                 } else {
@@ -1034,7 +1038,7 @@ class FragmentVisitation : Fragment() {
 
         progressBarTextVal.text = "Saving ..."
         dialogueLoadingView.visibility = View.VISIBLE
-        var urlString = facilityNo+"&clubcode="+clubCode+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&automotiveSpecialist="+automotiveSpecialist+"&visitationID=0"
+        var urlString = facilityNo+"&clubcode="+clubCode+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&performedBy="+automotiveSpecialist+"&visitationID=0"
         Log.v("Visitation Tracking -- ",Constants.UpdateVisitationTrackingData + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationTrackingData + urlString,
                 Response.Listener { response ->
@@ -1175,7 +1179,6 @@ class FragmentVisitation : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.height = 40
         rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
-
         var tableRowColorSwitch = false
 
 
@@ -1344,7 +1347,7 @@ class FragmentVisitation : Fragment() {
                     context)
 
             // set title
-            alertDialogBuilder.setTitle("Your Title")
+            alertDialogBuilder.setTitle("Cancel?")
 
             // set dialog message
             alertDialogBuilder
@@ -1360,6 +1363,7 @@ class FragmentVisitation : Fragment() {
                         aarSignEditText.setText(aarSignPreviousValue)
                         certificateOfApprovalEditText.setText(certificateOfApprovalPreviousValue)
                         memberBenefitsPosterEditText.setText(memberBenefitsPosterPreviousValue)
+                        (activity as FormsActivity).saveRequired = false
                         dialog.cancel()
                     }
                     .setNegativeButton("No") { dialog, id ->

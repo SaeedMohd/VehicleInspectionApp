@@ -404,6 +404,7 @@ class FragmentARRAVDeficiency : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.leftMargin=10
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
@@ -411,30 +412,35 @@ class FragmentARRAVDeficiency : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 0.7F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 0.7F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1.4F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 0.6F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
+        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -450,7 +456,7 @@ class FragmentARRAVDeficiency : Fragment() {
                         var textView = TextView(context)
                         textView.layoutParams = rowLayoutParam
                         textView.gravity = Gravity.CENTER_VERTICAL
-                        textView.textSize = 18f
+                        textView.textSize = 14f
                         textView.minimumHeight = 30
                         textView.text = getDefTypeName(get(it).DefTypeID)
                         tableRow.addView(textView)
@@ -458,7 +464,7 @@ class FragmentARRAVDeficiency : Fragment() {
                         var textView1 = TextView(context)
                         textView1.layoutParams = rowLayoutParam1
                         textView1.gravity = Gravity.CENTER_VERTICAL
-                        textView1.textSize = 18f
+                        textView1.textSize = 14f
                         textView1.minimumHeight = 30
 
                         try {
@@ -473,7 +479,7 @@ class FragmentARRAVDeficiency : Fragment() {
                         var textView2 = TextView(context)
                         textView2.layoutParams = rowLayoutParam2
                         textView2.gravity = Gravity.CENTER_VERTICAL
-                        textView2.textSize = 18f
+                        textView2.textSize = 14f
                         textView2.minimumHeight = 30
 //                    TableRow.LayoutParams()
                         try {
@@ -488,7 +494,7 @@ class FragmentARRAVDeficiency : Fragment() {
                         var textView3 = TextView(context)
                         textView3.layoutParams = rowLayoutParam3
                         textView3.gravity = Gravity.CENTER_VERTICAL
-                        textView3.textSize = 18f
+                        textView3.textSize = 14f
                         textView3.minimumHeight = 30
 
 
@@ -503,7 +509,7 @@ class FragmentARRAVDeficiency : Fragment() {
                         var textView4 = TextView(context)
                         textView4.layoutParams = rowLayoutParam4
                         textView4.gravity = Gravity.CENTER_VERTICAL
-                        textView4.textSize = 18f
+                        textView4.textSize = 14f
                         textView4.minimumHeight = 30
 
                         textView4.text = get(it).Comments
@@ -513,7 +519,7 @@ class FragmentARRAVDeficiency : Fragment() {
                         updateButton.layoutParams = rowLayoutParam5
                         updateButton.setTextColor(Color.BLUE)
                         updateButton.text = "EDIT"
-                        updateButton.textSize = 18f
+                        updateButton.textSize = 14f
                         updateButton.minimumHeight = 30
                         updateButton.isEnabled = true
                         updateButton.gravity = Gravity.CENTER

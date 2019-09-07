@@ -344,12 +344,14 @@ class FragmentARRAVPrograms : Fragment() {
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
         rowLayoutParam.leftMargin=10
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 0.7F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
 
@@ -357,12 +359,14 @@ class FragmentARRAVPrograms : Fragment() {
         rowLayoutParam2.weight = 0.7F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1.5F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
@@ -370,6 +374,7 @@ class FragmentARRAVPrograms : Fragment() {
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -386,7 +391,7 @@ class FragmentARRAVPrograms : Fragment() {
                     val textView1 = TextView(context)
                     textView1.layoutParams = rowLayoutParam
                     textView1.gravity = Gravity.CENTER_VERTICAL
-                    textView1.textSize = 18f
+                    textView1.textSize = 14f
                     textView1.minimumHeight = 30
                     for (fac in TypeTablesModel.getInstance().ProgramsType) {
                         if (get(it).ProgramTypeID.equals(fac.ProgramTypeID)) {
@@ -400,7 +405,7 @@ class FragmentARRAVPrograms : Fragment() {
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam1
                     textView2.gravity = Gravity.CENTER_VERTICAL
-                    textView2.textSize = 18f
+                    textView2.textSize = 14f
                     textView2.minimumHeight = 30
                     if (get(it).effDate.isNullOrBlank()) {
                         textView2.text = ""
@@ -416,7 +421,7 @@ class FragmentARRAVPrograms : Fragment() {
                     val textView3 = TextView(context)
                     textView3.layoutParams = rowLayoutParam2
                     textView3.gravity = Gravity.CENTER_VERTICAL
-                    textView3.textSize = 18f
+                    textView3.textSize = 14f
                     textView3.minimumHeight = 30
                     TableRow.LayoutParams()
                     if (get(it).expDate.isNullOrBlank()) {
@@ -436,7 +441,7 @@ class FragmentARRAVPrograms : Fragment() {
                     textView4.layoutParams = rowLayoutParam3
                     textView4.gravity = Gravity.CENTER_VERTICAL
                     textView4.minimumHeight = 30
-                    textView4.textSize = 18f
+                    textView4.textSize = 14f
                     textView4.text = get(it).Comments
                     tableRow.addView(textView4)
 
@@ -444,7 +449,7 @@ class FragmentARRAVPrograms : Fragment() {
                     updateButton.layoutParams = rowLayoutParam4
                     updateButton.setTextColor(Color.BLUE)
                     updateButton.text = "EDIT"
-                    updateButton.textSize = 18f
+                    updateButton.textSize = 14f
                     updateButton.minimumHeight = 30
                     updateButton.gravity = Gravity.CENTER
                     updateButton.setBackgroundColor(Color.TRANSPARENT)

@@ -142,6 +142,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.leftMargin = 10
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam.width = 0
 
 
@@ -150,30 +151,35 @@ class FragmentAARAVVendorRevenue : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 0.7F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 0.7F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
+        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -193,14 +199,14 @@ class FragmentAARAVVendorRevenue : Fragment() {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = get(it).VendorRevenueID.toString();
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
                     textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = get(it).RevenueSourceName
 //                    try {
 //                        textView.text = TypeTablesModel.getInstance().RevenueSourceType.filter { s -> s.RevenueSourceID.toInt() == get(it).RevenueSourceID }[0].RevenueSourceName
@@ -212,7 +218,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     TableRow.LayoutParams()
                     textView.text = if (get(it).DateOfCheck.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DateOfCheck.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
@@ -220,21 +226,21 @@ class FragmentAARAVVendorRevenue : Fragment() {
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = if (get(it).Amount.isNullOrEmpty()) "" else "%.3f".format(get(it).Amount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = if (get(it).ReceiptDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ReceiptDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = get(it).ReceiptNumber
                     tableRow.addView(textView)
 

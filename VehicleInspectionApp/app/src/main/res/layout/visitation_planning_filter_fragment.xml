@@ -12,87 +12,140 @@
         android:background="@color/white"
         android:orientation="vertical"
         >
-
-        <RelativeLayout
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
+            android:divider="@drawable/divider_table_layout"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingRight="20dp"
+            android:stretchColumns="*"
+            >
 
-            <TextView
-                android:id="@+id/clubCodeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="Club Code: "
-                android:textStyle="bold" />
+            <TableRow>
+                <TextView
+                    android:id="@+id/clubCodeTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="Club Code: "
+                    android:gravity="center_vertical"
+                    android:layout_column="0"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/clubCodeEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toRightOf="@id/clubCodeTextView"
-                android:background="@drawable/textview_background"
-                android:ems="4"
-                android:focusable="false"
-                android:lines="1"
-                android:gravity="center"
-                android:inputType="number"
-                android:textSize="16sp" />
+                <EditText
+                    android:id="@+id/clubCodeEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:focusable="false"
+                    android:lines="1"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/visitationfacilityIdTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/clubCodeEditText"
-                android:text="Facility #:"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/visitationfacilityIdTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_column="2"
+                    android:text="Facility #:"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/visitationfacilityIdVal"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/visitationfacilityIdTextView"
-                android:background="@drawable/textview_background"
-                android:ems="6"
-                android:imeOptions="actionDone"
-                android:maxLength="6"
-                android:gravity="center"
-                android:inputType="number"
-                android:text="" />
+                <EditText
+                    android:id="@+id/visitationfacilityIdVal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/visitationfacilityIdTextView"
+                    android:background="@drawable/textview_background"
+                    android:imeOptions="actionDone"
+                    android:maxLength="6"
+                    android:layout_column="3"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:text="" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_column="4"
+                    android:text="Facility Name:"
+                    android:textStyle="bold" />
 
+                <EditText
+                    android:id="@+id/facilityNameButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:background="@drawable/textview_background"
+                    android:drawableRight="@drawable/downarrow"
+                    android:focusable="false"
+                    android:layout_column="5"
+                    android:layout_span="3"
+                    android:gravity="center"
+                    android:hint="Select Facility"
+                    android:paddingRight="10dp" />
+            </TableRow>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/visitationfacilityIdVal"
-                android:orientation="horizontal"
-                android:weightSum="10">
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/visitationMonthTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="0"
+                    android:gravity="center_vertical"
+                    android:text="Month: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/visitationMonthsSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_column="1"
+                    android:entries="@array/visitationMonthsFilter" />
+
+                <TextView
+                    android:id="@+id/visitationYearTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:text="Year: "
+                    android:layout_column="2"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/visitationYearFilterSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_column="3"
+                    android:layout_toRightOf="@id/visitationYearTextView" />
 
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
                     android:text="Specialist Name:"
+                    android:layout_column="4"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/visitationSpecialistName"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="5"
+                    android:layout_column="5"
+                    android:layout_span="3"
                     android:textSize="12sp"
                     android:lines="1"
                     android:background="@drawable/textview_background"
@@ -101,160 +154,86 @@
                     android:gravity="center"
                     android:hint="Select Specialist"
                     android:paddingRight="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="Facility Name:"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/facilityNameButton"
+            </TableRow>
+            <TableRow>
+                <View
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_span="7"
+                    android:background="@color/light_gray" />
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <CheckBox
+                    android:id="@+id/annualVisitationCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="0"
+                    android:checked="true"
+                    android:text="Annual\nVisitations" />
+
+                <CheckBox
+                    android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="1"
+                    android:checked="true"
+                    android:text="Quarterly" />
+
+                <CheckBox
+                    android:id="@+id/adHocVisitationsCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="2"
+                    android:text="AdHoc\nVisitations" />
+
+                <CheckBox
+                    android:id="@+id/deficienciesCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="3"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="5"
-                    android:textSize="12sp"
-                    android:background="@drawable/textview_background"
-                    android:drawableRight="@drawable/downarrow"
-                    android:focusable="false"
-                    android:gravity="center"
-                    android:hint="Select Facility"
-                    android:paddingRight="10dp" />
+                    android:checked="true"
+                    android:text="Deficiencies" />
 
-            </LinearLayout>
+                <CheckBox
+                    android:id="@+id/pendingCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="4"
+                    android:checked="true"
+                    android:text="Not Started" />
 
-        </RelativeLayout>
+                <CheckBox
+                    android:id="@+id/completedCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="5"
+                    android:text="Completed" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/light_gray" />
+                <Button
+                    android:id="@+id/searchVisitaionsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="6"
+                    android:layout_span="2"
+                    android:background="@drawable/green_background_button"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="Search"
+                    android:textColor="@color/white" />
+            </TableRow>
+            <TableRow>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_span="7"
+                    android:background="@color/light_gray" />
+            </TableRow>
+        </TableLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-
-            android:paddingRight="20dp">
-
-            <TextView
-                android:id="@+id/visitationMonthTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@id/visitationfacilityIdVal"
-                android:text="Month: "
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/visitationMonthsSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-
-                android:layout_toRightOf="@id/visitationMonthTextView"
-                android:entries="@array/visitationMonthsFilter" />
-
-            <TextView
-                android:id="@+id/visitationYearTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/visitationMonthsSpinner"
-                android:text="Year: "
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/visitationYearFilterSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/visitationYearTextView" />
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-
-            <CheckBox
-                android:id="@+id/annualVisitationCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:checked="true"
-                android:text="Annual\nVisitations" />
-
-            <CheckBox
-                android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/annualVisitationCheckBox"
-                android:layout_marginRight="10dp"
-                android:checked="true"
-                android:text="Quarterly" />
-
-            <CheckBox
-                android:id="@+id/adHocVisitationsCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_toRightOf="@id/quarterlyOrOtherVisistationsCheckBox"
-                android:text="AdHoc\nVisitations" />
-
-            <CheckBox
-                android:id="@+id/deficienciesCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_toRightOf="@id/adHocVisitationsCheckBox"
-                android:layout_gravity="center_vertical"
-                android:checked="true"
-                android:text="Deficiencies" />
-
-            <CheckBox
-                android:id="@+id/pendingCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_toRightOf="@id/deficienciesCheckBox"
-                android:checked="true"
-                android:text="Not Started" />
-
-            <CheckBox
-                android:id="@+id/completedCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/pendingCheckBox"
-                android:layout_marginRight="10dp"
-                android:text="Completed" />
-
-            <Button
-                android:id="@+id/searchVisitaionsButton"
-                android:layout_width="150dp"
-                android:layout_height="35dp"
-                android:background="@drawable/green_background_button"
-                android:layout_alignParentRight="true"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:layout_marginRight="30dp"
-                android:text="Search"
-                android:textColor="@color/white" />
-
-        </RelativeLayout>
 
         <ListView
             android:id="@+id/visitationfacilityListView"

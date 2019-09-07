@@ -1086,66 +1086,77 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1.5F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
+        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1.5F
         rowLayoutParam6.column = 6
         rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
+        rowLayoutParam6.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
         rowLayoutParam7.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam7.width = 0
+        rowLayoutParam7.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam8.weight = 1F
         rowLayoutParam8.column = 8
         rowLayoutParam8.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam8.width = 0
+        rowLayoutParam8.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam9 = TableRow.LayoutParams()
         rowLayoutParam9.weight = 1F
         rowLayoutParam9.column = 9
         rowLayoutParam9.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam9.width = 0
+        rowLayoutParam9.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam10 = TableRow.LayoutParams()
         rowLayoutParam10.weight = 1F
         rowLayoutParam10.column = 10
         rowLayoutParam10.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam10.width = 0
+        rowLayoutParam10.gravity = Gravity.CENTER_VERTICAL
         var dateTobeFormated = ""
 
         val rowLayoutParam11 = TableRow.LayoutParams()
@@ -1153,6 +1164,7 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam11.column = 11
         rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam11.width = 0
+        rowLayoutParam11.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
@@ -1162,7 +1174,6 @@ class FragmentARRAVPersonnel : Fragment() {
             (0 until size).forEach {
                 var tableRow = TableRow(context)
                 tableRow.layoutParams = rowLayoutParamRow
-
                 tableRow.minimumHeight = 30
 
                 tableRow.setOnClickListener {
@@ -1180,6 +1191,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView1.gravity = Gravity.CENTER_VERTICAL
                 textView1.text = getTypeName(get(it).PersonnelTypeID.toString())
                 textView1.minimumHeight = 30
+                textView1.textSize = 12f
                 tableRow.addView(textView1)
 
                 val textView2 = TextView(context)
@@ -1188,6 +1200,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView2.text = get(it).FirstName
                 textView2.tag = get(it).PersonnelID
                 textView2.minimumHeight = 30
+                textView2.textSize = 12f
                 tableRow.addView(textView2)
 
                 val textView3 = TextView(context)
@@ -1195,6 +1208,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView3.gravity = Gravity.CENTER_VERTICAL
                 textView3.minimumHeight = 30
                 textView3.text = get(it).LastName
+                textView3.textSize = 12f
                 tableRow.addView(textView3)
 
                 val textView4 = TextView(context)
@@ -1202,12 +1216,13 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView4.gravity = Gravity.CENTER_VERTICAL
                 textView4.text = get(it).RSP_UserName
                 textView4.minimumHeight = 30
+                textView4.textSize = 12f
                 tableRow.addView(textView4)
 
                 val textView5 = TextView(context)
                 textView5.layoutParams = rowLayoutParam4
                 textView5.gravity = Gravity.CENTER_VERTICAL
-//                TableRow.LayoutParams()
+                textView5.textSize = 12f
                 textView5.text = get(it).email
                 textView5.minimumHeight = 30
                 tableRow.addView(textView5)
@@ -1216,6 +1231,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView6.layoutParams = rowLayoutParam5
                 textView6.minimumHeight = 30
                 textView6.gravity = Gravity.CENTER_VERTICAL
+                textView6.textSize = 12f
                 if (!(get(it).SeniorityDate.isNullOrEmpty()) ) {
                     try {
                         textView6.text  = if (get(it).SeniorityDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).SeniorityDate.apiToAppFormatMMDDYYYY()
@@ -1234,12 +1250,14 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView7.gravity = Gravity.CENTER_VERTICAL
                 textView7.text = get(it).CertificationNum
                 textView7.minimumHeight = 30
+                textView7.textSize = 12f
                 tableRow.addView(textView7)
 
                 val textView8 = TextView(context)
                 textView8.layoutParams = rowLayoutParam7
                 textView8.gravity = Gravity.CENTER_VERTICAL
                 textView8.minimumHeight = 30
+                textView8.textSize = 12f
                 if (!(get(it).startDate.isNullOrEmpty())) {
                     try {
                         textView8.text  = if (get(it).startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startDate.apiToAppFormatMMDDYYYY()
@@ -1257,6 +1275,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView9.layoutParams = rowLayoutParam8
                 textView9.gravity = Gravity.CENTER_VERTICAL
                 textView9.minimumHeight = 30
+                textView9.textSize = 12f
                 if (!(get(it).endDate.isNullOrEmpty())) {
                     try {
                         textView9.text = if (get(it).endDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).endDate.apiToAppFormatMMDDYYYY()
@@ -1274,6 +1293,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 checkBox10.isChecked = get(it).ContractSigner
                 checkBox10.minimumHeight = 30
                 checkBox10.isEnabled=false
+                checkBox10.textSize = 12f
                 tableRow.addView(checkBox10)
 
                 val checkBox11 = CheckBox(context)
@@ -1282,15 +1302,17 @@ class FragmentARRAVPersonnel : Fragment() {
                 checkBox11.isChecked = get(it).PrimaryMailRecipient
                 checkBox11.isEnabled=false
                 checkBox11.minimumHeight = 30
+                checkBox11.textSize = 12f
                 tableRow.addView(checkBox11)
 
 
 
                 val updateBtn = TextView(context)
                 updateBtn.layoutParams = rowLayoutParam11
-                updateBtn .setTextColor(Color.BLUE)
-                updateBtn .text = "EDIT"
+                updateBtn.setTextColor(Color.BLUE)
+                updateBtn.text = "EDIT"
                 updateBtn.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                updateBtn.textSize = 12f
                 updateBtn .setBackgroundColor(Color.TRANSPARENT)
 
                 tableRow.addView(updateBtn)
@@ -1683,26 +1705,30 @@ class FragmentARRAVPersonnel : Fragment() {
                     rowLayoutParam.weight = 1F
                     rowLayoutParam.column = 0
                     rowLayoutParam.leftMargin = 10
-                    rowLayoutParam.height = 30
+                    rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
                     rowLayoutParam.width = 0
+                    rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
 
                     val rowLayoutParam1 = TableRow.LayoutParams()
                     rowLayoutParam1.weight = 1F
                     rowLayoutParam1.column = 1
-                    rowLayoutParam1.height = 30
+                    rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
                     rowLayoutParam1.width = 0
+                    rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
 
                     val rowLayoutParam2 = TableRow.LayoutParams()
                     rowLayoutParam2.weight = 1F
                     rowLayoutParam2.column = 2
-                    rowLayoutParam2.height = 30
+                    rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
                     rowLayoutParam2.width = 0
+                    rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
                     val rowLayoutParam3 = TableRow.LayoutParams()
                     rowLayoutParam3.weight = 1F
                     rowLayoutParam3.column = 3
-                    rowLayoutParam3.height = 30
+                    rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
                     rowLayoutParam3.width = 0
+                    rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
 
                     val rowLayoutParamRow = TableRow.LayoutParams()
                     rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
@@ -1716,11 +1742,13 @@ class FragmentARRAVPersonnel : Fragment() {
                     textView1.layoutParams = rowLayoutParam
                     textView1.gravity = Gravity.CENTER
                     textView1.text = get(it).CertificationTypeId
+                    textView1.textSize = 14f
                     tableRow.addView(textView1)
 
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam1
                     textView2.gravity = Gravity.CENTER
+                    textView2.textSize = 14f
                     try {
                         textView2.text = get(it).CertificationDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
@@ -1731,6 +1759,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     val textView3 = TextView(context)
                     textView3.layoutParams = rowLayoutParam2
                     textView3.gravity = Gravity.CENTER
+                    textView3.textSize = 14f
                     TableRow.LayoutParams()
                     try {
                         textView3.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
@@ -1743,6 +1772,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     textView4.layoutParams = rowLayoutParam3
                     textView4.gravity = Gravity.CENTER
                     textView4.text = get(it).CertDesc
+                    textView4.textSize = 14f
                     tableRow.addView(textView4)
                     certificationsTable.addView(tableRow)
                 }

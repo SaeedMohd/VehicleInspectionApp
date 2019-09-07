@@ -428,7 +428,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="Automotive Specialist's   Signature"
+                            android:text="Automotive Specialist's Signature"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -467,7 +467,6 @@
                     android:id="@+id/trackingTableLayout"
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:showDividers="middle|beginning|end"
                     android:divider="@drawable/divider_table_layout"
                     android:layout_height="wrap_content"
                     android:stretchColumns="*"
@@ -479,20 +478,20 @@
                             android:layout_width="0dp"
                             android:textColor="@color/white"
                             android:layout_column="0"
-                            android:textSize="18sp"
-                            android:layout_marginLeft="10dp"
+                            android:textSize="14sp"
+                            android:layout_marginLeft="20dp"
                             android:layout_height="30dp"
                             android:textStyle="bold"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             android:layout_weight="1"/>
                         <TextView android:text="Performed By"
                             android:layout_width="0dp"
                             android:textColor="@color/white"
                             android:layout_column="1"
-                            android:textSize="18sp"
+                            android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_height="30dp"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             android:layout_weight="2"/>
                     </TableRow>
                 </TableLayout>
@@ -516,8 +515,6 @@
                         android:layout_height="wrap_content"
                         android:layout_span="3"
                         android:divider="@drawable/divider_table_layout"
-                        android:showDividers="middle|beginning|end"
-
                         android:stretchColumns="*">
 
                         <TableRow

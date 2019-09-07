@@ -235,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:divider="@drawable/divider_table_layout"
-                    android:showDividers="middle|beginning|end">
+                    >
 
                     <TableRow android:background="@color/mainColor">
 
@@ -248,7 +248,7 @@
                             android:text="Portal InspectionDate"
                             android:gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             />
 
                         <TextView
@@ -259,7 +259,7 @@
                             android:text="Logged Into Portal"
                             android:gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -269,7 +269,7 @@
                             android:text="Unacknowledged Tows"
                             android:gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -279,7 +279,7 @@
                             android:text="In Progress Tows"
                             android:gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -289,7 +289,7 @@
                             android:text="In Progress Walk-ins"
                             android:gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -299,7 +299,7 @@
                             android:text="Update"
                             android:gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </TableRow>
                 </TableLayout>
 
@@ -787,7 +787,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Number 0f In-Progress Tow-Ins"
+                        android:text="Number of In-Progress Tow-Ins"
                         android:layout_marginRight="10dp"
                         android:gravity="center"
                         android:layout_column="0"
@@ -795,7 +795,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Number 0f In-Progress Walk-Ins"
+                        android:text="Number of In-Progress Walk-Ins"
                         android:layout_marginLeft="10dp"
                         android:gravity="center"
                         android:layout_column="1"

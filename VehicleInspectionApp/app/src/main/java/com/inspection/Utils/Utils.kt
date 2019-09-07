@@ -956,7 +956,7 @@ private fun drawVisitationTrackingSection() : PdfPTable {
     table.addCell(addCellWithBorder("Quality Control Process", 1,true))
     table.addCell(addCellWithBorder("Staff Training Process", 1,true))
     if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals("00")) {
-        if (FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 3650 }.isNotEmpty()) {
+        if (FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.isNotEmpty()) {
             FacilityDataModel.getInstance().tblVisitationTracking.sortedWith(compareByDescending { it.DatePerformed }).apply {
                 (0 until size).forEach {
                     if (!get(it).performedBy.equals("00")) {
@@ -1082,7 +1082,8 @@ private fun drawPaymentSection() : PdfPTable {
     TypeTablesModel.getInstance().PaymentMethodsType.apply {
         (0 until size).forEach {
             table.addCell(addCellWithBorder(get(it).PmtMethodName, 2,false))
-            if (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.equals(get(it).PmtMethodID)}.size>0) {
+            if (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.equals(get(it).PmtMethodID)}.isNotEmpty()) {
+                Log.v("TICK "," TICK")
                 table.addCell(addTick(true,true))
             } else {
                 table.addCell(addCellWithBorder(" ", 1,true))
@@ -1187,7 +1188,7 @@ private fun drawVendorRevenueSectionForShop() : PdfPTable {
     table.addCell(addCellWithBorder("Amount", 1,true))
     table.addCell(addCell("", 2,true))
     if (FacilityDataModel.getInstance().tblVendorRevenue[0].VendorRevenueID>0) {
-        if (FacilityDataModel.getInstance().tblVendorRevenue.filter { s -> (Date().time - s.DateOfCheck.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 3650 }.isNotEmpty()) {
+        if (FacilityDataModel.getInstance().tblVendorRevenue.filter { s -> (Date().time - s.DateOfCheck.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.isNotEmpty()) {
             FacilityDataModel.getInstance().tblVendorRevenue.apply {
                 (0 until size).forEach {
                     if (get(it).VendorRevenueID > 0) {
@@ -1277,10 +1278,10 @@ private fun drawVehiclesSection(vehicleCatID : String) : PdfPTable {
         (0 until size).forEach { vMakeIt ->
             if (FacilityDataModel.getInstance().tblFacVehicles.filter { s -> s.VehicleID == get(vMakeIt).VehicleID }.isNotEmpty()) {
                 table.addCell(addTick(false,false))
-                table.addCell(addCell(get(vMakeIt).MakeName, 1, false))
+                table.addCell(addCell("  " + get(vMakeIt).MakeName, 1, false))
             } else {
                 table.addCell(addCell(" ", 1, false))
-                table.addCell(addCell(get(vMakeIt).MakeName, 1, false))
+                table.addCell(addCell("  " + get(vMakeIt).MakeName, 1, false))
             }
         }
     }
@@ -1301,10 +1302,10 @@ private fun drawVehicleServicesSection(vehicleTypeID: String) : PdfPTable {
             (0 until size).forEach { innerIt ->
                 if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehicleTypeID.toInt() && s.ScopeServiceID == get(innerIt).ScopeServiceID.toInt() }.isNotEmpty()) {
                     table.addCell(addTick(false,false))
-                    table.addCell(addCell(get(innerIt).ScopeServiceName,1,false))
+                    table.addCell(addCell("  " + get(innerIt).ScopeServiceName,1,false))
                 } else {
                     table.addCell(addCell(" ",1,false))
-                    table.addCell(addCell(get(innerIt).ScopeServiceName,1,false))
+                    table.addCell(addCell("  " + get(innerIt).ScopeServiceName,1,false))
                 }
             }
         }
@@ -1627,8 +1628,9 @@ fun addSignatures(image : Image) : PdfPCell {
 }
 
 fun addTick(alignCenter: Boolean, withBorder: Boolean) : PdfPCell {
-    val tick = Chunk("4", symbolsFont)
-    var p = Paragraph(tick)
+//    val tick =  Chunk("4", symbolsFont)
+//    tick.font.size = 14.0F
+    var p = Paragraph("x ")
     val cell = PdfPCell(p);
     cell.colspan=1
     cell.verticalAlignment = Element.ALIGN_MIDDLE

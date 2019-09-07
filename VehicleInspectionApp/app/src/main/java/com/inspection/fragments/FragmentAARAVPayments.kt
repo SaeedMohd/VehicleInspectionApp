@@ -195,6 +195,7 @@ class FragmentAARAVPayments : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.leftMargin = 10
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
@@ -202,36 +203,42 @@ class FragmentAARAVPayments : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
+        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
         rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
+        rowLayoutParam6.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -250,21 +257,21 @@ class FragmentAARAVPayments : Fragment() {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = get(it).InvoiceNumber
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = get(it).BillingMonth
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     TableRow.LayoutParams()
                     textView.text = if (get(it).BillingDueDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
@@ -272,21 +279,21 @@ class FragmentAARAVPayments : Fragment() {
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = if (get(it).InvoiceAmount.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = if (get(it).AmountReceived.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.text = if (get(it).BillBalanceDue.isNullOrEmpty()) "" else "%.3f".format(get(it).BillBalanceDue.toFloat())
                     tableRow.addView(textView)
 

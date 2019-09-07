@@ -133,7 +133,7 @@
                         android:text="Deficiency"
                         android:textColor="@color/white"
                         android:layout_column="0"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:layout_marginLeft="10dp"
                         android:layout_height="30dp"
                         android:gravity="center_vertical"
@@ -146,7 +146,7 @@
                         android:text="Visitation Date"
                         android:layout_column="1"
                         android:layout_weight="0.7"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:layout_height="30dp"
                         android:gravity="center_vertical"
                         />
@@ -157,7 +157,7 @@
                         android:text="Entered Date"
                         android:layout_column="2"
                         android:layout_weight="0.7"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:gravity="center_vertical"
                         />
                     <TextView
@@ -167,7 +167,7 @@
                         android:text="Cleared Date"
                         android:layout_column="3"
                         android:layout_weight="0.7"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:gravity="center_vertical"
                         />
                     <TextView
@@ -176,7 +176,7 @@
                         android:text="Comments"
                         android:layout_column="4"
                         android:layout_weight="1.4"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:layout_height="30dp"
                         android:gravity="center_vertical"
                         />
@@ -185,7 +185,7 @@
                         android:layout_width="0dp"
                         android:layout_column="5"
                         android:layout_weight="0.6"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:layout_height="30dp"
                         android:text="Options"
                         android:gravity="center"

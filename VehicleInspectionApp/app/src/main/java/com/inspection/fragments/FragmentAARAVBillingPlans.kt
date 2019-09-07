@@ -184,6 +184,7 @@ class FragmentAARAVBillingPlans : Fragment() {
         rowLayoutParam.weight = 1.5F
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam.leftMargin = 10
         rowLayoutParam.width = 0
 
@@ -191,6 +192,7 @@ class FragmentAARAVBillingPlans : Fragment() {
         rowLayoutParam1.weight = 2F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
         rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
@@ -198,30 +200,35 @@ class FragmentAARAVBillingPlans : Fragment() {
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 0.5F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
+        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
         rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
+        rowLayoutParam6.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -241,7 +248,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                             var textView = TextView(context)
                             textView.layoutParams = rowLayoutParam
                             textView.gravity = Gravity.CENTER_VERTICAL
-                            textView.textSize = 18f
+                            textView.textSize = 14f
 //                            textView.text = TypeTablesModel.getInstance().BillingPlanCategoryType.filter { s -> s.BillingPlanCatgTypeID.toInt() == get(it).BillingPlanCatgID }[0].BillingPlanCatgName
                             textView.text = get(it).BillingPlanCatgName
                             tableRow.addView(textView)
@@ -251,7 +258,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam1
                             textView.gravity = Gravity.CENTER_VERTICAL
-                            textView.textSize = 18f
+                            textView.textSize = 14f
 //                            textView.text = if (TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}.size>0) TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}[0].BillingPlanTypeName else ""
                             textView.text = get(it).BillingPlanTypeName
                             tableRow.addView(textView)
@@ -259,7 +266,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam2
                             textView.gravity = Gravity.CENTER_VERTICAL
-                            textView.textSize = 18f
+                            textView.textSize = 14f
                             TableRow.LayoutParams()
 //                            textView.text = TypeTablesModel.getInstance().BillingPlanFrequencyType.filter { s -> s.BillingPlanFrequencyTypeID.toInt() == get(it).FrequencyTypeID }[0].BillingPlanFrequencyTypeName
                             textView.text = get(it).BillingPlanFrequencyTypeName
@@ -268,21 +275,21 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam3
                             textView.gravity = Gravity.CENTER
-                            textView.textSize = 18f
+                            textView.textSize = 14f
                             textView.text = if (get(it).EffectiveDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).EffectiveDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam4
                             textView.gravity = Gravity.CENTER
-                            textView.textSize = 18f
+                            textView.textSize = 14f
                             textView.text = if (get(it).ExpirationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam5
                             textView.gravity = Gravity.CENTER
-                            textView.textSize = 18f
+                            textView.textSize = 14f
 //                            textView.text = if (TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}.size>0) TypeTablesModel.getInstance().BillingPlanType.filter { s->s.BillingPlanTypeID.toInt() == get(it).BillingPlanTypeID}[0].Cost else ""
                             textView.text = if (get(it).Cost.isNullOrEmpty()) "" else "%.2f".format(get(it).Cost.toFloat())
                             tableRow.addView(textView)
@@ -290,7 +297,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView = TextView(context)
                             textView.layoutParams = rowLayoutParam6
                             textView.gravity = Gravity.CENTER
-                            textView.textSize = 18f
+                            textView.textSize = 14f
                             textView.text = get(it).updateDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 

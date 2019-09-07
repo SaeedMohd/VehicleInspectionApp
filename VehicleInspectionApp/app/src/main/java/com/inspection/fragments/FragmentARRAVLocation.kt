@@ -4,6 +4,7 @@ package com.inspection.fragments
 import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.res.Resources
 import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
@@ -70,6 +71,24 @@ class FragmentARRAVLocation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//      ArrayAdapter<String> adapterJazyky = new ArrayAdapter<String>(this,
+//              R.layout.spinner_text_layout.xml, {"one","two","etc...."});
+        val officeTimes = resources.getStringArray(R.array.officeTimes)
+        sunCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        sunOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        monCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        monOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        tueCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        tueOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        wedCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        wedOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        thuCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        thuOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        friCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        friOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        satCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        satOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+
 
         FacilityDataModel.getInstance().tblHours[0].apply {
             if (SunClose.equals("00:00:01 AM")) SunClose="Closed"
@@ -1232,18 +1251,21 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.leftMargin=10
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -1260,7 +1282,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.layoutParams = rowLayoutParam
 //                    textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
                     textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.minimumHeight=30
                     textView.text = getPhoneTypeName(get(it).PhoneTypeID)
                     tableRow.addView(textView)
@@ -1268,7 +1290,7 @@ class FragmentARRAVLocation : Fragment() {
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam1
                     textView2.gravity = Gravity.CENTER_VERTICAL
-                    textView2.textSize = 18f
+                    textView2.textSize = 14f
                     textView2.minimumHeight=30
                     textView2.text = get(it).PhoneNumber
                     tableRow.addView(textView2)
@@ -1287,7 +1309,7 @@ class FragmentARRAVLocation : Fragment() {
                     editPhoneBtn.layoutParams = rowLayoutParam1
                     editPhoneBtn.setTextColor(Color.BLUE)
                     editPhoneBtn.text = "EDIT"
-                    editPhoneBtn.textSize = 18f
+                    editPhoneBtn.textSize = 14f
                     editPhoneBtn.minimumHeight=30
                     editPhoneBtn.gravity = Gravity.CENTER
                     editPhoneBtn.setBackgroundColor(Color.TRANSPARENT)
@@ -1384,18 +1406,21 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.leftMargin=10
+        rowLayoutParam.marginStart =10
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
         FacilityDataModel.getInstance().tblFacilityEmail.apply {
             (0 until size).forEach {
@@ -1405,7 +1430,7 @@ class FragmentARRAVLocation : Fragment() {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.minimumHeight = 30
                     textView.text = getEmailTypeName(get(it).emailTypeId)
                     tableRow.addView(textView)
@@ -1415,14 +1440,14 @@ class FragmentARRAVLocation : Fragment() {
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.text = get(it).email
                     textView.minimumHeight = 30
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
                     textView.setTextColor(Color.BLUE)
                     textView.text = "EDIT"
-                    textView.textSize = 18f
+                    textView.textSize = 14f
                     textView.minimumHeight = 30
                     textView.gravity = Gravity.CENTER
                     textView.setBackgroundColor(Color.TRANSPARENT)
@@ -1592,6 +1617,8 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
+        rowLayoutParam.leftMargin = 2
+        rowLayoutParam.gravity = Gravity.CENTER
 
         if (locationTbl.childCount>1) {
             for (i in locationTbl.childCount - 1 downTo 1) {
@@ -1602,69 +1629,79 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1.4F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.leftMargin = 2
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1.4F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 0.8F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
+        rowLayoutParam5.gravity = Gravity.CENTER
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
         rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
+        rowLayoutParam6.gravity = Gravity.CENTER
 
         val rowLayoutParam7 = TableRow.LayoutParams()
         rowLayoutParam7.weight = 1F
         rowLayoutParam7.column = 7
         rowLayoutParam7.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam7.width = 0
+        rowLayoutParam7.gravity = Gravity.CENTER
 
         val rowLayoutParam8 = TableRow.LayoutParams()
         rowLayoutParam8.weight = 1F
         rowLayoutParam8.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam8.column = 8
         rowLayoutParam8.width = 0
+        rowLayoutParam8.gravity = Gravity.CENTER
 
         val rowLayoutParam9 = TableRow.LayoutParams()
         rowLayoutParam9.weight = 1F
         rowLayoutParam9.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam9.column = 9
         rowLayoutParam9.width = 0
+        rowLayoutParam9.gravity = Gravity.CENTER
 
         val rowLayoutParam10 = TableRow.LayoutParams()
         rowLayoutParam10.weight = 1F
         rowLayoutParam10.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam10.column = 10
         rowLayoutParam10.width = 0
+        rowLayoutParam10.gravity = Gravity.CENTER
 
         val rowLayoutParam11 = TableRow.LayoutParams()
         rowLayoutParam11.weight = 0.8F
         rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam11.column = 11
         rowLayoutParam11.width = 0
+        rowLayoutParam11.gravity = Gravity.CENTER
 
         var dateTobeFormated = ""
 
@@ -1685,6 +1722,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.minimumHeight=30
                 textView.text = getLocationTypeName(get(it).LocationTypeID)
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1693,6 +1731,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.minimumHeight=30
                 textView.setEms(8)
                 textView.text = get(it).FAC_Addr1
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1700,6 +1739,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.minimumHeight=30
                 textView.setEms(8)
+                textView.textSize = 10f
                 textView.text = get(it).FAC_Addr2
                 tableRow.addView(textView)
 
@@ -1708,6 +1748,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.minimumHeight=30
                 textView.text = get(it).CITY
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1715,6 +1756,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).County
                 textView.minimumHeight=30
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1722,6 +1764,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ST
                 textView.minimumHeight=30
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1729,6 +1772,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ZIP + "-" + get(it).ZIP4
                 textView.minimumHeight=30
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1736,6 +1780,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).LATITUDE
                 textView.minimumHeight=30
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1743,6 +1788,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).LONGITUDE
                 textView.minimumHeight=30
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1750,6 +1796,7 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).BranchNumber
                 textView.minimumHeight=30
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -1757,13 +1804,15 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).BranchName
                 textView.minimumHeight=30
+                textView.textSize = 10f
                 tableRow.addView(textView)
 
                 var editButton = TextView(context)
                 editButton.layoutParams = rowLayoutParam11
-                editButton .setTextColor(Color.BLUE)
-                textView.minimumHeight=30
-                editButton .text = "EDIT"
+                editButton.setTextColor(Color.BLUE)
+                editButton.minimumHeight=30
+                editButton.text = "EDIT"
+                editButton.textSize = 12f
                 editButton .gravity = Gravity.CENTER
                 editButton .setBackgroundColor(Color.TRANSPARENT)
                 editButton.tag = it
