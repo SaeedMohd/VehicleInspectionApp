@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import com.android.volley.Request
 import com.android.volley.Response
@@ -42,6 +43,8 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     var ExoticVehiclesListView: ExpandableHeightGridView? = null
     var OtherVehiclesListView: ExpandableHeightGridView? = null
 
+
+
     internal var domesticAdapter: VehicleListAdapter? = null
     internal var asianAdapter: VehicleListAdapter? = null
     internal var europeanAdapter: VehicleListAdapter? = null
@@ -59,6 +62,9 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     private var vehicleTypeList = ArrayList<TypeTablesModel.vehiclesType>()
     private var vehicleTypeArray = ArrayList<String>()
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -72,6 +78,8 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         EuropeanVehiclesListView = view.findViewById(R.id.EuropeanVehiclesListView)
         ExoticVehiclesListView = view.findViewById(R.id.ExoticVehiclesListView)
         OtherVehiclesListView = view.findViewById(R.id.otherTypesVehiclesListView)
+
+
 
         return view
     }
@@ -268,30 +276,45 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             DomesticVehiclesListView?.adapter = domesticAdapter
             DomesticVehiclesListView?.isExpanded = true
             DomesticVehiclesListView?.isVisible = true
+            domesticContainer.visibility = View.VISIBLE
+        } else {
+            domesticContainer.visibility = View.GONE
         }
         if (asianListItems.count() > 0) {
             asianAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", asianListItems)
             AsianVehiclesListView?.adapter = asianAdapter
             AsianVehiclesListView?.isExpanded = true
             AsianVehiclesListView?.isVisible = true
+            asianContainer.visibility = View.VISIBLE
+        } else {
+            asianContainer.visibility = View.GONE
         }
         if (europeanListItems.count() > 0) {
             europeanAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", europeanListItems)
             EuropeanVehiclesListView?.adapter = europeanAdapter
             EuropeanVehiclesListView?.isExpanded = true
             EuropeanVehiclesListView?.isVisible = true
+            europeanContainer.visibility = View.VISIBLE
+        } else {
+            europeanContainer.visibility = View.GONE
         }
         if (exoticListItems.count() > 0) {
             exoticAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", exoticListItems)
             ExoticVehiclesListView?.adapter = exoticAdapter
             ExoticVehiclesListView?.isExpanded = true
             ExoticVehiclesListView?.isVisible = true
+            exoticContainer.visibility = View.VISIBLE
+        } else {
+            exoticContainer.visibility = View.GONE
         }
         if (otherListItems.count() > 0) {
             otherAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", otherListItems)
             OtherVehiclesListView?.adapter = otherAdapter
             OtherVehiclesListView?.isExpanded = true
             OtherVehiclesListView?.isVisible = true
+            otherContainer.visibility = View.VISIBLE
+        } else {
+            otherContainer.visibility = View.GONE
         }
         refreshButtonsState()
         expandablell.visibility = View.VISIBLE

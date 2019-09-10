@@ -68,7 +68,7 @@ class FragmentARRAVDeficiency : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         prepareDefSpinners()
         fillDeffTableView()
-        IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = FacilityDataModel.getInstance().tblDeficiency.filter { s->s.ClearedDate.isNullOrEmpty() }.isEmpty()
+//        IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = FacilityDataModel.getInstance().tblDeficiency.filter { s->s.ClearedDate.isNullOrEmpty() }.isEmpty()
         deffTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
