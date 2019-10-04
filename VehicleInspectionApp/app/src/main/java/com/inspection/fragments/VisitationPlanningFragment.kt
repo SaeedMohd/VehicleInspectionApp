@@ -16,8 +16,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import com.android.volley.Request
@@ -1069,7 +1072,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
                 vh.initialContractDateTextView.text = "Visitation Date:"
                 vh.visitationStatusTextView.text = "Status:"
-                vh.loadBtn.text = "SEND PDF"
+                vh.loadBtn.text = "VIEW PDF"
                 visitationID = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
                 vh.loadBtn.tag = visitationID.toInt()
 //                view?.setOnClickListener {
@@ -1093,8 +1096,9 @@ class VisitationPlanningFragment : Fragment() {
                 visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 vh.loadBtn.setOnClickListener({
                     Constants.visitationIDForPDF = vh.loadBtn.tag.toString()
-                    getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode,true,VisitationTypes.Annual)
+//                    getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode,true,VisitationTypes.Annual)
 //                    getFacilityPRGData(true)
+                    launchNextAction(true)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].BusinessName
@@ -1179,16 +1183,50 @@ class VisitationPlanningFragment : Fragment() {
 
     fun launchNextAction(isCompleted : Boolean){
         if (isCompleted) {
-//            if ((activity as MainActivity).checkPermission()) {
-//                (activity as MainActivity).generateAndOpenPDF()
-//            } else {
-//                if (!(activity as MainActivity).checkPermission()) {
-//                    (activity as MainActivity).requestPermissionAndContinue();
-//                } else {
-//                    (activity as MainActivity).generateAndOpenPDF()
+//            progressBarText.text = "Loading PDF ..."
+            recordsProgressView.visibility = View.VISIBLE
+            webView!!.webViewClient = object : WebViewClient() {
+//                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//                    view?.loadUrl(url)
+//                    return true
 //                }
+                override fun onPageFinished(view: WebView?, url: String?) {
+                }
+            }
+            webCardView.visibility = View.VISIBLE
+            pdfName.text = "Visitation PDF For Specialist (ID: "+Constants.visitationIDForPDF+")"
+            exitPDFDialogeBtn.setOnClickListener {
+                webView.loadUrl("about:blank")
+                recordsProgressView.visibility = View.GONE
+                webCardView.visibility = View.GONE
+            }
+            webView.getSettings().setJavaScriptEnabled(true);
+//            String url = "http://docs.google.com/gview?embedded=true&url=" + myPdfUrl;
+            webView!!.loadUrl("http://docs.google.com/gview?embedded=true&url="+Constants.getPDF+Constants.visitationIDForPDF)
+//            webView!!.loadUrl("https://www.google.com")
+
+//            startActivity(new Intent (Intent.ACTION_VIEW, Uri.parse(url)));
+//            val target = Intent(Intent.ACTION_VIEW, Uri.parse(Constants.getPDF+Constants.visitationIDForPDF))
+////            target.setType("application/pdf");
+//            target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////            target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+////            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+////            val intent = Intent.createChooser(target, "Open File")
+//            try {
+//                startActivity(target)
+//            } catch (e: ActivityNotFoundException) {
+//                // Instruct the user to install a PDF reader here, or something
 //            }
-            sendCompletedPDF()
+////            if ((activity as MainActivity).checkPermission()) {
+////                (activity as MainActivity).generateAndOpenPDF()
+////            } else {
+////                if (!(activity as MainActivity).checkPermission()) {
+////                    (activity as MainActivity).requestPermissionAndContinue();
+////                } else {
+////                    (activity as MainActivity).generateAndOpenPDF()
+////                }
+////            }
+//            sendCompletedPDF()
         } else {
             IndicatorsDataModel.getInstance().init()
             if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {

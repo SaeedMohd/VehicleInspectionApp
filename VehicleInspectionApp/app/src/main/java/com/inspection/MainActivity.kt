@@ -691,6 +691,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
 //        uploadPDF(file,"Specialist")
 //        uploadPDF(fileShop,"Shop")
+//        val target = Intent(Intent.ACTION_VIEW)
 //        target.setDataAndType(FileProvider.getUriForFile(this,"com.inspection.android.fileprovider",file), "application/pdf")
 //        target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
 //        target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

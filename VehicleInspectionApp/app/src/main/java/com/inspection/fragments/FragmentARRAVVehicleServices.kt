@@ -164,8 +164,8 @@ class FragmentARRAVVehicleServices : Fragment() {
             }
             scopeServiceId = selectedVehicleServices.toString()
             orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(Auto Mobile)"
-            dataChanges = "Auto Mobile Vehicle Services changed from " + orgSelectedServices + " to " + selectedVehicleServicesNames
+            saveMessage = "(Automobile)"
+            dataChanges = "Automobile Vehicle Services changed from " + orgSelectedServices + " to " + selectedVehicleServicesNames
         } else if (gridType.equals("1")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Body") }[0].VehiclesTypeID
             scopeServiceId = selectedAutoBodyServices.toString()
@@ -245,6 +245,7 @@ class FragmentARRAVVehicleServices : Fragment() {
                             }
                             Utility.showSubmitAlertDialog(activity, true, "Vehicle Services ${saveMessage}")
                             (activity as FormsActivity).saveRequired = false
+                            refreshButtonsState()
                             HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicleServices()
                             HasChangedModel.getInstance().changeDoneForSoSVehicleServices()
                         } else {

@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -259,13 +260,19 @@ class FacilityGeneralInformationFragment : Fragment() {
                 facilitytype_textviewVal.tag = facilitytype_textviewVal.selectedItemPosition
                 ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
                 ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY()
-                terminationDateButton.text = ""+tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY()
+                terminationDateButton.text = if (tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY()
                 //SAEED
                 terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
-                if (!tblFacilities[0].TerminationDate.equals("")) {
-                    terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
-                } else
-                    terminationReason_textviewVal.visibility=View.GONE
+
+            if (tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900") || tblFacilities[0].TerminationDate.equals("") ){
+                terminationReason_textviewVal.visibility=View.GONE
+            } else {
+                terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
+            }
+//                if (!tblFacilities[0].TerminationDate.equals("")) {
+//                    terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
+//                } else {
+//                    terminationReason_textviewVal.visibility=View.GONE
 
                 currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormatMMDDYYYY()
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY()
@@ -693,7 +700,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         val internetAccess = if (wifiAvailableCheckBox.isChecked) "1" else "0"
         val webSite = if (website_textviewVal.text.isNullOrEmpty())  "" else website_textviewVal.text
         val terminationDate = if (terminationDateButton.text.equals("")) "" else terminationDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-        val terminationReasonID = TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID
+        var terminationReasonID = if (terminationReason_textviewVal.isVisible) TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID else 0
         val terminationComments = if (terminationCommentEditText.text.isNullOrEmpty())  "" else terminationCommentEditText.text
         val insertDate = Date().toApiSubmitFormat()
         val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
@@ -709,10 +716,10 @@ class FacilityGeneralInformationFragment : Fragment() {
         FacilityDataModel.getInstance().tblFacilities[0]
         progressBarText.text = "Saving ..."
         scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-        var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=0&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
+        var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=${FacilityDataModel.getInstance().tblFacilities[0].ACTIVE}&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
 //        UUID.randomUUID().toString()
 
-        Log.v("Facility General --- ",Constants.submitFacilityGeneralInfo + urlString)
+        Log.v("Facility General --- ",Constants.submitFacilityGeneralInfo + urlString + Utility.getLoggingParameters(activity, 0, ""))
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString +Utility.getLoggingParameters(activity,0,getGeneralInfoChanges()),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {

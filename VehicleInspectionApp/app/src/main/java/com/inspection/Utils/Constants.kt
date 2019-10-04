@@ -90,6 +90,7 @@ object Constants {
     val logTracking = permanentURL + "logTracking?sessionId="
     val getFacilitiesWithFilters = permanentURL + "getFacilitiesWithFilters?"
     val getImages = permanentURL + "getImage?file="
+    val getPDF = permanentURL + "getPDFForApp?visitationID="
     val getFacilityPhotos = permanentURL + "getFacilityPhotos?facId="
     val updateFacilityPhotos = permanentURL + "updateFacilityPhotos?facId="
     val getLoggedActions = permanentURL + "getLoggedActions?facNum="
