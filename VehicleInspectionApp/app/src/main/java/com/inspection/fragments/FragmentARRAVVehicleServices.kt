@@ -186,7 +186,7 @@ class FragmentARRAVVehicleServices : Fragment() {
                 }
             }
             orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(Marine Status)"
+            saveMessage = "(Marine)"
             dataChanges = "Marine Vehicle Services changed from " + orgSelectedServices + " to " + selectedMarineServicesNames
         }else if (gridType.equals("3")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("RV") }[0].VehiclesTypeID
@@ -197,7 +197,7 @@ class FragmentARRAVVehicleServices : Fragment() {
                 }
             }
             orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(Recreation Status)"
+            saveMessage = "(RV)"
             dataChanges = "Recreation Vehicle Services changed from " + orgSelectedServices + " to " + selectedRecreationServicesNames
         }else if (gridType.equals("4")) {
             vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Auto Glass") }[0].VehiclesTypeID

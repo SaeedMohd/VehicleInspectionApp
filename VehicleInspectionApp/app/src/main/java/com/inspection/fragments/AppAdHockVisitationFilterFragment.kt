@@ -142,6 +142,8 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     activity!!.runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
                         var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+                        CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+                        facilityNames.add(0, "Any")
                         (0 until facilities.size).forEach {
                             facilityNames.add(facilities[it].facname)
                         }
@@ -152,8 +154,8 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 //                            defaultClubCode = facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
 //                            clubCodeEditText.setText(defaultClubCode)
 //                        }
-                        facilityNames.sort()
-                        facilityNames.add(0, "Any")
+//                        facilityNames.sort()
+
                         reloadFacilitiesList()
 //                        var searchDialog = SearchDialog(context, facilityNames)
 //                        searchDialog.show()
@@ -304,7 +306,9 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
         if (!adHocFacilityNameButton.text.contains("Select") && adHocFacilityNameButton.text.length > 1) {
             with(parametersString) {
-                append("dba=" + URLEncoder.encode(adHocFacilityNameButton.text.toString(), "UTF-8"))
+//                append("dba=" + URLEncoder.encode(adHocFacilityNameButton.text.toString(), "UTF-8"))
+                append("dba=" + adHocFacilityNameButton.text.toString())
+//                append("dba=![CDATA[" + adHocFacilityNameButton.text.toString()+"]")
                 append("&")
             }
         } else {

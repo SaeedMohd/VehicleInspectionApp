@@ -172,7 +172,10 @@ class FacilityGeneralInformationFragment : Fragment() {
 
 
         FacilityDataModel.getInstance().apply {
-            contractStatusTextViewVal.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s -> s.FacilityStatusID .toInt() == tblFacilities[0].ContractTypeID }[0].FacilityStatusName
+
+            val statusID = CSIFacilitySingelton.getInstance().csiFacilities.filter { s->s.facnum.equals(tblFacilities[0].FACNo.toString()) && s.clubcode.equals(clubCode)}[0].status
+
+            contractStatusTextViewVal.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s -> s.FacilityStatusID == statusID}[0].FacilityStatusName
 //            contractStatusTextViewVal.setTextColor(Color.BLUE)
 
                         for (provider in tblFacilityServiceProvider) {

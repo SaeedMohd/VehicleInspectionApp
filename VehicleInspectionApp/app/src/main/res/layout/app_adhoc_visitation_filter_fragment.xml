@@ -12,31 +12,34 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
+            android:divider="@drawable/divider_table_layout"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingRight="20dp"
+            android:stretchColumns="*"
+            >
 
+        <TableRow>
             <TextView
                 android:id="@+id/clubCodeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_column="0"
                 android:layout_centerVertical="true"
                 android:text="Club Code: "
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/clubCodeEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_column="1"
                 android:layout_toRightOf="@id/clubCodeTextView"
                 android:background="@drawable/textview_background"
-                android:ems="4"
                 android:focusable="false"
                 android:lines="1"
                 android:gravity="center"
@@ -45,159 +48,124 @@
 
             <TextView
                 android:id="@+id/visitationfacilityIdTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_column="2"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/clubCodeEditText"
                 android:text="Facility #:"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/adHocFacilityIdVal"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/visitationfacilityIdTextView"
                 android:background="@drawable/textview_background"
-                android:ems="5"
+                android:layout_column="3"
                 android:gravity="center"
                 android:inputType="number"
                 android:text="" />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:layout_column="4"
+                android:layout_marginLeft="10dp"
+                android:text="Facility Name:"
+                android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/adHocFacilityIdVal"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-
+            <EditText
+                android:id="@+id/adHocFacilityNameButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_column="5"
+                android:layout_span="3"
+                android:background="@drawable/textview_background"
+                android:drawableRight="@drawable/downarrow"
+                android:focusable="false"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:hint="Select Facility"
+                 />
+        </TableRow>
+            <TableRow android:layout_marginTop="10dp">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:gravity="center"
+                    android:layout_column="0"
                     android:text="Specialist:"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/adHocFacilitySpecialistButton"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="5"
                     android:background="@drawable/textview_background"
                     android:drawableRight="@drawable/downarrow"
                     android:focusable="false"
                     android:textSize="12sp"
+                    android:layout_column="1"
+                    android:layout_span="2"
                     android:gravity="center"
                     android:hint="Select Specialist"
                     android:paddingRight="10dp" />
-
-
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/contractStatusTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="3"
+                    android:layout_marginLeft="10dp"
                     android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="Facility Name:"
+                    android:text="Contract Status "
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/adHocFacilityNameButton"
+                <Spinner
+                    android:id="@+id/contractStatusTypeSpinner"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="5"
-                    android:background="@drawable/textview_background"
-                    android:drawableRight="@drawable/downarrow"
-                    android:focusable="false"
+                    android:layout_height="match_parent"
+                    android:layout_column="4"
                     android:gravity="center"
-                    android:hint="Select Facility"
-                    android:paddingRight="10dp" />
+                    android:layout_span="2"
+                    android:textSize="12sp"
+                    android:layout_gravity="center"
+                    />
 
-            </LinearLayout>
+                <CheckBox
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/newVisitationCheckBox"
+                    android:layout_column="6"
+                    android:layout_marginLeft="10dp"
+                    android:layout_span="2"
+                    android:checked="true"
+                    android:text="Create New Visitation"/>
+
+            </TableRow>
+        </TableLayout>
 
 
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:id="@+id/contractStatusTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:gravity="center_vertical"
-                android:text="Contract Status "
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/contractStatusTypeSpinner"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/contractStatusTextView"
-                android:ems="8"
-                />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/newVisitationCheckBox"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/contractStatusTypeSpinner"
-                android:checked="true"
-                android:text="Create New Visitation"/>
-
-            <RadioGroup
-                android:id="@+id/contractStatusRadioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/contractStatusTypeSpinner"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/contractStatusActiveRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Active"
-                    android:textColor="@color/black" />
-
-                <RadioButton
-                    android:id="@+id/contractStatusinActiveRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="InActive"
-                    android:textColor="@color/black" />
-
-            </RadioGroup>
-
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="10dp">
             <Button
                 android:id="@+id/adHocSearchButton"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:background="@drawable/green_background_button"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp"
+                android:layout_gravity="left"
                 android:textColor="@color/white"
                 android:text="Search"
                 />
-
         </RelativeLayout>
 
 
