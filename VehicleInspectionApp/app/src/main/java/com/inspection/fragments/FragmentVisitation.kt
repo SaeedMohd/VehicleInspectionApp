@@ -364,6 +364,16 @@ class FragmentVisitation : Fragment() {
 //            }
 
             facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(ApplicationPrefs.getInstance(activity).loggedInUserFullName))
+            waiveVisitationCheckBox.isChecked = false
+            emailPdfCheckBox.isChecked = false
+            waiverCommentsEditText.setText("")
+            emailEditText.setText("")
+            facilityRepresentativesSpinner.setSelection(0)
+            staffTrainingProcessEditText.setText("")
+            qualityControlProcessEditText.setText("")
+            aarSignEditText.setText("")
+            certificateOfApprovalEditText.setText("")
+            memberBenefitsPosterEditText.setText("")
             if (PRGDataModel.getInstance().tblPRGVisitationHeader.isNotEmpty()){
                 waiveVisitationCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation
                 waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked

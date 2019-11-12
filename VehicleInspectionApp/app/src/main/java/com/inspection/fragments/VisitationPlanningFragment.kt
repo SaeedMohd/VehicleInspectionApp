@@ -104,7 +104,7 @@ class VisitationPlanningFragment : Fragment() {
         var visitationYearFilterSpinnerEntries = mutableListOf<String>()
         var currentYear = Calendar.getInstance().get(Calendar.YEAR)
 //        visitationYearFilterSpinnerEntries.add    ("Any")
-        (currentYear - 30..currentYear).forEach {
+        (currentYear - 30..currentYear+1).forEach {
             visitationYearFilterSpinnerEntries.add("" + it)
         }
         visitationYearFilterSpinnerEntries.sortDescending()
@@ -284,7 +284,7 @@ class VisitationPlanningFragment : Fragment() {
                                 if (searchDialog.selectedString == "Any") {
                                     facilityNameButton.setText("")
                                 } else {
-                                    facilityNameButton.setText(searchDialog.selectedString)
+                                    facilityNameButton.setText(searchDialog.selectedString.substring(0,searchDialog.selectedString.indexOf(" || ")))
                                 }
                                 //reloadVisitationsList()
                             }
@@ -346,7 +346,7 @@ class VisitationPlanningFragment : Fragment() {
                         CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         (0 until facilities.size).forEach {
-                            facilityNames.add(facilities[it].facname)
+                            facilityNames.add(facilities[it].facname + " || " + facilities[it].facnum)
                         }
                         Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
                         if (facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
@@ -418,8 +418,8 @@ class VisitationPlanningFragment : Fragment() {
 
             if (!facilityNameButton.text.contains("Select") && facilityNameButton.text.length > 1) {
                 with(parametersString) {
-//                    append(("dba=" + URLEncoder.encode(facilityNameButton.text.toString(), "UTF-8")))
-                    append("dba=![CDATA[" + facilityNameButton.text.toString()+"]")
+                    append(("dba=" + URLEncoder.encode(facilityNameButton.text.toString(), "UTF-8")))
+//                    append("dba=" + facilityNameButton.text.toString())
                     append("&")
                 }
             } else {
@@ -1104,7 +1104,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].DueDate.apiToAppFormatMMDDYYYY()
-                val dueDate = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].DueDate.substring(0,9)
+                val dueDate = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].DueDate.substring(0,10)
                 val format = SimpleDateFormat("yyyy-MM-dd");
                 try {
                     val date = format.parse(dueDate);

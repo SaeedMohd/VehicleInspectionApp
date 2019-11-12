@@ -26,11 +26,12 @@ android {
             keyAlias "release"
             keyPassword "VhMAC@246"
         }
-
     }
+
     dexOptions {
         javaMaxHeapSize "12g"
     }
+
     buildTypes {
         release {
             debuggable false

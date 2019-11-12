@@ -51,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_column="2"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:text="Facility #:"
                 android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:gravity="center"
+
                 android:layout_column="4"
                 android:layout_marginLeft="10dp"
                 android:text="Facility Name:"
@@ -92,11 +92,34 @@
                  />
         </TableRow>
             <TableRow android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/contractStatusTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="0"
+                    android:layout_gravity="center_vertical"
+                    android:text="Contract Status "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/contractStatusTypeSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:layout_span="2"
+                    android:textSize="12sp"
+                    android:layout_gravity="center"
+                    />
+
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_column="0"
+                    android:layout_column="4"
+                    android:layout_marginLeft="10dp"
                     android:text="Specialist:"
                     android:textStyle="bold" />
 
@@ -110,41 +133,10 @@
                     android:focusable="false"
                     android:textSize="12sp"
                     android:layout_column="1"
-                    android:layout_span="2"
+                    android:layout_span="3"
                     android:gravity="center"
                     android:hint="Select Specialist"
-                    android:paddingRight="10dp" />
-                <TextView
-                    android:id="@+id/contractStatusTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_column="3"
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="Contract Status "
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/contractStatusTypeSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_column="4"
-                    android:gravity="center"
-                    android:layout_span="2"
-                    android:textSize="12sp"
-                    android:layout_gravity="center"
                     />
-
-                <CheckBox
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/newVisitationCheckBox"
-                    android:layout_column="6"
-                    android:layout_marginLeft="10dp"
-                    android:layout_span="2"
-                    android:checked="true"
-                    android:text="Create New Visitation"/>
-
             </TableRow>
         </TableLayout>
 
@@ -153,9 +145,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
+            android:paddingLeft="10dp"
             android:paddingRight="20dp"
             android:layout_marginTop="10dp">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/newVisitationCheckBox"
+                android:layout_column="2"
+                android:layout_marginLeft="10dp"
+                android:layout_span="2"
+                android:checked="true"
+                android:text="Create New Visitation"/>
             <Button
                 android:id="@+id/adHocSearchButton"
                 android:layout_width="200dp"
