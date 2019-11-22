@@ -281,7 +281,7 @@ class VisitationPlanningFragment : Fragment() {
                             var searchDialog = SearchDialog(context, facilityNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
-                                if (searchDialog.selectedString == "Any") {
+                                if (searchDialog.selectedString == "Any" || searchDialog.selectedString == "") {
                                     facilityNameButton.setText("")
                                 } else {
                                     facilityNameButton.setText(searchDialog.selectedString.substring(0,searchDialog.selectedString.indexOf(" || ")))
@@ -534,8 +534,22 @@ class VisitationPlanningFragment : Fragment() {
                     //  activity!!.toast("success!!!")
                     //     recordsProgressView.visibility = View.INVISIBLE
 
-                    if (responseString.toString().contains("returnCode>1<",false)) {
-                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message")+9,responseString.indexOf("</message")))
+                    if (responseString.toString().contains("returnCode>1<",false) || !responseString.toString().contains("returnCode>",false)) {
+                        activity?.runOnUiThread {
+                            if (responseString.toString().contains("message", false))
+                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+                            else
+                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString)
+                            recordsProgressView.visibility = View.GONE
+                            visitationfacilityListView.visibility = View.VISIBLE
+                            visitationsModel.pendingVisitationsArray.clear()
+                            visitationsModel.completedVisitationsArray.clear()
+                            visitationsModel.deficienciesArray.clear()
+                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                            visitationfacilityListView.adapter = visitationPlanningAdapter
+                            var totalVisitations = 0
+
+                        }
                     } else {
 //                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                         var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
@@ -665,7 +679,35 @@ class VisitationPlanningFragment : Fragment() {
                 visitationsModel.deficienciesArray.add(Gson().fromJson(jsonObject.get("Deficiencies").toString(), VisitationsModel.DeficiencyModel::class.java))
             }
         }
+//        visitationsModel.completedVisitationsArray = visitationsModel.completedVisitationsArray.filter { s->s.DatePerformed. }
+        //2019-07-05
+        //  APPLY FILTERS TO OVERCOME GET VISITATION API ISSUES
+        var filteredMonth = if (visitationMonthsSpinner.selectedItemPosition==0) "0" else visitationMonthsSpinner.selectedItemPosition.toString()
+        var filteredYear = if (visitationYearFilterSpinner.selectedItemPosition==0) "0" else visitationYearFilterSpinner.selectedItem.toString()
+        if (visitationsModel.deficienciesArray.size>0) {
+            visitationsModel.deficienciesArray.removeIf { s -> s.DueDate.substring(5, 7).toInt() > filteredMonth.toInt() }
+            visitationsModel.deficienciesArray.removeIf { s -> s.DueDate.substring(0, 4).toInt() > filteredYear.toInt() }
+        }
 
+        if (visitationsModel.completedVisitationsArray.size>0) {
+            // Quarterly , Annual & Add Hoc
+            if (!annualVisitationCheckBox.isChecked) {
+                visitationsModel.completedVisitationsArray.removeIf { s -> s.VisitationTypeID==1}
+            }
+            if (!quarterlyOrOtherVisistationsCheckBox.isChecked) {
+                visitationsModel.completedVisitationsArray.removeIf { s -> s.VisitationTypeID==2}
+            }
+            if (!adHocVisitationsCheckBox.isChecked) {
+                visitationsModel.completedVisitationsArray.removeIf { s -> s.VisitationTypeID==3}
+            }
+            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(5, 7).equals(filteredMonth) }
+            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(0, 4).equals(filteredYear) }
+        }
+
+//        visitationsModel.pendingVisitationsArray.removeIf { s->!s..substring(5,7).equals(filteredMonth)}
+//        visitationsModel.pendingVisitationsArray.removeIf { s->!s.DatePerformed.substring(0,4).equals(filteredYear)}
+//        if (!annualVisitationCheckBox.isChecked) {
+//        }
         return visitationsModel
     }
 
@@ -1019,8 +1061,6 @@ class VisitationPlanningFragment : Fragment() {
             if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].FACNo
-
-
                 vh.visitationStatusTextView.text = "Status:"
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
@@ -1034,6 +1074,7 @@ class VisitationPlanningFragment : Fragment() {
 //                }
                 val visitationTypeAndStatus = determineVisitationTypeAndStatus(visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].FacID.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt())
                 vh.visitationTypeValueTextView.text = visitationTypeAndStatus.first.toString()
+
                 if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
                     if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode == visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.facannualinspectionmonth == visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt() && s.inspectioncycle == visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle && s.visitationtype == visitationTypeAndStatus.first.toString() }.isNotEmpty()) {
                         if (visitationTypeAndStatus.second == VisitationStatus.NotStarted) {
@@ -1085,7 +1126,17 @@ class VisitationPlanningFragment : Fragment() {
 //                }
                 vh.visitationTypeValueTextView.visibility = View.GONE
                 vh.visitationTypeTextView.visibility = View.GONE
-                if (PRGDataModel.getInstance().tblPRGCompletedVisitations[0].recordid > -1){
+                if (visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].VisitationTypeID>0){
+                    vh.visitationTypeValueTextView.visibility = View.VISIBLE
+                    vh.visitationTypeTextView.visibility = View.VISIBLE
+                    when (visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].VisitationTypeID) {
+                        1 -> vh.visitationTypeValueTextView.text = "Annual"
+                        2 -> vh.visitationTypeValueTextView.text = "Quarterly"
+                        3 -> vh.visitationTypeValueTextView.text = "AdHoc"
+                    }
+
+                }
+                else if (PRGDataModel.getInstance().tblPRGCompletedVisitations[0].recordid > -1){
                     if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.visitationid==visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID }.isNotEmpty()){
                         vh.visitationTypeValueTextView.visibility = View.VISIBLE
                         vh.visitationTypeTextView.visibility = View.VISIBLE

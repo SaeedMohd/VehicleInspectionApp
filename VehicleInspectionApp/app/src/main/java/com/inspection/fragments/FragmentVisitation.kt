@@ -1036,8 +1036,10 @@ class FragmentVisitation : Fragment() {
         val performedBy = if (automotiveSpecialistSpinner.selectedItem.toString().contains("Select")) "" else automotiveSpecialistSpinner.selectedItem.toString()
         var dialogMsg = ""
         var visitationType = ""
+        var visitationTypeID = ""
         if (annualVisitationType.isChecked) {
             visitationType = VisitationTypes.Annual.toString()
+//            visitationTypeID = TypeTablesModel.getInstance().
         } else if (quarterlyVisitationType.isChecked) {
             visitationType = VisitationTypes.Quarterly.toString()
         } else if (adhocVisitationType.isChecked) {

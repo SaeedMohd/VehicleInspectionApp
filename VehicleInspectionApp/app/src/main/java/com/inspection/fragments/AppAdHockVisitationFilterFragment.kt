@@ -145,7 +145,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                         CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         facilityNames.add(0, "Any")
                         (0 until facilities.size).forEach {
-                            facilityNames.add(facilities[it].facname)
+                            facilityNames.add(facilities[it].facname + " || " + facilities[it].facnum)
                         }
                         Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
 //                        if (facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
@@ -192,10 +192,11 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                             var searchDialog = SearchDialog(context, facilityNames)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
-                                if (searchDialog.selectedString == "Any") {
+                                if (searchDialog.selectedString == "Any" || searchDialog.selectedString == "") {
                                     adHocFacilityNameButton.setText("")
                                 } else {
-                                    adHocFacilityNameButton.setText(searchDialog.selectedString)
+//                                    adHocFacilityNameButton.setText(searchDialog.selectedString)
+                                    adHocFacilityNameButton.setText(searchDialog.selectedString.substring(0,searchDialog.selectedString.indexOf(" || ")))
                                 }
                             }
 //                        }

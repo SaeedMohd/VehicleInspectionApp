@@ -83,6 +83,8 @@ class VisitationsModel {
         var visitationID = ""
         var DatePerformed = ""
         var DateReceived = ""
+        var VisitationTypeID = 0
+        var VisitationReasonTypeID = 0
     }
 
     class DeficiencyModel {
