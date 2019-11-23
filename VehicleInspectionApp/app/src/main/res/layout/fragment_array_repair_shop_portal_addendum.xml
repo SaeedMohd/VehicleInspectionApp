@@ -240,19 +240,19 @@
                     <TableRow android:background="@color/mainColor">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_weight="1"
                             android:layout_marginLeft="10dp"
-                            android:text="Portal InspectionDate"
+                            android:text="Portal Inspection Date"
                             android:gravity="center"
                             android:textColor="@color/white"
                             android:textSize="14sp"
                             />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="1"
                             android:layout_weight="1"
@@ -262,7 +262,7 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="2"
                             android:layout_weight="1"
@@ -272,7 +272,7 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_weight="1"
@@ -282,7 +282,7 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="4"
                             android:layout_weight="1"
@@ -292,7 +292,7 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="5"
                             android:layout_weight="1"

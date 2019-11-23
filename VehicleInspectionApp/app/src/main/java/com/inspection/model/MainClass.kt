@@ -620,6 +620,7 @@ class PRGVisitationHeader {
     var aarsigns = ""
     var certificateofapproval = ""
     var memberbenefitposter = ""
+    var changedate = ""
 }
 
 class PRGCompletedVisitations {

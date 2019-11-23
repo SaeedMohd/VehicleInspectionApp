@@ -366,6 +366,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         var coStatusAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractStatusArray)
         coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contractStatusTypeSpinner.adapter = coStatusAdapter
+        contractStatusTypeSpinner.setSelection(contractStatusArray.indexOf("Active"))
         specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
             requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName

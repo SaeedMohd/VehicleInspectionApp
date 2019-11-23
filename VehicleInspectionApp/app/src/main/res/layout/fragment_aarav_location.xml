@@ -228,7 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="15dp"
                     android:background="@drawable/green_background_button"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
@@ -366,22 +366,52 @@
 
             </TableLayout>
 
-            <TableLayout
-
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/mainViewLinearId31"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="30dp">
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="30dp">
 
-                <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hours"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hours"
-                        android:textColor="@color/mainColor"
-                        android:textSize="18sp" />
-                </TableRow>
-            </TableLayout>
+<!--                <Button-->
+<!--                    android:id="@+id/copyHoursBtn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_marginLeft="15dp"-->
+<!--                    android:layout_marginRight="15dp"-->
+<!--                    android:background="@drawable/green_background_button"-->
+<!--                    android:paddingLeft="15dp"-->
+<!--                    android:paddingRight="15dp"-->
+<!--                    android:text="Copy Hours"-->
+<!--                    android:textColor="@color/white" />-->
+
+            </RelativeLayout>
+
+<!--            <TableLayout-->
+
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingTop="30dp">-->
+
+<!--                <TableRow>-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Hours"-->
+<!--                        android:textColor="@color/mainColor"-->
+<!--                        android:textSize="18sp" />-->
+<!--                </TableRow>-->
+<!--            </TableLayout>-->
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -580,25 +610,38 @@
                         android:entries="@array/officeTimes" />
                 </TableRow>
             </TableLayout>
-
+            <RelativeLayout
+                android:id="@+id/mainViewLinearId32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp" />
+                <Button
+                    android:id="@+id/copyHoursBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/green_background_button"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="   Copy Hours  "
+                    android:textColor="@color/white" />
+            </RelativeLayout>
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 >
-
                 <TableRow>
-
-                    <Button
-                        android:id="@+id/copyHoursBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:background="@drawable/green_background_button"
-                        android:text="Copy Hours"
-                        android:textColor="@color/white" />
-                </TableRow>
-
-                <TableRow android:layout_marginTop="30dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -686,7 +729,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-
                         android:layout_marginTop="5dp"
                         android:text="Night Drop Instructions:"
                         android:textStyle="bold" />

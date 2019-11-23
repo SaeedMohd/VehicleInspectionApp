@@ -374,6 +374,8 @@ class FragmentVisitation : Fragment() {
             aarSignEditText.setText("")
             certificateOfApprovalEditText.setText("")
             memberBenefitsPosterEditText.setText("")
+
+//            PRGDataModel.getInstance().tblPRGVisitationHeader[0].changedate
             if (PRGDataModel.getInstance().tblPRGVisitationHeader.isNotEmpty()){
                 waiveVisitationCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation
                 waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked
@@ -1197,7 +1199,7 @@ class FragmentVisitation : Fragment() {
         FacilityDataModel.getInstance().tblDeficiency.apply {
 
             (0 until size).forEach {
-                if (!get(it).DefTypeID.equals("-1")) {
+                if ((!get(it).DefTypeID.equals("-1")) && get(it).ClearedDate.isNullOrEmpty()) {
                     var tableRow = TableRow(context)
 
                     if (tableRowColorSwitch) {

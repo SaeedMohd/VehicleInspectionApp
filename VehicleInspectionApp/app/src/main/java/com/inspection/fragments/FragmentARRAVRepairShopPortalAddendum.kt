@@ -488,7 +488,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         rowLayoutParam.leftMargin=10
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.gravity = Gravity.CENTER
-
+        rowLayoutParam.width = 0
 
 
         if (aarPortalTrackingTableLayout.childCount>1) {
@@ -522,31 +522,35 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.gravity = Gravity.CENTER
+        rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.gravity = Gravity.CENTER
+        rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.gravity = Gravity.CENTER
+        rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.gravity = Gravity.CENTER
+        rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.gravity = Gravity.CENTER
-
+        rowLayoutParam5.width = 0
 
         FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate }).apply {
             (0 until size).forEach {
@@ -600,7 +604,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     tableRow.addView(textView4)
 
                     val updateButton  = TextView(context)
-                    updateButton.layoutParams = rowLayoutParam1
+                    updateButton.layoutParams = rowLayoutParam5
                     updateButton.setTextColor(Color.BLUE)
                     updateButton.text = "EDIT"
                     updateButton.textSize = 14f

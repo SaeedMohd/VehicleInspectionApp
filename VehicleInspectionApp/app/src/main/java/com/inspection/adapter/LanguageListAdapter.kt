@@ -63,6 +63,7 @@ class LanguageListAdapter(internal var context: Context, internal var recource: 
             FacilityDataModel.getInstance().tblLanguage = langArray
             (context as FormsActivity).saveRequired = true
             parentFragment.refreshButtonsState()
+            parentFragment.saveLangRequired = true
             //// SAVE REQUIRED LOGIC REMAINING
         })
         return view

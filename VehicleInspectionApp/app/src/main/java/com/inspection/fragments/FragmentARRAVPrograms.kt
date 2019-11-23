@@ -380,7 +380,7 @@ class FragmentARRAVPrograms : Fragment() {
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
 
-        FacilityDataModel.getInstance().tblPrograms.apply {
+        FacilityDataModel.getInstance().tblPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).apply {
             (0 until size).forEach {
                 if (!get(it).ProgramID.equals("-1")) {
                     var tableRow = TableRow(context)
@@ -451,6 +451,7 @@ class FragmentARRAVPrograms : Fragment() {
                     updateButton.text = "EDIT"
                     updateButton.textSize = 14f
                     updateButton.minimumHeight = 30
+                    updateButton.tag = get(it).ProgramID
                     updateButton.gravity = Gravity.CENTER
                     updateButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(updateButton)
@@ -459,6 +460,7 @@ class FragmentARRAVPrograms : Fragment() {
 
                         var currentTableRowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
                         var currentfacilityDataModelIndex = currentTableRowIndex - 1
+
 
                         disableAllAddButnsAndDialog()
                         edit_comments_editTextVal.setText(textView4.text)
@@ -472,8 +474,6 @@ class FragmentARRAVPrograms : Fragment() {
                         (activity as FormsActivity).overrideBackButton = true
 
                         edit_submitNewProgramButton.setOnClickListener {
-
-
                             var currentRowDataModel = FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex]
                             var originalDataModel = FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex]
                             if (edit_validateInputs()) {

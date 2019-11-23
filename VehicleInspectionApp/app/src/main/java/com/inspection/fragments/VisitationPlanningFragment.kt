@@ -35,7 +35,9 @@ import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.dialog_forgot_password.view.*
+import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
+import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.progressBarRecords
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -283,8 +285,10 @@ class VisitationPlanningFragment : Fragment() {
                             searchDialog.setOnDismissListener {
                                 if (searchDialog.selectedString == "Any" || searchDialog.selectedString == "") {
                                     facilityNameButton.setText("")
+                                    visitationfacilityIdVal.setText("")
                                 } else {
                                     facilityNameButton.setText(searchDialog.selectedString.substring(0,searchDialog.selectedString.indexOf(" || ")))
+                                    visitationfacilityIdVal.setText(searchDialog.selectedString.substringAfter("|| "))
                                 }
                                 //reloadVisitationsList()
                             }
@@ -418,8 +422,9 @@ class VisitationPlanningFragment : Fragment() {
 
             if (!facilityNameButton.text.contains("Select") && facilityNameButton.text.length > 1) {
                 with(parametersString) {
-                    append(("dba=" + URLEncoder.encode(facilityNameButton.text.toString(), "UTF-8")))
+//                    append(("dba=" + URLEncoder.encode(facilityNameButton.text.toString(), "UTF-8")))
 //                    append("dba=" + facilityNameButton.text.toString())
+                    append("dba=")
                     append("&")
                 }
             } else {
@@ -1287,6 +1292,9 @@ class VisitationPlanningFragment : Fragment() {
     }
 
     fun getFacilityPRGData(isCompleted : Boolean) {
+        PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
+        PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()
+        PRGDataModel.getInstance().tblPRGLogChanges.clear()
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {

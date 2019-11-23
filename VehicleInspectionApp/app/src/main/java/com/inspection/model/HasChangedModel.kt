@@ -402,7 +402,9 @@ class HasChangedModel {
 
     fun checkGeneralInfoTblLanguagesChange () {
         var changeWasDone = false
-        if (FacilityDataModel.getInstance().tblLanguage[0].LangTypeID!=FacilityDataModelOrg.getInstance().tblLanguage[0].LangTypeID) changeWasDone = true
+        if (FacilityDataModelOrg.getInstance().tblLanguage.size > 0) {
+            if (FacilityDataModel.getInstance().tblLanguage[0].LangTypeID != FacilityDataModelOrg.getInstance().tblLanguage[0].LangTypeID) changeWasDone = true
+        } else changeWasDone = true
         groupFacilityContactInfo[0].FacilityLanguages = changeWasDone
     }
 

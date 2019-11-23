@@ -54,6 +54,8 @@ class FragmentARRAVLocation : Fragment() {
     private var facLocationsArray = ArrayList<String>()
     private var states= arrayOf("select state","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
     private var hoursArray:Array<String>? = null
+    var saveLangRequired = false
+    var saveHoursRequired = false
 
 
     var languagesGridView: ExpandableHeightGridView? = null
@@ -196,6 +198,7 @@ class FragmentARRAVLocation : Fragment() {
                     satOpenSpinner.setSelection(openValue)
                     satCloseSpinner.setSelection(closeValue)
                 }
+                saveHoursRequired = true
                 exitCopyDialogeBtnId.callOnClick()
             }
             fromDaySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -271,6 +274,8 @@ class FragmentARRAVLocation : Fragment() {
             fillOpenHoursTableView()
             fillClosedHoursTableView()
             (activity as FormsActivity).saveRequired = false
+            saveHoursRequired = false
+            saveLangRequired = false
             refreshButtonsState()
             Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully")
         }
@@ -286,6 +291,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -300,6 +306,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -314,6 +321,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -328,6 +336,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -342,6 +351,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -356,6 +366,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -370,6 +381,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -384,6 +396,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -398,6 +411,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -412,6 +426,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -426,6 +441,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -440,6 +456,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -454,6 +471,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -468,6 +486,7 @@ class FragmentARRAVLocation : Fragment() {
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
+                    saveHoursRequired = true
                     refreshButtonsState()
                 }
             }
@@ -667,8 +686,8 @@ class FragmentARRAVLocation : Fragment() {
         saveButton.setOnClickListener(View.OnClickListener {
             contactInfoLoadingText.text = "Saving ..."
             contactInfoLoadingView.visibility = View.VISIBLE
-            submitHours()
-            submitLanguages()
+            if (saveHoursRequired) submitHours()
+            if (saveLangRequired) submitLanguages()
 
         })
 
@@ -1948,18 +1967,24 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModelOrg.getInstance().tblHours[0].NightDrop= nightDropCheck.isChecked
                             FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr = nightDropInstText.text.toString()
                             (activity as FormsActivity).saveRequired = false
+                            saveHoursRequired = false
                             HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             refreshButtonsState()
                             Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Nigh Drop")
+
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Night Drop (Error: "+errorMessage+" )")
                         }
+                        contactInfoLoadingView.visibility = View.GONE
+                        contactInfoLoadingText.text = "Loading ..."
                     }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error submitting hours")
             Utility.showSubmitAlertDialog(activity,false,"Facility Hours / Night Drop (Error: "+it.message+" )")
+            contactInfoLoadingView.visibility = View.GONE
+            contactInfoLoadingText.text = "Loading ..."
         }))
 
     }
@@ -1991,6 +2016,7 @@ class FragmentARRAVLocation : Fragment() {
                             }
                             HasChangedModel.getInstance().checkGeneralInfoTblLanguagesChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                            saveLangRequired = false
                             refreshButtonsState()
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))

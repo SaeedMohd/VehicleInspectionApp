@@ -204,12 +204,14 @@
                                 android:id="@+id/dataChangedYesRadioButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:enabled="false"
                                 android:text="Yes" />
 
                             <RadioButton
                                 android:id="@+id/dataChangedNoRadioButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:enabled="false"
                                 android:text="No" />
 
                         </RadioGroup>
@@ -634,6 +636,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:inputType="textCapSentences"
                             android:background="@drawable/textview_background"
                             android:ems="20"
 
@@ -667,6 +670,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:inputType="textCapSentences"
                             android:background="@drawable/textview_background"
                             android:ems="20"
 
@@ -701,7 +705,7 @@
                             android:layout_centerVertical="true"
                             android:background="@drawable/textview_background"
                             android:ems="20"
-
+                            android:inputType="textMultiLine|textCapSentences"
                             android:padding="5dp" />
 
                     </RelativeLayout>
@@ -735,7 +739,7 @@
                             android:background="@drawable/textview_background"
                             android:ems="20"
                             android:gravity="left|top"
-                            android:inputType="textMultiLine"
+                            android:inputType="textMultiLine|textCapSentences"
                             android:lines="6"
                             android:padding="5dp" />
 
@@ -767,7 +771,7 @@
                             android:background="@drawable/textview_background"
                             android:ems="20"
                             android:gravity="left|top"
-                            android:inputType="textMultiLine"
+                            android:inputType="textMultiLine|textCapSentences"
                             android:lines="6"
                             android:padding="5dp" />
 
