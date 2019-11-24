@@ -740,8 +740,8 @@ private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?) : PdfPTable
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].automotivespecialist,1,false));
-    table.addCell(addCell("Facility Representative's Signature:",2,true));
-    table.addCell(addCell("Specialist's Signature:",2,true));
+    table.addCell(addCell("Facility Representative's Signature:",2,false));
+    table.addCell(addCell("Specialist's Signature:",2,false));
     imageRep?.scaleAbsolute(50F,50F)
     val c = PdfPCell(imageRep)
     c.colspan = 2

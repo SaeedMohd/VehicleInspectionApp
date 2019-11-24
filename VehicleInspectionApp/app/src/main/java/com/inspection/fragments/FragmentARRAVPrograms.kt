@@ -40,6 +40,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -380,7 +381,7 @@ class FragmentARRAVPrograms : Fragment() {
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
 
-        FacilityDataModel.getInstance().tblPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).apply {
+        FacilityDataModel.getInstance().tblPrograms.apply {
             (0 until size).forEach {
                 if (!get(it).ProgramID.equals("-1")) {
                     var tableRow = TableRow(context)
@@ -571,12 +572,16 @@ class FragmentARRAVPrograms : Fragment() {
                                                         FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex].expDate = currentRowDataModel.expDate
                                                         FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex].effDate= currentRowDataModel.effDate
                                                         FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex].ProgramTypeID = currentRowDataModel.ProgramTypeID
-
                                                         FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].Comments = currentRowDataModel.Comments
                                                         FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].expDate = currentRowDataModel.expDate
                                                         FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].effDate= currentRowDataModel.effDate
                                                         FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].ProgramTypeID = currentRowDataModel.ProgramTypeID
-
+                                                        var tempPrograms = ArrayList<TblPrograms>()
+                                                        FacilityDataModel.getInstance().tblPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(tempPrograms)
+                                                        FacilityDataModel.getInstance().tblPrograms.clear()
+                                                        FacilityDataModelOrg.getInstance().tblPrograms.clear()
+                                                        tempPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(FacilityDataModel.getInstance().tblPrograms)
+                                                        tempPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(FacilityDataModelOrg.getInstance().tblPrograms)
                                                         fillPortalTrackingTableView()
                                                     } else {
                                                         var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))

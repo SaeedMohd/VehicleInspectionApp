@@ -82,6 +82,7 @@ class TypeTablesModel {
     var VehicleMakes = ArrayList<vehicleMakes>()
     var WarrantyPeriodType = ArrayList<warrantyPeriodType>()
     var EmployeeList = ArrayList<employeeList>()
+    var VisitationReasons = ArrayList<visitationReasonType>()
 
     class employeeList {
         var NTLogin = ""
@@ -754,5 +755,8 @@ class TypeTablesModel {
         var updateDate = ""
     }
 
-
+    class visitationReasonType {
+        var visitationReasonID = 0
+        var visitationReasonName = ""
+    }
 }

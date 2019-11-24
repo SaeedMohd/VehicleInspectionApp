@@ -185,6 +185,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
             val alert = alertBuilder.create();
             alert.show();
+            overrideBackButton = false
         } else {
             super.onBackPressed()
         }

@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -105,7 +106,28 @@ class FragmentVisitation : Fragment() {
         setFieldsListeners()
         fillTrackingData()
         IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
-
+        var item = TypeTablesModel.visitationReasonType()
+        item.visitationReasonID=1
+        item.visitationReasonName="Deficiency Inspection"
+        TypeTablesModel.getInstance().VisitationReasons.add(item)
+        item.visitationReasonID=2
+        item.visitationReasonName="Member Complaint"
+        TypeTablesModel.getInstance().VisitationReasons.add(item)
+        item.visitationReasonID=3
+        item.visitationReasonName="Motorsport Ticket Delivery"
+        TypeTablesModel.getInstance().VisitationReasons.add(item)
+        item.visitationReasonID=4
+        item.visitationReasonName="Battery Tester Replacement"
+        TypeTablesModel.getInstance().VisitationReasons.add(item)
+        item.visitationReasonID=5
+        item.visitationReasonName="Courtesy Visit"
+        TypeTablesModel.getInstance().VisitationReasons.add(item)
+        item.visitationReasonID=6
+        item.visitationReasonName="Annual Visitation"
+        TypeTablesModel.getInstance().VisitationReasons.add(item)
+        item.visitationReasonID=7
+        item.visitationReasonName="Quarterly Visitation"
+        TypeTablesModel.getInstance().VisitationReasons.add(item)
 
 //        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
@@ -1039,20 +1061,24 @@ class FragmentVisitation : Fragment() {
         var dialogMsg = ""
         var visitationType = ""
         var visitationTypeID = ""
+        var visitationReasonID = ""
         if (annualVisitationType.isChecked) {
             visitationType = VisitationTypes.Annual.toString()
-//            visitationTypeID = TypeTablesModel.getInstance().
+            visitationTypeID = "1"
         } else if (quarterlyVisitationType.isChecked) {
             visitationType = VisitationTypes.Quarterly.toString()
+            visitationTypeID = "2"
         } else if (adhocVisitationType.isChecked) {
             visitationType = VisitationTypes.AdHoc.toString()
+            visitationTypeID = "3"
         } else if (defVisitationType.isChecked) {
             visitationType = VisitationTypes.Deficiency.toString()
+            visitationTypeID = "3"
         }
-
+        visitationReasonID = TypeTablesModel.getInstance().VisitationReasons.filter { s->s.visitationReasonName.equals(visitationReasonDropListId.selectedItem.toString())}[0].visitationReasonID.toString()
         progressBarTextVal.text = "Saving ..."
         dialogueLoadingView.visibility = View.VISIBLE
-        var urlString = facilityNo+"&clubcode="+clubCode+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&performedBy="+automotiveSpecialist+"&visitationID=0"
+        var urlString = facilityNo+"&clubcode="+clubCode+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationTypeID+"&visitationReason="+visitationReasonID+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&performedBy="+automotiveSpecialist+"&visitationID=0"
         Log.v("Visitation Tracking -- ",Constants.UpdateVisitationTrackingData + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationTrackingData + urlString,
                 Response.Listener { response ->
@@ -1114,11 +1140,21 @@ class FragmentVisitation : Fragment() {
                                                             Handler().postDelayed({
                                                                 dialogueLoadingView.visibility = View.GONE
                                                                 progressBarTextVal.text = "Loading ..."
-                                                                Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
-                                                            }, 1500)
-                                                        }, 1500)
-                                                    }, 1500)
-                                                }, 1500)
+//                                                                Utility.showMessageDialog(activity,"Confirmation ...", dialogMsg)
+                                                                val builder = AlertDialog.Builder(activity)
+                                                                builder.setTitle("Confirmation ...")
+                                                                builder.setMessage(dialogMsg)
+                                                                builder.setPositiveButton("OK"
+                                                                )
+                                                                { dialog, id ->
+                                                                    dialog.dismiss()
+                                                                    (activity as FormsActivity).onBackPressed()
+                                                                }
+                                                                builder.show()
+                                                            }, 5000)
+                                                        }, 5000)
+                                                    }, 5000)
+                                                }, 5000)
 
 
 

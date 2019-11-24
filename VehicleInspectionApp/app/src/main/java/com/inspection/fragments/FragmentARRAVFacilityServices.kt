@@ -484,10 +484,10 @@ class FragmentARRAVFacilityServices : Fragment() {
             fcServiceSpinner.setError("Required Field")
         }
 
-        if(comments_editTextVal.text.isNullOrEmpty()) {
-            facServicesValide = false
-            comments_editTextVal.setError("Required Field")
-        }
+//        if(comments_editTextVal.text.isNullOrEmpty()) {
+//            facServicesValide = false
+//            comments_editTextVal.setError("Required Field")
+//        }
 
         return facServicesValide
     }
@@ -511,10 +511,10 @@ class FragmentARRAVFacilityServices : Fragment() {
             edit_fcServiceSpinner.setError("Required Field")
         }
 
-        if(edit_comments_editTextVal.text.isNullOrEmpty()) {
-            facServicesValide = false
-            edit_comments_editTextVal.setError("Required Field")
-        }
+//        if(edit_comments_editTextVal.text.isNullOrEmpty()) {
+//            facServicesValide = false
+//            edit_comments_editTextVal.setError("Required Field")
+//        }
 
         return facServicesValide
     }

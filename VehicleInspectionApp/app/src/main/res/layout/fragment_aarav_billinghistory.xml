@@ -52,7 +52,7 @@ tools:context=".fragments.FragmentAARAVBillingHistory">
             <TableRow android:background="@color/mainColor">
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:text="Invoice #"
                     android:layout_column="0"
                     android:layout_marginLeft="10dp"
@@ -60,67 +60,74 @@ tools:context=".fragments.FragmentAARAVBillingHistory">
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
                     />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:text="Status"
                     android:layout_column="1"
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:text="Billing Month"
                     android:layout_column="2"
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:text="Billing Due Date"
                     android:layout_column="3"
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:text="Invoice Amount"
                     android:layout_column="4"
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:text="Payment Amount"
                     android:layout_column="5"
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     />
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:text="Payment Received Date"
                     android:layout_column="6"
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     />
             </TableRow>
         </TableLayout>
