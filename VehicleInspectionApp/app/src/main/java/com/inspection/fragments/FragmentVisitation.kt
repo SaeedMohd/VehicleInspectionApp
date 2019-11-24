@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
@@ -28,13 +29,16 @@ import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.get
 import androidx.core.view.setPadding
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.inspection.FormsActivity
 import com.inspection.MainActivity
@@ -42,9 +46,11 @@ import com.inspection.Utils.*
 import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.UnsupportedEncodingException
+import java.lang.Exception
 
 
 /**
@@ -397,7 +403,6 @@ class FragmentVisitation : Fragment() {
             certificateOfApprovalEditText.setText("")
             memberBenefitsPosterEditText.setText("")
 
-//            PRGDataModel.getInstance().tblPRGVisitationHeader[0].changedate
             if (PRGDataModel.getInstance().tblPRGVisitationHeader.isNotEmpty()){
                 waiveVisitationCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation
                 waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked
@@ -408,6 +413,20 @@ class FragmentVisitation : Fragment() {
                 emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
                 emailEditTextPreviousValue = emailEditText.text.toString()
                 facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep))
+                // get Rep Signature
+                var imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_RepSignature.png"
+                Glide.with(this).load(Constants.getImages+imgFileName).into(facilityRepresentativeSignatureImageView);
+//                FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = facilityRepresentativeSignatureImageView.drawable.toBitmap()
+                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_SpecSignature.png"
+                Glide.with(this).load(Constants.getImages+imgFileName).into(automotiveSpecialistSignatureImageView);
+//                FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = automotiveSpecialistSignatureImageView.drawable.toBitmap()
+                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_WSignature.png"
+                Glide.with(this).load(Constants.getImages+imgFileName).into(waiversSignatureImageView);
+
+                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_DefSignature.png"
+                Glide.with(this).load(Constants.getImages+imgFileName).into(facilityRepresentativeDeficienciesSignatureImageView);
+
+
 
                 if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.isNullOrEmpty()){
 
@@ -503,6 +522,19 @@ class FragmentVisitation : Fragment() {
                     visitationType = VisitationTypes.Deficiency.toString()
                 }
                 progressBarTextVal.text = "Saving ..."
+                if ((activity as FormsActivity).imageSpecSignature != null)
+                    saveBmpAsFile((activity as FormsActivity).imageSpecSignature,"Spec",visitationType)
+                if ((activity as FormsActivity).imageRepSignature != null)
+                    saveBmpAsFile((activity as FormsActivity).imageRepSignature,"Rep",visitationType)
+                if ((activity as FormsActivity).imageDefSignature != null)
+                    saveBmpAsFile((activity as FormsActivity).imageDefSignature,"Def",visitationType)
+                if ((activity as FormsActivity).imageWaiveSignature != null)
+                    saveBmpAsFile((activity as FormsActivity).imageWaiveSignature,"W",visitationType)
+                (activity as FormsActivity).imageSpecSignature = null
+                (activity as FormsActivity).imageRepSignature = null
+                (activity as FormsActivity).imageDefSignature = null
+                (activity as FormsActivity).imageWaiveSignature = null
+
                 dialogueLoadingView.visibility = View.VISIBLE
                 var urlString = facilityNo + "&clubcode=" + clubCode + "&StaffTraining=" + staffTraining + "&QualityControl=" + qa + "&AARSigns=" + aarSign + "&MemberBenefitPoster=" + memberBenefits + "&CertificateOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&visitationType=" + visitationType.toString() + "&visitationReason=" + visitationReasonDropListId.selectedItem.toString() + "&emailPDF=" + (if (emailPdfCheckBox.isChecked) "1" else "0") + "&emailTo=" + emailEditText.text + "&waiveVisitation=" + (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments=" + waiverCommentsEditText.text + "&facilityRep=" + facilityRep + "&automotiveSpecialist=" + automotiveSpecialist + "&visitationId=" + visitationID
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsDataProgress + urlString,
@@ -607,10 +639,8 @@ class FragmentVisitation : Fragment() {
             signatureDialog.visibility = View.VISIBLE
             visitationFormAlphaBackground.visibility = View.VISIBLE
             selectedSignature = requestedSignature.representative
-            if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature  != null) {
+            if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature  != null)
                 signatureInkView.drawBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature, 0.0f, 0.0f, Paint())
-            }
-
         }
 
         automotiveSpecialistSignatureButton.setOnClickListener {
@@ -706,6 +736,7 @@ class FragmentVisitation : Fragment() {
 
                 requestedSignature.waiver -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].waiverSignature = bitmap
+                    (activity as FormsActivity).imageWaiveSignature = bitmap
                     if (!isEmpty) {
                         waiversSignatureButton.text = "Edit Signature"
                         waiversSignatureImageView.setImageBitmap(bitmap)
@@ -983,13 +1014,13 @@ class FragmentVisitation : Fragment() {
     }
 
 
-    fun saveBmpAsFile(bmp : Bitmap,type: String) {
-        var strPrefix = if (type.equals("Rep")) "RepSignature" else if (type.equals("Rep")) "SpecSignature" else "DefSignature"
-        var fileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+strPrefix+".png"
+    fun saveBmpAsFile(bmp : Bitmap?,type: String,visitationType: String) {
+        var strPrefix = if (type.equals("Rep")) "RepSignature" else if (type.equals("Spec")) "SpecSignature" else if (type.equals("W")) "WSignature" else "DefSignature"
+        var fileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+visitationType+"_"+strPrefix+".png"
         val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_"+strPrefix+".png")
         val fOut = FileOutputStream(file);
 //        bmp.toDrawable(resources).bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-        bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+        bmp?.compress(Bitmap.CompressFormat.PNG, 85, fOut);
         fOut.flush();
         fOut.close();
         uploadSignature(file,fileName)

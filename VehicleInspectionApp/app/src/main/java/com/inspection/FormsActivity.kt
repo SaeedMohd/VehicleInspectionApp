@@ -82,6 +82,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     var imageRepSignature : Bitmap? = null
     var imageSpecSignature : Bitmap? = null
     var imageDefSignature : Bitmap? = null
+    var imageWaiveSignature : Bitmap? = null
     var visitationID : String? = ""
     //    var toolbar = findViewById<Toolbar>(R.id.toolbar)
 //    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
