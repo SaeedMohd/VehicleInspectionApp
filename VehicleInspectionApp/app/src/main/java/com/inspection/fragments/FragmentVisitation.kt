@@ -39,6 +39,9 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.google.gson.Gson
 import com.inspection.FormsActivity
 import com.inspection.MainActivity
@@ -414,17 +417,18 @@ class FragmentVisitation : Fragment() {
                 emailEditTextPreviousValue = emailEditText.text.toString()
                 facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep))
                 // get Rep Signature
-                var imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_RepSignature.png"
-                Glide.with(this).load(Constants.getImages+imgFileName).into(facilityRepresentativeSignatureImageView);
+                var requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true);
+                var imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_RepSignature_" +Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
+                Glide.with(this).load(Constants.getImages+imgFileName).apply(requestOptions).into(facilityRepresentativeSignatureImageView);
 //                FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = facilityRepresentativeSignatureImageView.drawable.toBitmap()
-                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_SpecSignature.png"
-                Glide.with(this).load(Constants.getImages+imgFileName).into(automotiveSpecialistSignatureImageView);
+                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_SpecSignature_" +Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
+                Glide.with(this).load(Constants.getImages+imgFileName).apply(requestOptions).into(automotiveSpecialistSignatureImageView);
 //                FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = automotiveSpecialistSignatureImageView.drawable.toBitmap()
-                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_WSignature.png"
-                Glide.with(this).load(Constants.getImages+imgFileName).into(waiversSignatureImageView);
+                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_WSignature_" +Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
+                Glide.with(this).load(Constants.getImages+imgFileName).apply(requestOptions).into(waiversSignatureImageView);
 
-                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_DefSignature.png"
-                Glide.with(this).load(Constants.getImages+imgFileName).into(facilityRepresentativeDeficienciesSignatureImageView);
+                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_DefSignature_" +Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
+                Glide.with(this).load(Constants.getImages+imgFileName).apply(requestOptions).into(facilityRepresentativeDeficienciesSignatureImageView);
 
 
 
@@ -1016,6 +1020,7 @@ class FragmentVisitation : Fragment() {
 
     fun saveBmpAsFile(bmp : Bitmap?,type: String,visitationType: String) {
         var strPrefix = if (type.equals("Rep")) "RepSignature" else if (type.equals("Spec")) "SpecSignature" else if (type.equals("W")) "WSignature" else "DefSignature"
+        strPrefix += "_"+Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString();
         var fileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+visitationType+"_"+strPrefix+".png"
         val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_"+strPrefix+".png")
         val fOut = FileOutputStream(file);
@@ -1388,7 +1393,7 @@ class FragmentVisitation : Fragment() {
 
             if (waiveVisitationCheckBox.isChecked) {
 
-                if (waiverCommentsEditText.text.toString().isNullOrEmpty() || waiversSignatureButton.text.toString().isNullOrEmpty()) {
+                if (waiverCommentsEditText.text.toString().isNullOrEmpty() || waiversSignatureButton.text.toString() == "Add Signature") {
 
                     isInputValid = false
                     waiverCommentsEditText.setError("required field")

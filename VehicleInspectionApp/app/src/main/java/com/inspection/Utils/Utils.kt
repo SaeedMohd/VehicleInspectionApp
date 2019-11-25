@@ -1108,8 +1108,12 @@ private fun drawPhoneSection() : PdfPTable {
     FacilityDataModel.getInstance().tblPhone.apply {
         (0 until size).forEach {
             if (!get(it).PhoneID.equals("-1")) {
-                table.addCell(addCellWithBorder(TypeTablesModel.getInstance().LocationPhoneType.filter { s->s.LocPhoneID.equals(get(it).PhoneTypeID)}[0].LocPhoneName, 1, false))
-                table.addCell(addCellWithBorder(get(it).PhoneNumber, 2, false))
+                try {
+                    table.addCell(addCellWithBorder(TypeTablesModel.getInstance().LocationPhoneType.filter { s -> s.LocPhoneID.equals(get(it).PhoneTypeID) }[0].LocPhoneName, 1, false))
+                    table.addCell(addCellWithBorder(get(it).PhoneNumber, 2, false))
+                } catch (e: Exception){
+
+                }
             }
         }
     }
