@@ -1,5 +1,6 @@
 package com.inspection.fragments
 
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -197,6 +198,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                 } else {
 //                                    adHocFacilityNameButton.setText(searchDialog.selectedString)
                                     adHocFacilityNameButton.setText(searchDialog.selectedString.substring(0,searchDialog.selectedString.indexOf(" || ")))
+                                    adHocFacilityIdVal.setText(searchDialog.selectedString.substringAfter("|| "))
                                 }
                             }
 //                        }
@@ -305,18 +307,24 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
         }
 
-        if (!adHocFacilityNameButton.text.contains("Select") && adHocFacilityNameButton.text.length > 1) {
-            with(parametersString) {
-//                append("dba=" + URLEncoder.encode(adHocFacilityNameButton.text.toString(), "UTF-8"))
-                append("dba=" + adHocFacilityNameButton.text.toString())
-//                append("dba=![CDATA[" + adHocFacilityNameButton.text.toString()+"]")
-                append("&")
-            }
-        } else {
-            with(parametersString) {
-                append("dba=")
-                append("&")
-            }
+//        if (!adHocFacilityNameButton.text.contains("Select") && adHocFacilityNameButton.text.length > 1) {
+//            with(parametersString) {
+////                append("dba=" + URLEncoder.encode(adHocFacilityNameButton.text.toString(), "UTF-8"))
+//                append("dba=" + adHocFacilityNameButton.text.toString())
+////                append("dba=![CDATA[" + adHocFacilityNameButton.text.toString()+"]")
+//                append("&")
+//            }
+//        } else {
+//            with(parametersString) {
+//                append("dba=")
+//                append("&")
+//            }
+//        }
+
+
+        with(parametersString) {
+            append("dba=")
+            append("&")
         }
 
 
@@ -546,6 +554,9 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     }
 
     fun getFacilityPRGData() {
+        PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
+        PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()
+        PRGDataModel.getInstance().tblPRGLogChanges.clear()
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -571,10 +582,32 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                                     activity!!.runOnUiThread {
                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
+//                                                            val builder = AlertDialog.Builder(activity)
+//                                                            builder.setTitle("Confirmation ...")
+//                                                            builder.setMessage("Load Previously Saved Data ?")
+//                                                            builder.setPositiveButton("Yes"
+//                                                            )
+//                                                            { dialog, id ->
+//                                                                dialog.dismiss()
+//                                                                launchNextAction()
+//                                                            }
+//                                                            builder.setNegativeButton("No"
+//                                                            )
+//                                                            { dialog, id ->
+//                                                                dialog.dismiss()
+//                                                                PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
+//                                                                PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()
+//                                                                var item = PRGVisitationHeader()
+//                                                                item.recordid=-1
+//                                                                PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
+//                                                                launchNextAction()
+//                                                            }
+//                                                            builder.show()
                                                         } else {
                                                             var item = PRGVisitationHeader()
                                                             item.recordid=-1
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
+//                                                            launchNextAction()
                                                         }
                                                         launchNextAction()
                                                     }

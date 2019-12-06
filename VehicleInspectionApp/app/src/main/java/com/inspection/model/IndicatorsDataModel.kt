@@ -143,7 +143,7 @@ class IndicatorsDataModel {
         Facility.Location=false;
         Facility.LocationVisited=false
         Facility.Personnel=false;
-        Facility.PersonnelVisited=true
+        Facility.PersonnelVisited=false
         tblFacility.add(0,Facility)
         var Billing = TblBilling()
         Billing.Billing=true;
@@ -173,16 +173,16 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].ProgramsVisited = false
         tblScopeOfServices[0].VehicleServicesVisited = false
         tblScopeOfServices[0].VehiclesVisited = false
-        tblBilling[0].BillingAdjustmentsVisited = false
-        tblBilling[0].BillingHistoryVisited = false
-        tblBilling[0].BillingPlanVisited = false
-        tblBilling[0].BillingVisited = false
-        tblBilling[0].PaymentsVisited = false
-        tblBilling[0].VendorRevenueVisited = false
-        tblComplaints[0].visited = false
-        tblDeffeciencies[0].visited = false
-        tblPhotos[0].visited = false
-        tblSurveys[0].visited = false
+        tblBilling[0].BillingAdjustmentsVisited = true
+        tblBilling[0].BillingHistoryVisited = true
+        tblBilling[0].BillingPlanVisited = true
+        tblBilling[0].BillingVisited = true
+        tblBilling[0].PaymentsVisited = true
+        tblBilling[0].VendorRevenueVisited = true
+        tblComplaints[0].visited = true
+        tblDeffeciencies[0].visited = true
+        tblPhotos[0].visited = true
+        tblSurveys[0].visited = true
         tblVisitation[0].visited = false
     }
 

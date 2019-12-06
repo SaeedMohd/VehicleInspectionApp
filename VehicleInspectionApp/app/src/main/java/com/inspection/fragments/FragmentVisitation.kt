@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -28,6 +29,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
+import androidx.annotation.Nullable
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
@@ -40,7 +42,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.signature.ObjectKey
 import com.google.gson.Gson
 import com.inspection.FormsActivity
@@ -54,6 +59,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.UnsupportedEncodingException
 import java.lang.Exception
+import javax.sql.DataSource
 
 
 /**
@@ -119,24 +125,31 @@ class FragmentVisitation : Fragment() {
         item.visitationReasonID=1
         item.visitationReasonName="Deficiency Inspection"
         TypeTablesModel.getInstance().VisitationReasons.add(item)
-        item.visitationReasonID=2
-        item.visitationReasonName="Member Complaint"
-        TypeTablesModel.getInstance().VisitationReasons.add(item)
-        item.visitationReasonID=3
-        item.visitationReasonName="Motorsport Ticket Delivery"
-        TypeTablesModel.getInstance().VisitationReasons.add(item)
-        item.visitationReasonID=4
-        item.visitationReasonName="Battery Tester Replacement"
-        TypeTablesModel.getInstance().VisitationReasons.add(item)
-        item.visitationReasonID=5
-        item.visitationReasonName="Courtesy Visit"
-        TypeTablesModel.getInstance().VisitationReasons.add(item)
-        item.visitationReasonID=6
-        item.visitationReasonName="Annual Visitation"
-        TypeTablesModel.getInstance().VisitationReasons.add(item)
-        item.visitationReasonID=7
-        item.visitationReasonName="Quarterly Visitation"
-        TypeTablesModel.getInstance().VisitationReasons.add(item)
+        var item2 = TypeTablesModel.visitationReasonType()
+        item2.visitationReasonID=2
+        item2.visitationReasonName="Member Complaint"
+        TypeTablesModel.getInstance().VisitationReasons.add(item2)
+        var item3 = TypeTablesModel.visitationReasonType()
+        item3.visitationReasonID=3
+        item3.visitationReasonName="Motorsport Ticket Delivery"
+        TypeTablesModel.getInstance().VisitationReasons.add(item3)
+        var item4 = TypeTablesModel.visitationReasonType()
+        item4.visitationReasonID=4
+        item4.visitationReasonName="Battery Tester Replacement"
+        TypeTablesModel.getInstance().VisitationReasons.add(item4)
+        var item5 = TypeTablesModel.visitationReasonType()
+        item5.visitationReasonID=5
+        item5.visitationReasonName="Courtesy Visit"
+        TypeTablesModel.getInstance().VisitationReasons.add(item5)
+        var item6 = TypeTablesModel.visitationReasonType()
+        item6.visitationReasonID=7
+        item6.visitationReasonName="Quarterly Visitation"
+        TypeTablesModel.getInstance().VisitationReasons.add(item6)
+        var item7 = TypeTablesModel.visitationReasonType()
+        item7.visitationReasonID=6
+        item7.visitationReasonName="Annual Visitation"
+        TypeTablesModel.getInstance().VisitationReasons.add(item7)
+
 
 //        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
@@ -374,6 +387,17 @@ class FragmentVisitation : Fragment() {
             }
         }
 
+        waiveVisitationCheckBox.isChecked = false
+        emailPdfCheckBox.isChecked = false
+        waiverCommentsEditText.setText("")
+        emailEditText.setText("")
+        facilityRepresentativesSpinner.setSelection(0)
+        staffTrainingProcessEditText.setText("")
+        qualityControlProcessEditText.setText("")
+        aarSignEditText.setText("")
+        certificateOfApprovalEditText.setText("")
+        memberBenefitsPosterEditText.setText("")
+
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
 
 
@@ -395,47 +419,86 @@ class FragmentVisitation : Fragment() {
 //            }
 
             facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(ApplicationPrefs.getInstance(activity).loggedInUserFullName))
-            waiveVisitationCheckBox.isChecked = false
-            emailPdfCheckBox.isChecked = false
-            waiverCommentsEditText.setText("")
-            emailEditText.setText("")
-            facilityRepresentativesSpinner.setSelection(0)
-            staffTrainingProcessEditText.setText("")
-            qualityControlProcessEditText.setText("")
-            aarSignEditText.setText("")
-            certificateOfApprovalEditText.setText("")
-            memberBenefitsPosterEditText.setText("")
+
 
             if (PRGDataModel.getInstance().tblPRGVisitationHeader.isNotEmpty()){
-                waiveVisitationCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation
-                waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked
-                emailPdfCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf
-                emailPdfCBPreviousValue = emailPdfCheckBox.isChecked
-                waiverCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments)
-                waiverCommentsPreviousValue = waiverCommentsEditText.text.toString()
-                emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
-                emailEditTextPreviousValue = emailEditText.text.toString()
-                facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep))
-                // get Rep Signature
-                var requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true);
-                var imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_RepSignature_" +Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
-                Glide.with(this).load(Constants.getImages+imgFileName).apply(requestOptions).into(facilityRepresentativeSignatureImageView);
+                var loadPrevData = true
+//                if (adhocVisitationType.isChecked){
+//                }
+                if (loadPrevData) {
+                    waiveVisitationCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation
+                    waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked
+                    emailPdfCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf
+                    emailPdfCBPreviousValue = emailPdfCheckBox.isChecked
+                    waiverCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments)
+                    waiverCommentsPreviousValue = waiverCommentsEditText.text.toString()
+                    emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
+                    emailEditTextPreviousValue = emailEditText.text.toString()
+                    facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep))
+                    // get Rep Signature
+                    var requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true);
+                    var imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_" + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype + "_RepSignature_" + Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
+                    Glide.with(this).load(Constants.getImages + imgFileName).apply(requestOptions).listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            //TODO: something on exception
+                            return false
+                        }
+
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: com.bumptech.glide.load.DataSource?, isFirstResource: Boolean): Boolean {
+                            Log.v("SIGNATURE ---->", "  LOAD COMPLETED")
+                            facilityRepresentativeSignatureButton.text = "Edit Signature"
+                            return false
+                        }
+                    }).into(facilityRepresentativeSignatureImageView);
 //                FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = facilityRepresentativeSignatureImageView.drawable.toBitmap()
-                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_SpecSignature_" +Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
-                Glide.with(this).load(Constants.getImages+imgFileName).apply(requestOptions).into(automotiveSpecialistSignatureImageView);
+                    imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_" + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype + "_SpecSignature_" + Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
+                    Glide.with(this).load(Constants.getImages + imgFileName).apply(requestOptions).listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            //TODO: something on exception
+                            return false
+                        }
+
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: com.bumptech.glide.load.DataSource?, isFirstResource: Boolean): Boolean {
+                            Log.v("SIGNATURE ---->", "  LOAD COMPLETED")
+                            automotiveSpecialistSignatureButton.text = "Edit Signature"
+                            return false
+                        }
+                    }).into(automotiveSpecialistSignatureImageView);
 //                FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = automotiveSpecialistSignatureImageView.drawable.toBitmap()
-                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_WSignature_" +Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
-                Glide.with(this).load(Constants.getImages+imgFileName).apply(requestOptions).into(waiversSignatureImageView);
+                    imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_" + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype + "_WSignature_" + Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
+                    Glide.with(this).load(Constants.getImages + imgFileName).apply(requestOptions).listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            //TODO: something on exception
+                            return false
+                        }
 
-                imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype+"_DefSignature_" +Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
-                Glide.with(this).load(Constants.getImages+imgFileName).apply(requestOptions).into(facilityRepresentativeDeficienciesSignatureImageView);
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: com.bumptech.glide.load.DataSource?, isFirstResource: Boolean): Boolean {
+                            Log.v("SIGNATURE ---->", "  LOAD COMPLETED")
+                            waiversSignatureButton.text = "Edit Signature"
+                            return false
+                        }
+                    }).into(waiversSignatureImageView);
 
+                    imgFileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_" + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype + "_DefSignature_" + Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString() + ".png"
+                    Glide.with(this).load(Constants.getImages + imgFileName).apply(requestOptions).listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            //TODO: something on exception
+                            return false
+                        }
 
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: com.bumptech.glide.load.DataSource?, isFirstResource: Boolean): Boolean {
+                            Log.v("SIGNATURE ---->", "  LOAD COMPLETED")
+                            facilityRepresentativeDeficienciesSignatureButton.text = "Edit Signature"
+                            return false
+                        }
+                    }).into(facilityRepresentativeDeficienciesSignatureImageView)
+
+                }
 
                 if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.isNullOrEmpty()){
 
                 } else {
-                    if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.equals("0")) {
+                    if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid.equals("0") && loadPrevData) {
                         staffTrainingProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].stafftraining)
                         staffTrainingProcessPreviousValue = staffTrainingProcessEditText.text.toString()
                         qualityControlProcessEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].qualitycontrol)
@@ -556,10 +619,11 @@ class FragmentVisitation : Fragment() {
                                     certificateOfApprovalPreviousValue = certificateOfApprovalEditText.text.toString()
                                     memberBenefitsPosterPreviousValue = memberBenefitsPosterEditText.text.toString()
                                     (activity as FormsActivity).saveRequired = false
-                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                                    refreshButtonsState()
                                     Utility.showMessageDialog(activity, "Confirmation ...", "Visitation Data Saved Successfully")
                                     (activity as FormsActivity).saveVisitedScreensRequired = false
-                                    IndicatorsDataModel.getInstance().resetAllVisitedFlags()
+//                                    IndicatorsDataModel.getInstance().resetAllVisitedFlags()
                                     cancelButton.isEnabled = false
                                     dialogueLoadingView.visibility = View.GONE
                                     progressBarTextVal.text = "Loading ..."
@@ -789,6 +853,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
                 (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
                 checkMarkChangesDone()
             }
 
@@ -806,6 +871,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
                 (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
                 checkMarkChangesDone()
 
             }
@@ -842,6 +908,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining = p0.toString()
                 (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
                 checkMarkChangesDone()
             }
 
@@ -859,6 +926,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster = p0.toString()
                 (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
                 checkMarkChangesDone()
             }
 
@@ -876,6 +944,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments = p0.toString()
                 (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
                 checkMarkChangesDone()
             }
 
@@ -894,6 +963,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
 //                FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
                 (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
 //                PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf =
                 checkMarkChangesDone()
             }
@@ -1146,7 +1216,7 @@ class FragmentVisitation : Fragment() {
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments = waiverCommentsEditText.text.toString()
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation = waiveVisitationCheckBox.isChecked
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid = visitationID.toString()
-                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid
+//                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid
                                                 if ((activity as FormsActivity).checkPermission()) {
                                                     (activity as FormsActivity).generateAndOpenPDF()
                                                 } else {
@@ -1158,9 +1228,10 @@ class FragmentVisitation : Fragment() {
                                                 }
 
                                                 (activity as FormsActivity).saveRequired = false
-                                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+//                                                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                                                refreshButtonsState()
                                                 (activity as FormsActivity).saveVisitedScreensRequired = false
-                                                IndicatorsDataModel.getInstance().resetAllVisitedFlags()
+//                                                IndicatorsDataModel.getInstance().resetAllVisitedFlags()
                                                 if (visitationType.equals(VisitationTypes.AdHoc) || visitationType.equals(VisitationTypes.Deficiency)) {
                                                     completeButton.isEnabled = true
                                                 } else {
@@ -1238,6 +1309,7 @@ class FragmentVisitation : Fragment() {
         emailPdfCheckBox.setOnClickListener {
             emailEditText.isEnabled = emailPdfCheckBox.isChecked
             (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
 //            if (emailPdfCheckBox.isChecked) {
 //                emailEditText.isEnabled = true
 //            } else emailEditText.isEnabled = false
@@ -1254,6 +1326,7 @@ class FragmentVisitation : Fragment() {
             waiverCommentsEditText.isEnabled = waiveVisitationCheckBox.isChecked
             waiverConditionedEnablingLayout.isEnabled = waiveVisitationCheckBox.isChecked
             (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
         }
 
     }
@@ -1424,6 +1497,12 @@ class FragmentVisitation : Fragment() {
         return isInputValid
     }
 
+    fun refreshButtonsState(){
+
+        saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+    }
+
     fun handleCancelButtonClick() {
 
         cancelButton.setOnClickListener {
@@ -1450,6 +1529,7 @@ class FragmentVisitation : Fragment() {
                         certificateOfApprovalEditText.setText(certificateOfApprovalPreviousValue)
                         memberBenefitsPosterEditText.setText(memberBenefitsPosterPreviousValue)
                         (activity as FormsActivity).saveRequired = false
+                        refreshButtonsState()
                         dialog.cancel()
                     }
                     .setNegativeButton("No") { dialog, id ->

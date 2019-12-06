@@ -172,7 +172,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             overrideBackButton = false
         } else if (preventNavigation()) {
             Utility.showSaveOrCancelAlertDialog(this)
-        } else if ((saveVisitedScreensRequired && !FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
+        } else if ((saveVisitedScreensRequired && !FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) || ( saveVisitedScreensRequired  && FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc))) {
             var cancelProgress = false
             var alertBuilder = AlertDialog.Builder(this);
             alertBuilder.setCancelable(true);
