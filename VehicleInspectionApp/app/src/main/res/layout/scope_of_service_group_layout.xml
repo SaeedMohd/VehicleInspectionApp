@@ -14,17 +14,15 @@
         android:orientation="horizontal"
         android:stretchColumns="*"
         >
-
-        <TableRow>
-
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
             <Button
                 android:id="@+id/sosgeneralInformationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="General Information"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:background="@color/transparent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="0"
                 />
 
@@ -32,10 +30,10 @@
                 android:id="@+id/vehicleServicesButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:background="@color/transparent"
                 android:text="Vehicle Services"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="1"
                 />
             <Button
@@ -43,9 +41,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:text="Programs"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="2"
                 />
             <Button
@@ -54,8 +52,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="Facility Services"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="3"
                 />
 
@@ -65,8 +63,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="Vehicles"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="4"
                 />
 
@@ -76,9 +74,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="Affiliations"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_column="5"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 />
 
             <!--<Button-->
@@ -110,6 +108,7 @@
                 <!--android:layout_column="8"-->
                 <!--android:layout_marginLeft="10dp"-->
                 <!--/>-->
+
         </TableRow>
         <TableRow>
             <View

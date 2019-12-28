@@ -80,6 +80,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         addsaveButton.setOnClickListener {
             if (validateAdminInputs()) {
+                addnumberOfCardsReaderEditText.hideKeyboard()
                 rspLoadingText.text = "Saving ..."
                 RSP_LoadingView.visibility = View.VISIBLE
                 var portalAdminEntry = TblAARPortalAdmin()

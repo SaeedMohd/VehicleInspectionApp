@@ -57,7 +57,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var personnelTypeList = ArrayList<TypeTablesModel.personnelType>()
     private var certificationTypeList= ArrayList<TypeTablesModel.personnelCertificationType>()
     private var states= arrayOf("Select State","Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
-
+    private var statesAbbrev= arrayOf("Select State","AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN ", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY")
     private var personTypeArray = ArrayList<String>()
     private var certTypeArray = ArrayList<String>()
     private var personTypeIDsArray = ArrayList<String>()
@@ -405,7 +405,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                         signerItem.Addr1= if (newAdd1Text.text.toString().isNullOrEmpty()) "" else newAdd1Text.text.toString()
                                         signerItem.Addr2= if (newAdd2Text.text.toString().isNullOrEmpty()) "" else newAdd2Text.text.toString()
                                         signerItem.CITY= if (newCityText.text.toString().isNullOrEmpty()) "" else newCityText.text.toString()
-                                        signerItem.ST= if (newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else newStateSpinner.selectedItem.toString()
+//                                        signerItem.ST = if (newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else newStateSpinner.selectedItem.toString()
+                                        signerItem.ST = if (newStateSpinner.selectedItemPosition==0) "" else statesAbbrev.get(newStateSpinner.selectedItemPosition);
                                         signerItem.ZIP= if (newZipText.text.toString().isNullOrEmpty()) "" else newZipText.text.toString()
                                         signerItem.ZIP4= if (newZipText2.text.toString().isNullOrEmpty()) "" else newZipText2.text.toString()
                                         signerItem.Phone= if (newPhoneText.text.equals("SELECT DATE")) "" else newPhoneText.text.toString()
@@ -1505,7 +1506,7 @@ class FragmentARRAVPersonnel : Fragment() {
                         edit_newCityText.setText(model.CITY)
                         edit_newZipText2.setText(model.ZIP4)
                         edit_newEmailText.setText(model.email)
-                        edit_newStateSpinner.setSelection(statesArray.indexOf(model.ST))
+                        edit_newStateSpinner.setSelection(statesAbbrev.indexOf(model.ST))
                         if (model.ContractStartDate.isNullOrEmpty() || model.ContractStartDate.equals("01/01/1900")) {
                             edit_newCoStartDateBtn.setText("SELECT DATE")
                         } else {
@@ -1597,7 +1598,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                                     val coAddr1= if (edit_newAdd1Text.text.toString().isNullOrEmpty()) "" else edit_newAdd1Text.text.toString()
                                                     val coAddr2= if (edit_newAdd2Text.text.toString().isNullOrEmpty()) "" else edit_newAdd2Text.text.toString()
                                                     val coCITY= if (edit_newCityText.text.toString().isNullOrEmpty()) "" else edit_newCityText.text.toString()
-                                                    val coST= if (edit_newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else edit_newStateSpinner.selectedItem.toString()
+//                                                    val coST= if (edit_newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else edit_newStateSpinner.selectedItem.toString()
+                                                    val coST = if (edit_newStateSpinner.selectedItemPosition==0) "" else statesAbbrev.get(edit_newStateSpinner.selectedItemPosition);
                                                     val coZIP= if (edit_newZipText.text.toString().isNullOrEmpty()) "" else edit_newZipText.text.toString()
                                                     val coZIP4= if (edit_newZipText2.text.toString().isNullOrEmpty()) "" else edit_newZipText2.text.toString()
                                                     val coPhone= if (edit_newPhoneText.text.equals("SELECT DATE")) "" else edit_newPhoneText.text.toString()

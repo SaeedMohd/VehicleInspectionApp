@@ -746,7 +746,7 @@
                         android:ems="8"
                         android:lines="5"
                         android:text=""
-                        android:textStyle="bold" />
+                        />
                 </TableRow>
 
                 <TableRow>

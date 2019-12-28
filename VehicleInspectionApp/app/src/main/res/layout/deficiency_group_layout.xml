@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:text="General Information"
                 android:background="@color/transparent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="0"
                 />
 
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="Vehicle Services"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="1"
                 />
             <Button
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="Programs"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="2"
                 />
             <Button
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="Facility Services"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="3"
                 />
 
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="Vehicles"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_column="4"
                 />
 
@@ -71,7 +71,7 @@
                 android:background="@color/transparent"
                 android:text="Affiliations"
                 android:layout_column="5"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 />
 
             <Button
@@ -81,7 +81,7 @@
                 android:background="@color/transparent"
                 android:text="Promotions"
                 android:layout_column="6"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 />
 
             <Button
@@ -91,7 +91,7 @@
                 android:background="@color/transparent"
                 android:text="Awards And Distinctions"
                 android:layout_column="7"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 />
 
             <Button
@@ -101,7 +101,7 @@
                 android:background="@color/transparent"
                 android:text="Other"
                 android:layout_column="8"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 />
         </TableRow>
         <TableRow>
