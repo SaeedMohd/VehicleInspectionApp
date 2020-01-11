@@ -172,7 +172,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             overrideBackButton = false
         } else if (preventNavigation()) {
             Utility.showSaveOrCancelAlertDialog(this)
-        } else if ((saveVisitedScreensRequired && !FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) || ( saveVisitedScreensRequired  && FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc))) {
+        } else if ((saveVisitedScreensRequired && !FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) ) {
             var cancelProgress = false
             var alertBuilder = AlertDialog.Builder(this);
             alertBuilder.setCancelable(true);
@@ -187,6 +187,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val alert = alertBuilder.create();
             alert.show();
             overrideBackButton = false
+        } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
+            updateVisitationProgress(true)
         } else {
             super.onBackPressed()
         }
@@ -386,7 +388,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
-        menuInflater.inflate(R.menu.forms, menu)
+//        menuInflater.inflate(R.menu.forms, menu)
 
         return true
     }

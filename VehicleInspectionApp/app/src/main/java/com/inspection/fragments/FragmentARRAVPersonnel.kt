@@ -1264,7 +1264,6 @@ class FragmentARRAVPersonnel : Fragment() {
                         textView8.text  = if (get(it).startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
                         textView8.text  = get(it).startDate.apiToAppFormatMMDDYYYY()
-
                     }
                 } else {
                     textView8.text  = ""
@@ -1327,99 +1326,53 @@ class FragmentARRAVPersonnel : Fragment() {
                     if (checkBox10.isChecked){
                         edit_enableContractSignerIsChecked()
                         edit_newSignerCheck.isChecked=true
-
                         edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
-
-
                             if (edit_newSignerCheck.isChecked ) {
-
                                 edit_enableContractSignerIsChecked()
-
                             } else {
-
                                 edit_disableContractSignerIsChecked()
-
                             }
-
                         }
-
-
                     }else{
                         edit_disableContractSignerIsChecked()
                         edit_newSignerCheck.isChecked=false
-
-
                     }
-
-
-
 
                     FacilityDataModel.getInstance().tblPersonnel.apply {
                         (0 until size).forEach {
-
-
                             if (get(it).ContractSigner.equals("true")) {
                                 contractSignerFound++
-
-
                             }
                             if (get(it).PrimaryMailRecipient.equals("true")) {
                                 emailPrimaryFound++
-
-
                             }
-
-
                             if (contractSignerFound>0&&!checkBox10.isChecked){
                                 edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
-
-
                                     if (edit_newSignerCheck.isChecked ) {
-
         //                                Toast.makeText(context, "there's already contract signer for this contract", Toast.LENGTH_SHORT).show()
                                         Utility.showValidationAlertDialog(activity,"There is already contract signer for this contract")
                                         edit_newSignerCheck.isChecked=false
-
                                     } else {
-
                                         edit_disableContractSignerIsChecked()
-
                                     }
-
                                 }
-
-
                             }
                             if (emailPrimaryFound>0&&!checkBox11.isChecked){
                                 edit_newACSCheck.setOnCheckedChangeListener { buttonView, isChecked ->
-
-
                                     if (edit_newACSCheck.isChecked ) {
-
                                         Utility.showValidationAlertDialog(activity,"There's already primary email assigned for this contract")
-        //                                Toast.makeText(context, "there's already primary email assigned for this contract", Toast.LENGTH_SHORT).show()
                                         edit_newACSCheck.isChecked=false
-
                                     }
-
                                 }
-
-
                             }
                             if (emailPrimaryFound>0&&checkBox11.isChecked){
                                 edit_newACSCheck.setOnCheckedChangeListener { buttonView, isChecked ->
-
-
                                     if (edit_newACSCheck.isChecked ) {
-
                                         edit_newACSCheck.isChecked=true
-
                                     }
-
                                 }
-
-
                             }
+
                             if (contractSignerFound==0){
                                 edit_newSignerCheck.setOnClickListener(View.OnClickListener {
                                     if (edit_newSignerCheck.isChecked) {
@@ -1550,15 +1503,11 @@ class FragmentARRAVPersonnel : Fragment() {
                             (activity as FormsActivity).overrideBackButton = false
                             personnelLoadingText.text = "Saving ..."
                             personnelLoadingView.visibility = View.VISIBLE
-
                             var PersonnelTypeId=""
-
                             for (fac in TypeTablesModel.getInstance().PersonnelType) {
                                 if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
-
                                     PersonnelTypeId =fac.PersonnelTypeID
                             }
-
                             var FirstName=if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
                             var LastName=if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
                             var RSP_UserName=FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName

@@ -604,7 +604,7 @@ class FragmentVisitation : Fragment() {
 
                 dialogueLoadingView.visibility = View.VISIBLE
                 var urlString = facilityNo + "&clubcode=" + clubCode + "&StaffTraining=" + staffTraining + "&QualityControl=" + qa + "&AARSigns=" + aarSign + "&MemberBenefitPoster=" + memberBenefits + "&CertificateOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&visitationType=" + visitationType.toString() + "&visitationReason=" + visitationReasonDropListId.selectedItem.toString() + "&emailPDF=" + (if (emailPdfCheckBox.isChecked) "1" else "0") + "&emailTo=" + emailEditText.text + "&waiveVisitation=" + (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments=" + waiverCommentsEditText.text + "&facilityRep=" + facilityRep + "&automotiveSpecialist=" + automotiveSpecialist + "&visitationId=" + visitationID
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsDataProgress + urlString,
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsDataProgress + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Saved ... Type --> " + visitationType),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 Log.v("VT RESPONSE ||| ", response.toString())
@@ -1185,8 +1185,8 @@ class FragmentVisitation : Fragment() {
         progressBarTextVal.text = "Saving ..."
         dialogueLoadingView.visibility = View.VISIBLE
         var urlString = facilityNo+"&clubcode="+clubCode+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationTypeID+"&visitationReason="+visitationReasonID+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&performedBy="+automotiveSpecialist+"&visitationID=0"
-        Log.v("Visitation Tracking -- ",Constants.UpdateVisitationTrackingData + urlString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationTrackingData + urlString,
+        Log.v("Visitation Tracking -- ",Constants.UpdateVisitationTrackingData + urlString )
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationTrackingData + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         Log.v("VT RESPONSE ||| ",response.toString())
@@ -1198,7 +1198,7 @@ class FragmentVisitation : Fragment() {
                             (activity as FormsActivity).saveRequired = false
                             urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&automotiveSpecialist="+automotiveSpecialist+"&visitationId="+visitationID
                             Log.v("Visitation Details --- ",Constants.UpdateVisitationDetailsData + urlString)
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString,
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString+ Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             Log.v("VT RESPONSE ||| ",response.toString())

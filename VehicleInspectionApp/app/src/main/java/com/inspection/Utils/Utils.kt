@@ -784,7 +784,6 @@ private fun drawAddressOverallSection() : PdfPTable {
     table.addCell(addCell("",1,true));
     table.addCell(addTableInCell(drawLanguageSection(),1,true));
     table.addCell(addCell("",1,true));
-
     table.addCell(addTableInCell(drawHoursSection(),1,true));
 
 
@@ -956,22 +955,26 @@ private fun drawVisitationTrackingSection() : PdfPTable {
     table.addCell(addCellWithBorder("Quality Control Process", 1,true))
     table.addCell(addCellWithBorder("Staff Training Process", 1,true))
     if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals("00")) {
-        if (FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.isNotEmpty()) {
-            FacilityDataModel.getInstance().tblVisitationTracking.sortedWith(compareByDescending { it.DatePerformed }).apply {
-                (0 until size).forEach {
-                    if (!get(it).performedBy.equals("00")) {
-                        table.addCell(addCellWithBorder(if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY(), 1, true));
-                        table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(), 1, true));
-                        table.addCell(addCellWithBorder("", 1, true));
-                        table.addCell(addCellWithBorder(get(it).performedBy, 1, true))
-                        table.addCell(addCellWithBorder(get(it).AARSigns, 1, false))
-                        table.addCell(addCellWithBorder(get(it).CertificateOfApproval, 1, false))
-                        table.addCell(addCellWithBorder(get(it).MemberBenefitPoster, 1, false))
-                        table.addCell(addCellWithBorder(get(it).QualityControl, 1, false))
-                        table.addCell(addCellWithBorder(get(it).StaffTraining, 1, false))
+        try {
+            if (FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.isNotEmpty()) {
+                FacilityDataModel.getInstance().tblVisitationTracking.sortedWith(compareByDescending { it.DatePerformed }).apply {
+                    (0 until size).forEach {
+                        if (!get(it).performedBy.equals("00")) {
+                            table.addCell(addCellWithBorder(if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY(), 1, true));
+                            table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(), 1, true));
+                            table.addCell(addCellWithBorder("", 1, true));
+                            table.addCell(addCellWithBorder(get(it).performedBy, 1, true))
+                            table.addCell(addCellWithBorder(get(it).AARSigns, 1, false))
+                            table.addCell(addCellWithBorder(get(it).CertificateOfApproval, 1, false))
+                            table.addCell(addCellWithBorder(get(it).MemberBenefitPoster, 1, false))
+                            table.addCell(addCellWithBorder(get(it).QualityControl, 1, false))
+                            table.addCell(addCellWithBorder(get(it).StaffTraining, 1, false))
+                        }
                     }
                 }
             }
+        } catch (e:Exception){
+
         }
     }
     return table
@@ -1006,7 +1009,7 @@ private fun drawFacilitySection() : PdfPTable {
     table.addCell(addCell("Business Type: "+TypeTablesModel.getInstance().BusinessType.filter { s->s.BusTypeID.equals(FacilityDataModel.getInstance().tblFacilities[0].BusTypeID.toString())}[0].BusTypeName,1,false));
     table.addCell(addCell("Time Zone: "+ FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName,1,false));
     table.addCell(addCell("Website URL: "+ FacilityDataModel.getInstance().tblFacilities[0].WebSite,1,false));
-    table.addCell(addCell("Wi-Fi Available: "+ FacilityDataModel.getInstance().tblFacilities[0].InternetAccess,1,false));
+    table.addCell(addCell("Wi-Fi Available: "+ if (FacilityDataModel.getInstance().tblFacilities[0].InternetAccess) "Yes" else "No",1,false));
     table.addCell(addCell("Tax ID: "+ FacilityDataModel.getInstance().tblFacilities[0].TaxIDNumber,1,false));
     table.addCell(addCell("Repair Order Count: "+ FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount,1,false));
     table.addCell(addCell("Annual Inspection Month: "+ FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth.monthNoToName(),1,false));

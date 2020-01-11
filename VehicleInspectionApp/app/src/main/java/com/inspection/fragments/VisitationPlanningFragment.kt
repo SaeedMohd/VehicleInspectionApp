@@ -520,9 +520,9 @@ class VisitationPlanningFragment : Fragment() {
             recordsProgressView.visibility = View.VISIBLE
 
             var client = OkHttpClient()
-            var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString).build()
+            var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ...")).build()
 
-            Log.v("******get visitation", Constants.getVisitations+parametersString)
+            Log.v("******get visitation", Constants.getVisitations+parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ..."))
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call?, e: IOException?) {
@@ -1405,7 +1405,7 @@ class VisitationPlanningFragment : Fragment() {
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
         var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
-        var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, clubCode)).build()
+        var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData+Utility.getLoggingParameters(activity, 0, "Load Visitations ..."), facilityNumber, clubCode)).build()
         this.clubCode = clubCode
         if (isCompleted) {
             progressBarText.text = "Generating PDF ..."

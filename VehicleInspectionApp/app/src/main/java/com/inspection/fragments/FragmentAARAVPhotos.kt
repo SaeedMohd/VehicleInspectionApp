@@ -468,6 +468,7 @@ class FragmentAARAVPhotos : Fragment() {
         rowLayoutParam.leftMargin = 5
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
@@ -578,13 +579,18 @@ class FragmentAARAVPhotos : Fragment() {
                     textView1.gravity = Gravity.CENTER_VERTICAL
                     textView1.minimumHeight = 30
                     textView1.text = get(it).filename
+                    textView1.textSize = 14f
                     tableRow.addView(textView1)
+
+
+
 
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam2
                     textView2.gravity = Gravity.CENTER_VERTICAL
                     textView2.minimumHeight = 30
                     textView2.text = get(it).filedescription
+                    textView2.textSize = 14f
                     tableRow.addView(textView2)
 
                     val textView3 = TextView(context)
@@ -592,12 +598,13 @@ class FragmentAARAVPhotos : Fragment() {
                     textView3.gravity = Gravity.CENTER
                     textView3.minimumHeight = 30
                     textView3.text = get(it).lastupdateby
+                    textView3.textSize = 14f
                     tableRow.addView(textView3)
 
                     val textView4 = TextView(context)
                     textView4.layoutParams = rowLayoutParam4
                     textView4.gravity = Gravity.CENTER
-
+                    textView4.textSize = 14f
                     textView4.minimumHeight = 30
                     if (get(it).approveddate.isNullOrEmpty()) textView4.text = ""
                     else textView4.text = if (get(it).lastupdatedate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).lastupdatedate.apiToAppFormatMMDDYYYY()
@@ -608,6 +615,7 @@ class FragmentAARAVPhotos : Fragment() {
                     checkBox1.gravity = Gravity.CENTER
                     checkBox1.minimumHeight = 30
                     checkBox1.isClickable = false
+                    checkBox1.textSize = 14f
                     checkBox1.isChecked = get(it).approvalrequested
                     tableRow.addView(checkBox1)
 
@@ -617,6 +625,7 @@ class FragmentAARAVPhotos : Fragment() {
                     checkBox2.minimumHeight = 30
                     checkBox2.isChecked = get(it).approved
                     checkBox2.isClickable = false
+                    checkBox2.textSize = 14f
                     tableRow.addView(checkBox2)
 
                     val textView5 = TextView(context)
@@ -624,12 +633,14 @@ class FragmentAARAVPhotos : Fragment() {
                     textView5.gravity = Gravity.CENTER
                     textView5.minimumHeight = 30
                     textView5.text = get(it).approvedby
+                    textView5.textSize = 14f
                     tableRow.addView(textView5)
 
                     val textView6 = TextView(context)
                     textView6.layoutParams = rowLayoutParam8
                     textView6.gravity = Gravity.CENTER
                     textView6.minimumHeight = 30
+                    textView5.textSize = 14f
                     if (get(it).approveddate.isNullOrEmpty()) textView6.text = ""
                     else textView6.text = if (get(it).approveddate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).approveddate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView6)
@@ -639,6 +650,7 @@ class FragmentAARAVPhotos : Fragment() {
                     textView7.gravity = Gravity.CENTER_VERTICAL
                     textView7.minimumHeight = 30
                     textView7.text = get(it).downstreamapps
+                    textView5.textSize = 14f
                     tableRow.addView(textView7)
 
                     val editButton = Button(context)
@@ -647,6 +659,7 @@ class FragmentAARAVPhotos : Fragment() {
                     editButton.text = "EDIT"
                     editButton.minimumHeight = 30
                     editButton.isEnabled = true
+                    editButton.textSize = 12f
                     editButton.gravity = Gravity.CENTER
                     editButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(editButton)

@@ -337,7 +337,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         }
 
         Log.v("ADHOC FACWITHFILTERS--",Constants.getFacilitiesWithFilters + parametersString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString,
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString+Utility.getLoggingParameters(activity, 0, "Search Facilities ..."),
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
@@ -502,7 +502,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String) {
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(40, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
         var client = clientBuilder.build()
-        var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData, facilityNumber, clubCode)).build()
+        var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData+Utility.getLoggingParameters(activity, 1, "Load Facility ..."), facilityNumber, clubCode)).build()
         this.clubCode = clubCode
         recordsProgressView.visibility = View.VISIBLE
         client.newCall(request2).enqueue(object : Callback {
