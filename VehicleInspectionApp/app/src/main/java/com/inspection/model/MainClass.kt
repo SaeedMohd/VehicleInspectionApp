@@ -227,6 +227,9 @@ class TblPersonnel {
     var endDate = ""
     var ContractStartDate=""
     var ContractEndDate=""
+    var OEMstartDate = ""
+    var ASE_Cert_URL = ""
+    var OEMendDate = ""
 }
 //    <CertificationNum/><ContractSigner>true</ContractSigner><Addr2/><PrimaryMailRecipient>true</PrimaryMailRecipient>
 
@@ -500,6 +503,7 @@ class TblPersonnelCertification{
     var PersonnelID = 0
     var TechName = ""
     var CertID = ""
+    var Category = ""
     var CertificationTypeId = ""
     var CertificationDate = ""
     var ExpirationDate = ""

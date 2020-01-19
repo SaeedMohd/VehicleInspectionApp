@@ -59,6 +59,11 @@
 
     </string-array>
 
+    <string-array name="CertCatEntries">
+        <item>ASE</item>
+        <item>OEM</item>
+    </string-array>
+
 
     <string-array name="Interval">
         <item>30 Seconds</item>

@@ -228,7 +228,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divider_table_layout"
-
                 android:stretchColumns="*">
 
 
@@ -238,19 +237,18 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_weight="1"
-                        android:text="Certification Type"
+                        android:layout_weight="0.5"
+                        android:text="Category"
                         android:gravity="center"
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:layout_weight="1"
-                        android:text="Certification Date"
+                        android:layout_weight="2"
+                        android:text="Certification Type"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
@@ -260,7 +258,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="2"
                         android:layout_weight="1"
-                        android:text="Expiration Date"
+                        android:text="Certification Date"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
@@ -270,7 +268,17 @@
                         android:layout_height="wrap_content"
                         android:layout_column="3"
                         android:layout_weight="1"
-                        android:text="Description"
+                        android:text="Expiration Date"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="4"
+                        android:layout_weight="1"
+                        android:text="Comments"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
@@ -349,6 +357,28 @@
                 <TableRow>
 
                     <TextView
+                        android:id="@+id/certCatTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Certification Category:*"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/newCertCatSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="center"
+                        android:ems="8"
+                        android:entries="@array/CertCatEntries" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
                         android:id="@+id/certTypeTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -367,7 +397,6 @@
                         android:ems="8"
                         android:entries="@array/contractTypesEntries" />
                 </TableRow>
-
                 <TableRow>
 
                     <TextView
@@ -458,8 +487,6 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -527,7 +554,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="0dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -535,7 +562,6 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="5dp"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:text="First Name:*"
                             android:textStyle="bold" />
@@ -545,7 +571,6 @@
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_margin="5dp"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:text="Last Name:*"
                             android:textStyle="bold" />
@@ -581,25 +606,21 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="0dp"
                         android:orientation="horizontal">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="5dp"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:text="RSP USER ID:"
                             android:textStyle="bold" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_margin="5dp"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:text="RSP Email Address:"
                             android:textStyle="bold" />
@@ -636,7 +657,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         android:text="Seniority Date:"
                         android:textStyle="bold" />
 
@@ -678,7 +699,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:text="Start Date:*"
                             android:textStyle="bold" />
@@ -687,8 +708,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_marginLeft="35dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:text="End Date:"
                             android:textStyle="bold" />
@@ -724,7 +745,88 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="OEM Affidavit"
+                        android:textStyle="bold" />
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:text="Start Date:"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:text="End Date:"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/newOEMStartDateBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+                        <Button
+                            android:id="@+id/newOEMEndDateBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_weight="1"
+                            android:text="ASE Certification URL:"
+                            android:textStyle="bold" />
+                        <EditText
+                            android:id="@+id/newACEURLText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/textview_background"
+                            android:inputType="textUri"
+                            />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -766,7 +868,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="20dp">
+                        android:padding="5dp">
 
 
                         <TextView
@@ -816,7 +918,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="5dp"
                             android:text="City:*"
                             android:textStyle="bold" />
 
@@ -835,7 +937,7 @@
                             android:id="@+id/stateTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="5dp"
                             android:text="State:*"
                             android:textStyle="bold" />
 
@@ -850,7 +952,7 @@
                             android:id="@+id/zipCodeTextId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="5dp"
                             android:text="Zip Code:*"
                             android:textStyle="bold" />
 
@@ -895,7 +997,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="5dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -903,8 +1005,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_column="0"
-                                android:layout_margin="5dp"
-                                android:layout_marginTop="5dp"
                                 android:layout_weight="1"
                                 android:text="Phone:"
                                 android:textStyle="bold" />
@@ -913,9 +1013,8 @@
                                 android:id="@+id/emailAddressTextId"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_column="0"
-                                android:layout_margin="5dp"
-                                android:layout_marginTop="5dp"
+                                android:layout_column="1"
+                                android:layout_marginLeft="70dp"
                                 android:layout_weight="1"
                                 android:text="Email Address:*"
                                 android:textStyle="bold" />
@@ -960,7 +1059,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_column="0"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_weight="1"
                                 android:text="Contract Start Date:"
                                 android:textStyle="bold" />
@@ -971,7 +1070,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_column="3"
                                 android:layout_marginLeft="30dp"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_weight="1"
                                 android:text="Contract End Date:"
                                 android:textStyle="bold" />
@@ -1030,8 +1129,6 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -1040,8 +1137,6 @@
                 android:layout_marginTop="20dp"
                 android:text="Update Personnel"
                 android:textSize="18dp" />
-
-
             <Button
                 android:id="@+id/edit_submitNewPersnRecordBtn"
                 android:layout_width="wrap_content"
@@ -1098,7 +1193,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -1152,7 +1246,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="0dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -1207,7 +1301,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="5dp"
                         android:text="Seniority Date:"
                         android:textStyle="bold" />
 
@@ -1249,7 +1343,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:text="Start Date:*"
                             android:textStyle="bold" />
@@ -1259,7 +1353,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_marginLeft="35dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:text="End Date:"
                             android:textStyle="bold" />
@@ -1296,7 +1390,88 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="OEM Affidavit"
+                        android:textStyle="bold" />
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:text="Start Date:"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:text="End Date:"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/newEditOEMStartDateBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+                        <Button
+                            android:id="@+id/newEditOEMEndDateBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/blue"
+                            android:textSize="12dp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_weight="1"
+                            android:text="ASE Certification URL:"
+                            android:textStyle="bold" />
+                        <EditText
+                            android:id="@+id/newEditACEURLText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/textview_background"
+                            android:inputType="textUri"
+                            />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -1339,16 +1514,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="20dp">
-
-
+                        android:layout_marginTop="5dp"
+                        >
                         <TextView
                             android:id="@+id/edit_address1TextId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="5dp"
-                            android:layout_marginTop="5dp"
                             android:text="Address 1:*"
                             android:textStyle="bold" />
 
@@ -1368,8 +1541,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_margin="5dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="10dp"
                             android:text="Address 2:"
                             android:textStyle="bold" />
 
@@ -1423,11 +1595,9 @@
                             android:id="@+id/edit_zipCodeTextId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="5dp"
                             android:text="Zip Code:*"
                             android:textStyle="bold" />
-
-
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -1533,7 +1703,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_column="0"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="5dp"
                                 android:layout_weight="1"
                                 android:text="Contract Start Date:"
                                 android:textStyle="bold" />
@@ -1544,7 +1714,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_column="3"
                                 android:layout_marginLeft="30dp"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="5dp"
                                 android:layout_weight="1"
                                 android:text="Contract End Date:"
                                 android:textStyle="bold" />

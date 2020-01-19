@@ -129,6 +129,8 @@ class FragmentARRAVPersonnel : Fragment() {
             newSeniorityDateBtn.setText("SELECT DATE")
             newCoStartDateBtn.setText("SELECT DATE")
             newCoEndDateBtn.setText("SELECT DATE")
+            newOEMStartDateBtn.setText("SELECT DATE")
+            newOEMEndDateBtn.setText("SELECT DATE")
             newPhoneText.setText("")
             newZipText.setText("")
             newAdd1Text.setText("")
@@ -170,10 +172,65 @@ class FragmentARRAVPersonnel : Fragment() {
             dpd.show()
         }
 
+        newOEMStartDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                newOEMStartDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
 
+        newOEMEndDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                newOEMEndDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
 
+        newEditOEMStartDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                newEditOEMStartDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
 
-
+        newEditOEMEndDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                newEditOEMEndDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
 
         newCoStartDateBtn.setOnClickListener {
 //            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
@@ -302,6 +359,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 personnelLoadingText.text = "Saving ..."
                 personnelLoadingView.visibility = View.VISIBLE
 
+//addoul
 
                 var item = TblPersonnelCertification()
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
@@ -374,9 +432,11 @@ class FragmentARRAVPersonnel : Fragment() {
                 var startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-
-                Log.v("PERSONNEL ADD --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0,0)),
+                var OEMStartDate = if (newOEMStartDateBtn.text.equals("SELECT DATE")) "" else newOEMStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                var OEMEndDate = if (newOEMEndDateBtn.text.equals("SELECT DATE")) "" else newOEMEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                var ace_url=if (newACEURLText.text.toString().isNullOrEmpty()) "" else newACEURLText.text.toString()
+//                Log.v("PERSONNEL ADD --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0,0)),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {
@@ -681,6 +741,28 @@ class FragmentARRAVPersonnel : Fragment() {
         citiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newStateSpinner.adapter = citiesAdapter
         edit_newStateSpinner.adapter = citiesAdapter
+// HERE
+
+
+        newCertCatSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                certTypeArray.clear()
+                certTypeArray.add("Not Selected")
+                for (fac in certificationTypeList) {
+                    if (newCertCatSpinner.selectedItem.toString().equals("ASE")) {
+                        if (fac.Category.equals(newCertCatSpinner.selectedItem.toString()) || fac.Category.isNullOrEmpty())
+                            certTypeArray.add(fac.PersonnelCertName)
+                    } else {
+                        if (fac.Category.equals(newCertCatSpinner.selectedItem.toString()))
+                            certTypeArray.add(fac.PersonnelCertName)
+                    }
+                }
+                newCertTypeSpinner.setSelection(0);
+            }
+        }
 
     }
 
@@ -1520,8 +1602,11 @@ class FragmentARRAVPersonnel : Fragment() {
                             var ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var personnelID = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].PersonnelID
+                            var OEMStartDate = if (newEditOEMStartDateBtn.text.equals("SELECT DATE")) "" else newEditOEMStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var OEMEndDate = if (newEditOEMEndDateBtn.text.equals("SELECT DATE")) "" else newEditOEMEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                            var ace_url=if (newEditACEURLText.text.toString().isNullOrEmpty()) "" else newEditACEURLText.text.toString()
 //                            Log.v("PERSONNEL EDIT --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,currentfacilityDataModelIndex)),
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,currentfacilityDataModelIndex)),
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode>0<",false)) {
@@ -1541,6 +1626,9 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 item.startDate = startDate
                                                 item.endDate = ExpirationDate
                                                 item.SeniorityDate = SeniorityDate
+                                                item.ASE_Cert_URL = ace_url
+                                                item.OEMstartDate = OEMStartDate
+                                                item.OEMendDate= OEMEndDate
                                                 HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                                 HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                                 if (ContractSigner.toBoolean()){
@@ -1653,7 +1741,7 @@ class FragmentARRAVPersonnel : Fragment() {
             (0 until size).forEach {
                 if (!get(it).CertificationTypeId.isNullOrEmpty()) {
                     val rowLayoutParam = TableRow.LayoutParams()
-                    rowLayoutParam.weight = 1F
+                    rowLayoutParam.weight = 0.5F
                     rowLayoutParam.column = 0
                     rowLayoutParam.leftMargin = 10
                     rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
@@ -1661,7 +1749,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
 
                     val rowLayoutParam1 = TableRow.LayoutParams()
-                    rowLayoutParam1.weight = 1F
+                    rowLayoutParam1.weight = 2F
                     rowLayoutParam1.column = 1
                     rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
                     rowLayoutParam1.width = 0
@@ -1681,6 +1769,13 @@ class FragmentARRAVPersonnel : Fragment() {
                     rowLayoutParam3.width = 0
                     rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
 
+                    val rowLayoutParam4 = TableRow.LayoutParams()
+                    rowLayoutParam4.weight = 1F
+                    rowLayoutParam4.column = 4
+                    rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
+                    rowLayoutParam4.width = 0
+                    rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
+
                     val rowLayoutParamRow = TableRow.LayoutParams()
                     rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
                     rowLayoutParamRow.weight=1F
@@ -1689,15 +1784,24 @@ class FragmentARRAVPersonnel : Fragment() {
                     val tableRow = TableRow(context)
                     tableRow.layoutParams = rowLayoutParamRow
 
+
+                    val textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.gravity = Gravity.CENTER
+                    textView.text = if (get(it).CertificationTypeId.contains("OEM")) "OEM" else "ASE"
+                    textView.textSize = 14f
+                    tableRow.addView(textView)
+
+
                     val textView1 = TextView(context)
-                    textView1.layoutParams = rowLayoutParam
+                    textView1.layoutParams = rowLayoutParam1
                     textView1.gravity = Gravity.CENTER
-                    textView1.text = get(it).CertificationTypeId
+                    textView1.text = TypeTablesModel.getInstance().PersonnelCertificationType.filter { s->s.PersonnelCertID.equals(get(it).CertificationTypeId)}[0].PersonnelCertName
                     textView1.textSize = 14f
                     tableRow.addView(textView1)
 
                     val textView2 = TextView(context)
-                    textView2.layoutParams = rowLayoutParam1
+                    textView2.layoutParams = rowLayoutParam2
                     textView2.gravity = Gravity.CENTER
                     textView2.textSize = 14f
                     try {
@@ -1708,7 +1812,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     tableRow.addView(textView2)
 
                     val textView3 = TextView(context)
-                    textView3.layoutParams = rowLayoutParam2
+                    textView3.layoutParams = rowLayoutParam3
                     textView3.gravity = Gravity.CENTER
                     textView3.textSize = 14f
                     TableRow.LayoutParams()
@@ -1720,7 +1824,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     tableRow.addView(textView3)
 
                     val textView4 = TextView(context)
-                    textView4.layoutParams = rowLayoutParam3
+                    textView4.layoutParams = rowLayoutParam4
                     textView4.gravity = Gravity.CENTER
                     textView4.text = get(it).CertDesc
                     textView4.textSize = 14f

@@ -514,6 +514,7 @@ class TypeTablesModel {
         var insertBy = ""
         var insertDate = ""
         var updateBy = ""
+        var Category = ""
         var updateDate = ""
     }
 
