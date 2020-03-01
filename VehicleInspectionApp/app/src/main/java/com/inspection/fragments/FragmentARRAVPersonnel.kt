@@ -81,7 +81,6 @@ class FragmentARRAVPersonnel : Fragment() {
         fillPersonnelTableView()
         rspUserId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName.toString())
         rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
-
         IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited = true
         (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
@@ -101,9 +100,14 @@ class FragmentARRAVPersonnel : Fragment() {
             (activity as FormsActivity).overrideBackButton = false
             addNewCertificateDialogue.visibility=View.GONE
             alphaBackgroundForPersonnelDialogs.visibility = View.GONE
-
-
         }
+
+        exitEditCertificateDialogeBtnId.setOnClickListener {
+            (activity as FormsActivity).overrideBackButton = false
+            editNewCertificateDialogue.visibility=View.GONE
+            alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+        }
+
 
         AddNewCertBtn.setOnClickListener {
             if (selectedPersonnelID.equals(0)) {
@@ -168,6 +172,21 @@ class FragmentARRAVPersonnel : Fragment() {
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
                 newCertStartDateBtn!!.text = sdf.format(c.time)
+            }, year, month, day)
+            dpd.show()
+        }
+
+        edit_newCertStartDateBtn.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                c.set(year, monthOfYear, dayOfMonth)
+                edit_newCertStartDateBtn!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
@@ -358,8 +377,6 @@ class FragmentARRAVPersonnel : Fragment() {
                 (activity as FormsActivity).overrideBackButton = false
                 personnelLoadingText.text = "Saving ..."
                 personnelLoadingView.visibility = View.VISIBLE
-
-//addoul
 
                 var item = TblPersonnelCertification()
                 for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
@@ -671,12 +688,6 @@ class FragmentARRAVPersonnel : Fragment() {
             edit_newCoEndDateBtn.setTextColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.gray));
             edit_contractSignerFieldsLinearLayourId.setBackgroundColor(newCoStartDateBtn.getContext().getResources().getColor(R.color.contractSignerFieldsAreDisabledColor));
 
-
-
-
-
-
-
     }
     fun edit_enableContractSignerIsChecked(){
 
@@ -763,7 +774,8 @@ class FragmentARRAVPersonnel : Fragment() {
                 newCertTypeSpinner.setSelection(0);
             }
         }
-
+        edit_newCertTypeSpinner.isEnabled = false
+        edit_newCertCatSpinner.isEnabled = false
     }
 
     fun getTypeName(typeID: String): String {
@@ -950,6 +962,31 @@ class FragmentARRAVPersonnel : Fragment() {
             }
 
         }
+
+        edit_newCertEndDateBtn.setOnClickListener {
+            if (edit_newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
+                edit_newCertStartDateBtn.setError("Required Field")
+                Utility.showValidationAlertDialog(activity,"Please enter Certificate Start Date")
+            }
+            else {
+                edit_newCertEndDateBtn.setError(null)
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    // Display Selected date in textbox
+                    val myFormat = "MM/dd/yyyy" // mention the format you need
+                    val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    c.set(year, monthOfYear, dayOfMonth)
+                    edit_newCertEndDateBtn!!.text = sdf.format(c.time)
+                }, year, month, day)
+                dpd.show()
+
+            }
+
+        }
+
     }
     fun edit_endDateMustBeAfterStartDateLogic(){
 
@@ -1776,6 +1813,21 @@ class FragmentARRAVPersonnel : Fragment() {
                     rowLayoutParam4.width = 0
                     rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
 
+                    val rowLayoutParam5 = TableRow.LayoutParams()
+                    rowLayoutParam5.weight = 0.5F
+                    rowLayoutParam5.column = 5
+                    rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
+                    rowLayoutParam5.width = 0
+                    rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
+
+                    val rowLayoutParamhidden = TableRow.LayoutParams()
+                    rowLayoutParamhidden.weight = 0F
+                    rowLayoutParamhidden.column = 5
+                    rowLayoutParamhidden.height = TableRow.LayoutParams.WRAP_CONTENT
+                    rowLayoutParamhidden.width = 0
+                    rowLayoutParamhidden.gravity = Gravity.CENTER_VERTICAL
+
+
                     val rowLayoutParamRow = TableRow.LayoutParams()
                     rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
                     rowLayoutParamRow.weight=1F
@@ -1815,7 +1867,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     textView3.layoutParams = rowLayoutParam3
                     textView3.gravity = Gravity.CENTER
                     textView3.textSize = 14f
-                    TableRow.LayoutParams()
+//                    TableRow.LayoutParams()
                     try {
                         textView3.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
                     } catch (e: Exception) {
@@ -1829,7 +1881,109 @@ class FragmentARRAVPersonnel : Fragment() {
                     textView4.text = get(it).CertDesc
                     textView4.textSize = 14f
                     tableRow.addView(textView4)
+
+                    val textViewhidden = TextView(context)
+                    textViewhidden.layoutParams = rowLayoutParamhidden
+                    textViewhidden.gravity = Gravity.CENTER
+                    textViewhidden.text = get(it).CertID
+                    textViewhidden.textSize = 14f
+                    tableRow.addView(textViewhidden)
+
+                    val updateCertBtn = TextView(context)
+                    updateCertBtn.layoutParams = rowLayoutParam5
+                    updateCertBtn.setTextColor(Color.BLUE)
+                    updateCertBtn.text = "EDIT"
+                    updateCertBtn.gravity = Gravity.CENTER
+                    updateCertBtn.textSize = 12f
+//                    updateCertBtn.tag = get(it).CertID
+                    updateCertBtn .setBackgroundColor(Color.TRANSPARENT)
+
+                    tableRow.addView(updateCertBtn)
+
                     certificationsTable.addView(tableRow)
+
+                    updateCertBtn.setOnClickListener {
+                        editNewCertificateDialogue.visibility=View.VISIBLE
+                        (activity as FormsActivity).overrideBackButton = true
+                        alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
+//                        var currentModelIndex = FacilityDataModel.getInstance().tblPersonnelCertification.filter { s->s.CertificationTypeId.equals(textView.text.toString()) && s.}
+
+//                        FacilityDataModel.getInstance().tblPersonnelCertification[currentTableRowIndex].apply {
+//                            (0 until size).forEach { it2 ->
+//                                if (get(it2).CertificationTypeId.contains("OEM")) edit_newCertCatSpinner.text = "OEM" else edit_newCertCatSpinner.text = "ASE"
+//                                edit_newCertTypeSpinner.text = get(it2).CertificationTypeId
+//                            }
+//                        }
+
+                        edit_newCertCatSpinner.text = textView.text.toString()
+                        edit_newCertTypeSpinner.text = textView1.text.toString()
+                        edit_newCertStartDateBtn.text = textView2.text.toString()
+                        edit_newCertEndDateBtn.text = textView3.text.toString()
+                        var currentCertId = textViewhidden.text.toString()
+
+                        editNewCertBtn.setOnClickListener {
+                            if (edit_validateCertificationInputs()) {
+                                editNewCertificateDialogue.visibility = View.GONE
+                                alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
+                                personnelLoadingText.text = "Saving ..."
+                                personnelLoadingView.visibility = View.VISIBLE
+
+                                var item = TblPersonnelCertification()
+//                                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+//                                    if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
+//                                        item.CertificationTypeId = fac.PersonnelCertID
+//                                }
+                                item = FacilityDataModel.getInstance().tblPersonnelCertification.filter { s->s.CertID.equals(currentCertId) }[0]
+
+
+                                var urlString = "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&personnelId=${item.PersonnelID}"+
+                                        "&certId=${currentCertId}&certificationTypeId=${item.CertificationTypeId}&certificationDate=${edit_newCertStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()}&expirationDate=${edit_newCertEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()}"+
+                                        "&certDesc=${item.CertDesc}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&active=1"
+                                Log.v("CERTIFICATION ADD --- ",Constants.UpdatePersonnelCertification + urlString)
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdatePersonnelCertification + urlString + Utility.getLoggingParameters(activity, 0, getCertificationChanges(0,selectedPersonnelID)),
+                                        Response.Listener { response ->
+                                            activity!!.runOnUiThread {
+                                                if (response.toString().contains("returnCode>0<", false)) {
+                                                    Utility.showSubmitAlertDialog(activity, true, "Certification")
+//                                                    item.CertID= response.toString().substring(response.toString().indexOf("<CertID")+8,response.toString().indexOf("</CertID"))
+//                                                    FacilityDataModelOrg.getInstance().tblPersonnelCertification.filter { s->s.CertID.equals(currentCertId)}[0].apply {
+//                                                        (0 until size).forEach {
+//                                                            get(it).CertificationDate = item.CertificationDate
+//                                                            get(it).ExpirationDate = item.ExpirationDate
+//                                                        }
+//                                                    }
+                                                    item.CertificationDate = edit_newCertStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                                    item.ExpirationDate = edit_newCertEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                                    item = FacilityDataModelOrg.getInstance().tblPersonnelCertification.filter { s->s.CertID.equals(currentCertId) }[0]
+                                                    item.CertificationDate = edit_newCertStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                                    item.ExpirationDate = edit_newCertEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+//                                                    FacilityDataModel.getInstance().tblPersonnelCertification.filter { s->s.CertID.equals(currentCertId)}[0].apply {
+//                                                        (0 until size).forEach {
+//                                                            get(it).CertificationDate = item.CertificationDate
+//                                                            get(it).ExpirationDate = item.ExpirationDate
+//                                                        }
+//                                                    }
+                                                    HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
+                                                    HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
+                                                    fillCertificationTableView(selectedPersonnelID)
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Certification (Error: " + errorMessage + " )")
+                                                }
+                                                personnelLoadingView.visibility = View.GONE
+                                                personnelLoadingText.text = "Loading ..."
+                                            }
+                                        }, Response.ErrorListener {
+                                    Utility.showSubmitAlertDialog(activity, false, "Certification (Error: "+it.message+" )")
+                                    personnelLoadingView.visibility = View.GONE
+                                    personnelLoadingText.text = "Loading ..."
+
+                                }))
+                                editNewCertificateDialogue.visibility = View.GONE
+                            }
+                        }
+                    }
                 }
                 altCertTableRow(2)
             }
@@ -2448,7 +2602,53 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         return cert.iscertInputValid
     }
 
+    fun edit_validateCertificationInputs() : Boolean{
 
+        edit_certDateTextView.setError(null)
+        edit_expirationDateText.setError(null)
+//        certTypeTextView.setError(null)
+
+        var cert = TblPersonnel()
+
+        cert.iscertInputValid=true
+
+        if (edit_newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            cert.iscertInputValid = false
+            edit_newCertStartDateBtn.setError("Required Field")
+        }
+        if (!edit_newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE") && edit_newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
+            cert.iscertInputValid = false
+            edit_expirationDateText.setError("Required Field")
+        }
+        var certificateType = ""
+//        for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+//            if (edit_newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
+//                certificateType = fac.PersonnelCertID
+//        }
+        certificateType = edit_newCertTypeSpinner.text.toString()
+
+        var datesOverlapping = false
+        if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.CertificationTypeId.equals(certificateType)}.size==1) {
+            datesOverlapping = true
+        } else {
+            FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.CertificationTypeId.equals(certificateType) }.apply {
+                (0 until size).forEach {
+                    if (get(it).PersonnelID.equals(selectedPersonnelID)) {
+                        if (Utility.datesAreOverlapping(edit_newCertStartDateBtn.text.toString().toDateMMDDYYYY(), edit_newCertEndDateBtn.text.toString().toDateMMDDYYYY(), get(it).CertificationDate.toDateDBFormat(), get(it).ExpirationDate.toDateDBFormat())) {
+                            datesOverlapping = true
+                        }
+                    }
+                }
+            }
+        }
+
+        if (datesOverlapping) {
+            Utility.showValidationAlertDialog(activity,"The certification overlaps with another active certification from the same type")
+            cert.iscertInputValid = !datesOverlapping
+        }
+
+        return cert.iscertInputValid
+    }
 
     fun validateInputs() : Boolean{
 

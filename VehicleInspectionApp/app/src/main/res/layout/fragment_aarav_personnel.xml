@@ -282,6 +282,16 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="5"
+                        android:layout_weight="0.5"
+                        android:text="Options"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
                 </TableRow>
             </TableLayout>
 
@@ -452,7 +462,7 @@
                         android:layout_column="0"
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
-                        android:text="Description:"
+                        android:text="Comments:"
                         android:textStyle="bold" />
 
                     <EditText
@@ -1759,6 +1769,203 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </ScrollView>
+
+    <ScrollView
+        android:id="@+id/editNewCertificateDialogue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="Edit Certificate"
+                android:textSize="18dp" />
+
+
+            <Button
+                android:id="@+id/editNewCertBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/green_background_button"
+                android:text="Submit"
+                android:textColor="@color/white" />
+
+
+            <ImageButton
+                android:id="@+id/exitEditCertificateDialogeBtnId"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/close" />
+
+            <TableLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="40dp">
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/edit_certCatTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Certification Category:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/edit_newCertCatSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Certification Category:"
+                        android:textStyle="bold" />
+
+<!--                    <Spinner-->
+<!--                        android:id="@+id/edit_newCertCatSpinner"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_column="1"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:clickable="false"-->
+<!--                        android:ems="8"-->
+<!--                        android:entries="@array/CertCatEntries" />-->
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/edit_certTypeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Certification Type:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/edit_newCertTypeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Certification Type:"
+                        android:textStyle="bold" />
+
+<!--                    <Spinner-->
+<!--                        android:id="@+id/edit_newCertTypeSpinner"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_column="1"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:ems="8"-->
+<!--                        android:clickable="false"-->
+<!--                        android:entries="@array/contractTypesEntries" />-->
+                </TableRow>
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/edit_certDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:ems="8"
+                        android:text="Certification Date:*"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/edit_newCertStartDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/transparent"
+                        android:gravity="center"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/edit_expirationDateText"
+                        android:text="Expiration Date:"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/edit_newCertEndDateBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="4"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/transparent"
+                        android:text="SELECT DATE"
+                        android:textColor="@color/blue"
+                        android:textSize="12dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Comments:"
+                        android:enabled="false"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edit_newCertDescText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_span="3"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="16"
+                        android:lines="5"
+                        android:text=""
+                        android:textStyle="bold" />
+                </TableRow>
+
+            </TableLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
 
     <RelativeLayout
         android:id="@+id/certificateLoadingView"

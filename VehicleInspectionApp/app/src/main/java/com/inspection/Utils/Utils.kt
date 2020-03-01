@@ -209,9 +209,9 @@ fun createPDF(activity: Activity){
 
     var imageView = ImageView(activity.applicationContext)
             .doAsync {
-                val imageNameRep = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_RepSignature.png"
-                val imageNameSpec = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_SpecSignature.png"
-                val imageNameDef = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_DefSignature.png"
+                val imageNameRep = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_RepSignature_"+Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString()+".png"
+                val imageNameSpec = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_SpecSignature_"+Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString()+".png"
+                val imageNameDef = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_DefSignature_"+Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString()+".png"
 
 //                val bitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_launcher);
 //                var stream = ByteArrayOutputStream();
@@ -887,6 +887,9 @@ private fun drawDeficienciesSection() : PdfPTable {
 
         }
     }
+    if (TypeTablesModel.getInstance().AARDeficiencyType.size % 3 > 0) {
+        table.addCell(addCell(" ", (TypeTablesModel.getInstance().AARDeficiencyType.size % 3)*2, false))
+    }
     return table
 }
 
@@ -1182,6 +1185,9 @@ private fun drawDeficiencySectionForShop() : PdfPTable {
             }
         }
     }
+    if (FacilityDataModel.getInstance().tblDeficiency.size % 3 > 0) {
+        table.addCell(addCell(" ", (FacilityDataModel.getInstance().tblDeficiency.size % 3)*2, false))
+    }
     return table
 }
 
@@ -1292,7 +1298,9 @@ private fun drawVehiclesSection(vehicleCatID : String) : PdfPTable {
             }
         }
     }
-
+    if (TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleTypeID == vehicleTypeID.toInt() && s.VehicleCategoryID == vehicleCatID.toInt() }.size % 8 > 0) {
+        table.addCell(addCell(" ", (TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleTypeID == vehicleTypeID.toInt() && s.VehicleCategoryID == vehicleCatID.toInt() }.size % 8)*2, false))
+    }
     return table
 }
 
@@ -1317,6 +1325,10 @@ private fun drawVehicleServicesSection(vehicleTypeID: String) : PdfPTable {
             }
         }
     }
+//    if (TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.VehiclesTypeID.equals(vehicleTypeID) }.size % 3 > 0) {
+//        table.addCell(addCell(" ", (TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.VehiclesTypeID.equals(vehicleTypeID) }.size % 3)*2, false))
+//    }
+    table.addCell(addCell(" ",6,false))
     return table
 }
 

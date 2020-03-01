@@ -166,6 +166,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             if (photosPreviewDialog != null) photosPreviewDialog.visibility = View.GONE
             if (editPhotoDialog != null) editPhotoDialog.visibility = View.GONE
             if (copyHoursDialog != null) copyHoursDialog.visibility = View.GONE
+            if (editPhoneDialog != null) editPhotoDialog.visibility = View.GONE
+//            if (complaintsCard != null) complaintsCard.visibility = View.GONE
 
 //            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
 //            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE

@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Debug
+import android.telephony.PhoneNumberUtils
 import androidx.fragment.app.Fragment
 import androidx.core.widget.TextViewCompat
 import android.text.Editable
@@ -1311,18 +1312,8 @@ class FragmentARRAVLocation : Fragment() {
                     textView2.gravity = Gravity.CENTER_VERTICAL
                     textView2.textSize = 14f
                     textView2.minimumHeight=30
-                    textView2.text = get(it).PhoneNumber
+                    textView2.text = PhoneNumberUtils.formatNumber(get(it).PhoneNumber,"US")
                     tableRow.addView(textView2)
-
-//                    val editPhoneBtn = Button(context)
-//                    editPhoneBtn.layoutParams = rowLayoutParam2
-////                    editPhoneBtn.textAlignment = Button.TEXT_ALIGNMENT_TEXT_START
-//                    textView.gravity = Gravity.CENTER_VERTICAL
-//                    textView.textSize = 18f
-//                    editPhoneBtn.text = "Edit"
-//                    editPhoneBtn.setTextColor(Color.BLACK)
-////                editPhoneBtn.setBackgroundResource(R.drawable.green_background_button)
-//                    tableRow.addView(editPhoneBtn)
 
                     val editPhoneBtn = TextView(context)
                     editPhoneBtn.layoutParams = rowLayoutParam1

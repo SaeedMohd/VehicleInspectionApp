@@ -314,7 +314,16 @@ class FragmentVisitation : Fragment() {
             }
         }
 
-
+        waiveVisitationCheckBox.isChecked = false
+        emailPdfCheckBox.isChecked = false
+        waiverCommentsEditText.setText("")
+        emailEditText.setText("")
+        facilityRepresentativesSpinner.setSelection(0)
+        staffTrainingProcessEditText.setText("")
+        qualityControlProcessEditText.setText("")
+        aarSignEditText.setText("")
+        certificateOfApprovalEditText.setText("")
+        memberBenefitsPosterEditText.setText("")
         dateOfVisitationButton.text = Date().toAppFormatMMDDYYYY()
         clubCodeEditVal.setText(FacilityDataModel.getInstance().clubCode)
         facilityNumberEditText.setText("" + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
@@ -387,16 +396,7 @@ class FragmentVisitation : Fragment() {
             }
         }
 
-        waiveVisitationCheckBox.isChecked = false
-        emailPdfCheckBox.isChecked = false
-        waiverCommentsEditText.setText("")
-        emailEditText.setText("")
-        facilityRepresentativesSpinner.setSelection(0)
-        staffTrainingProcessEditText.setText("")
-        qualityControlProcessEditText.setText("")
-        aarSignEditText.setText("")
-        certificateOfApprovalEditText.setText("")
-        memberBenefitsPosterEditText.setText("")
+
 
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
 
@@ -422,9 +422,13 @@ class FragmentVisitation : Fragment() {
 
 
             if (PRGDataModel.getInstance().tblPRGVisitationHeader.isNotEmpty()){
+
                 var loadPrevData = true
 //                if (adhocVisitationType.isChecked){
 //                }
+                if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].recordid==-1){
+                    loadPrevData = false
+                }
                 if (loadPrevData) {
                     waiveVisitationCheckBox.isChecked = PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation
                     waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked

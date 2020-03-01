@@ -51,6 +51,7 @@ import java.text.SimpleDateFormat
 import java.time.Month
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 
 /**
@@ -342,21 +343,23 @@ class VisitationPlanningFragment : Fragment() {
 
 
     private fun loadFacilityNames(){
+        var facilities : ArrayList<CsiFacility>
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                 Response.Listener { response ->
                     Log.v("test","testtesttest-----------")
                     activity!!.runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
                         CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                        var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+                        facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         (0 until facilities.size).forEach {
                             facilityNames.add(facilities[it].facname + " || " + facilities[it].facnum)
                         }
                         Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
-                        if (facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
+                        facilities.removeIf { s->s.accspecid.isNullOrEmpty() }
+                        if (facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
 //                            defaultFacNumber = facilities.filter { s -> s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID) }.sortedWith(compareBy { it.facnum })[0].facnum
 //                            adHocFacilityIdVal.setText(defaultFacNumber)
-                            defaultClubCode = facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
+                            defaultClubCode = facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
                             clubCodeEditText.setText(defaultClubCode)
                         } else {
                             clubCodeEditText.setText("252")

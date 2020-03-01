@@ -82,7 +82,6 @@ class FragmentARRAVFacilityServices : Fragment() {
             alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
         }
 
-
         fcexpiration_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)

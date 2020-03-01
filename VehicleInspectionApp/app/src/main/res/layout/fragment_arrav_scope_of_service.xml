@@ -107,6 +107,30 @@
                 android:orientation="horizontal"
                 android:id="@+id/connumberll">
                 <TextView
+                    android:id="@+id/fixedLaborRateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="Fixed Labor Rate ($): "
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/fixedLaborRateEditText"
+                    android:layout_toRightOf="@id/contract_number_textview"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:background="@drawable/textview_background"
+                    android:layout_height="wrap_content" />
+                <TextView
                     android:id="@+id/diagnosticRateTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -131,30 +155,7 @@
                     android:inputType="numberDecimal"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/fixedLaborRateTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:text="Fixed Labor Rate ($): "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/fixedLaborRateEditText"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="numberDecimal"
-                    android:digits="0123456789."
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:background="@drawable/textview_background"
-                    android:layout_height="wrap_content" />
+
 
             </LinearLayout>
             <View

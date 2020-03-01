@@ -87,4 +87,5 @@ class CsiFacility {
     var alertstomanager = ""
     var typeofshop = ""
     var haswebsite = ""
+    var accspecid = ""
 }
