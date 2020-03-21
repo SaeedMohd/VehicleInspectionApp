@@ -137,6 +137,12 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         addstartDateButton.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!addstartDateButton.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(addstartDateButton.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -156,6 +162,12 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         addendDateButton.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!addendDateButton.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(addendDateButton.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -175,6 +187,12 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
         addsignDateButton.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!addsignDateButton.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(addsignDateButton.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)

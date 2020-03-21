@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:divider="@drawable/divider_table_layout"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:stretchColumns="*"
@@ -160,11 +160,11 @@
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="5dp"
                     android:layout_span="8"
                     android:background="@color/light_gray" />
             </TableRow>
-            <TableRow android:layout_marginTop="10dp">
+            <TableRow android:layout_marginTop="5dp">
                 <CheckBox
                     android:id="@+id/annualVisitationCheckBox"
                     android:layout_width="0dp"
@@ -197,21 +197,34 @@
                     android:checked="true"
                     android:text="Deficiencies" />
 
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
                 <CheckBox
                     android:id="@+id/pendingCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_column="4"
+                    android:layout_column="0"
                     android:checked="true"
                     android:text="Not Started" />
 
                 <CheckBox
+                    android:id="@+id/inProgressCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="1"
+                    android:text="In Progress" />
+                <CheckBox
+                    android:id="@+id/overdueCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="2"
+                    android:text="Overdue" />
+                <CheckBox
                     android:id="@+id/completedCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_column="5"
+                    android:layout_column="3"
                     android:text="Completed" />
-
                 <Button
                     android:id="@+id/searchVisitaionsButton"
                     android:layout_width="0dp"
@@ -226,10 +239,21 @@
                     android:textColor="@color/white" />
             </TableRow>
             <TableRow>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_span="2"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/blue_krayola"
+                    android:textStyle="bold"
+                    android:id="@+id/resultsCount"
+                    android:text="Filtered Visitations --> ()"
+                     />
+            </TableRow>
+            <TableRow>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="5dp"
                     android:layout_span="8"
                     android:background="@color/light_gray" />
             </TableRow>

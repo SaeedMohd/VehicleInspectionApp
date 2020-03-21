@@ -85,6 +85,8 @@ class VisitationPlanningFragment : Fragment() {
     var specialistArrayModel = ArrayList<TypeTablesModel.employeeList>()
     var clubCode=""
     var visitationID =""
+    var totalVisitations = 0
+    var overridOverdue = VisitationStatus.Overdue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -487,7 +489,7 @@ class VisitationPlanningFragment : Fragment() {
             }
 
 
-            if (pendingCheckBox.isChecked) {
+            if (pendingCheckBox.isChecked || overdueCheckBox.isChecked || inProgressCheckBox.isChecked) {
                 with(parametersString) {
                     append("pendingVisitations=1")
                     append("&")
@@ -555,7 +557,7 @@ class VisitationPlanningFragment : Fragment() {
                             visitationsModel.deficienciesArray.clear()
                             var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                             visitationfacilityListView.adapter = visitationPlanningAdapter
-                            var totalVisitations = 0
+                            totalVisitations = 0
 
                         }
                     } else {
@@ -592,8 +594,9 @@ class VisitationPlanningFragment : Fragment() {
                                                             visitationfacilityListView.visibility = View.VISIBLE
                                                             var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                                                             visitationfacilityListView.adapter = visitationPlanningAdapter
-                                                            var totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-                                                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                                                            totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+//                                                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                                                            resultsCount.text = "Filtered Visitations --> ( " + totalVisitations +" )"
                                                         }
 
                                                     }
@@ -607,7 +610,7 @@ class VisitationPlanningFragment : Fragment() {
                                                 visitationfacilityListView.visibility = View.VISIBLE
                                                 var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                                                 visitationfacilityListView.adapter = visitationPlanningAdapter
-                                                var totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+                                                totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
                                                 Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
                                             }
                                             it.printStackTrace()
@@ -625,7 +628,7 @@ class VisitationPlanningFragment : Fragment() {
                             visitationfacilityListView.visibility = View.VISIBLE
                             var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                             visitationfacilityListView.adapter = visitationPlanningAdapter
-                            var totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+                            totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
                             Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
                         }
                         it.printStackTrace()
@@ -1080,9 +1083,17 @@ class VisitationPlanningFragment : Fragment() {
 //                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle
 //                    Utility.showMessageDialog(context,"Visitation Data",strData)
 //                }
-                val visitationTypeAndStatus = determineVisitationTypeAndStatus(visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].FacID.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt())
-                vh.visitationTypeValueTextView.text = visitationTypeAndStatus.first.toString()
 
+                var visitationTypeAndStatus = determineVisitationTypeAndStatus(visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].FacID.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt())
+                vh.visitationTypeValueTextView.text = visitationTypeAndStatus.first.toString()
+                val facAnnualMonth = visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt()
+                val c = Calendar.getInstance()
+                val month = c.get(Calendar.MONTH)+1
+                var overrideOverdueFlag = false
+                if (visitationTypeAndStatus.second == VisitationStatus.Overdue && facAnnualMonth-month==1) {
+                    overridOverdue=VisitationStatus.NotStarted
+                    overrideOverdueFlag = true
+                }
                 if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
                     if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode == visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.facannualinspectionmonth == visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt() && s.inspectioncycle == visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle && s.visitationtype == visitationTypeAndStatus.first.toString() }.isNotEmpty()) {
                         if (visitationTypeAndStatus.second == VisitationStatus.NotStarted) {
@@ -1091,10 +1102,16 @@ class VisitationPlanningFragment : Fragment() {
                             vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString() + " / In Progress"
                         }
                     } else {
+                        if (visitationTypeAndStatus.second==VisitationStatus.Overdue && overrideOverdueFlag)
+                                vh.visitationStatusValueTextView.text = overridOverdue.toString().replace("Not", "Not ")
+                        else
                         vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
                     }
                 } else {
-                    vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
+                    if (visitationTypeAndStatus.second==VisitationStatus.Overdue && overrideOverdueFlag)
+                        vh.visitationStatusValueTextView.text = overridOverdue.toString().replace("Not", "Not ")
+                    else
+                        vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
                 }
                 if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.visitationtype.equals(visitationTypeAndStatus.first.toString())}.isNotEmpty()){
                     vh.initialContractDateTextView.text = "Last Visitation Date:"
@@ -1219,10 +1236,27 @@ class VisitationPlanningFragment : Fragment() {
                     VisitationTypes.Deficiency.toString() -> vh.listBkg.setBackgroundColor(Color.rgb(255, 229, 204))
                 }
             }
+              if (reviewFilters(vh.visitationTypeValueTextView.text.toString(),vh.visitationStatusValueTextView.text.toString())) {
+                  vh.listBkg.visibility = View.GONE
+                  totalVisitations -= 1
+//                  resultsCount.text = "Filtered Visitations --> ( " + totalVisitations +" )"
+              }
             vh.visitationStatusValueTextView.setTextColor(getTextColor(vh.visitationStatusValueTextView.text.toString()))
             return view
         }
 
+        fun reviewFilters(visitationType : String, visitationStatus : String) : Boolean {
+            var hideVisitation = false
+            if (!annualVisitationCheckBox.isChecked && visitationType.equals(VisitationTypes.Annual.toString())) return true
+            if (!quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.equals(VisitationTypes.Quarterly.toString())) return true
+            if (!adHocVisitationsCheckBox.isChecked && visitationType.equals(VisitationTypes.AdHoc.toString())) return true
+            if (!deficienciesCheckBox.isChecked && visitationType.equals(VisitationTypes.Deficiency.toString())) return true
+            if (!pendingCheckBox.isChecked && visitationStatus.equals("Not Started")) return true
+            if (!inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
+            if (!overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
+            if (!completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
+            return hideVisitation
+        }
 
         override fun getItem(position: Int): Any {
             // return item at 'position'

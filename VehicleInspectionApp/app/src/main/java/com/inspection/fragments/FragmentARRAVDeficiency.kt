@@ -188,6 +188,12 @@ class FragmentARRAVDeficiency : Fragment() {
 
         newClearedDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newClearedDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newClearedDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -203,6 +209,12 @@ class FragmentARRAVDeficiency : Fragment() {
 
         newClearedDateBtnEdit.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newClearedDateBtnEdit.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newClearedDateBtnEdit.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -218,6 +230,12 @@ class FragmentARRAVDeficiency : Fragment() {
 
         signatureDateBtnEdit.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!signatureDateBtnEdit.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(signatureDateBtnEdit.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -233,6 +251,12 @@ class FragmentARRAVDeficiency : Fragment() {
 
         signatureDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!signatureDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(signatureDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -249,6 +273,12 @@ class FragmentARRAVDeficiency : Fragment() {
 
         newVisitationDateBtnEdit.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newVisitationDateBtnEdit.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newVisitationDateBtnEdit.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -264,6 +294,12 @@ class FragmentARRAVDeficiency : Fragment() {
 
         newVisitationDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newVisitationDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newVisitationDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)

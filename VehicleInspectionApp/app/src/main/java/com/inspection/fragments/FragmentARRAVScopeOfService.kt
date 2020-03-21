@@ -347,11 +347,11 @@ class FragmentARRAVScopeOfService : Fragment() {
     fun handleRadioButtonsSelection (){
 
         if (fixedLaborRadioButton.isChecked) {
-            fixedLaborRateTextView.visibility = View.INVISIBLE
-            fixedLaborRateEditText.visibility = View.INVISIBLE
-        } else {
             fixedLaborRateTextView.visibility = View.VISIBLE
             fixedLaborRateEditText.visibility = View.VISIBLE
+        } else {
+            fixedLaborRateTextView.visibility = View.GONE
+            fixedLaborRateEditText.visibility = View.GONE
         }
         laborRateLL.isVisible = !fixedLaborRadioButton.isChecked
         laborRateView.isVisible = !fixedLaborRadioButton.isChecked

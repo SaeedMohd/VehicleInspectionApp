@@ -163,6 +163,12 @@ class FragmentARRAVPersonnel : Fragment() {
 
         newCertStartDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newCertStartDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newCertStartDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -178,6 +184,12 @@ class FragmentARRAVPersonnel : Fragment() {
 
         edit_newCertStartDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!edit_newCertStartDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(edit_newCertStartDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -193,6 +205,12 @@ class FragmentARRAVPersonnel : Fragment() {
 
         newOEMStartDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newOEMStartDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newOEMStartDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -208,6 +226,12 @@ class FragmentARRAVPersonnel : Fragment() {
 
         newOEMEndDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newOEMEndDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newOEMEndDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -223,6 +247,12 @@ class FragmentARRAVPersonnel : Fragment() {
 
         newEditOEMStartDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newEditOEMStartDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newEditOEMStartDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -238,6 +268,12 @@ class FragmentARRAVPersonnel : Fragment() {
 
         newEditOEMEndDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newEditOEMEndDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newEditOEMEndDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -254,6 +290,12 @@ class FragmentARRAVPersonnel : Fragment() {
         newCoStartDateBtn.setOnClickListener {
 //            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                if (!newCoStartDateBtn.text.toString().equals("SELECT DATE")) {
+                    var currentDate = (sdf.parse(newCoStartDateBtn.text.toString()))
+                    c.setTime(currentDate)
+                }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -270,6 +312,12 @@ class FragmentARRAVPersonnel : Fragment() {
         edit_newEndDateBtn.setOnClickListener {
 //            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                if (!edit_newEndDateBtn.text.toString().equals("SELECT DATE")) {
+                    var currentDate = (sdf.parse(edit_newEndDateBtn.text.toString()))
+                    c.setTime(currentDate)
+                }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -287,6 +335,12 @@ class FragmentARRAVPersonnel : Fragment() {
         edit_newCoStartDateBtn.setOnClickListener {
 //            if (newCoStartDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!edit_newCoStartDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(edit_newCoStartDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -304,6 +358,12 @@ class FragmentARRAVPersonnel : Fragment() {
         newSeniorityDateBtn.setOnClickListener {
 //            if (newSeniorityDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newSeniorityDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newSeniorityDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -320,6 +380,12 @@ class FragmentARRAVPersonnel : Fragment() {
         edit_newSeniorityDateBtn.setOnClickListener {
 //            if (newSeniorityDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!edit_newSeniorityDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(edit_newSeniorityDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -337,6 +403,12 @@ class FragmentARRAVPersonnel : Fragment() {
         newStartDateBtn.setOnClickListener {
 //            if (newStartDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!newStartDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(newStartDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -353,6 +425,12 @@ class FragmentARRAVPersonnel : Fragment() {
         edit_newStartDateBtn.setOnClickListener {
 //            if (newStartDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!edit_newStartDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(edit_newStartDateBtn.text.toString()))
+                c.setTime(currentDate)
+            }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -902,6 +980,12 @@ class FragmentARRAVPersonnel : Fragment() {
             else {
                 newCoEndDateBtn.setError(null)
                 val c = Calendar.getInstance()
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                if (!newCoEndDateBtn.text.toString().equals("SELECT DATE")) {
+                    var currentDate = (sdf.parse(newCoEndDateBtn.text.toString()))
+                    c.setTime(currentDate)
+                }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -924,6 +1008,12 @@ class FragmentARRAVPersonnel : Fragment() {
             else {
                 newEndDateBtn.setError(null)
                 val c = Calendar.getInstance()
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                if (!newEndDateBtn.text.toString().equals("SELECT DATE")) {
+                    var currentDate = (sdf.parse(newEndDateBtn.text.toString()))
+                    c.setTime(currentDate)
+                }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -947,6 +1037,12 @@ class FragmentARRAVPersonnel : Fragment() {
             else {
                 newCertStartDateBtn.setError(null)
                 val c = Calendar.getInstance()
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                if (!newCertStartDateBtn.text.toString().equals("SELECT DATE")) {
+                    var currentDate = (sdf.parse(newCertStartDateBtn.text.toString()))
+                    c.setTime(currentDate)
+                }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -971,6 +1067,12 @@ class FragmentARRAVPersonnel : Fragment() {
             else {
                 edit_newCertEndDateBtn.setError(null)
                 val c = Calendar.getInstance()
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                if (!edit_newCertEndDateBtn.text.toString().equals("SELECT DATE")) {
+                    var currentDate = (sdf.parse(edit_newCertEndDateBtn.text.toString()))
+                    c.setTime(currentDate)
+                }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -1000,6 +1102,12 @@ class FragmentARRAVPersonnel : Fragment() {
             else {
                 edit_newCoEndDateBtn.setError(null)
                 val c = Calendar.getInstance()
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                if (!edit_newCoEndDateBtn.text.toString().equals("SELECT DATE")) {
+                    var currentDate = (sdf.parse(edit_newCoEndDateBtn.text.toString()))
+                    c.setTime(currentDate)
+                }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -1023,6 +1131,12 @@ class FragmentARRAVPersonnel : Fragment() {
             else {
                 edit_newEndDateBtn.setError(null)
                 val c = Calendar.getInstance()
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                if (!edit_newEndDateBtn.text.toString().equals("SELECT DATE")) {
+                    var currentDate = (sdf.parse(edit_newEndDateBtn.text.toString()))
+                    c.setTime(currentDate)
+                }
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
@@ -2585,11 +2699,14 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
         var datesOverlapping = false
+        var certTypeExists = false
         FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.CertificationTypeId.equals(certificateType)}.apply {
             (0 until size).forEach {
                 if (get(it).PersonnelID.equals(selectedPersonnelID)) {
                     if (Utility.datesAreOverlapping(newCertStartDateBtn.text.toString().toDateMMDDYYYY(), newCertEndDateBtn.text.toString().toDateMMDDYYYY(), get(it).CertificationDate.toDateDBFormat(), get(it).ExpirationDate.toDateDBFormat())) {
-                        datesOverlapping = true
+//                        datesOverlapping = true
+                    } else  {
+                        certTypeExists = true
                     }
                 }
             }
@@ -2597,6 +2714,11 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         if (datesOverlapping) {
             Utility.showValidationAlertDialog(activity,"The certification overlaps with another active certification from the same type")
             cert.iscertInputValid = !datesOverlapping
+        }
+
+        if (certTypeExists) {
+            Utility.showValidationAlertDialog(activity,"This Personnel has a certification from the same type")
+            cert.iscertInputValid = !certTypeExists
         }
 
         return cert.iscertInputValid

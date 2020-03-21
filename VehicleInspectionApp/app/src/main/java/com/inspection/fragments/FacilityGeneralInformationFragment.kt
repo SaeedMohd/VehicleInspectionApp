@@ -404,9 +404,17 @@ class FacilityGeneralInformationFragment : Fragment() {
     private fun setFieldsListeners(){
         ARDexp_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!ARDexp_textviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(ARDexp_textviewVal.text.toString()))
+                c.setTime(currentDate)
+            }
+            var year = c.get(Calendar.YEAR)
+            var month = c.get(Calendar.MONTH)
+            var day = c.get(Calendar.DAY_OF_MONTH)
+
             val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need

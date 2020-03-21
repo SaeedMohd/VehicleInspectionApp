@@ -84,6 +84,12 @@ class FragmentARRAVFacilityServices : Fragment() {
 
         fcexpiration_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!fcexpiration_date_textviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(fcexpiration_date_textviewVal.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -99,6 +105,12 @@ class FragmentARRAVFacilityServices : Fragment() {
 
         fceffective_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!fceffective_date_textviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(fceffective_date_textviewVal.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -114,6 +126,12 @@ class FragmentARRAVFacilityServices : Fragment() {
 
         edit_fcexpiration_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!edit_fcexpiration_date_textviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(edit_fcexpiration_date_textviewVal.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -129,6 +147,12 @@ class FragmentARRAVFacilityServices : Fragment() {
 
         edit_fceffective_date_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            if (!edit_fceffective_date_textviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(edit_fceffective_date_textviewVal.text.toString()))
+                c.setTime(currentDate)
+            }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)

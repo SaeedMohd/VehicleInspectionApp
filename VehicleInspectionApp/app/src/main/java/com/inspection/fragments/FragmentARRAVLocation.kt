@@ -697,6 +697,7 @@ class FragmentARRAVLocation : Fragment() {
             HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
             (activity as FormsActivity).saveRequired = true
+            saveHoursRequired = true
             refreshButtonsState()
         }
 
@@ -706,6 +707,7 @@ class FragmentARRAVLocation : Fragment() {
                 HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                 HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                 (activity as FormsActivity).saveRequired = true
+                saveHoursRequired = true
                 refreshButtonsState()
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -1962,7 +1964,7 @@ class FragmentARRAVLocation : Fragment() {
                             HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                             refreshButtonsState()
-                            Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Nigh Drop")
+                            Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Night Drop")
 
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))

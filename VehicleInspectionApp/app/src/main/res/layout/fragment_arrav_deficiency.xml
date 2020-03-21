@@ -329,7 +329,7 @@
                     />
             </TableRow>
 
-                <TableRow>
+                <TableRow android:layout_marginTop="20dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
