@@ -353,7 +353,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                         var visitationPlanningAdapter = AdhocAdapter(context, sortedList)
                         facilitiesListView.adapter = visitationPlanningAdapter
                         var totalFacilities= sortedList.size
-                        Utility.showMessageDialog(activity,"Filter Result"," " + totalFacilities + " Facilities Filtered ...")
+//                        Utility.showMessageDialog(activity,"Filter Result"," " + totalFacilities + " Facilities Filtered ...")
                     }
                 }, Response.ErrorListener {
             recordsProgressView.visibility = View.INVISIBLE
@@ -557,6 +557,11 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
         PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()
         PRGDataModel.getInstance().tblPRGLogChanges.clear()
+
+        PRGDataModel.getInstance().tblPRGFacilityDetails.clear()
+        PRGDataModel.getInstance().tblPRGPersonnelDetails.clear()
+        PRGDataModel.getInstance().tblPRGRepairDiscountFactors.clear()
+
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -582,38 +587,64 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                                     activity!!.runOnUiThread {
                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
-//                                                            val builder = AlertDialog.Builder(activity)
-//                                                            builder.setTitle("Confirmation ...")
-//                                                            builder.setMessage("Load Previously Saved Data ?")
-//                                                            builder.setPositiveButton("Yes"
-//                                                            )
-//                                                            { dialog, id ->
-//                                                                dialog.dismiss()
-//                                                                launchNextAction()
-//                                                            }
-//                                                            builder.setNegativeButton("No"
-//                                                            )
-//                                                            { dialog, id ->
-//                                                                dialog.dismiss()
-//                                                                PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
-//                                                                PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()
-//                                                                var item = PRGVisitationHeader()
-//                                                                item.recordid=-1
-//                                                                PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
-//                                                                launchNextAction()
-//                                                            }
-//                                                            builder.show()
                                                         } else {
                                                             var item = PRGVisitationHeader()
                                                             item.recordid=-1
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
 //                                                            launchNextAction()
                                                         }
-                                                        launchNextAction()
+                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getRepairDiscountFactors + "${FacilityDataModel.getInstance().clubCode}",
+                                                                Response.Listener { response ->
+                                                                    activity!!.runOnUiThread {
+                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors= Gson().fromJson(response.toString(), Array<PRGRepairDiscountFactors>::class.java).toCollection(ArrayList())
+                                                                        } else {
+                                                                            var item = PRGRepairDiscountFactors()
+                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode
+                                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors.add(item)
+                                                                        }
+                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPersonnelDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                Response.Listener { response ->
+                                                                                    activity!!.runOnUiThread {
+                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                            PRGDataModel.getInstance().tblPRGPersonnelDetails= Gson().fromJson(response.toString(), Array<PRGPersonnelDetails>::class.java).toCollection(ArrayList())
+                                                                                        } else {
+                                                                                            var item = PRGPersonnelDetails()
+                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                            item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                            PRGDataModel.getInstance().tblPRGPersonnelDetails.add(item)
+                                                                                        }
+                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGFacilityDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                                Response.Listener { response ->
+                                                                                                    activity!!.runOnUiThread {
+                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDetails= Gson().fromJson(response.toString(), Array<PRGFacilityDetails>::class.java).toCollection(ArrayList())
+                                                                                                        } else {
+                                                                                                            var item = PRGFacilityDetails()
+                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                                            item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
+                                                                                                        }
+                                                                                                        launchNextAction()
+                                                                                                    }
+                                                                                                }, Response.ErrorListener {
+                                                                                            Log.v("Loading PRG Data error", "" + it.message)
+                                                                                            launchNextAction()
+                                                                                            it.printStackTrace()
+                                                                                        }))
+                                                                                    }
+                                                                                }, Response.ErrorListener {
+                                                                            Log.v("Loading PRG Data error", "" + it.message)
+                                                                            it.printStackTrace()
+                                                                        }))
+                                                                    }
+                                                                }, Response.ErrorListener {
+                                                            Log.v("Loading PRG Data error", "" + it.message)
+                                                            it.printStackTrace()
+                                                        }))
                                                     }
                                                 }, Response.ErrorListener {
                                             Log.v("Loading PRG Data error", "" + it.message)
-                                            launchNextAction()
                                             it.printStackTrace()
                                         }))
 //                                        launchNextAction(isCompleted)

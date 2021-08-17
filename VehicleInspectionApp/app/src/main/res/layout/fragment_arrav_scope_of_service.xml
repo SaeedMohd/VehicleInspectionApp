@@ -363,6 +363,67 @@
                 android:layout_margin="3dp"
                 android:background="@color/light_gray" />
 
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="4"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/disountpercentageTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:text="Discount Percentage: "
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    />
+
+                <Spinner
+                    android:id="@+id/disountpercentageDropListId"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    />
+
+                <TextView
+                    android:id="@+id/maxdiscountamountTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Max Discount Amount: "
+                    android:textStyle="bold"
+                    />
+
+                <EditText
+                    android:id="@+id/maxdDiscountAmountEditText"
+                    android:layout_below="@id/contypell"
+                    android:layout_width="0dp"
+                    android:background="@drawable/textview_background"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:layout_marginLeft="10dp"
+                    android:digits="0123456789"
+                    android:maxLength="2"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="3dp"
+                android:background="@color/light_gray" />
 
 
             <LinearLayout android:layout_width="fill_parent"

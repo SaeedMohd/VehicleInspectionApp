@@ -233,6 +233,39 @@ class LoginActivity : Activity(){
             })
         }
 
+//    fun getTypeTablesStatic() {
+//        var responseString = Constants.getTableTypesStatic
+//        if (responseString.toString().contains("returnCode>1<", false)) {
+//            activity!!.runOnUiThread {
+//                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+//                recordsProgressView.visibility = View.GONE
+//            }
+//        } else {
+//            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
+//            var jsonObj = obj.getJSONObject("responseXml")
+//            TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
+//            (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
+//                TypeTablesModel.getInstance().EmployeeList[it].FullName = TypeTablesModel.getInstance().EmployeeList[it].FirstName + " " + TypeTablesModel.getInstance().EmployeeList[it].LastName
+//            }
+//            specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
+//
+//            activity!!.runOnUiThread {
+//                if (specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }.size > 0) {
+//                    ApplicationPrefs.getInstance(activity).loggedInUserEmail = loginEmailEditText!!.text.toString()
+//                    ApplicationPrefs.getInstance(activity).loggedInUserPass = loginPasswordEditText!!.text.toString()
+//                    ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
+//                    ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].FullName
+////                                ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
+////                                ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
+////                                        Settings.Secure.ANDROID_ID)
+//                    userIsLoggedInGotoMainActivity()
+//                } else {
+//                    Utility.showMessageDialog(activity, "Login Failed...", "This email is not listed in specialists list")
+//                }
+//                recordsProgressView.visibility = View.GONE
+//            }
+//        }
+//    }
 
 //    private fun loadSpecialistName(){
 //
@@ -253,7 +286,8 @@ class LoginActivity : Activity(){
                         activity!!.runOnUiThread {
                             Log.v("RESPONSE", response.toString())
                             if (response.toString().contains("1}]", false)) {
-                                getTypeTables()
+                                getTypeTables();
+                                //getTypeTablesStatic();
                             } else if (response.toString().contains("2}]", false)) {
                                 recordsProgressView.visibility = View.VISIBLE
                                 changePassDialog.visibility = View.VISIBLE

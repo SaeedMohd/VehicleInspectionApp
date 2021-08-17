@@ -550,7 +550,7 @@
                         android:layout_column="0"
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
-                        android:text="Personnel Type:"
+                        android:text="Personnel Type:*"
                         android:textStyle="bold" />
 
                     <Spinner
@@ -836,6 +836,14 @@
                             android:background="@drawable/textview_background"
                             android:inputType="textUri"
                             />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_weight="1"
+                            android:id="@+id/urlLink"
+                            android:text=""
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1189,7 +1197,7 @@
                         android:layout_column="0"
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
-                        android:text="Personnel Type:"
+                        android:text="Personnel Type:*"
                         android:textStyle="bold" />
 
                     <Spinner
@@ -1481,6 +1489,14 @@
                             android:background="@drawable/textview_background"
                             android:inputType="textUri"
                             />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_weight="1"
+                            android:id="@+id/editurlLink"
+                            android:text=""
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 

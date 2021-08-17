@@ -1332,6 +1332,9 @@ class VisitationPlanningFragment : Fragment() {
         PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
         PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()
         PRGDataModel.getInstance().tblPRGLogChanges.clear()
+        PRGDataModel.getInstance().tblPRGFacilityDetails.clear()
+        PRGDataModel.getInstance().tblPRGPersonnelDetails.clear()
+        PRGDataModel.getInstance().tblPRGRepairDiscountFactors.clear()
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
@@ -1362,11 +1365,59 @@ class VisitationPlanningFragment : Fragment() {
                                                             item.recordid=-1
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
                                                         }
-                                                        launchNextAction(isCompleted)
+                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getRepairDiscountFactors + "${FacilityDataModel.getInstance().clubCode}",
+                                                                Response.Listener { response ->
+                                                                    activity!!.runOnUiThread {
+                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors= Gson().fromJson(response.toString(), Array<PRGRepairDiscountFactors>::class.java).toCollection(ArrayList())
+                                                                        } else {
+                                                                            var item = PRGRepairDiscountFactors()
+                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode
+                                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors.add(item)
+                                                                        }
+                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPersonnelDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                Response.Listener { response ->
+                                                                                    activity!!.runOnUiThread {
+                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                            PRGDataModel.getInstance().tblPRGPersonnelDetails= Gson().fromJson(response.toString(), Array<PRGPersonnelDetails>::class.java).toCollection(ArrayList())
+                                                                                        } else {
+                                                                                            var item = PRGPersonnelDetails()
+                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                            item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                            PRGDataModel.getInstance().tblPRGPersonnelDetails.add(item)
+                                                                                        }
+                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGFacilityDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                                Response.Listener { response ->
+                                                                                                    activity!!.runOnUiThread {
+                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDetails= Gson().fromJson(response.toString(), Array<PRGFacilityDetails>::class.java).toCollection(ArrayList())
+                                                                                                        } else {
+                                                                                                            var item = PRGFacilityDetails()
+                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                                            item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
+                                                                                                        }
+                                                                                                        launchNextAction(isCompleted)
+                                                                                                    }
+                                                                                                }, Response.ErrorListener {
+                                                                                            Log.v("Loading PRG Data error", "" + it.message)
+                                                                                            launchNextAction(isCompleted)
+                                                                                            it.printStackTrace()
+                                                                                        }))
+                                                                                    }
+                                                                                }, Response.ErrorListener {
+                                                                            Log.v("Loading PRG Data error", "" + it.message)
+                                                                            it.printStackTrace()
+                                                                        }))
+                                                                    }
+                                                                }, Response.ErrorListener {
+                                                            Log.v("Loading PRG Data error", "" + it.message)
+                                                            it.printStackTrace()
+                                                        }))
                                                     }
                                                 }, Response.ErrorListener {
                                             Log.v("Loading PRG Data error", "" + it.message)
-                                            launchNextAction(isCompleted)
+//                                            launchNextAction(isCompleted)
                                             it.printStackTrace()
                                         }))
 //                                        launchNextAction(isCompleted)
@@ -1975,7 +2026,15 @@ class VisitationPlanningFragment : Fragment() {
             }
         }
 
-
+        if (jsonObj.has("tblGeocodes")) {
+            if (jsonObj.get("tblGeocodes").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblGeocodes = Gson().fromJson<ArrayList<TblGeocodes>>(jsonObj.get("tblGeocodes").toString(), object : TypeToken<ArrayList<TblGeocodes>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblGeocodes = Gson().fromJson<ArrayList<TblGeocodes>>(jsonObj.get("tblGeocodes").toString(), object : TypeToken<ArrayList<TblGeocodes>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblGeocodes.add(Gson().fromJson<TblGeocodes>(jsonObj.get("tblGeocodes").toString(), TblGeocodes::class.java))
+                FacilityDataModelOrg.getInstance().tblGeocodes.add(Gson().fromJson<TblGeocodes>(jsonObj.get("tblGeocodes").toString(), TblGeocodes::class.java))
+            }
+        }
         HasChangedModel.getInstance().init()
 //        IndicatorsDataModel.getInstance().validateAllScreensVisited()
     }
@@ -2019,6 +2078,25 @@ class VisitationPlanningFragment : Fragment() {
             }
         } else {
             jsonObj = addOneElementtoKey(jsonObj,"tblAddress")
+        }
+
+        if (jsonObj.has("tblGeocodes")) {
+            if (!jsonObj.get("tblGeocodes").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblGeocodes")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblGeocodes"))
+                    jsonObj.put("tblGeocodes", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblGeocodes")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblGeocodes")
         }
 //
         if (jsonObj.has("tblVisitationTracking")) {
@@ -2836,6 +2914,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.PhoneNumber=""
             oneArray.PhoneTypeID=""
             oneArray.PhoneID="-1"
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblGeocodes")) {
+            var oneArray = TblGeocodes()
+            oneArray.GeoCodeTypeID=-1
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblAARPortalAdmin")) {
             var oneArray = TblAARPortalAdmin()

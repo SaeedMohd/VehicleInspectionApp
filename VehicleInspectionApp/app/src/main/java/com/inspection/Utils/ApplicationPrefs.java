@@ -775,9 +775,7 @@ public class ApplicationPrefs {
     }
 
     public String getSessionID() {
-        SharedPreferences settings = context
-                .getSharedPreferences(PREFS_NAME, 0);
-
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
         return settings.getString(sessionID, "");
     }
 

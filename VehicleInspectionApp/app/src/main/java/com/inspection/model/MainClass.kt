@@ -107,6 +107,7 @@ class TblVisitationTracking {
     var waiveVisitations = false
     var waiverComments = ""
     var waiverSignature : Bitmap? = null
+
 }
 
 class TblVisitationDetailsData{
@@ -554,6 +555,14 @@ class TblFacVehicles{
     var updateDate = ""
 }
 
+class TblGeocodes {
+    var GeoCodeTypeID = 0
+    var GeocodeTypeName = ""
+    var LATITUDE = ""
+    var LONGITUDE = ""
+    var SortOrder = 0
+}
+
 
 class TblPersonnelSigner {
     var PersonnelID = -1
@@ -625,6 +634,7 @@ class PRGVisitationHeader {
     var certificateofapproval = ""
     var memberbenefitposter = ""
     var changedate = ""
+    var visitmethod = ""
 }
 
 class PRGCompletedVisitations {
@@ -652,3 +662,28 @@ class PRGVisitationsLog {
     var userid = ""
     var visitedscreens = ""
 }
+
+class PRGFacilityDetails {
+    var facid = 0
+    var clubcode = 0
+    var affiliatevendorname = ""
+    var affiliatevendornumber = ""
+    var sessionid = ""
+}
+
+class PRGPersonnelDetails {
+    var facnum = 0
+    var clubcode = 0
+    var personnelid = ""
+    var asecerturl = ""
+    var oemenddate = ""
+    var oemstartdate = ""
+}
+
+class PRGRepairDiscountFactors {
+    var clubcode = ""
+    var maxdiscountamount = ""
+    var discountpercentage = ""
+}
+
+

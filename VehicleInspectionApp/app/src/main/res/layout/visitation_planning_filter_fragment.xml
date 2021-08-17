@@ -174,29 +174,30 @@
                     android:text="Annual\nVisitations" />
 
                 <CheckBox
-                    android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_column="1"
-                    android:checked="true"
-                    android:text="Quarterly" />
-
-                <CheckBox
                     android:id="@+id/adHocVisitationsCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_column="2"
+                    android:layout_column="1"
                     android:text="AdHoc\nVisitations" />
 
                 <CheckBox
                     android:id="@+id/deficienciesCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_column="3"
+                    android:layout_column="2"
                     android:layout_gravity="center_vertical"
                     android:checked="true"
                     android:text="Deficiencies" />
 
+                <CheckBox
+                    android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="3"
+                    android:checked="false"
+                    android:enabled="false"
+                    android:visibility="gone"
+                    android:text="Quarterly" />
             </TableRow>
             <TableRow android:layout_marginTop="5dp">
                 <CheckBox
@@ -245,6 +246,7 @@
                     android:layout_marginTop="5dp"
                     android:textColor="@color/blue_krayola"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     android:id="@+id/resultsCount"
                     android:text="Filtered Visitations --> ()"
                      />

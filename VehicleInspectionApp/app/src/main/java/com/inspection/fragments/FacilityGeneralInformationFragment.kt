@@ -404,7 +404,6 @@ class FacilityGeneralInformationFragment : Fragment() {
     private fun setFieldsListeners(){
         ARDexp_textviewVal.setOnClickListener {
             val c = Calendar.getInstance()
-
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
             if (!ARDexp_textviewVal.text.toString().equals("SELECT DATE")) {

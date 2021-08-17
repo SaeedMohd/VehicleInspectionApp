@@ -7,8 +7,10 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.text.Editable
+import android.text.Html
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
@@ -63,6 +65,8 @@ class FragmentARRAVPersonnel : Fragment() {
     private var personTypeIDsArray = ArrayList<String>()
     private var personListArray = ArrayList<String>()
     private var statesArray = ArrayList<String>()
+    var hyperlinktxt : String =""
+    var edithyperlinktxt : String =""
     private var firstSelection = false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
     //    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val dbFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -154,9 +158,18 @@ class FragmentARRAVPersonnel : Fragment() {
             personnelTypeTextViewId.setError(null)
             onlyOneContractSignerLogic()
             addNewPersonnelDialogue.visibility=View.VISIBLE
+//            val hyperlinktxt : String = "<a href='"+textViewAceURL.text.toString()+"'>Tap here to open Link</a>"
+
+            editurlLink.isClickable = true;
+            editurlLink.movementMethod = LinkMovementMethod.getInstance()
+            urlLink.isClickable = true;
+            urlLink.movementMethod = LinkMovementMethod.getInstance()
+            hyperlinktxt = "<a href='"+newACEURLText.text.toString()+"'>"+newACEURLText.text.toString()+"</a>"
+            urlLink.text = Html.fromHtml(hyperlinktxt,Html.FROM_HTML_MODE_COMPACT)
             alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
             (activity as FormsActivity).overrideBackButton = true
         }
+
 
 
         // contractSignerIsNotCheckedLogic()
@@ -873,6 +886,8 @@ class FragmentARRAVPersonnel : Fragment() {
         newZipText2.addTextChangedListener(zipOfFourDigitsWatcher)
         newPhoneText.addTextChangedListener(phoneTenDigitsWatcher)
         newEmailText.addTextChangedListener(emailValidationWatcher)
+        newACEURLText.addTextChangedListener(addNewAceUrlWatcher)
+        newEditACEURLText.addTextChangedListener(editAceUrlWatcher)
     }
 
     fun emailFormatValidation(target : CharSequence) : Boolean{
@@ -882,26 +897,49 @@ class FragmentARRAVPersonnel : Fragment() {
 
     var emailValidationWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
         }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        }
 
+        override fun afterTextChanged(s: Editable) {
+            if (!emailFormatValidation(newEmailText.text.toString())){
+                newEmailText.setError("assure email format standards")
+            }
+        }
+    }
+
+
+    var editAceUrlWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            edithyperlinktxt = "<a href='"+newEditACEURLText.text.toString()+"'>"+newEditACEURLText.text.toString()+"</a>"
+            editurlLink.text = Html.fromHtml(edithyperlinktxt,Html.FROM_HTML_MODE_COMPACT)
         }
 
         override fun afterTextChanged(s: Editable) {
 
+        }
+    }
 
-            if (!emailFormatValidation(newEmailText.text.toString())){
-                newEmailText.setError("assure email format standards")
+    var addNewAceUrlWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+        }
 
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            hyperlinktxt = "<a href='"+newACEURLText.text.toString()+"'>"+newACEURLText.text.toString()+"</a>"
+            urlLink.text = Html.fromHtml(hyperlinktxt,Html.FROM_HTML_MODE_COMPACT)
+        }
 
-            }
-
-
+        override fun afterTextChanged(s: Editable) {
 
         }
     }
+
+
+
     var zipOfFiveDigitsWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
@@ -1307,6 +1345,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
     fun fillPersonnelTableView() {
+
+        addNewPersnRecordBtn.isEnabled = (FacilityDataModel.getInstance().tblPersonnel.filter {s->s.PrimaryMailRecipient==true}.isNotEmpty())
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         if (PersonnelResultsTbl.childCount>1) {
@@ -1406,6 +1446,13 @@ class FragmentARRAVPersonnel : Fragment() {
 
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
+
+                if (PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}.isNotEmpty()) {
+                    get(it).ASE_Cert_URL = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].asecerturl
+                    get(it).OEMstartDate = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].oemstartdate
+                    get(it).OEMendDate = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].oemenddate
+                }
+
                 var tableRow = TableRow(context)
                 tableRow.layoutParams = rowLayoutParamRow
                 tableRow.minimumHeight = 30
@@ -1538,6 +1585,32 @@ class FragmentARRAVPersonnel : Fragment() {
                 checkBox11.textSize = 12f
                 tableRow.addView(checkBox11)
 
+                val textViewOEMStart = TextView(context)
+                if (!(get(it).OEMstartDate.isNullOrEmpty())) {
+                    try {
+                        textViewOEMStart.text = if (get(it).OEMstartDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).OEMstartDate.apiToAppFormatMMDDYYYY()
+                    } catch (e: Exception) {
+                        textViewOEMStart.text = ""
+                    }
+                } else {
+                    textViewOEMStart.text = ""
+                }
+                val textViewOEMEnd = TextView(context)
+
+                if (!(get(it).OEMendDate.isNullOrEmpty())) {
+                    try {
+                        textViewOEMEnd.text = if (get(it).OEMendDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).OEMendDate.apiToAppFormatMMDDYYYY()
+                    } catch (e: Exception) {
+                        textViewOEMEnd.text = ""
+                    }
+                } else {
+                    textViewOEMEnd.text = ""
+                }
+
+                val textViewAceURL = TextView(context)
+                textViewAceURL.text = get(it).ASE_Cert_URL
+                textViewAceURL.text = get(it).ASE_Cert_URL
+
 
 
                 val updateBtn = TextView(context)
@@ -1549,6 +1622,8 @@ class FragmentARRAVPersonnel : Fragment() {
                 updateBtn .setBackgroundColor(Color.TRANSPARENT)
 
                 tableRow.addView(updateBtn)
+
+                updateBtn.isEnabled = (FacilityDataModel.getInstance().tblPersonnel.filter {s->s.PrimaryMailRecipient==true}.isNotEmpty())
 
                 PersonnelResultsTbl.addView(tableRow)
 
@@ -1681,6 +1756,22 @@ class FragmentARRAVPersonnel : Fragment() {
                         edit_newSeniorityDateBtn.setText(textView6.text)
 
                     }
+
+                    if (textViewOEMEnd.text.isNullOrEmpty()) {
+                        newEditOEMEndDateBtn.setText("SELECT DATE")
+                    }else{
+                        newEditOEMEndDateBtn.setText(textViewOEMEnd.text)
+                    }
+
+                    if (textViewOEMStart.text.isNullOrEmpty()) {
+                        newEditOEMStartDateBtn.setText("SELECT DATE")
+                    }else{
+                        newEditOEMStartDateBtn.setText(textViewOEMStart.text)
+                    }
+
+                    newEditACEURLText.setText(textViewAceURL.text)
+                    edithyperlinktxt = "<a href='"+newEditACEURLText.text.toString()+"'>"+newEditACEURLText.text.toString()+"</a>"
+                    editurlLink.text = Html.fromHtml(edithyperlinktxt,Html.FROM_HTML_MODE_COMPACT)
 
                     if (FacilityDataModel.getInstance().tblPersonnelSigner.filter { S->S.PersonnelID==textView2.tag}.count()>0){
                         var model = TblPersonnelSigner()
@@ -2788,6 +2879,15 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         else
             newFirstNameText.setError(null)
 
+        if (!newCertNoText.text.toString().isNullOrEmpty()){
+            if (FacilityDataModel.getInstance().tblPersonnel.filter{ s->s.CertificationNum==newCertNoText.text.toString()}.isNotEmpty()) {
+                persn.personnelIsInputsValid=false
+                newCertNoText.setError("Duplicated Cert ID")
+            }
+        }
+        else
+            newCertNoText.setError(null)
+
 //        if (newCertNoText.text.toString().isNullOrEmpty()){
 //            persn.personnelIsInputsValid=false
 //            newCertNoText.setError("required field")
@@ -2807,11 +2907,8 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
         if (newPersonnelTypeSpinner.selectedItem.toString().contains("Selected")){
-
             persn.personnelIsInputsValid=false
             personnelTypeTextViewId.setError("required field")
-
-
         }
         else
             personnelTypeTextViewId.setError(null)
@@ -2897,7 +2994,8 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
 
-            }else {
+            }
+        else {
                 newEmailText.setError(null)
                 newCoStartDateBtn.setError(null)
                 newPhoneText.setError(null)
@@ -2943,11 +3041,8 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
 
         if (edit_newPersonnelTypeSpinner.selectedItem.toString().contains("Selected")){
-
             persn.personnelIsInputsValid=false
             edit_personnelTypeTextViewId.setError("required field")
-
-
         }
         else
             edit_personnelTypeTextViewId.setError(null)

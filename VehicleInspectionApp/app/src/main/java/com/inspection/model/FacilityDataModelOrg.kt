@@ -72,6 +72,7 @@ class FacilityDataModelOrg  {
     var tblInvoiceInfoUpdated = ArrayList<InvoiceInfo>()
     var tblFacVehicles = ArrayList<TblFacVehicles>()
     var tblPersonnelSigner = ArrayList<TblPersonnelSigner>()
+    var tblGeocodes = ArrayList<TblGeocodes>()
 
 //    class TblFacilities {
 //        var isInputsValid = false

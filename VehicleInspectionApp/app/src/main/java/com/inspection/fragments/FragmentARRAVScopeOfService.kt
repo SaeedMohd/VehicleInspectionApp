@@ -55,6 +55,7 @@ import kotlin.properties.Delegates
 class FragmentARRAVScopeOfService : Fragment() {
 
     var warrantyArray = ArrayList<String>()
+    var discountPercentArray = ArrayList<String>()
 
     var fillMethodCalled = false
     var temp_warranty = ""
@@ -65,6 +66,8 @@ class FragmentARRAVScopeOfService : Fragment() {
     var temp_numberOfBaysEditText_ = ""
     var temp_numberOfLiftsEditText_ = ""
     var testString=""
+    var prevDiscountPercentage = ""
+    var prevMaxDiscountAmount = ""
 
 
     private var mListener: OnFragmentInteractionListener? = null
@@ -83,7 +86,6 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         implementOnAnyFragment=false
 
@@ -110,12 +112,16 @@ class FragmentARRAVScopeOfService : Fragment() {
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
 
+
+        var discountPercentageAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.discount_percentage))
+        discountPercentageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        disountpercentageDropListId.adapter = discountPercentageAdapter
+
         saveBtnPressed()
         setFields()
         handleRadioButtonsSelection()
         setFieldsListener()
-        (activity as FormsActivity).saveRequired = false
-        refreshButtonsState()
+
         laborRateRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
             handleRadioButtonsSelection()
         }
@@ -123,6 +129,8 @@ class FragmentARRAVScopeOfService : Fragment() {
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited= true
         (activity as FormsActivity).sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+        (activity as FormsActivity).saveRequired = false
+        refreshButtonsState()
     }
 
     fun refreshButtonsState(){
@@ -204,9 +212,7 @@ class FragmentARRAVScopeOfService : Fragment() {
         }
         var diagnosticWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
             }
-
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate = s.toString()
                 HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
@@ -216,12 +222,8 @@ class FragmentARRAVScopeOfService : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable) {
-
                 watcher_DiagnosticsRate=s.toString()
-
                 if (FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate!=watcher_DiagnosticsRate){
-
-
                 }
             }
         }
@@ -249,6 +251,35 @@ class FragmentARRAVScopeOfService : Fragment() {
             }
         }
 
+
+
+//                var discountPercentagerWatcher = object : TextWatcher {
+//                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+//                    }
+//
+//                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+//                        PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = s.toString().replace("%", "")
+//                        if (!prevDiscountPercentage.equals(s.toString())) (activity as FormsActivity).saveRequired = true
+//                        refreshButtonsState()
+//                    }
+//
+//                    override fun afterTextChanged(s: Editable) {
+//                    }
+//                }
+
+
+                var maxDiscountAmountWatcher = object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    }
+                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                        PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount = s.toString()
+                        if (!prevMaxDiscountAmount.equals(s.toString())) (activity as FormsActivity).saveRequired = true
+                        refreshButtonsState()
+                    }
+                    override fun afterTextChanged(s: Editable) {
+                    }
+                }
+
         var noOfLiftsWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
@@ -263,25 +294,19 @@ class FragmentARRAVScopeOfService : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable) {
-
                 watcher_NumOfLifts=s.toString()
-
-
                 if (FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts!=watcher_NumOfLifts){
-
-
                 }
-
             }
         }
 
-        laborRateMatrixMaxEditText.addTextChangedListener(laborMaxWatcher)
-        laborRateMatrixMinEditText.addTextChangedListener(laborMinWatcher)
-                fixedLaborRateEditText.addTextChangedListener(fixedLaborWatcher)
-                diagnosticRateEditText.addTextChangedListener(diagnosticWatcher)
-                numberOfBaysEditText.addTextChangedListener(noOfBaysWatcher)
-                numberOfLiftsEditText.addTextChangedListener(noOfLiftsWatcher)
-
+            laborRateMatrixMaxEditText.addTextChangedListener(laborMaxWatcher)
+            laborRateMatrixMinEditText.addTextChangedListener(laborMinWatcher)
+            fixedLaborRateEditText.addTextChangedListener(fixedLaborWatcher)
+            diagnosticRateEditText.addTextChangedListener(diagnosticWatcher)
+            numberOfBaysEditText.addTextChangedListener(noOfBaysWatcher)
+            numberOfLiftsEditText.addTextChangedListener(noOfLiftsWatcher)
+            maxdDiscountAmountEditText.addTextChangedListener(maxDiscountAmountWatcher)
 
             }
 
@@ -293,7 +318,6 @@ class FragmentARRAVScopeOfService : Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
                 if (!warrantyPeriodVal.tag.equals(position) || warrantyPeriodVal.tag.equals("-1")) {
                     warrantyPeriodVal.tag = "-1"
                     FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = warrantyArray[position]
@@ -304,6 +328,28 @@ class FragmentARRAVScopeOfService : Fragment() {
                 }
             }
         }
+
+        disountpercentageDropListId.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = disountpercentageDropListId.getItemAtPosition(position).toString()
+                if (!disountpercentageDropListId.getItemAtPosition(position).toString().equals(prevDiscountPercentage)) (activity as FormsActivity).saveRequired = true
+//                if (!warrantyPeriodVal.tag.equals(position) || warrantyPeriodVal.tag.equals("-1")) {
+//                    warrantyPeriodVal.tag = "-1"
+//                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = warrantyArray[position]
+//                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+//                    HasChangedModel.getInstance().changeDoneForSoSGeneral()
+//                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+//                }
+            }
+        }
+
+        (activity as FormsActivity).saveRequired = false
+        refreshButtonsState()
+
     }
 
 
@@ -322,6 +368,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 temp_numberOfLiftsEditText_ = numberOfLiftsEditText.text.toString()
                 temp_laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
                 temp_laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
+
                 warrantyPeriodVal.tag=0
                 for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
                     for (facWarranty in FacilityDataModel.getInstance().tblScopeofService) {
@@ -339,9 +386,14 @@ class FragmentARRAVScopeOfService : Fragment() {
                 }
             }
         }
+        if (PRGDataModel.getInstance().tblPRGRepairDiscountFactors.size > 0) {
+            maxdDiscountAmountEditText.setText(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount)
+            disountpercentageDropListId.setSelection((resources.getStringArray(R.array.discount_percentage)).indexOf(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"))
+            prevDiscountPercentage = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount
+            prevMaxDiscountAmount = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"
+        }
         (activity as FormsActivity).saveRequired = false
         refreshButtonsState()
-
     }
 
     fun handleRadioButtonsSelection (){
@@ -391,7 +443,6 @@ class FragmentARRAVScopeOfService : Fragment() {
         if (warrantyPeriodVal.getSelectedItem().toString() != (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName)) {
             strChanges += "Warranty Period changed from (" + TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName + ") to (" + warrantyPeriodVal.getSelectedItem().toString() + ") - "
         }
-
         strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
@@ -410,17 +461,21 @@ class FragmentARRAVScopeOfService : Fragment() {
                 var numberOfBaysEditText = numberOfBaysEditText.text.toString()
                 var numberOfLiftsEditText = numberOfLiftsEditText.text.toString()
                 var warrantyTypeId = TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeName.equals(warrantyPeriodVal.selectedItem.toString()) }[0].WarrantyTypeID
+                var discountPercentage = disountpercentageDropListId.selectedItem.toString().replace("%","")
+                var maxdiscountamount = maxdDiscountAmountEditText.text.toString()
 
                 progressBarText.text = "Saving ..."
                 scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
-                Log.v("SOS GENERAL --- ",UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, getSoSChanges()),
+                Log.v("SOS GENERAL --- ",UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&discountPercentage=${discountPercentage}&maxDiscountAmount=${maxdiscountamount}")
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + "&discountPercentage=${discountPercentage}&maxDiscountAmount=${maxdiscountamount}" + Utility.getLoggingParameters(activity, 1, getSoSChanges()),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {
                                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
                                     progressBarText.text = "Loading ..."
                                     Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
+                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage=discountPercentage
+                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount=maxdiscountamount
                                     if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                         FacilityDataModel.getInstance().tblScopeofService[0].apply {
                                             LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax

@@ -1842,6 +1842,128 @@ class FragmentARRAVLocation : Fragment() {
 
             }
         }
+
+        FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID>-1 }.apply {
+            (0 until size).forEach {
+                var tableRow = TableRow(context)
+                tableRow.layoutParams = rowLayoutParamRow
+                tableRow.minimumHeight = 30
+
+
+                var textView = TextView(context)
+                textView.layoutParams = rowLayoutParam
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.minimumHeight=30
+                textView.text = get(it).GeocodeTypeName
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam1
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.minimumHeight=30
+                textView.setEms(8)
+                textView.text = ""
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam2
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.minimumHeight=30
+                textView.setEms(8)
+                textView.textSize = 10f
+                textView.text = ""
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam3
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.minimumHeight=30
+                textView.text = ""
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam4
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.text = ""
+                textView.minimumHeight=30
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam5
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.text = ""
+                textView.minimumHeight=30
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam6
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.text = ""
+                textView.minimumHeight=30
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam7
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.text = get(it).LATITUDE
+                textView.minimumHeight=30
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam8
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.text = get(it).LONGITUDE
+                textView.minimumHeight=30
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam9
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.text = ""
+                textView.minimumHeight=30
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                textView = TextView(context)
+                textView.layoutParams = rowLayoutParam10
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.text = ""
+                textView.minimumHeight=30
+                textView.textSize = 10f
+                tableRow.addView(textView)
+
+                var editButton = TextView(context)
+                editButton.layoutParams = rowLayoutParam11
+                editButton.setTextColor(Color.BLUE)
+                editButton.minimumHeight=30
+                editButton.text = ""
+                editButton.textSize = 12f
+                editButton .gravity = Gravity.CENTER
+                editButton .setBackgroundColor(Color.TRANSPARENT)
+                editButton.tag = it
+
+                tableRow.addView(editButton)
+//                if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")){
+                    editButton.visibility = View.INVISIBLE
+//                }
+//
+//                editButton.setOnClickListener { s ->
+//                    showLocationDialog(it)
+//                }
+//FAC 19762
+                locationTbl.addView(tableRow)
+
+            }
+        }
+
         altLocationTableRow(2)
 
     }

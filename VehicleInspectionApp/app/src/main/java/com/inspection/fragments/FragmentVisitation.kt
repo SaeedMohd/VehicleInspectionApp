@@ -70,9 +70,8 @@ import javax.sql.DataSource
  * Use the [FragmentVisitation.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentVisitation : Fragment() {
 //    var specialistWatcher=""
-
+class FragmentVisitation : Fragment() {
     var isFacilityRepresentativeSignatureInitialized = false
     var isAutomotiveSpecialistSignatureInitialized = false
 //    var isWaiverSignatureInitialized = false
@@ -88,6 +87,7 @@ class FragmentVisitation : Fragment() {
     var waiveVisitationCBPreviousValue = false
     var  emailPdfCBPreviousValue = false
     var waiverCommentsPreviousValue = ""
+    var visitMethodPreviousValue = ""
     var emailEditTextPreviousValue = ""
     var staffTrainingProcessPreviousValue = ""
     var qualityControlProcessPreviousValue = ""
@@ -149,7 +149,10 @@ class FragmentVisitation : Fragment() {
         item7.visitationReasonID=6
         item7.visitationReasonName="Annual Visitation"
         TypeTablesModel.getInstance().VisitationReasons.add(item7)
-
+        var item8 = TypeTablesModel.visitationReasonType()
+        item8.visitationReasonID=8
+        item8.visitationReasonName="Other"
+        TypeTablesModel.getInstance().VisitationReasons.add(item8)
 
 //        completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
 
@@ -280,6 +283,7 @@ class FragmentVisitation : Fragment() {
         }
 
         visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_reasons))
+        visitationMethodDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, resources.getStringArray(R.array.visitation_methods))
 
         completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType==null){
@@ -340,11 +344,11 @@ class FragmentVisitation : Fragment() {
         }
 
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
-            qualityControlProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl.replace(".  ", ". ").replace(". ", ".\n"))
+            qualityControlProcessEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl.replace(".  ", ". ").replace(". ", ".\n"))
         }
 
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
-            staffTrainingProcessEditText.setText(" " + FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
+            staffTrainingProcessEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining.replace(".  ", ". ").replace(". ", ".\n"))
         }
 
         if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
@@ -436,6 +440,15 @@ class FragmentVisitation : Fragment() {
                     emailPdfCBPreviousValue = emailPdfCheckBox.isChecked
                     waiverCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments)
                     waiverCommentsPreviousValue = waiverCommentsEditText.text.toString()
+
+                    if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("")) {
+                        visitationMethodDropListId.setSelection((resources.getStringArray(R.array.visitation_methods)).indexOf(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod))
+                        visitMethodPreviousValue = visitationMethodDropListId.selectedItem.toString()
+                    } else {
+                        visitationMethodDropListId.setSelection(0)
+                        visitMethodPreviousValue = ""
+                    }
+
                     emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
                     emailEditTextPreviousValue = emailEditText.text.toString()
                     facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep))
@@ -578,11 +591,12 @@ class FragmentVisitation : Fragment() {
                 val facilityRep = facilityRepresentativesSpinner.selectedItem.toString()
                 val automotiveSpecialist = if (automotiveSpecialistSpinner.selectedItem.toString().contains("Select")) "" else automotiveSpecialistSpinner.selectedItem.toString()
                 val aarSign = if (aarSignEditText.text.isNullOrEmpty()) "" else aarSignEditText.text
-                val qa = if (qualityControlProcessEditText.text.isNullOrEmpty()) "" else qualityControlProcessEditText.text
-                val staffTraining = if (staffTrainingProcessEditText.text.isNullOrEmpty()) "" else staffTrainingProcessEditText.text
+                val qa = if (qualityControlProcessEditText.text.toString().isNullOrEmpty()) "" else qualityControlProcessEditText.text.toString()
+                val staffTraining = if (staffTrainingProcessEditText.text.toString().isNullOrEmpty()) "" else staffTrainingProcessEditText.text
                 val memberBenefits = if (memberBenefitsPosterEditText.text.isNullOrEmpty()) "" else memberBenefitsPosterEditText.text
                 val certificateOfApproval = if (certificateOfApprovalEditText.text.isNullOrEmpty()) "" else certificateOfApprovalEditText.text
                 var visitationType = ""
+                val visitmethod = if (visitationMethodDropListId.selectedItemPosition==0) "" else visitationMethodDropListId.selectedItem.toString()
                 if (annualVisitationType.isChecked) {
                     visitationType = VisitationTypes.Annual.toString()
                 } else if (quarterlyVisitationType.isChecked) {
@@ -607,7 +621,9 @@ class FragmentVisitation : Fragment() {
                 (activity as FormsActivity).imageWaiveSignature = null
 
                 dialogueLoadingView.visibility = View.VISIBLE
-                var urlString = facilityNo + "&clubcode=" + clubCode + "&StaffTraining=" + staffTraining + "&QualityControl=" + qa + "&AARSigns=" + aarSign + "&MemberBenefitPoster=" + memberBenefits + "&CertificateOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&visitationType=" + visitationType.toString() + "&visitationReason=" + visitationReasonDropListId.selectedItem.toString() + "&emailPDF=" + (if (emailPdfCheckBox.isChecked) "1" else "0") + "&emailTo=" + emailEditText.text + "&waiveVisitation=" + (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments=" + waiverCommentsEditText.text + "&facilityRep=" + facilityRep + "&automotiveSpecialist=" + automotiveSpecialist + "&visitationId=" + visitationID
+                var urlString = facilityNo + "&clubcode=" + clubCode + "&StaffTraining=" + staffTraining + "&QualityControl=" + qa + "&AARSigns=" + aarSign + "&MemberBenefitPoster=" + memberBenefits + "&CertificateOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&visitationType=" + visitationType.toString() + "&visitationReason=" + visitationReasonDropListId.selectedItem.toString() + "&emailPDF=" + (if (emailPdfCheckBox.isChecked) "1" else "0") + "&emailTo=" + emailEditText.text + "&waiveVisitation=" + (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments=" + waiverCommentsEditText.text + "&facilityRep=" + facilityRep + "&automotiveSpecialist=" + automotiveSpecialist + "&visitationId=" + visitationID + "&visitMethod="+visitmethod
+
+
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsDataProgress + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Saved ... Type --> " + visitationType),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
@@ -1168,6 +1184,8 @@ class FragmentVisitation : Fragment() {
         val memberBenefits = if (memberBenefitsPosterEditText.text.isNullOrEmpty()) "" else memberBenefitsPosterEditText.text
         val certificateOfApproval = if (certificateOfApprovalEditText.text.isNullOrEmpty()) "" else certificateOfApprovalEditText.text
         val performedBy = if (automotiveSpecialistSpinner.selectedItem.toString().contains("Select")) "" else automotiveSpecialistSpinner.selectedItem.toString()
+        val visitmethod = if (visitationMethodDropListId.selectedItemPosition==0) "" else visitationMethodDropListId.selectedItem.toString()
+        val annualvisitationmonth = FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth
         var dialogMsg = ""
         var visitationType = ""
         var visitationTypeID = ""
@@ -1175,20 +1193,36 @@ class FragmentVisitation : Fragment() {
         if (annualVisitationType.isChecked) {
             visitationType = VisitationTypes.Annual.toString()
             visitationTypeID = "1"
+
         } else if (quarterlyVisitationType.isChecked) {
             visitationType = VisitationTypes.Quarterly.toString()
             visitationTypeID = "2"
+
         } else if (adhocVisitationType.isChecked) {
             visitationType = VisitationTypes.AdHoc.toString()
             visitationTypeID = "3"
+
         } else if (defVisitationType.isChecked) {
             visitationType = VisitationTypes.Deficiency.toString()
-            visitationTypeID = "3"
+            visitationTypeID = "4"
+
         }
+        if ((activity as FormsActivity).imageSpecSignature != null)
+            saveBmpAsFile((activity as FormsActivity).imageSpecSignature,"Spec",visitationType)
+        if ((activity as FormsActivity).imageRepSignature != null)
+            saveBmpAsFile((activity as FormsActivity).imageRepSignature,"Rep",visitationType)
+        if ((activity as FormsActivity).imageDefSignature != null)
+            saveBmpAsFile((activity as FormsActivity).imageDefSignature,"Def",visitationType)
+        if ((activity as FormsActivity).imageWaiveSignature != null)
+            saveBmpAsFile((activity as FormsActivity).imageWaiveSignature,"W",visitationType)
+//        (activity as FormsActivity).imageSpecSignature = null
+//        (activity as FormsActivity).imageRepSignature = null
+//        (activity as FormsActivity).imageDefSignature = null
+//        (activity as FormsActivity).imageWaiveSignature = null
         visitationReasonID = TypeTablesModel.getInstance().VisitationReasons.filter { s->s.visitationReasonName.equals(visitationReasonDropListId.selectedItem.toString())}[0].visitationReasonID.toString()
         progressBarTextVal.text = "Saving ..."
         dialogueLoadingView.visibility = View.VISIBLE
-        var urlString = facilityNo+"&clubcode="+clubCode+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationTypeID+"&visitationReason="+visitationReasonID+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&performedBy="+automotiveSpecialist+"&visitationID=0"
+        var urlString = facilityNo+"&clubcode="+clubCode+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationTypeID+"&visitationReason="+visitationReasonID+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&performedBy="+automotiveSpecialist+"&visitationID=0&visitMethod="+visitmethod
         Log.v("Visitation Tracking -- ",Constants.UpdateVisitationTrackingData + urlString )
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationTrackingData + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
                 Response.Listener { response ->
@@ -1220,6 +1254,7 @@ class FragmentVisitation : Fragment() {
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments = waiverCommentsEditText.text.toString()
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation = waiveVisitationCheckBox.isChecked
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid = visitationID.toString()
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod = visitmethod
 //                                                PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationid
                                                 if ((activity as FormsActivity).checkPermission()) {
                                                     (activity as FormsActivity).generateAndOpenPDF()
@@ -1433,6 +1468,11 @@ class FragmentVisitation : Fragment() {
         waiverCommentsEditText.setError(null)
         waiversSignatureButton.setError(null)
         emailEditText.setError(null)
+        visitationMethodTextView.setError(null)
+        if (visitationMethodDropListId.selectedItemPosition==0) {
+            isInputValid = false
+            visitationMethodTextView.setError("Required field")
+        }
         if (adhocVisitationType.isChecked || defVisitationType.isChecked ) {
             if (visitationReasonDropListId.selectedItemPosition==0) {
                 isInputValid = false
