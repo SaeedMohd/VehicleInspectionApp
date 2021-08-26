@@ -322,6 +322,12 @@ class FacilityGeneralInformationFragment : Fragment() {
             validateInputs()
         }
 
+
+        if (PRGDataModel.getInstance().tblPRGFacilityDetails.isNotEmpty()) {
+            affiliateNAPAEditText.setText(PRGDataModel.getInstance().tblPRGFacilityDetails[0].napanumber)
+            affiliateNationalEditText.setText(PRGDataModel.getInstance().tblPRGFacilityDetails[0].nationalnumber)
+        }
+
         setPaymentMethods()
 
 
@@ -477,6 +483,34 @@ class FacilityGeneralInformationFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblFacilities[0].WebSite = p0.toString()
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
+                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+                (activity as FormsActivity).saveRequired = true
+                submitGeneralInfoRequired = true
+                refreshButtonsState()
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        affiliateNationalEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityNationalNo = true
+                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+                (activity as FormsActivity).saveRequired = true
+                submitGeneralInfoRequired = true
+                refreshButtonsState()
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        affiliateNAPAEditText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityNAPANo = true
                 HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                 (activity as FormsActivity).saveRequired = true
                 submitGeneralInfoRequired = true
@@ -731,10 +765,12 @@ class FacilityGeneralInformationFragment : Fragment() {
         val billingAmount = FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toString()
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode =FacilityDataModel.getInstance().clubCode
+        val napaNumber = affiliateNAPAEditText.text.toString()
+        val nationalNumber = affiliateNationalEditText.text.toString()
         FacilityDataModel.getInstance().tblFacilities[0]
         progressBarText.text = "Saving ..."
         scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-        var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=${FacilityDataModel.getInstance().tblFacilities[0].ACTIVE}&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType
+        var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=${FacilityDataModel.getInstance().tblFacilities[0].ACTIVE}&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType+"&napaNumber="+napaNumber+"&nationalNumber="+nationalNumber
 //        UUID.randomUUID().toString()
 
         Log.v("Facility General --- ",Constants.submitFacilityGeneralInfo + urlString + Utility.getLoggingParameters(activity, 0, ""))

@@ -666,8 +666,8 @@ class PRGVisitationsLog {
 class PRGFacilityDetails {
     var facid = 0
     var clubcode = 0
-    var affiliatevendorname = ""
-    var affiliatevendornumber = ""
+    var napanumber = ""
+    var nationalnumber = ""
     var sessionid = ""
 }
 

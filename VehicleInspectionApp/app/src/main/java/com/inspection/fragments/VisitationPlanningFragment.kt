@@ -1395,6 +1395,8 @@ class VisitationPlanningFragment : Fragment() {
                                                                                                             var item = PRGFacilityDetails()
                                                                                                             item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
                                                                                                             item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                            item.napanumber = ""
+                                                                                                            item.nationalnumber = ""
                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
                                                                                                         }
                                                                                                         launchNextAction(isCompleted)

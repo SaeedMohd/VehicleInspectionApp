@@ -43,6 +43,7 @@ class HasChangedModel {
     var groupPhoto= ArrayList<GroupPhoto>()
     var groupDeficiencyDef = ArrayList<GroupDefeciencyDef>()
 
+
     class GroupDeficiency {
         var DeficiencyDef = false
     }
@@ -70,6 +71,10 @@ class HasChangedModel {
         var FacilityTimeZone= false
         var FacilityGeneralPaymentMethods= false
         var FacilityType= false
+
+        var FacilityNAPANo = false
+        var FacilityNationalNo = false
+
     }
 
     class GroupFacilityRSP {
@@ -157,6 +162,9 @@ class HasChangedModel {
         GFGeneral.FacilityGeneralPaymentMethods = false
         GFGeneral.FacilityTimeZone = false
         GFGeneral.FacilityType = false
+        GFGeneral.FacilityNAPANo = false
+        GFGeneral.FacilityNationalNo = false
+
         groupFacilityGeneralInfo.add(GFGeneral)
         var GF = GroupFacility()
         GF.FacilityGeneral= false;
@@ -237,7 +245,7 @@ class HasChangedModel {
 
 
     fun changeDoneForFacilityGeneralInfo() : Boolean {
-        if (groupFacilityGeneralInfo[0].FacilityGeneral || groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods || groupFacilityGeneralInfo[0].FacilityTimeZone || groupFacilityGeneralInfo[0].FacilityType) {
+        if (groupFacilityGeneralInfo[0].FacilityGeneral || groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods || groupFacilityGeneralInfo[0].FacilityTimeZone || groupFacilityGeneralInfo[0].FacilityType || groupFacilityGeneralInfo[0].FacilityNAPANo || groupFacilityGeneralInfo[0].FacilityNationalNo) {
             groupFacility[0].FacilityGeneral=true
             return true
         } else {
