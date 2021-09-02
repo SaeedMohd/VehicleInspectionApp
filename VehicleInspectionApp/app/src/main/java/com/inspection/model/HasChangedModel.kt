@@ -108,6 +108,8 @@ class HasChangedModel {
 
     class GroupSoSGeneralInfo {
         var SoSGeneral = false
+        var SoSDiscPercentage = false
+        var SoSDiscAmount = false
     }
 
     class GroupSoSVehicleService {
@@ -172,6 +174,8 @@ class HasChangedModel {
         groupFacility.add(GF)
         var SoSGeneralInfo = GroupSoSGeneralInfo()
         SoSGeneralInfo.SoSGeneral=false
+        SoSGeneralInfo.SoSDiscAmount=false
+        SoSGeneralInfo.SoSDiscPercentage=false
         groupSoSGeneralInfo.add(SoSGeneralInfo)
         var SoSVehicleServices = GroupSoSVehicleService()
         SoSVehicleServices.SoSVehicleService=false
@@ -255,7 +259,7 @@ class HasChangedModel {
     }
 
     fun changeDoneForSoSGeneral() : Boolean {
-        if (groupSoSGeneralInfo[0].SoSGeneral) {
+        if (groupSoSGeneralInfo[0].SoSGeneral || groupSoSGeneralInfo[0].SoSDiscAmount || groupSoSGeneralInfo[0].SoSDiscPercentage) {
             groupSoS[0].SoSGeneralInfo=true
             return true
         } else {

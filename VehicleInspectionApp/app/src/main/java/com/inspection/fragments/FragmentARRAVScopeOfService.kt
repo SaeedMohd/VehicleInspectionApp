@@ -99,6 +99,8 @@ class FragmentARRAVScopeOfService : Fragment() {
             FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays= temp_numberOfBaysEditText_
             FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts= temp_numberOfLiftsEditText_
             FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID= temp_warranty
+            PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = prevDiscountPercentage.replace("%","")
+            PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount = prevMaxDiscountAmount
             setFields()
             (activity as FormsActivity).saveRequired = false
             refreshButtonsState()
@@ -273,7 +275,11 @@ class FragmentARRAVScopeOfService : Fragment() {
                     }
                     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                         PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount = s.toString()
-                        if (!prevMaxDiscountAmount.equals(s.toString())) (activity as FormsActivity).saveRequired = true
+                        if (!prevMaxDiscountAmount.equals(s.toString())) {
+                            (activity as FormsActivity).saveRequired = true
+                            HasChangedModel.getInstance().groupSoSGeneralInfo[0].SoSDiscAmount = true
+                            HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                        }
                         refreshButtonsState()
                     }
                     override fun afterTextChanged(s: Editable) {
@@ -334,16 +340,12 @@ class FragmentARRAVScopeOfService : Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = disountpercentageDropListId.getItemAtPosition(position).toString()
-                if (!disountpercentageDropListId.getItemAtPosition(position).toString().equals(prevDiscountPercentage)) (activity as FormsActivity).saveRequired = true
-//                if (!warrantyPeriodVal.tag.equals(position) || warrantyPeriodVal.tag.equals("-1")) {
-//                    warrantyPeriodVal.tag = "-1"
-//                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = warrantyArray[position]
-//                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
-//                    HasChangedModel.getInstance().changeDoneForSoSGeneral()
-//                    (activity as FormsActivity).saveRequired = true
+                PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = disountpercentageDropListId.getItemAtPosition(position).toString().replace("%","")
+                if (!disountpercentageDropListId.getItemAtPosition(position).toString().equals(prevDiscountPercentage+"%")) {
+                        HasChangedModel.getInstance().groupSoSGeneralInfo[0].SoSDiscPercentage = true
+                        (activity as FormsActivity).saveRequired = true
+                }
                     refreshButtonsState()
-//                }
             }
         }
 
@@ -388,9 +390,11 @@ class FragmentARRAVScopeOfService : Fragment() {
         }
         if (PRGDataModel.getInstance().tblPRGRepairDiscountFactors.size > 0) {
             maxdDiscountAmountEditText.setText(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount)
-            disountpercentageDropListId.setSelection((resources.getStringArray(R.array.discount_percentage)).indexOf(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"))
-            prevDiscountPercentage = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount
-            prevMaxDiscountAmount = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"
+            disountpercentageDropListId.setSelection(0)
+            if (PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage.toString().isNotEmpty())
+                disountpercentageDropListId.setSelection((resources.getStringArray(R.array.discount_percentage)).indexOf(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"))
+            prevDiscountPercentage = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"
+            prevMaxDiscountAmount = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount
         }
         (activity as FormsActivity).saveRequired = false
         refreshButtonsState()
