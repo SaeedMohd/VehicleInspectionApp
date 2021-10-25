@@ -299,6 +299,7 @@ fun createPDFForShop(activity: Activity) {
     var writer = PdfWriter.getInstance(document, FileOutputStream(file))
     val event = HeaderFooterPageEvent()
     writer.pageEvent = event
+    document.setMargins(20f,20f,20f,30f)
     document.open()
 
     document.addTitle("AAR Visitation")
@@ -363,7 +364,9 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     var writer = PdfWriter.getInstance(document, FileOutputStream(file))
     val event = HeaderFooterPageEvent()
     writer.pageEvent = event
+    document.setMargins(10f,10f,20f,30f)
     document.open()
+
 
     document.addTitle("AAR Visitation")
     // Headewr Section
@@ -561,26 +564,27 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
     addEmptyLine(document, 1)
     paragraph = Paragraph("")
-    paragraph.add(drawDeficienciesSection())
+//    paragraph.add(drawDeficienciesSection())
+    paragraph.add(drawDeficiencySectionForShop())
     document.add(paragraph)
     addEmptyLine(document, 1)
 
-    val defSignTable = PdfPTable(2)
-    defSignTable.addCell(addTitleCell("Signature: ",1,true,MaintitleFont))
-    imageDef?.scaleAbsolute(50F,50F)
-    val e = PdfPCell(imageDef)
-    e.border = Rectangle.NO_BORDER
-    e.horizontalAlignment = Element.ALIGN_CENTER
-    e.rowspan = 3
-    defSignTable.addCell(e)
-
-    document.add(defSignTable)
-    addEmptyLine(document, 1)
-    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
-    addEmptyLine(document, 1)
-    paragraph = Paragraph("I acknowledge all current deficiencies.", titleFont)
-    paragraph.alignment = Element.ALIGN_CENTER
-    document.add(paragraph)
+//    val defSignTable = PdfPTable(2)
+//    defSignTable.addCell(addTitleCell("Signature: ",1,true,MaintitleFont))
+//    imageDef?.scaleAbsolute(50F,50F)
+//    val e = PdfPCell(imageDef)
+//    e.border = Rectangle.NO_BORDER
+//    e.horizontalAlignment = Element.ALIGN_CENTER
+//    e.rowspan = 3
+//    defSignTable.addCell(e)
+//
+//    document.add(defSignTable)
+//    addEmptyLine(document, 1)
+//    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+//    addEmptyLine(document, 1)
+//    paragraph = Paragraph("I acknowledge all current deficiencies.", titleFont)
+//    paragraph.alignment = Element.ALIGN_CENTER
+//    document.add(paragraph)
 
 
     paragraph = Paragraph("Complaints", MaintitleFont)
@@ -609,8 +613,8 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     table.addCell(addCellWithBorder("File Description", 2,true))
     table.addCell(addCellWithBorder("Approval Requested", 1,true))
     table.addCell(addCellWithBorder("Approved", 1,true))
-    table.addCell(addCellWithBorder("Apporved By", 1,true))
-    table.addCell(addCellWithBorder("Apporved Date", 1,true))
+    table.addCell(addCellWithBorder("Approved By", 1,true))
+    table.addCell(addCellWithBorder("Approved Date", 1,true))
     table.addCell(addCellWithBorder("Updated By", 1,true))
     table.addCell(addCellWithBorder("Updated Date", 1,true))
     table.addCell(addCellWithBorder("Downstream Apps", 2,true))
@@ -621,6 +625,16 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
 //                    tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
                     if (PRGDataModel.getInstance().tblPRGFacilitiesPhotos.size==0) {
                         document.add(table)
+                        addEmptyLine(document, 1)
+                        paragraph = Paragraph("Visitation Comments", MaintitleFont)
+                        paragraph.alignment = Element.ALIGN_LEFT
+                        document.add(paragraph)
+                        document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+                        addEmptyLine(document, 1)
+//                        paragraph = Paragraph(PRGDataModel.getInstance().tblPRGVisitationHeader[0].comments)
+                        paragraph = Paragraph("")
+                        paragraph.add(drawCommentsSection())
+                        document.add(paragraph)
                         addEmptyLine(document, 1)
                         document.close()
                         uploadPDF(activity, file, "Specialist")
@@ -667,6 +681,16 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
                                                 if (it == size - 1) {
                                                     document.add(table)
                                                     addEmptyLine(document, 1)
+                                                    paragraph = Paragraph("Visitation Comments", MaintitleFont)
+                                                    paragraph.alignment = Element.ALIGN_LEFT
+                                                    document.add(paragraph)
+                                                    document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
+                                                    addEmptyLine(document, 1)
+//                                                    paragraph = Paragraph(PRGDataModel.getInstance().tblPRGVisitationHeader[0].comments)
+                                                    paragraph = Paragraph("")
+                                                    paragraph.add(drawCommentsSection())
+                                                    document.add(paragraph)
+                                                    addEmptyLine(document, 1)
                                                     document.close()
                                                     uploadPDF(activity, file, "Specialist")
                                                 }
@@ -688,6 +712,17 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
 
 }
 
+fun drawCommentsSection() :PdfPTable {
+    val commentsTable = PdfPTable(1)
+    commentsTable.setWidthPercentage(100f)
+    val cell = PdfPCell(Paragraph((PRGDataModel.getInstance().tblPRGVisitationHeader[0].comments), normalFont));
+    cell.colspan=1
+    cell.setBorder(Rectangle.NO_BORDER);
+    commentsTable.addCell(cell)
+//    commentsTable.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].comments, 1,false))
+    return commentsTable
+}
+
 fun uploadPDF(activity: Activity,file: File,type: String) {
     var email = ApplicationPrefs.getInstance(activity).loggedInUserEmail
     if (type.equals("Shop")) {
@@ -695,7 +730,7 @@ fun uploadPDF(activity: Activity,file: File,type: String) {
             email = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto
         }
     }
-    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail, null, file, Response.Listener { response ->
+    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail+"&sessionId="+ApplicationPrefs.getInstance(activity).getSessionID(), null, file, Response.Listener { response ->
 //    val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
         try {
         } catch (e: UnsupportedEncodingException) {
@@ -722,6 +757,12 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype,1,false));
     table.addCell(addCell("Date of Visitation: ",1,false));
     table.addCell(addCell(Date().toAppFormatMMDDYYYY(),1,false));
+
+    table.addCell(addCell("Visitation Reason: " ,1,false));
+    table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationreason,1,false));
+    table.addCell(addCell("Visitation Method: ",1,false));
+    table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod,1,false));
+
     table.addCell(addCell("Data Changes Made: "+ if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes" ,4,false));
     return table
 }
@@ -735,6 +776,11 @@ private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?) : PdfPTable
     table.addCell(addCell("Month Due: "+ FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth.toInt().monthNoToName(),1,false));
     table.addCell(addCell("Changes Made: "+if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes" ,1,false))
     table.addCell(addCell("Date of Visitation: "+ Date().toAppFormatMMDDYYYY(),1,false));
+
+    table.addCell(addCell("Visitation Reason: " + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationreason,2,false));
+    table.addCell(addCell("Visitation Method: " + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod,2,false));
+
+
     table.addCell(addCell("Facility Representative's Name: ",1,false));
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
     table.addCell(addCell("Automotive Specialist:",1,false));
@@ -799,7 +845,7 @@ private fun drawAARTrackingSection() : PdfPTable {
     table.addCell(addCellWithBorder("In Progress Walk Ins", 1,true))
     table.addCell(addCell("", 1,true))
     table.addCell(addCell("", 1,true))
-    FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareBy { it.PortalInspectionDate }).apply {
+    FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending { it.PortalInspectionDate }).apply {
         (0 until size).forEach {
             if ( !get(it).TrackingID.equals("-1") ) {
                 table.addCell(addCellWithBorder(get(it).PortalInspectionDate.apiToAppFormatMMDDYYYY(),1,true))
@@ -846,8 +892,8 @@ private fun drawComplaintsSection() : PdfPTable {
     table.addCell(addCellWithBorder("Complaint ID", 2,false))
     table.addCell(addCellWithBorder("First Name", 1,true))
     table.addCell(addCellWithBorder("Last Name", 1,true))
-    table.addCell(addCellWithBorder("Receieved Date", 1,false))
-    table.addCell(addCellWithBorder("Complaint Reasone", 2,false))
+    table.addCell(addCellWithBorder("Received Date", 1,false))
+    table.addCell(addCellWithBorder("Complaint Reason", 2,false))
     table.addCell(addCellWithBorder("Complaint Resolution", 2,false))
     FacilityDataModel.getInstance().tblComplaintFiles.apply {
         (0 until size).forEach {
@@ -994,6 +1040,9 @@ private fun drawSoSSection() : PdfPTable {
     table.addCell(addCell("# of Lifts: "+FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts,1,true));
     table.addCell(addCell("Warranty Period: "+if (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID)}.size>0) TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName else "",1,true));
     table.addCell(addCell("",1,true));
+    table.addCell(addCell("Discount Percentage: "+FacilityDataModel.getInstance().tblScopeofService[0].DiscountCap + "%",1,true));
+    table.addCell(addCell("Max Discount Amount: "+FacilityDataModel.getInstance().tblScopeofService[0].DiscountAmount,1,true));
+    table.addCell(addCell("",2,true));
     return table
 }
 
@@ -1052,7 +1101,7 @@ private fun drawHoursSection() : PdfPTable {
         hoursTable.addCell(addCell("Tue",1,false))
         hoursTable.addCell(addCell(if (TueOpen.isNullOrEmpty()) "Closed" else TueOpen,1,false))
         hoursTable.addCell(addCell(if (TueClose.isNullOrEmpty()) "Closed" else TueClose,1,false))
-        val cell = PdfPCell(Paragraph(("Nigh Drop Instuctions:" + if (NightDropInstr.isNullOrEmpty()) "" else NightDropInstr), normalFont));
+        val cell = PdfPCell(Paragraph(("Nigh Drop Instructions:" + if (NightDropInstr.isNullOrEmpty()) "" else NightDropInstr), normalFont));
         cell.colspan=1
         cell.setBorder(Rectangle.NO_BORDER);
         cell.rowspan = 5
@@ -1177,7 +1226,7 @@ private fun drawDeficiencySectionForShop() : PdfPTable {
     table.addCell(addCellWithBorder("Due Date", 1,true))
     FacilityDataModel.getInstance().tblDeficiency.apply {
         (0 until size).forEach {
-            if (!get(it).DefTypeID.equals("-1")) {
+            if (!get(it).DefTypeID.equals("-1") && get(it).ClearedDate.isNullOrEmpty()) {
                 table.addCell(addCellWithBorder(TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.toString() == get(it).DefTypeID }[0].DeficiencyName,1,true))
                 table.addCell(addCellWithBorder(if (get(it).VisitationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).VisitationDate.apiToAppFormatMMDDYYYY(),1,true));
                 table.addCell(addCellWithBorder("",1,true));
@@ -1220,23 +1269,23 @@ private fun drawVendorRevenueSectionForShop() : PdfPTable {
 
 
 private fun drawDataChangedSectionForShop() : PdfPTable {
-    val table = PdfPTable(10)
+    val table = PdfPTable(8)
     table.setWidthPercentage(100f)
 //    table.addCell(addCellWithBorder("User ID", 1,true))
     table.addCell(addCellWithBorder("Group Name", 1,true))
     table.addCell(addCellWithBorder("Screen Name", 1,true))
-    table.addCell(addCellWithBorder("Section Name", 1,true))
-    table.addCell(addCellWithBorder("Action", 1,true))
+//    table.addCell(addCellWithBorder("Section Name", 1,true))
+//    table.addCell(addCellWithBorder("Action", 1,true))
     table.addCell(addCellWithBorder("Change Date", 1,true))
     table.addCell(addCellWithBorder("Changes Made", 5,false))
     PRGDataModel.getInstance().tblPRGLogChanges.apply {
         (0 until size).forEach {
-            if (get(it).recordid>-1) {
+            if (get(it).recordid>-1 && !get(it).sectionname.equals("Load Visitation")) {
 //                table.addCell(addCellWithBorder(get(it).userid, 1, true))
                 table.addCell(addCellWithBorder(get(it).groupname, 1, true))
                 table.addCell(addCellWithBorder(get(it).screenname, 1, true));
-                table.addCell(addCellWithBorder(get(it).sectionname, 1, true));
-                table.addCell(addCellWithBorder(if (get(it).action) "ADD" else "EDIT", 1, true));
+//                table.addCell(addCellWithBorder(get(it).sectionname, 1, true));
+//                table.addCell(addCellWithBorder(if (get(it).action) "ADD" else "EDIT", 1, true));
                 table.addCell(addCellWithBorder(get(it).changedate.apiToAppFormatMMDDYYYY(), 1, true));
                 table.addCell(addCellWithBorder(get(it).datachanged, 5, false));
             }
@@ -1332,7 +1381,7 @@ private fun drawVehicleServicesSection(vehicleTypeID: String) : PdfPTable {
 }
 
 private fun drawPersonnelSection () : PdfPTable {
-    val table = PdfPTable(13)
+    val table = PdfPTable(15)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Personnel Type", 1,true))
     table.addCell(addCellWithBorder("First Name", 1,true))
@@ -1344,7 +1393,9 @@ private fun drawPersonnelSection () : PdfPTable {
     table.addCell(addCellWithBorder("Start Date", 1,true))
     table.addCell(addCellWithBorder("End Date", 1,true))
     table.addCell(addCellWithBorder("Contract Signer", 1,true))
-    table.addCell(addCellWithBorder("Primary Mail Recepient", 1,true))
+    table.addCell(addCellWithBorder("Primary Mail Recipient", 1,true))
+    table.addCell(addCellWithBorder("Report Recipient", 1,true))
+    table.addCell(addCellWithBorder("Notification Recipient", 1,true))
     FacilityDataModel.getInstance().tblPersonnel.apply {
         (0 until size).forEach {
             if (get(it).PersonnelID>-1) {
@@ -1357,8 +1408,10 @@ private fun drawPersonnelSection () : PdfPTable {
                 table.addCell(addCellWithBorder(if (get(it).SeniorityDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).SeniorityDate.apiToAppFormatMMDDYYYY(),1,true));
                 table.addCell(addCellWithBorder(if (get(it).startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startDate.apiToAppFormatMMDDYYYY(),1,true));
                 table.addCell(addCellWithBorder(if (get(it).endDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).endDate.apiToAppFormatMMDDYYYY(),1,true));
-                table.addCell(addCellWithBorder(if (get(it).ContractSigner) "Yes" else "No",1,true))
-                table.addCell(addCellWithBorder(if (get(it).PrimaryMailRecipient) "Yes" else "No",1,true))
+                table.addCell(addCellWithBorder(if (get(it).ContractSigner) "X" else "",1,true))
+                table.addCell(addCellWithBorder(if (get(it).PrimaryMailRecipient) "X" else "",1,true))
+                table.addCell(addCellWithBorder(if (get(it).ReportRecipient) "X" else "",1,true))
+                table.addCell(addCellWithBorder(if (get(it).NotificationRecipient) "X" else "",1,true))
             }
         }
     }
@@ -1705,7 +1758,7 @@ private fun createTable() : PdfPTable {
         (0 until size).forEach {
             if (!get(it).DefTypeID.equals("-1")) {
                 var strDef = "Def Type: " + TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.toString() == get(it).DefTypeID }[0].DeficiencyName
-                strDef += "\nInspection Date: " + get(it).VisitationDate.apiToAppFormatMMDDYYYY() +" - Due Date: " + get(it).ClearedDate.apiToAppFormatMMDDYYYY()
+                strDef += "\nInspection Date: " + get(it).VisitationDate.apiToAppFormatMMDDYYYY() +" - Due Date: " + get(it).DueDate.apiToAppFormatMMDDYYYY()
                 strDef += "\nComments: " + get(it).Comments
                 table.addCell(Paragraph(strDef, normalFont))
             } else {
@@ -1843,7 +1896,7 @@ private fun createTable() : PdfPTable {
                 var strAddress = "Address1: " + get(it).FAC_Addr1
                 strAddress += "\nAddress2: " + get(it).FAC_Addr2
                 if (TypeTablesModel.getInstance().LocationType.filter { s -> s.LocTypeID == get(it).LocationTypeID }[0].LocTypeName.equals("Physical")) {
-                    strAddress += "\nLattitude: " + get(it).LATITUDE
+                    strAddress += "\nLatitude: " + get(it).LATITUDE
                     strAddress += "\nLongitude: " + get(it).LONGITUDE
                 }
                 strAddress += "\nBranch Number: " + get(it).BranchNumber
@@ -1937,7 +1990,7 @@ private fun createTable() : PdfPTable {
                 addDataCell(table, "Certification Number", get(it).CertificationNum, normalFont,false)
                 addDataCell(table, "RSP User ID", get(it).RSP_UserName, normalFont,false)
                 addDataCell(table, "RSP Email Address", get(it).RSP_Email, normalFont,false)
-                addDataCell(table, "Seniorty Date", if (get(it).SeniorityDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).SeniorityDate.apiToAppFormatMMDDYYYY(), normalFont,false)
+                addDataCell(table, "Seniority Date", if (get(it).SeniorityDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).SeniorityDate.apiToAppFormatMMDDYYYY(), normalFont,false)
                 addDataCell(table, "Start Date", if (get(it).ContractStartDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ContractStartDate.apiToAppFormatMMDDYYYY(), normalFont,false)
                 addDataCell(table, "End Date", if (get(it).ContractEndDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ContractStartDate.apiToAppFormatMMDDYYYY(), normalFont,false)
                 addDataCell(table, "Contract Signer", if (get(it).ContractSigner) "Yes" else "No", normalFont,false)
@@ -1957,7 +2010,7 @@ private fun createTable() : PdfPTable {
                         }
                     }
                 }
-                addDataCell(table, "Primary Mail Recepient", if (get(it).PrimaryMailRecipient) "Yes" else "No", normalFont,false)
+                addDataCell(table, "Primary Mail Recipient", if (get(it).PrimaryMailRecipient) "Yes" else "No", normalFont,false)
 
                 if (FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) }.count() > 0) {
                     FacilityDataModel.getInstance().tblPersonnelCertification.filter { s -> s.PersonnelID.equals(get(it).PersonnelID) }.forEach { item ->
@@ -2305,7 +2358,8 @@ class HeaderFooterPageEvent : PdfPageEventHelper() {
     override fun onEndPage(writer: PdfWriter?, document: Document?) {
 //        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_CENTER, Phrase("http://www.xxxx-your_example.com/"), 110f, 30f, 0f)
         ColumnText.showTextAligned(writer?.directContent, Element.ALIGN_CENTER, Phrase("Page " + document!!.pageNumber,ffont), 550f, 20f, 0f)
-        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_LEFT, Phrase("Date Printed: "+Date().toAppFormatMMDDYYYY(),ffont),35f, 20f, 0f)
+//        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_LEFT, Phrase("Date Printed: "+Date().toAppFormatMMDDYYYY(),ffont),35f, 20f, 0f)
+        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_LEFT, Phrase("Fac No: "+FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + " - Name: "+FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - Visitation ID:"+Constants.visitationIDForPDF,ffont),20f, 20f, 0f)
     }
 
 }

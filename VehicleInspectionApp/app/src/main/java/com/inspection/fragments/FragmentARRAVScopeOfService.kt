@@ -55,7 +55,8 @@ import kotlin.properties.Delegates
 class FragmentARRAVScopeOfService : Fragment() {
 
     var warrantyArray = ArrayList<String>()
-    var discountPercentArray = ArrayList<String>()
+    var discountPercentageArray = ArrayList<String>()
+//    var discountPercentArray = ArrayList<String>()
 
     var fillMethodCalled = false
     var temp_warranty = ""
@@ -82,13 +83,10 @@ class FragmentARRAVScopeOfService : Fragment() {
         return inflater!!.inflate(R.layout.fragment_arrav_scope_of_service, container, false)
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         implementOnAnyFragment=false
-
         validationProblemFoundForOtherFragments=false
         cancelButton.setOnClickListener {
             cancelButton.hideKeyboard()
@@ -99,8 +97,10 @@ class FragmentARRAVScopeOfService : Fragment() {
             FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays= temp_numberOfBaysEditText_
             FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts= temp_numberOfLiftsEditText_
             FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID= temp_warranty
-            PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = prevDiscountPercentage.replace("%","")
-            PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount = prevMaxDiscountAmount
+            FacilityDataModel.getInstance().tblScopeofService[0].DiscountCap=prevMaxDiscountAmount
+            FacilityDataModel.getInstance().tblScopeofService[0].DiscountAmount=prevDiscountPercentage.replace("%","")
+//            PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = prevDiscountPercentage.replace("%","")
+//            PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount = prevMaxDiscountAmount
             setFields()
             (activity as FormsActivity).saveRequired = false
             refreshButtonsState()
@@ -115,7 +115,11 @@ class FragmentARRAVScopeOfService : Fragment() {
         warrantyPeriodVal.adapter = warrantyAdapter
 
 
-        var discountPercentageAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.discount_percentage))
+        for (discountPercentage in TypeTablesModel.getInstance().DiscountAmountType){
+            discountPercentageArray.add(discountPercentage.TypeName)
+        }
+
+        var discountPercentageAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, discountPercentageArray )
         discountPercentageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         disountpercentageDropListId.adapter = discountPercentageAdapter
 
@@ -274,12 +278,17 @@ class FragmentARRAVScopeOfService : Fragment() {
                     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                     }
                     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                        PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount = s.toString()
-                        if (!prevMaxDiscountAmount.equals(s.toString())) {
-                            (activity as FormsActivity).saveRequired = true
-                            HasChangedModel.getInstance().groupSoSGeneralInfo[0].SoSDiscAmount = true
-                            HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                        }
+//                        PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount = s.toString()
+//                        if (!prevMaxDiscountAmount.equals(s.toString())) {
+//                            (activity as FormsActivity).saveRequired = true
+//                            HasChangedModel.getInstance().groupSoSGeneralInfo[0].SoSDiscAmount = true
+//                            HasChangedModel.getInstance().changeDoneForSoSGeneral()
+//                        }
+//                        refreshButtonsState()
+                        FacilityDataModel.getInstance().tblScopeofService[0].DiscountCap = s.toString()
+                        HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                        HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                        (activity as FormsActivity).saveRequired = true
                         refreshButtonsState()
                     }
                     override fun afterTextChanged(s: Editable) {
@@ -340,12 +349,20 @@ class FragmentARRAVScopeOfService : Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = disountpercentageDropListId.getItemAtPosition(position).toString().replace("%","")
-                if (!disountpercentageDropListId.getItemAtPosition(position).toString().equals(prevDiscountPercentage+"%")) {
-                        HasChangedModel.getInstance().groupSoSGeneralInfo[0].SoSDiscPercentage = true
-                        (activity as FormsActivity).saveRequired = true
-                }
+//                PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage = disountpercentageDropListId.getItemAtPosition(position).toString().replace("%","")
+//                if (!disountpercentageDropListId.getItemAtPosition(position).toString().equals(prevDiscountPercentage+"%")) {
+//                        HasChangedModel.getInstance().groupSoSGeneralInfo[0].SoSDiscPercentage = true
+//                        (activity as FormsActivity).saveRequired = true
+//                }
+//                    refreshButtonsState()
+                    if (!disountpercentageDropListId.tag.equals(position) || disountpercentageDropListId.tag.equals("-1")) {
+                    disountpercentageDropListId.tag = "-1"
+                    FacilityDataModel.getInstance().tblScopeofService[0].DiscountAmount = disountpercentageDropListId.selectedItem.toString().replace("%","")
+                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                    HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                    (activity as FormsActivity).saveRequired = true
                     refreshButtonsState()
+                }
             }
         }
 
@@ -364,13 +381,18 @@ class FragmentARRAVScopeOfService : Fragment() {
                 numberOfLiftsEditText.setText(if (NumOfLifts.isNullOrEmpty()) "0" else NumOfLifts)
                 laborRateMatrixMaxEditText.setText(if (LaborMax.isNullOrEmpty()) "0" else LaborMax)
                 laborRateMatrixMinEditText.setText(if (LaborMin.isNullOrBlank()) "0" else LaborMin)
+                maxdDiscountAmountEditText.setText(DiscountCap)
                 temp_fixedLaborRate = fixedLaborRateEditText.text.toString()
                 temp_diagnosticLaborRate  = diagnosticRateEditText.text.toString()
                 temp_numberOfBaysEditText_ = numberOfBaysEditText.text.toString()
                 temp_numberOfLiftsEditText_ = numberOfLiftsEditText.text.toString()
                 temp_laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
                 temp_laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
-
+                prevDiscountPercentage = DiscountAmount
+                prevMaxDiscountAmount = DiscountCap
+                disountpercentageDropListId.setSelection(0)
+                disountpercentageDropListId.setSelection(discountPercentageArray.indexOf(DiscountAmount+'%'))
+                disountpercentageDropListId.tag = disountpercentageDropListId.selectedItemPosition
                 warrantyPeriodVal.tag=0
                 for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
                     for (facWarranty in FacilityDataModel.getInstance().tblScopeofService) {
@@ -388,14 +410,14 @@ class FragmentARRAVScopeOfService : Fragment() {
                 }
             }
         }
-        if (PRGDataModel.getInstance().tblPRGRepairDiscountFactors.size > 0) {
-            maxdDiscountAmountEditText.setText(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount)
-            disountpercentageDropListId.setSelection(0)
-            if (PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage.toString().isNotEmpty())
-                disountpercentageDropListId.setSelection((resources.getStringArray(R.array.discount_percentage)).indexOf(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"))
-            prevDiscountPercentage = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"
-            prevMaxDiscountAmount = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount
-        }
+//        if (PRGDataModel.getInstance().tblPRGRepairDiscountFactors.size > 0) {
+//            maxdDiscountAmountEditText.setText(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount)
+//            disountpercentageDropListId.setSelection(0)
+//            if (PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage.toString().isNotEmpty())
+//                disountpercentageDropListId.setSelection((resources.getStringArray(R.array.discount_percentage)).indexOf(PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"))
+//            prevDiscountPercentage = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage+"%"
+//            prevMaxDiscountAmount = PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount
+//        }
         (activity as FormsActivity).saveRequired = false
         refreshButtonsState()
     }
@@ -478,10 +500,12 @@ class FragmentARRAVScopeOfService : Fragment() {
                                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
                                     progressBarText.text = "Loading ..."
                                     Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
-                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage=discountPercentage
-                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount=maxdiscountamount
+//                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage=discountPercentage
+//                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount=maxdiscountamount
                                     if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
                                         FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                                            DiscountCap = maxdiscountamount
+                                            DiscountAmount = discountPercentage
                                             LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
                                             LaborMin = if (watcher_LaborMin.isNullOrBlank()) LaborMin else watcher_LaborMin
                                             FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FixedLaborRate else watcher_FixedLaborRate
@@ -546,6 +570,14 @@ class FragmentARRAVScopeOfService : Fragment() {
             laborRateMatrixMinEditText.setError("Required Field")
         }
 
+        if (!laborRateMatrixMinEditText.text.toString().isNullOrEmpty() && !laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+            var minRate =  laborRateMatrixMinEditText.text.toString().toInt()
+            var maxRate =  laborRateMatrixMaxEditText.text.toString().toInt()
+            if (minRate>maxRate) {
+                scopeOfServiceValide = false
+                laborRateMatrixMinEditText.setError("Min Labor Rate should be less than Max Labor Rate")
+            }
+        }
 
         return scopeOfServiceValide
 

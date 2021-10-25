@@ -267,7 +267,7 @@ class FragmentARRAVAffliations : Fragment() {
                     alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                 }))
             }else {
-                Utility.showValidationAlertDialog(activity, "Please fill all required fields")
+                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
             }
         }
         prepareAffiliations()
@@ -560,7 +560,7 @@ class FragmentARRAVAffliations : Fragment() {
                                 alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                             }))
                         } else
-                            Utility.showValidationAlertDialog(activity,"Please fill all the required activity")
+                            Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
                     }
                     mainAffTableLayout.addView(tableRow)
                 }
@@ -580,6 +580,16 @@ class FragmentARRAVAffliations : Fragment() {
             afDtlseffective_date_textviewVal.setError("Required Field")
         }
 
+        if(!afDtlsexpiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(afDtlseffective_date_textviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(afDtlsexpiration_date_textviewVal!!.text.toString())
+            if (expDate.before(effDate)) {
+                isInputsValid = false
+                afDtlsexpiration_date_textviewVal.setError("Should be after Effective Date")
+            }
+        }
+
 //        if (afDetails_textviewVal.selectedItem==null) {
 //            isInputsValid=false
 //            afDetails_textview.setError("Required Field")
@@ -596,6 +606,16 @@ class FragmentARRAVAffliations : Fragment() {
         if(edit_afDtlseffective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid=false
             edit_afDtlseffective_date_textviewVal.setError("Required Field")
+        }
+
+        if(!edit_afDtlsexpiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_afDtlseffective_date_textviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_afDtlsexpiration_date_textviewVal!!.text.toString())
+            if (expDate.before(effDate)) {
+                isInputsValid = false
+                edit_afDtlsexpiration_date_textviewVal.setError("Should be after Effective Date")
+            }
         }
 
 //        if (edit_afDetails_textviewVal.selectedItem==null) {

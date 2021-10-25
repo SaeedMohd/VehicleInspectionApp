@@ -23,7 +23,9 @@ import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityServicesData
 import com.inspection.Utils.Utility.showValidationAlertDialog
 import com.inspection.model.*
+import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
+import kotlinx.android.synthetic.main.fragment_arrav_facility_services.progressBarText
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -228,7 +230,8 @@ class FragmentARRAVFacilityServices : Fragment() {
                         alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                 }))
             }else {
-                showValidationAlertDialog(activity,"Please fill all the required fields")
+                showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
+//                showValidationAlertDialog(activity,"Please fill all the required fields")
             }
         }
         fillPortalTrackingTableView();
@@ -457,7 +460,8 @@ class FragmentARRAVFacilityServices : Fragment() {
                                     alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
                                 }))
                             } else {
-                                showValidationAlertDialog(activity, "Please fill all the required fields")
+//                                showValidationAlertDialog(activity, "Please fill all the required fields")
+                                showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
                             }
                         }
                     }
@@ -501,6 +505,16 @@ class FragmentARRAVFacilityServices : Fragment() {
             fceffective_date_textviewVal.setError("Required Field")
         }
 
+        if(!fcexpiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(fceffective_date_textviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(fcexpiration_date_textviewVal!!.text.toString())
+            if (expDate.before(effDate)) {
+                facServicesValide = false
+                fcexpiration_date_textviewVal.setError("Should be after Effective Date")
+            }
+        }
+
 
         if(fc_services_textviewVal.selectedItemPosition.equals(0)) {
             facServicesValide = false
@@ -528,6 +542,15 @@ class FragmentARRAVFacilityServices : Fragment() {
             edit_fceffective_date_textviewVal.setError("Required Field")
         }
 
+        if(!edit_fcexpiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_fceffective_date_textviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_fcexpiration_date_textviewVal!!.text.toString())
+            if (expDate.before(effDate)) {
+                facServicesValide = false
+                edit_fcexpiration_date_textviewVal.setError("Should be after Effective Date")
+            }
+        }
 
         if(edit_fc_services_textviewVal.selectedItemPosition.equals(0)) {
             facServicesValide = false

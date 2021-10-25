@@ -73,6 +73,7 @@ class FacilityDataModelOrg  {
     var tblFacVehicles = ArrayList<TblFacVehicles>()
     var tblPersonnelSigner = ArrayList<TblPersonnelSigner>()
     var tblGeocodes = ArrayList<TblGeocodes>()
+    var tblAffiliateVendorFacilities = ArrayList<AffiliateVendorFacilities>()
 
 //    class TblFacilities {
 //        var isInputsValid = false

@@ -109,6 +109,8 @@ object Constants {
     val UpdateAmendmentOrderTrackingData = permanentURL + "updateAmendmentOrderTrackingData?facNum="
     val UpdateDeficiencyData = permanentURL + "updateDeficiencyData?facNum="
     val UpdateProgramsData = permanentURL + "updateProgramsData?facNum="
+    val AddAffiliateVendorFacilities = permanentURL + "AddAffiliateVendorFacilities?facNum="
+    val DeleteAffiliateVendorFacilities = permanentURL + "DeleteAffiliateVendorFacilities?facNum="
     val UpdateFacilityServicesData = permanentURL + "updateFacilityServicesData?facNum="
     val UpdateAffiliationsData= permanentURL + "updateAffiliationsData?facNum="
     val UpdatePaymentMethodsData=permanentURL + "updatePaymentMethodsData?facnum="

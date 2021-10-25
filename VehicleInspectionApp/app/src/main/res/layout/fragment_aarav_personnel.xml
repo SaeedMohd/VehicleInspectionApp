@@ -58,14 +58,35 @@
 
             </RelativeLayout>
 
-            <TableLayout
-                android:id="@+id/PersonnelResultsTbl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@drawable/divider_table_layout"
-                android:stretchColumns="*">
+<!--            <ScrollView-->
+<!--                android:id="@+id/layout"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:scrollbars="horizontal"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_marginTop="5dip"-->
+<!--                android:scrollbarStyle="outsideInset"-->
+<!--                android:fillViewport="true">-->
 
-                <TableRow android:background="@color/mainColor" android:minHeight="30dp" android:layout_height="wrap_content">
+            <HorizontalScrollView
+                android:id="@+id/horizontalView"
+                android:layout_height="match_parent"
+                android:scrollbars="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dip">
+                <ScrollView
+                    android:id="@+id/scrollview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+                    <TableLayout
+                    android:id="@+id/PersonnelResultsTbl"
+                    android:layout_width="1200dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:scrollbars="horizontal"
+                    android:scrollbarAlwaysDrawHorizontalTrack="true"
+                    android:divider="@drawable/divider_table_layout"
+                    android:stretchColumns="*">
+                    <TableRow android:background="@color/mainColor" android:minHeight="30dp" android:layout_height="wrap_content" android:layout_width="match_parent">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -165,6 +186,7 @@
                         android:layout_weight="1"
                         android:text="Contract Signer"
                         android:textAlignment="center"
+                        android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
@@ -172,15 +194,39 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="10"
+                        android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:text="Primary Mail Recipient"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="11"
+                            android:layout_weight="1"
+                            android:text="Report Recipient"
+                            android:textAlignment="center"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="12"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:text="Notification Recipient"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_column="11"
+                        android:layout_column="13"
                         android:layout_weight="0.8"
                         android:text="Options"
                         android:textAlignment="center"
@@ -188,6 +234,11 @@
                         android:textSize="12sp" />
                 </TableRow>
             </TableLayout>
+                </ScrollView>
+<!--                </LinearLayout>-->
+            </HorizontalScrollView>
+<!--            </ScrollView>-->
+<!--            </androidx.core.widget.NestedScrollView>-->
 
             <RelativeLayout
                 android:id="@+id/mainViewLinearId2"
@@ -196,10 +247,9 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:gravity="center"
                     android:id="@+id/certTextViewVal"
                     android:text="Personnel ID : Certification(s)"
                     android:textColor="@color/mainColor"
@@ -841,6 +891,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_weight="1"
+                            android:layout_marginTop="20dp"
                             android:id="@+id/urlLink"
                             android:text=""
                             android:textStyle="bold" />
@@ -871,6 +922,33 @@
 
                         <CheckBox
                             android:id="@+id/newACSCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Primary Mail Recipients"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/newReportCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Report Recipient"
+                            />
+
+                        <CheckBox
+                            android:id="@+id/newNotificationCheck"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="1"
@@ -1492,6 +1570,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
                             android:layout_column="0"
                             android:layout_weight="1"
                             android:id="@+id/editurlLink"
@@ -1531,6 +1610,33 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Primary Mail Recipients"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/edit_newReportCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Report Recipient"
+                            />
+
+                        <CheckBox
+                            android:id="@+id/edit_newNotificationCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Notification Recipients"
                             />
 
                     </LinearLayout>

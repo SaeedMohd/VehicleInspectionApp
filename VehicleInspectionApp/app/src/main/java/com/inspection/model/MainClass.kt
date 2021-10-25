@@ -231,6 +231,8 @@ class TblPersonnel {
     var OEMstartDate = ""
     var ASE_Cert_URL = ""
     var OEMendDate = ""
+    var ReportRecipient = false
+    var NotificationRecipient = false
 }
 //    <CertificationNum/><ContractSigner>true</ContractSigner><Addr2/><PrimaryMailRecipient>true</PrimaryMailRecipient>
 
@@ -275,6 +277,8 @@ class TblScopeofService {
     var NumOfBays = ""
     var NumOfLifts = ""
     var WarrantyTypeID = ""
+    var DiscountCap = ""
+    var DiscountAmount = ""
 }
 
 class TblPrograms {
@@ -313,6 +317,7 @@ class TblDeficiency {
     var ClearedDate = ""
     var EnteredDate = ""
     var Comments : String? = ""
+    var DueDate = ""
 }
 
 class TblComplaintFiles {
@@ -564,6 +569,16 @@ class TblGeocodes {
 }
 
 
+class AffiliateVendorFacilities {
+    var AffiliateVendorTypeID = 0
+    var AffiliateVendorName = ""
+    var active = true
+    var FacID = ""
+    var AffiliateVendorFacilityID = ""
+    var AffiliateVendor = ""
+}
+
+
 class TblPersonnelSigner {
     var PersonnelID = -1
     var Addr1 = ""
@@ -635,6 +650,7 @@ class PRGVisitationHeader {
     var memberbenefitposter = ""
     var changedate = ""
     var visitmethod = ""
+    var comments = ""
 }
 
 class PRGCompletedVisitations {
@@ -678,6 +694,8 @@ class PRGPersonnelDetails {
     var asecerturl = ""
     var oemenddate = ""
     var oemstartdate = ""
+    var reportrecipient = 0
+    var notificationrecipient = 0
 }
 
 class PRGRepairDiscountFactors {

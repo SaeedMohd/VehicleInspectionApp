@@ -82,7 +82,11 @@ class TypeTablesModel {
     var VehicleMakes = ArrayList<vehicleMakes>()
     var WarrantyPeriodType = ArrayList<warrantyPeriodType>()
     var EmployeeList = ArrayList<employeeList>()
-    var VisitationReasons = ArrayList<visitationReasonType>()
+    var VisitationReasonType = ArrayList<visitationReasonType>()
+    var VisitationMethodType = ArrayList<visitationMethodType>()
+    var GeoCodeTypes = ArrayList<GeocodeType>()
+    var DiscountAmountType = ArrayList<DiscountAmountTypeClass>()
+    var DiscountCapType = ArrayList<DiscountCapTypeClass>()
 
     class employeeList {
         var NTLogin = ""
@@ -757,7 +761,27 @@ class TypeTablesModel {
     }
 
     class visitationReasonType {
-        var visitationReasonID = 0
-        var visitationReasonName = ""
+        var VisitationReasonTypeID = 0
+        var VisitationReasonTypeName = ""
+    }
+
+    class visitationMethodType {
+        var TypeID = 0
+        var TypeName = ""
+    }
+
+    class GeocodeType {
+        var GeocodeTypeID = 0
+        var GeocodeTypeName = ""
+    }
+
+    class DiscountAmountTypeClass {
+        var TypeID = 0
+        var TypeName = ""
+    }
+
+    class DiscountCapTypeClass {
+        var TypeID = 0
+        var TypeName = ""
     }
 }

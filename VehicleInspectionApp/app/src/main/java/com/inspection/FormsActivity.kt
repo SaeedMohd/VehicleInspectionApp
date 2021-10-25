@@ -1,6 +1,7 @@
 package com.inspection
 
 import android.Manifest.permission.*
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -30,6 +31,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.R.id.drawer_layout
 import com.inspection.Utils.ApplicationPrefs
@@ -46,9 +48,7 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_La
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_LaborMin
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
-import com.inspection.model.FacilityDataModel
-import com.inspection.model.IndicatorsDataModel
-import com.inspection.model.VisitationTypes
+import com.inspection.model.*
 import kotlinx.android.synthetic.main.activity_forms.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
@@ -58,8 +58,10 @@ import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
+import org.jetbrains.anko.runOnUiThread
 import java.io.File
 import java.io.UnsupportedEncodingException
+import java.util.ArrayList
 
 enum class fragmentsNames {
     FacilityGeneralInfo, FacilityContactInfo,FacilityRSP,FacilityPersonnel,FacilityAmedndmentsOrderTracking,
@@ -300,24 +302,49 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     public fun refreshMenuIndicatorsForVisitedScreens() { // Method used to validate all screens were visited
         var navigationMenu = nav_view.menu
         var indicatorImage: ImageView;
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency) {
+//            indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+//            indicatorImage.visibility = View.GONE
+//            indicatorImage = (navigationMenu.findItem(R.id.visitation).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+//            indicatorImage.visibility = View.GONE
+//            indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+//            indicatorImage.visibility = View.GONE
+//            indicatorImage = (navigationMenu.findItem(R.id.surveys).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+//            indicatorImage.visibility = View.GONE
+//            indicatorImage = (navigationMenu.findItem(R.id.photos).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+//            indicatorImage.visibility = View.GONE
+//            indicatorImage = (navigationMenu.findItem(R.id.facility).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+//            indicatorImage.visibility = View.GONE
+//            indicatorImage = (navigationMenu.findItem(R.id.complaints).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+//            indicatorImage.visibility = View.GONE
+//            indicatorImage = (navigationMenu.findItem(R.id.billing).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
+//            indicatorImage.visibility = View.GONE
+//        }
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency) {
-            indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-            indicatorImage.visibility = View.GONE
-            indicatorImage = (navigationMenu.findItem(R.id.visitation).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-            indicatorImage.visibility = View.GONE
-            indicatorImage = (navigationMenu.findItem(R.id.deficiency).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-            indicatorImage.visibility = View.GONE
-            indicatorImage = (navigationMenu.findItem(R.id.surveys).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-            indicatorImage.visibility = View.GONE
-            indicatorImage = (navigationMenu.findItem(R.id.photos).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-            indicatorImage.visibility = View.GONE
-            indicatorImage = (navigationMenu.findItem(R.id.facility).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-            indicatorImage.visibility = View.GONE
-            indicatorImage = (navigationMenu.findItem(R.id.complaints).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-            indicatorImage.visibility = View.GONE
-            indicatorImage = (navigationMenu.findItem(R.id.billing).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
-            indicatorImage.visibility = View.GONE
+            IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited = true
+            IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited = true
+            IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited = true
+            IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited = true
+            IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited = true
+            IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited = true
+            IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = true
+            IndicatorsDataModel.getInstance().tblSurveys[0].visited = true
+            IndicatorsDataModel.getInstance().tblPhotos[0].visited = true
+            IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited = true
+            IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited = true
+            IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited = true
+            IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited = true
+            IndicatorsDataModel.getInstance().tblComplaints[0].visited = true
+            IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited = true
+            IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited = true
+            IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited = true
+            IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited = true
+            IndicatorsDataModel.getInstance().tblBilling[0].PaymentsVisited  = true
+            IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited = true
         }
+
+
+
         indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited
                 && IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited
@@ -622,11 +649,35 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     fun generateAndOpenPDF() {
-        createPDF(this)
-//        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForSpecialist.pdf")
-//        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
-        val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForSpecialist.pdf")
-        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForShop.pdf")
+        var act = this
+//        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(this).loggedInUserID,
+//                Response.Listener { response ->
+//                    activity!!.runOnUiThread {
+//                        PRGDataModel.getInstance().tblPRGLogChanges.clear()
+//                        if (!response.toString().replace(" ","").equals("[]")) {
+//                            PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
+//                        } else {
+//                            var item = PRGLogChanges()
+//                            item.recordid=-1
+//                                PRGDataModel.getInstance().tblPRGLogChanges.add(item)
+//                        }
+//                        createPDF(act)
+//                //        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForSpecialist.pdf")
+//                //        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
+//                        val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForSpecialist.pdf")
+//                        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForShop.pdf")
+//                    }
+//                }, Response.ErrorListener {
+//            Log.v("Loading PRG Data error", "" + it.message)
+////                            launchNextAction(isCompleted)
+//            it.printStackTrace()
+//        }))
+                        createPDF(this)
+                //        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForSpecialist.pdf")
+                //        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
+                        val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForSpecialist.pdf")
+                        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForShop.pdf")
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

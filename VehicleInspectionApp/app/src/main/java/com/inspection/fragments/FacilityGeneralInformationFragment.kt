@@ -11,15 +11,17 @@ import android.os.Bundle
 import android.os.Debug
 import androidx.fragment.app.Fragment
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.*
 import androidx.core.view.isVisible
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -35,11 +37,13 @@ import com.inspection.model.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import org.w3c.dom.CDATASection
 import org.w3c.dom.CharacterData
 import org.w3c.dom.Text
 import java.net.URI
 import java.net.URLEncoder
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -170,7 +174,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     private fun setFieldsValues() {
 
-
+        fillPortalTrackingTableView()
         FacilityDataModel.getInstance().apply {
 
             val statusID = CSIFacilitySingelton.getInstance().csiFacilities.filter { s->s.facnum.equals(tblFacilities[0].FACNo.toString()) && s.clubcode.equals(clubCode)}[0].status
@@ -322,11 +326,12 @@ class FacilityGeneralInformationFragment : Fragment() {
             validateInputs()
         }
 
+//        trackingTableLayout
 
-        if (PRGDataModel.getInstance().tblPRGFacilityDetails.isNotEmpty()) {
-            affiliateNAPAEditText.setText(PRGDataModel.getInstance().tblPRGFacilityDetails[0].napanumber)
-            affiliateNationalEditText.setText(PRGDataModel.getInstance().tblPRGFacilityDetails[0].nationalnumber)
-        }
+//        if (PRGDataModel.getInstance().tblPRGFacilityDetails.isNotEmpty()) {
+//            affiliateNAPAEditText.setText(PRGDataModel.getInstance().tblPRGFacilityDetails[0].napanumber)
+//            affiliateNationalEditText.setText(PRGDataModel.getInstance().tblPRGFacilityDetails[0].nationalnumber)
+//        }
 
         setPaymentMethods()
 
@@ -365,6 +370,223 @@ class FacilityGeneralInformationFragment : Fragment() {
             Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
         }
     }
+
+    fun fillPortalTrackingTableView() {
+
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        if (trackingTableLayout.childCount>1) {
+            for (i in trackingTableLayout.childCount - 1 downTo 1) {
+                trackingTableLayout.removeViewAt(i)
+            }
+
+        }
+
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.leftMargin=10
+        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 0.5F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam2.width = 0
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 0.5F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam3.width = 0
+
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+
+        FacilityDataModel.getInstance().tblAffiliateVendorFacilities.apply {
+            (0 until size).forEach {
+//                if (!get(it).AffiliateVendorFacilityID.equals("-1")) {
+                    var tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
+//                    tableRow.weightSum = 4.5F
+
+                    val textView1 = TextView(context)
+                    textView1.layoutParams = rowLayoutParam
+                    textView1.gravity = Gravity.CENTER
+                    textView1.textSize = 14f
+                    textView1.minimumHeight = 30
+                    textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView1.text = get(it).AffiliateVendorName
+                    tableRow.addView(textView1)
+
+                    val editView2 = EditText(context)
+                    editView2.layoutParams = rowLayoutParam1
+                    editView2.gravity = Gravity.CENTER
+                    editView2.textSize = 14f
+                    editView2.minimumHeight = 30
+                    editView2.setBackgroundColor(Color.WHITE)
+                    editView2.inputType = InputType.TYPE_CLASS_NUMBER
+                    editView2.setText(get(it).AffiliateVendor)
+                    editView2.textAlignment = EditText.TEXT_ALIGNMENT_CENTER
+                    tableRow.addView(editView2)
+
+                    val updateButton = Button(context)
+                    updateButton.layoutParams = rowLayoutParam2
+                    updateButton.setTextColor(Color.BLUE)
+                    updateButton.text = if (get(it).AffiliateVendor.isNullOrEmpty()) "ADD" else "EDIT"
+                    updateButton.tag = if (get(it).AffiliateVendorFacilityID.isNullOrEmpty()) 0 else get(it).AffiliateVendorFacilityID
+                    updateButton.textSize = 14f
+                    updateButton.minimumHeight = 30
+                    updateButton.gravity = Gravity.CENTER
+                    updateButton.setBackgroundColor(Color.TRANSPARENT)
+                    tableRow.addView(updateButton)
+
+                    updateButton.setOnClickListener {
+                        if (editView2.text.toString().isNullOrEmpty()) {
+                            Utility.showValidationAlertDialog(activity, "Please fill  the Affiliate vendor number")
+                        } else {
+                            progressBarText.text = "Saving ..."
+                            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+                            var currentTableRowIndex = trackingTableLayout.indexOfChild(tableRow)
+                            var affVendorTypeID = FacilityDataModel.getInstance().tblAffiliateVendorFacilities.filter { s -> s.AffiliateVendorName.equals(textView1.text.toString()) }[0].AffiliateVendorTypeID
+                            var affVendor = editView2.text.toString()
+                            var affVendorID = updateButton.tag.toString()
+                            var strChanges = if (updateButton.tag == 0) "Affiliate Vendor Number for " + textView1.text + " added to be " + affVendor else "Affiliate Vendor Number for " + textView1.text + " updated to be " + affVendor
+                            var currentfacilityDataModelIndex = currentTableRowIndex - 1
+                            Log.v("Aff Vendor Add --- ", Constants.AddAffiliateVendorFacilities + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&affVendorTypeID=${affVendorTypeID}&affVendor=$affVendor&affVendorID=$affVendorID&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat())
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.AddAffiliateVendorFacilities + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&affVendorTypeID=${affVendorTypeID}&affVendor=$affVendor&affVendorID=$affVendorID&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, strChanges),
+                                    Response.Listener { response ->
+                                        activity!!.runOnUiThread {
+                                            if (response.toString().contains("returnCode>0<", false)) {
+                                                Utility.showSubmitAlertDialog(activity, true, "Affiliate Vendor")
+                                                HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneral = true
+                                                HasChangedModel.getInstance().checkGeneralInfoTblAffiliateVendor()
+                                                FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendor = affVendor
+                                                FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorName = textView1.text.toString()
+                                                FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorTypeID = affVendorTypeID
+                                                FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID = response.toString().substring(response.toString().indexOf("<AffiliateVendorFacilityID") + 27, response.toString().indexOf("</AffiliateVendorFacilityID"))
+                                                FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendor = affVendor
+                                                FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorName = textView1.text.toString()
+                                                FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorTypeID = affVendorTypeID
+                                                FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID = FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID
+                                                fillPortalTrackingTableView()
+                                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                                progressBarText.text = "Loading ..."
+                                            } else {
+                                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                                progressBarText.text = "Loading ..."
+                                                var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                                Utility.showSubmitAlertDialog(activity, false, "Affiliate Vendor (Error: " + errorMessage + " )")
+                                            }
+                                            (activity as FormsActivity).overrideBackButton = false
+                                        }
+                                    }, Response.ErrorListener {
+                                Utility.showSubmitAlertDialog(activity, false, "Affiliate Vendor (Error: " + it.message + " )")
+                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                progressBarText.text = "Loading ..."
+                                (activity as FormsActivity).overrideBackButton = false
+                            }))
+//                    }
+                        }
+                    }
+                    val deleteButton = Button(context)
+                    deleteButton.layoutParams = rowLayoutParam3
+                    deleteButton.setTextColor(Color.BLUE)
+                    deleteButton.text = if (get(it).AffiliateVendor.isNullOrEmpty()) "" else "DELETE"
+                    deleteButton.tag = if (get(it).AffiliateVendorFacilityID.isNullOrEmpty()) 0 else get(it).AffiliateVendorFacilityID
+                    deleteButton.textSize = 14f
+                    deleteButton.minimumHeight = 30
+                    deleteButton.gravity = Gravity.CENTER
+                    deleteButton.setBackgroundColor(Color.TRANSPARENT)
+                    tableRow.addView(deleteButton)
+
+
+                deleteButton.setOnClickListener {
+                    progressBarText.text = "Saving ..."
+                    scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+                    var currentTableRowIndex = trackingTableLayout.indexOfChild(tableRow)
+//                    var affVendorTypeID = FacilityDataModel.getInstance().tblAffiliateVendorFacilities.filter { s->s.AffiliateVendorName.equals(textView1.text.toString())}[0].AffiliateVendorTypeID
+//                    var affVendor = editView2.text.toString()
+                    var affVendorID = updateButton.tag.toString()
+                    var strChanges = "Affiliate Vendor Number for "+textView1.text.toString()+" deleted"
+                    var currentfacilityDataModelIndex = currentTableRowIndex - 1
+
+                    Log.v("Aff Vendor Delete --- ", Constants.DeleteAffiliateVendorFacilities + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&affVendorID=$affVendorID&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat())
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.DeleteAffiliateVendorFacilities + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&affVendorID=$affVendorID&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, strChanges),
+                            { response ->
+                                activity!!.runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<", false)) {
+                                        Utility.showSubmitAlertDialog(activity, true, "Affiliate Vendor")
+                                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneral = true
+                                        HasChangedModel.getInstance().checkGeneralInfoTblAffiliateVendor()
+                                        FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendor = ""
+                                        FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorName = textView1.text.toString()
+                                        FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID = ""
+                                        FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendor = ""
+                                        FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID = ""
+                                        FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorName = textView1.text.toString()
+                                        fillPortalTrackingTableView()
+                                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                        progressBarText.text = "Loading ..."
+                                    } else {
+                                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                        progressBarText.text = "Loading ..."
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                        Utility.showSubmitAlertDialog(activity, false, "Affiliate Vendor (Error: "+ errorMessage+" )")
+                                    }
+                                    (activity as FormsActivity).overrideBackButton = false
+                                }
+                            }, {
+                        Utility.showSubmitAlertDialog(activity, false, "Affiliate Vendor (Error: "+it.message+" )")
+                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                        progressBarText.text = "Loading ..."
+                        (activity as FormsActivity).overrideBackButton = false
+                    }))
+//                    }
+                }
+
+
+                    trackingTableLayout.addView(tableRow)
+
+            }
+
+        }
+        altTableRow(2)
+    }
+
+    fun altTableRow(alt_row: Int) {
+        var childViewCount = trackingTableLayout.getChildCount();
+
+
+        for (i in 1..childViewCount - 1) {
+            var row: TableRow = trackingTableLayout.getChildAt(i) as TableRow;
+
+//            if (i % alt_row != 0) {
+                row.background = getResources().getDrawable(
+                        R.drawable.alt_row_color);
+//            } else {
+//                row.background = getResources().getDrawable(
+//                        R.drawable.row_color);
+//            }
+
+        }
+    }
+
+
 
 
     fun ImplementBusinessRules() {
@@ -494,33 +716,33 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
         })
 
-        affiliateNationalEditText.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
-                HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityNationalNo = true
-                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-                (activity as FormsActivity).saveRequired = true
-                submitGeneralInfoRequired = true
-                refreshButtonsState()
-            }
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-        })
-
-        affiliateNAPAEditText.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
-                HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityNAPANo = true
-                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-                (activity as FormsActivity).saveRequired = true
-                submitGeneralInfoRequired = true
-                refreshButtonsState()
-            }
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-        })
+//        affiliateNationalEditText.addTextChangedListener(object : TextWatcher{
+//            override fun afterTextChanged(p0: Editable?) {
+//                HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityNationalNo = true
+//                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+//                (activity as FormsActivity).saveRequired = true
+//                submitGeneralInfoRequired = true
+//                refreshButtonsState()
+//            }
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//        })
+//
+//        affiliateNAPAEditText.addTextChangedListener(object : TextWatcher{
+//            override fun afterTextChanged(p0: Editable?) {
+//                HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityNAPANo = true
+//                HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+//                (activity as FormsActivity).saveRequired = true
+//                submitGeneralInfoRequired = true
+//                refreshButtonsState()
+//            }
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//        })
 
         wifiAvailableCheckBox.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = b
@@ -764,13 +986,13 @@ class FacilityGeneralInformationFragment : Fragment() {
         val billingMonth = FacilityDataModel.getInstance().tblFacilities[0].BillingMonth.toString()
         val billingAmount = FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toString()
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-        val clubCode =FacilityDataModel.getInstance().clubCode
-        val napaNumber = affiliateNAPAEditText.text.toString()
-        val nationalNumber = affiliateNationalEditText.text.toString()
-        FacilityDataModel.getInstance().tblFacilities[0]
+        val clubCode = FacilityDataModel.getInstance().clubCode
+//        val napaNumber = affiliateNAPAEditText.text.toString()
+//        val nationalNumber = affiliateNationalEditText.text.toString()
+//        FacilityDataModel.getInstance().tblFacilities[0]
         progressBarText.text = "Saving ..."
         scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-        var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=${FacilityDataModel.getInstance().tblFacilities[0].ACTIVE}&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType+"&napaNumber="+napaNumber+"&nationalNumber="+nationalNumber
+        var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=${FacilityDataModel.getInstance().tblFacilities[0].ACTIVE}&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType//+"&napaNumber="+napaNumber+"&nationalNumber="+nationalNumber
 //        UUID.randomUUID().toString()
 
         Log.v("Facility General --- ",Constants.submitFacilityGeneralInfo + urlString + Utility.getLoggingParameters(activity, 0, ""))
@@ -954,6 +1176,29 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     }
 
+//    fun disableAllAddButnsAndDialog(){
+//
+//        for (i in 0 until mainViewLinearId.childCount)
+//        {
+//            val child = mainViewLinearId.getChildAt(i)
+//            child.isEnabled = false
+//        }
+//
+//        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+//
+//        for ( i in 1..childViewCount-1)
+//        {
+//            var row: TableRow = aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+//
+//            for (j in 0..row.getChildCount() - 1) {
+//
+//                var tv: TextView = row.getChildAt(j) as TextView
+//                tv.isEnabled = false
+//
+//            }
+//
+//        }
+//    }
 
     fun refreshButtonsState(){
 

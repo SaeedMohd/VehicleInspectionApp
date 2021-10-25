@@ -71,7 +71,7 @@ class HasChangedModel {
         var FacilityTimeZone= false
         var FacilityGeneralPaymentMethods= false
         var FacilityType= false
-
+        var AffiliateVendor = false
         var FacilityNAPANo = false
         var FacilityNationalNo = false
 
@@ -162,6 +162,7 @@ class HasChangedModel {
         var GFGeneral = GroupFacilityGeneralInfo()
         GFGeneral.FacilityGeneral = false
         GFGeneral.FacilityGeneralPaymentMethods = false
+        GFGeneral.AffiliateVendor = false
         GFGeneral.FacilityTimeZone = false
         GFGeneral.FacilityType = false
         GFGeneral.FacilityNAPANo = false
@@ -249,7 +250,7 @@ class HasChangedModel {
 
 
     fun changeDoneForFacilityGeneralInfo() : Boolean {
-        if (groupFacilityGeneralInfo[0].FacilityGeneral || groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods || groupFacilityGeneralInfo[0].FacilityTimeZone || groupFacilityGeneralInfo[0].FacilityType || groupFacilityGeneralInfo[0].FacilityNAPANo || groupFacilityGeneralInfo[0].FacilityNationalNo) {
+        if (groupFacilityGeneralInfo[0].FacilityGeneral || groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods || groupFacilityGeneralInfo[0].FacilityTimeZone || groupFacilityGeneralInfo[0].FacilityType || groupFacilityGeneralInfo[0].FacilityNAPANo || groupFacilityGeneralInfo[0].FacilityNationalNo || groupFacilityGeneralInfo[0].AffiliateVendor) {
             groupFacility[0].FacilityGeneral=true
             return true
         } else {
@@ -259,7 +260,7 @@ class HasChangedModel {
     }
 
     fun changeDoneForSoSGeneral() : Boolean {
-        if (groupSoSGeneralInfo[0].SoSGeneral || groupSoSGeneralInfo[0].SoSDiscAmount || groupSoSGeneralInfo[0].SoSDiscPercentage) {
+        if (groupSoSGeneralInfo[0].SoSGeneral) {
             groupSoS[0].SoSGeneralInfo=true
             return true
         } else {
@@ -420,6 +421,15 @@ class HasChangedModel {
         groupFacilityContactInfo[0].FacilityLanguages = changeWasDone
     }
 
+    fun checkGeneralInfoTblAffiliateVendor () {
+        var changeWasDone = false
+        if (FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities.size > 0) {
+            if (FacilityDataModel.getInstance().tblAffiliateVendorFacilities[0].AffiliateVendor != FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[0].AffiliateVendor) changeWasDone = true
+        } else changeWasDone = true
+        groupFacilityGeneralInfo[0].AffiliateVendor = changeWasDone
+    }
+
+
     fun checkIfChangeWasDoneforVisitation() : Boolean{
         var changeWasDone = false
         if (changeDoneForFacilityGeneralGroup()){
@@ -453,6 +463,8 @@ class HasChangedModel {
         else if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays!=FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays) changeWasDone = true
         else if (FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts!=FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts) changeWasDone = true
         else if (FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID!=FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblScopeofService[0].DiscountAmount!=FacilityDataModelOrg.getInstance().tblScopeofService[0].DiscountAmount) changeWasDone = true
+        else if (FacilityDataModel.getInstance().tblScopeofService[0].DiscountCap!=FacilityDataModelOrg.getInstance().tblScopeofService[0].DiscountCap) changeWasDone = true
         groupSoSGeneralInfo[0].SoSGeneral= changeWasDone
     }
 

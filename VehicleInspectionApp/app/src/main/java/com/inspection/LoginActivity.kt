@@ -104,7 +104,7 @@ class LoginActivity : Activity(){
 //            envText.text = "PRODUCTION ENVIRONMENT"
         }
 
-        ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
+            ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
         ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID)
 

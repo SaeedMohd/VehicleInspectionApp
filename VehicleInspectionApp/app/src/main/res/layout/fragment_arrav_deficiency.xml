@@ -7,10 +7,9 @@
     android:background="@color/light_gray"
     tools:context=".fragments.FragmentARRAVDeficiency">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/facComp"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:paddingBottom="10dp"
@@ -87,34 +86,34 @@
                 android:background="@color/white"
                 android:orientation="horizontal"
                 >
+
                 <Button
-                    android:background="@drawable/green_background_button"
-                    android:textColor="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_alignParentLeft="true"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="  Load Deficiencies  "
                     android:id="@+id/loadDefButton"
-                    />
-                <Button
-                    android:background="@drawable/green_background_button"
-                    android:textColor="@color/white"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/green_background_button"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="add New Deficiency"
+                    android:text="  Load Deficiencies  "
+                    android:textColor="@color/white" />
+
+                <Button
                     android:id="@+id/showNewDeffDialogueBtn"
-                    />
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/green_background_button"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="add New Deficiency"
+                    android:textColor="@color/white" />
 
             </RelativeLayout>
 
@@ -164,7 +163,7 @@
                         android:textColor="@color/white"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Cleared Date"
+                        android:text="Due Date"
                         android:layout_column="3"
                         android:layout_weight="0.7"
                         android:textSize="14sp"
@@ -173,8 +172,18 @@
                     <TextView
                         android:textColor="@color/white"
                         android:layout_width="0dp"
-                        android:text="Comments"
+                        android:layout_height="wrap_content"
+                        android:text="Cleared Date"
                         android:layout_column="4"
+                        android:layout_weight="0.7"
+                        android:textSize="14sp"
+                        android:gravity="center_vertical"
+                        />
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="0dp"
+                        android:text="Comments"
+                        android:layout_column="5"
                         android:layout_weight="1.4"
                         android:textSize="14sp"
                         android:layout_height="30dp"
@@ -183,7 +192,7 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_column="5"
+                        android:layout_column="6"
                         android:layout_weight="0.6"
                         android:textSize="14sp"
                         android:layout_height="30dp"
@@ -315,7 +324,7 @@
                     android:id="@+id/submitNewDeffNewBtn"
                     android:textColor="@color/white"
                     android:ems="12"
-                    android:layout_column="1"
+                    android:layout_column="2"
                     android:background="@drawable/green_background_button"
                     android:layout_gravity="top|right"/>
                 <ImageButton
@@ -377,21 +386,8 @@
                     android:layout_centerVertical="true"
                     android:text="Facility Representative's Signature (Deficiencies)"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
-            </TableRow>
-            <TableRow android:layout_marginTop="10dp">
-
-                <Button
-                    android:layout_weight="1"
-                    android:id="@+id/signatureDateBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_column="0"
-                    android:background="@color/transparent"
-                    android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-
+                    android:textStyle="bold" />
                 <ImageView
                     android:id="@+id/facilityRepresentativeDeficienciesSignatureImageView"
                     android:layout_width="0dp"
@@ -413,7 +409,25 @@
                     android:text="Add Signature"
                     android:textColor="@color/white"
                     android:textSize="12dp" />
-
+            </TableRow>
+            <TableRow android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_column="0"
+                    android:text="Signature Date"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/signatureDateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:background="@color/transparent"
+                    android:text="SELECT DATE"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp" />
 
             </TableRow>
 
@@ -479,7 +493,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/defeciencyCardEdit"
             android:layout_centerInParent="true"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
 
@@ -499,18 +513,19 @@
                         android:ems="12"
                         android:layout_column="0"
                         />
+
                     <Button
+                        android:id="@+id/submitNewDeffNewBtnEdit"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="48dp"
+                        android:layout_column="2"
+                        android:layout_gravity="top|right"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="5dp"
-                        android:text="SUBMIT"
-                        android:id="@+id/submitNewDeffNewBtnEdit"
-                        android:textColor="@color/white"
-                        android:ems="12"
-                        android:layout_column="1"
                         android:background="@drawable/green_background_button"
-                        android:layout_gravity="top|right"/>
+                        android:ems="12"
+                        android:text="SUBMIT"
+                        android:textColor="@color/white" />
                     <ImageButton
                         android:layout_marginTop="25dp"
                         android:id="@+id/exitDeffeciencyDialogeBtnIdEdit"
@@ -569,17 +584,25 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Facility Representative's Signature (Deficiencies)"
+                        android:layout_column="0"
                         android:textSize="15sp"
                         android:textStyle="bold" />
                 </TableRow>
                 <TableRow android:layout_marginTop="10dp">
-
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_column="0"
+                        android:text="Signature Date"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
                     <Button
                         android:layout_weight="1"
                         android:id="@+id/signatureDateBtnEdit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
+                        android:layout_column="1"
                         android:background="@color/transparent"
                         android:text="SELECT DATE"
                         android:textColor="@color/blue"
@@ -596,13 +619,13 @@
                     <Button
                         android:id="@+id/facilityRepresentativeDeficienciesSignatureButtonEdit"
                         android:layout_width="0dp"
-                        android:layout_height="30dp"
+                        android:layout_height="48dp"
+                        android:layout_column="2"
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:background="@drawable/blue_background_button"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
-                        android:layout_column="2"
                         android:text="Add Signature"
                         android:textColor="@color/white"
                         android:textSize="12dp" />

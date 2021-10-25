@@ -31,8 +31,10 @@ import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateProgramsData
 
 import com.inspection.model.*
+import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
 
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
+import kotlinx.android.synthetic.main.fragment_arrav_programs.mainViewLinearId
 
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 
@@ -301,7 +303,8 @@ class FragmentARRAVPrograms : Fragment() {
                     }))
                 }
             } else {
-                Utility.showValidationAlertDialog(activity,"Please fill the required fields")
+//                Utility.showValidationAlertDialog(activity,"Please fill the required fields")
+                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
             }
 
         }
@@ -628,7 +631,8 @@ class FragmentARRAVPrograms : Fragment() {
                                 }
                             } else {
                                 //                            Toast.makeText(context, "please fill all required fields", Toast.LENGTH_SHORT).show()
-                                Utility.showValidationAlertDialog(activity, "Please fill all required fields")
+//                                Utility.showValidationAlertDialog(activity, "Please fill all required fields")
+                                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
                             }
                         }
                     }
@@ -751,6 +755,16 @@ class FragmentARRAVPrograms : Fragment() {
             effective_date_textviewVal.setError("Required Field")
         }
 
+        if(!expiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(effective_date_textviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(expiration_date_textviewVal!!.text.toString())
+            if (expDate.before(effDate)) {
+                programValide = false
+                expiration_date_textviewVal.setError("Should be after Effective Date")
+            }
+        }
+
         if (comments_editTextVal.text.toString().isNullOrEmpty()) {
             programValide = false
             comments_editTextVal.setError("Required Field")
@@ -769,6 +783,16 @@ class FragmentARRAVPrograms : Fragment() {
         if (edit_effective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             programValide = false
             edit_effective_date_textviewVal.setError("Required Field")
+        }
+
+        if(!edit_expiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_effective_date_textviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_expiration_date_textviewVal!!.text.toString())
+            if (expDate.before(effDate)) {
+                programValide = false
+                edit_expiration_date_textviewVal.setError("Should be after Effective Date")
+            }
         }
 
 

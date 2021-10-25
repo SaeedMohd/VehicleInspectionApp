@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.activity_item_detail.*
 import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
+import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -128,6 +129,12 @@ class FragmentARRAVPersonnel : Fragment() {
                 alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
             }
         }
+
+
+        editurlLink.isClickable = true;
+        editurlLink.movementMethod = LinkMovementMethod.getInstance()
+
+
         addNewPersnRecordBtn.setOnClickListener {
             newFirstNameText.setText("")
             newLastNameText.setText("")
@@ -160,8 +167,6 @@ class FragmentARRAVPersonnel : Fragment() {
             addNewPersonnelDialogue.visibility=View.VISIBLE
 //            val hyperlinktxt : String = "<a href='"+textViewAceURL.text.toString()+"'>Tap here to open Link</a>"
 
-            editurlLink.isClickable = true;
-            editurlLink.movementMethod = LinkMovementMethod.getInstance()
             urlLink.isClickable = true;
             urlLink.movementMethod = LinkMovementMethod.getInstance()
             hyperlinktxt = "<a href='"+newACEURLText.text.toString()+"'>"+newACEURLText.text.toString()+"</a>"
@@ -508,6 +513,8 @@ class FragmentARRAVPersonnel : Fragment() {
                     personnelLoadingText.text = "Loading ..."
 
                 }))
+            } else {
+                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Start Date")
             }
 
         }
@@ -537,6 +544,8 @@ class FragmentARRAVPersonnel : Fragment() {
                 var CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
                 var ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
                 var PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
+                var ReportRec =if (newReportCheck.isChecked==true) "1" else "0"
+                var NotificationRec =if (newNotificationCheck.isChecked==true) "1" else "0"
                 var startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
@@ -544,7 +553,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 var OEMEndDate = if (newOEMEndDateBtn.text.equals("SELECT DATE")) "" else newOEMEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var ace_url=if (newACEURLText.text.toString().isNullOrEmpty()) "" else newACEURLText.text.toString()
 //                Log.v("PERSONNEL ADD --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0,0)),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0,0)),
                         Response.Listener { response ->
                             activity!!.runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {
@@ -565,6 +574,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                     item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                     item.endDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                     item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                    item.ReportRecipient = newReportCheck.isChecked
+                                    item.NotificationRecipient = newNotificationCheck.isChecked
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
 
@@ -630,7 +641,8 @@ class FragmentARRAVPersonnel : Fragment() {
             }
             else
             {
-                Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
+//                Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
+                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nEnd Date should be after Effective Date")
             }
         }
         onlyOneMailRecepientLogic()
@@ -1423,34 +1435,52 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam9.column = 9
         rowLayoutParam9.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam9.width = 0
-        rowLayoutParam9.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam9.gravity = Gravity.CENTER_HORIZONTAL
 
         val rowLayoutParam10 = TableRow.LayoutParams()
         rowLayoutParam10.weight = 1F
         rowLayoutParam10.column = 10
         rowLayoutParam10.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam10.width = 0
-        rowLayoutParam10.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam10.gravity = Gravity.CENTER_HORIZONTAL
         var dateTobeFormated = ""
 
         val rowLayoutParam11 = TableRow.LayoutParams()
         rowLayoutParam11.weight = 0.8F
-        rowLayoutParam11.column = 11
+        rowLayoutParam11.column = 13
         rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam11.width = 0
         rowLayoutParam11.gravity = Gravity.CENTER_VERTICAL
 
+        val rowLayoutParam12 = TableRow.LayoutParams()
+        rowLayoutParam12.weight = 1F
+        rowLayoutParam12.column = 11
+        rowLayoutParam12.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam12.width = 0
+        rowLayoutParam12.gravity = Gravity.CENTER_HORIZONTAL
+//        var dateTobeFormated = ""
+
+        val rowLayoutParam13 = TableRow.LayoutParams()
+        rowLayoutParam13.weight = 0.8F
+        rowLayoutParam13.column = 12
+        rowLayoutParam13.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam13.width = 0
+        rowLayoutParam13.gravity = Gravity.CENTER_VERTICAL
+
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParamRow.weight=1F
+        rowLayoutParamRow.width = TableRow.LayoutParams.WRAP_CONTENT
+//        rowLayoutParamRow.weight=1F
 
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
 
                 if (PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}.isNotEmpty()) {
-                    get(it).ASE_Cert_URL = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].asecerturl
+//                    get(it).ASE_Cert_URL = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].asecerturl
                     get(it).OEMstartDate = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].oemstartdate
                     get(it).OEMendDate = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].oemenddate
+//                    get(it).ReportRecipient = (PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].reportrecipient==1)
+//                    get(it).NotificationRecipient = (PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].notificationrecipient==1)
                 }
 
                 var tableRow = TableRow(context)
@@ -1567,6 +1597,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 }
 
                 tableRow.addView(textView9)
+
                 val checkBox10 = CheckBox(context)
                 checkBox10.layoutParams = rowLayoutParam9
                 checkBox10.gravity = Gravity.CENTER
@@ -1584,6 +1615,24 @@ class FragmentARRAVPersonnel : Fragment() {
                 checkBox11.minimumHeight = 30
                 checkBox11.textSize = 12f
                 tableRow.addView(checkBox11)
+
+                val checkBox12 = CheckBox(context)
+                checkBox12.layoutParams = rowLayoutParam12
+                checkBox12.gravity = Gravity.CENTER
+                checkBox12.isChecked = get(it).ReportRecipient
+                checkBox12.minimumHeight = 30
+                checkBox12.isEnabled=false
+                checkBox12.textSize = 12f
+                tableRow.addView(checkBox12)
+
+                val checkBox13 = CheckBox(context)
+                checkBox13.layoutParams = rowLayoutParam13
+                checkBox13.gravity = Gravity.CENTER
+                checkBox13.isChecked = get(it).NotificationRecipient
+                checkBox13.isEnabled=false
+                checkBox13.minimumHeight = 30
+                checkBox13.textSize = 12f
+                tableRow.addView(checkBox13)
 
                 val textViewOEMStart = TextView(context)
                 if (!(get(it).OEMstartDate.isNullOrEmpty())) {
@@ -1816,6 +1865,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
 
                     edit_newACSCheck.isChecked = checkBox11.isChecked
+                    edit_newReportCheck.isChecked = checkBox12.isChecked
+                    edit_newNotificationCheck.isChecked = checkBox13.isChecked
                     edit_addNewPersonnelDialogue.visibility=View.VISIBLE
                     (activity as FormsActivity).overrideBackButton = true
                     alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
@@ -1840,6 +1891,8 @@ class FragmentARRAVPersonnel : Fragment() {
                             var CertificationNum=if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
                             var ContractSigner=if (edit_newSignerCheck.isChecked==true) "true" else "false"
                             var PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "true" else "false"
+                            var ReportRec = edit_newReportCheck.isChecked
+                            var NotificationRec = edit_newNotificationCheck.isChecked
                             var startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
@@ -1848,7 +1901,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             var OEMEndDate = if (newEditOEMEndDateBtn.text.equals("SELECT DATE")) "" else newEditOEMEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var ace_url=if (newEditACEURLText.text.toString().isNullOrEmpty()) "" else newEditACEURLText.text.toString()
 //                            Log.v("PERSONNEL EDIT --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,currentfacilityDataModelIndex)),
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,currentfacilityDataModelIndex)),
                                     Response.Listener { response ->
                                         activity!!.runOnUiThread {
                                             if (response.toString().contains("returnCode>0<",false)) {
@@ -1871,6 +1924,8 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 item.ASE_Cert_URL = ace_url
                                                 item.OEMstartDate = OEMStartDate
                                                 item.OEMendDate= OEMEndDate
+                                                item.ReportRecipient = ReportRec
+                                                item.NotificationRecipient = NotificationRec
                                                 HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                                 HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                                 if (ContractSigner.toBoolean()){
@@ -1951,13 +2006,15 @@ class FragmentARRAVPersonnel : Fragment() {
                                 Utility.showSubmitAlertDialog(activity, false, "Personnel (Error: "+it.message+" )")
                                 personnelLoadingView.visibility = View.GONE
                                 personnelLoadingText.text = "Loading ..."
-
+                                fillPersonnelTableView()
+                                altTableRow(2)
                             }))
 
                         } else {
 
                             //                            Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
-                            Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
+//                            Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
+                            Utility.showValidationAlertDialog(activity, "Please fill all required fields \nEnd Date should be after Start Date")
 
                         }
 
@@ -2187,6 +2244,9 @@ class FragmentARRAVPersonnel : Fragment() {
                                 }))
                                 editNewCertificateDialogue.visibility = View.GONE
                             }
+                            else {
+                                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Start Date")
+                            }
                         }
                     }
                 }
@@ -2394,45 +2454,52 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             (0 until size).forEach {
                 if (get(it).ContractSigner) {
                     newSignerCheck.isEnabled = false
+//                    edit_newSignerCheck.isEnabled = false
                     alreadyContractSignerFound = true
                     disablecontractSignerFeilds()
                 }
             }
             if (!alreadyContractSignerFound){
                 newSignerCheck.isEnabled=true
+//                edit_newSignerCheck.isEnabled=true
                 disablecontractSignerFeilds()
             }
             newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
-
                 if (newSignerCheck.isChecked) {
-
                     if (alreadyContractSignerFound) {
-
                         newSignerCheck.isChecked=false
                         disablecontractSignerFeilds()
-//                        Toast.makeText(context,"there's already a contract signer for this contract",Toast.LENGTH_SHORT).show()
                         Utility.showValidationAlertDialog(activity,"There is already a contract signer for this contract")
                     }else
                     {
                         Utility.showValidationAlertDialog(activity,"No contract signer for this contract")
-//                        Toast.makeText(context,"no contract signer for the contract",Toast.LENGTH_SHORT).show()
                         newSignerCheck.isChecked=true
                         enable_contractSignerFeilds()
-
-
                     }
                 }
                 if (!newSignerCheck.isChecked){
-
                     newSignerCheck.isChecked=false
                     disablecontractSignerFeilds()
-
-
                 }
-
-
             }
-
+//            edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+//                if (edit_newSignerCheck.isChecked) {
+//                    if (alreadyContractSignerFound) {
+//                        edit_newSignerCheck.isChecked=false
+//                        disablecontractSignerFeilds()
+//                        Utility.showValidationAlertDialog(activity,"There is already a contract signer for this contract")
+//                    }else
+//                    {
+//                        Utility.showValidationAlertDialog(activity,"No contract signer for this contract")
+//                        edit_newSignerCheck.isChecked=true
+//                        enable_contractSignerFeilds()
+//                    }
+//                }
+//                if (!edit_newSignerCheck.isChecked){
+//                    edit_newSignerCheck.isChecked=false
+//                    disablecontractSignerFeilds()
+//                }
+//            }
         }
 
 
@@ -2777,6 +2844,18 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             cert.iscertInputValid = false
             expirationDateText.setError("Required Field")
         }
+
+        if(!newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(newCertStartDateBtn!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(newCertEndDateBtn!!.text.toString())
+            if (expDate.before(effDate)) {
+                cert.iscertInputValid = false
+                newCertEndDateBtn.setError("Should be after Effective Date")
+            }
+        }
+
+
         if (newCertTypeSpinner.selectedItem.toString().contains("Not")){
             cert.iscertInputValid=false
             certTypeTextView.setError("required field")
@@ -2833,6 +2912,17 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             cert.iscertInputValid = false
             edit_expirationDateText.setError("Required Field")
         }
+
+        if(!edit_newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newCertStartDateBtn!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newCertEndDateBtn!!.text.toString())
+            if (expDate.before(effDate)) {
+                cert.iscertInputValid = false
+                edit_newCertEndDateBtn.setError("Should be after Effective Date")
+            }
+        }
+
         var certificateType = ""
 //        for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
 //            if (edit_newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
@@ -2918,6 +3008,17 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             newStartDateBtn.setError("required field")
         }  else
             newStartDateBtn.setError(null)
+
+        if(!newEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(newStartDateBtn!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(newEndDateBtn!!.text.toString())
+            if (expDate.before(effDate)) {
+                persn.personnelIsInputsValid = false
+                newEndDateBtn.setError("Should be after Effective Date")
+            }
+        }
+
 
         if (newSignerCheck.isChecked){
 
@@ -3052,6 +3153,16 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             edit_newStartDateBtn.setError("required field")
         }  else
             edit_newStartDateBtn.setError(null)
+
+        if(!edit_newEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newStartDateBtn!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newEndDateBtn!!.text.toString())
+            if (expDate.before(effDate)) {
+                persn.personnelIsInputsValid = false
+                edit_newEndDateBtn.setError("Should be after Effective Date")
+            }
+        }
 
         if (edit_newSignerCheck.isChecked){
 

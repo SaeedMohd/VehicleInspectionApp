@@ -7,11 +7,9 @@
     android:background="@color/light_gray"
     tools:context=".fragments.FragmentAARAVComments">
 
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/facComments"
         android:layout_margin="10dp"
         android:background="@color/light_gray"
         android:orientation="vertical"
@@ -551,6 +549,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 app:cardElevation="5dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/visitationsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="Visitations"
+                    android:gravity="center"
+                    android:textColor="@color/mainColor"
+                    android:textSize="22sp"
+                    />
                 <TableLayout
                     android:id="@+id/trackingTableLayout"
                     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -583,6 +597,7 @@
                             android:layout_weight="2"/>
                     </TableRow>
                 </TableLayout>
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -956,6 +971,37 @@
                             android:layout_toLeftOf="@id/waiversSignatureButton" />
 
                     </RelativeLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Visitation Comments"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/visitationCommentsEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/textview_background"
+                            android:ems="40"
+                            android:lines="6"
+                            android:gravity="left|top"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:maxLength="1000"
+                            android:padding="5dp" />
+                    </RelativeLayout>
+                    
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
