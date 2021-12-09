@@ -1317,16 +1317,41 @@ class VisitationPlanningFragment : Fragment() {
 //            sendCompletedPDF()
         } else {
             IndicatorsDataModel.getInstance().init()
-            if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
-                if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.isNotEmpty()) {
-                    IndicatorsDataModel.getInstance().markVisitedScreen(PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.sortedByDescending { it.changedate }[0].visitedscreens)
-                }
-            }
-            var intent = Intent(context, com.inspection.FormsActivity::class.java)
-            startActivity(intent)
+
+            ////
+            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGVisitationsLog,
+                    Response.Listener { response ->
+                        activity!!.runOnUiThread {
+                            if (!response.toString().replace(" ","").equals("[]")) {
+                                PRGDataModel.getInstance().tblPRGVisitationsLog = Gson().fromJson(response.toString(), Array<PRGVisitationsLog>::class.java).toCollection(ArrayList())
+                            } else {
+                                var item = PRGVisitationsLog()
+                                item.recordid=-1
+                                PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
+                            }
+                            AdjustIndicatorsAndStartActivity()
+                        }
+                    }, Response.ErrorListener {
+                        Log.v("Loading PRG Data error", "" + it.message)
+                        var item = PRGVisitationsLog()
+                        item.recordid=-1
+                        PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
+                        it.printStackTrace()
+                        AdjustIndicatorsAndStartActivity()
+            }))
+            /////
         }
     }
 
+    fun AdjustIndicatorsAndStartActivity () {
+        if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
+            if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.isNotEmpty()) {
+                IndicatorsDataModel.getInstance().markVisitedScreen(PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.sortedByDescending { it.changedate }[0].visitedscreens)
+            }
+        }
+        var intent = Intent(context, com.inspection.FormsActivity::class.java)
+        startActivity(intent)
+    }
     fun getFacilityPRGData(isCompleted : Boolean) {
         PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
         PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()

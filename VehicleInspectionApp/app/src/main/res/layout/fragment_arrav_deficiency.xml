@@ -219,69 +219,69 @@
         android:background="@color/mainColor"
         android:visibility="gone"
         />
-    <RelativeLayout
-        android:id="@+id/signatureDialog"
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:elevation="15dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:background="@color/light_gray">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/signatureDialog"-->
+<!--        android:layout_width="500dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="10dp"-->
+<!--        android:elevation="15dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:visibility="gone"-->
+<!--        android:background="@color/light_gray">-->
 
-        <com.simplify.ink.InkView
-            android:id="@+id/signatureInkView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/white"
-            />
+<!--        <com.simplify.ink.InkView-->
+<!--            android:id="@+id/signatureInkView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="300dp"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:background="@color/white"-->
+<!--            />-->
 
-        <Button
-            android:id="@+id/signatureConfirmButton"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/signatureInkView"
-            android:layout_marginTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/green_background_button"
-            android:text="Confirm"
-            android:textColor="@color/white" />
+<!--        <Button-->
+<!--            android:id="@+id/signatureConfirmButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_below="@id/signatureInkView"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:paddingRight="10dp"-->
+<!--            android:paddingLeft="10dp"-->
+<!--            android:layout_marginRight="20dp"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:background="@drawable/green_background_button"-->
+<!--            android:text="Confirm"-->
+<!--            android:textColor="@color/white" />-->
 
-        <Button
-            android:id="@+id/signatureCancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@id/signatureInkView"
-            android:layout_marginRight="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@id/signatureConfirmButton"
-            android:background="@drawable/green_background_button"
-            android:text="Cancel"
-            android:textColor="@color/white" />
+<!--        <Button-->
+<!--            android:id="@+id/signatureCancelButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_below="@id/signatureInkView"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:paddingRight="10dp"-->
+<!--            android:paddingLeft="10dp"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_toLeftOf="@id/signatureConfirmButton"-->
+<!--            android:background="@drawable/green_background_button"-->
+<!--            android:text="Cancel"-->
+<!--            android:textColor="@color/white" />-->
 
-        <Button
-            android:id="@+id/signatureClearButton"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@id/signatureInkView"
-            android:layout_marginRight="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/green_background_button"
-            android:layout_alignParentLeft="true"
-            android:text="CLEAR"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+<!--        <Button-->
+<!--            android:id="@+id/signatureClearButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_below="@id/signatureInkView"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:paddingRight="10dp"-->
+<!--            android:paddingLeft="10dp"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:background="@drawable/green_background_button"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:text="CLEAR"-->
+<!--            android:textColor="@color/white" />-->
+<!--    </RelativeLayout>-->
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -379,57 +379,57 @@
                     android:textColor="@color/blue"
                     android:textSize="12dp" />
             </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="Facility Representative's Signature (Deficiencies)"
-                    android:textSize="15sp"
-                    android:layout_column="0"
-                    android:textStyle="bold" />
-                <ImageView
-                    android:id="@+id/facilityRepresentativeDeficienciesSignatureImageView"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="60dp"
-                    android:layout_column="1"
-                    />
+<!--            <TableRow>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:text="Facility Representative's Signature (Deficiencies)"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:layout_column="0"-->
+<!--                    android:textStyle="bold" />-->
+<!--                <ImageView-->
+<!--                    android:id="@+id/facilityRepresentativeDeficienciesSignatureImageView"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:layout_height="60dp"-->
+<!--                    android:layout_column="1"-->
+<!--                    />-->
 
-                <Button
-                    android:id="@+id/facilityRepresentativeDeficienciesSignatureButton"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/blue_background_button"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:layout_column="2"
-                    android:text="Add Signature"
-                    android:textColor="@color/white"
-                    android:textSize="12dp" />
-            </TableRow>
-            <TableRow android:layout_marginTop="10dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_column="0"
-                    android:text="Signature Date"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-                <Button
-                    android:id="@+id/signatureDateBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:background="@color/transparent"
-                    android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
+<!--                <Button-->
+<!--                    android:id="@+id/facilityRepresentativeDeficienciesSignatureButton"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/blue_background_button"-->
+<!--                    android:paddingLeft="15dp"-->
+<!--                    android:paddingRight="15dp"-->
+<!--                    android:layout_column="2"-->
+<!--                    android:text="Add Signature"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="12dp" />-->
+<!--            </TableRow>-->
+<!--            <TableRow android:layout_marginTop="10dp">-->
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_column="0"-->
+<!--                    android:text="Signature Date"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textStyle="bold" />-->
+<!--                <Button-->
+<!--                    android:id="@+id/signatureDateBtn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_column="1"-->
+<!--                    android:background="@color/transparent"-->
+<!--                    android:text="SELECT DATE"-->
+<!--                    android:textColor="@color/blue"-->
+<!--                    android:textSize="12dp" />-->
 
-            </TableRow>
+<!--            </TableRow>-->
 
 
             <TableRow>
@@ -493,7 +493,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/defeciencyCardEdit"
             android:layout_centerInParent="true"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
 
@@ -578,60 +578,60 @@
                         android:textColor="@color/blue"
                         android:textSize="12dp" />
                 </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="Facility Representative's Signature (Deficiencies)"
-                        android:layout_column="0"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </TableRow>
-                <TableRow android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_column="0"
-                        android:text="Signature Date"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                    <Button
-                        android:layout_weight="1"
-                        android:id="@+id/signatureDateBtnEdit"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
+<!--                <TableRow>-->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:text="Facility Representative's Signature (Deficiencies)"-->
+<!--                        android:layout_column="0"-->
+<!--                        android:textSize="15sp"-->
+<!--                        android:textStyle="bold" />-->
+<!--                </TableRow>-->
+<!--                <TableRow android:layout_marginTop="10dp">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:layout_column="0"-->
+<!--                        android:text="Signature Date"-->
+<!--                        android:textSize="15sp"-->
+<!--                        android:textStyle="bold" />-->
+<!--                    <Button-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:id="@+id/signatureDateBtnEdit"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_column="1"-->
+<!--                        android:background="@color/transparent"-->
+<!--                        android:text="SELECT DATE"-->
+<!--                        android:textColor="@color/blue"-->
+<!--                        android:textSize="12dp" />-->
 
-                    <ImageView
-                        android:id="@+id/facilityRepresentativeDeficienciesSignatureImageViewEdit"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="60dp"
-                        android:layout_column="1"
-                        />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/facilityRepresentativeDeficienciesSignatureImageViewEdit"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:layout_column="1"-->
+<!--                        />-->
 
-                    <Button
-                        android:id="@+id/facilityRepresentativeDeficienciesSignatureButtonEdit"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_column="2"
-                        android:layout_centerVertical="true"
-                        android:layout_weight="1"
-                        android:background="@drawable/blue_background_button"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="Add Signature"
-                        android:textColor="@color/white"
-                        android:textSize="12dp" />
+<!--                    <Button-->
+<!--                        android:id="@+id/facilityRepresentativeDeficienciesSignatureButtonEdit"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="48dp"-->
+<!--                        android:layout_column="2"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/blue_background_button"-->
+<!--                        android:paddingLeft="15dp"-->
+<!--                        android:paddingRight="15dp"-->
+<!--                        android:text="Add Signature"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="12dp" />-->
 
 
-                </TableRow>
+<!--                </TableRow>-->
 
 
                 <TableRow>

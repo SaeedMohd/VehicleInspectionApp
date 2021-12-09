@@ -53,12 +53,18 @@ import com.inspection.MainActivity
 import com.inspection.Utils.*
 import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
+import kotlinx.android.synthetic.main.fragment_aarav_location.*
+import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import kotlinx.android.synthetic.main.fragment_visitation_form.cancelButton
+import kotlinx.android.synthetic.main.fragment_visitation_form.saveButton
+import kotlinx.android.synthetic.main.fragment_visitation_form.trackingTableLayout
 import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.UnsupportedEncodingException
 import java.lang.Exception
+import java.lang.reflect.Type
 import javax.sql.DataSource
 
 
@@ -121,6 +127,8 @@ class FragmentVisitation : Fragment() {
         dataChangedYesRadioButton.isClickable=false
         dataChangeHandling()
         checkMarkChangesDone()
+        visitationMethodDropListId.tag = 0
+        facilityRepresentativesSpinner.tag = 0
         initializeFields()
         setFieldsValues()
         setFieldsListeners()
@@ -203,6 +211,28 @@ class FragmentVisitation : Fragment() {
         rowLayoutParam1.width = 0
         rowLayoutParam1.gravity = Gravity.CENTER
 
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 2F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 2F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER
+
+        val rowLayoutParam4 = TableRow.LayoutParams()
+        rowLayoutParam4.weight = 2F
+        rowLayoutParam4.column = 4
+        rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER
+
+
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
@@ -231,6 +261,40 @@ class FragmentVisitation : Fragment() {
                     textView1.minimumHeight = 30
                     textView1.text = get(it).performedBy
                     tableRow.addView(textView1)
+
+                    val textView2 = TextView(context)
+                    textView2.layoutParams = rowLayoutParam1
+                    textView2.gravity = Gravity.CENTER
+                    textView2.textSize = 14f
+                    textView2.minimumHeight = 30
+                    var visitationType = ""
+                    if (get(it).VisitationTypeID.equals("1")) {
+                        visitationType = VisitationTypes.Annual.toString()
+                    } else if (get(it).VisitationTypeID.equals("2")) {
+                        visitationType = VisitationTypes.Quarterly.toString()
+                    } else if (get(it).VisitationTypeID.equals("3")) {
+                        visitationType = VisitationTypes.AdHoc.toString()
+                    } else if (get(it).VisitationTypeID.equals("4")) {
+                        visitationType = VisitationTypes.Deficiency.toString()
+                    }
+                    textView2.text = visitationType
+                    tableRow.addView(textView2)
+
+                    val textView3 = TextView(context)
+                    textView3.layoutParams = rowLayoutParam1
+                    textView3.gravity = Gravity.CENTER
+                    textView3.textSize = 14f
+                    textView3.minimumHeight = 30
+                    textView3.text = if (get(it).VisitationMethodTypeID.equals("")) "" else TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(get(it).VisitationMethodTypeID)}[0].TypeName
+                    tableRow.addView(textView3)
+
+                    val textView4 = TextView(context)
+                    textView4.layoutParams = rowLayoutParam1
+                    textView4.gravity = Gravity.CENTER
+                    textView4.textSize = 14f
+                    textView4.minimumHeight = 30
+                    textView4.text = if (get(it).VisitationReasonTypeID.equals("")) "" else  TypeTablesModel.getInstance().VisitationReasonType.filter { s->s.VisitationReasonTypeID.toString().equals(get(it).VisitationReasonTypeID)}[0].VisitationReasonTypeName
+                    tableRow.addView(textView4)
 
                     trackingTableLayout.addView(tableRow)
                 }
@@ -391,6 +455,7 @@ class FragmentVisitation : Fragment() {
 //            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName))
 //            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.toUpperCase()))
             automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(ApplicationPrefs.getInstance(activity).loggedInUserFullName))
+            automotiveSpecialistSpinner.tag = automotiveSpecialistSpinner.selectedItemPosition
         }
 
 
@@ -461,13 +526,21 @@ class FragmentVisitation : Fragment() {
                     waiverCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments)
                     waiverCommentsPreviousValue = waiverCommentsEditText.text.toString()
 
-                    if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("0")) {
-                        var vMethood = TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod)}[0].TypeName
-                        visitationMethodDropListId.setSelection((resources.getStringArray(R.array.visitation_methods)).indexOf(vMethood))
-                        visitMethodPreviousValue = visitationMethodDropListId.selectedItem.toString()
-                    } else {
+
+                    if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.isNullOrEmpty()) {
                         visitationMethodDropListId.setSelection(0)
                         visitMethodPreviousValue = ""
+                    } else {
+                        if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("0")) {
+                            var vMethood = TypeTablesModel.getInstance().VisitationMethodType.filter { s -> s.TypeID.toString().equals(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod) }[0].TypeName
+//                        visitationMethodDropListId.setSelection((resources.getStringArray(R.array.visitation_methods)).indexOf(vMethood))
+                            visitationMethodDropListId.setSelection((VisitationMethodArray).indexOf(vMethood))
+                            visitMethodPreviousValue = visitationMethodDropListId.selectedItem.toString()
+                            visitationMethodDropListId.tag = visitationMethodDropListId.selectedItemPosition
+                        } else {
+                            visitationMethodDropListId.setSelection(0)
+                            visitMethodPreviousValue = ""
+                        }
                     }
                     visitationCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].comments)
                     emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
@@ -689,11 +762,6 @@ class FragmentVisitation : Fragment() {
 
 
 
-
-
-
-
-
         emailPdfCheckBox.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility = b
             checkMarkChangesDone()
@@ -718,6 +786,11 @@ class FragmentVisitation : Fragment() {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy = ""
                 }
 
+                if (!facilityRepresentativesSpinner.tag.equals(p2) || facilityRepresentativesSpinner.tag.equals("-1")) {
+                    facilityRepresentativesSpinner.tag = "-1"
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
                 checkMarkChangesDone()
             }
 
@@ -740,8 +813,14 @@ class FragmentVisitation : Fragment() {
                 } else{
                     FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName= ""
                 }
-                checkMarkChangesDone()
 
+                if (!automotiveSpecialistSpinner.tag.equals(p2) || automotiveSpecialistSpinner.tag.equals("-1")) {
+                    automotiveSpecialistSpinner.tag = "-1"
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+
+                checkMarkChangesDone()
             }
 
         }
@@ -936,6 +1015,7 @@ class FragmentVisitation : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
                 (activity as FormsActivity).saveRequired = true
+                refreshButtonsState()
                 checkMarkChangesDone()
             }
 
@@ -1020,6 +1100,20 @@ class FragmentVisitation : Fragment() {
             }
 
         })
+
+
+        visitationMethodDropListId.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (!visitationMethodDropListId.tag.equals(position) || visitationMethodDropListId.tag.equals("-1")) {
+                    visitationMethodDropListId.tag = "-1"
+                    (activity as FormsActivity).saveRequired = true
+                    refreshButtonsState()
+                }
+            }
+        }
 
     }
 
@@ -1652,6 +1746,14 @@ class FragmentVisitation : Fragment() {
                         aarSignEditText.setText(aarSignPreviousValue)
                         certificateOfApprovalEditText.setText(certificateOfApprovalPreviousValue)
                         memberBenefitsPosterEditText.setText(memberBenefitsPosterPreviousValue)
+                        if (visitMethodPreviousValue.equals(""))
+                            visitationMethodDropListId.setSelection(0)
+                        else {
+                            var vMethood = TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(visitMethodPreviousValue)}[0].TypeName
+                            visitationMethodDropListId.setSelection((VisitationMethodArray).indexOf(vMethood))
+                        }
+//                        visitationMethodDropListId.setSelection((resources.getStringArray(R.array.visitation_methods)).indexOf(vMethood))
+
                         (activity as FormsActivity).saveRequired = false
                         refreshButtonsState()
                         dialog.cancel()

@@ -84,75 +84,85 @@ class FragmentARRAVDeficiency : Fragment() {
             visitationFormAlphaBackground.visibility = View.GONE
         }
 
-        signatureConfirmButton.setOnClickListener {
-
-            var bitmap = signatureInkView.bitmap
-            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
-            when (selectedSignature) {
-                requestedSignature.representativeDeficiency -> {
-//                        saveBmpAsFile(bitmap,"Def")
-                    facilityRepresentativeDeficienciesSignatureBitmap = bitmap
-                    if (isEditing){
-                        if (!isEmpty) {
-                            facilityRepresentativeDeficienciesSignatureButtonEdit.text = "Edit Signature"
-                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(bitmap)
-                        } else {
-                            facilityRepresentativeDeficienciesSignatureButtonEdit.text = "Add Signature"
-                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(null)
-                        }
-                    } else {
-                        if (!isEmpty) {
-                            facilityRepresentativeDeficienciesSignatureButton.text = "Edit Signature"
-                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
-                        } else {
-                            facilityRepresentativeDeficienciesSignatureButton.text = "Add Signature"
-                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
-                        }
-                    }
-                }
-            }
-            signatureInkView.clear()
-//                visitationFormAlphaBackground.visibility = View.GONE
-            signatureDialog.visibility = View.GONE
-            (activity as FormsActivity).overrideBackButton = false
-        }
+//        signatureConfirmButton.setOnClickListener {
+//
+//            var bitmap = signatureInkView.bitmap
+//            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+//            when (selectedSignature) {
+//                requestedSignature.representativeDeficiency -> {
+////                        saveBmpAsFile(bitmap,"Def")
+//                    facilityRepresentativeDeficienciesSignatureBitmap = bitmap
+//                    if (isEditing){
+//                        if (!isEmpty) {
+//                            facilityRepresentativeDeficienciesSignatureButtonEdit.text = "Edit Signature"
+//                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(bitmap)
+//                        } else {
+//                            facilityRepresentativeDeficienciesSignatureButtonEdit.text = "Add Signature"
+//                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(null)
+//                        }
+//                    } else {
+//                        if (!isEmpty) {
+//                            facilityRepresentativeDeficienciesSignatureButton.text = "Edit Signature"
+//                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(bitmap)
+//                        } else {
+//                            facilityRepresentativeDeficienciesSignatureButton.text = "Add Signature"
+//                            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+//                        }
+//                    }
+//                }
+//            }
+//            signatureInkView.clear()
+////                visitationFormAlphaBackground.visibility = View.GONE
+//            signatureDialog.visibility = View.GONE
+//            (activity as FormsActivity).overrideBackButton = false
+//        }f
 
         showNewDeffDialogueBtn.setOnClickListener {
             isEditing = false
             comments_editTextVal.setText("")
-            newVisitationDateBtn.setText("SELECT DATE")
-            signatureDateBtn.setText("SELECT DATE")
-            facilityRepresentativeDeficienciesSignatureButton.setText("ADD SIGNATURE")
-            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
+//            newVisitationDateBtn.setText("SELECT DATE")
+
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            val currentDate = sdf.format(Date())
+//            newVisitationDateBtnEdit.setText(currentDate)
+//            newVisitationDateBtnEdit.isEnabled = false
+            newVisitationDateBtn.setText(currentDate)
+            newVisitationDateBtn.isEnabled = false
+
+
+//            signatureDateBtn.setText("SELECT DATE")
+//            facilityRepresentativeDeficienciesSignatureButton.setText("ADD SIGNATURE")
+//            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
 
             newVisitationDateBtn.setError(null)
-            signatureDateBtn.setError(null)
-            facilityRepresentativeDeficienciesSignatureButton.setError(null)
+//            signatureDateBtn.setError(null)
+//            facilityRepresentativeDeficienciesSignatureButton.setError(null)
             defeciencyCard.visibility=View.VISIBLE
             (activity as FormsActivity).overrideBackButton = true
             visitationFormAlphaBackground.visibility = View.VISIBLE
 
 
-            facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
-                signatureDialog.visibility = View.VISIBLE
-                (activity as FormsActivity).overrideBackButton = true
-                selectedSignature = requestedSignature.representativeDeficiency
-                if (facilityRepresentativeDeficienciesSignatureBitmap != null) {
-                    signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
-                }
-
-            }
-
-
-            signatureClearButton.setOnClickListener {
-                signatureInkView.clear()
-            }
-
-            signatureCancelButton.setOnClickListener {
-                signatureInkView.clear()
-                signatureDialog.visibility = View.GONE
-                (activity as FormsActivity).overrideBackButton = false
-            }
+//            facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
+//                signatureDialog.visibility = View.VISIBLE
+//                (activity as FormsActivity).overrideBackButton = true
+//                selectedSignature = requestedSignature.representativeDeficiency
+//                if (facilityRepresentativeDeficienciesSignatureBitmap != null) {
+//                    signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
+//                }
+//
+//            }
+//
+//
+//            signatureClearButton.setOnClickListener {
+//                signatureInkView.clear()
+//            }
+//
+//            signatureCancelButton.setOnClickListener {
+//                signatureInkView.clear()
+//                signatureDialog.visibility = View.GONE
+//                (activity as FormsActivity).overrideBackButton = false
+//            }
 
 
 //            try {
@@ -228,90 +238,72 @@ class FragmentARRAVDeficiency : Fragment() {
             dpd.show()
         }
 
-        signatureDateBtnEdit.setOnClickListener {
-            val c = Calendar.getInstance()
-            val myFormat = "MM/dd/yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!signatureDateBtnEdit.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(signatureDateBtnEdit.text.toString()))
-                c.setTime(currentDate)
-            }
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "MM/dd/yyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                signatureDateBtnEdit!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
+//        signatureDateBtnEdit.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val myFormat = "MM/dd/yyyy" // mention the format you need
+//            val sdf = SimpleDateFormat(myFormat, Locale.US)
+//            if (!signatureDateBtnEdit.text.toString().equals("SELECT DATE")) {
+//                var currentDate = (sdf.parse(signatureDateBtnEdit.text.toString()))
+//                c.setTime(currentDate)
+//            }
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "MM/dd/yyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year,monthOfYear,dayOfMonth)
+//                signatureDateBtnEdit!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//
+//        signatureDateBtn.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val myFormat = "MM/dd/yyyy" // mention the format you need
+//            val sdf = SimpleDateFormat(myFormat, Locale.US)
+//            if (!signatureDateBtn.text.toString().equals("SELECT DATE")) {
+//                var currentDate = (sdf.parse(signatureDateBtn.text.toString()))
+//                c.setTime(currentDate)
+//            }
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "MM/dd/yyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year,monthOfYear,dayOfMonth)
+//                signatureDateBtn!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
 
-        signatureDateBtn.setOnClickListener {
-            val c = Calendar.getInstance()
-            val myFormat = "MM/dd/yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!signatureDateBtn.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(signatureDateBtn.text.toString()))
-                c.setTime(currentDate)
-            }
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "MM/dd/yyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                signatureDateBtn!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
 
 
-        newVisitationDateBtnEdit.setOnClickListener {
-            val c = Calendar.getInstance()
-            val myFormat = "MM/dd/yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!newVisitationDateBtnEdit.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(newVisitationDateBtnEdit.text.toString()))
-                c.setTime(currentDate)
-            }
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "MM/dd/yyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                newVisitationDateBtnEdit!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
 
-        newVisitationDateBtn.setOnClickListener {
-            val c = Calendar.getInstance()
-            val myFormat = "MM/dd/yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!newVisitationDateBtn.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(newVisitationDateBtn.text.toString()))
-                c.setTime(currentDate)
-            }
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "MM/dd/yyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year,monthOfYear,dayOfMonth)
-                newVisitationDateBtn!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
+//        newVisitationDateBtnEdit.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val myFormat = "MM/dd/yyyy" // mention the format you need
+//            val sdf = SimpleDateFormat(myFormat, Locale.US)
+//            if (!newVisitationDateBtnEdit.text.toString().equals("SELECT DATE")) {
+//                var currentDate = (sdf.parse(newVisitationDateBtnEdit.text.toString()))
+//                c.setTime(currentDate)
+//            }
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "MM/dd/yyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year,monthOfYear,dayOfMonth)
+//                newVisitationDateBtnEdit!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+
 
         submitNewDeffNewBtn.setOnClickListener {
             if (validateInputs()){
@@ -595,39 +587,42 @@ class FragmentARRAVDeficiency : Fragment() {
                             comments_editTextValEdit.isEnabled = true
                             newVisitationDateBtnEdit.setText(textView1.text)
                             newVisitationDateBtnEdit.isEnabled = false
-                            signatureDateBtnEdit.setText("SELECT DATE")
-                            facilityRepresentativeDeficienciesSignatureBitmap = null
-                            facilityRepresentativeDeficienciesSignatureButtonEdit.setText("ADD SIGNATURE")
-                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(null)
+                            newClearedDateBtnEdit.setText(if (textView3.text.toString().equals("")) "SELECT DATE" else textView3.text)
+                            newClearedDateBtnEdit.isEnabled = true
+                            newClearedDateBtnEdit.setError(null)
+//                            signatureDateBtnEdit.setText("SELECT DATE")
+//                            facilityRepresentativeDeficienciesSignatureBitmap = null
+//                            facilityRepresentativeDeficienciesSignatureButtonEdit.setText("ADD SIGNATURE")
+//                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(null)
                             newDefSpinnerEdit.setSelection(defTypeArray.indexOf(textView.text.toString()))
                             newDefSpinnerEdit.isEnabled = false
                             newVisitationDateBtnEdit.setError(null)
-                            signatureDateBtnEdit.setError(null)
-                            facilityRepresentativeDeficienciesSignatureButtonEdit.setError(null)
+//                            signatureDateBtnEdit.setError(null)
+//                            facilityRepresentativeDeficienciesSignatureButtonEdit.setError(null)
                             defeciencyCardEdit.visibility = View.VISIBLE
                             (activity as FormsActivity).overrideBackButton = true
                             visitationFormAlphaBackground.visibility = View.VISIBLE
 
 
-                            facilityRepresentativeDeficienciesSignatureButtonEdit.setOnClickListener {
-                                signatureDialog.visibility = View.VISIBLE
-                                (activity as FormsActivity).overrideBackButton = true
-                                selectedSignature = requestedSignature.representativeDeficiency
-                                if (facilityRepresentativeDeficienciesSignatureBitmap != null) {
-                                    signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
-                                }
-                            }
-
-
-                            signatureClearButton.setOnClickListener {
-                                signatureInkView.clear()
-                            }
-
-                            signatureCancelButton.setOnClickListener {
-                                signatureInkView.clear()
-                                signatureDialog.visibility = View.GONE
-                                (activity as FormsActivity).overrideBackButton = false
-                            }
+//                            facilityRepresentativeDeficienciesSignatureButtonEdit.setOnClickListener {
+//                                signatureDialog.visibility = View.VISIBLE
+//                                (activity as FormsActivity).overrideBackButton = true
+//                                selectedSignature = requestedSignature.representativeDeficiency
+//                                if (facilityRepresentativeDeficienciesSignatureBitmap != null) {
+//                                    signatureInkView.drawBitmap(facilityRepresentativeDeficienciesSignatureBitmap, 0.0f, 0.0f, Paint())
+//                                }
+//                            }
+//
+//
+//                            signatureClearButton.setOnClickListener {
+//                                signatureInkView.clear()
+//                            }
+//
+//                            signatureCancelButton.setOnClickListener {
+//                                signatureInkView.clear()
+//                                signatureDialog.visibility = View.GONE
+//                                (activity as FormsActivity).overrideBackButton = false
+//                            }
 
 //                            signatureConfirmButton.setOnClickListener {
 //
@@ -657,7 +652,8 @@ class FragmentARRAVDeficiency : Fragment() {
                             // From here
                         submitNewDeffNewBtnEdit.setOnClickListener {
                             if (validateInputsEdit()){
-                                var currentfacilityDataModelIndex = rowIndex - 1
+//                                var currentfacilityDataModelIndex = rowIndex - 1
+//                                var currentfacilityDataModelIndex = FacilityDataModel.getInstance().tblDeficiency.filter {  }
                                 progressBarText.text = "Saving ..."
                                 DeffLoadingView.visibility = View.VISIBLE
                                 var item = TblDeficiency()
@@ -680,11 +676,14 @@ class FragmentARRAVDeficiency : Fragment() {
                                                 if (response.toString().contains("returnCode>0<",false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Deficiency")
 //                                                    item.DefID = response.toString().substring(response.toString().indexOf("<DefID")+7,response.toString().indexOf("</DefID"))
-                                                    FacilityDataModel.getInstance().tblDeficiency[currentfacilityDataModelIndex].Comments = item.Comments
-                                                    FacilityDataModel.getInstance().tblDeficiency[currentfacilityDataModelIndex].VisitationDate = item.VisitationDate
-                                                    FacilityDataModel.getInstance().tblDeficiency[currentfacilityDataModelIndex].EnteredDate = item.EnteredDate
-                                                    FacilityDataModel.getInstance().tblDeficiency[currentfacilityDataModelIndex].DueDate = item.DueDate
-                                                    FacilityDataModel.getInstance().tblDeficiency[currentfacilityDataModelIndex].DefTypeID = item.DefTypeID
+                                                    FacilityDataModel.getInstance().tblDeficiency.filter { s->s.DefID.equals(item.DefID)}[0].apply {
+                                                        Comments = item.Comments
+                                                        VisitationDate = item.VisitationDate
+                                                        EnteredDate = item.EnteredDate
+                                                        DueDate = item.DueDate
+                                                        DefTypeID = item.DefTypeID
+                                                        ClearedDate = item.ClearedDate
+                                                    }
                                                     fillDeffTableView()
                                                     HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
                                                     HasChangedModel.getInstance().changeDoneForDeficiencyDef()
@@ -776,8 +775,8 @@ class FragmentARRAVDeficiency : Fragment() {
         defValide = true
 
         newVisitationDateBtn.setError(null)
-        signatureDateBtn.setError(null)
-        facilityRepresentativeDeficienciesSignatureButton.setError(null)
+//        signatureDateBtn.setError(null)
+//        facilityRepresentativeDeficienciesSignatureButton.setError(null)
 
 
         if(newVisitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
@@ -789,18 +788,18 @@ class FragmentARRAVDeficiency : Fragment() {
 
             if (!fac.ClearedDate.isNullOrEmpty()) {
 
-                if (signatureDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-                    defValide = false
-                    signatureDateBtn.setError("Required Field")
-                }
-
-                if (facilityRepresentativeDeficienciesSignatureButton.text.toString() == "ADD SIGNATURE" ||
-                        facilityRepresentativeDeficienciesSignatureButton.text.toString() =="Add Signature") {
-
-                    defValide = false
-                    facilityRepresentativeDeficienciesSignatureButton.setError("required field")
-
-                }
+//                if (signatureDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+//                    defValide = false
+//                    signatureDateBtn.setError("Required Field")
+//                }
+//
+//                if (facilityRepresentativeDeficienciesSignatureButton.text.toString() == "ADD SIGNATURE" ||
+//                        facilityRepresentativeDeficienciesSignatureButton.text.toString() =="Add Signature") {
+//
+//                    defValide = false
+//                    facilityRepresentativeDeficienciesSignatureButton.setError("required field")
+//
+//                }
 
             }
 
@@ -815,14 +814,14 @@ class FragmentARRAVDeficiency : Fragment() {
         defValide = true
 
 //        newVisitationDateBtn.setError(null)
-        signatureDateBtnEdit.setError(null)
-        facilityRepresentativeDeficienciesSignatureButton.setError(null)
-
-
-        if (signatureDateBtnEdit.text.toString().toUpperCase().equals("SELECT DATE")) {
-            defValide = false
-            signatureDateBtnEdit.setError("Required Field")
-        }
+//        signatureDateBtnEdit.setError(null)
+//        facilityRepresentativeDeficienciesSignatureButton.setError(null)
+//
+//
+//        if (signatureDateBtnEdit.text.toString().toUpperCase().equals("SELECT DATE")) {
+//            defValide = false
+//            signatureDateBtnEdit.setError("Required Field")
+//        }
 
         if (newClearedDateBtnEdit.text.toString().toUpperCase().equals("SELECT DATE")) {
             defValide = false
@@ -830,11 +829,11 @@ class FragmentARRAVDeficiency : Fragment() {
         }
 
 
-        if (facilityRepresentativeDeficienciesSignatureButtonEdit.text.toString() == "ADD SIGNATURE" ||
-                facilityRepresentativeDeficienciesSignatureButtonEdit.text.toString() =="Add Signature") {
-            defValide = false
-            facilityRepresentativeDeficienciesSignatureButtonEdit.setError("required field")
-        }
+//        if (facilityRepresentativeDeficienciesSignatureButtonEdit.text.toString() == "ADD SIGNATURE" ||
+//                facilityRepresentativeDeficienciesSignatureButtonEdit.text.toString() =="Add Signature") {
+//            defValide = false
+//            facilityRepresentativeDeficienciesSignatureButtonEdit.setError("required field")
+//        }
 
         return  defValide
 

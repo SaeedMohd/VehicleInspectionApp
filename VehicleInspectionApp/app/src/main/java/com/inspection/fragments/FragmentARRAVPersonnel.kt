@@ -67,6 +67,7 @@ class FragmentARRAVPersonnel : Fragment() {
     private var personListArray = ArrayList<String>()
     private var statesArray = ArrayList<String>()
     var hyperlinktxt : String =""
+    var validationMsg = ""
     var edithyperlinktxt : String =""
     private var firstSelection = false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
     //    private val strFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -514,7 +515,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 }))
             } else {
-                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Start Date")
+                Utility.showValidationAlertDialog(activity, validationMsg)
             }
 
         }
@@ -642,7 +643,7 @@ class FragmentARRAVPersonnel : Fragment() {
             else
             {
 //                Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
-                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nEnd Date should be after Effective Date")
+                Utility.showValidationAlertDialog(activity, validationMsg)
             }
         }
         onlyOneMailRecepientLogic()
@@ -1534,9 +1535,12 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView5.layoutParams = rowLayoutParam4
                 textView5.gravity = Gravity.CENTER_VERTICAL
                 textView5.textSize = 12f
-                textView5.text = get(it).email
+                textView5.text = if (get(it).ContractSigner) FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==get(it).PersonnelID}[0].email else get(it).RSP_Email
                 textView5.minimumHeight = 30
                 tableRow.addView(textView5)
+
+                val textView50 = TextView(context)
+                textView50.text = get(it).RSP_Email
 
                 val textView6 = TextView(context)
                 textView6.layoutParams = rowLayoutParam5
@@ -1556,16 +1560,10 @@ class FragmentARRAVPersonnel : Fragment() {
 
                 tableRow.addView(textView6)
 
-                val textView7 = TextView(context)
-                textView7.layoutParams = rowLayoutParam6
-                textView7.gravity = Gravity.CENTER_VERTICAL
-                textView7.text = get(it).CertificationNum
-                textView7.minimumHeight = 30
-                textView7.textSize = 12f
-                tableRow.addView(textView7)
+
 
                 val textView8 = TextView(context)
-                textView8.layoutParams = rowLayoutParam7
+                textView8.layoutParams = rowLayoutParam6
                 textView8.gravity = Gravity.CENTER_VERTICAL
                 textView8.minimumHeight = 30
                 textView8.textSize = 12f
@@ -1582,7 +1580,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 tableRow.addView(textView8)
 
                 val textView9 = TextView(context)
-                textView9.layoutParams = rowLayoutParam8
+                textView9.layoutParams = rowLayoutParam7
                 textView9.gravity = Gravity.CENTER_VERTICAL
                 textView9.minimumHeight = 30
                 textView9.textSize = 12f
@@ -1597,6 +1595,14 @@ class FragmentARRAVPersonnel : Fragment() {
                 }
 
                 tableRow.addView(textView9)
+
+                val textView7 = TextView(context)
+                textView7.layoutParams = rowLayoutParam8
+                textView7.gravity = Gravity.CENTER_VERTICAL
+                textView7.text = get(it).CertificationNum
+                textView7.minimumHeight = 30
+                textView7.textSize = 12f
+                tableRow.addView(textView7)
 
                 val checkBox10 = CheckBox(context)
                 checkBox10.layoutParams = rowLayoutParam9
@@ -1683,6 +1689,9 @@ class FragmentARRAVPersonnel : Fragment() {
                     if (checkBox10.isChecked){
                         edit_enableContractSignerIsChecked()
                         edit_newSignerCheck.isChecked=true
+                        edit_newFirstNameText.isEnabled = false
+                        edit_newLastNameText.isEnabled = false
+                        edit_newSignerCheck.isEnabled=false
                         edit_newSignerCheck.setOnCheckedChangeListener { buttonView, isChecked ->
                             if (edit_newSignerCheck.isChecked ) {
                                 edit_enableContractSignerIsChecked()
@@ -1693,6 +1702,9 @@ class FragmentARRAVPersonnel : Fragment() {
                     }else{
                         edit_disableContractSignerIsChecked()
                         edit_newSignerCheck.isChecked=false
+                        edit_newSignerCheck.isEnabled=false
+                        edit_newFirstNameText.isEnabled = true
+                        edit_newLastNameText.isEnabled = true
                     }
 
                     FacilityDataModel.getInstance().tblPersonnel.apply {
@@ -1786,6 +1798,8 @@ class FragmentARRAVPersonnel : Fragment() {
                     edit_newLastNameText.setText(textView3.text)
                     edit_newCertNoText.setText(textView7.text)
                     edit_newStartDateBtn.setText(textView8.text)
+                    edit_rspEmailId.setText(textView50.text)
+                    edit_rspUserId.setText(textView4.text)
                     if (textView9.text.isNullOrEmpty() || textView9.equals("01/01/1900")) {
                         edit_newEndDateBtn.setText("SELECT DATE")
                     }else{
@@ -1885,8 +1899,8 @@ class FragmentARRAVPersonnel : Fragment() {
                             }
                             var FirstName=if (edit_newFirstNameText.text.toString().isNullOrEmpty()) "" else edit_newFirstNameText.text.toString()
                             var LastName=if (edit_newLastNameText.text.toString().isNullOrEmpty()) "" else edit_newLastNameText.text.toString()
-                            var RSP_UserName=FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName
-                            var RSP_Email=FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email
+                            var RSP_UserName=edit_rspUserId.text.toString()
+                            var RSP_Email=edit_rspEmailId.text.toString()
                             var facNo=FacilityDataModel.getInstance().tblFacilities[0].FACNo
                             var CertificationNum=if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
                             var ContractSigner=if (edit_newSignerCheck.isChecked==true) "true" else "false"
@@ -2014,7 +2028,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
                             //                            Toast.makeText(context,"please fill the required fields",Toast.LENGTH_SHORT).show()
 //                            Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
-                            Utility.showValidationAlertDialog(activity, "Please fill all required fields \nEnd Date should be after Start Date")
+                            Utility.showValidationAlertDialog(activity, validationMsg)
 
                         }
 
@@ -2245,7 +2259,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                 editNewCertificateDialogue.visibility = View.GONE
                             }
                             else {
-                                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Start Date")
+                                Utility.showValidationAlertDialog(activity, validationMsg)
                             }
                         }
                     }
@@ -2392,7 +2406,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             textView.layoutParams = rowLayoutParam4
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             TableRow.LayoutParams()
-            textView.text = RSP_Email
+            textView.text = if (ContractSigner) FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==PersonnelID}[0].email else RSP_Email
             tableRow.addView(textView)
 
 
@@ -2460,7 +2474,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 }
             }
             if (!alreadyContractSignerFound){
-                newSignerCheck.isEnabled=true
+                newSignerCheck.isEnabled=false
 //                edit_newSignerCheck.isEnabled=true
                 disablecontractSignerFeilds()
             }
@@ -2830,7 +2844,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
         certDateTextView.setError(null)
         certTypeTextView.setError(null)
-
+        validationMsg = ""
 
            var cert = TblPersonnel()
 
@@ -2839,34 +2853,27 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         if (newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
             cert.iscertInputValid = false
             certDateTextView.setError("Required Field")
+            validationMsg = "Please fill all required fields"
         }
         if (!newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE") && newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
             cert.iscertInputValid = false
             expirationDateText.setError("Required Field")
+            validationMsg = "Please fill all required fields"
         }
 
-        if(!newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-            val myFormat = "MM/dd/yyyy" // mention the format you need
-            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(newCertStartDateBtn!!.text.toString())
-            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(newCertEndDateBtn!!.text.toString())
-            if (expDate.before(effDate)) {
-                cert.iscertInputValid = false
-                newCertEndDateBtn.setError("Should be after Effective Date")
-            }
-        }
+
 
 
         if (newCertTypeSpinner.selectedItem.toString().contains("Not")){
             cert.iscertInputValid=false
             certTypeTextView.setError("required field")
+            validationMsg = "Please fill all required fields"
         }
         var certificateType = ""
         for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
             if (newCertTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelCertName))
                 certificateType = fac.PersonnelCertID
         }
-
-
 
         var datesOverlapping = false
         var certTypeExists = false
@@ -2891,6 +2898,20 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             cert.iscertInputValid = !certTypeExists
         }
 
+        if(!newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(newCertStartDateBtn!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(newCertEndDateBtn!!.text.toString())
+            if (expDate.before(effDate)) {
+                cert.iscertInputValid = false
+                newCertEndDateBtn.setError("Should be after Effective Date")
+                if (validationMsg.equals(""))
+                    validationMsg = "Expiration Date should be after Start Date"
+                else
+                    validationMsg += "\nExpiration Date should be after Start Date"
+            }
+        }
+
         return cert.iscertInputValid
     }
 
@@ -2899,7 +2920,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         edit_certDateTextView.setError(null)
         edit_expirationDateText.setError(null)
 //        certTypeTextView.setError(null)
-
+        validationMsg = ""
         var cert = TblPersonnel()
 
         cert.iscertInputValid=true
@@ -2907,21 +2928,15 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         if (edit_newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
             cert.iscertInputValid = false
             edit_newCertStartDateBtn.setError("Required Field")
+            validationMsg = "Please fill all required fields"
         }
         if (!edit_newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE") && edit_newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")){
             cert.iscertInputValid = false
             edit_expirationDateText.setError("Required Field")
+            validationMsg = "Please fill all required fields"
         }
 
-        if(!edit_newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-            val myFormat = "MM/dd/yyyy" // mention the format you need
-            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newCertStartDateBtn!!.text.toString())
-            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newCertEndDateBtn!!.text.toString())
-            if (expDate.before(effDate)) {
-                cert.iscertInputValid = false
-                edit_newCertEndDateBtn.setError("Should be after Effective Date")
-            }
-        }
+
 
         var certificateType = ""
 //        for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
@@ -2950,6 +2965,20 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             cert.iscertInputValid = !datesOverlapping
         }
 
+        if(!edit_newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newCertStartDateBtn!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newCertEndDateBtn!!.text.toString())
+            if (expDate.before(effDate)) {
+                cert.iscertInputValid = false
+                edit_newCertEndDateBtn.setError("Should be after Effective Date")
+                if (validationMsg.equals(""))
+                    validationMsg = "Expiration Date should be after Start Date"
+                else
+                    validationMsg += "\nExpiration Date should be after Start Date"
+            }
+        }
+
         return cert.iscertInputValid
     }
 
@@ -2957,14 +2986,14 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
         var persn = TblPersonnel()
 
-
+        validationMsg = ""
         persn.personnelIsInputsValid=true
 
         if (newFirstNameText.text.toString().isNullOrEmpty()){
 
             persn.personnelIsInputsValid=false
             newFirstNameText.setError("required field")
-
+            validationMsg = "Please fill all required fields"
         }
         else
             newFirstNameText.setError(null)
@@ -2973,6 +3002,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             if (FacilityDataModel.getInstance().tblPersonnel.filter{ s->s.CertificationNum==newCertNoText.text.toString()}.isNotEmpty()) {
                 persn.personnelIsInputsValid=false
                 newCertNoText.setError("Duplicated Cert ID")
+                validationMsg = "Please fill all required fields"
             }
         }
         else
@@ -2989,7 +3019,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
             persn.personnelIsInputsValid=false
             newLastNameText.setError("required field")
-
+            validationMsg = "Please fill all required fields"
 
         }
         else
@@ -2999,6 +3029,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         if (newPersonnelTypeSpinner.selectedItem.toString().contains("Selected")){
             persn.personnelIsInputsValid=false
             personnelTypeTextViewId.setError("required field")
+            validationMsg = "Please fill all required fields"
         }
         else
             personnelTypeTextViewId.setError(null)
@@ -3006,18 +3037,11 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         if (newStartDateBtn.text.toString().contains("SELECT")){
             persn.personnelIsInputsValid=false
             newStartDateBtn.setError("required field")
+            validationMsg = "Please fill all required fields"
         }  else
             newStartDateBtn.setError(null)
 
-        if(!newEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-            val myFormat = "MM/dd/yyyy" // mention the format you need
-            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(newStartDateBtn!!.text.toString())
-            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(newEndDateBtn!!.text.toString())
-            if (expDate.before(effDate)) {
-                persn.personnelIsInputsValid = false
-                newEndDateBtn.setError("Should be after Effective Date")
-            }
-        }
+
 
 
         if (newSignerCheck.isChecked){
@@ -3025,6 +3049,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 if (newAdd1Text.text.toString().isNullOrEmpty()){
                     persn.personnelIsInputsValid=false
                     newAdd1Text.setError("required field")
+                    validationMsg = "Please fill all required fields"
                 }
                 else
                     newAdd1Text.setError(null)
@@ -3033,7 +3058,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     newCityText.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }
                 else
@@ -3043,7 +3068,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     stateTextView.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }
                 else
@@ -3054,7 +3079,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     newZipText.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }
                 else
@@ -3065,7 +3090,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     newPhoneText.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }
                 else
@@ -3076,7 +3101,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     newCoStartDateBtn.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }  else
                     newCoStartDateBtn.setError(null)
@@ -3088,7 +3113,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     newEmailText.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }  else
                     newEmailText.setError(null)
@@ -3108,7 +3133,22 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
             }
 
+        if(!newEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(newStartDateBtn!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(newEndDateBtn!!.text.toString())
+            if (expDate.before(effDate)) {
+                persn.personnelIsInputsValid = false
+                if (validationMsg.equals(""))
+                    validationMsg = "End Date should be after Start Date"
+                else
+                    validationMsg += "\nEnd Date should be after Start Date"
+                newEndDateBtn.setError("Should be after Start Date")
 
+//                \n" +
+//                "End Date should be after Start Date"
+            }
+        }
 
 
         return persn.personnelIsInputsValid
@@ -3116,7 +3156,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
     fun edit_validateInputs() : Boolean{
 
         var persn = TblPersonnel()
-
+        validationMsg = ""
 
         persn.personnelIsInputsValid=true
 
@@ -3124,6 +3164,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
             persn.personnelIsInputsValid=false
             edit_newFirstNameText.setError("required field")
+            validationMsg = "Please fill all required fields"
 
         }
         else
@@ -3134,7 +3175,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
             persn.personnelIsInputsValid=false
             edit_newLastNameText.setError("required field")
-
+            validationMsg = "Please fill all required fields"
 
         }
         else
@@ -3144,6 +3185,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         if (edit_newPersonnelTypeSpinner.selectedItem.toString().contains("Selected")){
             persn.personnelIsInputsValid=false
             edit_personnelTypeTextViewId.setError("required field")
+            validationMsg = "Please fill all required fields"
         }
         else
             edit_personnelTypeTextViewId.setError(null)
@@ -3151,18 +3193,11 @@ val rowLayoutParam9 = TableRow.LayoutParams()
         if (edit_newStartDateBtn.text.toString().contains("SELECT")){
             persn.personnelIsInputsValid=false
             edit_newStartDateBtn.setError("required field")
+            validationMsg = "Please fill all required fields"
         }  else
             edit_newStartDateBtn.setError(null)
 
-        if(!edit_newEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
-            val myFormat = "MM/dd/yyyy" // mention the format you need
-            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newStartDateBtn!!.text.toString())
-            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newEndDateBtn!!.text.toString())
-            if (expDate.before(effDate)) {
-                persn.personnelIsInputsValid = false
-                edit_newEndDateBtn.setError("Should be after Effective Date")
-            }
-        }
+
 
         if (edit_newSignerCheck.isChecked){
 
@@ -3170,7 +3205,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     edit_newAdd1Text.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
                 }
                 else
                     edit_newAdd1Text.setError(null)
@@ -3179,7 +3214,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     edit_newCityText.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }
                 else
@@ -3188,6 +3223,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 if (edit_newStateSpinner.selectedItem.toString().contains("Select")){
                     persn.personnelIsInputsValid=false
                     edit_stateTextView.setError("required field")
+                    validationMsg = "Please fill all required fields"
                 }
                 else
                     edit_stateTextView.setError(null)
@@ -3197,7 +3233,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     edit_newZipText.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }
                 else
@@ -3208,7 +3244,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     edit_newPhoneText.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }
                 else
@@ -3220,7 +3256,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                     persn.personnelIsInputsValid=false
                     edit_newCoStartDateBtn.setError("required field")
 
-
+                    validationMsg = "Please fill all required fields"
                 }  else
                     edit_newCoStartDateBtn.setError(null)
 
@@ -3231,7 +3267,7 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
                     persn.personnelIsInputsValid=false
                     edit_newEmailText.setError("required field")
-
+                    validationMsg = "Please fill all required fields"
 
                 }  else
                     edit_newEmailText.setError(null)
@@ -3250,7 +3286,19 @@ val rowLayoutParam9 = TableRow.LayoutParams()
 
             }
 
-
+        if(!edit_newEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            val myFormat = "MM/dd/yyyy" // mention the format you need
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newStartDateBtn!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_newEndDateBtn!!.text.toString())
+            if (expDate.before(effDate)) {
+                persn.personnelIsInputsValid = false
+                edit_newEndDateBtn.setError("Should be after Start Date")
+                if (validationMsg.equals(""))
+                    validationMsg = "End Date should be after Start Date"
+                else
+                    validationMsg += "\nEnd Date should be after Start Date"
+            }
+        }
 
 
         return persn.personnelIsInputsValid

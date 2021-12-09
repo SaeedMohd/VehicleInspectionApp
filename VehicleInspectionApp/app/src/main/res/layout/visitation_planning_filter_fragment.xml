@@ -194,9 +194,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="3"
-                    android:checked="false"
-                    android:enabled="false"
-                    android:visibility="gone"
+                    android:checked="true"
+                    android:enabled="true"
+                    android:visibility="visible"
                     android:text="Quarterly" />
             </TableRow>
             <TableRow android:layout_marginTop="5dp">
@@ -213,12 +213,14 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="1"
+                    android:checked="true"
                     android:text="In Progress" />
                 <CheckBox
                     android:id="@+id/overdueCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="2"
+                    android:checked="true"
                     android:text="Overdue" />
                 <CheckBox
                     android:id="@+id/completedCheckBox"

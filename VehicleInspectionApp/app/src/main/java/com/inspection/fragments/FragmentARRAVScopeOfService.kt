@@ -538,12 +538,13 @@ class FragmentARRAVScopeOfService : Fragment() {
                     Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information (Error: "+it.message+" )")
                 }))
             } else {
-                Utility.showValidationAlertDialog(activity,"Please fill all the required fields")
+                Utility.showValidationAlertDialog(activity,validateMsg)
             }
         }
     }
 
     fun validateInputs(): Boolean {
+        validateMsg = ""
         scopeOfServiceValide = true
         fixedLaborRateEditText.setError(null)
         diagnosticRateEditText.setError(null)
@@ -552,22 +553,26 @@ class FragmentARRAVScopeOfService : Fragment() {
         if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             fixedLaborRateEditText.setError("Required Field")
+            if (validateMsg.equals("")) validateMsg = "Please fill all the required fields"
         }
 
         if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             diagnosticRateEditText.setError("Required Field")
+            if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
         }
 
 
         if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             laborRateMatrixMaxEditText.setError("Required Field")
+            if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
         }
 
         if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             laborRateMatrixMinEditText.setError("Required Field")
+            if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
         }
 
         if (!laborRateMatrixMinEditText.text.toString().isNullOrEmpty() && !laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
@@ -576,6 +581,10 @@ class FragmentARRAVScopeOfService : Fragment() {
             if (minRate>maxRate) {
                 scopeOfServiceValide = false
                 laborRateMatrixMinEditText.setError("Min Labor Rate should be less than Max Labor Rate")
+                if (validateMsg.equals(""))
+                    validateMsg = "- Min Labor Rate should be less than Max Labor Rate"
+                else
+                    validateMsg += "\n\n- Min Labor Rate should be less than Max Labor Rate"
             }
         }
 
@@ -663,6 +672,7 @@ class FragmentARRAVScopeOfService : Fragment() {
         var typeIdCompare=""
 
         var scopeOfServiceValide = TblScopeofService().isInputsValid
+        var validateMsg = ""
         var scopeOfServiceValideForOtherFragmentToTest = false
 
 

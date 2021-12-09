@@ -220,29 +220,77 @@ class FragmentARRAVPrograms : Fragment() {
                             if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
                                 val dateFormat = SimpleDateFormat("MM/dd/yyyy")
                                 var newEffDate = Date()
-                                var newExpDate = Date()
+                                var newExpDate = dateFormat.parse("01/01/2500")
                                 var DB_EffDate = Date()
-                                var DB_ExpDate = Date()
+                                var DB_ExpDate = dateFormat.parse("01/01/2500")
                                 try {
+                                    //
                                     newEffDate = dateFormat.parse(effective_date_textviewVal!!.text.toString())
-                                    newExpDate = dateFormat.parse(expiration_date_textviewVal!!.text.toString())
+                                    if (expiration_date_textviewVal!!.text.toString().isNullOrEmpty() || expiration_date_textviewVal!!.text.toString().equals("SELECT DATE"))
+                                    else
+                                        newExpDate = dateFormat.parse(expiration_date_textviewVal!!.text.toString())
                                     DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormatMMDDYYYY())
-                                    DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormatMMDDYYYY())
+                                    if (item1.expDate.apiToAppFormatMMDDYYYY().isNullOrEmpty() || item1.expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900"))
+                                    else
+                                        DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormatMMDDYYYY())
                                 } catch (e: ParseException) {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace()
                                 }
 
-                                if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
-                                    if ((DB_ExpDate <= newEffDate) && (newExpDate >= DB_EffDate) ) {
-                                        validProgram = true
-                                        valid_validProgram=true
-                                    } else
-                                        Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
-                                    validProgram = false
-                                } else
-                                    Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
-                                validProgram = false
+//                                if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
+//                                if (item1.expDate.isNullOrEmpty() || item1.expDate.equals("01/01/1900")) {
+                                    // Option 1 .. Old program has no expiry date
+                                    if (DB_ExpDate==dateFormat.parse("01/01/2500")){
+                                        // Option 1.1 .. New Program b4 old program and expiry b4 old program as well
+                                        if (newEffDate<=DB_EffDate && newExpDate!=dateFormat.parse("01/01/2500") && newExpDate<DB_EffDate) {
+                                            validProgram = true
+                                            valid_validProgram=true
+                                        // Option 1.2 .. New Program b4 old program and expiry after start of old program
+                                        } else if (newEffDate<=DB_EffDate && newExpDate!=dateFormat.parse("01/01/2500") && newExpDate>=DB_EffDate) {
+                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                            validProgram = false
+                                            valid_validProgram= false
+                                        } else if (newEffDate<=DB_EffDate && newExpDate==dateFormat.parse("01/01/2500")) {
+                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                            validProgram = false
+                                            valid_validProgram= false
+                                        // Option 1.3 .. New Program after old program start date while old program has no expiry
+                                        } else if (newEffDate>DB_EffDate) {
+                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                            validProgram = false
+                                            valid_validProgram= false
+                                        }
+                                        // Option 2 Old Program has expiry date
+                                    } else {
+                                        // Option 2.1 .. New Program b4 old program and expiry b4 old program as well
+                                        if (newEffDate<=DB_EffDate && newExpDate!=dateFormat.parse("01/01/2500") && newExpDate<DB_EffDate) {
+                                            validProgram = true
+                                            valid_validProgram=true
+                                            // Option 2.2 .. New Program b4 old program and expiry after start of old program
+                                        } else if (newEffDate<=DB_EffDate && newExpDate!=dateFormat.parse("01/01/2500") && newExpDate>=DB_EffDate) {
+                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                            validProgram = false
+                                            valid_validProgram= false
+                                        } else if (newEffDate>DB_EffDate && newEffDate<DB_ExpDate) {
+                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                            validProgram = false
+                                            valid_validProgram= false
+                                        } else if (newEffDate>DB_ExpDate){
+                                            validProgram = true
+                                            valid_validProgram=true
+                                        }
+                                    }
+
+//                                    if ((DB_ExpDate <= newEffDate) && (newExpDate == Date() || newExpDate >= DB_EffDate) ) {
+//                                        validProgram = true
+//                                        valid_validProgram=true
+//                                    } else
+//                                        Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+//                                    validProgram = false
+//                                } else
+//                                    Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+//                                validProgram = false
 
                             }
                     }
@@ -509,61 +557,116 @@ class FragmentARRAVPrograms : Fragment() {
                                 var valid_validProgram = false
                                 for (fac in TypeTablesModel.getInstance().ProgramsType) {
                                     if (edit_program_name_textviewVal.getSelectedItem().toString().equals(fac.ProgramTypeName)) {
-                                        //   Toast.makeText(context,"spinner match",Toast.LENGTH_SHORT).show()
-
-
                                         for (item1 in FacilityDataModel.getInstance().tblPrograms)
                                             if (item1.ProgramTypeID.toString().equals(fac.ProgramTypeID.toString())) {
-
                                                 val selectemProgramName = edit_program_name_textviewVal.getSelectedItem().toString()
                                                 var numToCopare = FacilityDataModel.getInstance().tblPrograms.indexOf(item1)
-
-
                                                 if (textView1.text.toString() == selectemProgramName && numToCopare == currentfacilityDataModelIndex) {
                                                     validProgram = true
                                                     valid_validProgram = true
                                                 } else {
-                                                    val dateFormat = SimpleDateFormat("dd MMM yyyy")
+//                                                    val dateFormat = SimpleDateFormat("dd MMM yyyy")
+//                                                    var newEffDate = Date()
+//                                                    var newExpDate = Date()
+//                                                    var DB_EffDate = Date()
+//                                                    var DB_ExpDate = Date()
+//                                                    try {
+//                                                        newEffDate = dateFormat.parse(edit_effective_date_textviewVal!!.text.toString())
+//                                                        newExpDate = dateFormat.parse(c!!.text.toString())
+//                                                        DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormat())
+//                                                        DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormat())
+//                                                    } catch (e: ParseException) {
+//                                                        // TODO Auto-generated catch block
+//                                                        e.printStackTrace()
+//                                                    }
+//                                                    if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
+//                                                        if ((DB_ExpDate <= newEffDate) && (newExpDate >= DB_EffDate)) {
+//                                                            validProgram = true
+//                                                            valid_validProgram = true
+//                                                        } else
+//                                                        //                                                            Toast.makeText(context, "1st this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+//                                                            Utility.showValidationAlertDialog(activity, "This program is already active within the same dates")
+//                                                        validProgram = false
+//                                                    } else
+//                                                    //                                                        Toast.makeText(context, "2nd this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
+//                                                        Utility.showValidationAlertDialog(activity, "This program is already active within the same dates")
+//                                                    validProgram = false
+
+
+                                                    val dateFormat = SimpleDateFormat("MM/dd/yyyy")
                                                     var newEffDate = Date()
-                                                    var newExpDate = Date()
+                                                    var newExpDate = dateFormat.parse("01/01/2500")
                                                     var DB_EffDate = Date()
-                                                    var DB_ExpDate = Date()
+                                                    var DB_ExpDate = dateFormat.parse("01/01/2500")
                                                     try {
+                                                        //
                                                         newEffDate = dateFormat.parse(edit_effective_date_textviewVal!!.text.toString())
-                                                        newExpDate = dateFormat.parse(edit_expiration_date_textviewVal!!.text.toString())
-                                                        DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormat())
-                                                        DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormat())
+                                                        if (edit_expiration_date_textviewVal!!.text.toString().isNullOrEmpty() || edit_expiration_date_textviewVal!!.text.toString().equals("SELECT DATE"))
+                                                        else
+                                                            newExpDate = dateFormat.parse(edit_expiration_date_textviewVal!!.text.toString())
+                                                        DB_EffDate = dateFormat.parse(item1.effDate.apiToAppFormatMMDDYYYY())
+                                                        if (item1.expDate.apiToAppFormatMMDDYYYY().isNullOrEmpty() || item1.expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900"))
+                                                        else
+                                                            DB_ExpDate = dateFormat.parse(item1.expDate.apiToAppFormatMMDDYYYY())
                                                     } catch (e: ParseException) {
                                                         // TODO Auto-generated catch block
                                                         e.printStackTrace()
                                                     }
 
-                                                    if (!item1.expDate.isNullOrEmpty() || !item1.expDate.isNullOrBlank()) {
-
-
-                                                        if ((DB_ExpDate <= newEffDate) && (newExpDate >= DB_EffDate)) {
-
+                                                    if (DB_ExpDate==dateFormat.parse("01/01/2500")){
+                                                        // Option 1.1 .. New Program b4 old program and expiry b4 old program as well
+                                                        if (newEffDate<=DB_EffDate && newExpDate!=dateFormat.parse("01/01/2500") && newExpDate<DB_EffDate) {
                                                             validProgram = true
-                                                            valid_validProgram = true
-
-
-                                                        } else
-                                                        //                                                            Toast.makeText(context, "1st this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
-                                                            Utility.showValidationAlertDialog(activity, "This program is already active within the same dates")
-                                                        validProgram = false
-
-
-                                                    } else
-                                                    //                                                        Toast.makeText(context, "2nd this program is already active within this time frame".toString(), Toast.LENGTH_LONG).show()
-                                                        Utility.showValidationAlertDialog(activity, "This program is already active within the same dates")
-
-                                                    validProgram = false
-
+                                                            valid_validProgram=true
+                                                            // Option 1.2 .. New Program b4 old program and expiry after start of old program
+                                                        } else if (newEffDate<=DB_EffDate && newExpDate!=dateFormat.parse("01/01/2500") && newExpDate>=DB_EffDate) {
+                                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                                            validProgram = false
+                                                            valid_validProgram= false
+                                                        } else if (newEffDate<=DB_EffDate && newExpDate==dateFormat.parse("01/01/2500")) {
+                                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                                            validProgram = false
+                                                            valid_validProgram= false
+                                                            // Option 1.3 .. New Program after old program start date while old program has no expiry
+                                                        } else if (newEffDate>DB_EffDate) {
+                                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                                            validProgram = false
+                                                            valid_validProgram= false
+                                                        }
+                                                        // Option 2 Old Program has expiry date
+                                                    } else {
+                                                        // Option 2.1 .. New Program b4 old program and expiry b4 old program as well
+                                                        if (newEffDate<=DB_EffDate && newExpDate!=dateFormat.parse("01/01/2500") && newExpDate<DB_EffDate) {
+                                                            validProgram = true
+                                                            valid_validProgram=true
+                                                            // Option 2.2 .. New Program b4 old program and expiry after start of old program
+                                                        } else if (newEffDate<=DB_EffDate && newExpDate!=dateFormat.parse("01/01/2500") && newExpDate>=DB_EffDate) {
+                                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                                            validProgram = false
+                                                            valid_validProgram= false
+                                                        } else if (newEffDate>DB_EffDate && newEffDate<DB_ExpDate) {
+                                                            Utility.showValidationAlertDialog(activity,"This program is already active within the same dates")
+                                                            validProgram = false
+                                                            valid_validProgram= false
+                                                        } else if (newEffDate>DB_ExpDate){
+                                                            validProgram = true
+                                                            valid_validProgram=true
+                                                        }
+                                                    }
                                                 }
-
                                             }
-
                                     }
+                                    ///////////////////////
+
+
+
+
+
+
+
+
+
+                                    /////////////////////
 
                                 }
 

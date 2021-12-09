@@ -842,6 +842,18 @@ class FacilityGeneralInformationFragment : Fragment() {
             handlePaymentMethodsSelection(9, b)
         }
 
+        apple_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(10, b)
+        }
+
+        zelle_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(12, b)
+        }
+
+        venmo_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            handlePaymentMethodsSelection(11, b)
+        }
+
     }
 
     fun validateInputs() : Boolean{
@@ -919,6 +931,9 @@ class FacilityGeneralInformationFragment : Fragment() {
         cash_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==7 }.size>0)
         check_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==8 }.size>0)
         goodyear_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.size>0)
+        apple_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==10 }.size>0)
+        venmo_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==11 }.size>0)
+        zelle_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==12 }.size>0)
 
     }
 
@@ -1071,6 +1086,15 @@ class FacilityGeneralInformationFragment : Fragment() {
         if (goodyear_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.isEmpty()) {
             strAdded += "Goodyear Credit Card - "
         }
+        if (apple_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==10 }.isEmpty()) {
+            strAdded += "Apple Pay - "
+        }
+        if (venmo_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==11 }.isEmpty()) {
+            strAdded += "Venmo - "
+        }
+        if (zelle_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==12 }.isEmpty()) {
+            strAdded += "Zelle - "
+        }
         if (!strAdded.isNullOrEmpty()) {
             strChanges += strPrefix + strAdded.removeSuffix(" - ") + ") added"
         }
@@ -1102,6 +1126,15 @@ class FacilityGeneralInformationFragment : Fragment() {
         if (!goodyear_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.isNotEmpty()) {
             strRemoved += "Goodyear Credit Card - "
         }
+        if (!apple_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==10 }.isEmpty()) {
+            strRemoved += "Apple Pay - "
+        }
+        if (!venmo_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==11 }.isEmpty()) {
+            strRemoved += "Venmo - "
+        }
+        if (!zelle_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==12 }.isEmpty()) {
+            strRemoved += "Zelle - "
+        }
         if (!strRemoved.isNullOrEmpty()) {
             if (strAdded.isNotEmpty()) strChanges += " | "
             strChanges += strPrefix + strRemoved.removeSuffix(" - ") + ") removed"
@@ -1118,17 +1151,20 @@ class FacilityGeneralInformationFragment : Fragment() {
 
                 //  BuildProgramsList()
 
-      val visa : String=   if (visa_checkbox.isChecked == true) "1" else ""
-      val mastercard: String=   if (mastercard_checkbox.isChecked == true) "2" else ""
-      val americanexpress: String=   if (americanexpress_checkbox.isChecked == true) "3" else ""
-      val discover: String=   if (discover_checkbox.isChecked == true) "4" else ""
-      val paypal: String=   if (paypal_checkbox.isChecked == true) "5" else ""
-      val debit: String=   if (debit_checkbox.isChecked == true) "6" else ""
-      val cash: String=   if (cash_checkbox.isChecked == true) "7" else ""
-      val check: String=   if (check_checkbox.isChecked == true) "8" else ""
-      val goodyear: String=   if (goodyear_checkbox.isChecked == true) "9" else ""
+          val visa : String=   if (visa_checkbox.isChecked == true) "1" else ""
+          val mastercard: String=   if (mastercard_checkbox.isChecked == true) "2" else ""
+          val americanexpress: String=   if (americanexpress_checkbox.isChecked == true) "3" else ""
+          val discover: String=   if (discover_checkbox.isChecked == true) "4" else ""
+          val paypal: String=   if (paypal_checkbox.isChecked == true) "5" else ""
+          val debit: String=   if (debit_checkbox.isChecked == true) "6" else ""
+          val cash: String=   if (cash_checkbox.isChecked == true) "7" else ""
+          val check: String=   if (check_checkbox.isChecked == true) "8" else ""
+          val goodyear: String=   if (goodyear_checkbox.isChecked == true) "9" else ""
+          val applepay: String=   if (apple_checkbox.isChecked == true) "10" else ""
+          val venmo: String=   if (venmo_checkbox.isChecked == true) "11" else ""
+          val zelle: String=   if (zelle_checkbox.isChecked == true) "12" else ""
 
-         var paymentMethods= arrayOf(visa,mastercard,americanexpress,discover,paypal,debit,cash,check,goodyear)
+         var paymentMethods= arrayOf(visa,mastercard,americanexpress,discover,paypal,debit,cash,check,goodyear,applepay,venmo,zelle)
         var paymentMethodArray = ArrayList<String>()
         progressBarText.text = "Saving ..."
         scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE

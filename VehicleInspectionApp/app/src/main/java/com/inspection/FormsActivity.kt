@@ -154,7 +154,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             if (alphaBackgroundForAffilliationsDialogs != null) alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
             if (defeciencyCard != null) defeciencyCard.visibility = View.GONE
             if (defeciencyCardEdit != null) defeciencyCardEdit.visibility = View.GONE
-            if (signatureDialog != null) signatureDialog.visibility = View.GONE
+//            if (signatureDialog != null) signatureDialog.visibility = View.GONE
             if (affiliationsCard != null) affiliationsCard.visibility = View.GONE
             if (edit_affiliationsCard != null) edit_affiliationsCard.visibility = View.GONE
             if (facilityServicesCard != null) facilityServicesCard.visibility = View.GONE

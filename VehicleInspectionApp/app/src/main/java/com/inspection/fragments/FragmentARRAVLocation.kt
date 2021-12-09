@@ -39,6 +39,12 @@ import java.net.URLEncoder
 import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
+import android.text.Spanned
+
+import android.text.InputFilter
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+import java.util.regex.PatternSyntaxException
 
 
 /**
@@ -129,6 +135,7 @@ class FragmentARRAVLocation : Fragment() {
 
         hoursArray = resources.getStringArray(R.array.officeTimes)
         fillLocationTableView()
+        fillGeoCodesTable()
         fillPhoneTableView()
         fillOpenHoursTableView()
         fillClosedHoursTableView()
@@ -240,7 +247,126 @@ class FragmentARRAVLocation : Fragment() {
 
     fun setFieldsListeners(){
 
+//        editGeo1Long.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 6))
+        editGeo1Long.inputFilterDecimal(
+                // this values must be positive (0+) unless it throw exception
+                maxDigitsIncludingPoint = 5,
+                maxDecimalPlaces = 6,
+                signed = true
+        )
+        editGeo1Long.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                try {
+                    val s=p0.toString().toFloat()
+                    if (s>0 || s<=-181) {
+                        Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
+                    }
+                } catch(e: java.lang.Exception) {
 
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        editGeo2Long.inputFilterDecimal(
+                // this values must be positive (0+) unless it throw exception
+                maxDigitsIncludingPoint = 5,
+                maxDecimalPlaces = 6,
+                signed = true
+        )
+        editGeo2Long.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                try {
+                    val s=p0.toString().toFloat()
+                    if (s>0 || s<=-181) {
+                        Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
+                    }
+                } catch(e: java.lang.Exception) {
+
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        editGeo3Long.inputFilterDecimal(
+                maxDigitsIncludingPoint = 5, maxDecimalPlaces = 6, signed = true
+        )
+        editGeo3Long.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                try {
+                    val s=p0.toString().toFloat()
+                    if (s>0 || s<=-181) {
+                        Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
+                    }
+                } catch(e: java.lang.Exception) {
+
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        editGeo1Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
+        editGeo1Lat.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                try {
+                    val s=p0.toString().toFloat()
+                    if (s<0 || s>90) {
+                        Utility.showValidationAlertDialog(activity,"Please enter value between 0 and 90")
+                    }
+                } catch(e: java.lang.Exception) {
+
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        editGeo2Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
+        editGeo2Lat.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                try {
+                    val s=p0.toString().toFloat()
+                    if (s<0 || s>90) {
+                        Utility.showValidationAlertDialog(activity,"Please enter value between 0 and 90")
+                    }
+                } catch(e: java.lang.Exception) {
+
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        editGeo3Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
+        editGeo3Lat.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                try {
+                    val s=p0.toString().toFloat()
+                    if (s<0 || s>90) {
+                        Utility.showValidationAlertDialog(activity,"Please enter value between 0 and 90")
+                    }
+                } catch(e: java.lang.Exception) {
+
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
 
         cancelButton.setOnClickListener {
             cancelButton.hideKeyboard()
@@ -1079,7 +1205,7 @@ class FragmentARRAVLocation : Fragment() {
                 val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
 
                 val clubCode = FacilityDataModel.getInstance().clubCode
-                var urlString = facilityNo + "&clubcode=" + clubCode + "&BranchName=" + facBranchName + "&LATITUDE=" + Latitude + "&LONGITUDE=" + Longitude + "&BranchNumber=" + facBranchNo + "&locationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1"
+                var urlString = facilityNo + "&clubcode=" + clubCode + "&BranchName=" + facBranchName + "&LATITUDE=" + Latitude + "&LONGITUDE=" + Longitude + "&BranchNumber=" + facBranchNo + "&locationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1&geocodeTypeID=3"
                 Log.v("Location Address --- ", Constants.submitContactInfoAddress + urlString)
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString + Utility.getLoggingParameters(activity, 0, getAddressChanges()),
                         Response.Listener { response ->
@@ -1088,9 +1214,12 @@ class FragmentARRAVLocation : Fragment() {
                                     Utility.showSubmitAlertDialog(activity, true, "Facility Location")
                                     FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
                                     FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+                                    FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LATITUDE = newLocLatText.text.toString()
+                                    FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LONGITUDE = newLocLongText.text.toString()
                                     FacilityDataModelOrg.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
                                     FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
                                     fillLocationTableView()
+                                    fillGeoCodesTable()
                                     HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
                                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                                 } else {
@@ -1113,6 +1242,77 @@ class FragmentARRAVLocation : Fragment() {
         }
     }
 
+
+    private fun updateGeoCode(geoCodeTypeID: Int){
+        val insertDate = Date().toApiSubmitFormat()
+        val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+        val updateDate = Date().toApiSubmitFormat()
+        val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+        val LocationTypeID = TypeTablesModel.getInstance().LocationType.filter { s -> s.LocTypeName.equals("Physical") }[0].LocTypeID
+        val facAddr1 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr1
+        val facAddr2 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr2
+        val facCity = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].CITY
+        val facCountry = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].County
+        val facST = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ST
+        val facZip = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ZIP
+        val facZip4 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ZIP4
+        var facBranchName = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchName
+        facBranchName = URLEncoder.encode(facBranchName.toString() , "UTF-8");
+        val facBranchNo = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchNumber
+        var Latitude = ""
+        var Longitude = ""
+        if (geoCodeTypeID==3) {
+            Latitude = editGeo1Lat.text.toString()
+            Longitude = editGeo1Long.text.toString()
+        } else if (geoCodeTypeID==1) {
+            Latitude = editGeo2Lat.text.toString()
+            Longitude = editGeo2Long.text.toString()
+        } else {
+            Latitude = editGeo3Lat.text.toString()
+            Longitude = editGeo3Long.text.toString()
+        }
+
+        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+
+        val clubCode = FacilityDataModel.getInstance().clubCode
+        var urlString = facilityNo + "&clubcode=" + clubCode + "&BranchName=" + facBranchName + "&LATITUDE=" + Latitude + "&LONGITUDE=" + Longitude + "&BranchNumber=" + facBranchNo + "&locationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1&geocodeTypeID="+geoCodeTypeID.toString()
+        Log.v("Location GeoCodes --- ", Constants.submitContactInfoAddress + urlString)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString + Utility.getLoggingParameters(activity, 0, getAddressChanges()),
+                Response.Listener { response ->
+                    activity!!.runOnUiThread {
+                        if (response.toString().contains("returnCode>0<", false)) {
+                            Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes")
+                            if (geoCodeTypeID==3) {
+                                FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals("1") }[0].LATITUDE = Latitude
+                                FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals("1") }[0].LONGITUDE = Longitude
+                                FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
+                                FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
+                            }
+                            fillLocationTableView()
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
+                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
+                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
+//                            fillGeoCodesTable()
+                            HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
+                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                        } else {
+                            var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                            Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: " + errorMessage + " )")
+                        }
+                        contactInfoLoadingView.visibility = View.GONE
+                        contactInfoLoadingText.text = "Loading ..."
+                        //                            enableAllAddButnsAndDialog()
+                    }
+                }, Response.ErrorListener {
+
+            Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes (Error: " + it.message + " )")
+            contactInfoLoadingView.visibility = View.GONE
+            contactInfoLoadingText.text = "Loading ..."
+//                        enableAllAddButnsAndDialog()
+            Log.v("error while submitting", "GeoCode Details")
+        }))
+    }
     private fun getLocationTypeName(typeID: String): String {
         var typeName = ""
         for (fac in TypeTablesModel.getInstance().LocationType) {
@@ -1843,129 +2043,43 @@ class FragmentARRAVLocation : Fragment() {
             }
         }
 
-        FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID>-1 }.apply {
-            (0 until size).forEach {
-                var tableRow = TableRow(context)
-                tableRow.layoutParams = rowLayoutParamRow
-                tableRow.minimumHeight = 30
-
-
-                var textView = TextView(context)
-                textView.layoutParams = rowLayoutParam
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.minimumHeight=30
-                textView.text = get(it).GeocodeTypeName
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam1
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.minimumHeight=30
-                textView.setEms(8)
-                textView.text = ""
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam2
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.minimumHeight=30
-                textView.setEms(8)
-                textView.textSize = 10f
-                textView.text = ""
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam3
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.minimumHeight=30
-                textView.text = ""
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam4
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = ""
-                textView.minimumHeight=30
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam5
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = ""
-                textView.minimumHeight=30
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam6
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = ""
-                textView.minimumHeight=30
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam7
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = get(it).LATITUDE
-                textView.minimumHeight=30
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam8
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = get(it).LONGITUDE
-                textView.minimumHeight=30
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam9
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = ""
-                textView.minimumHeight=30
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                textView = TextView(context)
-                textView.layoutParams = rowLayoutParam10
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = ""
-                textView.minimumHeight=30
-                textView.textSize = 10f
-                tableRow.addView(textView)
-
-                var editButton = TextView(context)
-                editButton.layoutParams = rowLayoutParam11
-                editButton.setTextColor(Color.BLUE)
-                editButton.minimumHeight=30
-                editButton.text = ""
-                editButton.textSize = 12f
-                editButton .gravity = Gravity.CENTER
-                editButton .setBackgroundColor(Color.TRANSPARENT)
-                editButton.tag = it
-
-                tableRow.addView(editButton)
-//                if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")){
-                    editButton.visibility = View.INVISIBLE
-//                }
-//
-//                editButton.setOnClickListener { s ->
-//                    showLocationDialog(it)
-//                }
-//FAC 19762
-                locationTbl.addView(tableRow)
-
-            }
-        }
 
         altLocationTableRow(2)
 
+    }
+
+    fun fillGeoCodesTable () {
+            if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3}.isNullOrEmpty()) {
+            editGeo1Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3}[0].LATITUDE)
+            editGeo1Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3}[0].LONGITUDE)
+        }
+        if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==1}.isNullOrEmpty()) {
+            editGeo2Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==1}[0].LATITUDE)
+            editGeo2Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==1}[0].LONGITUDE)
+        }
+        if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2}.isNullOrEmpty()) {
+            editGeo3Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2}[0].LATITUDE)
+            editGeo3Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2}[0].LONGITUDE)
+        }
+
+        btnUpdate1.setOnClickListener {
+            if (editGeo1Long.text.isNullOrEmpty() || editGeo1Lat.text.isNullOrEmpty()){
+                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
+            } else
+            updateGeoCode(3)
+        }
+        btnUpdate2.setOnClickListener {
+            if (editGeo2Long.text.isNullOrEmpty() || editGeo2Lat.text.isNullOrEmpty()){
+                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
+            } else
+                updateGeoCode(1)
+        }
+        btnUpdate3.setOnClickListener {
+            if (editGeo3Long.text.isNullOrEmpty() || editGeo3Lat.text.isNullOrEmpty()){
+                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
+            } else
+                updateGeoCode(2)
+        }
     }
 
     fun submitFacilityEmail(){
@@ -2274,3 +2388,39 @@ class FragmentARRAVLocation : Fragment() {
     }
 
 }// Required empty public constructor
+
+
+fun EditText.inputFilterDecimal(
+        // maximum digits including point and without decimal places
+        maxDigitsIncludingPoint: Int,
+        maxDecimalPlaces: Int, // maximum decimal places
+        signed: Boolean
+){
+    try {
+        filters = arrayOf<InputFilter>(
+                DecimalDigitsInputFilter(maxDigitsIncludingPoint, maxDecimalPlaces,signed)
+        )
+    }catch (e: PatternSyntaxException){
+        isEnabled = false
+        hint = e.message
+    }
+}
+
+class DecimalDigitsInputFilter(
+        maxDigitsIncludingPoint: Int, maxDecimalPlaces: Int, signed: Boolean
+) : InputFilter {
+        private val pattern: Pattern = Pattern.compile(
+                (if (signed) "->" else "")+"[0-9]{0," + (maxDigitsIncludingPoint - 1) + "}+((\\.[0-9]{0,"
+                    + (maxDecimalPlaces - 1) + "})?)||(\\.)?"
+    )
+
+    override fun filter(
+            p0: CharSequence?,p1: Int,p2: Int,p3: Spanned?,p4: Int,p5: Int
+    ): CharSequence? {
+        p3?.apply {
+            val matcher: Matcher = pattern.matcher(p3)
+            return if (!matcher.matches()) "" else null
+        }
+        return null
+    }
+}

@@ -104,10 +104,12 @@ class TblVisitationTracking {
     var emailVisitationPdfToFacility = false
     var email = ""
     var visitationType : VisitationTypes? = null
+    var VisitationTypeID = ""
     var waiveVisitations = false
     var waiverComments = ""
     var waiverSignature : Bitmap? = null
-
+    var VisitationReasonTypeID = ""
+    var VisitationMethodTypeID = ""
 }
 
 class TblVisitationDetailsData{
