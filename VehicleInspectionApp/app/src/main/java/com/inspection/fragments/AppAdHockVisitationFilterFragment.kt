@@ -390,14 +390,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
 
-    override fun onDetach() {
-        super.onDetach()
-
-    }
 
     inner class AdhocAdapter : BaseAdapter {
 

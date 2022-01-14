@@ -63,6 +63,7 @@ class FragmentARRAVLocation : Fragment() {
     private var hoursArray:Array<String>? = null
     var saveLangRequired = false
     var saveHoursRequired = false
+    var saveGeoCodesRequired = false
 
 
     var languagesGridView: ExpandableHeightGridView? = null
@@ -260,6 +261,11 @@ class FragmentARRAVLocation : Fragment() {
                     val s=p0.toString().toFloat()
                     if (s>0 || s<=-181) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
+                    } else {
+                        FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LONGITUDE = p0.toString()
+                        (activity as FormsActivity).saveRequired = true
+                        saveGeoCodesRequired = true
+                        refreshButtonsState()
                     }
                 } catch(e: java.lang.Exception) {
 
@@ -283,6 +289,19 @@ class FragmentARRAVLocation : Fragment() {
                     val s=p0.toString().toFloat()
                     if (s>0 || s<=-181) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
+                    } else {
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }.isNullOrEmpty()) {
+                            var item = TblGeocodes()
+                            item.GeoCodeTypeID = 3
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeoCodeTypes.filter { s->s.GeocodeTypeID==3 }[0].GeocodeTypeName
+                            item.LONGITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.add(item)
+                        } else {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == 3 }[0].LONGITUDE = p0.toString()
+                        }
+                        (activity as FormsActivity).saveRequired = true
+                        saveGeoCodesRequired = true
+                        refreshButtonsState()
                     }
                 } catch(e: java.lang.Exception) {
 
@@ -303,6 +322,19 @@ class FragmentARRAVLocation : Fragment() {
                     val s=p0.toString().toFloat()
                     if (s>0 || s<=-181) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
+                    } else {
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2 }.isNullOrEmpty()) {
+                            var item = TblGeocodes()
+                            item.GeoCodeTypeID = 2
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeoCodeTypes.filter { s->s.GeocodeTypeID==2 }[0].GeocodeTypeName
+                            item.LONGITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.add(item)
+                        } else {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == 2 }[0].LONGITUDE = p0.toString()
+                        }
+                        (activity as FormsActivity).saveRequired = true
+                        saveGeoCodesRequired = true
+                        refreshButtonsState()
                     }
                 } catch(e: java.lang.Exception) {
 
@@ -321,6 +353,11 @@ class FragmentARRAVLocation : Fragment() {
                     val s=p0.toString().toFloat()
                     if (s<0 || s>90) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and 90")
+                    } else {
+                        FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LATITUDE = p0.toString()
+                        (activity as FormsActivity).saveRequired = true
+                        saveGeoCodesRequired = true
+                        refreshButtonsState()
                     }
                 } catch(e: java.lang.Exception) {
 
@@ -339,6 +376,19 @@ class FragmentARRAVLocation : Fragment() {
                     val s=p0.toString().toFloat()
                     if (s<0 || s>90) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and 90")
+                    } else {
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==1 }.isNullOrEmpty()) {
+                            var item = TblGeocodes()
+                            item.GeoCodeTypeID = 1
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeoCodeTypes.filter { s->s.GeocodeTypeID==1 }[0].GeocodeTypeName
+                            item.LATITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.add(item)
+                        } else {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == 1 }[0].LATITUDE = p0.toString()
+                        }
+                        (activity as FormsActivity).saveRequired = true
+                        saveGeoCodesRequired = true
+                        refreshButtonsState()
                     }
                 } catch(e: java.lang.Exception) {
 
@@ -357,6 +407,19 @@ class FragmentARRAVLocation : Fragment() {
                     val s=p0.toString().toFloat()
                     if (s<0 || s>90) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and 90")
+                    } else {
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2 }.isNullOrEmpty()) {
+                            var item = TblGeocodes()
+                            item.GeoCodeTypeID = 2
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeoCodeTypes.filter { s->s.GeocodeTypeID==2 }[0].GeocodeTypeName
+                            item.LATITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.add(item)
+                        } else {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == 2 }[0].LATITUDE = p0.toString()
+                        }
+                        (activity as FormsActivity).saveRequired = true
+                        saveGeoCodesRequired = true
+                        refreshButtonsState()
                     }
                 } catch(e: java.lang.Exception) {
 
@@ -387,6 +450,18 @@ class FragmentARRAVLocation : Fragment() {
             FacilityDataModel.getInstance().tblHours[0].NightDrop= FacilityDataModelOrg.getInstance().tblHours[0].NightDrop
             FacilityDataModel.getInstance().tblHours[0].NightDropInstr= FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr
             FacilityDataModel.getInstance().tblLanguage.clear()
+            FacilityDataModel.getInstance().tblGeocodes.clear()
+
+            FacilityDataModelOrg.getInstance().tblGeocodes.apply {
+                (0 until size).forEach {
+                    var geoCodeItem = TblGeocodes()
+                    geoCodeItem.GeocodeTypeName = get(it).GeocodeTypeName
+                    geoCodeItem.GeoCodeTypeID = get(it).GeoCodeTypeID
+                    geoCodeItem.LATITUDE = get(it).LATITUDE
+                    geoCodeItem.LONGITUDE = get(it).LONGITUDE
+                    FacilityDataModel.getInstance().tblGeocodes.add(geoCodeItem)
+                }
+            }
 
             FacilityDataModelOrg.getInstance().tblLanguage.apply {
                 (0 until size).forEach {
@@ -397,12 +472,13 @@ class FragmentARRAVLocation : Fragment() {
             }
 
             setServices()
-
+            fillGeoCodesTable()
             fillOpenHoursTableView()
             fillClosedHoursTableView()
             (activity as FormsActivity).saveRequired = false
             saveHoursRequired = false
             saveLangRequired = false
+            saveGeoCodesRequired = false
             refreshButtonsState()
             Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully")
         }
@@ -811,10 +887,25 @@ class FragmentARRAVLocation : Fragment() {
         })
 
         saveButton.setOnClickListener(View.OnClickListener {
-            contactInfoLoadingText.text = "Saving ..."
-            contactInfoLoadingView.visibility = View.VISIBLE
-            if (saveHoursRequired) submitHours()
-            if (saveLangRequired) submitLanguages()
+//            contactInfoLoadingText.text = "Saving ..."
+//            contactInfoLoadingView.visibility = View.VISIBLE
+            if (saveGeoCodesRequired) {
+                var msg = validateGeoCodesInputs()
+             if (!msg.equals("")) {
+                 Utility.showValidationAlertDialog(activity,msg)
+             } else {
+                 contactInfoLoadingText.text = "Saving ..."
+                 contactInfoLoadingView.visibility = View.VISIBLE
+                 submitGeoCodes()
+                 if (saveHoursRequired) submitHours()
+                 if (saveLangRequired) submitLanguages()
+             }
+            } else {
+                contactInfoLoadingText.text = "Saving ..."
+                contactInfoLoadingView.visibility = View.VISIBLE
+                if (saveHoursRequired) submitHours()
+                if (saveLangRequired) submitLanguages()
+            }
 
         })
 
@@ -841,6 +932,8 @@ class FragmentARRAVLocation : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
+
+
 
 
     }
@@ -1455,6 +1548,73 @@ class FragmentARRAVLocation : Fragment() {
         return isInputsValid
     }
 
+    fun validateGeoCodesInputs(): String {
+        var isInputsValid = true
+        var returnMsg = ""
+        editGeo1Lat.setError(null)
+        editGeo2Lat.setError(null)
+        editGeo3Lat.setError(null)
+        editGeo1Long.setError(null)
+        editGeo2Long.setError(null)
+        editGeo3Long.setError(null)
+        if (editGeo1Lat.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            editGeo1Lat.setError("Required Field")
+            returnMsg = "Map & Driving Directions Latitude is required"
+        }
+
+        if (editGeo1Long.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            editGeo1Long.setError("Required Field")
+            if (returnMsg.equals("")) {
+                returnMsg = "Map & Driving Directions Longitude is required"
+            } else {
+                returnMsg += "\nMap & Driving Directions Longitude is required"
+            }
+        }
+
+        if (editGeo2Lat.text.toString().isNullOrEmpty() && !editGeo2Long.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            editGeo2Lat.setError("Required Field")
+            if (returnMsg.equals("")) {
+                returnMsg = "Tow Truck Drop-Off Latitude is required"
+            } else {
+                returnMsg += "\nTow Truck Drop-Off Latitude is required"
+            }
+        }
+
+        if (!editGeo2Lat.text.toString().isNullOrEmpty() && editGeo2Long.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            editGeo2Long.setError("Required Field")
+            if (returnMsg.equals("")) {
+                returnMsg = "Tow Truck Drop-Off Longitude is required"
+            } else {
+                returnMsg += "\nTow Truck Drop-Off Longitude is required"
+            }
+        }
+
+        if (editGeo3Lat.text.toString().isNullOrEmpty() && !editGeo3Long.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            editGeo3Lat.setError("Required Field")
+            if (returnMsg.equals("")) {
+                returnMsg = "Customer Waiting Area Latitude is required"
+            } else {
+                returnMsg += "\nCustomer Waiting Area Latitude is required"
+            }
+        }
+
+        if (!editGeo3Lat.text.toString().isNullOrEmpty() && editGeo3Long.text.toString().isNullOrEmpty()) {
+            isInputsValid = false
+            editGeo3Long.setError("Required Field")
+            if (returnMsg.equals("")) {
+                returnMsg = "Customer Waiting Area Longitude is required"
+            } else {
+                returnMsg += "\nCustomer Waiting Area Longitude is required"
+            }
+        }
+        return returnMsg
+    }
+
     fun fillPhoneTableView() {
 //        val rowLayoutParam = TableRow.LayoutParams()
 //        rowLayoutParam.weight = 1F
@@ -1908,12 +2068,12 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam10.width = 0
         rowLayoutParam10.gravity = Gravity.CENTER
 
-        val rowLayoutParam11 = TableRow.LayoutParams()
-        rowLayoutParam11.weight = 0.8F
-        rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam11.column = 11
-        rowLayoutParam11.width = 0
-        rowLayoutParam11.gravity = Gravity.CENTER
+//        val rowLayoutParam11 = TableRow.LayoutParams()
+//        rowLayoutParam11.weight = 0.8F
+//        rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
+//        rowLayoutParam11.column = 11
+//        rowLayoutParam11.width = 0
+//        rowLayoutParam11.gravity = Gravity.CENTER
 
         var dateTobeFormated = ""
 
@@ -2019,24 +2179,24 @@ class FragmentARRAVLocation : Fragment() {
                 textView.textSize = 10f
                 tableRow.addView(textView)
 
-                var editButton = TextView(context)
-                editButton.layoutParams = rowLayoutParam11
-                editButton.setTextColor(Color.BLUE)
-                editButton.minimumHeight=30
-                editButton.text = "EDIT"
-                editButton.textSize = 12f
-                editButton .gravity = Gravity.CENTER
-                editButton .setBackgroundColor(Color.TRANSPARENT)
-                editButton.tag = it
-
-                tableRow.addView(editButton)
-                if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")){
-                    editButton.visibility = View.INVISIBLE
-                }
-
-                editButton.setOnClickListener { s ->
-                    showLocationDialog(it)
-                }
+//                var editButton = TextView(context)
+//                editButton.layoutParams = rowLayoutParam11
+//                editButton.setTextColor(Color.BLUE)
+//                editButton.minimumHeight=30
+//                editButton.text = "EDIT"
+//                editButton.textSize = 12f
+//                editButton .gravity = Gravity.CENTER
+//                editButton .setBackgroundColor(Color.TRANSPARENT)
+//                editButton.tag = it
+//
+//                tableRow.addView(editButton)
+//                if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")){
+//                    editButton.visibility = View.INVISIBLE
+//                }
+//
+//                editButton.setOnClickListener { s ->
+//                    showLocationDialog(it)
+//                }
 
                 locationTbl.addView(tableRow)
 
@@ -2134,6 +2294,79 @@ class FragmentARRAVLocation : Fragment() {
 
             Utility.showSubmitAlertDialog(activity,false,"Facility Email (Error: "+it.message+" )")
         }))
+    }
+
+
+    fun submitGeoCodes(){
+
+        val facID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+        val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+        val clubCode = FacilityDataModel.getInstance().clubCode
+        val LocationTypeID = "1"
+        val facAddr1 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr1
+        val facAddr2 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr2
+        val facCity = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].CITY
+        val facCountry = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].County
+        val facST = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ST
+        val facZip = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ZIP
+        val facZip4 = ""
+        var facBranchName = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchName
+        facBranchName = URLEncoder.encode(facBranchName.toString() , "UTF-8");
+        val facBranchNo = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchNumber
+
+        val geocodeTypeID_Map = 3
+        val LATITUDE_Map = editGeo1Lat.text.toString()
+        val LONGITUDE_Map = editGeo1Long.text.toString()
+        val geocodeTypeID_Tow = 1
+        var LATITUDE_Tow = ""
+        var LONGITUDE_Tow = ""
+        val geocodeTypeID_Cst = 2
+        var LATITUDE_Cst = ""
+        var LONGITUDE_Cst = ""
+        if (!editGeo2Lat.toString().isNullOrEmpty()) {
+            LATITUDE_Tow = editGeo2Lat.text.toString()
+            LONGITUDE_Tow = editGeo2Long.text.toString()
+        }
+        if (!editGeo3Lat.toString().isNullOrEmpty()) {
+            LATITUDE_Cst = editGeo3Lat.text.toString()
+            LONGITUDE_Cst = editGeo3Long.text.toString()
+        }
+
+        Log.v("REQUEST -->", Constants.submitFacilityGeoCodes + "${facID}&facnum=${facilityNo}&clubcode=${clubCode}" +
+                "&LocationTypeID_P=${LocationTypeID}&FAC_Addr1_P=${facAddr1}&FAC_Addr2_P=${facAddr2}&CITY_P=${facCity}&ST_P=${facST}&ZIP_P=${facZip}&County_P=${facCountry}&BranchName_P=${facBranchName}&BranchNumber_P=${facBranchNo}" +
+                "&geocodeTypeID_Map=${geocodeTypeID_Map}&LATITUDE_Map=${LATITUDE_Map}&LONGITUDE_Map=${LONGITUDE_Map}&geocodeTypeID_Tow=${geocodeTypeID_Tow}&LATITUDE_Tow=${LATITUDE_Tow}&LONGITUDE_Tow=${LONGITUDE_Tow}&geocodeTypeID_Cst=${geocodeTypeID_Cst}&LATITUDE_Cst=${LATITUDE_Cst}&LONGITUDE_Cst=${LONGITUDE_Cst}" +
+                "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
+                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getHoursChanges()))
+
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeoCodes + "${facID}&facnum=${facilityNo}&clubcode=${clubCode}" +
+                "&LocationTypeID_P=${LocationTypeID}&FAC_Addr1_P=${facAddr1}&FAC_Addr2_P=${facAddr2}&CITY_P=${facCity}&ST_P=${facST}&ZIP_P=${facZip}&County_P=${facCountry}&BranchName_P=${facBranchName}&BranchNumber_P=${facBranchNo}" +
+                "&geocodeTypeID_Map=${geocodeTypeID_Map}&LATITUDE_Map=${LATITUDE_Map}&LONGITUDE_Map=${LONGITUDE_Map}&geocodeTypeID_Tow=${geocodeTypeID_Tow}&LATITUDE_Tow=${LATITUDE_Tow}&LONGITUDE_Tow=${LONGITUDE_Tow}&geocodeTypeID_Cst=${geocodeTypeID_Cst}&LATITUDE_Cst=${LATITUDE_Cst}&LONGITUDE_Cst=${LONGITUDE_Cst}" +
+                "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
+                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getHoursChanges()),
+            Response.Listener { response ->
+                activity!!.runOnUiThread {
+                    if (response.toString().contains("returnCode>0<",false)) {
+                        (activity as FormsActivity).saveRequired = false
+                        saveGeoCodesRequired = false
+//                        HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+//                        HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                        refreshButtonsState()
+                        Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes")
+
+                    } else {
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity, false, "Facility GeoCodes (Error: "+errorMessage+" )")
+                    }
+                    contactInfoLoadingView.visibility = View.GONE
+                    contactInfoLoadingText.text = "Loading ..."
+                }
+            }, Response.ErrorListener {
+                Log.v("error while loading", "error submitting geocodes")
+                Utility.showSubmitAlertDialog(activity,false,"Facility GeoCodes (Error: "+it.message+" )")
+                contactInfoLoadingView.visibility = View.GONE
+                contactInfoLoadingText.text = "Loading ..."
+            }))
+
     }
 
     fun submitHours(){
@@ -2410,7 +2643,7 @@ class DecimalDigitsInputFilter(
         maxDigitsIncludingPoint: Int, maxDecimalPlaces: Int, signed: Boolean
 ) : InputFilter {
         private val pattern: Pattern = Pattern.compile(
-                (if (signed) "->" else "")+"[0-9]{0," + (maxDigitsIncludingPoint - 1) + "}+((\\.[0-9]{0,"
+                (if (signed) "-" else "")+"[0-9]{0," + (maxDigitsIncludingPoint - 1) + "}+((\\.[0-9]{0,"
                     + (maxDecimalPlaces - 1) + "})?)||(\\.)?"
     )
 

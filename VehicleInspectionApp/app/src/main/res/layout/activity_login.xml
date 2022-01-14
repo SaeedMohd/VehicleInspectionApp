@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Version 2.11"
+            android:text="Version 2.13"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_alignParentBottom="true"
@@ -64,17 +64,36 @@
                 android:gravity="center"
                 />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/textview_background"
+                android:layout_height="40dp">
             <EditText
                 android:id="@+id/loginPasswordEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:ems="20"
-                android:layout_marginTop="20dp"
+                android:ems="18"
                 android:background="@drawable/textview_background"
                 android:hint="Your Password"
                 android:inputType="textPassword"
                 android:gravity="center"
                 />
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/showPassBtn"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:scaleY="0.7"
+                    android:scaleX="0.8"
+                    android:clickable="true"
+                    android:background="@drawable/eyeicon"
+                    />
+            </LinearLayout>
+
+
 
             <Button
                 android:id="@+id/loginButton"

@@ -350,14 +350,14 @@ class FragmentARRAVFacilityContinued : Fragment() {
 //        phone_textviewVal.setText(FacilityDataModel.getInstance().tblPhone[0].PhoneNumber)
 //    }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            mListener = context
-//        } else {
-//            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
-//        }
-    }
+//    override fun onAttach(context: Context?) {
+//        super.onAttach(context)
+////        if (context is OnFragmentInteractionListener) {
+////            mListener = context
+////        } else {
+////            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
+////        }
+//    }
 
     override fun onDetach() {
         super.onDetach()

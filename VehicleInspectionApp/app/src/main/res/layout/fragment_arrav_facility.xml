@@ -49,21 +49,20 @@
                         android:id="@+id/contractStatusTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:layout_gravity="center_vertical"
                         android:text="Contract Status: "
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/contractStatusTextViewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:layout_marginRight="50dp"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="center"
+                        android:layout_marginRight="50dp"
                         android:text="TEST"
-                         />
+                        android:textSize="18sp" />
 
                     <RadioGroup
                         android:id="@+id/contractStatusRadioGroup"
@@ -94,6 +93,45 @@
 
 
                     </RadioGroup>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="60dp"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/terminationReasonTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:text="Status Comment: "
+                        android:textSize="18sp"
+                        android:layout_marginEnd="10dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/statusCommentEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/textview_background"
+                        android:ems="20"
+                        android:inputType="textMultiLine"
+                        android:lines="4"
+                        android:padding="5dp"
+                        android:enabled="false"
+                        android:scrollHorizontally="true"
+                        android:text=""
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
                 <View
@@ -674,8 +712,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:textSize="18sp"
                         android:text="Termination Comment: "
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <EditText

@@ -162,10 +162,10 @@ class FragmentARRAVVehicles : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-    }
+//    override fun onAttach(context: Context?) {
+//        super.onAttach(context)
+//
+//    }
 
     override fun onDetach() {
         super.onDetach()

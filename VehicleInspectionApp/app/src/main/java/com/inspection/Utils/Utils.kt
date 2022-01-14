@@ -1002,6 +1002,7 @@ private fun drawVisitationTrackingSection() : PdfPTable {
     table.addCell(addCellWithBorder("Member Benefits Poster(s)", 1,true))
     table.addCell(addCellWithBorder("Quality Control Process", 1,true))
     table.addCell(addCellWithBorder("Staff Training Process", 1,true))
+    var visitationType = ""
     if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals("00")) {
         try {
             if (FacilityDataModel.getInstance().tblVisitationTracking.filter { s -> (Date().time - s.DatePerformed.toDateDBFormat().time) / (24 * 60 * 60 * 1000) < 365 }.isNotEmpty()) {
@@ -1009,7 +1010,18 @@ private fun drawVisitationTrackingSection() : PdfPTable {
                     (0 until size).forEach {
                         if (!get(it).performedBy.equals("00")) {
                             table.addCell(addCellWithBorder(if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY(), 1, true));
-                            table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(), 1, true));
+//                            table.addCell(addCellWithBorder(FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(), 1, true));
+                            visitationType = ""
+                            if (get(it).VisitationTypeID.equals("1")) {
+                                visitationType = VisitationTypes.Annual.toString()
+                            } else if (get(it).VisitationTypeID.equals("2")) {
+                                visitationType = VisitationTypes.Quarterly.toString()
+                            } else if (get(it).VisitationTypeID.equals("3")) {
+                                visitationType = VisitationTypes.AdHoc.toString()
+                            } else if (get(it).VisitationTypeID.equals("4")) {
+                                visitationType = VisitationTypes.Deficiency.toString()
+                            }
+                            table.addCell(addCellWithBorder(visitationType, 1, true));
                             table.addCell(addCellWithBorder("", 1, true));
                             table.addCell(addCellWithBorder(get(it).performedBy, 1, true))
                             table.addCell(addCellWithBorder(get(it).AARSigns, 1, false))

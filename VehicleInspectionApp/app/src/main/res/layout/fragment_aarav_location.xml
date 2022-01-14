@@ -193,15 +193,15 @@
                             android:textColor="@color/white"
                             android:textSize="10sp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_column="11"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="0.8"
-                            android:text="Options"
-                            android:textColor="@color/white"
-                            android:textSize="10sp" />
+<!--                        <TextView-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_column="11"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:layout_weight="0.8"-->
+<!--                            android:text="Options"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="10sp" />-->
                     </TableRow>
 
                 </TableLayout>
@@ -330,6 +330,7 @@
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="0.5"
+                            android:visibility="gone"
                             android:gravity="center"
                             android:id="@+id/btnUpdate1"
                             android:background="@color/transparent"
@@ -388,6 +389,7 @@
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="0.5"
+                            android:visibility="gone"
                             android:gravity="center"
                             android:id="@+id/btnUpdate2"
                             android:background="@color/transparent"
@@ -447,6 +449,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="0.5"
                             android:gravity="center"
+                            android:visibility="gone"
                             android:id="@+id/btnUpdate3"
                             android:background="@color/transparent"
                             android:textColor="@color/blue_krayola"

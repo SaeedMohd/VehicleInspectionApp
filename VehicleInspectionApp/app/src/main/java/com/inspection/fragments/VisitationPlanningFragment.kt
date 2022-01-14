@@ -713,6 +713,7 @@ class VisitationPlanningFragment : Fragment() {
             }
             visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(5, 7).equals(filteredMonth) }
             visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(0, 4).equals(filteredYear) }
+
         }
 
 //        visitationsModel.pendingVisitationsArray.removeIf { s->!s..substring(5,7).equals(filteredMonth)}
@@ -765,14 +766,14 @@ class VisitationPlanningFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            mListener = context
-//        } else {
-//            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
-//        }
-    }
+//    override fun onAttach(context: Context?) {
+//        super.onAttach(context)
+////        if (context is OnFragmentInteractionListener) {
+////            mListener = context
+////        } else {
+////            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
+////        }
+//    }
 
     override fun onDetach() {
         super.onDetach()
@@ -1129,7 +1130,9 @@ class VisitationPlanningFragment : Fragment() {
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode,false,visitationTypeAndStatus.first)
                 })
-                } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
+                }
+
+            else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].DatePerformed.apiToAppFormatMMDDYYYY()

@@ -85,8 +85,8 @@ class FragmentARRAVPersonnel : Fragment() {
         scopeOfServiceChangesWatcher()
         preparePersonnelPage()
         fillPersonnelTableView()
-        rspUserId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName.toString())
-        rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
+//        rspUserId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName.toString())
+//        rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
         IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited = true
         (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
@@ -156,7 +156,8 @@ class FragmentARRAVPersonnel : Fragment() {
             newEmailText.setText("")
             newStateSpinner.setSelection(0)
             newPersonnelTypeSpinner.setSelection(0)
-
+            rspUserId.setText("")
+            rspEmailId.setText("")
             newZipText.setError(null)
             newZipText2.setError(null)
             newPhoneText.setError(null)

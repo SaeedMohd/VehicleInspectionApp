@@ -795,10 +795,10 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         addcancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-    }
+//    override fun onAttach(context: Context?) {
+//        super.onAttach(context)
+//
+//    }
 
     override fun onDetach() {
         super.onDetach()

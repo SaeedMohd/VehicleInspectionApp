@@ -419,16 +419,16 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         dialogOkButton.setOnClickListener {
             if (oldPasswordEditText.text.toString().trim { it <= ' ' }.length > 0 && newPasswordEditText.text.toString().trim { it <= ' ' }.length > 0 && confirmNewPasswordEditText.text.toString().trim { it <= ' ' }.length > 0) {
-                dialogOkButton.isEnabled = false
-                oldPasswordEditText.isEnabled = true
-                newPasswordEditText.isEnabled = false
-                confirmNewPasswordEditText.isEnabled = false
-
+//                if (confirmNewPasswordEditText.text.toString().trim { it <= ' ' }.equals(newPasswordEditText.text.toString().trim { it <= ' ' })) {
+                    dialogOkButton.isEnabled = false
+                    oldPasswordEditText.isEnabled = true
+                    newPasswordEditText.isEnabled = false
+                    confirmNewPasswordEditText.isEnabled = false
+//                } else {
+//                    Utility.showValidationAlertDialog(this,"Password & Confirm password are not matching")
+//                }
                 linearLayout.visibility = View.VISIBLE
-
                 changePasswordTask().execute("" + ApplicationPrefs.getInstance(mContext).userProfilePref.mobileUserProfileId, oldPasswordEditText.text.toString(), newPasswordEditText.text.toString())
-
-
             }
         }
         changePasswordDialog!!.show()

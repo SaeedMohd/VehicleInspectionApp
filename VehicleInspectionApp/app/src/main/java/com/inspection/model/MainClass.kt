@@ -48,6 +48,7 @@ class TblFacilities {
     var InsuranceExpDate = ""
     var ContractTypeID = 0
     var officeID = 0
+    var StatusComment = ""
 }
 
 class TblBusinessType {

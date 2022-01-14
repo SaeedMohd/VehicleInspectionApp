@@ -74,6 +74,7 @@ object Constants {
     val submitContactInfoAddress = permanentURL + "updateFacilityAddressData?facnum="
     val submitFacilityGeneralInfo = permanentURL + "updateFacilityData?facNum="
     val submitFacilityHours = permanentURL + "updateFacilityHoursData?facNum="
+    val submitFacilityGeoCodes = permanentURL + "updateFacilityGeoCodeData?FacID="
     val submitFacilityEmail = permanentURL + "updateFacilityEmailData?facnum="
     val authenticateUrl = permanentURL + "authenticate?email="
     val resetPassword = permanentURL + "resetPassword?email="

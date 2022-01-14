@@ -576,8 +576,8 @@ class FragmentARRAVScopeOfService : Fragment() {
         }
 
         if (!laborRateMatrixMinEditText.text.toString().isNullOrEmpty() && !laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
-            var minRate =  laborRateMatrixMinEditText.text.toString().toInt()
-            var maxRate =  laborRateMatrixMaxEditText.text.toString().toInt()
+            var minRate =  laborRateMatrixMinEditText.text.toString().toDouble()
+            var maxRate =  laborRateMatrixMaxEditText.text.toString().toDouble()
             if (minRate>maxRate) {
                 scopeOfServiceValide = false
                 laborRateMatrixMinEditText.setError("Min Labor Rate should be less than Max Labor Rate")
@@ -594,10 +594,10 @@ class FragmentARRAVScopeOfService : Fragment() {
 
 
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-    }
+//    override fun onAttach(context: Context?) {
+//        super.onAttach(context)
+//
+//    }
 
 
 

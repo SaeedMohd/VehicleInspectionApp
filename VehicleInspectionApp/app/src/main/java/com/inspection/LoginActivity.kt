@@ -12,7 +12,10 @@ import android.os.Bundle
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -60,13 +63,15 @@ class LoginActivity : Activity(){
     private var mCirclesList: ArrayList<String>? = null
 
     private var specialistArrayModel = ArrayList<TypeTablesModel.employeeList>()
-
+    private var changedPassword=""
 
     private var mSignInProgress: Int = 0
 
     private var mSignInIntent: PendingIntent? = null
 
     private var mSignInError: Int = 0
+
+    private var hidePassword: Boolean = true
 
 
     private val mRequestServerAuthCode = false
@@ -107,6 +112,17 @@ class LoginActivity : Activity(){
             ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
         ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID)
+
+        showPassBtn.setOnClickListener {
+            if (hidePassword) {
+                loginPasswordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                showPassBtn.background = this.getDrawable(R.drawable.eyehideicon)
+            } else {
+                loginPasswordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                showPassBtn.background = this.getDrawable(R.drawable.eyeicon)
+            }
+            hidePassword = !hidePassword
+        }
 
         forgotPasswordButton!!.setOnClickListener {
             if (loginEmailEditText.text.isNullOrEmpty()) {
@@ -214,7 +230,7 @@ class LoginActivity : Activity(){
                         specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
 
                         activity!!.runOnUiThread {
-                            if (specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }.size > 0) {
+//                            if (specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }.size > 0) {
                                 ApplicationPrefs.getInstance(activity).loggedInUserEmail = loginEmailEditText!!.text.toString()
                                 ApplicationPrefs.getInstance(activity).loggedInUserPass = loginPasswordEditText!!.text.toString()
                                 ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
@@ -223,9 +239,9 @@ class LoginActivity : Activity(){
 //                                ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
 //                                        Settings.Secure.ANDROID_ID)
                                 userIsLoggedInGotoMainActivity()
-                            } else {
-                                Utility.showMessageDialog(activity, "Login Failed...", "This email is not listed in specialists list")
-                            }
+//                            } else {
+//                                Utility.showMessageDialog(activity, "Login Failed...", "This email is not listed in specialists list")
+//                            }
                             recordsProgressView.visibility = View.GONE
                         }
                     }
@@ -312,7 +328,7 @@ class LoginActivity : Activity(){
         private fun initiateChangePassword(){
             if (chgPasswordEditText!!.text.toString().trim { it <= ' ' }.isEmpty() || chgPasswordConfirmEditText!!.text.toString().trim { it <= ' ' }.isEmpty()) {
                 Utility.showValidationAlertDialog(activity, "Please enter passowrd and confirm password")
-            } else if (chgPasswordEditText.text.equals(chgPasswordConfirmEditText.text)) {
+            } else if (!chgPasswordEditText.text.toString().equals(chgPasswordConfirmEditText.text.toString())) {
                 Utility.showValidationAlertDialog(activity, "Passowrd and confirm password are not matching")
             } else {
                 val userEmail = URLEncoder.encode(loginEmailEditText.text.toString(), "UTF-8");
@@ -324,6 +340,7 @@ class LoginActivity : Activity(){
                                 Log.v("RESPONSE", response.toString())
                                 if (response.toString().contains("Success", false)) {
                                     Utility.showMessageDialog(activity,"Confirmation...","Password changed succesfully ...")
+                                    loginPasswordEditText.setText(userPass)
                                 } else {
                                     var errorMessage = "Error changing password"
                                     Utility.showMessageDialog(activity, "Error ...", errorMessage)
@@ -336,6 +353,7 @@ class LoginActivity : Activity(){
                     changePassDialog.visibility = View.GONE
                     recordsProgressView.visibility = View.GONE
                 }))
+
             }
 
 
