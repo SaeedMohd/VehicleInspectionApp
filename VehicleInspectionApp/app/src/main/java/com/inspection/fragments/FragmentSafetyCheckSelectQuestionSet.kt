@@ -74,7 +74,7 @@ class FragmentSafetyCheckSelectQuestionSet : Fragment() {
                             questionSetNames.add(item.questionSetName)
                         }
 
-                        val myAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, questionSetNames)
+                        val myAdapter = ArrayAdapter<String>(context!!, android.R.layout.simple_list_item_1, questionSetNames)
                         searchCustomerSafetyCheckListView.adapter = myAdapter
                         searchCustomerSafetyCheckListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, position: Int, l: Long ->
                             Log.v("item clicked ", "item clicked'");

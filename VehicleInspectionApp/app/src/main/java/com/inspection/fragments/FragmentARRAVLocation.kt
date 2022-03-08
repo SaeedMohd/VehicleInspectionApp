@@ -84,20 +84,20 @@ class FragmentARRAVLocation : Fragment() {
 //      ArrayAdapter<String> adapterJazyky = new ArrayAdapter<String>(this,
 //              R.layout.spinner_text_layout.xml, {"one","two","etc...."});
         val officeTimes = resources.getStringArray(R.array.officeTimes)
-        sunCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        sunOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        monCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        monOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        tueCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        tueOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        wedCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        wedOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        thuCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        thuOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        friCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        friOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        satCloseSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
-        satOpenSpinner.adapter = ArrayAdapter.createFromResource(activity,R.array.officeTimes,R.layout.spinner_time_item)
+        sunCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        sunOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        monCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        monOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        tueCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        tueOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        wedCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        wedOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        thuCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        thuOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        friCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        friOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        satCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        satOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
 
 
         FacilityDataModel.getInstance().tblHours[0].apply {
@@ -701,7 +701,7 @@ class FragmentARRAVLocation : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
@@ -716,7 +716,7 @@ class FragmentARRAVLocation : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
@@ -1446,7 +1446,7 @@ class FragmentARRAVLocation : Fragment() {
             phoneTypeArray.add(fac.LocPhoneName)
         }
 
-        var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray)
+        var phoneTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, phoneTypeArray)
         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newPhoneTypeSpinner.adapter = phoneTypeAdapter
     }
@@ -1460,7 +1460,7 @@ class FragmentARRAVLocation : Fragment() {
             emailTypeArray.add(fac.EmailName)
         }
 
-        var emailTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, emailTypeArray)
+        var emailTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, emailTypeArray)
         emailTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newEmailTypeSpinner.adapter = emailTypeAdapter
     }
@@ -1471,7 +1471,7 @@ class FragmentARRAVLocation : Fragment() {
 
     private fun setLocations() {
 
-        var citiesAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, states)
+        var citiesAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, states)
         citiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        newStateSpinner.adapter = citiesAdapter
 
@@ -1701,7 +1701,7 @@ class FragmentARRAVLocation : Fragment() {
                         }
 
 
-                        var phoneTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, phoneTypeArray)
+                        var phoneTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, phoneTypeArray)
                         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         newPhoneTypeSpinner.adapter = phoneTypeAdapter
 
@@ -1838,7 +1838,7 @@ class FragmentARRAVLocation : Fragment() {
                             emailTypeArray.add(fac.EmailName)
                         }
 
-                        var emailTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, emailTypeArray)
+                        var emailTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, emailTypeArray)
                         emailTypeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         newEmailTypeSpinner.adapter = emailTypeAdapter
 
@@ -2373,20 +2373,34 @@ class FragmentARRAVLocation : Fragment() {
 
         val nightDrop= if (nightDropCheck.isChecked) "1" else "0"
         val nightDropInstructions=nightDropInstText.text
-        val sunClose = if (sunCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else sunCloseSpinner.selectedItem.toString()
-        val monClose = if (monCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else monCloseSpinner.selectedItem.toString()
-        val tueClose = if (tueCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else tueCloseSpinner.selectedItem.toString()
-        val wedClose = if (wedCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else wedCloseSpinner.selectedItem.toString()
-        val thuClose = if (thuCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else thuCloseSpinner.selectedItem.toString()
-        val friClose = if (friCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else friCloseSpinner.selectedItem.toString()
-        val satClose = if (satCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else satCloseSpinner.selectedItem.toString()
-        val sunOpen = if (sunOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else sunOpenSpinner.selectedItem.toString()
-        val monOpen = if (monOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else monOpenSpinner.selectedItem.toString()
-        val tueOpen = if (tueOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else tueOpenSpinner.selectedItem.toString()
-        val wedOpen = if (wedOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else wedOpenSpinner.selectedItem.toString()
-        val thuOpen = if (thuOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else thuOpenSpinner.selectedItem.toString()
-        val friOpen = if (friOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else friOpenSpinner.selectedItem.toString()
-        val satOpen = if (satOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else satOpenSpinner.selectedItem.toString()
+//        val sunClose = if (sunCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else sunCloseSpinner.selectedItem.toString()
+//        val monClose = if (monCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else monCloseSpinner.selectedItem.toString()
+//        val tueClose = if (tueCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else tueCloseSpinner.selectedItem.toString()
+//        val wedClose = if (wedCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else wedCloseSpinner.selectedItem.toString()
+//        val thuClose = if (thuCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else thuCloseSpinner.selectedItem.toString()
+//        val friClose = if (friCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else friCloseSpinner.selectedItem.toString()
+//        val satClose = if (satCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else satCloseSpinner.selectedItem.toString()
+//        val sunOpen = if (sunOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else sunOpenSpinner.selectedItem.toString()
+//        val monOpen = if (monOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else monOpenSpinner.selectedItem.toString()
+//        val tueOpen = if (tueOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else tueOpenSpinner.selectedItem.toString()
+//        val wedOpen = if (wedOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else wedOpenSpinner.selectedItem.toString()
+//        val thuOpen = if (thuOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else thuOpenSpinner.selectedItem.toString()
+//        val friOpen = if (friOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else friOpenSpinner.selectedItem.toString()
+//        val satOpen = if (satOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else satOpenSpinner.selectedItem.toString()
+        val sunClose = if (sunCloseSpinner.selectedItem.toString().equals("Closed")) "" else sunCloseSpinner.selectedItem.toString()
+        val monClose = if (monCloseSpinner.selectedItem.toString().equals("Closed")) "" else monCloseSpinner.selectedItem.toString()
+        val tueClose = if (tueCloseSpinner.selectedItem.toString().equals("Closed")) "" else tueCloseSpinner.selectedItem.toString()
+        val wedClose = if (wedCloseSpinner.selectedItem.toString().equals("Closed")) "" else wedCloseSpinner.selectedItem.toString()
+        val thuClose = if (thuCloseSpinner.selectedItem.toString().equals("Closed")) "" else thuCloseSpinner.selectedItem.toString()
+        val friClose = if (friCloseSpinner.selectedItem.toString().equals("Closed")) "" else friCloseSpinner.selectedItem.toString()
+        val satClose = if (satCloseSpinner.selectedItem.toString().equals("Closed")) "" else satCloseSpinner.selectedItem.toString()
+        val sunOpen = if (sunOpenSpinner.selectedItem.toString().equals("Closed")) "" else sunOpenSpinner.selectedItem.toString()
+        val monOpen = if (monOpenSpinner.selectedItem.toString().equals("Closed")) "" else monOpenSpinner.selectedItem.toString()
+        val tueOpen = if (tueOpenSpinner.selectedItem.toString().equals("Closed")) "" else tueOpenSpinner.selectedItem.toString()
+        val wedOpen = if (wedOpenSpinner.selectedItem.toString().equals("Closed")) "" else wedOpenSpinner.selectedItem.toString()
+        val thuOpen = if (thuOpenSpinner.selectedItem.toString().equals("Closed")) "" else thuOpenSpinner.selectedItem.toString()
+        val friOpen = if (friOpenSpinner.selectedItem.toString().equals("Closed")) "" else friOpenSpinner.selectedItem.toString()
+        val satOpen = if (satOpenSpinner.selectedItem.toString().equals("Closed")) "" else satOpenSpinner.selectedItem.toString()
         val facAvail = "1"
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&monOpen=${monOpen}&tueOpen=${tueOpen}&wedOpen=${wedOpen}&thuOpen=${thuOpen}" +
@@ -2459,12 +2473,12 @@ class FragmentARRAVLocation : Fragment() {
             }
             langTypeId=langTypeId.dropLast(1)
         } catch (e: Exception){
-            Log.v("ERROR --- >",e.message)
+            Log.v("ERROR --- >", e.message.toString())
         }
         Log.v("LANGUAGES --- ",UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat())
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getLanguageChanges()),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility Languages")
                             (activity as FormsActivity).saveRequired = false

@@ -82,7 +82,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     view.setMinDate(System.currentTimeMillis() - 1000);
 
@@ -316,7 +316,7 @@ class FragmentAARAVBillingPlans : Fragment() {
             categoryTypeArray.add(fac.BillingPlanCatgName)
         }
 
-        var catTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, categoryTypeArray)
+        var catTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, categoryTypeArray)
         catTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newCatSpinner.adapter = catTypeAdapter
 
@@ -329,10 +329,10 @@ class FragmentAARAVBillingPlans : Fragment() {
                 planTypeArrayCat2.add(fac.BillingPlanTypeName)
             }
         }
-        var planTypeAdapterCat1 = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, planTypeArrayCat1)
+        var planTypeAdapterCat1 = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, planTypeArrayCat1)
         planTypeAdapterCat1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newTypeSpinnerCat1.adapter = planTypeAdapterCat1
-        var planTypeAdapterCat2 = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, planTypeArrayCat2)
+        var planTypeAdapterCat2 = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, planTypeArrayCat2)
         planTypeAdapterCat1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newTypeSpinnerCat2.adapter = planTypeAdapterCat2
         newTypeSpinnerCat1.visibility = View.VISIBLE
@@ -361,7 +361,7 @@ class FragmentAARAVBillingPlans : Fragment() {
         for (fac in freqTypeList) {
             freqTypeArray.add(fac.BillingPlanFrequencyTypeName)
         }
-        var freqTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, freqTypeArray)
+        var freqTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, freqTypeArray)
         freqTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newFreqSpinner.adapter = freqTypeAdapter
     }

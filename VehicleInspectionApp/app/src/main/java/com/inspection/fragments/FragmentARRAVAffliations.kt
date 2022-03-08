@@ -81,7 +81,7 @@ class FragmentARRAVAffliations : Fragment() {
                 for (fac in affTypesDetailsList.filter { s->s.AARAffiliationTypeID.equals(selectedTypeID) }) {
                     affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
                 }
-                var afTypeDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesDetailsArray)
+                var afTypeDetailsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, affTypesDetailsArray)
                 afTypeDetailsAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 afDetails_textviewVal.adapter = afTypeDetailsAdapter
             }
@@ -97,7 +97,7 @@ class FragmentARRAVAffliations : Fragment() {
                 for (fac in edit_affTypesDetailsList.filter { s->s.AARAffiliationTypeID.equals(selectedTypeID) }) {
                     edit_affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
                 }
-                var edit_afTypeDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, edit_affTypesDetailsArray)
+                var edit_afTypeDetailsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, edit_affTypesDetailsArray)
                 edit_afTypeDetailsAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 edit_afDetails_textviewVal.adapter = edit_afTypeDetailsAdapter
                 if (!edit_afDetails_textviewVal.tag.equals("0")){
@@ -147,7 +147,7 @@ class FragmentARRAVAffliations : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -168,7 +168,7 @@ class FragmentARRAVAffliations : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -190,7 +190,7 @@ class FragmentARRAVAffliations : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
@@ -210,7 +210,7 @@ class FragmentARRAVAffliations : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -333,11 +333,11 @@ class FragmentARRAVAffliations : Fragment() {
             edit_affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
         }
 
-        var afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesDetailsArray);
+        var afDetailsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, affTypesDetailsArray);
         afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         afDetails_textviewVal.adapter = afDetailsAdapter
 
-        var edit_afDetailsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesDetailsArray);
+        var edit_afDetailsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, affTypesDetailsArray);
         edit_afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         edit_afDetails_textviewVal.adapter = edit_afDetailsAdapter
 
@@ -353,11 +353,11 @@ class FragmentARRAVAffliations : Fragment() {
             edit_affTypesArray.add(fac.AffiliationTypeName)
         }
 
-        var afTypeAdapter= ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, affTypesArray);
+        var afTypeAdapter= ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, affTypesArray);
         afTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         affiliations_textviewVal.adapter = afTypeAdapter
 
-        var edit_afTypeAdapter= ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, edit_affTypesArray);
+        var edit_afTypeAdapter= ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, edit_affTypesArray);
         edit_afTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         edit_affiliations_textviewVal.adapter = edit_afTypeAdapter
@@ -437,8 +437,12 @@ class FragmentARRAVAffliations : Fragment() {
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 14f
                     textView.minimumHeight = 30
-                    textView.text = if (get(it).AffiliationTypeID == 0) "" else TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == get(it).AffiliationTypeID}[0].AffiliationTypeName
-
+//                    textView.text = if (get(it).AffiliationTypeID == 0) "" else TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == get(it).AffiliationTypeID}[0].AffiliationTypeName
+                    for (fac in TypeTablesModel.getInstance().AARAffiliationType) {
+                        if (get(it).AffiliationTypeID.equals(fac.AARAffiliationTypeID)) {
+                            textView.text = fac.AffiliationTypeName
+                        }
+                    }
                     tableRow.addView(textView)
 
                     val textView1 = TextView(context)

@@ -278,7 +278,7 @@ class FragmentAARAVPhotos : Fragment() {
 
     fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(context!!.packageManager) != null) {
+        if (takePictureIntent.resolveActivity(requireContext().packageManager) != null) {
             var photoFile: File? = null
             try {
                 photoFile = createImageFile()
@@ -312,7 +312,7 @@ class FragmentAARAVPhotos : Fragment() {
         cachePath.mkdirs() // don't forget to make the directory
 //        val storageDir = File("" + cachePath + "/" + mCurrentFileName)
 //        val storageDir = File("" + cachePath)
-        val storageDir: File = (context as Context).getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir: File = (context as Context).getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
 
 //        val image = File.createTempFile(
 //                mCurrentFileName, /* prefix */
@@ -425,7 +425,7 @@ class FragmentAARAVPhotos : Fragment() {
 //        val cursor = context!!.contentResolver.query(contentUri, proj, null, null, null);
         val cursor = context!!.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, arrayOf(id), null);
         if (cursor == null) { // Source is Dropbox or other similar local file path
-            res = contentUri.getPath();
+            res = contentUri.getPath().toString();
         } else {
             if (cursor.moveToFirst()) {
                 var column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -761,7 +761,7 @@ class FragmentAARAVPhotos : Fragment() {
             }
         }, Response.ErrorListener {
             Utility.showMessageDialog(context, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
-            Log.v("Upload Photo Error : ", it.message)
+            Log.v("Upload Photo Error : ", it.message.toString())
         })
         val socketTimeout = 30000//30 seconds - change to what you want
         val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)

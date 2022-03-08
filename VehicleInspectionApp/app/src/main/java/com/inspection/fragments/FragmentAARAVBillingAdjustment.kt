@@ -68,7 +68,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
 //                    if (Calendar.getInstance().get(Calendar.YEAR)> year || Calendar.getInstance().get(Calendar.MONTH) > monthOfYear) {
 //                        newEffDateBtn!!.text == "SELECT DATE"
@@ -302,7 +302,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
         for (fac in descTypeList) {
             descTypeArray.add(fac.Description)
         }
-        var descTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, descTypeArray)
+        var descTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, descTypeArray)
         descTypeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newDescSpinner.adapter = descTypeAdapter
     }

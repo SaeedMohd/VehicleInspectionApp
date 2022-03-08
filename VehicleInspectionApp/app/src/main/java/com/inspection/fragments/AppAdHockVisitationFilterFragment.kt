@@ -371,7 +371,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             contractStatusArray.add(fac.FacilityStatusName)
         }
 
-        var coStatusAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractStatusArray)
+        var coStatusAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, contractStatusArray)
         coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contractStatusTypeSpinner.adapter = coStatusAdapter
         contractStatusTypeSpinner.setSelection(contractStatusArray.indexOf("Active"))
@@ -451,16 +451,16 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
+            override fun onFailure(call: Call, e: IOException) {
                 Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
                 activity!!.runOnUiThread {
                     Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facility Data - " + e.message)
                 }
             }
 
-            override fun onResponse(call: Call?, response: okhttp3.Response?) {
+            override fun onResponse(call: Call, response: okhttp3.Response) {
 
-                var responseString = response!!.body()!!.string()
+                var responseString = response!!.body!!.string()
                 Log.v("getTypeTables retrieved", "GetTYpeTables retrieved")
                 if (responseString.toString().contains("returnCode>1<", false)) {
                     activity!!.runOnUiThread {
@@ -481,7 +481,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                         contractStatusArray.add(fac.FacilityStatusName)
                     }
 
-                    var coStatusAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, contractStatusArray)
+                    var coStatusAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, contractStatusArray)
                     coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     activity!!.runOnUiThread {
                         contractStatusTypeSpinner.adapter = coStatusAdapter
@@ -499,15 +499,15 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         this.clubCode = clubCode
         recordsProgressView.visibility = View.VISIBLE
         client.newCall(request2).enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
+            override fun onFailure(call: Call, e: IOException) {
                 activity!!.runOnUiThread {
                     Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e?.message)
                     recordsProgressView.visibility = View.GONE
                 }
             }
 
-            override fun onResponse(call: Call?, response: okhttp3.Response?) {
-                var responseString = response!!.body()!!.string()
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                var responseString = response!!.body!!.string()
                 activity!!.runOnUiThread {
                     recordsProgressView.visibility = View.GONE
                     if (!responseString.contains("FacID not found")) {

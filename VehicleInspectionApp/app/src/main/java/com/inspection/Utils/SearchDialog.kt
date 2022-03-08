@@ -30,7 +30,7 @@ import java.util.ArrayList
 /**
  * Created by devsherif on 3/17/18.
  */
-class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog(context), View.OnClickListener {
+class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog(context!!), View.OnClickListener {
 
     var searchResultArrayList: ArrayList<String>? = null
     var selectedString = ""
@@ -41,7 +41,7 @@ class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog
 
         searchResultArrayList = arrayList
 
-        searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList)
+        searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList!!)
 
         searchDialogEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -54,7 +54,7 @@ class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchResultArrayList = ArrayList<String>(arrayList.filter { obj -> obj.contains(s.toString().trim(), true) })
-                searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList)
+                searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList!!)
             }
         })
 
@@ -62,7 +62,7 @@ class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog
             selectedString = searchResultArrayList!!.get(i)
             dismiss()
         })
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
 

@@ -104,7 +104,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             termReasonArray .add(fac.TerminationCodeName)
         }
 
-        var termReasonAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, termReasonArray)
+        var termReasonAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_item, termReasonArray)
         termReasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         terminationReason_textviewVal.adapter = termReasonAdapter
 
@@ -114,7 +114,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             busTypeArray .add(fac.BusTypeName)
         }
 
-        var busTypeAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, busTypeArray)
+        var busTypeAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_item, busTypeArray)
         busTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bustype_textviewVal.adapter = busTypeAdapter
 
@@ -125,7 +125,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             timeZoneArray .add(fac.TimezoneName)
         }
 
-        var tzdataAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, timeZoneArray)
+        var tzdataAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_item, timeZoneArray)
         tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeZoneSpinner.adapter = tzdataAdapter
 
@@ -134,7 +134,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         for (fac in svcAvailabilityList) {
             svcAvailabilityArray .add(fac.SrvAvaName)
         }
-        var svcAvldataAdapter = ArrayAdapter<String>(activity, R.layout.spinner_item, svcAvailabilityArray)
+        var svcAvldataAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, svcAvailabilityArray)
         svcAvldataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         availability_textviewVal.adapter = svcAvldataAdapter
 
@@ -143,7 +143,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         for (fac in facTypeList) {
             facTypeArray .add(fac.FacilityTypeName)
         }
-        var facilityTypedataAdapter = ArrayAdapter<String>(activity, R.layout.spinner_item, facTypeArray)
+        var facilityTypedataAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, facTypeArray)
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         facilitytype_textviewVal.adapter = facilityTypedataAdapter
 
@@ -154,7 +154,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             contractTypeArray .add(fac.ContractTypeName)
         }
 
-        var contractTypesAdapter = ArrayAdapter<String>(activity, R.layout.spinner_item, contractTypeArray )
+        var contractTypesAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, contractTypeArray )
         contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contractTypeValueSpinner.adapter = contractTypesAdapter
 
@@ -642,7 +642,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             var month = c.get(Calendar.MONTH)
             var day = c.get(Calendar.DAY_OF_MONTH)
 
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -664,7 +664,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)

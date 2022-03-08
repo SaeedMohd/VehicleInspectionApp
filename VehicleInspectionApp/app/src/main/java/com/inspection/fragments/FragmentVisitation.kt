@@ -1,6 +1,7 @@
 package com.inspection.fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -239,6 +241,8 @@ class FragmentVisitation : Fragment() {
         FacilityDataModel.getInstance().tblVisitationTracking.apply {
             (0 until size).forEach {
                 if (!get(it).performedBy.equals("00")) {
+                    Log.v("NUMBER ------------ "," "+ it)
+                    Log.v("Reason ------------ ",get(it).VisitationReasonTypeID)
                     val tableRow = TableRow(context)
                     tableRow.layoutParams = rowLayoutParamRow
                     tableRow.minimumHeight = 30
@@ -285,7 +289,7 @@ class FragmentVisitation : Fragment() {
                     textView3.gravity = Gravity.CENTER
                     textView3.textSize = 14f
                     textView3.minimumHeight = 30
-                    textView3.text = if (get(it).VisitationMethodTypeID.equals("")) "" else TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(get(it).VisitationMethodTypeID)}[0].TypeName
+                    textView3.text = if (get(it).VisitationMethodTypeID.equals("") || get(it).VisitationMethodTypeID.equals("0")) "" else TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(get(it).VisitationMethodTypeID)}[0].TypeName
                     tableRow.addView(textView3)
 
                     val textView4 = TextView(context)
@@ -293,7 +297,7 @@ class FragmentVisitation : Fragment() {
                     textView4.gravity = Gravity.CENTER
                     textView4.textSize = 14f
                     textView4.minimumHeight = 30
-                    textView4.text = if (get(it).VisitationReasonTypeID.equals("")) "" else  TypeTablesModel.getInstance().VisitationReasonType.filter { s->s.VisitationReasonTypeID.toString().equals(get(it).VisitationReasonTypeID)}[0].VisitationReasonTypeName
+                    textView4.text = if (get(it).VisitationReasonTypeID.equals("") || get(it).VisitationReasonTypeID.equals("0")) "" else  TypeTablesModel.getInstance().VisitationReasonType.filter { s->s.VisitationReasonTypeID.toString().equals(get(it).VisitationReasonTypeID)}[0].VisitationReasonTypeName
                     tableRow.addView(textView4)
 
                     trackingTableLayout.addView(tableRow)
@@ -366,8 +370,8 @@ class FragmentVisitation : Fragment() {
             VisitationMethodArray.add(reason.TypeName)
         }
 
-        visitationReasonDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, VisitationReasonArray)
-        visitationMethodDropListId.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, VisitationMethodArray)
+        visitationReasonDropListId.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, VisitationReasonArray)
+        visitationMethodDropListId.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, VisitationMethodArray)
 
         completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType==null){
@@ -444,12 +448,12 @@ class FragmentVisitation : Fragment() {
 
             facilitySpecialistNames.add("Select Specialist")
             for (specialist in TypeTablesModel.getInstance().EmployeeList.sortedWith(compareBy { it.FullName })) {
-                facilitySpecialistNames.add(specialist.FullName)
+                facilitySpecialistNames.add(specialist.FirstName.lowercase().capitalize()+" "+specialist.LastName.lowercase().capitalize())
             }
 
-            facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilityRepresentativeNames)
+            facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, facilityRepresentativeNames)
             //   automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
-            automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, facilitySpecialistNames)
+            automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, facilitySpecialistNames)
 
             facilityNameAndNumberRelationForSelection()
 //            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName))
@@ -840,7 +844,11 @@ class FragmentVisitation : Fragment() {
             visitationFormAlphaBackground.visibility = View.VISIBLE
             selectedSignature = requestedSignature.specialist
             if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature != null) {
-                signatureInkView.drawBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature, 0.0f, 0.0f, Paint())
+                try {
+                    signatureInkView.drawBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature, 0.0f, 0.0f, Paint())
+                } catch (e:Exception) {
+
+                }
             }
         }
 
@@ -1231,7 +1239,16 @@ class FragmentVisitation : Fragment() {
         var strPrefix = if (type.equals("Rep")) "RepSignature" else if (type.equals("Spec")) "SpecSignature" else if (type.equals("W")) "WSignature" else "DefSignature"
         strPrefix += "_"+Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString();
         var fileName = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_"+visitationType+"_"+strPrefix+".png"
-        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_"+strPrefix+".png")
+        var filePath = ""
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            filePath = context?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_" + strPrefix + ".png"
+//            filePath = Environment.DIRECTORY_DCIM + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_" + strPrefix + ".png"
+        } else {
+            filePath = Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_" + strPrefix + ".png"
+        }
+//        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_" + FacilityDataModel.getInstance().clubCode + "_" + strPrefix + ".png")
+        val file = File(filePath)
         val fOut = FileOutputStream(file);
 //        bmp.toDrawable(resources).bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
         bmp?.compress(Bitmap.CompressFormat.PNG, 85, fOut);
@@ -1249,7 +1266,7 @@ class FragmentVisitation : Fragment() {
 //            }
         }, Response.ErrorListener {
             Utility.showMessageDialog(context, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
-            Log.v("Upload Signature Error:", it.message)
+            Log.v("Upload Signature Error:", it.message.toString())
         })
         val socketTimeout = 30000//30 seconds - change to what you want
         val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
@@ -1415,7 +1432,7 @@ class FragmentVisitation : Fragment() {
                                                 }
                                                 cancelButton.isEnabled = false
 
-                                                if (!waiveVisitationCheckBox.isChecked) {
+                                                if (!waiveVisitationCheckBox.isChecked || waiveVisitationCheckBox.isChecked) {
                                                     if ((activity as FormsActivity).checkPermission()) {
                                                         (activity as FormsActivity).generateAndOpenPDF()
                                                     } else {
@@ -1638,12 +1655,16 @@ class FragmentVisitation : Fragment() {
                 isInputValid = false
                 waiversSignatureButton.setError("required field")
             }
-            if (automotiveSpecialistSignatureButton.text.toString() == "Add Signature") {
-                isInputValid = false
-                automotiveSpecialistSignatureButton.setError("Required field")
-            }
+//            if (automotiveSpecialistSignatureButton.text.toString() == "Add Signature") {
+//                isInputValid = false
+//                automotiveSpecialistSignatureButton.setError("Required field")
+//            }
+//            if (visitationMethodDropListId.selectedItemPosition==0) {
+//                isInputValid = false
+//                visitationMethodTextView.setError("Required field")
+//            }
         } else {
-            if (visitationMethodDropListId.selectedItemPosition==0 && !waiveVisitationCheckBox.isChecked) {
+            if (visitationMethodDropListId.selectedItemPosition==0) {
                 isInputValid = false
                 visitationMethodTextView.setError("Required field")
             }
@@ -1653,7 +1674,7 @@ class FragmentVisitation : Fragment() {
                     visitationReasonTextView.setError("Required field")
                 }
             } else {
-                if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature") {
+                if (facilityRepresentativeSignatureButton.text.toString() == "Add Signature" && visitationMethodDropListId.selectedItem.toString().equals("In Person")) {
                     isInputValid = false
                     facilityRepresentativeSignatureButton.setError("Required field")
                 }
@@ -1749,8 +1770,9 @@ class FragmentVisitation : Fragment() {
                         if (visitMethodPreviousValue.equals(""))
                             visitationMethodDropListId.setSelection(0)
                         else {
-                            var vMethood = TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(visitMethodPreviousValue)}[0].TypeName
-                            visitationMethodDropListId.setSelection((VisitationMethodArray).indexOf(vMethood))
+//                            var vMethood = TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(visitMethodPreviousValue)}[0].TypeName
+//                            visitationMethodDropListId.setSelection((VisitationMethodArray).indexOf(vMethood))
+                            visitationMethodDropListId.setSelection((VisitationMethodArray).indexOf(visitMethodPreviousValue))
                         }
 //                        visitationMethodDropListId.setSelection((resources.getStringArray(R.array.visitation_methods)).indexOf(vMethood))
 

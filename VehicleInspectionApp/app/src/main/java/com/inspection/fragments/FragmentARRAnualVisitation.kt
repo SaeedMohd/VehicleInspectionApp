@@ -99,7 +99,7 @@ class FragmentARRAnualVisitation : Fragment() {
                                         }
 
                                         facilityNameListView.visibility = View.VISIBLE
-                                        facilityNameListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, facilityNames)
+                                        facilityNameListView.adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_list_item_1, facilityNames)
                                     })
                                 }, Response.ErrorListener {
                             Log.v("error while loading", "error while loading")
@@ -114,18 +114,18 @@ class FragmentARRAnualVisitation : Fragment() {
 
         // Inspection Type
         var inspectionTypes = arrayOf("Quarterly", "Ad Hoc")
-        var dataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, inspectionTypes)
+        var dataAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, inspectionTypes)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inspectionTypeSpinner.adapter = dataAdapter
 
         // Changes Made
         var changesMadeArray = arrayOf("Yes", "No")
-        var chgdataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, changesMadeArray)
+        var chgdataAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, changesMadeArray)
         chgdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         changesMadeSwitch.adapter = chgdataAdapter
 
         var monthsArray = arrayOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-        var monthdataAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, monthsArray)
+        var monthdataAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, monthsArray)
         monthdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthDueSpinner.adapter = monthdataAdapter
 
@@ -134,7 +134,7 @@ class FragmentARRAnualVisitation : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "dd MMM yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)

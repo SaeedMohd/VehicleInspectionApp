@@ -13,7 +13,7 @@ import com.inspection.R
 /**
  * Created by sheri on 12/24/2017.
  */
-class VehicleServicesArrayAdapter(context: Context?, itemsList: List<VehicleServicesListItem>) : ArrayAdapter<VehicleServicesListItem>(context, 0, itemsList) {
+class VehicleServicesArrayAdapter(context: Context?, itemsList: List<VehicleServicesListItem>) : ArrayAdapter<VehicleServicesListItem>(context!!, 0, itemsList) {
 
     private var mInflater = LayoutInflater.from(context)
 

@@ -603,7 +603,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
         }, Response.ErrorListener {
             Utility.showMessageDialog(this, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
-            Log.v("Upload Photo Error : ", it.message)
+            Log.v("Upload Photo Error : ", it.message.toString())
         })
         val socketTimeout = 30000//30 seconds - change to what you want
         val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)

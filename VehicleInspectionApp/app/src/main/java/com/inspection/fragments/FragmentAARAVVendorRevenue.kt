@@ -70,7 +70,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -87,7 +87,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -275,7 +275,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
         for (fac in revSourceList) {
             revSourceArray.add(fac.RevenueSourceName)
         }
-        var revSourceAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, revSourceArray)
+        var revSourceAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, revSourceArray)
         revSourceAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newRevSourceSpinner.adapter = revSourceAdapter
     }

@@ -205,16 +205,16 @@ class LoginActivity : Activity(){
             var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
             recordsProgressView.visibility = View.VISIBLE
             client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call?, e: IOException?) {
+                override fun onFailure(call: Call, e: IOException) {
                     Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
                     activity!!.runOnUiThread {
                         Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
                     }
                 }
 
-                override fun onResponse(call: Call?, response: okhttp3.Response?) {
+                override fun onResponse(call: Call, response: okhttp3.Response) {
 
-                    var responseString = response!!.body()!!.string()
+                    var responseString = response!!.body!!.string()
                     if (responseString.toString().contains("returnCode>1<", false)) {
                         activity!!.runOnUiThread {
                             Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
@@ -230,11 +230,15 @@ class LoginActivity : Activity(){
                         specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
 
                         activity!!.runOnUiThread {
-//                            if (specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }.size > 0) {
+                            if (specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }.size > 0) {
                                 ApplicationPrefs.getInstance(activity).loggedInUserEmail = loginEmailEditText!!.text.toString()
                                 ApplicationPrefs.getInstance(activity).loggedInUserPass = loginPasswordEditText!!.text.toString()
+                                ApplicationPrefs.getInstance(activity).loggedInUserID = ""
+                                ApplicationPrefs.getInstance(activity).loggedInUserFullName = ""
+                            } else {
                                 ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
                                 ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].FullName
+                            }
 //                                ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
 //                                ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
 //                                        Settings.Secure.ANDROID_ID)
@@ -294,6 +298,7 @@ class LoginActivity : Activity(){
 
 
         private fun executeLogin() {
+//            throw RuntimeException("Test Crash"); // Force a crash
             val userEmail = URLEncoder.encode(loginEmailEditText.text.toString(), "UTF-8");
             val userPass = URLEncoder.encode(loginPasswordEditText.text.toString(), "UTF-8");
             Log.v("LOGIN : "+ "EXEC LOGIN -- ",Constants.authenticateUrl + userEmail + "&password=" + userPass)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="visitationMonthsFilter">
-        <item>Any</item>
+<!--        <item>Any</item>-->
         <item>Jan</item>
         <item>Feb</item>
         <item>Mar</item>

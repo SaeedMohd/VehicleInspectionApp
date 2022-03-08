@@ -1363,7 +1363,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_column="0"
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
@@ -1373,7 +1372,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_column="3"
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
@@ -1389,20 +1387,19 @@
 
                         <TextView
                             android:id="@+id/edit_rspUserId"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_column="1"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/textview_background"
                             android:textStyle="bold" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/edit_rspEmailId"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_column="4"
                             android:layout_margin="5dp"
+                            android:enabled="false"
                             android:layout_weight="1"
                             android:background="@drawable/textview_background" />
                     </LinearLayout>

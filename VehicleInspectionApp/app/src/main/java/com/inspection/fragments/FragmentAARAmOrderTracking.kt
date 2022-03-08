@@ -109,7 +109,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -234,7 +234,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
             reasonsTypesArray.add(fac.AmendmentSubReasonName)
         }
-        var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, reasonsTypesArray)
+        var reasonAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, reasonsTypesArray)
         reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         reasonDropDown.adapter = reasonAdapter
 
@@ -247,7 +247,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
             eventsTypesArray.add(fac.AmendmentEventName)
         }
-        var reasonAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, eventsTypesArray)
+        var reasonAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, eventsTypesArray)
         reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventsDropDown.adapter = reasonAdapter
 
@@ -262,7 +262,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
             employeesArray.add(fac.AOTEmployee)
         }
-        var employeeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, employeesArray)
+        var employeeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, employeesArray)
         employeeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         employeeDropDown.adapter = employeeAdapter
 

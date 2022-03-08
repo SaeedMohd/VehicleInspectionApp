@@ -67,7 +67,7 @@ class FragmentSafetyCheckSelectVehicle : Fragment() {
                     }
 
                     Log.v("number of vins", "number of vins = "+vinsArray.size)
-                    var myAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, vinsArray)
+                    var myAdapter = ArrayAdapter<String>(context!!, android.R.layout.simple_list_item_1, vinsArray)
                     searchCustomerSafetyCheckListView.adapter = myAdapter
                     searchCustomerSafetyCheckListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
                         var fragment = Fragment()

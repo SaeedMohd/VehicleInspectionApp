@@ -97,7 +97,7 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             vehicleTypeArray.add(fac.VehiclesTypeName)
         }
 
-        var vehicleTypeAdapter = ArrayAdapter<String>(context, R.layout.spinner_item, vehicleTypeArray)
+        var vehicleTypeAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, vehicleTypeArray)
         vehicleTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         vehicleTypeSpinner.adapter = vehicleTypeAdapter
         vehicleTypeSpinner.setSelection(vehicleTypeArray.indexOf("Automobile"))

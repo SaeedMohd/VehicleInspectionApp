@@ -525,7 +525,7 @@ class TblBillingAdjustments {
     var EffectiveDate = ""
     var Type = ""
     var Description = ""
-    var Amount = 0
+    var Amount = 0.0
     var Comments = ""
     var LastUpdateBy = ""
     var LastUpdateDate = ""
@@ -664,6 +664,7 @@ class PRGCompletedVisitations {
     var visitationid = ""
     var completiondate = ""
     var completionmonth = 0
+    var waivecomments = ""
 }
 
 class PRGVisitationsLog {

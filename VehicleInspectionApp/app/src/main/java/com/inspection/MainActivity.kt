@@ -166,27 +166,11 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         if (toolbar != null) {
             setSupportActionBar(toolbar)
-//            mDrawerList!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id -> selectItem(position) }
             toolbar!!.setTitleTextColor(Color.WHITE)
 
-            //ActionBar bar = getActionBar();
-            //bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f7fa")));
-//            drawerToggle = object : ActionBarDrawerToggle(mContext, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
-//
-//                override fun onDrawerClosed(drawerView: View) {
-//                    super.onDrawerClosed(drawerView)
-//                }
-//
-//                override fun onDrawerOpened(drawerView: View) {
-//                    super.onDrawerOpened(drawerView)
-//
-//                }
-//            }
-//            mDrawerLayout.setDrawerListener(drawerToggle)
         }
 
         ApplicationPrefs.getInstance(mContext).clearVehicleProfilePrefs()
-
 
         handler = Handler()
 
@@ -200,33 +184,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         ftSC.commit()
 
 
-        //        if (new Date().getTime() - ApplicationPrefs.getInstance(mContext).getLastSynchDate() > (1000 * 60 * 60 * 24)) {
-        //            new GetAccountDetailByEmailAndPhoneIDTask(mContext, false, ApplicationPrefs.getInstance(mContext).getUserProfilePref().getEmail(), "") {
-        //
-        //                @Override
-        //                public void onTaskCompleted(String result) {
-        //                    //Log.dMainActivity.TAG, "synching user data completed");
-        //                    new GetShopUserProfileDetails(mContext, false, ApplicationPrefs.getInstance(mContext).getUserAccountPref().getEmail(), "") {
-        //                        @Override
-        //                        public void onTaskCompleted(String result) {
-        //                            //Log.dMainActivity.TAG, "Synching shop profile completed");
-        //                            ApplicationPrefs.getInstance(con).setLastSynchDate(new Date().getTime());
-        //                            this.checkAccountDetailsRetrievedFromCloud(result);
-        //                        }
-        //                    }.execute();
-        //                }
-        //            }.execute();
-        //
-        //        }
 
         val myFolder = File(Environment.getExternalStorageDirectory().path + "/Matics")
         if (!myFolder.exists()) {
             myFolder.mkdir()
         }
-
         icon = BitmapFactory.decodeResource(resources, R.drawable.banner)
-
-        //        ApplicationPrefs.getInstance(this).updateProfiles();
 
         PHONE_ID = Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
 
@@ -241,8 +204,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
-//        drawerToggle!!.syncState()
     }
 
     fun enableLocation() {
@@ -686,8 +647,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
 //        val target = Intent(Intent.ACTION_VIEW)
 //        val file = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
 //        val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForShop.pdf")
-        val file = File(Environment.getExternalStorageDirectory().path+"/"+Constants.visitationIDForPDF+"_VisitationDetails_ForSpecialist.pdf")
-        val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+Constants.visitationIDForPDF+"_VisitationDetails_ForShop.pdf")
+//        val file = File(Environment.getExternalStorageDirectory().path+"/"+Constants.visitationIDForPDF+"_VisitationDetails_ForSpecialist.pdf")
+//        val fileShop = File(Environment.getExternalStorageDirectory().path+"/"+Constants.visitationIDForPDF+"_VisitationDetails_ForShop.pdf")
 
 //        uploadPDF(file,"Specialist")
 //        uploadPDF(fileShop,"Shop")
@@ -894,8 +855,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
             val cm = context
                     .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             return if (cm.activeNetworkInfo != null
-                    && cm.activeNetworkInfo.isAvailable
-                    && cm.activeNetworkInfo.isConnected) {
+                    && cm.activeNetworkInfo!!.isAvailable
+                    && cm.activeNetworkInfo!!.isConnected) {
                 true
             } else {
                 //Log.dMainActivity.TAG, "Internet Connection Not Present");

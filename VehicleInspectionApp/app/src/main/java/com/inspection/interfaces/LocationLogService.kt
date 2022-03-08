@@ -38,7 +38,7 @@ class LocationLogService : JobService() {
     private var fusedLocationProviderClient : FusedLocationProviderClient? = null
     override fun onStartJob(parameters: JobParameters?): Boolean {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(applicationContext)
-        urlString = parameters!!.extras.getString("urlString")
+        urlString = parameters!!.extras.getString("urlString").toString()
         if (checkLocationPermissions()) {
             try {
                 val task = fusedLocationProviderClient!!.getLastLocation();
@@ -55,7 +55,9 @@ class LocationLogService : JobService() {
             }
         } else {
             if (!checkLocationPermissions()) {
-                requestPermissionAndContinue();
+                if (activity != null) {
+                    requestPermissionAndContinue();
+                }
             } else {
                 try {
                     val task = fusedLocationProviderClient!!.getLastLocation();
@@ -114,7 +116,7 @@ class LocationLogService : JobService() {
     fun requestPermissionAndContinue() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity as MainActivity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 350);
+                    ActivityCompat.requestPermissions(activity as MainActivity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 350);
         } else {
             try {
                 val task = fusedLocationProviderClient!!.getLastLocation();

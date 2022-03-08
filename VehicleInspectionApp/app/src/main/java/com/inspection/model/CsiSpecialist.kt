@@ -10,3 +10,10 @@ class CsiSpecialist {
     var specialistname = ""
     var clubcode = ""
 }
+
+
+class CsiSpecialistDetails {
+    var accspecid = ""
+    var specialistfname = ""
+    var specialistlname = ""
+}

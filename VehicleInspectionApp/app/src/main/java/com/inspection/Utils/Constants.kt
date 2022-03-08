@@ -70,7 +70,7 @@ object Constants {
     val getAllFacilities = permanentURL + "getAllFacilities"
     val getAllSpecialists = permanentURL + "getAllSpecialists"
     val getSpecialistNameFromEmail = permanentURL + "getSpecialistNameFromEmail?specialistEmail="
-
+    val getSpecialistDetails = permanentURL + "getSpecialistDetails?specialistEmail="
     val submitContactInfoAddress = permanentURL + "updateFacilityAddressData?facnum="
     val submitFacilityGeneralInfo = permanentURL + "updateFacilityData?facNum="
     val submitFacilityHours = permanentURL + "updateFacilityHoursData?facNum="

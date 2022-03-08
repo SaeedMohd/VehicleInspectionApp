@@ -110,7 +110,7 @@ class FragmentARRAVScopeOfService : Fragment() {
         for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
                 warrantyArray.add(typeWarranty.WarrantyTypeName)
         }
-        var warrantyAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, warrantyArray)
+        var warrantyAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, warrantyArray)
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         warrantyPeriodVal.adapter = warrantyAdapter
 
@@ -119,7 +119,7 @@ class FragmentARRAVScopeOfService : Fragment() {
             discountPercentageArray.add(discountPercentage.TypeName)
         }
 
-        var discountPercentageAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, discountPercentageArray )
+        var discountPercentageAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, discountPercentageArray )
         discountPercentageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         disountpercentageDropListId.adapter = discountPercentageAdapter
 

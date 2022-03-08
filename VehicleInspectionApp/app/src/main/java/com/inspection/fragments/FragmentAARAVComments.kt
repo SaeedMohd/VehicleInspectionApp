@@ -63,7 +63,7 @@ class FragmentAARAVComments : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
@@ -78,7 +78,7 @@ class FragmentAARAVComments : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -383,7 +383,7 @@ class FragmentAARAVComments : Fragment() {
         for (fac in commentsTypeList) {
             commentsTypeArray.add(fac.CommentTypeName)
         }
-        var commentsTypeAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, commentsTypeArray)
+        var commentsTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, commentsTypeArray)
         commentsTypeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         catSpinner.adapter = commentsTypeAdapter
     }

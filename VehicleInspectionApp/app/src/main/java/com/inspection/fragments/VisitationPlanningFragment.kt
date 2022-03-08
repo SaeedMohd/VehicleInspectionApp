@@ -49,6 +49,8 @@ import java.net.URLEncoder
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.Month
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -83,6 +85,7 @@ class VisitationPlanningFragment : Fragment() {
     var allClubCodes = ArrayList<String>()
     var specialistClubCodes = ArrayList<String>()
     var specialistArrayModel = ArrayList<TypeTablesModel.employeeList>()
+    var specialistModel = ArrayList<CsiSpecialistDetails>()
     var clubCode=""
     var visitationID =""
     var totalVisitations = 0
@@ -91,8 +94,8 @@ class VisitationPlanningFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
+            mParam1 = requireArguments().getString(ARG_PARAM1)
+            mParam2 = requireArguments().getString(ARG_PARAM2)
         }
     }
 
@@ -113,8 +116,8 @@ class VisitationPlanningFragment : Fragment() {
             visitationYearFilterSpinnerEntries.add("" + it)
         }
         visitationYearFilterSpinnerEntries.sortDescending()
-        visitationYearFilterSpinnerEntries.add(0, "Any")
-        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
+//        visitationYearFilterSpinnerEntries.add(0, "Any")
+        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
         visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
         visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
 
@@ -130,6 +133,7 @@ class VisitationPlanningFragment : Fragment() {
 //        }
 
 //        getTypeTables()
+        loadSpecialistDetails()
         loadSpecialistName()
 //        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
 //                Response.Listener { response ->
@@ -192,7 +196,7 @@ class VisitationPlanningFragment : Fragment() {
 
 
 
-        visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH) + 1)
+        visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH))
         visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
 
@@ -451,10 +455,11 @@ class VisitationPlanningFragment : Fragment() {
                     append("&")
                 }
             }
-
+            var InsMonth = 0
+            InsMonth = visitationMonthsSpinner.selectedItemPosition+1
             if (visitationMonthsSpinner.selectedItem != "Any") {
                 with(parametersString) {
-                    append("inspectionMonth=" + visitationMonthsSpinner.selectedItemPosition)
+                    append("inspectionMonth=" + InsMonth)
                     append("&")
                 }
             }else{
@@ -530,7 +535,7 @@ class VisitationPlanningFragment : Fragment() {
             Log.v("******get visitation", Constants.getVisitations+parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ..."))
 
             client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call?, e: IOException?) {
+                override fun onFailure(call: Call, e: IOException) {
                     Log.v("failure http", "failed with exception : " + e!!.message)
                     activity!!.runOnUiThread {
                         Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
@@ -538,9 +543,9 @@ class VisitationPlanningFragment : Fragment() {
                     }
                 }
 
-                override fun onResponse(call: Call?, response: okhttp3.Response?) {
+                override fun onResponse(call: Call, response: okhttp3.Response) {
 
-                    var responseString = response!!.body()!!.string()
+                    var responseString = response!!.body!!.string()
                     //  activity!!.toast("success!!!")
                     //     recordsProgressView.visibility = View.INVISIBLE
 
@@ -592,7 +597,11 @@ class VisitationPlanningFragment : Fragment() {
                                                         activity!!.runOnUiThread {
                                                             recordsProgressView.visibility = View.GONE
                                                             visitationfacilityListView.visibility = View.VISIBLE
-                                                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                                            // New Logic
+                                                            FillVisitationList()
+                                                            //
+//                                                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                                            var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel)
                                                             visitationfacilityListView.adapter = visitationPlanningAdapter
                                                             totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
 //                                                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
@@ -611,7 +620,7 @@ class VisitationPlanningFragment : Fragment() {
                                                 var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                                                 visitationfacilityListView.adapter = visitationPlanningAdapter
                                                 totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-                                                Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+//                                                Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
                                             }
                                             it.printStackTrace()
                                         }))
@@ -664,6 +673,180 @@ class VisitationPlanningFragment : Fragment() {
         }
     }
 
+    fun FillVisitationList() { // New Method to
+//        val c = Calendar.getInstance()
+//        val month = c.get(Calendar.MONTH)+1
+//        var filteredMonth = if (visitationMonthsSpinner.selectedItemPosition==0) "0" else visitationMonthsSpinner.selectedItemPosition.toString()
+//        var filteredYear = if (visitationYearFilterSpinner.selectedItemPosition==0) "0" else visitationYearFilterSpinner.selectedItem.toString()
+//        if (visitationsModel.deficienciesArray.size>0) {
+//            visitationsModel.deficienciesArray.removeIf { s -> s.DueDate.substring(5, 7).toInt() > filteredMonth.toInt() }
+//            visitationsModel.deficienciesArray.removeIf { s -> s.DueDate.substring(0, 4).toInt() > filteredYear.toInt() }
+//        }
+        visitationsModel.listArray.clear()
+        visitationsModel.pendingVisitationsArray.forEach {
+            val item = VisitationsModel.VisitationListModel()
+            item.active = "1"
+            item.BusinessName = it.BusinessName
+            item.ClubCode = it.ClubCode
+            item.ContractCurrentDate = it.ContractCurrentDate
+            item.ContractInitialDate = it.ContractInitialDate
+            item.FACNo = it.FACNo
+            item.FacID = it.FacID
+            item.FacilityAnnualInspectionMonth = it.FacilityAnnualInspectionMonth
+//            visitationsModel.listArray.add(item)
+            // Check Visitation Type
+            var visitationTypeAndStatus = determineVisitationTypeAndStatus(item.FacilityAnnualInspectionMonth.toInt(),item.FacID.toInt(),item.ClubCode.toInt())
+            item.VisitationType = visitationTypeAndStatus.first.toString()
+            item.VisitationStatus = visitationTypeAndStatus.second.toString()
+            item.InspectionCycle = it.InspectionCycle
+            // CHeck Visitation Status
+
+            if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
+                if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == item.FACNo.toInt() && s.clubcode == item.ClubCode.toInt() && s.facannualinspectionmonth == item.FacilityAnnualInspectionMonth.toInt() && s.inspectioncycle == item.InspectionCycle && s.visitationtype == visitationTypeAndStatus.first.toString() }.isNotEmpty()) {
+                    if (visitationTypeAndStatus.second == VisitationStatus.NotStarted) {
+                        item.VisitationStatus = VisitationStatus.InProgress.toString().replace("In", "In ")
+                    } else {
+                        item.VisitationStatus = visitationTypeAndStatus.second.toString() + " / In Progress"
+                    }
+                }
+            }
+
+            if (item.VisitationStatus.equals(VisitationStatus.NotStarted.toString())){
+                item.VisitationStatus = VisitationStatus.NotStarted.toString().replace("Not","Not ")
+            }
+            // CHeck if has deficiency
+
+            if (visitationsModel.deficienciesArray.filter { s->s.FACNo.equals(item.FACNo) && s.ClubCode.equals(item.ClubCode)}.isNotEmpty()) {
+                item.VisitationStatus = item.VisitationStatus + "/Deficiency"
+                visitationsModel.deficienciesArray.removeIf { s->s.FACNo.equals(item.FACNo) && s.ClubCode.equals(item.ClubCode)}
+            }
+
+            visitationsModel.listArray.add(item)
+        }
+
+        visitationsModel.completedVisitationsArray.forEach {
+            val item = VisitationsModel.VisitationListModel()
+            item.active = "1"
+            item.BusinessName = it.BusinessName
+            item.ClubCode = it.ClubCode
+            item.ContractCurrentDate = it.ContractCurrentDate
+            item.ContractInitialDate = it.ContractInitialDate
+            item.FACNo = it.FACNo
+            item.FacID = it.FacID
+            item.FacilityAnnualInspectionMonth = it.FacilityAnnualInspectionMonth
+            item.CompletionDate = it.DatePerformed.apiToAppFormatMMDDYYYY()
+            item.VisitationID = it.visitationID
+            item.VisitationType = it.VisitationTypeID.toString()
+            item.VisitationStatus = "Completed"
+            when (item.VisitationType.toInt()) {
+                1 -> item.VisitationType = "Annual"
+                2 -> item.VisitationType = "Quarterly"
+                3 -> item.VisitationType = "AdHoc"
+                4 -> item.VisitationType = "Deficiency"
+            }
+            visitationsModel.listArray.add(item)
+        }
+
+
+        visitationsModel.deficienciesArray.forEach {
+            val item = VisitationsModel.VisitationListModel()
+            item.active = "1"
+            item.BusinessName = it.BusinessName
+            item.ClubCode = it.ClubCode
+            item.ContractCurrentDate = it.ContractCurrentDate
+            item.ContractInitialDate = it.ContractInitialDate
+            item.FACNo = it.FACNo
+            item.FacID = it.FacID
+            item.FacilityAnnualInspectionMonth = it.FacilityAnnualInspectionMonth
+            item.DueDate = it.DueDate.apiToAppFormatMMDDYYYY()
+            item.VisitationType = "Deficiency"
+            val dueDate = it.DueDate.substring(0,10)
+            val format = SimpleDateFormat("yyyy-MM-dd");
+            try {
+                val date = format.parse(dueDate);
+                if (Date()<=date) {
+                    item.VisitationStatus = VisitationStatus.NotStarted.toString().replace("Not","Not ")
+                } else {
+                    item.VisitationStatus = VisitationStatus.Overdue.toString()
+                }
+            } catch (e : ParseException) {
+                e.printStackTrace();
+            }
+
+            if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
+                if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == it.FACNo.toInt() && s.clubcode == it.ClubCode.toInt() && s.facannualinspectionmonth == it.FacilityAnnualInspectionMonth.toInt() && s.inspectioncycle == it.InspectionCycle && s.visitationtype == VisitationTypes.Deficiency.toString() }.isNotEmpty()) {
+                    if (item.VisitationStatus == VisitationStatus.NotStarted.toString().replace("Not","Not ")) {
+                        item.VisitationStatus = VisitationStatus.InProgress.toString().replace("In", "In ")
+                    } else {
+                        item.VisitationStatus = item.VisitationStatus + " / In Progress"
+                    }
+                }
+            }
+            visitationsModel.listArray.add(item)
+        }
+
+        var sortedList = ArrayList<VisitationsModel.VisitationListModel>()
+
+        visitationsModel.listArray.forEach {
+            if (it.active.equals("1") && it.VisitationStatus.contains("Overdue") && !it.VisitationStatus.contains("Deficiency")){
+                sortedList.add(it)
+                it.active = "0"
+            }
+        }
+        visitationsModel.listArray.forEach {
+            if (it.active.equals("1") && it.VisitationStatus.contains("Overdue") && it.VisitationStatus.contains("Deficiency")){
+                sortedList.add(it)
+                it.active = "0"
+            }
+        }
+        visitationsModel.listArray.forEach {
+            if (it.active.equals("1") && it.VisitationStatus.contains("Progress") && !it.VisitationStatus.contains("Deficiency")){
+                sortedList.add(it)
+                it.active = "0"
+            }
+        }
+
+        visitationsModel.listArray.forEach {
+            if (it.active.equals("1") && it.VisitationStatus.contains("Progress") && it.VisitationStatus.contains("Deficiency")){
+                sortedList.add(it)
+                it.active = "0"
+            }
+        }
+
+        visitationsModel.listArray.forEach {
+            if (it.active.equals("1") && it.VisitationStatus.contains("Not") && !it.VisitationStatus.contains("Deficiency")){
+                sortedList.add(it)
+                it.active = "0"
+            }
+        }
+
+        visitationsModel.listArray.forEach {
+            if (it.active.equals("1") && it.VisitationStatus.contains("Not") && it.VisitationStatus.contains("Deficiency")){
+                sortedList.add(it)
+                it.active = "0"
+            }
+        }
+
+        visitationsModel.listArray.forEach {
+            if (it.active.equals("1") && !it.VisitationStatus.contains("Completed")){
+                sortedList.add(it)
+                it.active = "0"
+            }
+        }
+
+        visitationsModel.listArray.forEach {
+            if (it.active.equals("1") && it.VisitationStatus.contains("Completed")){
+                sortedList.add(it)
+                it.active = "0"
+            }
+        }
+        visitationsModel.listArray.clear()
+        visitationsModel.listArray = sortedList
+        visitationsModel.pendingVisitationsArray.clear()
+        visitationsModel.completedVisitationsArray.clear()
+        visitationsModel.deficienciesArray.clear()
+    }
+
     fun parseVisitationsData(jsonObject: JSONObject): VisitationsModel {
         var visitationsModel = VisitationsModel()
 
@@ -693,12 +876,12 @@ class VisitationPlanningFragment : Fragment() {
 //        visitationsModel.completedVisitationsArray = visitationsModel.completedVisitationsArray.filter { s->s.DatePerformed. }
         //2019-07-05
         //  APPLY FILTERS TO OVERCOME GET VISITATION API ISSUES
-        var filteredMonth = if (visitationMonthsSpinner.selectedItemPosition==0) "0" else visitationMonthsSpinner.selectedItemPosition.toString()
-        var filteredYear = if (visitationYearFilterSpinner.selectedItemPosition==0) "0" else visitationYearFilterSpinner.selectedItem.toString()
-        if (visitationsModel.deficienciesArray.size>0) {
-            visitationsModel.deficienciesArray.removeIf { s -> s.DueDate.substring(5, 7).toInt() > filteredMonth.toInt() }
-            visitationsModel.deficienciesArray.removeIf { s -> s.DueDate.substring(0, 4).toInt() > filteredYear.toInt() }
-        }
+//        var filteredMonth = if (visitationMonthsSpinner.selectedItemPosition==0) "0" else visitationMonthsSpinner.selectedItemPosition.toString()
+//        var filteredYear = if (visitationYearFilterSpinner.selectedItemPosition==0) "0" else visitationYearFilterSpinner.selectedItem.toString()
+//        if (visitationsModel.deficienciesArray.size>0) {
+//            visitationsModel.deficienciesArray.removeIf { s -> s.DueDate.substring(5, 7).toInt() > filteredMonth.toInt() }
+//            visitationsModel.deficienciesArray.removeIf { s -> s.DueDate.substring(0, 4).toInt() > filteredYear.toInt() }
+//        }
 
         if (visitationsModel.completedVisitationsArray.size>0) {
             // Quarterly , Annual & Add Hoc
@@ -711,9 +894,8 @@ class VisitationPlanningFragment : Fragment() {
             if (!adHocVisitationsCheckBox.isChecked) {
                 visitationsModel.completedVisitationsArray.removeIf { s -> s.VisitationTypeID==3}
             }
-            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(5, 7).equals(filteredMonth) }
-            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(0, 4).equals(filteredYear) }
-
+//            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(5, 7).equals(filteredMonth) }
+//            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(0, 4).equals(filteredYear) }
         }
 
 //        visitationsModel.pendingVisitationsArray.removeIf { s->!s..substring(5,7).equals(filteredMonth)}
@@ -760,6 +942,24 @@ class VisitationPlanningFragment : Fragment() {
 
     }
 
+
+    private fun loadSpecialistDetails() {
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistDetails + ApplicationPrefs.getInstance(context).loggedInUserEmail,
+                Response.Listener { response ->
+                    requireActivity().runOnUiThread {
+                        specialistModel = Gson().fromJson(response.toString(), Array<CsiSpecialistDetails>::class.java).toCollection(ArrayList())
+                        if (specialistModel != null && specialistModel.size > 0) {
+                            visitationSpecialistName.setText(specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize() )
+                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistModel[0].accspecid
+                            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize()
+                        }
+                    }
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading Specialist Details")
+            Log.v("Loading error", "" + it.message)
+        }))
+    }
+
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
             mListener!!.onFragmentInteraction(uri)
@@ -781,6 +981,207 @@ class VisitationPlanningFragment : Fragment() {
     }
 
 
+    fun determineVisitationTypeAndStatusUpdatedLogic (facAnnualMonth : Int,facId:Int, clubCode:Int) : Pair<VisitationTypes,VisitationStatus> {
+        val c = Calendar.getInstance()
+        val month = c.get(Calendar.MONTH)+1
+        when (facAnnualMonth) {
+            1 -> {
+                when(month) {
+                    1 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    2 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            2 -> {
+                when(month) {
+                    2 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    3 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            3 -> {
+                when(month) {
+                    3 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    4 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            4 -> {
+                when(month) {
+                    4 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    5 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            5 -> {
+                when(month) {
+                    5 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    6 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            6 -> {
+                when(month) {
+                    6 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    7 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            7 -> {
+                when(month) {
+                    7 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    8 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            8 -> {
+                when(month) {
+                    8 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    9 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            9 -> {
+                when(month) {
+                    9 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    10 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            10 -> {
+                when(month) {
+                    10 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    11 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            11 -> {
+                when(month) {
+                    11 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    12 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    1 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+            12 -> {
+                when(month) {
+                    12 -> return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+                    1 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                }
+            }
+        }
+        return Pair(VisitationTypes.Annual,VisitationStatus.NotStarted)
+    }
+
+
     fun determineVisitationTypeAndStatus (facAnnualMonth : Int,facId:Int, clubCode:Int) : Pair<VisitationTypes,VisitationStatus> {
         val c = Calendar.getInstance()
         val month = c.get(Calendar.MONTH)+1
@@ -796,7 +1197,8 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    in 4 ..6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    in 5..6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                     8,9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
@@ -816,7 +1218,8 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    in 5 ..7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    in 6 ..7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                     9,10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
@@ -836,7 +1239,8 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    in 6..8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    in 7..8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                     10,11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
@@ -856,7 +1260,8 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    in 7..9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    7 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    in 8..9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                     11,12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                 }
@@ -876,7 +1281,8 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    in 8..10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    8 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    in 9..10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                     12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                 }
@@ -897,7 +1303,8 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    in 9..11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    9 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    in 10..11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                 }
             }
@@ -918,7 +1325,8 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    in 10..12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    10 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    in 11..12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                 }
             }
             8 -> {
@@ -939,7 +1347,8 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    in 11..12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    11 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                 }
             }
             9 -> {
@@ -961,12 +1370,12 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    12 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                 }
             }
             10 -> {
                 when(month) {
-                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    1 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                     2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
@@ -995,7 +1404,7 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    2 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                     3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
@@ -1017,7 +1426,7 @@ class VisitationPlanningFragment : Fragment() {
                             return Pair(VisitationTypes.Annual,VisitationStatus.Overdue)
                         }
                     }
-                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
+                    3 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
                     4 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     5 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.Overdue)
                     6 -> return Pair(VisitationTypes.Quarterly,VisitationStatus.NotStarted)
@@ -1076,13 +1485,6 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
 
-//                view?.setOnClickListener {
-//                    var strData = "Pending List:"
-//                    strData += "\n--------------------------"
-//                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth
-//                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle
-//                    Utility.showMessageDialog(context,"Visitation Data",strData)
-//                }
 
                 var visitationTypeAndStatus = determineVisitationTypeAndStatus(visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].FacID.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt())
                 vh.visitationTypeValueTextView.text = visitationTypeAndStatus.first.toString()
@@ -1090,10 +1492,10 @@ class VisitationPlanningFragment : Fragment() {
                 val c = Calendar.getInstance()
                 val month = c.get(Calendar.MONTH)+1
                 var overrideOverdueFlag = false
-                if (visitationTypeAndStatus.second == VisitationStatus.Overdue && facAnnualMonth-month==1) {
-                    overridOverdue=VisitationStatus.NotStarted
-                    overrideOverdueFlag = true
-                }
+//                if (visitationTypeAndStatus.second == VisitationStatus.Overdue && facAnnualMonth-month==1) {
+//                    overridOverdue=VisitationStatus.NotStarted
+//                    overrideOverdueFlag = true
+//                }
                 if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
                     if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode == visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.facannualinspectionmonth == visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt() && s.inspectioncycle == visitationPlanningModelList.pendingVisitationsArray[position].InspectionCycle && s.visitationtype == visitationTypeAndStatus.first.toString() }.isNotEmpty()) {
                         if (visitationTypeAndStatus.second == VisitationStatus.NotStarted) {
@@ -1113,10 +1515,12 @@ class VisitationPlanningFragment : Fragment() {
                     else
                         vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
                 }
-                if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.visitationtype.equals(visitationTypeAndStatus.first.toString())}.isNotEmpty()){
-                    vh.initialContractDateTextView.text = "Last Visitation Date:"
-                    vh.initialContractDateValueTextView.text = PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.visitationtype.equals(visitationTypeAndStatus.first.toString())}.sortedByDescending{it.completiondate}[0].completiondate.apiToAppFormatMMDDYYYY()
-                } else {
+
+
+//                if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.visitationtype.equals(visitationTypeAndStatus.first.toString())}.isNotEmpty()){
+//                    vh.initialContractDateTextView.text = "Last Visitation Date:"
+//                    vh.initialContractDateValueTextView.text = PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.facid==visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt() && s.clubcode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt() && s.visitationtype.equals(visitationTypeAndStatus.first.toString())}.sortedByDescending{it.completiondate}[0].completiondate.apiToAppFormatMMDDYYYY()
+//                } else {
 
                     if (visitationPlanningModelList.completedVisitationsArray.filter { s->s.FACNo==visitationPlanningModelList.pendingVisitationsArray[position].FACNo && s.ClubCode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode}.isNotEmpty()) {
                         vh.initialContractDateTextView.text = "Last Visitation Date:"
@@ -1125,7 +1529,7 @@ class VisitationPlanningFragment : Fragment() {
                         vh.initialContractDateTextView.text = "Initial Contract Date:"
                         vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
                     }
-                }
+//                }
 
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode,false,visitationTypeAndStatus.first)
@@ -1143,14 +1547,6 @@ class VisitationPlanningFragment : Fragment() {
                 vh.loadBtn.text = "VIEW PDF"
                 visitationID = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
                 vh.loadBtn.tag = visitationID.toInt()
-//                view?.setOnClickListener {
-//                    var strData = "Completed List:"
-//                    strData += "\n------------------------------"
-//                    strData += "\nVisitation ID --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
-//                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
-//                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].InspectionCycle
-//                    Utility.showMessageDialog(context,"Visitation Data",strData)
-//                }
                 vh.visitationTypeValueTextView.visibility = View.GONE
                 vh.visitationTypeTextView.visibility = View.GONE
                 if (visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].VisitationTypeID>0){
@@ -1163,19 +1559,18 @@ class VisitationPlanningFragment : Fragment() {
                     }
 
                 }
-                else if (PRGDataModel.getInstance().tblPRGCompletedVisitations[0].recordid > -1){
-                    if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.visitationid==visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID }.isNotEmpty()){
-                        vh.visitationTypeValueTextView.visibility = View.VISIBLE
-                        vh.visitationTypeTextView.visibility = View.VISIBLE
-                        vh.visitationTypeValueTextView.text = PRGDataModel.getInstance().tblPRGCompletedVisitations.filter {s->s.visitationid==visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID}.sortedByDescending { it.recordid }[0].visitationtype
-                    }
-                }
+
+//                else if (PRGDataModel.getInstance().tblPRGCompletedVisitations[0].recordid > -1){
+//                    if (PRGDataModel.getInstance().tblPRGCompletedVisitations.filter { s->s.visitationid==visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID }.isNotEmpty()){
+//                        vh.visitationTypeValueTextView.visibility = View.VISIBLE
+//                        vh.visitationTypeTextView.visibility = View.VISIBLE
+//                        vh.visitationTypeValueTextView.text = PRGDataModel.getInstance().tblPRGCompletedVisitations.filter {s->s.visitationid==visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID}.sortedByDescending { it.recordid }[0].visitationtype
+//                    }
+//                }
 
                 visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 vh.loadBtn.setOnClickListener({
                     Constants.visitationIDForPDF = vh.loadBtn.tag.toString()
-//                    getFullFacilityDataFromAAA(visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].ClubCode,true,VisitationTypes.Annual)
-//                    getFacilityPRGData(true)
                     launchNextAction(true)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
@@ -1211,22 +1606,7 @@ class VisitationPlanningFragment : Fragment() {
                             vh.visitationStatusValueTextView.text = vh.visitationStatusValueTextView.text.toString() + " / In Progress"
                         }
                     }
-//                    else {
-////                        vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
-//                    }
                 }
-//                else {
-//                    vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
-//                }
-
-//                view?.setOnClickListener {
-//                    var strData = "Deficiency List:"
-//                    strData += "\n------------------------------"
-//                    strData += "\nFacilityAnnualInspectionMonth --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FacilityAnnualInspectionMonth
-//                    strData += "\nInspectionCycle --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].InspectionCycle
-//                    strData += "\nDue Date --> "+visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].DueDate.apiToAppFormatMMDDYYYY()
-//                    Utility.showMessageDialog(context,"Visitation Data",strData)
-//                }
                 vh.loadBtn.setOnClickListener {
                     getFullFacilityDataFromAAA(visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(), visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode,false,VisitationTypes.Deficiency)
                 }
@@ -1273,6 +1653,118 @@ class VisitationPlanningFragment : Fragment() {
         override fun getCount(): Int {
             // return quantity of the list
             return visitationPlanningModelList.completedVisitationsArray.size + visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.deficienciesArray.size
+        }
+    }
+
+    inner class VisitationPlanningNewAdapter : BaseAdapter {
+
+        private var visitationPlanningModelList = VisitationsModel()
+        private var context: Context? = null
+
+        constructor(context: Context?, visitationsModel: VisitationsModel) : super() {
+            this.visitationPlanningModelList = visitationsModel
+            this.context = context
+        }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+            val view: View?
+            val vh: VisitationPlanningViewHolder
+
+            if (convertView == null) {
+                view = layoutInflater.inflate(R.layout.visitation_planning_list_item, parent, false)
+                vh = VisitationPlanningViewHolder(view)
+                view.tag = vh
+            } else {
+                view = convertView
+                vh = view.tag as VisitationPlanningViewHolder
+            }
+
+            vh.loadBtn.text = "LOAD VISITATION"
+
+            vh.facilityNameValueTextView.text = visitationPlanningModelList.listArray[position].BusinessName
+            vh.facilityNoValueTextView.text = visitationPlanningModelList.listArray[position].FACNo
+
+            if (visitationPlanningModelList.listArray[position].VisitationStatus.contains("Not Started") || visitationPlanningModelList.listArray[position].VisitationStatus.contains("In Progress") || visitationPlanningModelList.listArray[position].VisitationStatus.contains("Overdue")) {
+                vh.visitationStatusTextView.text = "Status:"
+                vh.visitationStatusValueTextView.text = visitationPlanningModelList.listArray[position].VisitationStatus
+                vh.visitationTypeValueTextView.visibility = View.VISIBLE
+                vh.visitationTypeTextView.visibility = View.VISIBLE
+                vh.visitationTypeValueTextView.text = visitationPlanningModelList.listArray[position].VisitationType
+                vh.initialContractDateTextView.text = "Initial Contract Date:"
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+                vh.loadBtn.setOnClickListener({
+                    getFullFacilityDataFromAAA(visitationPlanningModelList.listArray[position].FACNo.toInt(), visitationPlanningModelList.listArray[position].ClubCode,false,VisitationTypes.valueOf(visitationPlanningModelList.listArray[position].VisitationType))
+                })
+            }
+            else if (visitationPlanningModelList.listArray[position].VisitationStatus.contains("Completed")) {
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].CompletionDate
+                vh.visitationStatusValueTextView.text = "Completed"
+                vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
+                vh.initialContractDateTextView.text = "Visitation Date:"
+                vh.visitationStatusTextView.text = "Status:"
+                vh.loadBtn.text = "VIEW PDF"
+                visitationID = visitationPlanningModelList.listArray[position].VisitationID
+                vh.loadBtn.tag = visitationID.toInt()
+                vh.visitationTypeValueTextView.visibility = View.VISIBLE
+                vh.visitationTypeTextView.visibility = View.VISIBLE
+                vh.visitationTypeValueTextView.text = visitationPlanningModelList.listArray[position].VisitationType
+                vh.loadBtn.setOnClickListener({
+                    Constants.visitationIDForPDF = vh.loadBtn.tag.toString()
+                    launchNextAction(true)
+                })
+            } else if (visitationPlanningModelList.listArray[position].VisitationType.contains("Deficiency")) {
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].DueDate
+                vh.visitationTypeValueTextView.text = "Deficiency"
+                vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
+                vh.initialContractDateTextView.text = "Deficiency Due Date:"
+                vh.visitationTypeTextView.text = "Type:"
+                vh.visitationTypeValueTextView.visibility = View.VISIBLE
+                vh.visitationTypeTextView.visibility = View.VISIBLE
+                vh.visitationStatusValueTextView.text = visitationPlanningModelList.listArray[position].VisitationStatus
+                vh.loadBtn.setOnClickListener {
+                    getFullFacilityDataFromAAA(visitationPlanningModelList.listArray[position].FACNo.toInt(), visitationPlanningModelList.listArray[position].ClubCode,false,VisitationTypes.Deficiency)
+                }
+            }
+            if (vh.visitationTypeValueTextView.isVisible) {
+                if (vh.visitationTypeValueTextView.text.contains("Deficiency")) vh.listBkg.setBackgroundColor(Color.rgb(255, 229, 204))
+                else if (vh.visitationTypeValueTextView.text.contains("Annual")) vh.listBkg.setBackgroundColor((Color.WHITE))
+                else if (vh.visitationTypeValueTextView.text.contains("Quarterly")) vh.listBkg.setBackgroundColor(Color.rgb(255, 229, 204))
+            }
+            if (reviewFilters(vh.visitationTypeValueTextView.text.toString(),vh.visitationStatusValueTextView.text.toString())) {
+                vh.listBkg.visibility = View.GONE
+                totalVisitations -= 1
+//                  resultsCount.text = "Filtered Visitations --> ( " + totalVisitations +" )"
+            }
+            vh.visitationStatusValueTextView.setTextColor(getTextColor(vh.visitationStatusValueTextView.text.toString()))
+            return view
+        }
+
+        fun reviewFilters(visitationType : String, visitationStatus : String) : Boolean {
+            var hideVisitation = false
+            if (!annualVisitationCheckBox.isChecked && visitationType.contains(VisitationTypes.Annual.toString())) return true
+            if (!quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.contains(VisitationTypes.Quarterly.toString())) return true
+            if (!adHocVisitationsCheckBox.isChecked && visitationType.contains(VisitationTypes.AdHoc.toString())) return true
+            if (!deficienciesCheckBox.isChecked && visitationType.contains(VisitationTypes.Deficiency.toString())) return true
+            if (!pendingCheckBox.isChecked && visitationStatus.contains("Not Started")) return true
+            if (!inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
+            if (!overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
+            if (!completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
+            return hideVisitation
+        }
+
+        override fun getItem(position: Int): Any {
+            // return item at 'position'
+            return visitationPlanningModelList
+        }
+
+        override fun getItemId(position: Int): Long {
+            // return item Id by Long datatype
+            return position.toLong()
+        }
+
+        override fun getCount(): Int {
+            // return quantity of the list
+            return visitationPlanningModelList.listArray.size
         }
     }
 
@@ -1470,15 +1962,15 @@ class VisitationPlanningFragment : Fragment() {
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         recordsProgressView.visibility = View.VISIBLE
         client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
+            override fun onFailure(call: Call, e: IOException) {
                 Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
                 activity!!.runOnUiThread {
                     Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
                 }
             }
-            override fun onResponse(call: Call?, response: okhttp3.Response?) {
+            override fun onResponse(call: Call, response: okhttp3.Response) {
 
-                var responseString = response!!.body()!!.string()
+                var responseString = response!!.body!!.string()
                 if (responseString.toString().contains("returnCode>1<", false)) {
                     activity!!.runOnUiThread {
                         Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
@@ -1532,7 +2024,7 @@ class VisitationPlanningFragment : Fragment() {
         recordsProgressView.visibility = View.VISIBLE
 
         client.newCall(request2).enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
+            override fun onFailure(call: Call, e: IOException) {
                 activity!!.runOnUiThread {
                     Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e?.message)
                     recordsProgressView.visibility = View.GONE
@@ -1540,8 +2032,8 @@ class VisitationPlanningFragment : Fragment() {
                 }
             }
 
-            override fun onResponse(call: Call?, response: okhttp3.Response?) {
-                var responseString = response!!.body()!!.string()
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                var responseString = response!!.body!!.string()
                 activity!!.runOnUiThread {
                     recordsProgressView.visibility = View.GONE
                     progressBarText.text = "Loading ..."

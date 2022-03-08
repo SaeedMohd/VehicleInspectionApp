@@ -5,7 +5,7 @@ class VisitationsModel {
     var pendingVisitationsArray = ArrayList<PendingVisitationModel>()
     var completedVisitationsArray = ArrayList<CompletedVisitationModel>()
     var deficienciesArray = ArrayList<DeficiencyModel>()
-
+    var listArray = ArrayList<VisitationListModel>()
 
     class PendingVisitationModel{
         var FacID = ""
@@ -134,6 +134,26 @@ class VisitationsModel {
         var updateBy1 = ""
         var updateDate1 = ""
         var DueDate = ""
+    }
+
+    class VisitationListModel{
+        var FacID = ""
+        var ClubCode = ""
+        var FACNo = ""
+        var BusinessName = ""
+        var EntityName = ""
+        var FacilityAnnualInspectionMonth = ""
+        var InspectionCycle = ""
+        var ContractCurrentDate = ""
+        var ContractInitialDate = ""
+        var ContractTypeID = ""
+        var VisitationType = ""
+        var VisitationStatus = ""
+        var WaiveComments = ""
+        var CompletionDate = ""
+        var VisitationID = ""
+        var DueDate = ""
+        var active = "0"
     }
 
 

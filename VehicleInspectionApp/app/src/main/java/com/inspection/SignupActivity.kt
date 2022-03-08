@@ -79,13 +79,13 @@ class SignupActivity : Activity() {
 
         backButton!!.setOnClickListener { finish() }
 
-        if (intent.extras.getString("email") != null){
-            emailEditText!!.setText(intent.extras.getString("email"))
+        if (intent.extras?.getString("email") != null){
+            emailEditText!!.setText(intent.extras!!.getString("email"))
             emailEditText!!.isEnabled = false
         }
 
-        if (intent.extras.getString("phone") != null){
-            phoneEditText!!.setText(intent.extras.getString("phone"))
+        if (intent.extras?.getString("phone") != null){
+            phoneEditText!!.setText(intent.extras!!.getString("phone"))
             phoneEditText!!.isEnabled = false
         }
 

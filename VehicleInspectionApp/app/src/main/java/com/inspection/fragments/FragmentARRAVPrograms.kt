@@ -121,7 +121,7 @@ class FragmentARRAVPrograms : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -145,7 +145,7 @@ class FragmentARRAVPrograms : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -171,7 +171,7 @@ class FragmentARRAVPrograms : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -194,7 +194,7 @@ class FragmentARRAVPrograms : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -397,7 +397,7 @@ class FragmentARRAVPrograms : Fragment() {
         for (fac in TypeTablesModel.getInstance().ProgramsType) {
             programTypesArray.add(fac.ProgramTypeName)
         }
-        var programsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, programTypesArray)
+        var programsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, programTypesArray)
         programsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         program_name_textviewVal.adapter = programsAdapter
         edit_program_name_textviewVal.adapter = programsAdapter
@@ -471,10 +471,8 @@ class FragmentARRAVPrograms : Fragment() {
                     textView1.minimumHeight = 30
                     for (fac in TypeTablesModel.getInstance().ProgramsType) {
                         if (get(it).ProgramTypeID.equals(fac.ProgramTypeID)) {
-
                             textView1.text = fac.ProgramTypeName
                         }
-
                     }
                     tableRow.addView(textView1)
 

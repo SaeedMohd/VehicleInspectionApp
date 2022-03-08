@@ -46,8 +46,8 @@ class FragmentAnnualVisitationPager : Fragment() {
         super.onCreate(savedInstanceState)
 //        setC(R.layout.activity_main);
         if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
+            mParam1 = requireArguments().getString(ARG_PARAM1)
+            mParam2 = requireArguments().getString(ARG_PARAM2)
         }
 
     }
@@ -82,11 +82,11 @@ class FragmentAnnualVisitationPager : Fragment() {
         super.onResume()
         container.clearFindViewByIdCache()
         mSectionsPagerAdapter = null
-        fragmentManager!!.fragments.clear()
-        fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":0")
+        requireFragmentManager().fragments.clear()
+        requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":0")
         container.removeAllViews()
         container.adapter = null
-        mSectionsPagerAdapter = SectionsPagerAdapter(fragmentManager!!)
+        mSectionsPagerAdapter = SectionsPagerAdapter(requireFragmentManager())
         (activity as MainActivity).viewPager = container
         container.offscreenPageLimit = 16
         container.adapter = mSectionsPagerAdapter
@@ -155,17 +155,17 @@ class FragmentAnnualVisitationPager : Fragment() {
         var isValidInput: Boolean = true
         var errorText: String = ""
 
-        val fragmentVisitation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":0") as FragmentARRAnualVisitation
-        val fragmentFacility = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":1") as FacilityGeneralInformationFragment
-        val fragmentFacilityContinued = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued
-        val fragmentFacilityLocation = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":3") as FragmentARRAVLocation
-        val fragmentPersonnel = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel
-        val fragmentRepairShopPortal = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":6") as FragmentARRAVRepairShopPortalAddendum
-        val fragmentScopeOfServices = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService
-        val fragmentPrograms = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":11") as FragmentARRAVPrograms
-        val fragmentFcServices = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":12") as FragmentARRAVFacilityServices
-        val fragmentAffiliations = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":13") as FragmentARRAVAffliations
-        val fragmentDefficiencies = fragmentManager!!.findFragmentByTag("android:switcher:" + R.id.container + ":14") as FragmentARRAVDeficiency
+        val fragmentVisitation = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":0") as FragmentARRAnualVisitation
+        val fragmentFacility = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":1") as FacilityGeneralInformationFragment
+        val fragmentFacilityContinued = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":2") as FragmentARRAVFacilityContinued
+        val fragmentFacilityLocation = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":3") as FragmentARRAVLocation
+        val fragmentPersonnel = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":4") as FragmentARRAVPersonnel
+        val fragmentRepairShopPortal = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":6") as FragmentARRAVRepairShopPortalAddendum
+        val fragmentScopeOfServices = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":8") as FragmentARRAVScopeOfService
+        val fragmentPrograms = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":11") as FragmentARRAVPrograms
+        val fragmentFcServices = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":12") as FragmentARRAVFacilityServices
+        val fragmentAffiliations = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":13") as FragmentARRAVAffliations
+        val fragmentDefficiencies = requireFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":14") as FragmentARRAVDeficiency
 
         if (!fragmentVisitation.validateInputs()) {
             isValidInput = !isValidInput
@@ -229,7 +229,7 @@ class FragmentAnnualVisitationPager : Fragment() {
     }
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-        override fun getItem(position: Int): Fragment? {
+        override fun getItem(position: Int): Fragment {
             var ft: Fragment? = null
             when (position) {
 //                 0 -> ft = FragmentARRAnualVisitation.newInstance("Test", "Test")
@@ -250,7 +250,7 @@ class FragmentAnnualVisitationPager : Fragment() {
                 15 -> ft = FragmentARRAVComplaints.newInstance("Test", "Test")
             }
 
-            return ft
+            return ft!!
 
         }
 

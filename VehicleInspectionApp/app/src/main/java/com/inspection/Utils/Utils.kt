@@ -30,6 +30,7 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.transition.Transition
 import android.widget.CheckBox
 import android.widget.ImageView
@@ -56,6 +57,7 @@ import com.inspection.model.*
 import com.itextpdf.text.pdf.*
 import com.itextpdf.text.pdf.PdfName.TEXT
 import com.itextpdf.text.pdf.draw.LineSeparator
+import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import org.jetbrains.anko.doAsync
 import org.w3c.dom.Text
 import java.awt.font.TextAttribute.FONT
@@ -64,6 +66,7 @@ import java.io.*
 import java.lang.Exception
 import java.net.URI
 import java.net.URL
+import java.net.URLEncoder
 import java.nio.file.Paths
 import javax.sql.DataSource
 
@@ -205,7 +208,8 @@ fun Int.monthNoToName(): String {
 }
 
 fun createPDF(activity: Activity){
-    createPDFForShop(activity)
+    if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation)
+        createPDFForShop(activity)
 
     var imageView = ImageView(activity.applicationContext)
             .doAsync {
@@ -219,6 +223,7 @@ fun createPDF(activity: Activity){
                 var imageRepSignature: Image;
                 var imageSpecSignature: Image;
                 var imageDefSignature: Image;
+                var imageWaiveSignature: Image;
                 val ims = activity.assets.open("nosignatureicon.png");
                 val bmp = BitmapFactory.decodeStream(ims);
                 val stream = ByteArrayOutputStream();
@@ -226,17 +231,23 @@ fun createPDF(activity: Activity){
                 imageRepSignature = Image.getInstance(stream.toByteArray());
                 imageSpecSignature = Image.getInstance(stream.toByteArray());
                 imageDefSignature = Image.getInstance(stream.toByteArray());
+                imageWaiveSignature = Image.getInstance(stream.toByteArray());
+
+                if ((activity as FormsActivity).imageWaiveSignature != null) {
+                    try {
+                        var baos = ByteArrayOutputStream();
+                        (activity as FormsActivity).imageWaiveSignature?.compress(Bitmap.CompressFormat.PNG, 70, baos);
+                        var imageInByte = baos.toByteArray();
+                        imageWaiveSignature = Image.getInstance(imageInByte)
+                        imageWaiveSignature.scaleToFit(5F, 5F)
+                    } catch (e: Exception) {
+                        e.printStackTrace();
+                    }
+                }
+
                 if ((activity as FormsActivity).imageRepSignature != null) {
                     try {
-//                        val bmpRep = Glide.with(activity)
-//                                .asBitmap()
-//                                .load(Constants.getImages + imageNameRep)
-//                                .apply(RequestOptions().dontTransform().skipMemoryCache(true)
-//                                        .diskCacheStrategy(DiskCacheStrategy.NONE))
-//                                .submit()
-//                                .get()
                         var baos = ByteArrayOutputStream();
-//                        bmpRep.compress(Bitmap.CompressFormat.PNG, 70, baos);
                         (activity as FormsActivity).imageRepSignature?.compress(Bitmap.CompressFormat.PNG, 70, baos);
                         var imageInByte = baos.toByteArray();
                         imageRepSignature = Image.getInstance(imageInByte)
@@ -248,15 +259,7 @@ fun createPDF(activity: Activity){
 
                 if ((activity as FormsActivity).imageSpecSignature != null) {
                     try {
-//                        val bmpSpec = Glide.with(activity)
-//                                .asBitmap()
-//                                .load(Constants.getImages + imageNameSpec)
-//                                .apply(RequestOptions().dontTransform().skipMemoryCache(true)
-//                                        .diskCacheStrategy(DiskCacheStrategy.NONE))
-//                                .submit()
-//                                .get()
                         val baos = ByteArrayOutputStream();
-//                        bmpSpec.compress(Bitmap.CompressFormat.PNG, 70, baos);
                         (activity as FormsActivity).imageSpecSignature?.compress(Bitmap.CompressFormat.PNG, 70, baos);
                         val imageInByte = baos.toByteArray();
                         imageSpecSignature = Image.getInstance(imageInByte)
@@ -285,7 +288,7 @@ fun createPDF(activity: Activity){
                         e.printStackTrace();
                     }
                 }
-                createPDFForSpecialist(activity,imageRepSignature,imageSpecSignature,imageDefSignature)
+                createPDFForSpecialist(activity,imageRepSignature,imageSpecSignature,imageDefSignature,imageWaiveSignature)
             }
 
 }
@@ -295,7 +298,15 @@ fun createPDFForShop(activity: Activity) {
     val document = Document()
     //output file path
 //    val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
-    val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForShop.pdf")
+    var filePath = ""
+//    val file = File(Environment.getExternalStorageDirectory().path + "/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        filePath = activity?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/"+Constants.visitationIDForPDF+"_VisitationDetails_ForShop.pdf";
+    } else {
+        filePath = activity?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/"+Constants.visitationIDForPDF+"_VisitationDetails_ForShop.pdf";
+    }
+//    val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForShop.pdf")
+    val file = File(filePath)
     var writer = PdfWriter.getInstance(document, FileOutputStream(file))
     val event = HeaderFooterPageEvent()
     writer.pageEvent = event
@@ -354,13 +365,19 @@ fun createPDFForShop(activity: Activity) {
     uploadPDF(activity,file,"Shop")
 }
 
-fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?,imageDef: Image?) {
+fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?,imageDef: Image?,imageWaive: Image?) {
     val document = Document()
 
     //output file path
+    var filePath = ""
 //    val file = File(Environment.getExternalStorageDirectory().path + "/"+FacilityDataModel.getInstance().tblFacilities[0].FACNo+"_VisitationDetails_ForSpecialist.pdf")
-    val file = File(Environment.getExternalStorageDirectory().path + "/"+Constants.visitationIDForPDF+"_VisitationDetails_ForSpecialist.pdf")
-
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        filePath = activity?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/"+Constants.visitationIDForPDF+"_VisitationDetails_ForSpecialist.pdf";
+    } else {
+        filePath = activity?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/"+Constants.visitationIDForPDF+"_VisitationDetails_ForSpecialist.pdf";
+    }
+//    val file = File(Environment.getExternalStorageDirectory().path + "/"+Constants.visitationIDForPDF+"_VisitationDetails_ForSpecialist.pdf")
+    val file = File(filePath)
     var writer = PdfWriter.getInstance(document, FileOutputStream(file))
     val event = HeaderFooterPageEvent()
     writer.pageEvent = event
@@ -382,7 +399,7 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
 
     // Visitation Section
     paragraph = Paragraph("")
-    paragraph.add(drawVisitaionSection(imageRep,imageSpec))
+    paragraph.add(drawVisitaionSection(imageRep,imageSpec,imageWaive))
     document.add(paragraph)
 
 
@@ -730,7 +747,11 @@ fun uploadPDF(activity: Activity,file: File,type: String) {
             email = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto
         }
     }
-    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail+"&sessionId="+ApplicationPrefs.getInstance(activity).getSessionID(), null, file, Response.Listener { response ->
+    var facNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+    var waived = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) 'Y' else 'N'
+//    var sendPDF = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf) 'Y' else 'N'
+    var busName = URLEncoder.encode(FacilityDataModel.getInstance().tblFacilities[0].BusinessName , "UTF-8");
+    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&waived=${waived}&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail+"&facName=${busName}&facNo=${facNo}&sessionId="+ApplicationPrefs.getInstance(activity).getSessionID(), null, file, Response.Listener { response ->
 //    val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
         try {
         } catch (e: UnsupportedEncodingException) {
@@ -768,7 +789,7 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
 }
 
 
-private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?) : PdfPTable {
+private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?,imageWaiver: Image?) : PdfPTable {
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
 //    table.addCell(addCell("Type of Inspection: " + FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
@@ -778,31 +799,75 @@ private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?) : PdfPTable
     table.addCell(addCell("Date of Visitation: "+ Date().toAppFormatMMDDYYYY(),1,false));
 
     table.addCell(addCell("Visitation Reason: " + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationreason,2,false));
-    table.addCell(addCell("Visitation Method: " + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod,2,false));
+    table.addCell(addCell("Visitation Method: " + if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) "NA" else PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod,2,false));
 
-
-    table.addCell(addCell("Facility Representative's Name: ",1,false));
-    table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
+    if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) {
+        table.addCell(addCell("Facility Representative's Name: ",1,false));
+        table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep,1,false));
+    }
     table.addCell(addCell("Automotive Specialist:",1,false));
     table.addCell(addCell(PRGDataModel.getInstance().tblPRGVisitationHeader[0].automotivespecialist,1,false));
-    table.addCell(addCell("Facility Representative's Signature:",2,false));
-    table.addCell(addCell("Specialist's Signature:",2,false));
-    imageRep?.scaleAbsolute(50F,50F)
-    val c = PdfPCell(imageRep)
-    c.colspan = 2
-    c.border = Rectangle.NO_BORDER
-    c.horizontalAlignment = Element.ALIGN_CENTER
-    c.rowspan = 3
-    table.addCell(c)
-    imageSpec?.scaleAbsolute(50F,50F)
-    val d = PdfPCell(imageSpec)
-    d.colspan = 2
-    d.border = Rectangle.NO_BORDER
-    d.horizontalAlignment = Element.ALIGN_CENTER
-    d.rowspan = 3
-    table.addCell(d)
+    if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) {
+        if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("In Person"))
+            table.addCell(addCell("Facility Representative's Signature:", 2, false));
+        else
+            table.addCell(addCell("", 2, false));
+    } else  {
+        table.addCell(addCell("",2,false));
+        table.addCell(addCell("Waiver Comments:",1,false));
+        table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments.toString(),3,false));
+    }
+//    table.addCell(addCell("Specialist's Signature:",2,false));
+    if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) {
+        table.addCell(addCell("Specialist Signature:",2,false));
+        if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("In Person")) {
+            imageRep?.scaleAbsolute(50F, 50F)
+            val c = PdfPCell(imageRep)
+            c.colspan = 2
+            c.border = Rectangle.NO_BORDER
+            c.horizontalAlignment = Element.ALIGN_CENTER
+            c.rowspan = 3
+            table.addCell(c)
+        } else {
+//            table.addCell(addCell("",2,false));
+            val c = PdfPCell()
+            c.colspan = 2
+            c.border = Rectangle.NO_BORDER
+            c.horizontalAlignment = Element.ALIGN_CENTER
+            c.rowspan = 3
+            table.addCell(c)
+        }
+        imageSpec?.scaleAbsolute(50F, 50F)
+        val d = PdfPCell(imageSpec)
+        d.colspan = 2
+        d.border = Rectangle.NO_BORDER
+        d.horizontalAlignment = Element.ALIGN_CENTER
+        d.rowspan = 3
+        table.addCell(d)
+    } else  {
+        table.addCell(addCell("Waiver Signature:",2,false));
+        table.addCell(addCell("",2,false));
+        imageWaiver?.scaleAbsolute(50F,50F)
+        val d = PdfPCell(imageWaiver)
+        d.colspan = 2
+        d.border = Rectangle.NO_BORDER
+        d.horizontalAlignment = Element.ALIGN_CENTER
+        d.rowspan = 3
+        table.addCell(d)
+        table.addCell(addCell("",2,false));
+    }
+//    imageSpec?.scaleAbsolute(50F,50F)
+//    val d = PdfPCell(imageSpec)
+//    d.colspan = 2
+//    d.border = Rectangle.NO_BORDER
+//    d.horizontalAlignment = Element.ALIGN_CENTER
+//    d.rowspan = 3
+//    table.addCell(d)
 
-    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature.toString(),1,false));
+//    table.addCell(addCell(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature.toString(),1,false));
+//    if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) {
+//        table.addCell(addCell("",1,false));
+//    }
     return table
 }
 
@@ -1239,7 +1304,7 @@ private fun drawDeficiencySectionForShop() : PdfPTable {
     FacilityDataModel.getInstance().tblDeficiency.apply {
         (0 until size).forEach {
             if (!get(it).DefTypeID.equals("-1") && get(it).ClearedDate.isNullOrEmpty()) {
-                table.addCell(addCellWithBorder(TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.toString() == get(it).DefTypeID }[0].DeficiencyName,1,true))
+                table.addCell(addCellWithBorder(TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.equals(get(it).DefTypeID) }[0].DeficiencyName,1,true))
                 table.addCell(addCellWithBorder(if (get(it).VisitationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).VisitationDate.apiToAppFormatMMDDYYYY(),1,true));
                 table.addCell(addCellWithBorder("",1,true));
             }

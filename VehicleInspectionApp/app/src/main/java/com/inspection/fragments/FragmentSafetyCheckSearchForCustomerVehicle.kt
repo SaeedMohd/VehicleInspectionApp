@@ -58,7 +58,7 @@ class FragmentSafetyCheckSearchForCustomerVehicle : Fragment() {
 
             override fun onQueryTextChange(query: String): Boolean {
                 searchResultNames = customerNames.filter { it.contains(query, true) } as ArrayList<String>
-                val myAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultNames)
+                val myAdapter = ArrayAdapter<String>(context!!, android.R.layout.simple_list_item_1, searchResultNames)
                 searchCustomerSafetyCheckListView.adapter = myAdapter
                 searchCustomerSafetyCheckListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, position: Int, l: Long ->
                     val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

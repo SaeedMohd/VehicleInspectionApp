@@ -221,14 +221,15 @@ public class ApplicationPrefs {
 
 
     public void clearVehicleProfilePrefs() {
-        SharedPreferences settings = context
-                .getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(VEHICLE_PROFILE, "");
-        editor.commit();
+        try {
+            SharedPreferences settings = context
+                    .getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString(VEHICLE_PROFILE, "");
+            editor.commit();
+        } catch (Exception e) {
 
-
-
+        }
 
     }
 
@@ -711,10 +712,14 @@ public class ApplicationPrefs {
     }
 
     public String getLoggedInUserEmail() {
-        SharedPreferences settings = context
-                .getSharedPreferences(PREFS_NAME, 0);
+        try {
+            SharedPreferences settings = context
+                    .getSharedPreferences(PREFS_NAME, 0);
 
-        return settings.getString(loggedInUserEmail, "");
+            return settings.getString(loggedInUserEmail, "");
+        } catch (Exception e) {
+            return "E000000";
+        }
     }
 
     public void setLoggedInUserPass(String userPass) {
@@ -743,10 +748,13 @@ public class ApplicationPrefs {
     }
 
     public String getLoggedInUserID() {
-        SharedPreferences settings = context
-                .getSharedPreferences(PREFS_NAME, 0);
-
-        return settings.getString(loggedInUserID, "");
+        try {
+            SharedPreferences settings = context
+                    .getSharedPreferences(PREFS_NAME, 0);
+            return settings.getString(loggedInUserID, "");
+        } catch (Exception e) {
+            return "E000000";
+        }
     }
 
     public void setLoggedInUserFullName(String fullName) {
@@ -775,8 +783,12 @@ public class ApplicationPrefs {
     }
 
     public String getSessionID() {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
-        return settings.getString(sessionID, "");
+        try {
+            SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+            return settings.getString(sessionID, "");
+        } catch (Exception e) {
+            return "Anonymous";
+        }
     }
 
     public void setDeviceID(String strDeviceID) {
@@ -789,10 +801,14 @@ public class ApplicationPrefs {
     }
 
     public String getDeviceID() {
-        SharedPreferences settings = context
-                .getSharedPreferences(PREFS_NAME, 0);
+        try {
+            SharedPreferences settings = context
+                    .getSharedPreferences(PREFS_NAME, 0);
 
-        return settings.getString(deviceID, "");
+            return settings.getString(deviceID, "");
+        } catch (Exception e) {
+            return "Anonymous";
+        }
     }
 
 }
