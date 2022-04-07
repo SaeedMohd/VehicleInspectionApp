@@ -750,8 +750,10 @@ fun uploadPDF(activity: Activity,file: File,type: String) {
     var facNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo
     var waived = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) 'Y' else 'N'
 //    var sendPDF = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf) 'Y' else 'N'
+    var emailPDF = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf) "1" else "0"
     var busName = URLEncoder.encode(FacilityDataModel.getInstance().tblFacilities[0].BusinessName , "UTF-8");
-    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&waived=${waived}&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail+"&facName=${busName}&facNo=${facNo}&sessionId="+ApplicationPrefs.getInstance(activity).getSessionID(), null, file, Response.Listener { response ->
+    var directorEmail = PRGDataModel.getInstance().tblPRGFacilityDirectors[0].directoremail
+    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&emailPDF=${emailPDF}&director=${directorEmail}&waived=${waived}&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail+"&facName=${busName}&facNo=${facNo}&sessionId="+ApplicationPrefs.getInstance(activity).getSessionID(), null, file, Response.Listener { response ->
 //    val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
         try {
         } catch (e: UnsupportedEncodingException) {

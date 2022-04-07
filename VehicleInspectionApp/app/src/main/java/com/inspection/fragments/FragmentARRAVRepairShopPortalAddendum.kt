@@ -108,6 +108,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
                                     (activity as FormsActivity).saveRequired = false
                                     refreshButtonsState()
+                                    (activity as FormsActivity).saveDone = true
                                     HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
                                     HasChangedModel.getInstance().changeDoneForFacilityRSP()
 
@@ -346,6 +347,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                         FacilityDataModelOrg.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
                                         fillPortalTrackingTableView()
                                         altLocationTableRow(2)
+                                        (activity as FormsActivity).saveDone = true
                                         HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
                                         HasChangedModel.getInstance().changeDoneForFacilityRSP()
                                     } else {
@@ -690,6 +692,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                                     FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
                                                     fillPortalTrackingTableView()
                                                     altLocationTableRow(2)
+                                                    (activity as FormsActivity).saveDone = true
                                                     HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
                                                 } else {
                                                     var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))

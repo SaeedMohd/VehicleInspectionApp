@@ -1,5 +1,7 @@
 package com.inspection.model
 
+import android.util.Log
+
 class HasChangedModel {
 
     companion object {
@@ -229,6 +231,10 @@ class HasChangedModel {
 
 
     fun changeWasMadeFroAny () : Boolean {
+        Log.v("ForFacilityGGroup-->", changeDoneForFacilityGeneralGroup().toString())
+        Log.v("ForSoSGroup-->", changeDoneForSoSGroup().toString())
+        Log.v("ForPhotoDef-->", changeDoneForPhotoDef().toString())
+        Log.v("ForDeficiencyDef-->", changeDoneForDeficiencyDef().toString())
         return (changeDoneForFacilityGeneralGroup() || changeDoneForSoSGroup() || changeDoneForPhotoDef() || changeDoneForDeficiencyDef())
     }
 

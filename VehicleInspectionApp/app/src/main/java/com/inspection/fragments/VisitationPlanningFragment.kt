@@ -673,6 +673,19 @@ class VisitationPlanningFragment : Fragment() {
         }
     }
 
+    fun reviewFilters(visitationType : String, visitationStatus : String) : Boolean {
+        var hideVisitation = false
+        if (!annualVisitationCheckBox.isChecked && visitationType.equals(VisitationTypes.Annual.toString())) return true
+        if (!quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.equals(VisitationTypes.Quarterly.toString())) return true
+        if (!adHocVisitationsCheckBox.isChecked && visitationType.equals(VisitationTypes.AdHoc.toString())) return true
+        if (!deficienciesCheckBox.isChecked && visitationType.equals(VisitationTypes.Deficiency.toString())) return true
+        if (!pendingCheckBox.isChecked && visitationStatus.equals("Not Started")) return true
+        if (!inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
+        if (!overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
+        if (!completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
+        return hideVisitation
+    }
+
     fun FillVisitationList() { // New Method to
 //        val c = Calendar.getInstance()
 //        val month = c.get(Calendar.MONTH)+1
@@ -720,8 +733,7 @@ class VisitationPlanningFragment : Fragment() {
                 item.VisitationStatus = item.VisitationStatus + "/Deficiency"
                 visitationsModel.deficienciesArray.removeIf { s->s.FACNo.equals(item.FACNo) && s.ClubCode.equals(item.ClubCode)}
             }
-
-            visitationsModel.listArray.add(item)
+            if (!reviewFilters(item.VisitationType,item.VisitationStatus)) visitationsModel.listArray.add(item)
         }
 
         visitationsModel.completedVisitationsArray.forEach {
@@ -744,7 +756,9 @@ class VisitationPlanningFragment : Fragment() {
                 3 -> item.VisitationType = "AdHoc"
                 4 -> item.VisitationType = "Deficiency"
             }
-            visitationsModel.listArray.add(item)
+
+            if (!reviewFilters(item.VisitationType,item.VisitationStatus))
+                visitationsModel.listArray.add(item)
         }
 
 
@@ -782,7 +796,8 @@ class VisitationPlanningFragment : Fragment() {
                     }
                 }
             }
-            visitationsModel.listArray.add(item)
+            if (!reviewFilters(item.VisitationType,item.VisitationStatus)) visitationsModel.listArray.add(item)
+                visitationsModel.listArray.add(item)
         }
 
         var sortedList = ArrayList<VisitationsModel.VisitationListModel>()
@@ -1618,11 +1633,13 @@ class VisitationPlanningFragment : Fragment() {
                     VisitationTypes.Deficiency.toString() -> vh.listBkg.setBackgroundColor(Color.rgb(255, 229, 204))
                 }
             }
-              if (reviewFilters(vh.visitationTypeValueTextView.text.toString(),vh.visitationStatusValueTextView.text.toString())) {
-                  vh.listBkg.visibility = View.GONE
-                  totalVisitations -= 1
-//                  resultsCount.text = "Filtered Visitations --> ( " + totalVisitations +" )"
-              }
+//              if (reviewFilters(vh.visitationTypeValueTextView.text.toString(),vh.visitationStatusValueTextView.text.toString())) {
+//                  vh.listBkg.visibility = View.GONE
+//                  totalVisitations -= 1
+////                  resultsCount.text = "Filtered Visitations --> ( " + totalVisitations +" )"
+//              } else {
+//                  vh.listBkg.visibility = View.VISIBLE
+//              }
             vh.visitationStatusValueTextView.setTextColor(getTextColor(vh.visitationStatusValueTextView.text.toString()))
             return view
         }
@@ -1683,7 +1700,9 @@ class VisitationPlanningFragment : Fragment() {
 
             vh.facilityNameValueTextView.text = visitationPlanningModelList.listArray[position].BusinessName
             vh.facilityNoValueTextView.text = visitationPlanningModelList.listArray[position].FACNo
-
+            if (visitationPlanningModelList.listArray[position].FACNo.equals("3114")) {
+                Log.v("HERE ---->"," START TRACE -----")
+            }
             if (visitationPlanningModelList.listArray[position].VisitationStatus.contains("Not Started") || visitationPlanningModelList.listArray[position].VisitationStatus.contains("In Progress") || visitationPlanningModelList.listArray[position].VisitationStatus.contains("Overdue")) {
                 vh.visitationStatusTextView.text = "Status:"
                 vh.visitationStatusValueTextView.text = visitationPlanningModelList.listArray[position].VisitationStatus
@@ -1730,11 +1749,14 @@ class VisitationPlanningFragment : Fragment() {
                 else if (vh.visitationTypeValueTextView.text.contains("Annual")) vh.listBkg.setBackgroundColor((Color.WHITE))
                 else if (vh.visitationTypeValueTextView.text.contains("Quarterly")) vh.listBkg.setBackgroundColor(Color.rgb(255, 229, 204))
             }
-            if (reviewFilters(vh.visitationTypeValueTextView.text.toString(),vh.visitationStatusValueTextView.text.toString())) {
-                vh.listBkg.visibility = View.GONE
-                totalVisitations -= 1
+            Log.v("Facility NO -->",visitationPlanningModelList.listArray[position].FACNo)
+
+                if (reviewFilters(vh.visitationTypeValueTextView.text.toString(), vh.visitationStatusValueTextView.text.toString())) {
+                    vh.listBkg.visibility = View.GONE
+                    totalVisitations -= 1
 //                  resultsCount.text = "Filtered Visitations --> ( " + totalVisitations +" )"
-            }
+                }
+
             vh.visitationStatusValueTextView.setTextColor(getTextColor(vh.visitationStatusValueTextView.text.toString()))
             return view
         }
@@ -1918,8 +1940,27 @@ class VisitationPlanningFragment : Fragment() {
                                                                                                             item.nationalnumber = ""
                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
                                                                                                         }
-                                                                                                        launchNextAction(isCompleted)
-                                                                                                    }
+                                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityDirectors + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                                                Response.Listener { response ->
+                                                                                                                    activity!!.runOnUiThread {
+                                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDirectors= Gson().fromJson(response.toString(), Array<PRGFacilityDirectors>::class.java).toCollection(ArrayList())
+                                                                                                                        } else {
+                                                                                                                            var item = PRGFacilityDirectors()
+                                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                                                            item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                                            item.specialistid = -1
+                                                                                                                            item.directorid = -1
+                                                                                                                            item.directoremail = ""
+                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDirectors.add(item)
+                                                                                                                        }
+                                                                                                                        launchNextAction(isCompleted)
+                                                                                                                    }
+                                                                                                                }, Response.ErrorListener {
+                                                                                                            Log.v("Loading PRG Data error", "" + it.message)
+                                                                                                            launchNextAction(isCompleted)
+                                                                                                            it.printStackTrace()
+                                                                                                        }))                                                                                                    }
                                                                                                 }, Response.ErrorListener {
                                                                                             Log.v("Loading PRG Data error", "" + it.message)
                                                                                             launchNextAction(isCompleted)

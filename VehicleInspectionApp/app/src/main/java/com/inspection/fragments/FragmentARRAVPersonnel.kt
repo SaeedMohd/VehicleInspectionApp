@@ -502,6 +502,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                     fillCertificationTableView(selectedPersonnelID)
+                                    (activity as FormsActivity).saveDone = true
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
                                     Utility.showSubmitAlertDialog(activity, false, "Certification (Error: " + errorMessage + " )")
@@ -580,7 +581,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                     item.NotificationRecipient = newNotificationCheck.isChecked
                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
-
+                                    (activity as FormsActivity).saveDone = true
                                     if (ContractSigner.toBoolean()){
                                         var signerItem = TblPersonnelSigner()
                                         signerItem.Addr1= if (newAdd1Text.text.toString().isNullOrEmpty()) "" else newAdd1Text.text.toString()
@@ -1944,6 +1945,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                 item.NotificationRecipient = NotificationRec
                                                 HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                                 HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
+                                                (activity as FormsActivity).saveDone = true
                                                 if (ContractSigner.toBoolean()){
                                                     val coAddr1= if (edit_newAdd1Text.text.toString().isNullOrEmpty()) "" else edit_newAdd1Text.text.toString()
                                                     val coAddr2= if (edit_newAdd2Text.text.toString().isNullOrEmpty()) "" else edit_newAdd2Text.text.toString()
@@ -2242,6 +2244,7 @@ class FragmentARRAVPersonnel : Fragment() {
 //                                                            get(it).ExpirationDate = item.ExpirationDate
 //                                                        }
 //                                                    }
+                                                    (activity as FormsActivity).saveDone = true
                                                     HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
                                                     HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
                                                     fillCertificationTableView(selectedPersonnelID)

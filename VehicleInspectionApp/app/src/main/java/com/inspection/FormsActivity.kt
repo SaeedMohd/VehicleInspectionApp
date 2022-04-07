@@ -86,6 +86,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     var imageDefSignature : Bitmap? = null
     var imageWaiveSignature : Bitmap? = null
     var visitationID : String? = ""
+    var saveDone : Boolean = false
 
     //    var toolbar = findViewById<Toolbar>(R.id.toolbar)
 //    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -106,7 +107,6 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         watcher_NumOfBays = ""
         watcher_NumOfLifts = ""
         typeIdCompare = ""
-
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -201,10 +201,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     fun updateVisitationProgress(cancel : Boolean) {
         var strUrl = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "&clubCode="+FacilityDataModel.getInstance().clubCode+"&sessionId="+ ApplicationPrefs.getInstance(activity).sessionID+"&facAnnualInspectionMonth="+FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth+"&inspectionCycle="+FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle+"&userId="+ ApplicationPrefs.getInstance(activity).loggedInUserID+"&visitedScreens="+IndicatorsDataModel.getInstance().getVisitedScreen()+"&visitationType="+FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType +"&cancelled="
-        if (cancel)
-            strUrl += "1"
-        else
-            strUrl += "0"
+        strUrl += if (cancel && !saveDone) "1" else "0"
         Log.v("Mark In Progress -> ",Constants.saveVisitedScreens+strUrl)
         Volley.newRequestQueue(this).add(StringRequest(Request.Method.GET, Constants.saveVisitedScreens+strUrl,
                 Response.Listener { response ->

@@ -500,6 +500,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                                     scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
                                     progressBarText.text = "Loading ..."
                                     Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
+                                    (activity as FormsActivity).saveDone = true
 //                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage=discountPercentage
 //                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount=maxdiscountamount
                                     if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {

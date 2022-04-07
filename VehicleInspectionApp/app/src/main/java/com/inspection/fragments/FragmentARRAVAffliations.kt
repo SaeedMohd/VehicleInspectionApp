@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -247,6 +248,7 @@ class FragmentARRAVAffliations : Fragment() {
                                     FacilityDataModelOrg.getInstance().tblAffiliations.add(affiliationItem)
                                     fillAffTableView()
                                     altLocationTableRow(2)
+                                    (activity as FormsActivity).saveDone = true
                                     HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
                                     HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
                                 } else {
@@ -321,13 +323,13 @@ class FragmentARRAVAffliations : Fragment() {
 
     fun prepareAffiliations () {
 
-        affTypesDetailsList = TypeTablesModel.getInstance().AffiliationDetailType
+        affTypesDetailsList = TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.active.equals("true")}.toCollection(ArrayList())
         affTypesDetailsArray.clear()
         for (fac in affTypesDetailsList ) {
             affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
         }
 
-        edit_affTypesDetailsList = TypeTablesModel.getInstance().AffiliationDetailType
+        edit_affTypesDetailsList = TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.active.equals("true")}.toCollection(ArrayList())
         edit_affTypesDetailsArray.clear()
         for (fac in edit_affTypesDetailsList ) {
             edit_affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
@@ -341,13 +343,13 @@ class FragmentARRAVAffliations : Fragment() {
         edit_afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         edit_afDetails_textviewVal.adapter = edit_afDetailsAdapter
 
-        affTypesList = TypeTablesModel.getInstance().AARAffiliationType
+        affTypesList = TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.active.equals("true")}.toCollection(ArrayList())
         affTypesArray.clear()
         for (fac in affTypesList ) {
             affTypesArray.add(fac.AffiliationTypeName)
         }
 
-        edit_affTypesList = TypeTablesModel.getInstance().AARAffiliationType
+        edit_affTypesList = TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.active.equals("true")}.toCollection(ArrayList())
         edit_affTypesArray.clear()
         for (fac in edit_affTypesList ) {
             edit_affTypesArray.add(fac.AffiliationTypeName)
@@ -439,7 +441,7 @@ class FragmentARRAVAffliations : Fragment() {
                     textView.minimumHeight = 30
 //                    textView.text = if (get(it).AffiliationTypeID == 0) "" else TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == get(it).AffiliationTypeID}[0].AffiliationTypeName
                     for (fac in TypeTablesModel.getInstance().AARAffiliationType) {
-                        if (get(it).AffiliationTypeID.equals(fac.AARAffiliationTypeID)) {
+                        if (get(it).AffiliationTypeID.toString().equals(fac.AARAffiliationTypeID)) {
                             textView.text = fac.AffiliationTypeName
                         }
                     }
@@ -540,7 +542,7 @@ class FragmentARRAVAffliations : Fragment() {
                                                 FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
                                                 FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
                                                 FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].comment= comment
-
+                                                (activity as FormsActivity).saveDone = true
                                                 affLoadingView.visibility = View.GONE
                                                 progressBarText.text = "Loading ..."
                                                 fillAffTableView()

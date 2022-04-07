@@ -328,6 +328,7 @@ class FragmentARRAVPrograms : Fragment() {
                                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSPrograms()
                                         fillPortalTrackingTableView()
                                         altTableRow(2)
+                                        (activity as FormsActivity).saveDone = true
                                         programCard.visibility = View.GONE
                                         progressBarTextVal.text = "Loading ..."
                                         programsLoadingView.visibility = View.GONE
@@ -394,7 +395,7 @@ class FragmentARRAVPrograms : Fragment() {
 
     fun prepareProgramTypes() {
 
-        for (fac in TypeTablesModel.getInstance().ProgramsType) {
+        for (fac in TypeTablesModel.getInstance().ProgramsType.filter { s->s.active.equals("true")}.toCollection(ArrayList())) {
             programTypesArray.add(fac.ProgramTypeName)
         }
         var programsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, programTypesArray)
@@ -708,6 +709,7 @@ class FragmentARRAVPrograms : Fragment() {
                                                         FacilityDataModel.getInstance().tblPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(tempPrograms)
                                                         FacilityDataModel.getInstance().tblPrograms.clear()
                                                         FacilityDataModelOrg.getInstance().tblPrograms.clear()
+                                                        (activity as FormsActivity).saveDone = true
                                                         tempPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(FacilityDataModel.getInstance().tblPrograms)
                                                         tempPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(FacilityDataModelOrg.getInstance().tblPrograms)
                                                         fillPortalTrackingTableView()

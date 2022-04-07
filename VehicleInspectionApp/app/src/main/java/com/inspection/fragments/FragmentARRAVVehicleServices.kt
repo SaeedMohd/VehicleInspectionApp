@@ -243,6 +243,7 @@ class FragmentARRAVVehicleServices : Fragment() {
                                 vehicleServiceItem.insertDate = FacilityDataModel.getInstance().tblVehicleServices[i].insertDate
                                 FacilityDataModelOrg.getInstance().tblVehicleServices.add(vehicleServiceItem)
                             }
+                            (activity as FormsActivity).saveDone = true
                             Utility.showSubmitAlertDialog(activity, true, "Vehicle Services ${saveMessage}")
                             (activity as FormsActivity).saveRequired = false
                             refreshButtonsState()

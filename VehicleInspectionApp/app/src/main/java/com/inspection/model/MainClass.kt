@@ -310,6 +310,7 @@ class TblAffiliations {
     var effDate = ""
     var expDate = ""
     var comment = ""
+    var active = ""
 }
 
 class TblDeficiency {
@@ -700,6 +701,15 @@ class PRGPersonnelDetails {
     var oemstartdate = ""
     var reportrecipient = 0
     var notificationrecipient = 0
+}
+
+class PRGFacilityDirectors {
+    var facnum = 0
+    var clubcode = 0
+    var specialistemail = ""
+    var specialistid = 0
+    var directorid = 0
+    var directoremail = ""
 }
 
 class PRGRepairDiscountFactors {

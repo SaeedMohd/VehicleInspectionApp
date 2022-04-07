@@ -97,6 +97,7 @@ object Constants {
     val getRepairDiscountFactors = permanentURL + "getRepairDiscountFactors?clubCode="
     val getPersonnelDetails = permanentURL + "getPRGPersonnelDetails?clubCode="
     val getPRGFacilityDetails = permanentURL + "getPRGFacilityDetails?clubCode="
+    val getFacilityDirectors = permanentURL + "getFacilityDirectors?clubCode="
     val updateFacilityPhotos = permanentURL + "updateFacilityPhotos?facId="
     val getLoggedActions = permanentURL + "getLoggedActions?facNum="
     val getVisitationHeader = permanentURL + "getVisitationHeader?facNum="

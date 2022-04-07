@@ -209,6 +209,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                                     Utility.showSubmitAlertDialog(activity, true, "Facility Services")
                                     fillPortalTrackingTableView()
                                     altFacServiceTableRow(2)
+                                    (activity as FormsActivity).saveDone = true
                                     HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices=true
                                     HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
                                 } else {
@@ -439,6 +440,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                                                     FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
                                                     fillPortalTrackingTableView()
                                                     altFacServiceTableRow(2)
+                                                    (activity as FormsActivity).saveDone = true
                                                     HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices = true
                                                     HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
                                                 } else {

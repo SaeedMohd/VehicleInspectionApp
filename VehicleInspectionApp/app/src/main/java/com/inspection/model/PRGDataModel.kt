@@ -29,5 +29,6 @@ class PRGDataModel {
     var tblPRGFacilityDetails= ArrayList<PRGFacilityDetails>()
     var tblPRGRepairDiscountFactors= ArrayList<PRGRepairDiscountFactors>()
     var tblPRGPersonnelDetails= ArrayList<PRGPersonnelDetails>()
+    var tblPRGFacilityDirectors= ArrayList<PRGFacilityDirectors>()
 
 }

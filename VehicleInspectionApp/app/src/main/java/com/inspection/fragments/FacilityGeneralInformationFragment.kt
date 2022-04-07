@@ -41,6 +41,7 @@ import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import org.w3c.dom.CDATASection
 import org.w3c.dom.CharacterData
 import org.w3c.dom.Text
+import java.lang.Exception
 import java.net.URI
 import java.net.URLEncoder
 import java.text.ParseException
@@ -176,8 +177,12 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         fillPortalTrackingTableView()
         FacilityDataModel.getInstance().apply {
+            var statusID = "1"
+            try {
+                statusID = CSIFacilitySingelton.getInstance().csiFacilities.filter { s -> s.facnum.equals(tblFacilities[0].FACNo.toString()) && s.clubcode.equals(clubCode) }[0].status
+            } catch (e: Exception) {
 
-            val statusID = CSIFacilitySingelton.getInstance().csiFacilities.filter { s->s.facnum.equals(tblFacilities[0].FACNo.toString()) && s.clubcode.equals(clubCode)}[0].status
+            }
             statusCommentEditText.setText(tblFacilities[0].StatusComment)
             contractStatusTextViewVal.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s -> s.FacilityStatusID == statusID}[0].FacilityStatusName
 //            contractStatusTextViewVal.setTextColor(Color.BLUE)
@@ -485,6 +490,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                                                 FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID = FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID
                                                 fillPortalTrackingTableView()
                                                 scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                                (activity as FormsActivity).saveDone = true
                                                 progressBarText.text = "Loading ..."
                                             } else {
                                                 scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
@@ -540,6 +546,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                                         FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID = ""
                                         FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorName = textView1.text.toString()
                                         fillPortalTrackingTableView()
+                                        (activity as FormsActivity).saveDone = true
                                         scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                                         progressBarText.text = "Loading ..."
                                     } else {
@@ -1033,6 +1040,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                             FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
                             FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
                             (activity as FormsActivity).saveRequired = false
+                            (activity as FormsActivity).saveDone = true
                             submitGeneralInfoRequired = false
                             HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone=true
@@ -1197,6 +1205,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                             refreshButtonsState()
                             submitPaymentRequired=false
+                            (activity as FormsActivity).saveDone = true
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage+" )")

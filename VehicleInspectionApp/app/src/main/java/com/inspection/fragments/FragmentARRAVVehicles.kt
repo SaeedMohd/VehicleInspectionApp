@@ -107,6 +107,7 @@ class FragmentARRAVVehicles : Fragment() {
                 Response.Listener { response ->
                     activity!!.runOnUiThread {
                         isVehiclesLoaded = true
+                        (activity as FormsActivity).saveDone = true
                         vehiclesList = Gson().fromJson(response.toString(), Array<AAAVehiclesModel>::class.java).toCollection(ArrayList())
                         vehiclesListItems.add(VehicleServiceHeader("Automobile"))
                         (0..vehiclesList.size - 1).forEach {

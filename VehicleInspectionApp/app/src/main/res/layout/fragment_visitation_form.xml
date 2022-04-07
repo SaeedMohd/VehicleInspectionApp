@@ -380,11 +380,13 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:id="@+id/signatureView"
                         android:background="@color/light_gray" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/signatureRL"
                         android:minHeight="60dp"
                         android:padding="10dp">
 

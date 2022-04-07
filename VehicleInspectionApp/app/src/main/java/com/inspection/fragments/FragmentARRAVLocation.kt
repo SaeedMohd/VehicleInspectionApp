@@ -1313,6 +1313,7 @@ class FragmentARRAVLocation : Fragment() {
                                     FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
                                     fillLocationTableView()
                                     fillGeoCodesTable()
+                                    (activity as FormsActivity).saveDone = true
                                     HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
                                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                                 } else {
@@ -1387,6 +1388,7 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
                             FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
 //                            fillGeoCodesTable()
+                            (activity as FormsActivity).saveDone = true
                             HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                         } else {
@@ -1741,6 +1743,7 @@ class FragmentARRAVLocation : Fragment() {
                                                     FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
                                                     FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
                                                     fillPhoneTableView()
+                                                    (activity as FormsActivity).saveDone = true
                                                     checkIfChangeDone("PHONE")
                                                 } else {
                                                     var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
@@ -1884,6 +1887,7 @@ class FragmentARRAVLocation : Fragment() {
                                                     FacilityDataModelOrg.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = newChangesEmailText.text.toString()
                                                     fillEmailTableView()
                                                     checkIfChangeDone("EMAIL")
+                                                    (activity as FormsActivity).saveDone = true
                                                 } else {
                                                     var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                                     Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
@@ -2278,6 +2282,7 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
                             FacilityDataModelOrg.getInstance().tblFacilityEmail.add(newEmail)
                             fillEmailTableView()
+                            (activity as FormsActivity).saveDone = true
                             HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail= true
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                         } else {
@@ -2351,6 +2356,7 @@ class FragmentARRAVLocation : Fragment() {
 //                        HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
 //                        HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                         refreshButtonsState()
+                        (activity as FormsActivity).saveDone = true
                         Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes")
 
                     } else {
@@ -2443,6 +2449,7 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModelOrg.getInstance().tblHours[0].NightDrop= nightDropCheck.isChecked
                             FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr = nightDropInstText.text.toString()
                             (activity as FormsActivity).saveRequired = false
+                            (activity as FormsActivity).saveDone = true
                             saveHoursRequired = false
                             HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
@@ -2492,6 +2499,7 @@ class FragmentARRAVLocation : Fragment() {
                             }
                             HasChangedModel.getInstance().checkGeneralInfoTblLanguagesChange()
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                            (activity as FormsActivity).saveDone = true
                             saveLangRequired = false
                             refreshButtonsState()
                         } else {
@@ -2544,6 +2552,7 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModel.getInstance().tblPhone.add(newPhone)
                             HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = true
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                            (activity as FormsActivity).saveDone = true
                             fillPhoneTableView()
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))

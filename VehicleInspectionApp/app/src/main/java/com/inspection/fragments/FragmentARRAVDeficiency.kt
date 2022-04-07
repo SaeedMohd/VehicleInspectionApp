@@ -331,6 +331,7 @@ class FragmentARRAVDeficiency : Fragment() {
 //                                    Utility.showMessageDialog(activity,"DEF ID",item.DefID)
                                     FacilityDataModel.getInstance().tblDeficiency.add(item)
                                     fillDeffTableView()
+                                    (activity as FormsActivity).saveDone = true
                                     HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
                                     HasChangedModel.getInstance().changeDoneForDeficiencyDef()
                                 } else {
@@ -686,6 +687,7 @@ class FragmentARRAVDeficiency : Fragment() {
                                                         ClearedDate = item.ClearedDate
                                                     }
                                                     fillDeffTableView()
+                                                    (activity as FormsActivity).saveDone = true
                                                     HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
                                                     HasChangedModel.getInstance().changeDoneForDeficiencyDef()
                                                 } else {
