@@ -1,41 +1,30 @@
 package com.inspection
 
-import android.app.Activity
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.app.PendingIntent
-import android.app.ProgressDialog
+//import org.apache.http.NameValuePair;
+//import org.apache.http.message.BasicNameValuePair;
+
+import android.R.id
+import android.app.*
 import android.content.*
-import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.Settings
-import android.telephony.TelephonyManager
-import android.text.Editable
-import android.text.InputType
-import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.widget.ButtonBarLayout
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-
-
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Constants
 import com.inspection.Utils.Utility
-import com.inspection.Utils.toast
 import com.inspection.model.*
 import com.inspection.serverTasks.*
 import kotlinx.android.synthetic.main.activity_login.*
@@ -44,18 +33,12 @@ import kotlinx.android.synthetic.main.dialog_user_register.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
-
-
-//import org.apache.http.NameValuePair;
-//import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException
-import org.json.JSONObject
 import org.json.XML
 import java.io.IOException
 import java.net.URLEncoder
 import java.util.*
-
 import java.util.concurrent.TimeUnit
+
 
 class LoginActivity : Activity(){
 
@@ -88,7 +71,6 @@ class LoginActivity : Activity(){
     internal var activity: Activity? = null
 
     internal var currentUser: GoogleSignInAccount? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,6 +105,8 @@ class LoginActivity : Activity(){
             }
             hidePassword = !hidePassword
         }
+
+
 
         forgotPasswordButton!!.setOnClickListener {
             if (loginEmailEditText.text.isNullOrEmpty()) {
@@ -197,6 +181,50 @@ class LoginActivity : Activity(){
 
 
         }
+
+
+    fun getAppVersion() {
+        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
+        var client = clientBuilder.build()
+        var request = okhttp3.Request.Builder().url(Constants.getAppVersion).build()
+        recordsProgressView.visibility = View.VISIBLE
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
+                activity!!.runOnUiThread {
+                    Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
+                }
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                var responseString = response!!.body!!.string()
+                if (!responseString.replace(" ","").equals("[]")) {
+                    PRGDataModel.getInstance().tblPRGAppVersion = Gson().fromJson(responseString, Array<PRGAppVersion>::class.java).toCollection(ArrayList())
+                }
+                activity!!.runOnUiThread {
+                    if (!resources.getString(R.string.app_version).equals(PRGDataModel.getInstance().tblPRGAppVersion[0].version) && PRGDataModel.getInstance().tblPRGAppVersion[0].enabled==1) {
+                        var alertBuilder = androidx.appcompat.app.AlertDialog.Builder(activity!!);
+                        alertBuilder.setCancelable(true);
+                        alertBuilder.setTitle("Note")
+                        alertBuilder.setMessage("New ${PRGDataModel.getInstance().tblPRGAppVersion[0].version} is available with the below changes: \n" +
+                                " ${PRGDataModel.getInstance().tblPRGAppVersion[0].message} \n" +
+                                " Do you Want to Continue ?");
+                        alertBuilder.setPositiveButton("YES") { dialog, which ->
+                            getTypeTables();
+                        }
+                        alertBuilder.setNegativeButton("NO") { dialog, which ->
+                            finishAndRemoveTask();
+                        }
+                        val alert = alertBuilder.create();
+                        alert.show();
+                    } else {
+                        getTypeTables();
+                    }
+                    recordsProgressView.visibility = View.GONE
+                }
+            }
+        })
+    }
 
 
         fun getTypeTables() {
@@ -301,13 +329,13 @@ class LoginActivity : Activity(){
 //            throw RuntimeException("Test Crash"); // Force a crash
             val userEmail = URLEncoder.encode(loginEmailEditText.text.toString(), "UTF-8");
             val userPass = URLEncoder.encode(loginPasswordEditText.text.toString(), "UTF-8");
-            Log.v("LOGIN : "+ "EXEC LOGIN -- ",Constants.authenticateUrl + userEmail + "&password=" + userPass)
-            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.authenticateUrl + userEmail + "&password=" + userPass,
+            Log.v("LOGIN : "+ "EXEC LOGIN -- ",Constants.authenticateUrl + userEmail + "&password=" + userPass + "&version=${resources.getString(R.string.app_version)}")
+            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.authenticateUrl + userEmail + "&password=" + userPass + "&version=${resources.getString(R.string.app_version)}",
                     Response.Listener { response ->
                         activity!!.runOnUiThread {
                             Log.v("RESPONSE", response.toString())
                             if (response.toString().contains("1}]", false)) {
-                                getTypeTables();
+                                getAppVersion()
                                 //getTypeTablesStatic();
                             } else if (response.toString().contains("2}]", false)) {
                                 recordsProgressView.visibility = View.VISIBLE

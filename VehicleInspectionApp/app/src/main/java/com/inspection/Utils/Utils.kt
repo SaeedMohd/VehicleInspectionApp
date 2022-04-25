@@ -748,12 +748,14 @@ fun uploadPDF(activity: Activity,file: File,type: String) {
         }
     }
     var facNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+    var visitationType = PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype
     var waived = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) 'Y' else 'N'
+    var waivedComments = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments else ""
 //    var sendPDF = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf) 'Y' else 'N'
     var emailPDF = if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf) "1" else "0"
     var busName = URLEncoder.encode(FacilityDataModel.getInstance().tblFacilities[0].BusinessName , "UTF-8");
-    var directorEmail = PRGDataModel.getInstance().tblPRGFacilityDirectors[0].directoremail
-    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&emailPDF=${emailPDF}&director=${directorEmail}&waived=${waived}&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail+"&facName=${busName}&facNo=${facNo}&sessionId="+ApplicationPrefs.getInstance(activity).getSessionID(), null, file, Response.Listener { response ->
+    var directorEmail = if (!PRGDataModel.getInstance().tblPRGFacilityDirectors.isNullOrEmpty()) PRGDataModel.getInstance().tblPRGFacilityDirectors[0].directoremail else ""
+    val multipartRequest = MultipartRequest(Constants.uploadFile+email+"&emailPDF=${emailPDF}&director=${directorEmail}&waived=${waived}&type=${type}&specialistEmail="+ApplicationPrefs.getInstance(activity).loggedInUserEmail+"&facName=${busName}&facNo=${facNo}&visitationType=${visitationType}&waivedComments=${waivedComments}&sessionId="+ApplicationPrefs.getInstance(activity).getSessionID(), null, file, Response.Listener { response ->
 //    val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
         try {
         } catch (e: UnsupportedEncodingException) {

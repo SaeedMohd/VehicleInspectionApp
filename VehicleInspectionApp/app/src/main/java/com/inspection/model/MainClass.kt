@@ -111,6 +111,7 @@ class TblVisitationTracking {
     var waiverSignature : Bitmap? = null
     var VisitationReasonTypeID = ""
     var VisitationMethodTypeID = ""
+    var visitationID = ""
 }
 
 class TblVisitationDetailsData{
@@ -711,6 +712,14 @@ class PRGFacilityDirectors {
     var directorid = 0
     var directoremail = ""
 }
+
+
+class PRGAppVersion {
+    var version = ""
+    var message = ""
+    var enabled = 0
+}
+
 
 class PRGRepairDiscountFactors {
     var clubcode = ""

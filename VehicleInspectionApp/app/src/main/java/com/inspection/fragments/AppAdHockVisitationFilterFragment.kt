@@ -618,11 +618,35 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                                                                                             item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
                                                                                                         }
-                                                                                                        launchNextAction()
+                                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityDirectors + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                                                Response.Listener { response ->
+                                                                                                                    requireActivity().runOnUiThread {
+                                                                                                                        Log.v("Load Director ", " --> 1")
+                                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                                            Log.v("Load Director ", " --> 2")
+                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDirectors= Gson().fromJson(response.toString(), Array<PRGFacilityDirectors>::class.java).toCollection(ArrayList())
+                                                                                                                        } else {
+                                                                                                                            Log.v("Load Director ", " --> 3")
+                                                                                                                            var item = PRGFacilityDirectors()
+                                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                                                            item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                                            item.specialistid = -1
+                                                                                                                            item.directorid = -1
+                                                                                                                            item.directoremail = ""
+                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDirectors.add(item)
+                                                                                                                        }
+                                                                                                                        launchNextAction()
+                                                                                                                    }
+                                                                                                                }, Response.ErrorListener {
+                                                                                                            Log.v("Load Director ", " --> 4")
+                                                                                                            Log.v("Loading PRG Data error", "" + it.message)
+//                                                                                                            launchNextAction()
+                                                                                                            it.printStackTrace()
+                                                                                                        }))
                                                                                                     }
                                                                                                 }, Response.ErrorListener {
                                                                                             Log.v("Loading PRG Data error", "" + it.message)
-                                                                                            launchNextAction()
+//                                                                                            launchNextAction()
                                                                                             it.printStackTrace()
                                                                                         }))
                                                                                     }

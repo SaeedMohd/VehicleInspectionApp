@@ -108,11 +108,13 @@ class FragmentVisitation : Fragment() {
     var VisitationMethodList = ArrayList<TypeTablesModel.visitationMethodType>()
     var VisitationReasonArray = ArrayList<String>()
     var VisitationMethodArray = ArrayList<String>()
-
+    var duplicateVisitationID = ""
 
     var selectedSignature: requestedSignature? = null
 
     var emailValid = true
+
+    var firsLoadDone = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,6 +184,7 @@ class FragmentVisitation : Fragment() {
         if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.isEmpty()) {
             markVisitationInProgress()
         }
+        firsLoadDone = true
     }
 
 
@@ -685,7 +688,11 @@ class FragmentVisitation : Fragment() {
 
         completeButton.setOnClickListener {
             if (validateInputs()) {
-                submitVisitationData()
+                if (duplicateCheckPassed()) {
+                    submitVisitationData()
+                } else {
+                    Utility.showValidationAlertDialog(activity, "Duplicate visitation exists with Visitation ID: $duplicateVisitationID")
+                }
             } else {
                 Utility.showValidationAlertDialog(activity, "Please fill all required fields")
             }
@@ -809,25 +816,28 @@ class FragmentVisitation : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (p2>0) {
-                    if (isFacilityRepresentativeSignatureInitialized) {
-                        isFacilityRepresentativeSignatureInitialized = false
-                    } else {//if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals(facilitySpecialistNames[p2])) {
+
+                    if (p2 > 0) {
+                        if (isFacilityRepresentativeSignatureInitialized) {
+                            isFacilityRepresentativeSignatureInitialized = false
+                        } else {//if (!FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.equals(facilitySpecialistNames[p2])) {
 //                        FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy = facilitySpecialistNames[p2]
-                        FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
-                        automotiveSpecialistSignatureImageView.setImageBitmap(null)
+                            FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature = null
+                            automotiveSpecialistSignatureImageView.setImageBitmap(null)
+                        }
+                    } else {
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy = ""
                     }
-                } else {
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy = ""
+                    Log.v("SAVEREQUIRED -->", facilityRepresentativesSpinner.tag.toString())
+                    if (p2 > 0 && (!facilityRepresentativesSpinner.tag.equals(p2) || facilityRepresentativesSpinner.tag.equals("-1"))) {
+                        facilityRepresentativesSpinner.tag = "-1"
+                        if (firsLoadDone) {
+                            (activity as FormsActivity).saveRequired = true
+                            refreshButtonsState()
+                        }
+                    }
+                    checkMarkChangesDone()
                 }
-                Log.v("SAVEREQUIRED -->", facilityRepresentativesSpinner.tag.toString())
-                if (p2>0 && (!facilityRepresentativesSpinner.tag.equals(p2) || facilityRepresentativesSpinner.tag.equals("-1"))) {
-                    facilityRepresentativesSpinner.tag = "-1"
-                    (activity as FormsActivity).saveRequired = true
-                    refreshButtonsState()
-                }
-                checkMarkChangesDone()
-            }
 
         }
 
@@ -836,28 +846,31 @@ class FragmentVisitation : Fragment() {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
-                if (p2>0) {
-                    if (isAutomotiveSpecialistSignatureInitialized) {
-                        isAutomotiveSpecialistSignatureInitialized = false
-                    } else {
+
+                    if (p2 > 0) {
+                        if (isAutomotiveSpecialistSignatureInitialized) {
+                            isAutomotiveSpecialistSignatureInitialized = false
+                        } else {
 //                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilitySpecialistNames[p2]
-                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature= null
-                        automotiveSpecialistSignatureImageView.setImageBitmap(null)
+                            FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
+                            automotiveSpecialistSignatureImageView.setImageBitmap(null)
 
+                        }
+                    } else {
+                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = ""
                     }
-                } else{
-                    FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName= ""
-                }
 
-                if (!automotiveSpecialistSpinner.tag.equals(p2) || automotiveSpecialistSpinner.tag.equals("-1")) {
-                    automotiveSpecialistSpinner.tag = "-1"
-                    (activity as FormsActivity).saveRequired = true
-                    Log.v("SAVEREQUIRED -->", " automotiveSpecialistSpinner")
-                    refreshButtonsState()
-                }
+                    if (!automotiveSpecialistSpinner.tag.equals(p2) || automotiveSpecialistSpinner.tag.equals("-1")) {
+                        automotiveSpecialistSpinner.tag = "-1"
+                        if (firsLoadDone) {
+                            (activity as FormsActivity).saveRequired = true
+                            Log.v("SAVEREQUIRED -->", " automotiveSpecialistSpinner")
+                            refreshButtonsState()
+                        }
+                    }
 
-                checkMarkChangesDone()
-            }
+                    checkMarkChangesDone()
+                }
 
         }
 
@@ -1016,12 +1029,14 @@ class FragmentVisitation : Fragment() {
         aarSignEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns = p0.toString()
-                if (aarSignEditText.tag == "-1")
-                    (activity as FormsActivity).saveRequired = true
-                aarSignEditText.tag = "-1"
-                Log.v("SAVEREQUIRED -->", " aarSignEditText")
-                refreshButtonsState()
-                checkMarkChangesDone()
+                if (firsLoadDone) {
+                    if (aarSignEditText.tag == "-1")
+                        (activity as FormsActivity).saveRequired = true
+                    aarSignEditText.tag = "-1"
+                    Log.v("SAVEREQUIRED -->", " aarSignEditText")
+                    refreshButtonsState()
+                    checkMarkChangesDone()
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -1037,13 +1052,14 @@ class FragmentVisitation : Fragment() {
         certificateOfApprovalEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval = p0.toString()
-                if (certificateOfApprovalEditText.tag == "-1")
-                    (activity as FormsActivity).saveRequired = true
-                certificateOfApprovalEditText.tag = "-1"
-                Log.v("SAVEREQUIRED -->", " certificateOfApprovalEditText")
-                refreshButtonsState()
-                checkMarkChangesDone()
-
+                if (firsLoadDone) {
+                    if (certificateOfApprovalEditText.tag == "-1")
+                        (activity as FormsActivity).saveRequired = true
+                    certificateOfApprovalEditText.tag = "-1"
+                    Log.v("SAVEREQUIRED -->", " certificateOfApprovalEditText")
+                    refreshButtonsState()
+                    checkMarkChangesDone()
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -1060,12 +1076,14 @@ class FragmentVisitation : Fragment() {
         qualityControlProcessEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl = p0.toString()
-                if (qualityControlProcessEditText.tag == "-1")
-                    (activity as FormsActivity).saveRequired = true
-                qualityControlProcessEditText.tag = "-1"
-                Log.v("SAVEREQUIRED -->", " qualityControlProcessEditText")
-                refreshButtonsState()
-                checkMarkChangesDone()
+                if (firsLoadDone) {
+                    if (qualityControlProcessEditText.tag == "-1")
+                        (activity as FormsActivity).saveRequired = true
+                    qualityControlProcessEditText.tag = "-1"
+                    Log.v("SAVEREQUIRED -->", " qualityControlProcessEditText")
+                    refreshButtonsState()
+                    checkMarkChangesDone()
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -1081,12 +1099,14 @@ class FragmentVisitation : Fragment() {
         staffTrainingProcessEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining = p0.toString()
-                if (staffTrainingProcessEditText.tag == "-1")
-                    (activity as FormsActivity).saveRequired = true
-                staffTrainingProcessEditText.tag = "-1"
-                Log.v("SAVEREQUIRED -->", " staffTrainingProcessEditText")
-                refreshButtonsState()
-                checkMarkChangesDone()
+                if (firsLoadDone) {
+                    if (staffTrainingProcessEditText.tag == "-1")
+                        (activity as FormsActivity).saveRequired = true
+                    staffTrainingProcessEditText.tag = "-1"
+                    Log.v("SAVEREQUIRED -->", " staffTrainingProcessEditText")
+                    refreshButtonsState()
+                    checkMarkChangesDone()
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -1102,12 +1122,14 @@ class FragmentVisitation : Fragment() {
         memberBenefitsPosterEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster = p0.toString()
-                if (memberBenefitsPosterEditText.tag == "-1")
-                    (activity as FormsActivity).saveRequired = true
-                memberBenefitsPosterEditText.tag = "-1"
-                Log.v("SAVEREQUIRED -->", " memberBenefitsPosterEditText")
-                refreshButtonsState()
-                checkMarkChangesDone()
+                if (firsLoadDone) {
+                    if (memberBenefitsPosterEditText.tag == "-1")
+                        (activity as FormsActivity).saveRequired = true
+                    memberBenefitsPosterEditText.tag = "-1"
+                    Log.v("SAVEREQUIRED -->", " memberBenefitsPosterEditText")
+                    refreshButtonsState()
+                    checkMarkChangesDone()
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -1123,13 +1145,15 @@ class FragmentVisitation : Fragment() {
         waiverCommentsEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments = p0.toString()
-                if (waiverCommentsEditText.tag == "-1")
-                    (activity as FormsActivity).saveRequired = true
-                waiverCommentsEditText.tag = "-1"
-                Log.v("SAVEREQUIRED -->", " waiverCommentsEditText")
-                memberBenefitsPosterEditText
-                refreshButtonsState()
-                checkMarkChangesDone()
+                if (firsLoadDone) {
+                    if (waiverCommentsEditText.tag == "-1")
+                        (activity as FormsActivity).saveRequired = true
+                    waiverCommentsEditText.tag = "-1"
+                    Log.v("SAVEREQUIRED -->", " waiverCommentsEditText")
+                    memberBenefitsPosterEditText
+                    refreshButtonsState()
+                    checkMarkChangesDone()
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -1146,13 +1170,16 @@ class FragmentVisitation : Fragment() {
         emailEditText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
 //                FacilityDataModel.getInstance().tblFacilityEmail[0].email = p0.toString()
-                if (emailEditText.tag == "-1")
-                    (activity as FormsActivity).saveRequired = true
-                emailEditText.tag = "-1"
-                Log.v("SAVEREQUIRED -->", " emailEditText")
-                refreshButtonsState()
+
+                if (firsLoadDone) {
+                    if (emailEditText.tag == "-1")
+                        (activity as FormsActivity).saveRequired = true
+                    emailEditText.tag = "-1"
+                    Log.v("SAVEREQUIRED -->", " emailEditText")
+                    refreshButtonsState()
 //                PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf =
-                checkMarkChangesDone()
+                    checkMarkChangesDone()
+                }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -1179,9 +1206,11 @@ class FragmentVisitation : Fragment() {
                 }
                 if (!visitationMethodDropListId.tag.equals(position) || visitationMethodDropListId.tag.equals("-1")) {
                     visitationMethodDropListId.tag = "-1"
-                    (activity as FormsActivity).saveRequired = true
-                    Log.v("SAVEREQUIRED -->", " visitationMethodDropListId")
-                    refreshButtonsState()
+                    if (firsLoadDone) {
+                        (activity as FormsActivity).saveRequired = true
+                        Log.v("SAVEREQUIRED -->", " visitationMethodDropListId")
+                        refreshButtonsState()
+                    }
                 }
             }
         }
@@ -1460,7 +1489,7 @@ class FragmentVisitation : Fragment() {
                             Constants.visitationIDForPDF = visitationID.toString()
                             dialogMsg = "New Visitation with ID (${visitationID}) created succesfully"
                             (activity as FormsActivity).saveRequired = false
-                            urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&automotiveSpecialist="+automotiveSpecialist+"&visitationId="+visitationID+"&annualVisitationMonth="+annualvisitationmonth+"&comments="+visitationCommentsEditText.text.toString()
+                            urlString = facilityNo+"&clubcode="+clubCode+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationType.toString()+"&visitationReason="+visitationReasonDropListId.selectedItem.toString()+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&automotiveSpecialist="+automotiveSpecialist+"&visitationId="+visitationID+"&visitMethod=${visitmethod}&annualVisitationMonth="+annualvisitationmonth+"&comments="+visitationCommentsEditText.text.toString()
                             Log.v("Visitation Details --- ",Constants.UpdateVisitationDetailsData + urlString)
                             (activity as FormsActivity).saveDone = true
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString+ Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
@@ -1702,7 +1731,31 @@ class FragmentVisitation : Fragment() {
 //        completeButton.isEnabled = true//IndicatorsDataModel.getInstance().validateAllScreensVisited()
     }
 
-
+    private fun duplicateCheckPassed(): Boolean {
+        duplicateVisitationID = ""
+        var visitationTypeID = ""
+        Calendar.getInstance().get(Calendar.MONTH).toString()
+        if (annualVisitationType.isChecked) {
+            visitationTypeID = "1"
+        } else if (quarterlyVisitationType.isChecked) {
+            visitationTypeID = "2"
+        } else if (adhocVisitationType.isChecked) {
+            visitationTypeID = "3"
+        } else if (defVisitationType.isChecked) {
+            visitationTypeID = "4"
+        }
+        var currentMonth = ""
+        currentMonth = if ((Calendar.getInstance().get(Calendar.MONTH)+1).toString().length==1) {
+            "0"+(Calendar.getInstance().get(Calendar.MONTH)+1).toString()
+        } else {
+            (Calendar.getInstance().get(Calendar.MONTH)+1).toString()
+        }
+        if (!FacilityDataModel.getInstance().tblVisitationTracking.filter { s->s.VisitationTypeID!!.equals(visitationTypeID) && s.DatePerformed.substring(5,2).equals(currentMonth)}.isNullOrEmpty()) {
+            duplicateVisitationID = FacilityDataModel.getInstance().tblVisitationTracking.filter { s->s.VisitationTypeID!!.equals(visitationTypeID) && s.DatePerformed.substring(5,2).equals(currentMonth)}[0].visitationID
+            return false
+        }
+        return true
+    }
     fun validateInputs(): Boolean {
         var isInputValid = true
         automotiveSpecialistSignatureButton.setError(null)

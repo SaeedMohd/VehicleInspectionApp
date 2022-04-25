@@ -30,5 +30,5 @@ class PRGDataModel {
     var tblPRGRepairDiscountFactors= ArrayList<PRGRepairDiscountFactors>()
     var tblPRGPersonnelDetails= ArrayList<PRGPersonnelDetails>()
     var tblPRGFacilityDirectors= ArrayList<PRGFacilityDirectors>()
-
+    var tblPRGAppVersion = ArrayList<PRGAppVersion>()
 }

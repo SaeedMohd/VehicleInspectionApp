@@ -1958,7 +1958,7 @@ class VisitationPlanningFragment : Fragment() {
                                                                                                                     }
                                                                                                                 }, Response.ErrorListener {
                                                                                                             Log.v("Loading PRG Data error", "" + it.message)
-                                                                                                            launchNextAction(isCompleted)
+//                                                                                                            launchNextAction(isCompleted)
                                                                                                             it.printStackTrace()
                                                                                                         }))                                                                                                    }
                                                                                                 }, Response.ErrorListener {

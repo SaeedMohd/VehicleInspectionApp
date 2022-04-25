@@ -88,6 +88,7 @@ object Constants {
     val getFacilityData = permanentURL + "getFacilityData?facnum=%d&clubcode=%s"
 
     val getTypeTables = permanentURL + "getTableTypes"
+    val getAppVersion = permanentURL + "getAppVersion"
     val getVisitations = permanentURL + "getVisitations?"
     val logTracking = permanentURL + "logTracking?sessionId="
     val getFacilitiesWithFilters = permanentURL + "getFacilitiesWithFilters?"
