@@ -6,7 +6,7 @@
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_gray"
@@ -28,16 +28,46 @@
                 android:background="@color/white"
                 android:elevation="5dp"
                 android:orientation="vertical">
-
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:id="@+id/GIlabel"
                     android:text="General Information"
                     android:textColor="@color/mainColor"
                     android:textStyle="bold"
                     android:padding="10dp"
+                    android:layout_alignParentLeft="true"
                     android:textSize="22sp" />
+
+                    <ImageButton
+                        android:id="@+id/alertYIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/GIlabel"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:visibility="gone"
+                        android:backgroundTint="@color/dark_yellow"
+                        android:background="@android:drawable/ic_dialog_info" />
+                    <ImageButton
+                        android:id="@+id/alertRIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/GIlabel"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:visibility="gone"
+                        android:backgroundTint="@android:color/holo_red_dark"
+                        android:background="@android:drawable/ic_dialog_info" />
+                </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1228,8 +1258,8 @@
                         android:layout_alignParentRight="true"
                         android:layout_gravity="left"
                         android:background="@color/transparent"
-                        android:text="SELECT DATE"
                         android:textColor="@color/blue"
+                        android:text="SELECT DATE"
                         android:textSize="18sp" />
                 </RelativeLayout>
 
@@ -1356,11 +1386,13 @@
                         android:id="@+id/InsuranceExpDate_textviewVal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_column="1"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:text="test" />
+                        android:layout_alignParentRight="true"
+                        android:background="@color/transparent"
+                        android:text="test"
+                        android:textColor="@color/blue"
+                        android:textSize="18sp" />
+
                 </RelativeLayout>
 
                 <View

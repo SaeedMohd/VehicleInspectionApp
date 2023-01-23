@@ -1,23 +1,17 @@
 package com.inspection.fragments
 
-import android.app.AlertDialog
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
+import android.graphics.Color
 import android.os.Bundle
-import android.os.Environment
-import androidx.fragment.app.Fragment
-import android.text.Editable
-import android.text.TextWatcher
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -25,148 +19,108 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.inspection.R
-import com.inspection.Utils.*
-import com.inspection.imageloader.Utils
+import com.inspection.Utils.ApplicationPrefs
+import com.inspection.Utils.Constants
+import com.inspection.Utils.SearchDialog
+import com.inspection.Utils.Utility
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
+import com.shuhart.stepview.StepView
+import kotlinx.android.synthetic.main.fragment_pdfgenerate.*
+import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
+import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.clubCodeEditText
+import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.facilityNameButton
+import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.recordsProgressView
+import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.searchVisitaionsButton
+import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.visitationfacilityIdVal
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
-
-
 import org.json.JSONObject
 import org.json.XML
-import java.io.File
 import java.io.IOException
-import java.net.URLEncoder
-import java.util.*
 import java.util.concurrent.TimeUnit
 
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [FrgmentARRAnnualVisitationRecords.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [FrgmentARRAnnualVisitationRecords.newInstance] factory method to
+ * Use the [PDFGenerateFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AppAdHockVisitationFilterFragment : Fragment() {
-
+class PDFGenerateFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var mParam1: String? = null
-    private var mParam2: String? = null
-    var fragment: Fragment? = null
-    private var mListener: OnFragmentInteractionListener? = null
-    var facilityNames = ArrayList<String>()
-    var facilitiesList = ArrayList<CsiFacility>()
-    var itemSelected = false
-    var facilityNameInputField: EditText? = null
-    var firstLoading = true
-    var isVisitationPlanning = false
+    private var param1: String? = null
+    private var param2: String? = null
     var allClubCodes = ArrayList<String>()
-    var requiredSpecialistName = ""
-    var clubCode = ""
+    var facilityNames = ArrayList<String>()
     var defaultClubCode = ""
-    var defaultFacNumber = ""
-    var specialistArrayModel = ArrayList<TypeTablesModel.employeeList>()
-    private var contractStatusList = ArrayList<TypeTablesModel.facilityStatusType>()
-    private var contractStatusArray = ArrayList<String>()
-
-
+    var clubCode=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.app_adhoc_visitation_filter_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_pdfgenerate, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //getTypeTableData()
-        loadSpecialistName()
-
-
-        setFieldsListeners()
-
-        recordsProgressView.visibility = View.VISIBLE
-        firstLoading = false
+        loadClubCodes()
     }
 
-
-    fun loadSpecialists() {
-        Log.v("ADHOC ALL SPECIAL --- ",Constants.getAllSpecialists + "")
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
+    private fun loadClubCodes() {
+        Log.v("url*******", ""+ Constants.getClubCodes)
+        Log.v("VISITATION CLUB --- ", Constants.getClubCodes)
+//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Club Codes")
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
                 Response.Listener { response ->
-                    Log.v("****response", response)
-                    activity!!.runOnUiThread {
-                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-
-                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread {
-                                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                                        if (specialistName != null && specialistName.size > 0) {
-                                            requiredSpecialistName = specialistName[0].specialistname
-                                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistName[0].accspecid
-//                                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
-//                                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
-//                                            var reformattedName = firstName + " " + lastName
-//                                            adHocFacilitySpecialistButton.setText(reformattedName)
-                                        }
-                                        loadSpecialistName()
-//                                        loadClubCodes()
-                                    }
-                                }, Response.ErrorListener {
-                            Log.v("error while loading", "error while loading facilities")
-                            Log.v("Loading error", "" + it.message)
-                        }))
+                    var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
+                    allClubCodes.clear()
+                    for (cc in clubCodeModels) {
+                        allClubCodes.add(cc.clubcode)
                     }
+                    loadFacilityNames()
+//                    firstLoadingCompleted()
                 }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading specialists")
-            Log.v("Loading error", "" + it.message)
+            Log.v("error while loading", "error while loading club codes")
         }))
-
     }
 
     private fun loadFacilityNames(){
+        var facilities : ArrayList<CsiFacility>
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                 Response.Listener { response ->
                     Log.v("test","testtesttest-----------")
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
-                        var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                        facilityNames.add(0, "Any")
+                        facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         (0 until facilities.size).forEach {
                             facilityNames.add(facilities[it].facname + " || " + facilities[it].facnum)
                         }
-                        Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
-//                        if (facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
-////                            defaultFacNumber = facilities.filter { s -> s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID) }.sortedWith(compareBy { it.facnum })[0].facnum
-////                            adHocFacilityIdVal.setText(defaultFacNumber)
-//                            defaultClubCode = facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
-//                            clubCodeEditText.setText(defaultClubCode)
-//                        }
-//                        facilityNames.sort()
-
-                        reloadFacilitiesList()
-//                        var searchDialog = SearchDialog(context, facilityNames)
-//                        searchDialog.show()
-//                        searchDialog.setOnDismissListener {
-//                            if (searchDialog.selectedString == "Any") {
-//                                adHocFacilityNameButton.setText("")
-//                            } else {
-//                                adHocFacilityNameButton.setText(searchDialog.selectedString)
-//                            }
-//                        }
+                        Log.v("Logged User --- >  ", ApplicationPrefs.getInstance(activity).loggedInUserID)
+                        facilities.removeIf { s->s.accspecid.isNullOrEmpty() }
+                        if (facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
+//                            defaultFacNumber = facilities.filter { s -> s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID) }.sortedWith(compareBy { it.facnum })[0].facnum
+//                            adHocFacilityIdVal.setText(defaultFacNumber)
+                            defaultClubCode = facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
+                            clubCodeEditText.setText(defaultClubCode)
+                        } else {
+                            clubCodeEditText.setText("252")
+                        }
+                        facilityNames.sort()
+                        facilityNames.add(0, "Any")
+                        firstLoadingCompleted()
                     }
                 }, Response.ErrorListener {
             Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
@@ -174,72 +128,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             Log.v("error while loading", "error while loading facilities")
             Log.v("Loading error", "" + it.message)
         }))
+
     }
 
-    private fun setFieldsListeners() {
-        adHocFacilityNameButton.setOnClickListener {
-//            recordsProgressView.visibility = View.VISIBLE
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
-//                    Response.Listener { response ->
-//                        activity!!.runOnUiThread {
-//                            recordsProgressView.visibility = View.INVISIBLE
-//                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-//                            var facilityNames = ArrayList<String>()
-//                            (0 until facilities.size).forEach {
-//                                facilityNames.add(facilities[it].facname)
-//                            }
-//                            facilityNames.sort()
-//                            facilityNames.add(0, "Any")
-                            var searchDialog = SearchDialog(context, facilityNames)
-                            searchDialog.show()
-                            searchDialog.setOnDismissListener {
-                                if (searchDialog.selectedString == "Any" || searchDialog.selectedString == "") {
-                                    adHocFacilityNameButton.setText("")
-                                } else {
-//                                    adHocFacilityNameButton.setText(searchDialog.selectedString)
-                                    adHocFacilityNameButton.setText(searchDialog.selectedString.substring(0,searchDialog.selectedString.indexOf(" || ")))
-                                    adHocFacilityIdVal.setText(searchDialog.selectedString.substringAfter("|| "))
-                                }
-                            }
-//                        }
-//                    }, Response.ErrorListener {
-//                Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
-//                recordsProgressView.visibility = View.INVISIBLE
-//                Log.v("error while loading", "error while loading facilities")
-//                Log.v("Loading error", "" + it.message)
-//            }))
-        }
-
-
-        adHocFacilitySpecialistButton.setOnClickListener {
-            var personnelNames = ArrayList<String>()
-
-            if (clubCodeEditText.text.isNotEmpty() && false) {
-                var specialistIds = StringBuilder()
-                (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
-                    personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].FullName)
-                }
-                var specialistIdsString = specialistIds.trim().removeSuffix(",").toString()
-                Log.v("requesting........****", Constants.getSpecialistIdsForClubCode + "specialistIds=" + specialistIdsString + "&clubCode=" + clubCodeEditText.text.toString())
-            } else {
-                (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
-                    personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].FullName)
-                }
-            }
-
-            personnelNames.sort()
-            personnelNames.add(0, "Any")
-            var searchDialog = SearchDialog(context, personnelNames)
-            searchDialog.show()
-            searchDialog.setOnDismissListener {
-                if (searchDialog.selectedString == "Any") {
-                    adHocFacilitySpecialistButton.setText("")
-                } else {
-                    adHocFacilitySpecialistButton.setText(searchDialog.selectedString)
-                }
-            }
-        }
-
+    fun firstLoadingCompleted(){
         clubCodeEditText.setOnClickListener {
             var searchDialog = SearchDialog(context, allClubCodes)
             searchDialog.show()
@@ -247,257 +139,40 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 clubCodeEditText.setText(searchDialog.selectedString)
             }
         }
-
-        adHocSearchButton.setOnClickListener {
-            adHocSearchButton.hideKeyboard()
-            reloadFacilitiesList()
-        }
-    }
-
-    private fun loadClubCodes() {
-        Log.v("ADHOC CLUB--- ",Constants.getClubCodes)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
-                Response.Listener { response ->
-                    activity!!.runOnUiThread {
-                        var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
-                        allClubCodes.clear()
-                        for (cc in clubCodeModels) {
-                            allClubCodes.add(cc.clubcode)
-                        }
-                        recordsProgressView.visibility = View.GONE
-                    }
-                    loadFacilityNames()
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading club codes")
-            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Club Codes - " + it.message)
-        }))
-    }
-
-    fun reloadFacilitiesList() {
-        recordsProgressView.visibility = View.VISIBLE
-        noRecordsFoundTextView.visibility = View.GONE
-        var parametersString = StringBuilder()
-        if (clubCodeEditText.text.trim().isNotEmpty()) {
-            with(parametersString) {
-                append("clubCode=" + clubCodeEditText.text.trim())
-                append("&")
-            }
-        } else {
-            with(parametersString) {
-                append("clubCode=")
-                append("&")
+        facilityNameButton.setOnClickListener {
+            var searchDialog = SearchDialog(context, facilityNames)
+            searchDialog.show()
+            searchDialog.setOnDismissListener {
+                if (searchDialog.selectedString == "Any" || searchDialog.selectedString == "") {
+                    facilityNameButton.setText("")
+                    visitationfacilityIdVal.setText("")
+                } else {
+                    facilityNameButton.setText(searchDialog.selectedString.substring(0,searchDialog.selectedString.indexOf(" || ")))
+                    visitationfacilityIdVal.setText(searchDialog.selectedString.substringAfter("|| "))
+                }
             }
         }
 
-        with(parametersString) {
-            append("facilityNumber=" + adHocFacilityIdVal.text.trim())
-            append("&")
+        searchVisitaionsButton.setOnClickListener {
+            val stepsArray = ArrayList<String>()
+            stepsArray.add("Load ACE Facility Details")
+            stepsArray.add("Load PRG Visitation Details")
+            stepsArray.add("Validate Visitation ID")
+            clubCode = clubCodeEditText.text.toString()
+            getFullFacilityDataFromAAA(visitationfacilityIdVal.text.toString().toInt(),clubCodeEditText.text.toString(),false,VisitationTypes.Annual)
         }
-
-        if (!adHocFacilitySpecialistButton.text.contains("Select") && adHocFacilitySpecialistButton.text.length > 1) {
-            with(parametersString) {
-                var specialistId =  TypeTablesModel.getInstance().EmployeeList.filter { s -> s.FullName.equals(adHocFacilitySpecialistButton.text.toString()) }[0].NTLogin
-                append("assignedSpecialist=" + specialistId)
-                append("&")
-            }
-        } else {
-            with(parametersString) {
-                append("assignedSpecialist=")
-                append("&")
-            }
-        }
-
-//        if (!adHocFacilityNameButton.text.contains("Select") && adHocFacilityNameButton.text.length > 1) {
-//            with(parametersString) {
-////                append("dba=" + URLEncoder.encode(adHocFacilityNameButton.text.toString(), "UTF-8"))
-//                append("dba=" + adHocFacilityNameButton.text.toString())
-////                append("dba=![CDATA[" + adHocFacilityNameButton.text.toString()+"]")
-//                append("&")
-//            }
-//        } else {
-//            with(parametersString) {
-//                append("dba=")
-//                append("&")
-//            }
-//        }
-
-
-        with(parametersString) {
-            append("dba=")
-            append("&")
-        }
-
-
-        with(parametersString) {
-            if (contractStatusTypeSpinner.selectedItemPosition>0){
-                append("contractStatus="+TypeTablesModel.getInstance().FacilityStatusType.filter { S->S.FacilityStatusName.equals(contractStatusTypeSpinner.selectedItem.toString())}[0].FacilityStatusID+"&")
-            } else {
-                append("contractStatus=&") // NO "ALL" AVAILABLE IN THE WEB SERVICE
-            }
-        }
-
-        Log.v("ADHOC FACWITHFILTERS--",Constants.getFacilitiesWithFilters + parametersString)
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString+Utility.getLoggingParameters(activity, 0, "Search Facilities ..."),
-                Response.Listener { response ->
-                    activity!!.runOnUiThread {
-                        recordsProgressView.visibility = View.INVISIBLE
-                        var sortedList = ArrayList<CsiFacility>()
-                        facilitiesList = Gson().fromJson(response, Array<CsiFacility>::class.java).toCollection(ArrayList())
-                        if (facilitiesList.size == 0) {
-                            noRecordsFoundTextView.visibility = View.VISIBLE
-                        } else {
-                            noRecordsFoundTextView.visibility = View.GONE
-                        }
-                        facilitiesListView.visibility = View.VISIBLE
-                        facilitiesList.sortedWith(compareBy { it.facname}).toCollection(sortedList)
-                        var visitationPlanningAdapter = AdhocAdapter(context, sortedList)
-                        facilitiesListView.adapter = visitationPlanningAdapter
-                        var totalFacilities= sortedList.size
-//                        Utility.showMessageDialog(activity,"Filter Result"," " + totalFacilities + " Facilities Filtered ...")
-                    }
-                }, Response.ErrorListener {
-            recordsProgressView.visibility = View.INVISIBLE
-            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities List - " + it.message)
-            Log.v("error while loading", "error while loading visitation records")
-        }))
 
     }
 
-    private fun loadSpecialistName() {
-        contractStatusList = TypeTablesModel.getInstance().FacilityStatusType
-        contractStatusArray.clear()
-        contractStatusArray.add("All")
-        for (fac in contractStatusList) {
-            contractStatusArray.add(fac.FacilityStatusName)
-        }
-
-        var coStatusAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, contractStatusArray)
-        coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        contractStatusTypeSpinner.adapter = coStatusAdapter
-        contractStatusTypeSpinner.setSelection(contractStatusArray.indexOf("Active"))
-        specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
-        if (specialistArrayModel != null && specialistArrayModel.size > 0) {
-            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
-            adHocFacilitySpecialistButton.setText(requiredSpecialistName)
-            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].NTLogin
-        }
-        loadClubCodes()
-    }
-
-    fun onButtonPressed(uri: Uri) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
-    }
-
-
-
-    inner class AdhocAdapter : BaseAdapter {
-
-        private var facilitiesArrayList = ArrayList<CsiFacility>()
-        private var context: Context? = null
-
-        constructor(context: Context?, facilitiesArrayList: ArrayList<CsiFacility>) : super() {
-            this.facilitiesArrayList = facilitiesArrayList
-            this.context = context
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-            val view: View?
-            val vh: AdHocVisitationViewHolder
-
-            if (convertView == null) {
-                view = layoutInflater.inflate(R.layout.adhoc_visitation_facility_list_item, parent, false)
-                vh = AdHocVisitationViewHolder(view)
-                view.tag = vh
-            } else {
-                view = convertView
-                vh = view.tag as AdHocVisitationViewHolder
-            }
-
-            vh.facilityNameValueTextView?.text = facilitiesArrayList[position].facname
-            vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].facnum
-            vh.adHocClubCodeValueTextView?.text = facilitiesArrayList[position].clubcode
-            if (TypeTablesModel.getInstance().FacilityStatusType.filter { s->s.FacilityStatusID.equals(facilitiesArrayList[position].status)}.isNotEmpty())
-                vh.adHocStatusValueTextView?.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s->s.FacilityStatusID.equals(facilitiesArrayList[position].status)}[0].FacilityStatusName
-            else
-                vh.adHocStatusValueTextView?.text = ""
-
-            vh.loadFacilityButton!!.setOnClickListener {
-                getFullFacilityDataFromAAA(facilitiesArrayList[position].facnum.toInt(), facilitiesArrayList[position].clubcode)
-            }
-            return view
-        }
-
-
-        override fun getItem(position: Int): Any {
-            // return item at 'position'
-            return facilitiesArrayList[position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            // return item Id by Long datatype
-            return position.toLong()
-        }
-
-        override fun getCount(): Int {
-            // return quantity of the list
-            return facilitiesArrayList.size
-        }
-    }
-
-    fun getTypeTableData() {
-        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(40, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
+    fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String,isCompleted : Boolean,visitationType : VisitationTypes) {
+//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Facility Details")
+        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
         var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
-                activity!!.runOnUiThread {
-                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facility Data - " + e.message)
-                }
-            }
+        var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData+Utility.getLoggingParameters(activity, 0, "Load Visitations ..."), facilityNumber, clubCode)).build()
 
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                var responseString = response!!.body!!.string()
-                Log.v("getTypeTables retrieved", "GetTYpeTables retrieved")
-                if (responseString.toString().contains("returnCode>1<", false)) {
-                    activity!!.runOnUiThread {
-                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
-                        recordsProgressView.visibility = View.GONE
-                    }
-                } else {
-                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
-                    var jsonObj = obj.getJSONObject("responseXml")
-                    TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
-                    (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
-                        TypeTablesModel.getInstance().EmployeeList[it].FullName = TypeTablesModel.getInstance().EmployeeList[it].FirstName + " " + TypeTablesModel.getInstance().EmployeeList[it].LastName
-                    }
-                    contractStatusList = TypeTablesModel.getInstance().FacilityStatusType
-                    contractStatusArray.clear()
-                    contractStatusArray.add("All")
-                    for (fac in contractStatusList) {
-                        contractStatusArray.add(fac.FacilityStatusName)
-                    }
-
-                    var coStatusAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, contractStatusArray)
-                    coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    activity!!.runOnUiThread {
-                        contractStatusTypeSpinner.adapter = coStatusAdapter
-                        loadSpecialistName()
-                    }
-                }
-            }
-        })
-    }
-
-    fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String) {
-        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(50, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
-        var client = clientBuilder.build()
-        var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData+Utility.getLoggingParameters(activity, 1, "Load Facility ..."), facilityNumber, clubCode)).build()
-        this.clubCode = clubCode
         recordsProgressView.visibility = View.VISIBLE
+
         client.newCall(request2).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 activity!!.runOnUiThread {
@@ -516,19 +191,17 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                 Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
                             }
                         } else {
-//                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+//                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
 //                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                             var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
                             var jsonObj = obj.getJSONObject("responseXml")
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
-                            getFacilityPRGData()
-                            if (FacilityDataModel.getInstance().tblVisitationTracking.size == 0) {
-                                FacilityDataModel.getInstance().tblVisitationTracking.add(TblVisitationTracking())
-                            }
-                            FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = VisitationTypes.AdHoc
-//                            var intent = Intent(context, com.inspection.FormsActivity::class.java)
-//                            startActivity(intent)
+                            step_view.go(1,true)
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                getFacilityPRGData(isCompleted)
+                                FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = visitationType
+                            }, 1000)
                         }
                     } else {
                         activity!!.runOnUiThread {
@@ -537,27 +210,21 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     }
                 }
             }
+
         })
+
     }
 
-    fun launchNextAction(){
-            var intent = Intent(context, com.inspection.FormsActivity::class.java)
-            intent.putExtra("createNewVisitation",newVisitationCheckBox.isChecked);
-            startActivity(intent)
-    }
-
-    fun getFacilityPRGData() {
+    fun getFacilityPRGData(isCompleted : Boolean) {
         PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
         PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()
         PRGDataModel.getInstance().tblPRGLogChanges.clear()
-
         PRGDataModel.getInstance().tblPRGFacilityDetails.clear()
         PRGDataModel.getInstance().tblPRGPersonnelDetails.clear()
         PRGDataModel.getInstance().tblPRGRepairDiscountFactors.clear()
-
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (!response.toString().replace(" ","").equals("[ ]")) {
                             PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
                         } else {
@@ -567,7 +234,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                         }
                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
                                 Response.Listener { response ->
-                                    activity!!.runOnUiThread {
+                                    requireActivity().runOnUiThread {
                                         if (!response.toString().replace(" ","").equals("[]")) {
                                             PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
                                         } else {
@@ -577,18 +244,17 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                         }
                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getVisitationHeader + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                                                 Response.Listener { response ->
-                                                    activity!!.runOnUiThread {
+                                                    requireActivity().runOnUiThread {
                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
                                                         } else {
                                                             var item = PRGVisitationHeader()
                                                             item.recordid=-1
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
-//                                                            launchNextAction()
                                                         }
                                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getRepairDiscountFactors + "${FacilityDataModel.getInstance().clubCode}",
                                                                 Response.Listener { response ->
-                                                                    activity!!.runOnUiThread {
+                                                                    requireActivity().runOnUiThread {
                                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                                             PRGDataModel.getInstance().tblPRGRepairDiscountFactors= Gson().fromJson(response.toString(), Array<PRGRepairDiscountFactors>::class.java).toCollection(ArrayList())
                                                                         } else {
@@ -598,7 +264,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                                                         }
                                                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPersonnelDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
                                                                                 Response.Listener { response ->
-                                                                                    activity!!.runOnUiThread {
+                                                                                    requireActivity().runOnUiThread {
                                                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                                                             PRGDataModel.getInstance().tblPRGPersonnelDetails= Gson().fromJson(response.toString(), Array<PRGPersonnelDetails>::class.java).toCollection(ArrayList())
                                                                                         } else {
@@ -609,24 +275,23 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                                                                         }
                                                                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGFacilityDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
                                                                                                 Response.Listener { response ->
-                                                                                                    activity!!.runOnUiThread {
+                                                                                                    requireActivity().runOnUiThread {
                                                                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDetails= Gson().fromJson(response.toString(), Array<PRGFacilityDetails>::class.java).toCollection(ArrayList())
                                                                                                         } else {
                                                                                                             var item = PRGFacilityDetails()
                                                                                                             item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
                                                                                                             item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                            item.napanumber = ""
+                                                                                                            item.nationalnumber = ""
                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
                                                                                                         }
                                                                                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityDirectors + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
                                                                                                                 Response.Listener { response ->
                                                                                                                     requireActivity().runOnUiThread {
-                                                                                                                        Log.v("Load Director ", " --> 1")
                                                                                                                         if (!response.toString().replace(" ","").equals("[]")) {
-                                                                                                                            Log.v("Load Director ", " --> 2")
                                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDirectors= Gson().fromJson(response.toString(), Array<PRGFacilityDirectors>::class.java).toCollection(ArrayList())
                                                                                                                         } else {
-                                                                                                                            Log.v("Load Director ", " --> 3")
                                                                                                                             var item = PRGFacilityDirectors()
                                                                                                                             item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
                                                                                                                             item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
@@ -635,18 +300,38 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                                                                                                             item.directoremail = ""
                                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDirectors.add(item)
                                                                                                                         }
-                                                                                                                        launchNextAction()
-                                                                                                                    }
+                                                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityHolidays + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                                                                Response.Listener { response ->
+                                                                                                                                    requireActivity().runOnUiThread {
+                                                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes= Gson().fromJson(response.toString(), Array<PRGFacilityShopHolidayTimes>::class.java).toCollection(ArrayList())
+                                                                                                                                        } else {
+                                                                                                                                            var item = PRGFacilityShopHolidayTimes()
+                                                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toString()
+                                                                                                                                            item.FacNum = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                                                                                                                                            item.comments = "-1"
+                                                                                                                                            item.startdate = ""
+                                                                                                                                            item.enddate = ""
+                                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes.add(item)
+                                                                                                                                        }
+                                                                                                                                        Handler(Looper.getMainLooper()).postDelayed({
+                                                                                                                                            step_view.go(2,true)
+                                                                                                                                            validateFacilityData()
+                                                                                                                                        }, 1000)
+                                                                                                                                    }
+                                                                                                                                }, Response.ErrorListener {
+                                                                                                                            Log.v("Loading PRG Data error", "" + it.message)
+//                                                                                                            launchNextAction(isCompleted)
+                                                                                                                            it.printStackTrace()
+                                                                                                                        }))                                                                                                    }
                                                                                                                 }, Response.ErrorListener {
-                                                                                                            Log.v("Load Director ", " --> 4")
                                                                                                             Log.v("Loading PRG Data error", "" + it.message)
-//                                                                                                            launchNextAction()
+//                                                                                                            launchNextAction(isCompleted)
                                                                                                             it.printStackTrace()
-                                                                                                        }))
-                                                                                                    }
+                                                                                                        }))                                                                                                    }
                                                                                                 }, Response.ErrorListener {
                                                                                             Log.v("Loading PRG Data error", "" + it.message)
-//                                                                                            launchNextAction()
+//                                                                                            launchNextAction(isCompleted)
                                                                                             it.printStackTrace()
                                                                                         }))
                                                                                     }
@@ -662,6 +347,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                                                     }
                                                 }, Response.ErrorListener {
                                             Log.v("Loading PRG Data error", "" + it.message)
+//                                            launchNextAction(isCompleted)
                                             it.printStackTrace()
                                         }))
 //                                        launchNextAction(isCompleted)
@@ -679,6 +365,38 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         }))
     }
 
+    fun validateFacilityData(){
+        Handler(Looper.getMainLooper()).postDelayed({
+            step_view.go(3,true)
+            step_view.done(true)
+        }, 1000)
+        val visitationID = visitationIDEditText.text.toString()
+        if (FacilityDataModel.getInstance().tblVisitationTracking.filter { s->s.visitationID.equals(visitationID)}.isEmpty()) {
+            Utility.showMessageDialog(activity,"Warning","Visitation ID Not Found")
+        } else {
+            // Open Specialist PDF
+//            recordsProgressView.visibility = View.VISIBLE
+//            webViewPDF!!.webViewClient = object : WebViewClient() {
+//                override fun onPageFinished(view: WebView?, url: String?) {
+//                }
+//            }
+//            webCardPDFView.visibility = View.VISIBLE
+//            pdfNameWeb.text = "Visitation PDF For Specialist (ID: "+visitationID+")"
+//            exitDialogeBtn.setOnClickListener {
+//                webViewPDF.loadUrl("about:blank")
+//                recordsProgressView.visibility = View.GONE
+//                webCardPDFView.visibility = View.GONE
+//            }
+//            webViewPDF.getSettings().setJavaScriptEnabled(true);
+//            webViewPDF!!.loadUrl("http://docs.google.com/gview?embedded=true&url="+Constants.getPDF+visitationID)
+
+        }
+    }
+
+    fun validatePDFData(){
+
+
+    }
 
     fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
         FacilityDataModel.getInstance().clear()
@@ -694,6 +412,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 FacilityDataModelOrg.getInstance().tblFacilities.add(Gson().fromJson<TblFacilities>(jsonObj.get("tblFacilities").toString(), TblFacilities::class.java))
             }
         }
+        // Load PRG DATA
 
         if (jsonObj.has("tblBusinessType")) {
             if (jsonObj.get("tblBusinessType").toString().startsWith("[")) {
@@ -704,6 +423,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 FacilityDataModelOrg.getInstance().tblBusinessType.add(Gson().fromJson<TblBusinessType>(jsonObj.get("tblBusinessType").toString(), TblBusinessType::class.java))
             }
         }
+
 
         if (jsonObj.has("tblContractType")) {
             if (jsonObj.get("tblContractType").toString().startsWith("[")) {
@@ -813,7 +533,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 FacilityDataModelOrg.getInstance().tblAddress = Gson().fromJson<ArrayList<TblAddress>>(jsonObj.get("tblAddress").toString(), object : TypeToken<ArrayList<TblAddress>>() {}.type)
             } else {
                 FacilityDataModel.getInstance().tblAddress.add(Gson().fromJson<TblAddress>(jsonObj.get("tblAddress").toString(), TblAddress::class.java))
-                FacilityDataModel.getInstance().tblAddress.add(Gson().fromJson<TblAddress>(jsonObj.get("tblAddress").toString(), TblAddress::class.java))
+                FacilityDataModelOrg.getInstance().tblAddress.add(Gson().fromJson<TblAddress>(jsonObj.get("tblAddress").toString(), TblAddress::class.java))
             }
         }
 
@@ -826,6 +546,8 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 FacilityDataModelOrg.getInstance().tblPhone.add(Gson().fromJson<TblPhone>(jsonObj.get("tblPhone").toString(), TblPhone::class.java))
             }
         }
+
+
 
         if (jsonObj.has("tblFacilityEmail")) {
             if (jsonObj.get("tblFacilityEmail").toString().startsWith("[")) {
@@ -877,7 +599,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
         }
 
-        if (jsonObj.has("tblAmendmentOrderTracking")) {
+        if (jsonObj.has("tblAmendmentOrderTracking") && !jsonObj.has("tblAmendmentOrderTracking /")) {
             if (jsonObj.get("tblAmendmentOrderTracking").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking = Gson().fromJson<ArrayList<TblAmendmentOrderTracking>>(jsonObj.get("tblAmendmentOrderTracking").toString(), object : TypeToken<ArrayList<TblAmendmentOrderTracking>>() {}.type)
                 FacilityDataModelOrg.getInstance().tblAmendmentOrderTracking = Gson().fromJson<ArrayList<TblAmendmentOrderTracking>>(jsonObj.get("tblAmendmentOrderTracking").toString(), object : TypeToken<ArrayList<TblAmendmentOrderTracking>>() {}.type)
@@ -908,12 +630,16 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         }
 
         if (jsonObj.has("tblPrograms")) {
+            var tempPrograms = ArrayList<TblPrograms>()
             if (jsonObj.get("tblPrograms").toString().startsWith("[")) {
-                FacilityDataModel.getInstance().tblPrograms = Gson().fromJson<ArrayList<TblPrograms>>(jsonObj.get("tblPrograms").toString(), object : TypeToken<ArrayList<TblPrograms>>() {}.type)
-                FacilityDataModelOrg.getInstance().tblPrograms = Gson().fromJson<ArrayList<TblPrograms>>(jsonObj.get("tblPrograms").toString(), object : TypeToken<ArrayList<TblPrograms>>() {}.type)
+                tempPrograms = Gson().fromJson<ArrayList<TblPrograms>>(jsonObj.get("tblPrograms").toString(), object : TypeToken<ArrayList<TblPrograms>>() {}.type)
+//                FacilityDataModelOrg.getInstance().tblPrograms = Gson().fromJson<ArrayList<TblPrograms>>(jsonObj.get("tblPrograms").toString(), object : TypeToken<ArrayList<TblPrograms>>() {}.type)
+                tempPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(FacilityDataModel.getInstance().tblPrograms)
+                tempPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(FacilityDataModelOrg.getInstance().tblPrograms)
             } else {
-                FacilityDataModel.getInstance().tblPrograms.add(Gson().fromJson<TblPrograms>(jsonObj.get("tblPrograms").toString(), TblPrograms::class.java))
-                FacilityDataModelOrg.getInstance().tblPrograms.add(Gson().fromJson<TblPrograms>(jsonObj.get("tblPrograms").toString(), TblPrograms::class.java))
+                tempPrograms .add(Gson().fromJson<TblPrograms>(jsonObj.get("tblPrograms").toString(), TblPrograms::class.java))
+                tempPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(FacilityDataModel.getInstance().tblPrograms)
+                tempPrograms.sortedWith(compareBy<TblPrograms> { it.expDate}).toCollection(FacilityDataModelOrg.getInstance().tblPrograms)
             }
         }
 
@@ -1081,13 +807,13 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             if (jsonObj.get("tblAARPortalTracking").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblAARPortalTracking = Gson().fromJson<ArrayList<TblAARPortalTracking>>(jsonObj.get("tblAARPortalTracking").toString(), object : TypeToken<ArrayList<TblAARPortalTracking>>() {}.type)
                 FacilityDataModelOrg.getInstance().tblAARPortalTracking= Gson().fromJson<ArrayList<TblAARPortalTracking>>(jsonObj.get("tblAARPortalTracking").toString(), object : TypeToken<ArrayList<TblAARPortalTracking>>() {}.type)
-                FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
-                FacilityDataModelOrg.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
+//                FacilityDataModel.getInstance().tblAARPortalTracking = FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
+//                FacilityDataModelOrg.getInstance().tblAARPortalTracking = FacilityDataModelOrg.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
             } else {
                 FacilityDataModel.getInstance().tblAARPortalTracking.add(Gson().fromJson<TblAARPortalTracking>(jsonObj.get("tblAARPortalTracking").toString(), TblAARPortalTracking::class.java))
                 FacilityDataModelOrg.getInstance().tblAARPortalTracking.add(Gson().fromJson<TblAARPortalTracking>(jsonObj.get("tblAARPortalTracking").toString(), TblAARPortalTracking::class.java))
-                FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
-                FacilityDataModelOrg.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
+//                FacilityDataModel.getInstance().tblAARPortalTracking = FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
+//                FacilityDataModelOrg.getInstance().tblAARPortalTracking = FacilityDataModelOrg.getInstance().tblAARPortalTracking.sortedWith(compareByDescending<TblAARPortalTracking> { it.PortalInspectionDate })
             }
         }
 
@@ -1119,10 +845,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 FacilityDataModel.getInstance().tblAAAPortalEmailFacilityRepTable.add(Gson().fromJson<TblAAAPortalEmailFacilityRepTable>(jsonObj.get("AAAPortalEmailFacilityRepTable").toString(), TblAAAPortalEmailFacilityRepTable::class.java))
                 FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable.add(Gson().fromJson<TblAAAPortalEmailFacilityRepTable>(jsonObj.get("AAAPortalEmailFacilityRepTable").toString(), TblAAAPortalEmailFacilityRepTable::class.java))
             }
-            FacilityDataModel.getInstance().tblAAAPortalEmailFacilityRepTable.sortedWith(compareBy{ it.Year}).sortedWith(compareBy { it.Quarter }).sortedWith(compareBy { it.Month })
-            FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable.sortedWith(compareBy{ it.Year}).sortedWith(compareBy { it.Quarter }).sortedWith(compareBy { it.Month })
+//            FacilityDataModel.getInstance().tblAAAPortalEmailFacilityRepTable.sortedWith(compareBy{ it.Year.toInt()}).sortedWith(compareBy { it.Quarter.toInt() }).sortedWith(compareBy { it.Month.toInt() }).toCollection()
+//            FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable = FacilityDataModelOrg.getInstance().tblAAAPortalEmailFacilityRepTable.sortedWith(compareBy{ it.Year.toInt()}).sortedWith(compareBy { it.Quarter.toInt() }).sortedWith(compareBy { it.Month.toInt()}))
         }
-
+//
         if (jsonObj.has("InvoiceInfo")) {
             if (jsonObj.get("InvoiceInfo").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblInvoiceInfoUpdated = Gson().fromJson<ArrayList<InvoiceInfo>>(jsonObj.get("InvoiceInfo").toString(), object : TypeToken<ArrayList<InvoiceInfo>>() {}.type)
@@ -1132,6 +858,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 FacilityDataModelOrg.getInstance().tblInvoiceInfoUpdated.add(Gson().fromJson<InvoiceInfo>(jsonObj.get("InvoiceInfo").toString(), InvoiceInfo::class.java))
             }
         }
+
         if (jsonObj.has("tblFacVehicles")) {
             if (jsonObj.get("tblFacVehicles").toString().startsWith("[")) {
                 FacilityDataModel.getInstance().tblFacVehicles = Gson().fromJson<ArrayList<TblFacVehicles>>(jsonObj.get("tblFacVehicles").toString(), object : TypeToken<ArrayList<TblFacVehicles>>() {}.type)
@@ -1171,11 +898,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities.add(Gson().fromJson<AffiliateVendorFacilities>(jsonObj.get("AffiliateVendorFacilities").toString(), AffiliateVendorFacilities::class.java))
             }
         }
-
-
-
-        IndicatorsDataModel.getInstance().init()
-        HasChangedModel.getInstance().init()
     }
 
     fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {
@@ -1219,25 +941,43 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj,"tblAddress")
         }
 
-        if (jsonObj.has("tblFacilityEmail")) {
-            if (!jsonObj.get("tblFacilityEmail").toString().equals("")) {
+        if (jsonObj.has("tblGeocodes")) {
+            if (!jsonObj.get("tblGeocodes").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityEmail")
+                    var result = jsonObj.getJSONArray("tblGeocodes")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
-                    jsonObj.remove(("tblFacilityEmail"))
-                    jsonObj.put("tblFacilityEmail", result)
+                    jsonObj.remove(("tblGeocodes"))
+                    jsonObj.put("tblGeocodes", result)
                 } catch (e: Exception) {
 
                 }
             } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityEmail")
+                jsonObj = addOneElementtoKey(jsonObj, "tblGeocodes")
             }
         } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblFacilityEmail")
+            jsonObj = addOneElementtoKey(jsonObj,"tblGeocodes")
         }
+//
+        if (jsonObj.has("tblVisitationTracking")) {
+            if (!jsonObj.get("tblVisitationTracking").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblVisitationTracking")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblVisitationTracking"))
+                    jsonObj.put("tblVisitationTracking", result)
+                } catch (e: Exception) {
 
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblVisitationTracking")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblVisitationTracking")
+        }
 
         if (jsonObj.has("tblPhone")) {
             if (!jsonObj.get("tblPhone").toString().equals("")) {
@@ -1257,6 +997,26 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj,"tblPhone")
         }
+
+        if (jsonObj.has("tblFacilityEmail")) {
+            if (!jsonObj.get("tblFacilityEmail").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityEmail")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityEmail"))
+                    jsonObj.put("tblFacilityEmail", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityEmail")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj,"tblFacilityEmail")
+        }
+
 
         if (jsonObj.has("tblOfficeType")) {
             if (!jsonObj.get("tblOfficeType").toString().equals("")) {
@@ -1337,16 +1097,16 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
         if (jsonObj.has("tblScopeofService")) {
             if (!jsonObj.get("tblScopeofService").toString().equals("")) {
-            try {
-                var result = jsonObj.getJSONArray("tblScopeofService")
-                for (i in result.length() - 1 downTo 0) {
-                    if (result[i].toString().equals("")) result.remove(i);
-                }
-                jsonObj.remove(("tblScopeofService"))
-                jsonObj.put("tblScopeofService", result)
-            } catch (e:Exception){
+                try {
+                    var result = jsonObj.getJSONArray("tblScopeofService")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblScopeofService"))
+                    jsonObj.put("tblScopeofService", result)
+                } catch (e:Exception){
 
-            }
+                }
             } else {
                 jsonObj = addOneElementtoKey(jsonObj, "tblScopeofService")
             }
@@ -1482,16 +1242,16 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
                 }
             } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
+                jsonObj = addOneElementtoKey(jsonObj, "Billing")
             }
         } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
+            jsonObj = addOneElementtoKey(jsonObj, "Billing")
         }
 
         if (jsonObj.has("BillingPlan")) {
             if (!jsonObj.get("BillingPlan").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("BillingPlan")
+                    var result = jsonObj.getJSONArray("tblBillingPlan")
                     for (i in result.length() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
@@ -1543,25 +1303,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblInvoiceInfo")
-        }
-
-        if (jsonObj.has("tblVisitationTracking")) {
-            if (!jsonObj.get("tblVisitationTracking").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblVisitationTracking")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblVisitationTracking"))
-                    jsonObj.put("tblVisitationTracking", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblVisitationTracking")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblVisitationTracking")
         }
 
         if (jsonObj.has("VendorRevenue")) {
@@ -1639,6 +1380,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblVehicleServices")
         }
+
         if (jsonObj.has("tblAARPortalTracking")) {
             if (!jsonObj.get("tblAARPortalTracking").toString().equals("")) {
                 try {
@@ -1772,7 +1514,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelSigner")
         }
 
-
         if (jsonObj.has("tblHours")) {
             if (!jsonObj.get("tblHours").toString().equals("")) {
                 try {
@@ -1791,6 +1532,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblHours")
         }
+
         if (jsonObj.has("tblTerminationCodeType")) {
             if (!jsonObj.get("tblTerminationCodeType").toString().equals("")) {
                 try {
@@ -1866,6 +1608,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
         }
+
         if (jsonObj.has("tblFacilityServiceProvider")) {
             if (!jsonObj.get("tblFacilityServiceProvider").toString().equals("")) {
                 try {
@@ -1923,6 +1666,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
         }
 
+//
         return jsonObj
     }
 
@@ -1957,6 +1701,26 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.FirstName = ""
             oneArray.LastName = ""
             oneArray.ReceivedDate = ""
+            jsonObj.put(key, Gson().toJson(oneArray))
+            //
+        } else if (key.equals("tblVisitationTracking")) {
+            var oneArray = TblVisitationTracking()
+            oneArray.AARSigns=""
+            oneArray.CertificateOfApproval=""
+            oneArray.DatePerformed=""
+            oneArray.MemberBenefitPoster=""
+            oneArray.QualityControl=""
+            oneArray.StaffTraining=""
+            oneArray.automotiveSpecialistName=""
+            oneArray.automotiveSpecialistSignature=null
+            oneArray.email=""
+            oneArray.emailVisitationPdfToFacility=false
+            oneArray.facilityRepresentativeDeficienciesSignature=null
+            oneArray.performedBy="00"
+            oneArray.visitationType=null
+            oneArray.waiveVisitations=false
+            oneArray.waiverComments=""
+            oneArray.waiverSignature=null
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblAmendmentOrderTracking")) {
             var oneArray = TblAmendmentOrderTracking()
@@ -2000,25 +1764,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.ZIP=""
             oneArray.ZIP4=""
             jsonObj.put(key, Gson().toJson(oneArray))
-        } else if (key.equals("tblVisitationTracking")) {
-            var oneArray = TblVisitationTracking()
-            oneArray.AARSigns=""
-            oneArray.CertificateOfApproval=""
-            oneArray.DatePerformed=""
-            oneArray.MemberBenefitPoster=""
-            oneArray.QualityControl=""
-            oneArray.StaffTraining=""
-            oneArray.automotiveSpecialistName=""
-            oneArray.automotiveSpecialistSignature=null
-            oneArray.email=""
-            oneArray.emailVisitationPdfToFacility=false
-            oneArray.facilityRepresentativeDeficienciesSignature=null
-            oneArray.performedBy=""
-            oneArray.visitationType=null
-            oneArray.waiveVisitations=false
-            oneArray.waiverComments=""
-            oneArray.waiverSignature=null
-            jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblFacilityEmail")) {
             var oneArray = TblFacilityEmail()
             oneArray.email=""
@@ -2031,16 +1776,22 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.PhoneTypeID=""
             oneArray.PhoneID="-1"
             jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblGeocodes")) {
+            var oneArray = TblGeocodes()
+            oneArray.GeoCodeTypeID=-1
+            jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblAARPortalAdmin")) {
             var oneArray = TblAARPortalAdmin()
             oneArray.AddendumSigned=""
             oneArray.CardReaders="-1"
+
             oneArray.startDate=""
             jsonObj.put(key, Gson().toJson(oneArray))
         } else if (key.equals("tblPrograms")) {
             var oneArray = TblPrograms()
             oneArray.Comments=""
             oneArray.ProgramID = "-1"
+            oneArray.ProgramTypeID=""
             oneArray.effDate=""
             oneArray.expDate=""
             oneArray.programtypename=""
@@ -2236,68 +1987,26 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.FacilityTypeName="Independent"
             jsonObj.put(key, Gson().toJson(oneArray))
         }
-
         return jsonObj;
     }
 
-    private class AdHocVisitationViewHolder(view: View?) {
-        var facilityNameValueTextView: TextView? = null
-        var facilityNumberValueTextView: TextView? = null
-        var adHocClubCodeValueTextView: TextView? = null
-        var adHocStatusValueTextView: TextView? = null
-        var loadFacilityButton: Button? = null
-
-        init {
-            this.facilityNameValueTextView = view?.findViewById(R.id.facilityNameValueTextView) as TextView
-            this.facilityNumberValueTextView = view?.findViewById(R.id.facilityNumberValueTextView) as TextView
-            this.adHocClubCodeValueTextView = view?.findViewById(R.id.adHocClubCodeValueTextView)
-            this.loadFacilityButton = view?.findViewById(R.id.loadFacilityButton) as Button
-            this.adHocStatusValueTextView = view?.findViewById(R.id.adHocCoStatusValueTextView) as TextView
-        }
-
-    }
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
-
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
-        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
-
-        var shouldShowVisitation = false
-
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment FrgmentARRAnnualVisitationRecords.
+         * @return A new instance of fragment PDFGenerateFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): AppAdHockVisitationFilterFragment {
-            val fragment = AppAdHockVisitationFilterFragment()
-            val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
-            fragment.arguments = args
-            return fragment
-        }
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+                PDFGenerateFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putString(ARG_PARAM2, param2)
+                    }
+                }
     }
 }
-
-

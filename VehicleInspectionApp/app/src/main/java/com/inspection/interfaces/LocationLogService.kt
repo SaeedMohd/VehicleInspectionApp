@@ -50,9 +50,9 @@ class LocationLogService : JobService() {
                         logLocationtoDB(urlString+"&latitude=Unable to get Location&longitude=Unable to get Location")
                     }
                 }
-            } catch (e: SecurityException) {
+                } catch (e: SecurityException) {
 
-            }
+                }
         } else {
             if (!checkLocationPermissions()) {
                 if (activity != null) {

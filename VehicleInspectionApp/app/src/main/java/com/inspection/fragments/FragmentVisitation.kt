@@ -1,11 +1,7 @@
 package com.inspection.fragments
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
@@ -13,31 +9,19 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
+import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
+import android.util.Patterns
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-
-import com.inspection.R
-
-import kotlinx.android.synthetic.main.fragment_visitation_form.*
-import java.util.*
-import kotlin.collections.ArrayList
-import android.text.Editable
-import android.text.TextUtils
-import android.util.Log
-import android.util.Patterns
-import android.view.Gravity
-import androidx.annotation.Nullable
-import androidx.core.app.ActivityCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.graphics.get
-import androidx.core.view.isVisible
+import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import androidx.fragment.app.Fragment
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
@@ -49,26 +33,22 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.signature.ObjectKey
 import com.google.gson.Gson
 import com.inspection.FormsActivity
-import com.inspection.MainActivity
+import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+import kotlinx.android.synthetic.main.fragment_visitation_form.*
 import kotlinx.android.synthetic.main.fragment_visitation_form.cancelButton
 import kotlinx.android.synthetic.main.fragment_visitation_form.saveButton
 import kotlinx.android.synthetic.main.fragment_visitation_form.trackingTableLayout
 import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.io.UnsupportedEncodingException
-import java.lang.Exception
-import java.lang.reflect.Type
-import javax.sql.DataSource
+import java.util.*
 
 
 /**
@@ -384,6 +364,14 @@ class FragmentVisitation : Fragment() {
         completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType==null){
             adhocVisitationType.isChecked = true
+            adhocVisitationType.isClickable = true
+            adhocVisitationType.isEnabled = true
+            annualVisitationType.isClickable = true
+            annualVisitationType.isEnabled = true
+            quarterlyVisitationType.isClickable = true
+            quarterlyVisitationType.isEnabled = true
+            defVisitationType.isClickable = true
+            defVisitationType.isEnabled = true
             visitationReasonDropListId.setSelection(0,true)
             visitationReasonDropListId.isEnabled = true
             visitationReasonDropListId.isClickable = true
@@ -392,24 +380,35 @@ class FragmentVisitation : Fragment() {
             if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Annual)) {
                 annualVisitationType.isChecked = true
                 visitationReasonDropListId.setSelection(VisitationReasonArray.indexOf("Annual Visitation"), true)
-                visitationReasonDropListId.isEnabled = false
-                visitationReasonDropListId.isClickable = false
+//                visitationReasonDropListId.isEnabled = false
+//                visitationReasonDropListId.isClickable = false
             } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Quarterly)) {
                 quarterlyVisitationType.isChecked = true
                 visitationReasonDropListId.setSelection(VisitationReasonArray.indexOf("Quarterly Visitation"), true)
-                visitationReasonDropListId.isEnabled = false
-                visitationReasonDropListId.isClickable = false
+//                visitationReasonDropListId.isEnabled = false
+//                visitationReasonDropListId.isClickable = false
             } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
                 adhocVisitationType.isChecked = true
+                // Make Type selectable
+                adhocVisitationType.isClickable = true
+                adhocVisitationType.isEnabled = true
+                annualVisitationType.isClickable = true
+                annualVisitationType.isEnabled = true
+                quarterlyVisitationType.isClickable = true
+                quarterlyVisitationType.isEnabled = true
+                defVisitationType.isClickable = true
+                defVisitationType.isEnabled = true
+
+                // End
                 visitationReasonDropListId.setSelection(0, true)
-                visitationReasonDropListId.isEnabled = true
-                visitationReasonDropListId.isClickable = true
+//                visitationReasonDropListId.isEnabled = true
+//                visitationReasonDropListId.isClickable = true
                 completeButton.isEnabled = true
             } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.Deficiency)) {
                 defVisitationType.isChecked = true
                 visitationReasonDropListId.setSelection(VisitationReasonArray.indexOf("Deficiency Inspection"), true)
-                visitationReasonDropListId.isEnabled = false
-                visitationReasonDropListId.isClickable = false
+//                visitationReasonDropListId.isEnabled = false
+//                visitationReasonDropListId.isClickable = false
                 completeButton.isEnabled = true
             }
         }
@@ -553,7 +552,7 @@ class FragmentVisitation : Fragment() {
                         visitationMethodDropListId.setSelection(0)
                         visitMethodPreviousValue = ""
                     } else {
-                        if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("0")) {
+                        if (!PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("0") && !PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("") && !PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod.equals("None")) {
                             var vMethood = TypeTablesModel.getInstance().VisitationMethodType.filter { s -> s.TypeID.toString().equals(PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitmethod) }[0].TypeName
 //                        visitationMethodDropListId.setSelection((resources.getStringArray(R.array.visitation_methods)).indexOf(vMethood))
                             visitationMethodDropListId.setSelection((VisitationMethodArray).indexOf(vMethood))
@@ -671,9 +670,6 @@ class FragmentVisitation : Fragment() {
             }
 
             if (waiveVisitationCheckBox.isChecked) completeButton.isEnabled = true
-
-
-
         }
 
 
@@ -751,7 +747,7 @@ class FragmentVisitation : Fragment() {
                 Log.v("SAVE VISITATION || ", Constants.UpdateVisitationDetailsDataProgress + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Saved ... Type --> " + visitationType))
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsDataProgress + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Saved ... Type --> " + visitationType),
                         Response.Listener { response ->
-                            activity!!.runOnUiThread {
+                            requireActivity().runOnUiThread {
                                 Log.v("VT RESPONSE ||| ", response.toString())
                                 if (response.toString().contains("Success", false)) {
                                     waiveVisitationCBPreviousValue = waiveVisitationCheckBox.isChecked
@@ -764,6 +760,8 @@ class FragmentVisitation : Fragment() {
                                     certificateOfApprovalPreviousValue = certificateOfApprovalEditText.text.toString()
                                     memberBenefitsPosterPreviousValue = memberBenefitsPosterEditText.text.toString()
                                     visitationComments = visitationCommentsEditText.text.toString()
+                                    visitMethodPreviousValue = visitationMethodDropListId.selectedItem.toString()
+                                    PRGDataModel.getInstance().tblPRGVisitationHeader[0].recordid = 9999999
                                     PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation = waiveVisitationCheckBox.isChecked
                                     PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf = emailPdfCheckBox.isChecked
                                     PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivecomments = waiverCommentsEditText.text.toString()
@@ -992,15 +990,13 @@ class FragmentVisitation : Fragment() {
 
                     }
                 }
-
-
             }
-
+            (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
             signatureInkView.clear()
             visitationFormAlphaBackground.visibility = View.GONE
             signatureDialog.visibility = View.GONE
             checkMarkChangesDone()
-
         }
 
         waiveVisitationCheckBox.setOnCheckedChangeListener { compoundButton, b ->
@@ -1214,6 +1210,60 @@ class FragmentVisitation : Fragment() {
                 }
             }
         }
+
+        adhocVisitationType.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked){
+                    quarterlyVisitationType.isChecked = false
+                    annualVisitationType.isChecked = false
+                    defVisitationType.isChecked = false
+                    FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = VisitationTypes.AdHoc
+                    IndicatorsDataModel.getInstance().init()
+                    IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
+                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                    completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+                }
+
+        }
+
+        defVisitationType.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                quarterlyVisitationType.isChecked = false
+                annualVisitationType.isChecked = false
+                adhocVisitationType.isChecked = false
+                FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = VisitationTypes.Deficiency
+                IndicatorsDataModel.getInstance().init()
+                IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
+                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+            }
+        }
+
+        annualVisitationType.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                quarterlyVisitationType.isChecked = false
+                defVisitationType.isChecked = false
+                adhocVisitationType.isChecked = false
+                FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = VisitationTypes.Annual
+                IndicatorsDataModel.getInstance().init()
+                IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
+                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+            }
+        }
+
+        quarterlyVisitationType.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                annualVisitationType.isChecked = false
+                defVisitationType.isChecked = false
+                adhocVisitationType.isChecked = false
+                FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = VisitationTypes.Quarterly
+                IndicatorsDataModel.getInstance().init()
+                IndicatorsDataModel.getInstance().tblVisitation[0].visited = true
+                (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+                completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+            }
+        }
+
         (activity as FormsActivity).saveRequired = false
     }
 
@@ -1461,7 +1511,7 @@ class FragmentVisitation : Fragment() {
 
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
             Response.Listener { response ->
-                activity!!.runOnUiThread {
+                requireActivity().runOnUiThread {
                     PRGDataModel.getInstance().tblPRGLogChanges.clear()
                     (activity as FormsActivity).saveDone = true
                     if (!response.toString().replace(" ","").equals("[]")) {
@@ -1477,11 +1527,16 @@ class FragmentVisitation : Fragment() {
             it.printStackTrace()
         }))
 
+        (activity as FormsActivity).saveRequired = false
+        refreshButtonsState()
+        (activity as FormsActivity).saveVisitedScreensRequired = false
+        completeButton.isEnabled = false
+
         var urlString = facilityNo+"&clubcode="+clubCode+"&DatePerformed="+insertDate+"&DateReceived="+insertDate+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&StaffTraining="+staffTraining+"&QualityControl="+qa+"&AARSigns="+aarSign+"&MemberBenefitPoster="+memberBenefits+"&CertificateOfApproval="+certificateOfApproval+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&sessionId="+ApplicationPrefs.getInstance(activity).sessionID+"&userId="+insertBy+"&visitationType="+visitationTypeID+"&visitationReason="+visitationReasonID+"&emailPDF="+(if (emailPdfCheckBox.isChecked) "1" else "0")+"&emailTo="+emailEditText.text+"&waiveVisitation="+ (if (waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments="+waiverCommentsEditText.text+"&facilityRep="+facilityRep+"&performedBy="+automotiveSpecialist+"&visitationID=0&annualVisitationMonth="+annualvisitationmonth+"&visitMethod="+visitmethod
         Log.v("Visitation Tracking -- ",Constants.UpdateVisitationTrackingData + urlString )
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationTrackingData + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         Log.v("VT RESPONSE ||| ",response.toString())
                         if (response.toString().contains("returnCode>0<",false)) {
                             visitationID = response.toString().substring(response.toString().indexOf("<visitationID")+14,response.toString().indexOf("" +
@@ -1494,7 +1549,7 @@ class FragmentVisitation : Fragment() {
                             (activity as FormsActivity).saveDone = true
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString+ Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
                                     Response.Listener { response ->
-                                        activity!!.runOnUiThread {
+                                        requireActivity().runOnUiThread {
                                             Log.v("VT RESPONSE ||| ",response.toString())
                                             if (response.toString().contains("returnCode>0<",false)) {
                                                 PRGDataModel.getInstance().tblPRGVisitationHeader[0].clubcode=clubCode.toInt()
@@ -1519,11 +1574,12 @@ class FragmentVisitation : Fragment() {
                                                 refreshButtonsState()
                                                 (activity as FormsActivity).saveVisitedScreensRequired = false
 //                                                IndicatorsDataModel.getInstance().resetAllVisitedFlags()
-                                                if (visitationType.equals(VisitationTypes.AdHoc) || visitationType.equals(VisitationTypes.Deficiency)) {
-                                                    completeButton.isEnabled = true
-                                                } else {
-                                                    completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
-                                                }
+                                                // Disable Buttons after click complete Button
+//                                                if (visitationType.equals(VisitationTypes.AdHoc) || visitationType.equals(VisitationTypes.Deficiency)) {
+//                                                    completeButton.isEnabled = true
+//                                                } else {
+//                                                    completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+//                                                }
                                                 cancelButton.isEnabled = false
 
                                                 if (!waiveVisitationCheckBox.isChecked || waiveVisitationCheckBox.isChecked) {
@@ -1660,7 +1716,7 @@ class FragmentVisitation : Fragment() {
                     var tableRow = TableRow(context)
 
                     if (tableRowColorSwitch) {
-                        tableRow.setBackgroundColor(ContextCompat.getColor(context!!, R.color.table_row_color))
+                        tableRow.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.table_row_color))
                     } else {
                         tableRow.setBackgroundColor(Color.WHITE)
                     }
@@ -1732,9 +1788,10 @@ class FragmentVisitation : Fragment() {
     }
 
     private fun duplicateCheckPassed(): Boolean {
+        if (PRGDataModel.getInstance().tblPRGAppVersion[0].duplicateCheckEnabled==0) return true
         duplicateVisitationID = ""
         var visitationTypeID = ""
-        Calendar.getInstance().get(Calendar.MONTH).toString()
+//        Calendar.getInstance().get(Calendar.MONTH).toString()
         if (annualVisitationType.isChecked) {
             visitationTypeID = "1"
         } else if (quarterlyVisitationType.isChecked) {
@@ -1750,8 +1807,9 @@ class FragmentVisitation : Fragment() {
         } else {
             (Calendar.getInstance().get(Calendar.MONTH)+1).toString()
         }
-        if (!FacilityDataModel.getInstance().tblVisitationTracking.filter { s->s.VisitationTypeID!!.equals(visitationTypeID) && s.DatePerformed.substring(5,2).equals(currentMonth)}.isNullOrEmpty()) {
-            duplicateVisitationID = FacilityDataModel.getInstance().tblVisitationTracking.filter { s->s.VisitationTypeID!!.equals(visitationTypeID) && s.DatePerformed.substring(5,2).equals(currentMonth)}[0].visitationID
+        val visitationReasonID = TypeTablesModel.getInstance().VisitationReasonType.filter { s->s.VisitationReasonTypeName.equals(visitationReasonDropListId.selectedItem.toString())}[0].VisitationReasonTypeID.toString()
+        if (!FacilityDataModel.getInstance().tblVisitationTracking.filter { s->s.VisitationTypeID!!.equals(visitationTypeID) && s.DatePerformed.substring(5,7).equals(currentMonth) && s.VisitationReasonTypeID.equals(visitationReasonID)}.isNullOrEmpty()) {
+            duplicateVisitationID = FacilityDataModel.getInstance().tblVisitationTracking.filter { s->s.VisitationTypeID!!.equals(visitationTypeID) && s.DatePerformed.substring(5,7).equals(currentMonth) && s.VisitationReasonTypeID.equals(visitationReasonID)}[0].visitationID
             return false
         }
         return true

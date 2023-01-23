@@ -37,19 +37,44 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/personelLbl"
                     android:text="Personnel"
                     android:textColor="@color/mainColor"
                     android:textSize="22sp" />
+                <ImageButton
+                    android:id="@+id/alertPersonnelYIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_toRightOf="@id/personelLbl"
+                    android:layout_marginStart="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="50dp"
+                    android:visibility="gone"
+                    android:backgroundTint="@color/dark_yellow"
+                    android:background="@android:drawable/ic_dialog_info" />
+                <ImageButton
+                    android:id="@+id/alertPersonnelRIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/personelLbl"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="50dp"
+                    android:visibility="visible"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:background="@android:drawable/ic_dialog_info" />
 
                 <Button
                     android:id="@+id/addNewPersnRecordBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginBottom="20dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/green_background_button"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
@@ -91,7 +116,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1.4"
                         android:text="Type"
                         android:textAlignment="center"
@@ -104,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_weight="1"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:text="First Name"
                         android:textAlignment="center"
                         android:textColor="@color/white"
@@ -115,7 +140,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="2"
                         android:layout_weight="1"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:text="Last Name"
                         android:textAlignment="center"
                         android:textColor="@color/white"
@@ -126,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="3"
                         android:layout_weight="1"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:text="RSP User ID"
                         android:textAlignment="center"
                         android:textColor="@color/white"
@@ -137,7 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="4"
                         android:layout_weight="1.5"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:text="Email Address"
                         android:textAlignment="center"
                         android:textColor="@color/white"
@@ -147,7 +172,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="5"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:text="Seniority Date"
                         android:textAlignment="center"
@@ -162,7 +187,7 @@
                         android:layout_column="6"
                         android:layout_weight="1"
                         android:text="Start Date"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
@@ -174,7 +199,7 @@
                         android:layout_weight="1"
                         android:text="End Date"
                         android:textAlignment="center"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
@@ -188,6 +213,17 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="8"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1.5"
+                            android:text="Cert ID_ASE"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -236,7 +272,17 @@
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
-
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="12"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:text="Complaint Contact"
+                            android:layout_marginLeft="10dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -808,7 +854,27 @@
                         android:layout_column="0"
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
-                        android:text="Certification ID #:"
+                        android:text="ASE Certification ID:"
+                        android:textStyle="bold" />
+
+                    <br.com.sapereaude.maskedEditText.MaskedEditText
+                        android:id="@+id/newASECertNoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:typeface="monospace"
+                        app:allowed_chars="0123456789"
+                        android:ems="8"
+                        app:mask="ASE-####-####"
+                        android:maxLength="30" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Other Certification ID:"
                         android:textStyle="bold" />
 
                     <EditText
@@ -816,8 +882,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
+                        android:ems="8"
                         android:background="@drawable/textview_background"
-                        android:hint="Enter certificate ID"
+                        android:hint="Other Certificate ID"
                         android:maxLength="30" />
 
                     <TextView
@@ -963,13 +1030,29 @@
                             />
 
                         <CheckBox
-                            android:id="@+id/newNotificationCheck"
+                            android:id="@+id/newComplaintContact"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="1"
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
-                            android:text="Primary Mail Recipients"
+                            android:text="Complaint Contact"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <CheckBox
+                            android:id="@+id/newNotificationCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Notification Recipients"
                             />
 
                     </LinearLayout>
@@ -1478,7 +1561,26 @@
 
 
                     </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="ASE Certification ID:"
+                        android:textStyle="bold" />
 
+                    <br.com.sapereaude.maskedEditText.MaskedEditText
+                        android:id="@+id/edit_newASECertNoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:typeface="monospace"
+                        app:allowed_chars="0123456789"
+                        android:ems="8"
+                        app:mask="ASE-####-####"
+                        android:maxLength="30" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -1486,7 +1588,7 @@
                         android:layout_column="0"
                         android:layout_margin="5dp"
                         android:layout_marginTop="5dp"
-                        android:text="Certification ID #:"
+                        android:text="Other Certification ID:"
                         android:textStyle="bold" />
 
                     <EditText
@@ -1495,7 +1597,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:background="@drawable/textview_background"
-                        android:hint="Enter certificate ID"
+                        android:hint="Other Certificate ID"
                         android:maxLength="30" />
 
                     <TextView
@@ -1640,6 +1742,23 @@
                             android:layout_marginTop="5dp"
                             android:text="Report Recipient"
                             />
+                        <CheckBox
+                            android:id="@+id/edit_newComplaintCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_margin="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Complaint Contact"
+                            />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <CheckBox
                             android:id="@+id/edit_newNotificationCheck"
@@ -1650,9 +1769,7 @@
                             android:layout_marginTop="5dp"
                             android:text="Notification Recipients"
                             />
-
                     </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/edit_contractSignerFieldsLinearLayourId"
                         android:layout_width="match_parent"

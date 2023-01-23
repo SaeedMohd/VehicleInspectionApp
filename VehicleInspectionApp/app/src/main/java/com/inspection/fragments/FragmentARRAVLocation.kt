@@ -1,31 +1,33 @@
 package com.inspection.fragments
 
 
-import android.app.ActionBar
-import android.app.AlertDialog
+import android.Manifest
 import android.app.DatePickerDialog
-import android.content.res.Resources
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
-import android.opengl.Visibility
+import android.net.Uri
 import android.os.Bundle
-import android.os.Debug
 import android.telephony.PhoneNumberUtils
-import androidx.fragment.app.Fragment
-import androidx.core.widget.TextViewCompat
-import android.text.Editable
-import android.text.SpannableString
-import android.text.TextWatcher
-import android.text.style.UnderlineSpan
+import android.text.*
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.inspection.FormsActivity
 import com.inspection.MainActivity
-
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityLanguageData
@@ -33,15 +35,14 @@ import com.inspection.adapter.LanguageListAdapter
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_location.*
+import kotlinx.android.synthetic.main.fragment_aarav_location.mainViewLinearId
+import kotlinx.android.synthetic.main.fragment_aarav_location.mainViewLinearId2
+import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
 import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
 import kotlinx.android.synthetic.main.fragment_arravlocation.*
 import java.net.URLEncoder
-import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
-import android.text.Spanned
-
-import android.text.InputFilter
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
@@ -64,7 +65,8 @@ class FragmentARRAVLocation : Fragment() {
     var saveLangRequired = false
     var saveHoursRequired = false
     var saveGeoCodesRequired = false
-
+    private var fusedLocationProviderClient : FusedLocationProviderClient? = null
+    private var btnToBeUpdated = 0
 
     var languagesGridView: ExpandableHeightGridView? = null
     internal var arrayAdapter: LanguageListAdapter? = null
@@ -137,6 +139,7 @@ class FragmentARRAVLocation : Fragment() {
         hoursArray = resources.getStringArray(R.array.officeTimes)
         fillLocationTableView()
         fillGeoCodesTable()
+        fillHolidaysTableView()
         fillPhoneTableView()
         fillOpenHoursTableView()
         fillClosedHoursTableView()
@@ -474,6 +477,7 @@ class FragmentARRAVLocation : Fragment() {
             setServices()
             fillGeoCodesTable()
             fillOpenHoursTableView()
+            fillHolidaysTableView()
             fillClosedHoursTableView()
             (activity as FormsActivity).saveRequired = false
             saveHoursRequired = false
@@ -701,7 +705,7 @@ class FragmentARRAVLocation : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
@@ -716,7 +720,7 @@ class FragmentARRAVLocation : Fragment() {
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
@@ -1070,7 +1074,7 @@ class FragmentARRAVLocation : Fragment() {
 
         }
 
-        arrayAdapter = LanguageListAdapter(context!!, R.layout.lang_checkbox_item, this ,langListItems)
+        arrayAdapter = LanguageListAdapter(requireContext(), R.layout.lang_checkbox_item, this ,langListItems)
 
         languagesGridView?.adapter = arrayAdapter
         languagesGridView?.isExpanded=true
@@ -1302,7 +1306,7 @@ class FragmentARRAVLocation : Fragment() {
                 Log.v("Location Address --- ", Constants.submitContactInfoAddress + urlString)
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString + Utility.getLoggingParameters(activity, 0, getAddressChanges()),
                         Response.Listener { response ->
-                            activity!!.runOnUiThread {
+                            requireActivity().runOnUiThread {
                                 if (response.toString().contains("returnCode>0<", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Facility Location")
                                     FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
@@ -1373,7 +1377,7 @@ class FragmentARRAVLocation : Fragment() {
         Log.v("Location GeoCodes --- ", Constants.submitContactInfoAddress + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString + Utility.getLoggingParameters(activity, 0, getAddressChanges()),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("returnCode>0<", false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes")
                             if (geoCodeTypeID==3) {
@@ -1737,7 +1741,7 @@ class FragmentARRAVLocation : Fragment() {
                                 Log.v("Phone Edit --- ",Constants.submitFacilityPhone + urlString)
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(1,phoneFacilityChangedIndex)),
                                         Response.Listener { response ->
-                                            activity!!.runOnUiThread {
+                                            requireActivity().runOnUiThread {
                                                 if (response.toString().contains("returnCode>0<", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
                                                     FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
@@ -1880,7 +1884,7 @@ class FragmentARRAVLocation : Fragment() {
                                 Log.v("Email Edit --- ",Constants.submitFacilityEmail + urlString)
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString+ Utility.getLoggingParameters(activity, 0, getEmailChanges(1,emailFacilityChangedIndex)),
                                         Response.Listener { response ->
-                                            activity!!.runOnUiThread {
+                                            requireActivity().runOnUiThread {
                                                 if (response.toString().contains("returnCode>0<", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Facility Email")
                                                     FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = newChangesEmailText.text.toString()
@@ -1933,6 +1937,90 @@ class FragmentARRAVLocation : Fragment() {
             HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = changeWasDone
             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
         }
+    }
+
+    fun fillHolidaysTableView() {
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.width = 0
+
+        if (holidaysTbl.childCount>1) {
+            for (i in holidaysTbl.childCount - 1 downTo 1) {
+                holidaysTbl.removeViewAt(i)
+            }
+        }
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
+
+        val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.column = 3
+        rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam3.width = 0
+
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParamRow.weight=1F
+
+        PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes.apply {
+            (0 until size).forEach {
+                if (!get(it).comments.equals("-1")) {
+                    var tableRow = TableRow(context)
+                    tableRow.layoutParams = rowLayoutParamRow
+                    tableRow.minimumHeight = 30
+
+
+                    var textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam
+                    textView.gravity = Gravity.CENTER
+                    textView.minimumHeight = 30
+                    textView.textSize = 14f
+                    textView.text = get(it).type
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam1
+                    textView.gravity = Gravity.CENTER
+                    textView.minimumHeight = 30
+                    textView.textSize = 14f
+                    textView.text = if (get(it).startdate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startdate.apiToAppFormatMMDDYYYY()
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam2
+                    textView.gravity = Gravity.CENTER
+                    textView.minimumHeight = 30
+                    textView.textSize = 14f
+                    textView.text = if (get(it).enddate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).enddate.apiToAppFormatMMDDYYYY()
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam3
+                    textView.gravity = Gravity.CENTER
+                    textView.minimumHeight = 30
+                    textView.textSize = 14f
+                    textView.text = get(it).comments
+                    tableRow.addView(textView)
+
+                    holidaysTbl.addView(tableRow)
+                }
+            }
+        }
+        altHolidayTableRow(2)
+
     }
 
 
@@ -2154,7 +2242,11 @@ class FragmentARRAVLocation : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam7
                 textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = get(it).LATITUDE
+                if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")) {
+                    textView.text = ""
+                } else {
+                    textView.text = get(it).LATITUDE
+                }
                 textView.minimumHeight=30
                 textView.textSize = 10f
                 tableRow.addView(textView)
@@ -2162,7 +2254,11 @@ class FragmentARRAVLocation : Fragment() {
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam8
                 textView.gravity = Gravity.CENTER_VERTICAL
-                textView.text = get(it).LONGITUDE
+                if (!getLocationTypeName(get(it).LocationTypeID).equals("Physical")) {
+                    textView.text = ""
+                } else {
+                    textView.text = get(it).LONGITUDE
+                }
                 textView.minimumHeight=30
                 textView.textSize = 10f
                 tableRow.addView(textView)
@@ -2227,22 +2323,60 @@ class FragmentARRAVLocation : Fragment() {
         }
 
         btnUpdate1.setOnClickListener {
-            if (editGeo1Long.text.isNullOrEmpty() || editGeo1Lat.text.isNullOrEmpty()){
-                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
-            } else
-            updateGeoCode(3)
+            btnToBeUpdated = 1
+            captureLocation()
         }
+        btnOpen1.setOnClickListener {
+            if (editGeo1Lat.text.isNullOrEmpty() || editGeo1Long.text.isNullOrEmpty()) {
+
+            } else {
+                val gmmIntentUri =
+                        Uri.parse("geo:${editGeo1Lat.text.toString()},${editGeo1Long.text.toString()}?z=16&q=${editGeo1Lat.text.toString()},${editGeo1Long.text.toString()}(Maps &amp; Driving Directions)")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+        }
+
+        btnOpen2.setOnClickListener {
+            if (editGeo2Lat.text.isNullOrEmpty() || editGeo2Long.text.isNullOrEmpty()) {
+
+            } else {
+                val gmmIntentUri =
+                        Uri.parse("geo:${editGeo2Lat.text.toString()},${editGeo2Long.text.toString()}?z=16&q=${editGeo2Lat.text.toString()},${editGeo2Long.text.toString()}(Tow Truck Drop-Off)")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+        }
+
+        btnOpen3.setOnClickListener {
+            if (editGeo3Lat.text.isNullOrEmpty() || editGeo3Long.text.isNullOrEmpty()) {
+
+            } else {
+                val gmmIntentUri =
+                        Uri.parse("geo:${editGeo3Lat.text.toString()},${editGeo3Long.text.toString()}?z=16&q=${editGeo3Lat.text.toString()},${editGeo3Long.text.toString()}(Customer Waiting Area)")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+        }
+
         btnUpdate2.setOnClickListener {
-            if (editGeo2Long.text.isNullOrEmpty() || editGeo2Lat.text.isNullOrEmpty()){
-                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
-            } else
-                updateGeoCode(1)
+//            if (editGeo2Long.text.isNullOrEmpty() || editGeo2Lat.text.isNullOrEmpty()){
+//                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
+//            } else
+//                updateGeoCode(1)
+            btnToBeUpdated = 2
+            captureLocation()
         }
         btnUpdate3.setOnClickListener {
-            if (editGeo3Long.text.isNullOrEmpty() || editGeo3Lat.text.isNullOrEmpty()){
-                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
-            } else
-                updateGeoCode(2)
+//            if (editGeo3Long.text.isNullOrEmpty() || editGeo3Lat.text.isNullOrEmpty()){
+//                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
+//            } else
+//                updateGeoCode(2)
+            btnToBeUpdated = 3
+            captureLocation()
         }
     }
 
@@ -2271,7 +2405,7 @@ class FragmentARRAVLocation : Fragment() {
         Log.v("Email ADD --- ",Constants.submitFacilityEmail + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString + Utility.getLoggingParameters(activity, 0, getEmailChanges(0,0)),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility Email")
                             if (FacilityDataModel.getInstance().tblFacilityEmail.size==1 && FacilityDataModel.getInstance().tblFacilityEmail[0].emailID.equals("-1")){
@@ -2349,7 +2483,7 @@ class FragmentARRAVLocation : Fragment() {
                 "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
                 "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getHoursChanges()),
             Response.Listener { response ->
-                activity!!.runOnUiThread {
+                requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
                         (activity as FormsActivity).saveRequired = false
                         saveGeoCodesRequired = false
@@ -2414,7 +2548,7 @@ class FragmentARRAVLocation : Fragment() {
                 "&satClose=${satClose}&sunClose=${sunClose}&nightDrop=${nightDrop}&nightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
                 "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&facAvailability=${facAvail}&availEffDate=${Date().toApiSubmitFormat()}&availExpDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getHoursChanges()),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
                             FacilityDataModel.getInstance().tblHours[0].MonClose = monClose
                             FacilityDataModel.getInstance().tblHours[0].SunClose = sunClose
@@ -2541,7 +2675,7 @@ class FragmentARRAVLocation : Fragment() {
         Log.v("PHONE ADD --- ",Constants.submitFacilityPhone + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(0,0)),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("returnCode>0<", false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
                             if (FacilityDataModel.getInstance().tblPhone.size==1 && FacilityDataModel.getInstance().tblPhone[0].PhoneID.equals("-1")){
@@ -2601,6 +2735,97 @@ class FragmentARRAVLocation : Fragment() {
         }
     }
 
+    fun checkLocationPermissions(): Boolean {
+        return ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun requestPermissionAndContinue() {
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.activity as MainActivity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 350);
+        } else {
+            try {
+                val task = fusedLocationProviderClient!!.getLastLocation();
+                task.addOnSuccessListener {
+                    if (it != null) {
+                        Log.v("Location Captured", it.getLatitude().toString() + " " + it.getLongitude());
+                        editGeo1Long.setText(it.longitude.toString())
+                        editGeo1Lat.setText(it.latitude.toString())
+                    } else {
+                        Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+                    }
+                }
+            } catch (e: SecurityException) {
+
+            }
+        }
+    }
+
+    private fun captureLocation() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        if (checkLocationPermissions()) {
+            try {
+                val task = fusedLocationProviderClient!!.getCurrentLocation(PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
+                    override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+                        return CancellationTokenSource().token
+                    }
+                    override fun isCancellationRequested(): Boolean {
+                        return false
+                    }
+                })
+                task.addOnSuccessListener {
+                    if (it != null) {
+                        Log.v("Location Captured", it.getLatitude().toString() + " " + it.getLongitude());
+                        if (btnToBeUpdated ==1) {
+                            editGeo1Long.setText(it.longitude.toString())
+                            editGeo1Lat.setText(it.latitude.toString())
+                        } else if (btnToBeUpdated ==2) {
+                            editGeo2Long.setText(it.longitude.toString())
+                            editGeo2Lat.setText(it.latitude.toString())
+                        } else {
+                            editGeo3Long.setText(it.longitude.toString())
+                            editGeo3Lat.setText(it.latitude.toString())
+                        }
+                    } else {
+                        Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+                    }
+                }
+            } catch (e: SecurityException) {
+
+            }
+        } else {
+            if (!checkLocationPermissions()) {
+                if (MainActivity.activity != null) {
+                    requestPermissionAndContinue();
+                }
+            } else {
+                try {
+                    val task = fusedLocationProviderClient!!.getLastLocation();
+                    task.addOnSuccessListener {
+                        if (it != null) {
+                            Log.v("Location Captured", it.getLatitude().toString() + " " + it.getLongitude());
+                            if (btnToBeUpdated ==1) {
+                                editGeo1Long.setText(it.longitude.toString())
+                                editGeo1Lat.setText(it.latitude.toString())
+                            } else if (btnToBeUpdated ==2) {
+                                editGeo2Long.setText(it.longitude.toString())
+                                editGeo2Lat.setText(it.latitude.toString())
+                            } else {
+                                editGeo3Long.setText(it.longitude.toString())
+                                editGeo3Lat.setText(it.latitude.toString())
+                            }
+                        } else {
+                            Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+                        }
+                    }
+                } catch (e: SecurityException) {
+
+                }
+            }
+        }
+    }
+
     fun altLocationTableRow(alt_row : Int) {
         var childViewCount = locationTbl.getChildCount();
 
@@ -2618,6 +2843,22 @@ class FragmentARRAVLocation : Fragment() {
         }
     }
 
+    fun altHolidayTableRow(alt_row : Int) {
+        var childViewCount = holidaysTbl.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= holidaysTbl.getChildAt(i) as TableRow;
+
+            if (i % alt_row != 0) {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.alt_row_color));
+            } else {
+                row.setBackground(getResources().getDrawable(
+                        R.drawable.row_color));
+            }
+
+        }
+    }
 
 
     companion object {

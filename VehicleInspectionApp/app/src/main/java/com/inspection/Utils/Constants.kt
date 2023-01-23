@@ -17,6 +17,7 @@ object Constants {
     public  val uatPort = "5002/"
     public val prodPort = "5000/"
     public var permanentURL = "http://144.217.24.163:" + if (BuildConfig.FLAVOR.equals("dev")) devPort else (if (BuildConfig.FLAVOR.equals("uat")) uatPort else prodPort)
+    public var permanentURLWithDomain = "http://jet-matics.com:" + if (BuildConfig.FLAVOR.equals("dev")) devPort else (if (BuildConfig.FLAVOR.equals("uat")) uatPort else prodPort)
 //    public var permanentURL = "https://inspection" + if (BuildConfig.FLAVOR.equals("dev")) "dev" else (if (BuildConfig.FLAVOR.equals("uat")) "uat" else "") + ".jet-matics.com/"
     private val tempURL = "https://dev.facilityappointment.com/ACEAPI.asmx/"
     val VERSION_NUMBER = "1.0"
@@ -93,12 +94,14 @@ object Constants {
     val logTracking = permanentURL + "logTracking?sessionId="
     val getFacilitiesWithFilters = permanentURL + "getFacilitiesWithFilters?"
     val getImages = permanentURL + "getImage?file="
+    val getImagesWithDomain = permanentURLWithDomain + "getImage?file="
     val getPDF = permanentURL + "getPDFForApp?visitationID="
     val getFacilityPhotos = permanentURL + "getFacilityPhotos?facId="
     val getRepairDiscountFactors = permanentURL + "getRepairDiscountFactors?clubCode="
     val getPersonnelDetails = permanentURL + "getPRGPersonnelDetails?clubCode="
     val getPRGFacilityDetails = permanentURL + "getPRGFacilityDetails?clubCode="
     val getFacilityDirectors = permanentURL + "getFacilityDirectors?clubCode="
+    val getFacilityHolidays = permanentURL + "getFacilityHolidays?clubCode="
     val updateFacilityPhotos = permanentURL + "updateFacilityPhotos?facId="
     val getLoggedActions = permanentURL + "getLoggedActions?facNum="
     val getVisitationHeader = permanentURL + "getVisitationHeader?facNum="
@@ -108,6 +111,8 @@ object Constants {
 
     val sendCompletedPDF = permanentURL + "sendCompletedPDF?visitationID="
     val UpdateAARPortalAdminData = permanentURL + "updateAARPortalAdminData?facNum="
+    val rspLoginGet = "https://rsp.national.aaa.com/app/login"
+    val rspLoginPost = "https://rsp.national.aaa.com/login?username=ace_cherya&password=Surfing12345678!"
     val UpdateAARPortalTrackingData = permanentURL + "updateAARPortalTracking?facNum="
     val UpdateAmendmentOrderTrackingData = permanentURL + "updateAmendmentOrderTrackingData?facNum="
     val UpdateDeficiencyData = permanentURL + "updateDeficiencyData?facNum="

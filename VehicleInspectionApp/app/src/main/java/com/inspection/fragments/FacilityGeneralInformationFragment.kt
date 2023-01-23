@@ -1,15 +1,11 @@
 package com.inspection.fragments
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
 //import android.app.Fragment
-import android.content.Context
+
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Debug
-import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -18,36 +14,30 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.core.view.isVisible
-import androidx.core.view.marginEnd
-import androidx.core.view.marginStart
+import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
-
 import com.inspection.R
-import com.inspection.R.id.terminationReason_textviewVal
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdatePaymentMethodsData
-import com.inspection.imageloader.Utils
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.app_bar_forms.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
+import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
 import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
-import org.w3c.dom.CDATASection
-import org.w3c.dom.CharacterData
-import org.w3c.dom.Text
-import java.lang.Exception
-import java.net.URI
 import java.net.URLEncoder
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 /**
  * A simple [Fragment] subclass.
@@ -105,7 +95,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             termReasonArray .add(fac.TerminationCodeName)
         }
 
-        var termReasonAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_item, termReasonArray)
+        var termReasonAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, termReasonArray)
         termReasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         terminationReason_textviewVal.adapter = termReasonAdapter
 
@@ -115,7 +105,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             busTypeArray .add(fac.BusTypeName)
         }
 
-        var busTypeAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_item, busTypeArray)
+        var busTypeAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, busTypeArray)
         busTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bustype_textviewVal.adapter = busTypeAdapter
 
@@ -126,7 +116,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             timeZoneArray .add(fac.TimezoneName)
         }
 
-        var tzdataAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_item, timeZoneArray)
+        var tzdataAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, timeZoneArray)
         tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeZoneSpinner.adapter = tzdataAdapter
 
@@ -164,14 +154,58 @@ class FacilityGeneralInformationFragment : Fragment() {
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
 
-
         setFieldsValues()
         ImplementBusinessRules()
         setFieldsListeners()
-
-
+        setAlertColoring()
     }
 
+    private fun setAlertColoring() {
+        var InsuranceExpDateStr = ""
+        var ARDExpDateStr = FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY()
+        if (FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate.contains('T')) {
+            InsuranceExpDateStr = FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
+        } else {
+            InsuranceExpDateStr = FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate
+        }
+//        val pattern = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+
+        val sdf = SimpleDateFormat("MM/dd/yyyy")
+        val InsuranceExpDate = sdf.parse(InsuranceExpDateStr)
+        val InsuranceExpDatedays =  (InsuranceExpDate.getTime() - Date().getTime()) / 1000 / 60 / 60 / 24
+        val ARDExpDate = sdf.parse(ARDExpDateStr)
+        val ARDExpDatedays =  (ARDExpDate.getTime() - Date().getTime()) / 1000 / 60 / 60 / 24
+        alertRIcon.isVisible = (InsuranceExpDatedays <= 0) || (ARDExpDatedays <= 0)
+        alertYIcon.isVisible = (InsuranceExpDatedays <= 180 || ARDExpDatedays <= 180) && !alertRIcon.isVisible
+        val animation: Animation =  AlphaAnimation(1.0f,0.0f)
+        animation.duration = 500 //1 second duration for each animation cycle
+        animation.interpolator = LinearInterpolator()
+        animation.repeatCount = Animation.INFINITE //repeating indefinitely
+        animation.repeatMode = Animation.REVERSE //animation will start from end point once ended.
+        alertYIcon.startAnimation(animation) //to start animation
+        alertRIcon.startAnimation(animation) //to start animation
+
+        if (ARDExpDatedays<=0){
+            ARDexp_textview.setTextColor(Color.RED)
+            ARDexp_textview.startAnimation(animation) //to start animation
+        } else if (ARDExpDatedays<=180) {
+            ARDexp_textview.setTextColor(resources.getColor(R.color.dark_yellow))
+            ARDexp_textview.startAnimation(animation) //to start animation
+        } else {
+            ARDexp_textview.setTextColor(Color.BLACK)
+            ARDexp_textview.clearAnimation()
+        }
+        if (InsuranceExpDatedays<=0){
+            InsuranceExpDate_textview.setTextColor(Color.RED)
+            InsuranceExpDate_textview.startAnimation(animation) //to start animation
+        } else if (InsuranceExpDatedays<=180) {
+            InsuranceExpDate_textview.setTextColor(resources.getColor(R.color.dark_yellow))
+            InsuranceExpDate_textview.startAnimation(animation) //to start animation
+        } else {
+            InsuranceExpDate_textview.setTextColor(Color.BLACK)
+            InsuranceExpDate_textview.clearAnimation()
+        }
+    }
 
     private fun setFieldsValues() {
 
@@ -288,7 +322,13 @@ class FacilityGeneralInformationFragment : Fragment() {
 
                 currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormatMMDDYYYY()
                 initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY()
-                InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
+                if (tblFacilities[0].InsuranceExpDate.contains('T')) {
+                    InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
+                } else {
+                    InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate
+                }
+
+
                 inspectionCycleTextViewVal.text = if (tblFacilities[0].InspectionCycle.isNullOrEmpty()) "" else tblFacilities[0].InspectionCycle
                 inspectionMonthsTextViewVal.text = tblFacilities[0].FacilityAnnualInspectionMonth.monthNoToName()
                 var FacManagersList = ""
@@ -327,7 +367,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                 }
         }
 
-        if (arguments!!.getBoolean(isValidating)) {
+        if (requireArguments().getBoolean(isValidating)) {
             validateInputs()
         }
 
@@ -475,7 +515,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                             Log.v("Aff Vendor Add --- ", Constants.AddAffiliateVendorFacilities + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&affVendorTypeID=${affVendorTypeID}&affVendor=$affVendor&affVendorID=$affVendorID&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat())
                             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.AddAffiliateVendorFacilities + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&affVendorTypeID=${affVendorTypeID}&affVendor=$affVendor&affVendorID=$affVendorID&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, strChanges),
                                     Response.Listener { response ->
-                                        activity!!.runOnUiThread {
+                                        requireActivity().runOnUiThread {
                                             if (response.toString().contains("returnCode>0<", false)) {
                                                 Utility.showSubmitAlertDialog(activity, true, "Affiliate Vendor")
                                                 HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneral = true
@@ -534,7 +574,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                     Log.v("Aff Vendor Delete --- ", Constants.DeleteAffiliateVendorFacilities + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&affVendorID=$affVendorID&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat())
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.DeleteAffiliateVendorFacilities + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&affVendorID=$affVendorID&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, strChanges),
                             { response ->
-                                activity!!.runOnUiThread {
+                                requireActivity().runOnUiThread {
                                     if (response.toString().contains("returnCode>0<", false)) {
                                         Utility.showSubmitAlertDialog(activity, true, "Affiliate Vendor")
                                         HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneral = true
@@ -632,7 +672,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         ARDno_textviewVal.isEnabled=false
         currcodate_textviewVal.isEnabled=false
         initcodate_textviewVal.isEnabled=false
-        InsuranceExpDate_textviewVal.isEnabled=false
+        InsuranceExpDate_textviewVal.isEnabled=true
     }
 
 
@@ -946,26 +986,30 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     fun getGeneralInfoChanges() : String {
         var strChanges = ""
-        if (FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount != FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount) {
-            strChanges += "Repair order count changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount + ") to ("+FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount+") - "
-        }
-        if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName) {
-            strChanges += "Time Zone changed from (" + FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName + ") to ("+FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName+") - "
-        }
-        if (FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability != FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability) {
-            strChanges += "Service Availability changed from (" + TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s->s.SrvAvaID.equals(FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability)}[0].SrvAvaName + ") to ("+TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s->s.SrvAvaID.equals(FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability)}[0].SrvAvaName+") - "
-        }
-        if (FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate != FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate) {
-            strChanges += "ARD Expiration date changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY() + ") to ("+FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate+") - "
-        }
-        if (FacilityDataModel.getInstance().tblFacilities[0].WebSite != FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite) {
-            strChanges += "Website URL changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite + ") to ("+FacilityDataModel.getInstance().tblFacilities[0].WebSite+") - "
-        }
-        if (FacilityDataModel.getInstance().tblFacilities[0].InternetAccess != FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess) {
-            strChanges += "Wi-Fi Availability changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess + ") to ("+FacilityDataModel.getInstance().tblFacilities[0].InternetAccess+") - "
-        }
-        if (FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName != FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName) {
-            strChanges += "Facility Type changed from (" + FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName + ") to ("+FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName+") - "
+        try {
+            if (FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount != FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount) {
+                strChanges += "Repair order count changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount + ") to (" + FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName) {
+                strChanges += "Time Zone changed from (" + FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName + ") to (" + FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability != FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability) {
+                strChanges += "Service Availability changed from (" + TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID.equals(FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability) }[0].SrvAvaName + ") to (" + TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID.equals(FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability) }[0].SrvAvaName + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate != FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate) {
+                strChanges += "ARD Expiration date changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY() + ") to (" + FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblFacilities[0].WebSite != FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite) {
+                strChanges += "Website URL changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite + ") to (" + FacilityDataModel.getInstance().tblFacilities[0].WebSite + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblFacilities[0].InternetAccess != FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess) {
+                strChanges += "Wi-Fi Availability changed from (" + FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess + ") to (" + FacilityDataModel.getInstance().tblFacilities[0].InternetAccess + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName != FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName) {
+                strChanges += "Facility Type changed from (" + FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName + ") to (" + FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName + ") - "
+            }
+        } catch (e: Exception) {
+
         }
         strChanges = strChanges.removeSuffix(" - ")
         return if (strChanges.isNullOrEmpty()) "No Changes" else strChanges
@@ -1021,7 +1065,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         Log.v("Facility General --- ",Constants.submitFacilityGeneralInfo + urlString + Utility.getLoggingParameters(activity, 0, ""))
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString +Utility.getLoggingParameters(activity,0,getGeneralInfoChanges()),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         Log.v("RESPONSE",response.toString())
                         if (response.toString().contains("returnCode>0<",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility General Information")
@@ -1031,6 +1075,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                             FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
                             FacilityDataModel.getInstance().tblFacilities[0].WebSite = webSite.toString()
                             FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
+                            FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate = insuranceExpDate
                             FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
                             FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName = timeZoneSpinner.selectedItem.toString()
                             FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
@@ -1038,7 +1083,9 @@ class FacilityGeneralInformationFragment : Fragment() {
                             FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
                             FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite = webSite.toString()
                             FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
+                            FacilityDataModelOrg.getInstance().tblFacilities[0].InsuranceExpDate = insuranceExpDate
                             FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
+
                             (activity as FormsActivity).saveRequired = false
                             (activity as FormsActivity).saveDone = true
                             submitGeneralInfoRequired = false
@@ -1047,6 +1094,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType=true
                             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
                             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            setAlertColoring()
                             progressBarText.text = "Loading ..."
                         } else {
                             scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
@@ -1191,7 +1239,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         Log.v("Facility Payments --- ",UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}"+Utility.getLoggingParameters(activity,0,getPaymentDataChanges()),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Payment Methods")
                             (activity as FormsActivity).saveRequired = false

@@ -2,36 +2,36 @@ package com.inspection.fragments
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-
-import com.inspection.R
-import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
-import java.text.SimpleDateFormat
-import java.util.*
-import android.widget.LinearLayout
+import android.widget.TableRow
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
+import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAARPortalAdminData
 import com.inspection.Utils.Constants.UpdateAARPortalTrackingData
-import com.inspection.Utils.Constants.UpdateAmendmentOrderTrackingData
+import com.inspection.Utils.Constants.rspLoginGet
+import com.inspection.Utils.Constants.rspLoginPost
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
+import kotlinx.android.synthetic.main.fragment_array_repair_shop_portal_addendum.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -46,8 +46,8 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
     var rowIndex=0
-
-
+    var csrf_token = ""
+    var rawCookies : String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -379,6 +379,193 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         altLocationTableRow(2)
         (activity as FormsActivity).saveRequired = false
         refreshButtonsState()
+//        var alertBuilder = AlertDialog.Builder(activity);
+//        alertBuilder.setCancelable(true);
+//        alertBuilder.setTitle("Confirmation")
+//        alertBuilder.setMessage("Get RSP Details ?");
+//        alertBuilder.setPositiveButton("Yes") { dialog, which ->
+//            getRSPDetails()
+//        }
+//        alertBuilder.setNegativeButton("No") { dialog, which ->
+//
+//        }
+//        val alert = alertBuilder.create();
+//        alert.show();
+    }
+    fun getRSPDetails() {
+        // Get CSRF-TOKEN
+        val stringRequest = object: StringRequest(Request.Method.GET, rspLoginGet,
+                Response.Listener<String> { response ->
+                    Log.v("A", "Response is: " + response.substring(0,1000))
+                    if (response.toString().contains("csrf-token", false)) {
+//                            Log.v("COOKIE ---> ", response)
+                        var strToken = response.toString()
+                        strToken = strToken.substring(strToken.indexOf("csrf-token"), strToken.indexOf("csrf-token") + 200)
+                        Log.v("CSRF_TOKEN --> ", strToken)
+//                          strToken = strToken.replace("\"csrf-token\" content=\"","")
+                        strToken = strToken.split(">")[0]
+                        Log.v("CSRF_TOKEN --> ", strToken)
+                        strToken = strToken.substring(strToken.indexOf("=") + 1)
+                        Log.v("CSRF_TOKEN --> ", strToken.replace("\"", ""))
+                        csrf_token = strToken.replace("\"", "")
+
+                        // POST LOGIN
+                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, "https://rsp.national.aaa.com/app/logout",
+                                Response.Listener { response ->
+                                    Log.v("A", "Logged Out: " + response.toString())
+                                    val stringRequest = object: StringRequest(Request.Method.POST, rspLoginPost,
+                                            Response.Listener<String> { response ->
+                                                Log.v("A", "Response is: " + response.substring(0,1000))
+                                            },
+                                            Response.ErrorListener {
+                                                Log.v("E", "Error is: " + it.message)
+                                            })
+                                    {
+                                        override fun getParams(): MutableMap<String, String>? {
+                                            val params = HashMap<String, String>()
+                                            params["username"] = "ace_cherya"
+                                            params["password"] = "Surfing12345678!"
+                                            Log.v("PARAMETERS --> ", "Done")
+                                            return params
+//                                    return super.getParams()
+                                        }
+                                        override fun getHeaders(): MutableMap<String, String> {
+                                            val headers = HashMap<String, String>()
+                                            headers["CSRF-Token"] = csrf_token
+                                            headers["Content-Type"] = "application/json"
+                                            headers["Connection"] = "keep-alive"
+                                            headers["HOST"] = "api.national.aaa.com"
+//                                headers["Accept"] = "application/json"
+//                                headers["Origin"] = "https://rsp.national.aaa.com"
+                                            headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+                                            headers["Cookie"] = rawCookies.toString()
+                                            Log.v("HEADERS --> ", "Done")
+                                            return headers
+                                        }
+                                    }
+
+                                    Volley.newRequestQueue(context).add(stringRequest)
+                                }, Response.ErrorListener {
+
+                        }))
+
+                    }
+                },
+                Response.ErrorListener {
+                    Log.v("E", "Error --> " + it.message)
+                })
+        {
+            override fun parseNetworkResponse(response: NetworkResponse?): Response<String> {
+                val responseHeaders = response!!.headers
+                rawCookies = responseHeaders!!["Set-Cookie"]
+                Log.v("COOKIE -->", rawCookies.toString())
+                return super.parseNetworkResponse(response)
+            }
+
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Connection"] = "keep-alive"
+                headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+                return headers
+            }
+        }
+
+//        val requestQueue = Volley.newRequestQueue(context)
+        Volley.newRequestQueue(context).add(stringRequest)
+
+
+
+/*
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, rspLoginGet,
+                Response.Listener { response ->
+//                    requireActivity().runOnUiThread {
+                        if (response.toString().contains("csrf-token", false)) {
+//                            Log.v("COOKIE ---> ", response)
+                            var strToken = response.toString()
+                            strToken = strToken.substring(strToken.indexOf("csrf-token"),strToken.indexOf("csrf-token")+200)
+                            Log.v("CSRF_TOKEN --> " , strToken)
+//                          strToken = strToken.replace("\"csrf-token\" content=\"","")
+                            strToken = strToken.split(">")[0]
+                            Log.v("CSRF_TOKEN --> " , strToken)
+                            strToken = strToken.substring(strToken.indexOf("=")+1)
+                            Log.v("CSRF_TOKEN --> " , strToken.replace("\"",""))
+                            csrf_token = strToken.replace("\"","")
+                            // Real Login
+//                            val policy =
+//                                var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
+//                                var client = clientBuilder.build()
+//                                var formBody = FormBody.Builder()
+//                                        .add("username", "ace_cherya")
+//                                        .add("password", "Surfing12345678!").build();
+//
+//                                val request = okhttp3.Request.Builder()
+//                                        .url(rspLoginPost).addHeader("CSRF-Token",csrf_token)
+//                                        .post(formBody).build()
+////                            var requestBody = RequestBody.create(
+////                                    "application/json".toMediaTypeOrNull(), rspLoginPost);
+////                            var request = okhttp3.Request.Builder().url(rspLoginPost).addHeader("CSRF-Token",csrf_token).build()
+////                            var request = okhttp3.Request.Builder().post(requestBody).addHeader("CSRF-Token",csrf_token).build()
+////                            var call = client.newCall(request)
+////                            try {
+////                                var response = call.execute()
+////                            } catch (e: java.lang.Exception) {
+////                                Log.v("TEST --> ",e.message.toString())
+////                            }
+//
+//                                try {
+//                                    client.newCall(request).enqueue(object : Callback {
+//                                        override fun onFailure(call: Call, e: IOException) {
+//                                            TODO("Not yet implemented")
+//                                            Log.v("A", "Response is: " + e.message)
+//                                        }
+//
+//                                        override fun onResponse(call: Call, response: okhttp3.Response) {
+//                                            TODO("Not yet implemented")
+//                                            Log.v("A", "Response is: " + response.toString())
+//                                        }
+//                                    })
+//                                } catch (e: java.lang.Exception) {
+//                                    Log.v("TEST --> ",e.message.toString())
+//                                }
+
+
+//                            StrictMode.setThreadPolicy(ThreadPolicy.Builder() .build())
+
+                            val stringRequest = object: StringRequest(Request.Method.POST, rspLoginPost,
+                                    Response.Listener<String> { response ->
+                                        Log.v("A", "Response is: " + response.substring(0,1000))
+                                    },
+                                    Response.ErrorListener {
+                                        Log.v("E", "Error is: " + it.message)
+                                    })
+                            {
+                                override fun getParams(): MutableMap<String, String>? {
+                                    val params = HashMap<String, String>()
+                                    params["username"] = "ace_cherya"
+                                    params["password"] = "Surfing12345678!"
+                                    Log.v("PARAMETERS --> ", "Done")
+                                    return params
+//                                    return super.getParams()
+                                }
+                                override fun getHeaders(): MutableMap<String, String> {
+                                    val headers = HashMap<String, String>()
+                                    headers["CSRF-Token"] = csrf_token
+                                    headers["Content-Type"] = "application/json"
+                                    headers["HOST"] = "api.national.aaa.com"
+                                    headers["Accept"] = "application/json"
+                                    headers["User-Agent"] = "PostmanRuntime/7.29.2"
+                                    Log.v("HEADERS --> ", "Done")
+                                    return headers
+                                }
+                            }
+
+                            Volley.newRequestQueue(context).add(stringRequest)
+                        }
+//                    }
+                }, Response.ErrorListener {
+            Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: " + it.message + " )")
+        })
+        ) */
     }
 
     fun fillData() {
@@ -846,5 +1033,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             return fragment
         }
     }
+
 }// Required empty public constructor
 

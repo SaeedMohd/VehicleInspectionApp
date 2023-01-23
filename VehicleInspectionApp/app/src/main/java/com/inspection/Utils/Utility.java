@@ -189,6 +189,23 @@ public class Utility {
         alertDialog.show();
     }
 
+    public static void showSubmitAlertDialog (Activity act,Boolean isSuccess, String dataToSave, String strCondition){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                act);
+        if (isSuccess) {
+            alertDialogBuilder.setTitle("Confirmation ...");
+            alertDialogBuilder.setMessage(dataToSave + " Data Saved Succesfully with comment ( " + strCondition +" )");
+        } else {
+            alertDialogBuilder.setTitle("Sorry ...");
+            alertDialogBuilder.setMessage("Error occured while saving " + dataToSave + " Changes - ( "+ strCondition +" )");
+        }
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",null);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
     public static String postRequest(String url, ContentValues values) {
         String request = "";

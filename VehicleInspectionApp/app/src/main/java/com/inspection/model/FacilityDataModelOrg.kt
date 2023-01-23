@@ -41,6 +41,7 @@ class FacilityDataModelOrg  {
     var tblAddress = ArrayList<TblAddress>()
     var tblPhone = ArrayList<TblPhone>()
     var tblFacilityEmail = ArrayList<TblFacilityEmail>()
+    var tblShopHolidayTimes = ArrayList<TblShopHolidayTimes>()
     var tblHours = ArrayList<TblHours>()
     var tblFacilityClosure = ArrayList<TblFacilityClosure>()
     var tblLanguage = ArrayList<TblLanguage>()

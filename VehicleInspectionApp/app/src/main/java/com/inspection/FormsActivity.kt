@@ -341,7 +341,6 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
 
 
-
         indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited
                 && IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited

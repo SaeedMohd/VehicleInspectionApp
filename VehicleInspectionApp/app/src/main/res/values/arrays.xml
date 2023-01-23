@@ -139,6 +139,14 @@
         <item>Web Conference</item>
     </string-array>
 
+    <string-array name="steps_array">
+        <item>Collect Data Started</item>
+        <item>Load ACE Facility Details</item>
+        <item>Load PRG Visitation Details</item>
+        <item>Validate Visitation ID</item>
+        <item>Review PDF Data</item>
+    </string-array>
+
     <string-array name="discount_percentage">
         <item>0%</item>
         <item>5%</item>

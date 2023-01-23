@@ -100,6 +100,16 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
             }
         }
 
+        myPerformanceButton.setOnClickListener {
+            (activity as MainActivity).supportActionBar!!.title = "My Performance"
+            var fragment = PDFGenerateFragment()
+//            fragment!!.isVisitationPlanning = false
+            val fragmentManagerSC = fragmentManager
+            val ftSC = fragmentManagerSC!!.beginTransaction()
+            ftSC.replace(R.id.fragment, fragment)
+            ftSC.addToBackStack("frag")
+            ftSC.commit()
+        }
         //button added for fragments testing only > sherif yousry
 //        fragmentTester.setOnClickListener {
 //            fragment2 = VehiclesFragmentInScopeOfServicesView()

@@ -67,6 +67,7 @@ public class ApplicationPrefs {
     public static final String loggedInUserEmail = "loggedInUserEmail";
     public static final String loggedInUserPass = "loggedInUserPass";
     public static final String loggedInUserID = "loggedInUserID";
+    public static final String loggedInIsSpecialist = "loggedInIsSpecialist";
     public static final String loggedInUserFullName = "loggedInUserFullName";
     public static final String sessionID = "sessionID";
     public static final String deviceID = "deviceID";
@@ -744,7 +745,6 @@ public class ApplicationPrefs {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(loggedInUserID, userID);
         editor.commit();
-
     }
 
     public String getLoggedInUserID() {
@@ -756,6 +756,26 @@ public class ApplicationPrefs {
             return "E000000";
         }
     }
+
+    public void setLoggedInIsSpecialist(String isSpecialist) {
+        SharedPreferences settings = context
+                .getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(loggedInIsSpecialist, isSpecialist);
+        editor.commit();
+    }
+
+    public String getLoggedInIsSpecialist() {
+        try {
+            SharedPreferences settings = context
+                    .getSharedPreferences(PREFS_NAME, 0);
+            return settings.getString(loggedInIsSpecialist, "Yes");
+        } catch (Exception e) {
+            return "E000000";
+        }
+    }
+
+
 
     public void setLoggedInUserFullName(String fullName) {
         SharedPreferences settings = context

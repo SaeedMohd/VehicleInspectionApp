@@ -10,8 +10,8 @@ android {
         applicationId "com.inspection"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 67
-        versionName "1.4"
+        versionCode 72
+        versionName "2.38"
         // Enabling multidex support.
         multiDexEnabled true
     }
@@ -116,12 +116,14 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.1.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
-    implementation('org.apache.httpcomponents:httpmime:4.3.5')
+    implementation('org.apache.httpcomponents:httpmime:4.5.6')
 //    implementation ('org.apache.httpcomponents:httpmime:4.3.6') {
 //        exclude module: 'httpclient'
 //    }
 //    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
     implementation 'org.json:json:20180130'
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
+    implementation 'com.shuhart.stepview:stepview:1.2.6'
 }
 repositories {
     google()

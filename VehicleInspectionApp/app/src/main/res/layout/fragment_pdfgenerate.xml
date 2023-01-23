@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/light_gray">
+
+    <RelativeLayout
+        android:id="@+id/recordsProgressView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:clickable="true"
+        android:background="@color/mainColor"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:id="@+id/progressBarText"
+            android:layout_centerHorizontal="true"
+            android:text="Loading..."
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/visitationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="PDF Generate Screen"
+            android:textColor="@color/mainColor"
+            android:textSize="22sp" />
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:divider="@drawable/divider_table_layout"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:stretchColumns="*">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/clubCodeTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="0"
+                    android:gravity="center_vertical"
+                    android:text="Club Code: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/clubCodeEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/visitationfacilityIdTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="2"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:text="Facility #:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/visitationfacilityIdVal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="3"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/visitationfacilityIdTextView"
+                    android:background="@drawable/textview_background"
+                    android:gravity="center"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="4"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:text="Facility Name:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/facilityNameButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="5"
+                    android:layout_gravity="center_vertical"
+                    android:layout_span="3"
+                    android:background="@drawable/textview_background"
+                    android:drawableRight="@drawable/downarrow"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:hint="Select Facility"
+                    android:paddingRight="10dp"
+                    android:textSize="12sp" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/visitationIDTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="0"
+                    android:gravity="center_vertical"
+                    android:text="Visitation #: "
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/visitationIDEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="1"
+                    android:background="@drawable/textview_background"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/searchVisitaionsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_column="6"
+                    android:layout_alignParentRight="true"
+                    android:layout_span="2"
+                    android:background="@drawable/green_background_button"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="Search"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_span="8"
+                    android:background="@color/light_gray" />
+            </TableRow>
+        </TableLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:background="#26C3AA"
+                    android:orientation="vertical">
+                    <com.shuhart.stepview.StepView
+                        android:id="@+id/step_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        app:sv_selectedCircleColor="#26C3AA"
+                        app:sv_selectedTextColor="@android:color/white"
+                        app:sv_stepLineWidth="1dp"
+                        app:sv_stepPadding="4dp"
+                        app:sv_nextTextColor="@color/dark_gray"
+                        app:sv_nextStepLineColor="@color/white"
+                        app:sv_doneCircleColor="@color/white"
+                        app:sv_doneStepLineColor="@color/white"
+                        app:sv_doneTextColor="@color/white"
+                        app:sv_doneCircleRadius="14dp"
+                        app:sv_selectedCircleRadius="14dp"
+                        app:sv_selectedStepNumberColor="@color/white"
+                        app:sv_stepViewStyle="@style/StepView"
+                        app:sv_doneStepMarkColor="#26C3AA"
+                        app:sv_stepNumberTextSize="14sp"
+                        app:sv_animationType="All"
+                        app:sv_steps="@array/steps_array"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:id="@+id/webCardPDFView"
+        app:cardCornerRadius="5dp"
+        android:visibility="gone"
+        app:cardElevation="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text=""
+                    android:id="@+id/pdfNameWeb"
+                    android:textSize="18dp" />
+                <ImageButton
+                    android:id="@+id/exitDialogeBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/close" />
+            </RelativeLayout>
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/webViewPDF"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

@@ -1,14 +1,11 @@
 package com.inspection.fragments
 
 
-import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,17 +17,14 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
-import androidx.core.view.size
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.inspection.FormsActivity
-import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.model.*
@@ -41,16 +35,12 @@ import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.progre
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
+import org.jetbrains.anko.runOnUiThread
 import org.json.JSONObject
 import org.json.XML
-import java.io.File
 import java.io.IOException
-import java.net.URLEncoder
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.Month
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -117,7 +107,7 @@ class VisitationPlanningFragment : Fragment() {
         }
         visitationYearFilterSpinnerEntries.sortDescending()
 //        visitationYearFilterSpinnerEntries.add(0, "Any")
-        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
+        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
         visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
         visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
 
@@ -353,7 +343,7 @@ class VisitationPlanningFragment : Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                 Response.Listener { response ->
                     Log.v("test","testtesttest-----------")
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
                         CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
@@ -534,10 +524,12 @@ class VisitationPlanningFragment : Fragment() {
 
             Log.v("******get visitation", Constants.getVisitations+parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ..."))
 
+//            FirebaseCrashlytics.getInstance().setCustomKey("Details", parametersString.toString())
+
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.v("failure http", "failed with exception : " + e!!.message)
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
                         recordsProgressView.visibility = View.INVISIBLE
                     }
@@ -548,13 +540,13 @@ class VisitationPlanningFragment : Fragment() {
                     var responseString = response!!.body!!.string()
                     //  activity!!.toast("success!!!")
                     //     recordsProgressView.visibility = View.INVISIBLE
-
+//                    FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Visitation --> ${responseString}")
                     if (responseString.toString().contains("returnCode>1<",false) || !responseString.toString().contains("returnCode>",false)) {
-                        activity?.runOnUiThread {
-                            if (responseString.toString().contains("message", false))
-                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
-                            else
-                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString)
+                        requireActivity().runOnUiThread {
+//                            if (responseString.toString().contains("message", false))
+//                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+//                            else
+                            Utility.showMessageDialog(activity, "Retrieve Data Error", responseString)
                             recordsProgressView.visibility = View.GONE
                             visitationfacilityListView.visibility = View.VISIBLE
                             visitationsModel.pendingVisitationsArray.clear()
@@ -568,81 +560,90 @@ class VisitationPlanningFragment : Fragment() {
                     } else {
 //                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                         var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
-                        var jsonObj = obj.getJSONObject("responseXml")
+                        if (obj.toString().equals("{\"responseXml\":\"\"}")) {
+                            activity!!.runOnUiThread {
+                                visitationsModel.listArray.clear()
+                                visitationfacilityListView.adapter = null
+                                recordsProgressView.visibility = View.GONE
+                                visitationfacilityListView.visibility = View.VISIBLE
+                                Utility.showMessageDialog(requireContext(), "Information", "No available visitations to show")
+                            }
+                        } else {
+                            var jsonObj = obj.getJSONObject("responseXml")
 
+                            visitationsModel = parseVisitationsData(jsonObj)
 
-                    visitationsModel = parseVisitationsData(jsonObj)
-
-                    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGCompletedVisitations,
-                            Response.Listener { response ->
-                                activity!!.runOnUiThread {
-                                    if (!response.toString().replace(" ","").equals("[]")) {
-                                        PRGDataModel.getInstance().tblPRGCompletedVisitations = Gson().fromJson(response.toString(), Array<PRGCompletedVisitations>::class.java).toCollection(ArrayList())
-                                    } else {
-                                        var item = PRGCompletedVisitations()
-                                        item.recordid=-1
-                                        PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
-                                    }
-                                    activity!!.runOnUiThread {
-                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGVisitationsLog,
-                                                Response.Listener { response ->
-                                                    activity!!.runOnUiThread {
-                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                            PRGDataModel.getInstance().tblPRGVisitationsLog = Gson().fromJson(response.toString(), Array<PRGVisitationsLog>::class.java).toCollection(ArrayList())
-                                                        } else {
-                                                            var item = PRGVisitationsLog()
-                                                            item.recordid=-1
-                                                            PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
-                                                        }
-                                                        activity!!.runOnUiThread {
-                                                            recordsProgressView.visibility = View.GONE
-                                                            visitationfacilityListView.visibility = View.VISIBLE
-                                                            // New Logic
-                                                            FillVisitationList()
-                                                            //
-//                                                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                                            var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel)
-                                                            visitationfacilityListView.adapter = visitationPlanningAdapter
-                                                            totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-//                                                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
-                                                            resultsCount.text = "Filtered Visitations --> ( " + totalVisitations +" )"
-                                                        }
-
-                                                    }
-                                                }, Response.ErrorListener {
-                                            Log.v("Loading PRG Data error", "" + it.message)
-                                            var item = PRGVisitationsLog()
-                                            item.recordid=-1
-                                            PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
-                                            activity!!.runOnUiThread {
-                                                recordsProgressView.visibility = View.GONE
-                                                visitationfacilityListView.visibility = View.VISIBLE
-                                                var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                                visitationfacilityListView.adapter = visitationPlanningAdapter
-                                                totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-//                                                Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGCompletedVisitations,
+                                    { response ->
+                                        activity!!.runOnUiThread {
+                                            if (!response.toString().replace(" ", "").equals("[]")) {
+                                                PRGDataModel.getInstance().tblPRGCompletedVisitations = Gson().fromJson(response.toString(), Array<PRGCompletedVisitations>::class.java).toCollection(ArrayList())
+                                            } else {
+                                                var item = PRGCompletedVisitations()
+                                                item.recordid = -1
+                                                PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
                                             }
-                                            it.printStackTrace()
-                                        }))
-                                    }
+                                            activity!!.runOnUiThread {
+                                                Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGVisitationsLog,
+                                                        Response.Listener { response ->
+                                                            activity!!.runOnUiThread {
+                                                                if (!response.toString().replace(" ", "").equals("[]")) {
+                                                                    PRGDataModel.getInstance().tblPRGVisitationsLog = Gson().fromJson(response.toString(), Array<PRGVisitationsLog>::class.java).toCollection(ArrayList())
+                                                                } else {
+                                                                    var item = PRGVisitationsLog()
+                                                                    item.recordid = -1
+                                                                    PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
+                                                                }
+                                                                activity!!.runOnUiThread {
+                                                                    recordsProgressView.visibility = View.GONE
+                                                                    visitationfacilityListView.visibility = View.VISIBLE
+                                                                    // New Logic
+                                                                    FillVisitationList()
+                                                                    //
+//                                                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                                                    var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel)
+                                                                    visitationfacilityListView.adapter = visitationPlanningAdapter
+                                                                    totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+//                                                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                                                                    resultsCount.text = "Filtered Visitations --> ( " + totalVisitations + " )"
+                                                                }
 
+                                                            }
+                                                        }, Response.ErrorListener {
+                                                    Log.v("Loading PRG Data error", "" + it.message)
+                                                    var item = PRGVisitationsLog()
+                                                    item.recordid = -1
+                                                    PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
+                                                    activity!!.runOnUiThread {
+                                                        recordsProgressView.visibility = View.GONE
+                                                        visitationfacilityListView.visibility = View.VISIBLE
+                                                        var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                                        visitationfacilityListView.adapter = visitationPlanningAdapter
+                                                        totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+//                                                Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                                                    }
+                                                    it.printStackTrace()
+                                                }))
+                                            }
+
+                                        }
+                                    }, {
+                                Log.v("Loading PRG Data error", "" + it.message)
+                                var item = PRGCompletedVisitations()
+                                item.recordid = -1
+                                PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
+                                activity!!.runOnUiThread {
+                                    recordsProgressView.visibility = View.GONE
+                                    visitationfacilityListView.visibility = View.VISIBLE
+                                    var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                    visitationfacilityListView.adapter = visitationPlanningAdapter
+                                    totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+                                    Utility.showMessageDialog(activity, "Filter Result", " " + totalVisitations + " Visitations Filtered ...")
                                 }
-                            }, Response.ErrorListener {
-                        Log.v("Loading PRG Data error", "" + it.message)
-                        var item = PRGCompletedVisitations()
-                        item.recordid=-1
-                        PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
-                        activity!!.runOnUiThread {
-                            recordsProgressView.visibility = View.GONE
-                            visitationfacilityListView.visibility = View.VISIBLE
-                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                            visitationfacilityListView.adapter = visitationPlanningAdapter
-                            totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                                it.printStackTrace()
+                            }))
                         }
-                        it.printStackTrace()
-                    }))
-                }
+                    }
             }
             })
 
@@ -651,7 +652,7 @@ class VisitationPlanningFragment : Fragment() {
             Log.v("VISITATION GET --- ",Constants.getVisitations + parametersString)
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVisitations + parametersString,
                     Response.Listener { response ->
-                        activity!!.runOnUiThread {
+                        requireActivity().runOnUiThread {
                             var responseString = response.toString()
                             if (responseString.toString().contains("returnCode>1<",false)) {
                                 Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message")+9,responseString.indexOf("</message")))
@@ -923,6 +924,7 @@ class VisitationPlanningFragment : Fragment() {
     private fun loadClubCodes() {
         Log.v("url*******", ""+ Constants.getClubCodes)
         Log.v("VISITATION CLUB --- ",Constants.getClubCodes)
+//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Club Codes")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
                 Response.Listener { response ->
                     var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
@@ -959,6 +961,8 @@ class VisitationPlanningFragment : Fragment() {
 
 
     private fun loadSpecialistDetails() {
+//        FirebaseCrashlytics.getInstance().setCustomKey("Screen", "Visitation Planning Screen")
+//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Specialist Details")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistDetails + ApplicationPrefs.getInstance(context).loggedInUserEmail,
                 Response.Listener { response ->
                     requireActivity().runOnUiThread {
@@ -1792,6 +1796,7 @@ class VisitationPlanningFragment : Fragment() {
 
     fun launchNextAction(isCompleted : Boolean){
         if (isCompleted) {
+//            FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load PDF")
 //            progressBarText.text = "Loading PDF ..."
             recordsProgressView.visibility = View.VISIBLE
             webView!!.webViewClient = object : WebViewClient() {
@@ -1838,7 +1843,7 @@ class VisitationPlanningFragment : Fragment() {
             ////
             Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGVisitationsLog,
                     Response.Listener { response ->
-                        activity!!.runOnUiThread {
+                        requireActivity().runOnUiThread {
                             if (!response.toString().replace(" ","").equals("[]")) {
                                 PRGDataModel.getInstance().tblPRGVisitationsLog = Gson().fromJson(response.toString(), Array<PRGVisitationsLog>::class.java).toCollection(ArrayList())
                             } else {
@@ -1861,6 +1866,7 @@ class VisitationPlanningFragment : Fragment() {
     }
 
     fun AdjustIndicatorsAndStartActivity () {
+//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Starting Activity")
         if (PRGDataModel.getInstance().tblPRGVisitationsLog[0].recordid > -1) {
             if (PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.isNotEmpty()) {
                 IndicatorsDataModel.getInstance().markVisitedScreen(PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.sortedByDescending { it.changedate }[0].visitedscreens)
@@ -1878,7 +1884,7 @@ class VisitationPlanningFragment : Fragment() {
         PRGDataModel.getInstance().tblPRGRepairDiscountFactors.clear()
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (!response.toString().replace(" ","").equals("[ ]")) {
                             PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
                         } else {
@@ -1888,7 +1894,7 @@ class VisitationPlanningFragment : Fragment() {
                         }
                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
                                 Response.Listener { response ->
-                                    activity!!.runOnUiThread {
+                                    requireActivity().runOnUiThread {
                                         if (!response.toString().replace(" ","").equals("[]")) {
                                             PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
                                         } else {
@@ -1898,7 +1904,7 @@ class VisitationPlanningFragment : Fragment() {
                                         }
                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getVisitationHeader + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
                                                 Response.Listener { response ->
-                                                    activity!!.runOnUiThread {
+                                                    requireActivity().runOnUiThread {
                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                             PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
                                                         } else {
@@ -1908,7 +1914,7 @@ class VisitationPlanningFragment : Fragment() {
                                                         }
                                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getRepairDiscountFactors + "${FacilityDataModel.getInstance().clubCode}",
                                                                 Response.Listener { response ->
-                                                                    activity!!.runOnUiThread {
+                                                                    requireActivity().runOnUiThread {
                                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                                             PRGDataModel.getInstance().tblPRGRepairDiscountFactors= Gson().fromJson(response.toString(), Array<PRGRepairDiscountFactors>::class.java).toCollection(ArrayList())
                                                                         } else {
@@ -1918,7 +1924,7 @@ class VisitationPlanningFragment : Fragment() {
                                                                         }
                                                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPersonnelDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
                                                                                 Response.Listener { response ->
-                                                                                    activity!!.runOnUiThread {
+                                                                                    requireActivity().runOnUiThread {
                                                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                                                             PRGDataModel.getInstance().tblPRGPersonnelDetails= Gson().fromJson(response.toString(), Array<PRGPersonnelDetails>::class.java).toCollection(ArrayList())
                                                                                         } else {
@@ -1929,7 +1935,7 @@ class VisitationPlanningFragment : Fragment() {
                                                                                         }
                                                                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGFacilityDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
                                                                                                 Response.Listener { response ->
-                                                                                                    activity!!.runOnUiThread {
+                                                                                                    requireActivity().runOnUiThread {
                                                                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDetails= Gson().fromJson(response.toString(), Array<PRGFacilityDetails>::class.java).toCollection(ArrayList())
                                                                                                         } else {
@@ -1942,7 +1948,7 @@ class VisitationPlanningFragment : Fragment() {
                                                                                                         }
                                                                                                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityDirectors + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
                                                                                                                 Response.Listener { response ->
-                                                                                                                    activity!!.runOnUiThread {
+                                                                                                                    requireActivity().runOnUiThread {
                                                                                                                         if (!response.toString().replace(" ","").equals("[]")) {
                                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDirectors= Gson().fromJson(response.toString(), Array<PRGFacilityDirectors>::class.java).toCollection(ArrayList())
                                                                                                                         } else {
@@ -1954,8 +1960,27 @@ class VisitationPlanningFragment : Fragment() {
                                                                                                                             item.directoremail = ""
                                                                                                                             PRGDataModel.getInstance().tblPRGFacilityDirectors.add(item)
                                                                                                                         }
-                                                                                                                        launchNextAction(isCompleted)
-                                                                                                                    }
+                                                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityHolidays + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                                                                Response.Listener { response ->
+                                                                                                                                    requireActivity().runOnUiThread {
+                                                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes= Gson().fromJson(response.toString(), Array<PRGFacilityShopHolidayTimes>::class.java).toCollection(ArrayList())
+                                                                                                                                        } else {
+                                                                                                                                            var item = PRGFacilityShopHolidayTimes()
+                                                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toString()
+                                                                                                                                            item.FacNum = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                                                                                                                                            item.comments = "-1"
+                                                                                                                                            item.startdate = ""
+                                                                                                                                            item.enddate = ""
+                                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes.add(item)
+                                                                                                                                        }
+                                                                                                                                        launchNextAction(isCompleted)
+                                                                                                                                    }
+                                                                                                                                }, Response.ErrorListener {
+                                                                                                                            Log.v("Loading PRG Data error", "" + it.message)
+//                                                                                                            launchNextAction(isCompleted)
+                                                                                                                            it.printStackTrace()
+                                                                                                                        }))                                                                                                    }
                                                                                                                 }, Response.ErrorListener {
                                                                                                             Log.v("Loading PRG Data error", "" + it.message)
 //                                                                                                            launchNextAction(isCompleted)
@@ -2051,8 +2076,8 @@ class VisitationPlanningFragment : Fragment() {
     }
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String,isCompleted : Boolean,visitationType : VisitationTypes) {
-
-        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
+//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Facility Details")
+        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
         var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData+Utility.getLoggingParameters(activity, 0, "Load Visitations ..."), facilityNumber, clubCode)).build()

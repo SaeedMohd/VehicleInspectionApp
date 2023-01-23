@@ -168,6 +168,17 @@ class TblPhone {
     var PhoneID = ""
 }
 
+class TblShopHolidayTimes{
+    var FacNum = ""
+    var clubcode = ""
+    var type = ""
+    var startdate = ""
+    var enddate = ""
+    var comments = ""
+}
+
+
+
 class TblFacilityEmail {
     var emailIsInputsValid = false
     var emailTypeId = ""
@@ -237,6 +248,8 @@ class TblPersonnel {
     var OEMendDate = ""
     var ReportRecipient = false
     var NotificationRecipient = false
+    var ComplaintContact = false
+    var CertificationNum_ASE = ""
 }
 //    <CertificationNum/><ContractSigner>true</ContractSigner><Addr2/><PrimaryMailRecipient>true</PrimaryMailRecipient>
 
@@ -713,11 +726,21 @@ class PRGFacilityDirectors {
     var directoremail = ""
 }
 
+class PRGFacilityShopHolidayTimes{
+    var FacNum = ""
+    var clubcode = ""
+    var type = ""
+    var startdate = ""
+    var enddate = ""
+    var comments = ""
+}
+
 
 class PRGAppVersion {
     var version = ""
     var message = ""
     var enabled = 0
+    var duplicateCheckEnabled = 0
 }
 
 

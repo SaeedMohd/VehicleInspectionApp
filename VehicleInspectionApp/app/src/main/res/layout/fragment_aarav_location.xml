@@ -230,7 +230,7 @@
                     android:id="@+id/geocodeTbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="200dp"
+                    android:layout_marginEnd="50dp"
                     android:scrollbarAlwaysDrawHorizontalTrack="true"
                     android:scrollbars="horizontal"
                     android:stretchColumns="*">
@@ -274,8 +274,9 @@
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="0.5"
+                            android:layout_weight="1.5"
                             android:gravity="center"
+                            android:visibility="invisible"
                             android:background="@color/transparent"
                             android:textColor="@color/blue_krayola"
                             android:textSize="14sp" />
@@ -329,15 +330,26 @@
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="0.5"
-                            android:visibility="gone"
+                            android:layout_weight="1.5"
                             android:gravity="center"
                             android:id="@+id/btnUpdate1"
                             android:background="@color/transparent"
                             android:textColor="@color/blue_krayola"
-                            android:text="UPDATE"
+                            android:text="Set to current location"
                             android:textSize="12sp" />
 
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="4"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:id="@+id/btnOpen1"
+                            android:background="@color/transparent"
+                            android:textColor="@color/blue_krayola"
+                            android:text="Open Location"
+                            android:textSize="12sp" />
                     </TableRow>
 
                     <TableRow android:layout_height="wrap_content"
@@ -388,15 +400,26 @@
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="0.5"
-                            android:visibility="gone"
+                            android:layout_weight="1.5"
+                            android:visibility="visible"
                             android:gravity="center"
                             android:id="@+id/btnUpdate2"
                             android:background="@color/transparent"
                             android:textColor="@color/blue_krayola"
-                            android:text="UPDATE"
+                            android:text="Set to current location"
                             android:textSize="12sp" />
-
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="4"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:id="@+id/btnOpen2"
+                            android:background="@color/transparent"
+                            android:textColor="@color/blue_krayola"
+                            android:text="Open Location"
+                            android:textSize="12sp" />
                     </TableRow>
 
                     <TableRow android:layout_height="wrap_content"
@@ -447,15 +470,26 @@
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="0.5"
+                            android:layout_weight="1.5"
                             android:gravity="center"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:id="@+id/btnUpdate3"
                             android:background="@color/transparent"
                             android:textColor="@color/blue_krayola"
-                            android:text="UPDATE"
+                            android:text="Set to current location"
                             android:textSize="12sp" />
-
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="4"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:id="@+id/btnOpen3"
+                            android:background="@color/transparent"
+                            android:textColor="@color/blue_krayola"
+                            android:text="Open Location"
+                            android:textSize="12sp" />
                     </TableRow>
 
                 </TableLayout>
@@ -614,6 +648,64 @@
 
                     </TableRow>
 
+
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="100dp"
+                    android:id="@+id/holidaysTbl"
+                    android:stretchColumns="*"
+                    >
+
+                    <TableRow android:background="@color/mainColor"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:layout_column="0"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="Type"
+                            android:layout_weight="1"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:layout_column="1"
+                            android:text="Start Time"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:layout_column="2"
+                            android:text="End Time"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:layout_weight="2"
+                            android:layout_column="3"
+                            android:text="Comments"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                    </TableRow>
 
                 </TableLayout>
 

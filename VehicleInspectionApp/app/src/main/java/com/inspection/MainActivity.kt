@@ -185,23 +185,23 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
 
 
-        val myFolder = File(Environment.getExternalStorageDirectory().path + "/Matics")
-        if (!myFolder.exists()) {
-            myFolder.mkdir()
-        }
+//        val myFolder = File(Environment.getExternalStorageDirectory().path + "/Matics")
+//        if (!myFolder.exists()) {
+//            myFolder.mkdir()
+//        }
         icon = BitmapFactory.decodeResource(resources, R.drawable.banner)
 
-        PHONE_ID = Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
+//        PHONE_ID = Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
 
         if (!GcmBroadcastReceiver.isStarted) {
             GcmRegistration(this)
         }
 
 
-        if (ApplicationPrefs.getInstance(this).getBooleanPref(ApplicationPrefs.IS_PASSWORD_RESET)) {
-            showChangePasswordDialog()
-            ApplicationPrefs.getInstance(this).setBooleanPref(ApplicationPrefs.IS_PASSWORD_RESET, false)
-        }
+//        if (ApplicationPrefs.getInstance(this).getBooleanPref(ApplicationPrefs.IS_PASSWORD_RESET)) {
+//            showChangePasswordDialog()
+//            ApplicationPrefs.getInstance(this).setBooleanPref(ApplicationPrefs.IS_PASSWORD_RESET, false)
+//        }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }

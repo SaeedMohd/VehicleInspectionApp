@@ -153,7 +153,7 @@ class FragmentAARAVPhotos : Fragment() {
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
 
             } else {
-                context!!.toast("Please make sure camera and storage permissions are granted")
+                requireContext().toast("Please make sure camera and storage permissions are granted")
             }
         }
 
@@ -166,7 +166,7 @@ class FragmentAARAVPhotos : Fragment() {
                 dispatchTakePictureIntent()
 
             } else {
-                context!!.toast("Please make sure camera and storage permissions are granted")
+                requireContext().toast("Please make sure camera and storage permissions are granted")
             }
         }
 
@@ -230,7 +230,7 @@ class FragmentAARAVPhotos : Fragment() {
         photoLoadingView.visibility = View.VISIBLE
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=${FacilityDataModel.getInstance().clubCode}",
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
 //                        Utility.showMessageDialog(context,"ajshd","COUNT ---> "+tblFacilityPhotos.size)
                         fillPhotosTableView()
@@ -291,7 +291,7 @@ class FragmentAARAVPhotos : Fragment() {
 
             if (photoFile != null) {
                 photoFile?.also {
-                    var photoURI = FileProvider.getUriForFile(context!!, "com.inspection.android.fileprovider", File(it.absolutePath))
+                    var photoURI = FileProvider.getUriForFile(requireContext(), "com.inspection.android.fileprovider", File(it.absolutePath))
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, MainActivity.PHOTO_CAPTURE_ACTIVITY_REQUEST_ID)
                 }
@@ -308,7 +308,7 @@ class FragmentAARAVPhotos : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         mCurrentFileName = "" + Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + Calendar.getInstance().get(Calendar.HOUR) + "-" + Calendar.getInstance().get(Calendar.MINUTE) + "-" + Calendar.getInstance().get(Calendar.SECOND)
-        val cachePath = File(context!!.cacheDir, "images")
+        val cachePath = File(requireContext().cacheDir, "images")
         cachePath.mkdirs() // don't forget to make the directory
 //        val storageDir = File("" + cachePath + "/" + mCurrentFileName)
 //        val storageDir = File("" + cachePath)
@@ -377,11 +377,11 @@ class FragmentAARAVPhotos : Fragment() {
 //
 //            }
         } else if (requestCode == 234 && resultCode == Activity.RESULT_OK) {
-            context!!.toast("Image picked successfully")
+            requireContext().toast("Image picked successfully")
             var uri = data!!.data
 
             try {
-                var bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, uri);
+                var bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri);
 
                 // Log.d(TAG, String.valueOf(bitmap));
                 photoBitmap = bitmap
@@ -423,7 +423,7 @@ class FragmentAARAVPhotos : Fragment() {
         val column = arrayOf(MediaStore.Images.Media.DATA)
         val sel = MediaStore.Images.Media._ID + "=?";
 //        val cursor = context!!.contentResolver.query(contentUri, proj, null, null, null);
-        val cursor = context!!.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, arrayOf(id), null);
+        val cursor = requireContext().contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, arrayOf(id), null);
         if (cursor == null) { // Source is Dropbox or other similar local file path
             res = contentUri.getPath().toString();
         } else {
@@ -705,7 +705,7 @@ class FragmentAARAVPhotos : Fragment() {
                                 downstreamStr = downstreamStr.removeSuffix(", ")
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&operation=EDIT&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 1, getPhotosChanges(1,currentPhotoIndex)),
                                         Response.Listener { response ->
-                                            activity!!.runOnUiThread {
+                                            requireActivity().runOnUiThread {
                                                 if (response.toString().contains("Success", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Photos")
 //                                                    PRGDataModel.getInstance().tblPRGFacilitiesPhotos[currentPhotoIndex].filedescription = fileDescStr
@@ -877,7 +877,7 @@ class FragmentAARAVPhotos : Fragment() {
         item.clubCode = FacilityDataModel.getInstance().clubCode.toInt()
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&operation=ADD&downstreamApps=${downstreamStr}&LastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("Success", false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Photos")
                             photoLoadingView.visibility = View.GONE

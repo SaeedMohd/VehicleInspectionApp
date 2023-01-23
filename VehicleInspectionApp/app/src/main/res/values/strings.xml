@@ -21,10 +21,8 @@
     <string name="RepairShopInfo">Repair Shop Info</string>
     <string name="VehicleInfo">Vehicle Info</string>
     <string name="sign_up_button_text"><u>Sign up</u></string>
-    <string name="app_version"><u>Version 2.27</u></string>
+    <string name="app_version"><u>Version 2.38</u></string>
     <!--<string name="previous_button"><u></u></string>-->
-
-
     <string name="play_services_error">Google Play services is not available.  This application will close.</string>
     <string name="close">Close</string>
 

@@ -1,11 +1,10 @@
 package com.inspection.fragments
 
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.Html
 import android.text.TextUtils
@@ -17,28 +16,30 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.widget.*
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.inspection.FormsActivity
-
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityPersonnelData
 import com.inspection.Utils.Constants.UpdateFacilityPersonnelSignerData
 import com.inspection.model.*
-import com.inspection.singletons.AnnualVisitationSingleton
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
 import kotlinx.android.synthetic.main.facility_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
+import kotlinx.android.synthetic.main.fragment_arrav_facility.*
 import kotlinx.android.synthetic.main.fragment_arrav_programs.*
-
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -85,6 +86,7 @@ class FragmentARRAVPersonnel : Fragment() {
         scopeOfServiceChangesWatcher()
         preparePersonnelPage()
         fillPersonnelTableView()
+        setAlertColoring()
 //        rspUserId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName.toString())
 //        rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
         IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited = true
@@ -140,6 +142,7 @@ class FragmentARRAVPersonnel : Fragment() {
             newFirstNameText.setText("")
             newLastNameText.setText("")
             newCertNoText.setText("")
+            newASECertNoText.setText("")
             newStartDateBtn.setText("SELECT DATE")
             newEndDateBtn.setText("SELECT DATE")
             newSeniorityDateBtn.setText("SELECT DATE")
@@ -493,7 +496,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 Log.v("CERTIFICATION ADD --- ",Constants.UpdatePersonnelCertification + urlString)
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdatePersonnelCertification + urlString + Utility.getLoggingParameters(activity, 0, getCertificationChanges(0,selectedPersonnelID)),
                         Response.Listener { response ->
-                            activity!!.runOnUiThread {
+                            requireActivity().runOnUiThread {
                                 if (response.toString().contains("returnCode>0<", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Certification")
                                     item.CertID= response.toString().substring(response.toString().indexOf("<CertID")+8,response.toString().indexOf("</CertID"))
@@ -542,13 +545,15 @@ class FragmentARRAVPersonnel : Fragment() {
                 var FirstName=if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
                 var LastName=if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
                 var RSP_UserName=""//FacilityDataModel.getInstance().tblPersonnel[0].RSP_UserName
-                var RSP_Email=""//FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email
+                var RSP_Email = rspEmailId.text.toString()//FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email
                 var facNo=FacilityDataModel.getInstance().tblFacilities[0].FACNo
                 var CertificationNum=if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+                var ASECertificationNum=if (newASECertNoText.text.toString().isNullOrEmpty() || newASECertNoText.text.toString().equals("ASE-")) "" else newASECertNoText.text.toString()
                 var ContractSigner=if (newSignerCheck.isChecked==true) "true" else "false"
                 var PrimaryMailRecipient=if (newACSCheck.isChecked==true) "true" else "false"
                 var ReportRec =if (newReportCheck.isChecked==true) "1" else "0"
                 var NotificationRec =if (newNotificationCheck.isChecked==true) "1" else "0"
+                var ComplaintContact =if (newComplaintContact.isChecked==true) "1" else "0"
                 var startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var ExpirationDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
@@ -556,77 +561,85 @@ class FragmentARRAVPersonnel : Fragment() {
                 var OEMEndDate = if (newOEMEndDateBtn.text.equals("SELECT DATE")) "" else newOEMEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var ace_url=if (newACEURLText.text.toString().isNullOrEmpty()) "" else newACEURLText.text.toString()
 //                Log.v("PERSONNEL ADD --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0,0)),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&certificationNumASE=$ASECertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}&ComplaintContact=${ComplaintContact}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0,0)),
                         Response.Listener { response ->
-                            activity!!.runOnUiThread {
+                            requireActivity().runOnUiThread {
                                 if (response.toString().contains("returnCode>0<",false)) {
-                                    Utility.showSubmitAlertDialog(activity, true, "Personnel")
-                                    var item = TblPersonnel()
-                                    for (fac in TypeTablesModel.getInstance().PersonnelType) {
-                                        if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
-                                            item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
-                                    }
-                                    item.PersonnelID= response.toString().substring(response.toString().indexOf("<PersonnelID")+13,response.toString().indexOf("</PersonnelID")).toInt()
-                                    item.FirstName = if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
-                                    item.LastName = if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                                    item.RSP_UserName = if (rspUserId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                                    item.RSP_Email = if (rspEmailId.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
-                                    item.CertificationNum = if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
-                                    item.ContractSigner = if (newSignerCheck.isChecked == true) true else false
-                                    item.PrimaryMailRecipient = if (newACSCheck.isChecked == true) true else false
-                                    item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                    item.endDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                    item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                    item.ReportRecipient = newReportCheck.isChecked
-                                    item.NotificationRecipient = newNotificationCheck.isChecked
-                                    HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
-                                    HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
-                                    (activity as FormsActivity).saveDone = true
-                                    if (ContractSigner.toBoolean()){
-                                        var signerItem = TblPersonnelSigner()
-                                        signerItem.Addr1= if (newAdd1Text.text.toString().isNullOrEmpty()) "" else newAdd1Text.text.toString()
-                                        signerItem.Addr2= if (newAdd2Text.text.toString().isNullOrEmpty()) "" else newAdd2Text.text.toString()
-                                        signerItem.CITY= if (newCityText.text.toString().isNullOrEmpty()) "" else newCityText.text.toString()
-//                                        signerItem.ST = if (newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else newStateSpinner.selectedItem.toString()
-                                        signerItem.ST = if (newStateSpinner.selectedItemPosition==0) "" else statesAbbrev.get(newStateSpinner.selectedItemPosition);
-                                        signerItem.ZIP= if (newZipText.text.toString().isNullOrEmpty()) "" else newZipText.text.toString()
-                                        signerItem.ZIP4= if (newZipText2.text.toString().isNullOrEmpty()) "" else newZipText2.text.toString()
-                                        signerItem.Phone= if (newPhoneText.text.equals("SELECT DATE")) "" else newPhoneText.text.toString()
-                                        signerItem.email= newEmailText.text.toString()
-                                        signerItem.ContractStartDate = if (newCoStartDateBtn.text.equals("SELECT DATE")) "" else newCoStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                        signerItem.PersonnelID = item.PersonnelID
-                                        item.ContractEndDate = if (newCoEndDateBtn.text.equals("SELECT DATE")) "" else newCoEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelSignerData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${signerItem.PersonnelID}&addr1=${signerItem.Addr1}&addr2=${signerItem.Addr2}&city=${signerItem.CITY}&st=${signerItem.ST}&phone=${signerItem.Phone}&email=${signerItem.email}&zip=${signerItem.ZIP}&zip4=${signerItem.ZIP4}&contractStartDate=${signerItem.ContractStartDate}&contractEndDate=${item.ContractEndDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1",
-                                                Response.Listener { response ->
-                                                    activity!!.runOnUiThread {
-                                                        if (response.toString().contains("returnCode>0<",false)) {
-                                                            Utility.showSubmitAlertDialog(activity, true, "Contract Signer")
-                                                            FacilityDataModel.getInstance().tblPersonnel.add(item)
-                                                            if (FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==signerItem.PersonnelID }.isEmpty())
-                                                                FacilityDataModel.getInstance().tblPersonnelSigner.add(signerItem)
-                                                            else {
-                                                                FacilityDataModel.getInstance().tblPersonnelSigner.removeIf {s->s.PersonnelID==signerItem.PersonnelID }
-                                                                FacilityDataModel.getInstance().tblPersonnelSigner.add(signerItem)
-                                                            }
-                                                            fillPersonnelTableView()
-                                                            altTableRow(2)
-                                                        } else {
-                                                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                            Utility.showSubmitAlertDialog(activity,false,"Contract Signer (Error: "+ errorMessage+" )")
-                                                        }
-                                                        personnelLoadingView.visibility = View.GONE
-                                                        personnelLoadingText.text = "Loading ..."
-                                                    }
-                                                }, Response.ErrorListener {
-                                            Utility.showSubmitAlertDialog(activity, false, "Contract Signer (Error: "+it.message+" )")
-                                            personnelLoadingView.visibility = View.GONE
-                                            personnelLoadingText.text = "Loading ..."
-                                        }))
-
+                                    if (response.toString().contains("Duplicate ASE Certification ID")) {
+                                        Utility.showSubmitAlertDialog(activity, false, "Personnel", "Duplicate ASE Certification ID - Record Not Saved")
+                                    } else if (response.toString().contains("Invalid ASE Certification ID")) {
+                                        Utility.showSubmitAlertDialog(activity, false, "Personnel","Invalid ASE Certification ID - Record Not Saved")
                                     } else {
-                                        FacilityDataModel.getInstance().tblPersonnel.add(item)
-                                        fillPersonnelTableView()
-                                        altTableRow(2)
+                                        Utility.showSubmitAlertDialog(activity, true, "Personnel")
+                                        var item = TblPersonnel()
+                                        for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                                            if (newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+                                                item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
+                                        }
+                                        item.PersonnelID= response.toString().substring(response.toString().indexOf("<PersonnelID")+13,response.toString().indexOf("</PersonnelID")).toInt()
+                                        item.FirstName = if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString()
+                                        item.LastName = if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
+                                        item.RSP_UserName = if (rspUserId.text.toString().isNullOrEmpty()) "" else rspUserId.text.toString()
+                                        item.RSP_Email = if (rspEmailId.text.toString().isNullOrEmpty()) "" else rspEmailId.text.toString()
+                                        item.CertificationNum = if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+                                        item.CertificationNum_ASE = if (newASECertNoText.text.toString().isNullOrEmpty()) "" else newASECertNoText.text.toString()
+                                        item.ContractSigner = newSignerCheck.isChecked
+                                        item.PrimaryMailRecipient = newACSCheck.isChecked
+                                        item.startDate = if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                        item.endDate = if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                        item.SeniorityDate = if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                        item.ReportRecipient = newReportCheck.isChecked
+                                        item.NotificationRecipient = newNotificationCheck.isChecked
+                                        item.ComplaintContact = newComplaintContact.isChecked
+                                        HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
+                                        HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
+                                        (activity as FormsActivity).saveDone = true
+                                        if (ContractSigner.toBoolean()){
+                                            var signerItem = TblPersonnelSigner()
+                                            signerItem.Addr1= if (newAdd1Text.text.toString().isNullOrEmpty()) "" else newAdd1Text.text.toString()
+                                            signerItem.Addr2= if (newAdd2Text.text.toString().isNullOrEmpty()) "" else newAdd2Text.text.toString()
+                                            signerItem.CITY= if (newCityText.text.toString().isNullOrEmpty()) "" else newCityText.text.toString()
+//                                        signerItem.ST = if (newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else newStateSpinner.selectedItem.toString()
+                                            signerItem.ST = if (newStateSpinner.selectedItemPosition==0) "" else statesAbbrev.get(newStateSpinner.selectedItemPosition);
+                                            signerItem.ZIP= if (newZipText.text.toString().isNullOrEmpty()) "" else newZipText.text.toString()
+                                            signerItem.ZIP4= if (newZipText2.text.toString().isNullOrEmpty()) "" else newZipText2.text.toString()
+                                            signerItem.Phone= if (newPhoneText.text.equals("SELECT DATE")) "" else newPhoneText.text.toString()
+                                            signerItem.email= newEmailText.text.toString()
+                                            signerItem.ContractStartDate = if (newCoStartDateBtn.text.equals("SELECT DATE")) "" else newCoStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                            signerItem.PersonnelID = item.PersonnelID
+                                            item.ContractEndDate = if (newCoEndDateBtn.text.equals("SELECT DATE")) "" else newCoEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelSignerData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${signerItem.PersonnelID}&addr1=${signerItem.Addr1}&addr2=${signerItem.Addr2}&city=${signerItem.CITY}&st=${signerItem.ST}&phone=${signerItem.Phone}&email=${signerItem.email}&zip=${signerItem.ZIP}&zip4=${signerItem.ZIP4}&contractStartDate=${signerItem.ContractStartDate}&contractEndDate=${item.ContractEndDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1",
+                                                    Response.Listener { response ->
+                                                        requireActivity().runOnUiThread {
+                                                            if (response.toString().contains("returnCode>0<",false)) {
+                                                                Utility.showSubmitAlertDialog(activity, true, "Contract Signer")
+                                                                FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                                                if (FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==signerItem.PersonnelID }.isEmpty())
+                                                                    FacilityDataModel.getInstance().tblPersonnelSigner.add(signerItem)
+                                                                else {
+                                                                    FacilityDataModel.getInstance().tblPersonnelSigner.removeIf {s->s.PersonnelID==signerItem.PersonnelID }
+                                                                    FacilityDataModel.getInstance().tblPersonnelSigner.add(signerItem)
+                                                                }
+                                                                fillPersonnelTableView()
+                                                                altTableRow(2)
+                                                            } else {
+                                                                var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                                Utility.showSubmitAlertDialog(activity,false,"Contract Signer (Error: "+ errorMessage+" )")
+                                                            }
+                                                            personnelLoadingView.visibility = View.GONE
+                                                            personnelLoadingText.text = "Loading ..."
+                                                        }
+                                                    }, Response.ErrorListener {
+                                                Utility.showSubmitAlertDialog(activity, false, "Contract Signer (Error: "+it.message+" )")
+                                                personnelLoadingView.visibility = View.GONE
+                                                personnelLoadingText.text = "Loading ..."
+                                            }))
+
+                                        } else {
+                                            FacilityDataModel.getInstance().tblPersonnel.add(item)
+                                            fillPersonnelTableView()
+                                            altTableRow(2)
+                                        }
                                     }
                                 } else {
                                     var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
@@ -653,6 +666,33 @@ class FragmentARRAVPersonnel : Fragment() {
         altCertTableRow(2)
     }
 
+    private fun setAlertColoring() {
+//        var ASEExpDateStr = ""
+        var ASEExpDatedays = 0
+        var YAlert = false
+        var RAlert = false
+        val sdf = SimpleDateFormat("MM/dd/yyyy")
+        for (i in 0 .. FacilityDataModel.getInstance().tblPersonnelCertification.size-1){
+            if (FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID>0 && FacilityDataModel.getInstance().tblPersonnel.filter { s->s.PersonnelID==FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID }.isNotEmpty()) {
+                val ASEExpDate = sdf.parse(FacilityDataModel.getInstance().tblPersonnelCertification[i].ExpirationDate.apiToAppFormatMMDDYYYY())
+                val ASEExpDatedays = (ASEExpDate.getTime() - Date().getTime()) / 1000 / 60 / 60 / 24
+                RAlert = RAlert || (ASEExpDatedays <= 0)
+                YAlert = YAlert || (ASEExpDatedays <= 180 && ASEExpDatedays > 0)
+            }
+        }
+
+        alertPersonnelRIcon.isVisible = RAlert
+        alertPersonnelYIcon.isVisible = YAlert && !alertPersonnelRIcon.isVisible
+        val animation: Animation =  AlphaAnimation(1.0f,0.0f)
+        animation.duration = 500 //1 second duration for each animation cycle
+        animation.interpolator = LinearInterpolator()
+        animation.repeatCount = Animation.INFINITE //repeating indefinitely
+        animation.repeatMode = Animation.REVERSE //animation will start from end point once ended.
+        alertPersonnelRIcon.startAnimation(animation) //to start animation
+        alertPersonnelYIcon.startAnimation(animation) //to start animation
+
+    }
+
     fun getCertificationChanges(action : Int,personnelId: Int) : String {
         var strChanges = ""
         if (action==0) {
@@ -672,7 +712,7 @@ class FragmentARRAVPersonnel : Fragment() {
         if (action==0) {
             strChanges += "New personnel added with first name (" + if (newFirstNameText.text.toString().isNullOrEmpty()) "" else newFirstNameText.text.toString() + ") , last name (" + if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
             strChanges += "), position (" + newPersonnelTypeSpinner.getSelectedItem().toString() + ") and start date (" + if (newStartDateBtn.text.equals("SELECT DATE")) "" else newStartDateBtn.text.toString()
-            strChanges += "), end date (" + if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString() + ") and certification ID # (" + if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
+            strChanges += "), end date (" + if (newEndDateBtn.text.equals("SELECT DATE")) "" else newEndDateBtn.text.toString() + ") and certification ID # (" + if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString() + ") and ASE Certification ID # (" + if (newASECertNoText.text.toString().isNullOrEmpty()) "" else newASECertNoText.text.toString()
             strChanges += "), siniority date (" + if (newSeniorityDateBtn.text.equals("SELECT DATE")) "" else newSeniorityDateBtn.text.toString() + ") and contract signer (" + if (newSignerCheck.isChecked==true) "true" else "false"
             strChanges += ") and primary mail recipient (" + if (newACSCheck.isChecked==true) "true" else "false" + ")"
         }
@@ -839,7 +879,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 personTypeArray.add(fac.PersonnelTypeName)
                 personTypeIDsArray.add(fac.PersonnelTypeID)
         }
-         var personTypeAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, personTypeArray)
+         var personTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, personTypeArray)
         personTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newPersonnelTypeSpinner.adapter = personTypeAdapter
         edit_newPersonnelTypeSpinner.adapter = personTypeAdapter
@@ -850,11 +890,11 @@ class FragmentARRAVPersonnel : Fragment() {
         for (fac in certificationTypeList) {
             certTypeArray.add(fac.PersonnelCertName)
         }
-        var certTypeAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, certTypeArray)
+        var certTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, certTypeArray)
         certTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newCertTypeSpinner.adapter = certTypeAdapter
 
-        var citiesAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, states)
+        var citiesAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, states)
         citiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newStateSpinner.adapter = citiesAdapter
         edit_newStateSpinner.adapter = citiesAdapter
@@ -1042,7 +1082,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
@@ -1070,7 +1110,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -1099,7 +1139,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -1129,7 +1169,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -1164,7 +1204,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -1193,7 +1233,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
@@ -1371,7 +1411,7 @@ class FragmentARRAVPersonnel : Fragment() {
         }
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1.4F
-        rowLayoutParam.leftMargin = 10
+//        rowLayoutParam.leftMargin = 10
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
@@ -1413,7 +1453,7 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam6 = TableRow.LayoutParams()
-        rowLayoutParam6.weight = 1.5F
+        rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
         rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
@@ -1433,16 +1473,23 @@ class FragmentARRAVPersonnel : Fragment() {
         rowLayoutParam8.width = 0
         rowLayoutParam8.gravity = Gravity.CENTER_VERTICAL
 
+        val rowLayoutParam82 = TableRow.LayoutParams()
+        rowLayoutParam82.weight = 1F
+        rowLayoutParam82.column = 9
+        rowLayoutParam82.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam82.width = 0
+        rowLayoutParam82.gravity = Gravity.CENTER_VERTICAL
+
         val rowLayoutParam9 = TableRow.LayoutParams()
         rowLayoutParam9.weight = 1F
-        rowLayoutParam9.column = 9
+        rowLayoutParam9.column = 10
         rowLayoutParam9.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam9.width = 0
         rowLayoutParam9.gravity = Gravity.CENTER_HORIZONTAL
 
         val rowLayoutParam10 = TableRow.LayoutParams()
         rowLayoutParam10.weight = 1F
-        rowLayoutParam10.column = 10
+        rowLayoutParam10.column = 11
         rowLayoutParam10.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam10.width = 0
         rowLayoutParam10.gravity = Gravity.CENTER_HORIZONTAL
@@ -1450,22 +1497,29 @@ class FragmentARRAVPersonnel : Fragment() {
 
         val rowLayoutParam11 = TableRow.LayoutParams()
         rowLayoutParam11.weight = 0.8F
-        rowLayoutParam11.column = 13
+        rowLayoutParam11.column = 15
         rowLayoutParam11.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam11.width = 0
         rowLayoutParam11.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam12 = TableRow.LayoutParams()
         rowLayoutParam12.weight = 1F
-        rowLayoutParam12.column = 11
+        rowLayoutParam12.column = 12
         rowLayoutParam12.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam12.width = 0
         rowLayoutParam12.gravity = Gravity.CENTER_HORIZONTAL
 //        var dateTobeFormated = ""
 
+        val rowLayoutParam14 = TableRow.LayoutParams()
+        rowLayoutParam14.weight = 1F
+        rowLayoutParam14.column = 14
+        rowLayoutParam14.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam14.width = 0
+        rowLayoutParam14.gravity = Gravity.CENTER_HORIZONTAL
+
         val rowLayoutParam13 = TableRow.LayoutParams()
         rowLayoutParam13.weight = 0.8F
-        rowLayoutParam13.column = 12
+        rowLayoutParam13.column = 13
         rowLayoutParam13.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam13.width = 0
         rowLayoutParam13.gravity = Gravity.CENTER_VERTICAL
@@ -1530,13 +1584,13 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView4.gravity = Gravity.CENTER_VERTICAL
                 textView4.text = get(it).RSP_UserName
                 textView4.minimumHeight = 30
-                textView4.textSize = 12f
+                textView4.textSize = 10f
                 tableRow.addView(textView4)
 
                 val textView5 = TextView(context)
                 textView5.layoutParams = rowLayoutParam4
                 textView5.gravity = Gravity.CENTER_VERTICAL
-                textView5.textSize = 12f
+                textView5.textSize = 10f
                 textView5.text = if (get(it).ContractSigner) FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==get(it).PersonnelID}[0].email else get(it).RSP_Email
                 textView5.minimumHeight = 30
                 tableRow.addView(textView5)
@@ -1544,10 +1598,12 @@ class FragmentARRAVPersonnel : Fragment() {
                 val textView50 = TextView(context)
                 textView50.text = get(it).RSP_Email
 
+
                 val textView6 = TextView(context)
                 textView6.layoutParams = rowLayoutParam5
                 textView6.minimumHeight = 30
                 textView6.gravity = Gravity.CENTER_VERTICAL
+                textView6.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
                 textView6.textSize = 12f
                 if (!(get(it).SeniorityDate.isNullOrEmpty()) ) {
                     try {
@@ -1559,15 +1615,13 @@ class FragmentARRAVPersonnel : Fragment() {
                     textView6.text  = ""
                 }
 
-
                 tableRow.addView(textView6)
-
-
 
                 val textView8 = TextView(context)
                 textView8.layoutParams = rowLayoutParam6
                 textView8.gravity = Gravity.CENTER_VERTICAL
                 textView8.minimumHeight = 30
+                textView6.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
                 textView8.textSize = 12f
                 if (!(get(it).startDate.isNullOrEmpty())) {
                     try {
@@ -1606,6 +1660,14 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView7.textSize = 12f
                 tableRow.addView(textView7)
 
+                val textView72 = TextView(context)
+                textView72.layoutParams = rowLayoutParam82
+                textView72.gravity = Gravity.CENTER_VERTICAL
+                textView72.text = get(it).CertificationNum_ASE
+                textView72.minimumHeight = 30
+                textView72.textSize = 12f
+                tableRow.addView(textView72)
+
                 val checkBox10 = CheckBox(context)
                 checkBox10.layoutParams = rowLayoutParam9
                 checkBox10.gravity = Gravity.CENTER
@@ -1641,6 +1703,15 @@ class FragmentARRAVPersonnel : Fragment() {
                 checkBox13.minimumHeight = 30
                 checkBox13.textSize = 12f
                 tableRow.addView(checkBox13)
+
+                val checkBox14 = CheckBox(context)
+                checkBox14.layoutParams = rowLayoutParam14
+                checkBox14.gravity = Gravity.CENTER
+                checkBox14.isChecked = get(it).ComplaintContact
+                checkBox14.isEnabled=false
+                checkBox14.minimumHeight = 30
+                checkBox14.textSize = 12f
+                tableRow.addView(checkBox14)
 
                 val textViewOEMStart = TextView(context)
                 if (!(get(it).OEMstartDate.isNullOrEmpty())) {
@@ -1799,6 +1870,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     edit_newFirstNameText.setText(textView2.text)
                     edit_newLastNameText.setText(textView3.text)
                     edit_newCertNoText.setText(textView7.text)
+                    edit_newASECertNoText.setText(textView72.text)
                     edit_newStartDateBtn.setText(textView8.text)
                     edit_rspEmailId.setText(textView50.text)
                     edit_rspUserId.setText(textView4.text)
@@ -1884,6 +1956,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     edit_newACSCheck.isChecked = checkBox11.isChecked
                     edit_newReportCheck.isChecked = checkBox12.isChecked
                     edit_newNotificationCheck.isChecked = checkBox13.isChecked
+                    edit_newComplaintCheck.isChecked = checkBox14.isChecked
                     edit_addNewPersonnelDialogue.visibility=View.VISIBLE
                     (activity as FormsActivity).overrideBackButton = true
                     alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
@@ -1906,10 +1979,12 @@ class FragmentARRAVPersonnel : Fragment() {
                             var RSP_Email=edit_rspEmailId.text.toString()
                             var facNo=FacilityDataModel.getInstance().tblFacilities[0].FACNo
                             var CertificationNum=if (edit_newCertNoText.text.toString().isNullOrEmpty()) "" else edit_newCertNoText.text.toString()
-                            var ContractSigner=if (edit_newSignerCheck.isChecked==true) "true" else "false"
-                            var PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "true" else "false"
-                            var ReportRec = edit_newReportCheck.isChecked
-                            var NotificationRec = edit_newNotificationCheck.isChecked
+                            var ASECertificationNum=if (edit_newASECertNoText.text.toString().isNullOrEmpty() || edit_newASECertNoText.text.toString().equals("ASE-")) "" else edit_newASECertNoText.text.toString()
+                            var ContractSigner=if (edit_newSignerCheck.isChecked==true) "1" else "0"
+                            var PrimaryMailRecipient=if (edit_newACSCheck.isChecked==true) "1" else "0"
+                            var ReportRec = if (edit_newReportCheck.isChecked==true) "1" else "0"
+                            var NotificationRec = if (edit_newNotificationCheck.isChecked==true) "1" else "0"
+                            var ComplaintContact = if (edit_newComplaintCheck.isChecked==true) "1" else "0"
                             var startDate = if (edit_newStartDateBtn.text.equals("SELECT DATE")) "" else edit_newStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var ExpirationDate = if (edit_newEndDateBtn.text.equals("SELECT DATE")) "" else edit_newEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var SeniorityDate = if (edit_newSeniorityDateBtn.text.equals("SELECT DATE")) "" else edit_newSeniorityDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
@@ -1918,99 +1993,109 @@ class FragmentARRAVPersonnel : Fragment() {
                             var OEMEndDate = if (newEditOEMEndDateBtn.text.equals("SELECT DATE")) "" else newEditOEMEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                             var ace_url=if (newEditACEURLText.text.toString().isNullOrEmpty()) "" else newEditACEURLText.text.toString()
 //                            Log.v("PERSONNEL EDIT --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,currentfacilityDataModelIndex)),
+                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&certificationNumASE=$ASECertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}&ComplaintContact=${ComplaintContact}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1,currentfacilityDataModelIndex)),
                                     Response.Listener { response ->
-                                        activity!!.runOnUiThread {
+                                        requireActivity().runOnUiThread {
                                             if (response.toString().contains("returnCode>0<",false)) {
-                                                Utility.showSubmitAlertDialog(activity, true, "Personnel")
-                                                var item = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
-                                                for (fac in TypeTablesModel.getInstance().PersonnelType) {
-                                                    if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
-                                                        item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
-                                                }
-                                                item.FirstName = FirstName
-                                                item.LastName = LastName
-                                                item.RSP_UserName = RSP_UserName
-                                                item.RSP_Email = RSP_Email
-                                                item.CertificationNum = CertificationNum
-                                                item.ContractSigner = ContractSigner.toBoolean()
-                                                item.PrimaryMailRecipient = PrimaryMailRecipient.toBoolean()
-                                                item.startDate = startDate
-                                                item.endDate = ExpirationDate
-                                                item.SeniorityDate = SeniorityDate
-                                                item.ASE_Cert_URL = ace_url
-                                                item.OEMstartDate = OEMStartDate
-                                                item.OEMendDate= OEMEndDate
-                                                item.ReportRecipient = ReportRec
-                                                item.NotificationRecipient = NotificationRec
-                                                HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
-                                                HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
-                                                (activity as FormsActivity).saveDone = true
-                                                if (ContractSigner.toBoolean()){
-                                                    val coAddr1= if (edit_newAdd1Text.text.toString().isNullOrEmpty()) "" else edit_newAdd1Text.text.toString()
-                                                    val coAddr2= if (edit_newAdd2Text.text.toString().isNullOrEmpty()) "" else edit_newAdd2Text.text.toString()
-                                                    val coCITY= if (edit_newCityText.text.toString().isNullOrEmpty()) "" else edit_newCityText.text.toString()
-//                                                    val coST= if (edit_newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else edit_newStateSpinner.selectedItem.toString()
-                                                    val coST = if (edit_newStateSpinner.selectedItemPosition==0) "" else statesAbbrev.get(edit_newStateSpinner.selectedItemPosition);
-                                                    val coZIP= if (edit_newZipText.text.toString().isNullOrEmpty()) "" else edit_newZipText.text.toString()
-                                                    val coZIP4= if (edit_newZipText2.text.toString().isNullOrEmpty()) "" else edit_newZipText2.text.toString()
-                                                    val coPhone= if (edit_newPhoneText.text.equals("SELECT DATE")) "" else edit_newPhoneText.text.toString()
-                                                    val coemail= edit_newEmailText.text.toString()
-                                                    val coContractStartDate = if (edit_newCoStartDateBtn.text.equals("SELECT DATE")) "" else edit_newCoStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                                    val coContractEndDate = if (edit_newCoEndDateBtn.text.equals("SELECT DATE")) "" else edit_newCoEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelSignerData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${item.PersonnelID}&addr1=${coAddr1}&addr2=${coAddr2}&city=${coCITY}&st=${coST}&phone=${coPhone}&email=${coemail}&zip=${coZIP}&zip4=${coZIP4}&contractStartDate=${coContractStartDate}&contractEndDate=${coContractEndDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1" ,
-                                                            Response.Listener { response ->
-                                                                activity!!.runOnUiThread {
-                                                                    if (response.toString().contains("returnCode>0<",false)) {
-                                                                        Utility.showSubmitAlertDialog(activity, true, "Contract Signer")
-                                                                        item.ContractStartDate=coContractStartDate
-                                                                        item.ContractEndDate=coContractEndDate
-                                                                        item.email=coemail
-                                                                        item.Addr1=coAddr1
-                                                                        item.Addr2=coAddr2
-                                                                        item.CITY=coCITY
-                                                                        item.ST=coST
-                                                                        item.ZIP4=coZIP4
-                                                                        item.ZIP=coZIP
-                                                                        item.Phone=coPhone
-                                                                        var signerItem = TblPersonnelSigner()
-                                                                        signerItem.PersonnelID = item.PersonnelID
-                                                                        signerItem.ContractStartDate=coContractStartDate
-                                                                        signerItem.email=coemail
-                                                                        signerItem.Addr1=coAddr1
-                                                                        signerItem.Addr2=coAddr2
-                                                                        signerItem.CITY=coCITY
-                                                                        signerItem.ST=coST
-                                                                        signerItem.ZIP4=coZIP4
-                                                                        signerItem.ZIP=coZIP
-                                                                        signerItem.Phone=coPhone
-                                                                        if (FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==signerItem.PersonnelID }.isEmpty())
-                                                                            FacilityDataModel.getInstance().tblPersonnelSigner.add(signerItem)
-                                                                        else {
-                                                                            FacilityDataModel.getInstance().tblPersonnelSigner.removeIf {s->s.PersonnelID==signerItem.PersonnelID }
-                                                                            FacilityDataModel.getInstance().tblPersonnelSigner.add(signerItem)
-                                                                        }
-                                                                        fillPersonnelTableView()
-                                                                        altTableRow(2)
-                                                                    } else {
-                                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                                        Utility.showSubmitAlertDialog(activity,false,"Contract Signer (Error: "+ errorMessage+" )")
-                                                                    }
-                                                                    personnelLoadingView.visibility = View.GONE
-                                                                    personnelLoadingText.text = "Loading ..."
-                                                                }
-                                                            }, Response.ErrorListener {
-                                                        Utility.showSubmitAlertDialog(activity, false, "Contract Signer (Error: "+it.message+" )")
-                                                        personnelLoadingView.visibility = View.GONE
-                                                        personnelLoadingText.text = "Loading ..."
-                                                    }))
-
+                                                if (response.toString().contains("Duplicate ASE Certification ID")) {
+                                                    Utility.showSubmitAlertDialog(activity, false, "Personnel", "Duplicate ASE Certification ID - Record Not Saved")
+                                                } else if (response.toString().contains("Invalid ASE Certification ID")) {
+                                                    Utility.showSubmitAlertDialog(activity, false, "Personnel","Invalid ASE Certification ID - Record Not Saved")
                                                 } else {
-                                                    FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
-                                                    FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
-                                                    FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
-                                                    fillPersonnelTableView()
-                                                    altTableRow(2)
+                                                    Utility.showSubmitAlertDialog(activity, true, "Personnel")
+                                                    var item = FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex]
+                                                    for (fac in TypeTablesModel.getInstance().PersonnelType) {
+                                                        if (edit_newPersonnelTypeSpinner.getSelectedItem().toString().equals(fac.PersonnelTypeName))
+                                                            item.PersonnelTypeID = fac.PersonnelTypeID.toInt()
+                                                    }
+                                                    item.FirstName = FirstName
+                                                    item.LastName = LastName
+                                                    item.RSP_UserName = RSP_UserName
+                                                    item.RSP_Email = RSP_Email
+                                                    item.CertificationNum = CertificationNum
+                                                    if (!response.toString().contains("Duplicate ASE Certification ID")) {
+                                                        item.CertificationNum_ASE = ASECertificationNum
+                                                    }
+                                                    item.ContractSigner = ContractSigner.toBoolean()
+                                                    item.PrimaryMailRecipient = PrimaryMailRecipient.toBoolean()
+                                                    item.startDate = startDate
+                                                    item.endDate = ExpirationDate
+                                                    item.SeniorityDate = SeniorityDate
+                                                    item.ASE_Cert_URL = ace_url
+                                                    item.OEMstartDate = OEMStartDate
+                                                    item.OEMendDate= OEMEndDate
+                                                    item.ReportRecipient = edit_newReportCheck.isChecked
+                                                    item.NotificationRecipient = edit_newNotificationCheck.isChecked
+                                                    item.ComplaintContact = edit_newComplaintCheck.isChecked
+                                                    HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel= true
+                                                    HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
+                                                    (activity as FormsActivity).saveDone = true
+                                                    if (ContractSigner.toBoolean()){
+                                                        val coAddr1= if (edit_newAdd1Text.text.toString().isNullOrEmpty()) "" else edit_newAdd1Text.text.toString()
+                                                        val coAddr2= if (edit_newAdd2Text.text.toString().isNullOrEmpty()) "" else edit_newAdd2Text.text.toString()
+                                                        val coCITY= if (edit_newCityText.text.toString().isNullOrEmpty()) "" else edit_newCityText.text.toString()
+//                                                    val coST= if (edit_newStateSpinner.selectedItem.toString().isNullOrEmpty()) "" else edit_newStateSpinner.selectedItem.toString()
+                                                        val coST = if (edit_newStateSpinner.selectedItemPosition==0) "" else statesAbbrev.get(edit_newStateSpinner.selectedItemPosition);
+                                                        val coZIP= if (edit_newZipText.text.toString().isNullOrEmpty()) "" else edit_newZipText.text.toString()
+                                                        val coZIP4= if (edit_newZipText2.text.toString().isNullOrEmpty()) "" else edit_newZipText2.text.toString()
+                                                        val coPhone= if (edit_newPhoneText.text.equals("SELECT DATE")) "" else edit_newPhoneText.text.toString()
+                                                        val coemail= edit_newEmailText.text.toString()
+                                                        val coContractStartDate = if (edit_newCoStartDateBtn.text.equals("SELECT DATE")) "" else edit_newCoStartDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                                        val coContractEndDate = if (edit_newCoEndDateBtn.text.equals("SELECT DATE")) "" else edit_newCoEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelSignerData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${item.PersonnelID}&addr1=${coAddr1}&addr2=${coAddr2}&city=${coCITY}&st=${coST}&phone=${coPhone}&email=${coemail}&zip=${coZIP}&zip4=${coZIP4}&contractStartDate=${coContractStartDate}&contractEndDate=${coContractEndDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1" ,
+                                                                Response.Listener { response ->
+                                                                    requireActivity().runOnUiThread {
+                                                                        if (response.toString().contains("returnCode>0<",false)) {
+                                                                            Utility.showSubmitAlertDialog(activity, true, "Contract Signer")
+                                                                            item.ContractStartDate=coContractStartDate
+                                                                            item.ContractEndDate=coContractEndDate
+                                                                            item.email=coemail
+                                                                            item.Addr1=coAddr1
+                                                                            item.Addr2=coAddr2
+                                                                            item.CITY=coCITY
+                                                                            item.ST=coST
+                                                                            item.ZIP4=coZIP4
+                                                                            item.ZIP=coZIP
+                                                                            item.Phone=coPhone
+                                                                            var signerItem = TblPersonnelSigner()
+                                                                            signerItem.PersonnelID = item.PersonnelID
+                                                                            signerItem.ContractStartDate=coContractStartDate
+                                                                            signerItem.email=coemail
+                                                                            signerItem.Addr1=coAddr1
+                                                                            signerItem.Addr2=coAddr2
+                                                                            signerItem.CITY=coCITY
+                                                                            signerItem.ST=coST
+                                                                            signerItem.ZIP4=coZIP4
+                                                                            signerItem.ZIP=coZIP
+                                                                            signerItem.Phone=coPhone
+                                                                            if (FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==signerItem.PersonnelID }.isEmpty())
+                                                                                FacilityDataModel.getInstance().tblPersonnelSigner.add(signerItem)
+                                                                            else {
+                                                                                FacilityDataModel.getInstance().tblPersonnelSigner.removeIf {s->s.PersonnelID==signerItem.PersonnelID }
+                                                                                FacilityDataModel.getInstance().tblPersonnelSigner.add(signerItem)
+                                                                            }
+                                                                            fillPersonnelTableView()
+                                                                            altTableRow(2)
+                                                                        } else {
+                                                                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                                            Utility.showSubmitAlertDialog(activity,false,"Contract Signer (Error: "+ errorMessage+" )")
+                                                                        }
+                                                                        personnelLoadingView.visibility = View.GONE
+                                                                        personnelLoadingText.text = "Loading ..."
+                                                                    }
+                                                                }, Response.ErrorListener {
+                                                            Utility.showSubmitAlertDialog(activity, false, "Contract Signer (Error: "+it.message+" )")
+                                                            personnelLoadingView.visibility = View.GONE
+                                                            personnelLoadingText.text = "Loading ..."
+                                                        }))
+
+                                                    } else {
+                                                        FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
+                                                        FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
+                                                        FacilityDataModelOrg.getInstance().tblPersonnel[currentfacilityDataModelIndex] = item
+                                                        fillPersonnelTableView()
+                                                        altTableRow(2)
+                                                    }
                                                 }
                                                 personnelLoadingView.visibility = View.GONE
                                                 personnelLoadingText.text = "Loading ..."
@@ -2108,6 +2193,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     rowLayoutParamhidden.gravity = Gravity.CENTER_VERTICAL
 
 
+
                     val rowLayoutParamRow = TableRow.LayoutParams()
                     rowLayoutParamRow.height = TableRow.LayoutParams.WRAP_CONTENT
                     rowLayoutParamRow.weight=1F
@@ -2150,6 +2236,23 @@ class FragmentARRAVPersonnel : Fragment() {
 //                    TableRow.LayoutParams()
                     try {
                         textView3.text = get(it).ExpirationDate.apiToAppFormatMMDDYYYY()
+                        val sdf = SimpleDateFormat("MM/dd/yyyy")
+                        val ASEExpDate = sdf.parse(get(it).ExpirationDate.apiToAppFormatMMDDYYYY())
+                        val ASEExpDatedays =  (ASEExpDate.getTime() - Date().getTime()) / 1000 / 60 / 60 / 24
+                        val animation: Animation =  AlphaAnimation(1.0f,0.0f)
+                        animation.duration = 500 //1 second duration for each animation cycle
+                        animation.interpolator = LinearInterpolator()
+                        animation.repeatCount = Animation.INFINITE //repeating indefinitely
+                        animation.repeatMode = Animation.REVERSE //animation will start from end point once ended.
+                        if (ASEExpDatedays<=0) {
+                            textView3.setTextColor(Color.RED)
+                            textView3.startAnimation(animation) //to start animation
+                        } else if (ASEExpDatedays<=180) {
+                            textView3.setTextColor(resources.getColor(R.color.dark_yellow))
+                            textView3.startAnimation(animation) //to start animation
+                        } else {
+                            textView3.clearAnimation()
+                        }
                     } catch (e: Exception) {
                         textView3.text = ""
                     }
@@ -2167,6 +2270,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     textViewhidden.gravity = Gravity.CENTER
                     textViewhidden.text = get(it).CertID
                     textViewhidden.textSize = 14f
+                    textViewhidden.visibility = View.GONE
                     tableRow.addView(textViewhidden)
 
                     val updateCertBtn = TextView(context)
@@ -2223,7 +2327,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                 Log.v("CERTIFICATION ADD --- ",Constants.UpdatePersonnelCertification + urlString)
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdatePersonnelCertification + urlString + Utility.getLoggingParameters(activity, 0, getCertificationChanges(0,selectedPersonnelID)),
                                         Response.Listener { response ->
-                                            activity!!.runOnUiThread {
+                                            requireActivity().runOnUiThread {
                                                 if (response.toString().contains("returnCode>0<", false)) {
                                                     Utility.showSubmitAlertDialog(activity, true, "Certification")
 //                                                    item.CertID= response.toString().substring(response.toString().indexOf("<CertID")+8,response.toString().indexOf("</CertID"))
@@ -2415,13 +2519,11 @@ val rowLayoutParam9 = TableRow.LayoutParams()
             tableRow.addView(textView)
 
 
-
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam5
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             textView.text = SeniorityDate.apiToAppFormatMMDDYYYY()
             tableRow.addView(textView)
-
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam6
@@ -2658,7 +2760,6 @@ val rowLayoutParam9 = TableRow.LayoutParams()
                 row.setBackground(getResources().getDrawable(
                         R.drawable.row_color));
             }
-
         }
     }
 

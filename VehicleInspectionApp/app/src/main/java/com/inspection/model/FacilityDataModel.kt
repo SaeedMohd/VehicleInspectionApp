@@ -43,6 +43,7 @@ class FacilityDataModel {
     var tblPhone = ArrayList<TblPhone>()
     var tblFacilityEmail = ArrayList<TblFacilityEmail>()
     var tblHours = ArrayList<TblHours>()
+    var tblShopHolidayTimes = ArrayList<TblShopHolidayTimes>()
     var tblFacilityClosure = ArrayList<TblFacilityClosure>()
     var tblLanguage = ArrayList<TblLanguage>()
     var tblPersonnel = ArrayList<TblPersonnel>()

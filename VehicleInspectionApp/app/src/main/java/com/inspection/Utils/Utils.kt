@@ -69,6 +69,20 @@ import java.net.URL
 import java.net.URLEncoder
 import java.nio.file.Paths
 import javax.sql.DataSource
+import com.itextpdf.text.pdf.PdfAnnotation
+
+import com.itextpdf.text.pdf.PdfAction
+
+import com.itextpdf.text.pdf.PdfWriter
+
+import com.itextpdf.text.pdf.PdfContentByte
+
+import com.itextpdf.text.pdf.PdfPCell
+
+import com.itextpdf.text.pdf.PdfPCellEvent
+
+
+
 
 
 /**
@@ -85,6 +99,7 @@ val normalFont = FontFactory.getFont(FontFactory.HELVETICA,8F,BaseColor.BLACK)
 val normalFontMissing = FontFactory.getFont(FontFactory.HELVETICA,8F,BaseColor.RED)
 
 val normalFont7 = FontFactory.getFont(FontFactory.HELVETICA,7F,BaseColor.BLACK)
+val normalFont7L = FontFactory.getFont(FontFactory.HELVETICA,7F,BaseColor.BLUE)
 val symbolsFont = FontFactory.getFont(FontFactory.ZAPFDINGBATS,8F,BaseColor.BLACK)
 private val apiFormat = SimpleDateFormat("yyyy-MM-dd")
 private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -632,9 +647,10 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     table.addCell(addCellWithBorder("Approved", 1,true))
     table.addCell(addCellWithBorder("Approved By", 1,true))
     table.addCell(addCellWithBorder("Approved Date", 1,true))
-    table.addCell(addCellWithBorder("Updated By", 1,true))
-    table.addCell(addCellWithBorder("Updated Date", 1,true))
+//    table.addCell(addCellWithBorder("Updated By", 1,true))
+//    table.addCell(addCellWithBorder("Updated Date", 1,true))
     table.addCell(addCellWithBorder("Downstream Apps", 2,true))
+    table.addCell(addCellWithBorder("Image URL", 2,true))
 //    var tblFacilityPhotos = ArrayList<PRGFacilityPhotos>()
 //    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
 //            Response.Listener { response ->
@@ -692,9 +708,11 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
                                                 }
                                                 table.addCell(addCellWithBorder(get(it).approvedby, 1, true))
                                                 table.addCell(addCellWithBorder(if (get(it).approveddate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).approveddate.apiToAppFormatMMDDYYYY(), 1, true))
-                                                table.addCell(addCellWithBorder(get(it).lastupdateby, 1, true))
-                                                table.addCell(addCellWithBorder(if (get(it).lastupdatedate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).lastupdatedate.apiToAppFormatMMDDYYYY(), 1, true))
+//                                                table.addCell(addCellWithBorder(get(it).lastupdateby, 1, true))
+//                                                table.addCell(addCellWithBorder(if (get(it).lastupdatedate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).lastupdatedate.apiToAppFormatMMDDYYYY(), 1, true))
                                                 table.addCell(addCellWithBorder(get(it).downstreamapps, 2, true))
+                                                table.addCell(addHyperLinkWithBorder(Constants.getImagesWithDomain + get(it).filename, 2, true))
+
                                                 if (it == size - 1) {
                                                     document.add(table)
                                                     addEmptyLine(document, 1)
@@ -1760,6 +1778,28 @@ fun addCellWithBorder(strValue : String, colSpan : Int,alignCenter : Boolean ) :
     if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
     return cell
 }
+
+internal class LinkInCell(protected var url: String) : PdfPCellEvent {
+    override fun cellLayout(cell: PdfPCell?, position: Rectangle?,
+                            canvases: Array<PdfContentByte>) {
+        val writer = canvases[0].pdfWriter
+        val action = PdfAction(url)
+        val link = PdfAnnotation.createLink(
+                writer, position, PdfAnnotation.HIGHLIGHT_INVERT, action)
+        writer.addAnnotation(link)
+    }
+}
+
+fun addHyperLinkWithBorder(strValue : String, colSpan : Int,alignCenter : Boolean ) : PdfPCell {
+    val cell = PdfPCell(Paragraph("Show Image", normalFont7L));
+    cell.colspan=colSpan
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
+    cell.setCellEvent(LinkInCell(
+            strValue));
+    if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
+    return cell
+}
+
 
 fun addImageWithBorder(image : Image, colSpan : Int,alignCenter : Boolean ) : PdfPCell {
     val cell = PdfPCell(image);

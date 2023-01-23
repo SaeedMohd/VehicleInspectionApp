@@ -4,7 +4,6 @@ package com.inspection
 //import org.apache.http.NameValuePair;
 //import org.apache.http.message.BasicNameValuePair;
 
-import android.R.id
 import android.app.*
 import android.content.*
 import android.os.Bundle
@@ -20,8 +19,9 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.firebase.crashlytics.CustomKeysAndValues
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Constants
 import com.inspection.Utils.Utility
@@ -184,6 +184,7 @@ class LoginActivity : Activity(){
 
 
     fun getAppVersion() {
+//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Get App Version Step")
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
         var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getAppVersion).build()
@@ -228,7 +229,8 @@ class LoginActivity : Activity(){
 
 
         fun getTypeTables() {
-            var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
+//            FirebaseCrashlytics.getInstance().setCustomKey("Details", "Get Table Types Step")
+            var clientBuilder = OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
             var client = clientBuilder.build()
             var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
             recordsProgressView.visibility = View.VISIBLE
@@ -263,13 +265,14 @@ class LoginActivity : Activity(){
                                 ApplicationPrefs.getInstance(activity).loggedInUserPass = loginPasswordEditText!!.text.toString()
                                 ApplicationPrefs.getInstance(activity).loggedInUserID = ""
                                 ApplicationPrefs.getInstance(activity).loggedInUserFullName = ""
+                                ApplicationPrefs.getInstance(activity).loggedInIsSpecialist = "Yes"
                             } else {
-                                ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
-                                ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].FullName
+//                                ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
+//                                ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].FullName
+                                ApplicationPrefs.getInstance(activity).loggedInUserEmail = loginEmailEditText!!.text.toString()
+                                ApplicationPrefs.getInstance(activity).loggedInUserPass = loginPasswordEditText!!.text.toString()
+                                ApplicationPrefs.getInstance(activity).loggedInIsSpecialist = "No"
                             }
-//                                ApplicationPrefs.getInstance(activity).sessionID = UUID.randomUUID().toString()
-//                                ApplicationPrefs.getInstance(activity).deviceID = Settings.Secure.getString(getContentResolver(),
-//                                        Settings.Secure.ANDROID_ID)
                                 userIsLoggedInGotoMainActivity()
 //                            } else {
 //                                Utility.showMessageDialog(activity, "Login Failed...", "This email is not listed in specialists list")
@@ -327,6 +330,17 @@ class LoginActivity : Activity(){
 
         private fun executeLogin() {
 //            throw RuntimeException("Test Crash"); // Force a crash
+            val keysAndValues = CustomKeysAndValues.Builder()
+                    .putString("Email", loginEmailEditText.text.toString())
+                    .putString("Screen", "Login Screen")
+                    .putString("Details", "")
+                    .putString("Session ID", ApplicationPrefs.getInstance(activity).sessionID)
+                    .build()
+            FirebaseCrashlytics.getInstance().setCustomKeys(keysAndValues)
+
+
+//            throw RuntimeException("Test Crash"); // Force a crash
+
             val userEmail = URLEncoder.encode(loginEmailEditText.text.toString(), "UTF-8");
             val userPass = URLEncoder.encode(loginPasswordEditText.text.toString(), "UTF-8");
             Log.v("LOGIN : "+ "EXEC LOGIN -- ",Constants.authenticateUrl + userEmail + "&password=" + userPass + "&version=${resources.getString(R.string.app_version)}")
@@ -352,6 +366,8 @@ class LoginActivity : Activity(){
 
 
         private fun userIsLoggedInGotoMainActivity() {
+//            FirebaseCrashlytics.getInstance().setCustomKey("Details", "Starting Main Activity")
+//            throw RuntimeException("Test Crash"); // Force a crash
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
