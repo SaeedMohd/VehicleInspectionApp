@@ -39,6 +39,7 @@ import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateScopeofServiceData
 import com.inspection.model.*
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
+import java.lang.Exception
 import java.util.*
 import kotlin.jvm.java
 import kotlin.properties.Delegates
@@ -448,28 +449,34 @@ class FragmentARRAVScopeOfService : Fragment() {
         val numberOfBays = numberOfBaysEditText.text.toString()
         val numberOfLifts = numberOfLiftsEditText.text.toString()
 
-        if (fixedLaborRate != FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate) {
-            strChanges += "Fixed Labor Rate changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate + ") to (" + fixedLaborRate + ") - "
+        try {
+            if (fixedLaborRate != FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate) {
+                strChanges += "Fixed Labor Rate changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate + ") to (" + fixedLaborRate + ") - "
+            }
+            if (diagnosticLaborRate != FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate) {
+                strChanges += "Diagnostic Labor Rate changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate + ") to (" + diagnosticLaborRate + ") - "
+            }
+            if (laborRateMatrixMax != FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax) {
+                strChanges += "Labor Rate Max ($) changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax + ") to (" + laborRateMatrixMax + ") - "
+            }
+            if (laborRateMatrixMin != FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin) {
+                strChanges += "Labor Rate Min ($) changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin + ") to (" + laborRateMatrixMin + ") - "
+            }
+            if (numberOfBays != FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays) {
+                strChanges += "Number of Bays changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays + ") to (" + numberOfBays + ") - "
+            }
+            if (numberOfLifts != FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts) {
+                strChanges += "Number of Lifts changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts + ") to (" + numberOfLifts + ") - "
+            }
+            if (warrantyPeriodVal.getSelectedItem().toString() != (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s -> s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) }[0].WarrantyTypeName)) {
+                strChanges += "Warranty Period changed from (" + TypeTablesModel.getInstance().WarrantyPeriodType.filter { s -> s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) }[0].WarrantyTypeName + ") to (" + warrantyPeriodVal.getSelectedItem().toString() + ") - "
+            }
+            strChanges = strChanges.removeSuffix(" - ")
+            return strChanges
         }
-        if (diagnosticLaborRate != FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate) {
-            strChanges += "Diagnostic Labor Rate changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].DiagnosticsRate + ") to (" + diagnosticLaborRate + ") - "
+        catch (e: Exception) {
+            return strChanges
         }
-        if (laborRateMatrixMax != FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax) {
-            strChanges += "Labor Rate Max ($) changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMax + ") to (" + laborRateMatrixMax + ") - "
-        }
-        if (laborRateMatrixMin != FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin) {
-            strChanges += "Labor Rate Min ($) changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].LaborMin + ") to (" + laborRateMatrixMin + ") - "
-        }
-        if (numberOfBays != FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays) {
-            strChanges += "Number of Bays changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfBays + ") to (" + numberOfBays + ") - "
-        }
-        if (numberOfLifts != FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts) {
-            strChanges += "Number of Lifts changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts + ") to (" + numberOfLifts + ") - "
-        }
-        if (warrantyPeriodVal.getSelectedItem().toString() != (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName)) {
-            strChanges += "Warranty Period changed from (" + TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName + ") to (" + warrantyPeriodVal.getSelectedItem().toString() + ") - "
-        }
-        strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
 
@@ -573,6 +580,12 @@ class FragmentARRAVScopeOfService : Fragment() {
         if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
             laborRateMatrixMinEditText.setError("Required Field")
+            if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
+        }
+
+        if (maxdDiscountAmountEditText.text.toString().isNullOrEmpty()) {
+            scopeOfServiceValide = false
+            maxdDiscountAmountEditText.setError("Required Field")
             if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
         }
 

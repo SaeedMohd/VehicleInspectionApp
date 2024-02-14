@@ -176,14 +176,14 @@ class FragmentAARAVBillingHistory : Fragment() {
                     textView.layoutParams = rowLayoutParam5
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
-                    textView.text = if (get(it).AmountReceived.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
+                    textView.text = if (get(it).AmountReceived.isNullOrEmpty()) "" else "%.3f".format(get(it).AmountReceived.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam6
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
-                    textView.text = if (get(it).ReceiptDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).BillingDueDate.apiToAppFormatMMDDYYYY()
+                    textView.text = if (get(it).ReceiptDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ReceiptDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     billHistoryResultsTbl.addView(tableRow)

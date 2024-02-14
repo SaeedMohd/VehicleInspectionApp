@@ -331,6 +331,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                     textView1.layoutParams = rowLayoutParam
                     textView1.gravity = Gravity.CENTER_VERTICAL
                     textView1.textSize = 14f
+                    textView1.setTextColor(Color.BLACK)
                     textView1.minimumHeight = 30
 
                     for (fac in TypeTablesModel.getInstance().ServicesType) {
@@ -344,6 +345,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                     textView.layoutParams = rowLayoutParam1
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
                     if (get(it).effDate.isNullOrBlank()) {
                         textView.text = ""
@@ -362,6 +364,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                     textView.layoutParams = rowLayoutParam2
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
                     TableRow.LayoutParams()
                     if (get(it).expDate.isNullOrBlank()) {
@@ -381,6 +384,7 @@ class FragmentARRAVFacilityServices : Fragment() {
                     textView.layoutParams = rowLayoutParam3
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
                     textView.text = get(it).Comments
                     tableRow.addView(textView)

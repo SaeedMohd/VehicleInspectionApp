@@ -95,7 +95,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
                         "&startDate=${portalAdminEntry.startDate}&endDate=${portalAdminEntry.endDate}&AddendumSigned=${portalAdminEntry.AddendumSigned}&cardReaders=${portalAdminEntry.CardReaders}&active=1" + Utility.getLoggingParameters(activity, 0, getRSPChanges()),
                         Response.Listener { response ->
-                            activity!!.runOnUiThread {
+                            requireActivity().runOnUiThread {
                                 if (response.toString().contains("returnCode>0<", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "RSP Admin")
                                     FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
@@ -770,6 +770,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
                     try {
                         textView.text = get(it).PortalInspectionDate.apiToAppFormatMMDDYYYY()
@@ -783,6 +784,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     textView1.layoutParams = rowLayoutParam1
                     textView1.gravity = Gravity.CENTER
                     textView1.textSize = 14f
+                    textView1.setTextColor(Color.BLACK)
                     textView1.text = get(it).LoggedIntoPortal
                     textView1.minimumHeight = 30
                     tableRow.addView(textView1)
@@ -791,6 +793,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     textView2.layoutParams = rowLayoutParam2
                     textView2.gravity = Gravity.CENTER
                     textView2.textSize = 14f
+                    textView2.setTextColor(Color.BLACK)
                     textView2.text = get(it).NumberUnacknowledgedTows
                     textView2.minimumHeight = 30
                     tableRow.addView(textView2)
@@ -799,6 +802,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     textView3.layoutParams = rowLayoutParam3
                     textView3.gravity = Gravity.CENTER
                     textView3.textSize = 14f
+                    textView3.setTextColor(Color.BLACK)
                     textView3.text = get(it).InProgressTows
                     textView3.minimumHeight = 30
                     tableRow.addView(textView3)
@@ -807,6 +811,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     textView4.layoutParams = rowLayoutParam4
                     textView4.gravity = Gravity.CENTER
                     textView4.textSize = 14f
+                    textView4.setTextColor(Color.BLACK)
                     textView4.minimumHeight = 30
                     textView4.text = get(it).InProgressWalkIns
                     tableRow.addView(textView4)
@@ -914,19 +919,23 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 
     fun getRSPChanges() : String {
         var strChanges = ""
-        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate) {
-            strChanges += "RSP Admin end date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate.apiToAppFormatMMDDYYYY() + ") to ("+FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate+") - "
+        try {
+            if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate) {
+                strChanges += "RSP Admin end date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate.apiToAppFormatMMDDYYYY() + ") to (" + FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned) {
+                strChanges += "RSP Admin addendum signed date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned.apiToAppFormatMMDDYYYY() + ") to (" + FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate) {
+                strChanges += "RSP Admin start date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate.apiToAppFormatMMDDYYYY() + ") to (" + FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate + ") - "
+            }
+            if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders) {
+                strChanges += "RSP Admin card readers changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders + ") to (" + FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders + ") - "
+            }
+            strChanges = strChanges.removeSuffix(" - ")
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned) {
-            strChanges += "RSP Admin addendum signed date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned.apiToAppFormatMMDDYYYY() + ") to ("+FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned+") - "
-        }
-        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate) {
-            strChanges += "RSP Admin start date changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate.apiToAppFormatMMDDYYYY() + ") to ("+FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate+") - "
-        }
-        if (FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders != FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders) {
-            strChanges += "RSP Admin card readers changed from (" + FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders + ") to ("+FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders+") - "
-        }
-        strChanges = strChanges.removeSuffix(" - ")
         return if (strChanges.isNullOrEmpty()) "No Changes" else strChanges
     }
 

@@ -72,6 +72,7 @@ class VisitationsModel {
         var TerminationID = ""
         var TerminationComments = ""
         var insertBy = ""
+        var insertBy1 = ""
         var insertDate = ""
         var updateBy = ""
         var updateDate = ""
@@ -154,6 +155,7 @@ class VisitationsModel {
         var VisitationID = ""
         var DueDate = ""
         var active = "0"
+        var insertBy1 = ""
     }
 
 

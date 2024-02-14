@@ -61,6 +61,7 @@ class IndicatorsDataModel {
         var AffiliationsVisited = false
         var VehicleServicesVisited = false
         var VehiclesVisited = false
+        var PromotionsVisited = false
     }
 
     class TblDeffeciencies {
@@ -111,6 +112,7 @@ class IndicatorsDataModel {
         SoS.ProgramsVisited=false
         SoS.VehicleServicesVisited= false
         SoS.VehiclesVisited=false
+        SoS.PromotionsVisited=false
         tblScopeOfServices.add(0,SoS)
         var Def = TblDeffeciencies()
         Def.Deffeciency=false;
@@ -173,6 +175,7 @@ class IndicatorsDataModel {
         tblScopeOfServices[0].ProgramsVisited = false
         tblScopeOfServices[0].VehicleServicesVisited = false
         tblScopeOfServices[0].VehiclesVisited = false
+        tblScopeOfServices[0].PromotionsVisited = false
         tblBilling[0].BillingAdjustmentsVisited = true
         tblBilling[0].BillingHistoryVisited = true
         tblBilling[0].BillingPlanVisited = true
@@ -199,6 +202,7 @@ class IndicatorsDataModel {
         visitedScreens += if (tblScopeOfServices[0].ProgramsVisited) "1" else "0"
         visitedScreens += if (tblScopeOfServices[0].FacilityServicesVisited) "1" else "0"
         visitedScreens += if (tblScopeOfServices[0].VehiclesVisited) "1" else "0"
+//        visitedScreens += if (tblScopeOfServices[0].PromotionsVisited) "1" else "0"
         visitedScreens += if (tblScopeOfServices[0].AffiliationsVisited) "1" else "0"
         visitedScreens += if (tblDeffeciencies[0].visited) "1" else "0"
         visitedScreens += if (tblComplaints[0].visited) "1" else "1"
@@ -261,7 +265,7 @@ class IndicatorsDataModel {
     }
 
     fun validateSoSSectionVisited() : Boolean {//Scope Of Services
-        return validateSoSGeneralVisited() && validateSOSProgramsVisited() && validateSOSFacilityServicesVisited() && validateSOSAffiliationsVisited() && validateSOSVehicleVisited() && validateSOSVehicleServicesVisited()
+        return validateSoSGeneralVisited() && validateSOSProgramsVisited() && validateSOSFacilityServicesVisited() && validateSOSAffiliationsVisited() && validateSOSVehicleVisited() && validateSOSVehicleServicesVisited() && validateSOSPromotionsVisited()
     }
 
     fun validateSoSSection() {//Scope Of Services
@@ -364,6 +368,10 @@ class IndicatorsDataModel {
 
     fun validateSOSVehicleVisited() : Boolean {
         return tblScopeOfServices[0].VehiclesVisited
+    }
+
+    fun validateSOSPromotionsVisited() : Boolean {
+        return tblScopeOfServices[0].PromotionsVisited
     }
 
     fun validateSoSGeneral() {

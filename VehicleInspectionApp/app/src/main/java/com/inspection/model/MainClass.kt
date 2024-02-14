@@ -250,6 +250,10 @@ class TblPersonnel {
     var NotificationRecipient = false
     var ComplaintContact = false
     var CertificationNum_ASE = ""
+    var updateBy = ""
+    var updateDate = ""
+    var insertBy = ""
+    var insertDate = ""
 }
 //    <CertificationNum/><ContractSigner>true</ContractSigner><Addr2/><PrimaryMailRecipient>true</PrimaryMailRecipient>
 
@@ -336,6 +340,9 @@ class TblDeficiency {
     var EnteredDate = ""
     var Comments : String? = ""
     var DueDate = ""
+    var DefActionID = ""
+    var DefActionTypeID = ""
+    var ActionDate = ""
 }
 
 class TblComplaintFiles {
@@ -521,6 +528,8 @@ class TblVehicleServices{
     var ScopeServiceID = 0
     var insertBy = ""
     var insertDate = ""
+    var ServiceID = ""
+    var VehicleCategoryID = ""
 }
 
 class TblPersonnelCertification{
@@ -594,6 +603,28 @@ class AffiliateVendorFacilities {
     var FacID = ""
     var AffiliateVendorFacilityID = ""
     var AffiliateVendor = ""
+}
+
+class TblPromotions {
+    var PromoID = 0
+    var Description = ""
+    var active = true
+    var PromoPage = ""
+    var SearchResultsHeader = ""
+    var SearchDescription = ""
+    var CouponFileName = ""
+    var EffDate = ""
+    var ExpDate = ""
+    var HoverText = ""
+    var ToolTip = ""
+    var UpdateDate = ""
+    var UpdateBy = ""
+    var PromoTypeName = ""
+    var Participant = ""
+    var CouponText = ""
+    var Disclaimer = ""
+    var ParticipantUpdateBy = ""
+    var ParticipantUpdateDate = ""
 }
 
 
@@ -741,6 +772,7 @@ class PRGAppVersion {
     var message = ""
     var enabled = 0
     var duplicateCheckEnabled = 0
+    var useNewPDFFormat = false
 }
 
 

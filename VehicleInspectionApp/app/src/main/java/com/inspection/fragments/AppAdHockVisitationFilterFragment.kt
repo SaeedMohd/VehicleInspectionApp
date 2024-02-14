@@ -91,6 +91,8 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //getTypeTableData()
+        loadSpecialists()
+
         loadSpecialistName()
 
 
@@ -109,25 +111,25 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     activity!!.runOnUiThread {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
 
-                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-                                Response.Listener { response ->
-                                    activity!!.runOnUiThread {
-                                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                                        if (specialistName != null && specialistName.size > 0) {
-                                            requiredSpecialistName = specialistName[0].specialistname
-                                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistName[0].accspecid
-//                                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
-//                                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
-//                                            var reformattedName = firstName + " " + lastName
-//                                            adHocFacilitySpecialistButton.setText(reformattedName)
-                                        }
-                                        loadSpecialistName()
-//                                        loadClubCodes()
-                                    }
-                                }, Response.ErrorListener {
-                            Log.v("error while loading", "error while loading facilities")
-                            Log.v("Loading error", "" + it.message)
-                        }))
+//                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
+//                                Response.Listener { response ->
+//                                    activity!!.runOnUiThread {
+//                                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+//                                        if (specialistName != null && specialistName.size > 0) {
+//                                            requiredSpecialistName = specialistName[0].specialistname
+//                                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistName[0].accspecid
+////                                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
+////                                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
+////                                            var reformattedName = firstName + " " + lastName
+////                                            adHocFacilitySpecialistButton.setText(reformattedName)
+//                                        }
+//                                        loadSpecialistName()
+////                                        loadClubCodes()
+//                                    }
+//                                }, Response.ErrorListener {
+//                            Log.v("error while loading", "error while loading facilities")
+//                            Log.v("Loading error", "" + it.message)
+//                        }))
                     }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading specialists")
@@ -140,7 +142,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                 Response.Listener { response ->
                     Log.v("test","testtesttest-----------")
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         recordsProgressView.visibility = View.INVISIBLE
                         var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
@@ -258,7 +260,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         Log.v("ADHOC CLUB--- ",Constants.getClubCodes)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
                         allClubCodes.clear()
                         for (cc in clubCodeModels) {
@@ -376,10 +378,12 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         contractStatusTypeSpinner.adapter = coStatusAdapter
         contractStatusTypeSpinner.setSelection(contractStatusArray.indexOf("Active"))
         specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
+        var specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail.substring(0,ApplicationPrefs.getInstance(context).loggedInUserEmail.indexOf("@")).lowercase()
         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
-            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
+//             requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
+            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
             adHocFacilitySpecialistButton.setText(requiredSpecialistName)
-            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].NTLogin
+            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].NTLogin
         }
         loadClubCodes()
     }
@@ -416,7 +420,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
 
             vh.facilityNameValueTextView?.text = facilitiesArrayList[position].facname
-            vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].facnum
+            vh.facilityNumberValueTextView?.text = facilitiesArrayList[position].clientfacnum
             vh.adHocClubCodeValueTextView?.text = facilitiesArrayList[position].clubcode
             if (TypeTablesModel.getInstance().FacilityStatusType.filter { s->s.FacilityStatusID.equals(facilitiesArrayList[position].status)}.isNotEmpty())
                 vh.adHocStatusValueTextView?.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s->s.FacilityStatusID.equals(facilitiesArrayList[position].status)}[0].FacilityStatusName
@@ -424,7 +428,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 vh.adHocStatusValueTextView?.text = ""
 
             vh.loadFacilityButton!!.setOnClickListener {
-                getFullFacilityDataFromAAA(facilitiesArrayList[position].facnum.toInt(), facilitiesArrayList[position].clubcode)
+                getFullFacilityDataFromAAA(facilitiesArrayList[position].clientfacnum.toInt(), facilitiesArrayList[position].clubcode)
             }
             return view
         }
@@ -493,7 +497,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     }
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String) {
-        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(50, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
+        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(50, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
         var client = clientBuilder.build()
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData+Utility.getLoggingParameters(activity, 1, "Load Facility ..."), facilityNumber, clubCode)).build()
         this.clubCode = clubCode
@@ -1172,6 +1176,15 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
         }
 
+        if (jsonObj.has("Promotions")) {
+            if (jsonObj.get("Promotions").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblPromotions = Gson().fromJson<ArrayList<TblPromotions>>(jsonObj.get("Promotions").toString(), object : TypeToken<ArrayList<TblPromotions>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblPromotions = Gson().fromJson<ArrayList<TblPromotions>>(jsonObj.get("Promotions").toString(), object : TypeToken<ArrayList<TblPromotions>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblPromotions.add(Gson().fromJson<TblPromotions>(jsonObj.get("Promotions").toString(), TblPromotions::class.java))
+                FacilityDataModelOrg.getInstance().tblPromotions.add(Gson().fromJson<TblPromotions>(jsonObj.get("Promotions").toString(), TblPromotions::class.java))
+            }
+        }
 
 
         IndicatorsDataModel.getInstance().init()
@@ -1923,6 +1936,25 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
         }
 
+        if (jsonObj.has("Promotions")) {
+            if (!jsonObj.get("Promotions").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("Promotions")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("Promotions"))
+                    jsonObj.put("Promotions", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "Promotions")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "Promotions")
+        }
+
         return jsonObj
     }
 
@@ -2235,6 +2267,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             var oneArray = TblFacilityType()
             oneArray.FacilityTypeName="Independent"
             jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("Promotions")) {
+            var oneArray = TblPromotions()
+            oneArray.PromoID=-1
+            jsonObj.put(key, Gson().toJson(oneArray))
         }
 
         return jsonObj;
@@ -2254,7 +2290,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             this.loadFacilityButton = view?.findViewById(R.id.loadFacilityButton) as Button
             this.adHocStatusValueTextView = view?.findViewById(R.id.adHocCoStatusValueTextView) as TextView
         }
-
     }
 
 

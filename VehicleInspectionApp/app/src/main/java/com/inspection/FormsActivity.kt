@@ -324,6 +324,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited = true
             IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited = true
             IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited = true
+            IndicatorsDataModel.getInstance().tblScopeOfServices[0].PromotionsVisited = true
             IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = true
             IndicatorsDataModel.getInstance().tblSurveys[0].visited = true
             IndicatorsDataModel.getInstance().tblPhotos[0].visited = true
@@ -344,7 +345,8 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
         if (IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited
                 && IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited
-                && IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited)
+                && IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited && IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited
+                && IndicatorsDataModel.getInstance().tblScopeOfServices[0].PromotionsVisited)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
         else {
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
@@ -668,7 +670,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 ////                            launchNextAction(isCompleted)
 //            it.printStackTrace()
 //        }))
-                        createPDF(this)
+            createPDF(this)
                 //        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForSpecialist.pdf")
                 //        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
                         val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForSpecialist.pdf")

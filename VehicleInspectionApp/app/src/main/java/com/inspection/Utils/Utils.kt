@@ -80,6 +80,10 @@ import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfPCell
 
 import com.itextpdf.text.pdf.PdfPCellEvent
+import com.itextpdf.text.BaseColor
+
+
+
 
 
 
@@ -93,12 +97,15 @@ import com.itextpdf.text.pdf.PdfPCellEvent
 
 
 val MaintitleFont = FontFactory.getFont(FontFactory.HELVETICA,12F,BaseColor.BLUE)
-val SubtitleFont = FontFactory.getFont(FontFactory.HELVETICA,10F,BaseColor.DARK_GRAY)
+val SubtitleFont = FontFactory.getFont(FontFactory.HELVETICA,12F, BaseColor(37,84,144))
+val SubSubtitleFont = FontFactory.getFont(FontFactory.HELVETICA,12F, BaseColor(18,56,104))
 val titleFont = FontFactory.getFont(FontFactory.HELVETICA,10F,BaseColor.BLUE)
 val normalFont = FontFactory.getFont(FontFactory.HELVETICA,8F,BaseColor.BLACK)
 val normalFontMissing = FontFactory.getFont(FontFactory.HELVETICA,8F,BaseColor.RED)
-
+var createPDFLogData = ""
 val normalFont7 = FontFactory.getFont(FontFactory.HELVETICA,7F,BaseColor.BLACK)
+val normalFont5 = FontFactory.getFont(FontFactory.HELVETICA,5F,BaseColor.BLACK)
+val normalFont6 = FontFactory.getFont(FontFactory.HELVETICA,6F,BaseColor.BLACK)
 val normalFont7L = FontFactory.getFont(FontFactory.HELVETICA,7F,BaseColor.BLUE)
 val symbolsFont = FontFactory.getFont(FontFactory.ZAPFDINGBATS,8F,BaseColor.BLACK)
 private val apiFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -106,6 +113,9 @@ private val dbFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
 private val appFormat = SimpleDateFormat("dd MMM yyyy")
 private val appFormatMMDDYYYY = SimpleDateFormat("MM/dd/yyyy")
+
+private val appFormatMMDDYY = SimpleDateFormat("MM/dd/yy")
+
 private val apiSubmitFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 
 fun String.toDate(): Date = dbFormat.parse(this)
@@ -123,6 +133,10 @@ fun String.apiToAppFormat(): String {
 
 fun String.apiToAppFormatMMDDYYYY(): String {
     return if (this.equals("")) "" else appFormatMMDDYYYY.format(apiFormat.parse(this.split("T")[0]))
+}
+
+fun String.apiToAppFormatMMDDYY(): String {
+    return if (this.equals("")) "" else appFormatMMDDYY.format(apiFormat.parse(this.split("T")[0]))
 }
 
 fun String.apiToAppFormatMMDDYYYYDelimitSpace(): String {
@@ -227,7 +241,17 @@ fun createPDF(activity: Activity){
         createPDFForShop(activity)
 
     var imageView = ImageView(activity.applicationContext)
-            .doAsync {
+            //logCreatePDF
+            .doAsync(exceptionHandler = { e ->
+                Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.logCreatePDF + createPDFLogData,
+                        Response.Listener { response ->
+                        }, Response.ErrorListener {
+                    Log.v("ERROR LOGGING", "" + it.message)
+                    it.printStackTrace()
+                }))
+            })
+            {
+                createPDFLogData += "Loading Signatures"
                 val imageNameRep = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_" + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype + "_RepSignature_"+Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString()+".png"
                 val imageNameSpec = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_" + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype + "_SpecSignature_"+Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString()+".png"
                 val imageNameDef = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + "_" + FacilityDataModel.getInstance().clubCode + "_" + PRGDataModel.getInstance().tblPRGVisitationHeader[0].visitationtype + "_DefSignature_"+Calendar.getInstance().get(Calendar.MONTH).toString() + "_" + Calendar.getInstance().get(Calendar.YEAR).toString()+".png"
@@ -303,9 +327,9 @@ fun createPDF(activity: Activity){
                         e.printStackTrace();
                     }
                 }
+                createPDFLogData += "...Done"
                 createPDFForSpecialist(activity,imageRepSignature,imageSpecSignature,imageDefSignature,imageWaiveSignature)
             }
-
 }
 
 
@@ -482,6 +506,7 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     document.add(paragraph)
     addEmptyLine(document, 1)
     paragraph = Paragraph("")
+    paragraph.alignment = Element.ALIGN_CENTER
     paragraph.add(drawAARTrackingSection())
     document.add(paragraph)
     addEmptyLine(document, 1)
@@ -514,23 +539,42 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
     addEmptyLine(document, 1)
 
+    paragraph = Paragraph(TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeID.toInt()==1 }[0].VehiclesTypeName, SubtitleFont)
+    paragraph.alignment = Element.ALIGN_LEFT
+    document.add(paragraph)
+    document.add(LineSeparator(0.5f, 95f, BaseColor.BLACK, 0, -5f))
+    addEmptyLine(document, 1)
+
     var vehicleTypeID = ""
 
-    TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeName.equals("Automobile") }.apply {
+//    TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeName.equals("Automobile") }.apply {
+//        (0 until size).forEach {
+//            vehicleTypeID = get(it).VehiclesTypeID
+//            paragraph = Paragraph(get(it).VehiclesTypeName, MaintitleFont)
+//            paragraph.alignment = Element.ALIGN_LEFT
+//            document.add(paragraph)
+//            document.add(LineSeparator(0.5f, 95f, BaseColor.BLACK, 0, -5f))
+//            addEmptyLine(document, 1)
+//            paragraph = Paragraph("")
+//            paragraph.add(drawVehicleServicesSection(vehicleTypeID))
+//            document.add(paragraph)
+//            addEmptyLine(document, 1)
+//        }
+//    }
+    TypeTablesModel.getInstance().VehiclesMakesCategoryType.apply {
         (0 until size).forEach {
-            vehicleTypeID = get(it).VehiclesTypeID
-            paragraph = Paragraph(get(it).VehiclesTypeName, MaintitleFont)
+//            vehicleTypeID = get(it).VehiclesTypeID
+            paragraph = Paragraph("   "+get(it).VehCategoryName, SubSubtitleFont)
             paragraph.alignment = Element.ALIGN_LEFT
             document.add(paragraph)
             document.add(LineSeparator(0.5f, 95f, BaseColor.BLACK, 0, -5f))
             addEmptyLine(document, 1)
             paragraph = Paragraph("")
-            paragraph.add(drawVehicleServicesSection(vehicleTypeID))
+            paragraph.add(drawVehicleServicesSection(get(it).VehCategoryID))
             document.add(paragraph)
-            addEmptyLine(document, 1)
         }
     }
-
+    addEmptyLine(document, 1)
     paragraph = Paragraph("Vehicles", MaintitleFont)
     paragraph.alignment = Element.ALIGN_LEFT
     document.add(paragraph)
@@ -547,7 +591,7 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     addEmptyLine(document, 1)
     TypeTablesModel.getInstance().VehiclesMakesCategoryType.apply {
         (0 until size).forEach {
-            paragraph = Paragraph(get(it).VehCategoryName, titleFont)
+            paragraph = Paragraph("   " + get(it).VehCategoryName, SubSubtitleFont)
             paragraph.alignment = Element.ALIGN_LEFT
             document.add(paragraph)
             document.add(LineSeparator(0.5f, 95f, BaseColor.BLACK, 0, -5f))
@@ -566,6 +610,7 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
     addEmptyLine(document, 1)
     paragraph = Paragraph("")
+    paragraph.alignment = Element.ALIGN_CENTER
     paragraph.add(drawProgramsSection())
     document.add(paragraph)
     addEmptyLine(document, 1)
@@ -576,6 +621,7 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
     addEmptyLine(document, 1)
     paragraph = Paragraph("")
+    paragraph.alignment = Element.ALIGN_CENTER
     paragraph.add(drawFacServicesSection())
     document.add(paragraph)
     addEmptyLine(document, 1)
@@ -586,6 +632,7 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     document.add(LineSeparator(0.5f, 100f, BaseColor.BLACK, 0, -5f))
     addEmptyLine(document, 1)
     paragraph = Paragraph("")
+    paragraph.alignment = Element.ALIGN_CENTER
     paragraph.add(drawAffiliationSection())
     document.add(paragraph)
     addEmptyLine(document, 1)
@@ -629,7 +676,7 @@ fun createPDFForSpecialist(activity: Activity,imageRep: Image?,imageSpec: Image?
     document.add(paragraph)
     addEmptyLine(document, 1)
 
-
+    createPDFLogData += " - drawPhotosSection"
     paragraph = Paragraph("Photos", MaintitleFont)
     paragraph.alignment = Element.ALIGN_LEFT
     document.add(paragraph)
@@ -812,6 +859,7 @@ private fun drawVisitaionSectionForShop() : PdfPTable {
 
 
 private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?,imageWaiver: Image?) : PdfPTable {
+    createPDFLogData += " - drawVisitaionSection"
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
 //    table.addCell(addCell("Type of Inspection: " + FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString(),1,false));
@@ -890,11 +938,14 @@ private fun drawVisitaionSection(imageRep: Image?,imageSpec: Image?,imageWaiver:
 //    if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].waivevisitation) {
 //        table.addCell(addCell("",1,false));
 //    }
+    createPDFLogData += "...Done"
     return table
 }
 
 private fun drawAARHeaderSection() : PdfPTable {
+    createPDFLogData += " - drawAARHeaderSection"
     val table = PdfPTable(4)
+//    table.headerRows = 1
     table.setWidthPercentage(100f)
     table.addCell(addCell("Start Date:",1,true));
     table.addCell(addCell("End Date:",1,true));
@@ -909,6 +960,7 @@ private fun drawAARHeaderSection() : PdfPTable {
 
 
 private fun drawAddressOverallSection() : PdfPTable {
+    createPDFLogData += " - drawAddressOverallSection"
     val columnWidths = floatArrayOf(5f, 1f,5f, 1f,10f)
     val table = PdfPTable(columnWidths)
     table.setWidthPercentage(100f)
@@ -917,21 +969,21 @@ private fun drawAddressOverallSection() : PdfPTable {
     table.addCell(addTableInCell(drawLanguageSection(),1,true));
     table.addCell(addCell("",1,true));
     table.addCell(addTableInCell(drawHoursSection(),1,true));
-
-
     return table
 }
 
 private fun drawAARTrackingSection() : PdfPTable {
-    val table = PdfPTable(7)
-    table.setWidthPercentage(100f)
+    createPDFLogData += " - drawAARTrackingSection"
+    val table = PdfPTable(5)
+    table.headerRows = 1
+    table.setWidthPercentage(70f)
     table.addCell(addCellWithBorder("RSP Inspection Date", 1,true))
     table.addCell(addCellWithBorder("Logged Into RSP", 1,true))
     table.addCell(addCellWithBorder("# Unacknowledged Tows", 1,true))
     table.addCell(addCellWithBorder("In Progress Tows", 1,true))
     table.addCell(addCellWithBorder("In Progress Walk Ins", 1,true))
-    table.addCell(addCell("", 1,true))
-    table.addCell(addCell("", 1,true))
+//    table.addCell(addCell("", 1,true))
+//    table.addCell(addCell("", 1,true))
     FacilityDataModel.getInstance().tblAARPortalTracking.sortedWith(compareByDescending { it.PortalInspectionDate }).apply {
         (0 until size).forEach {
             if ( !get(it).TrackingID.equals("-1") ) {
@@ -940,8 +992,8 @@ private fun drawAARTrackingSection() : PdfPTable {
                 table.addCell(addCellWithBorder(get(it).NumberUnacknowledgedTows,1,true))
                 table.addCell(addCellWithBorder(get(it).InProgressTows,1,true))
                 table.addCell(addCellWithBorder(get(it).InProgressWalkIns,1,true))
-                table.addCell(addCell("",1,true))
-                table.addCell(addCell("",1,true))
+//                table.addCell(addCell("",1,true))
+//                table.addCell(addCell("",1,true))
             }
         }
     }
@@ -950,13 +1002,15 @@ private fun drawAARTrackingSection() : PdfPTable {
 }
 
 private fun drawProgramsSection() : PdfPTable {
-    val table = PdfPTable(6)
+    createPDFLogData += " - drawProgramsSection"
+    val table = PdfPTable(7)
+    table.headerRows = 1
     table.setWidthPercentage(80f)
-    table.horizontalAlignment = Element.ALIGN_LEFT
+//    table.horizontalAlignment = Element.ALIGN_LEFT
     table.addCell(addCellWithBorder("Program Name", 2,false))
     table.addCell(addCellWithBorder("Effective Date", 1,true))
     table.addCell(addCellWithBorder("Expiration Date", 1,true))
-    table.addCell(addCellWithBorder("Comments", 2,false))
+    table.addCell(addCellWithBorder("Comments", 3,false))
     FacilityDataModel.getInstance().tblPrograms.apply {
         (0 until size).forEach {
             if ( !get(it).ProgramID.equals("-1") ) {
@@ -964,7 +1018,7 @@ private fun drawProgramsSection() : PdfPTable {
                     table.addCell(addCellWithBorder(TypeTablesModel.getInstance().ProgramsType.filter { s -> s.ProgramTypeID.equals(get(it).ProgramTypeID) }[0].ProgramTypeName, 2, false))
                     table.addCell(addCellWithBorder(if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY(), 1, true))
                     table.addCell(addCellWithBorder(if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY(), 1, true))
-                    table.addCell(addCellWithBorder(get(it).Comments, 2, false))
+                    table.addCell(addCellWithBorder(get(it).Comments, 3, false))
                 }
             }
         }
@@ -973,7 +1027,9 @@ private fun drawProgramsSection() : PdfPTable {
 }
 
 private fun drawComplaintsSection() : PdfPTable {
+    createPDFLogData += " - drawComplaintsSection"
     val table = PdfPTable(9)
+    table.headerRows = 1
     table.setWidthPercentage(100f)
     table.horizontalAlignment = Element.ALIGN_LEFT
     table.addCell(addCellWithBorder("Complaint ID", 2,false))
@@ -1026,13 +1082,15 @@ private fun drawDeficienciesSection() : PdfPTable {
 }
 
 private fun drawFacServicesSection() : PdfPTable {
-    val table = PdfPTable(6)
+    createPDFLogData += " - drawFacServicesSection"
+    val table = PdfPTable(7)
+    table.headerRows = 1
     table.setWidthPercentage(80f)
-    table.horizontalAlignment = Element.ALIGN_LEFT
+//    table.horizontalAlignment = Element.ALIGN_LEFT
     table.addCell(addCellWithBorder("Service Name", 2,false))
     table.addCell(addCellWithBorder("Effective Date", 1,true))
     table.addCell(addCellWithBorder("Expiration Date", 1,true))
-    table.addCell(addCellWithBorder("Comments", 2,false))
+    table.addCell(addCellWithBorder("Comments", 3,false))
     FacilityDataModel.getInstance().tblFacilityServices.apply {
         (0 until size).forEach {
             if ( !get(it).FacilityServicesID.equals("-1") ) {
@@ -1040,7 +1098,7 @@ private fun drawFacServicesSection() : PdfPTable {
                     table.addCell(addCellWithBorder(TypeTablesModel.getInstance().ServicesType.filter { s -> s.ServiceTypeID.equals(get(it).ServiceID) }[0].ServiceTypeName, 2, false))
                     table.addCell(addCellWithBorder(if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY(), 1, true))
                     table.addCell(addCellWithBorder(if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY(), 1, true))
-                    table.addCell(addCellWithBorder(get(it).Comments, 2, false))
+                    table.addCell(addCellWithBorder(get(it).Comments, 3, false))
                 }
             }
         }
@@ -1049,14 +1107,16 @@ private fun drawFacServicesSection() : PdfPTable {
 }
 
 private fun drawAffiliationSection() : PdfPTable {
-    val table = PdfPTable(8)
-    table.setWidthPercentage(80f)
-    table.horizontalAlignment = Element.ALIGN_LEFT
+    createPDFLogData += " - drawAffiliationSection"
+    val table = PdfPTable(9)
+    table.headerRows = 1
+    table.setWidthPercentage(90f)
+//    table.horizontalAlignment = Element.ALIGN_LEFT
     table.addCell(addCellWithBorder("Affiliation Name", 2,false))
     table.addCell(addCellWithBorder("Affiliation Details", 2,false))
     table.addCell(addCellWithBorder("Effective Date", 1,true))
     table.addCell(addCellWithBorder("Expiration Date", 1,true))
-    table.addCell(addCellWithBorder("Comments", 2,false))
+    table.addCell(addCellWithBorder("Comments", 3,false))
     FacilityDataModel.getInstance().tblAffiliations.apply {
         (0 until size).forEach {
             if ( !get(it).AffiliationID.equals("-1") ) {
@@ -1069,7 +1129,7 @@ private fun drawAffiliationSection() : PdfPTable {
                     }
                     table.addCell(addCellWithBorder(if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY(), 1, true))
                     table.addCell(addCellWithBorder(if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY(), 1, true))
-                    table.addCell(addCellWithBorder(get(it).comment, 2, false))
+                    table.addCell(addCellWithBorder(get(it).comment, 3, false))
                 }
             }
         }
@@ -1078,7 +1138,11 @@ private fun drawAffiliationSection() : PdfPTable {
 }
 
 private fun drawVisitationTrackingSection() : PdfPTable {
-    val table = PdfPTable(9)
+    createPDFLogData += " - drawVisitationTrackingSection"
+    val columnWidths = floatArrayOf(5f, 5f,5f, 5f,10f, 10f,10f,10f,10f)
+    val table = PdfPTable(columnWidths)
+    table.headerRows = 1
+//    val table = PdfPTable(9)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Date Performed", 1,true))
     table.addCell(addCellWithBorder("Visitation Type", 1,true))
@@ -1129,25 +1193,26 @@ private fun drawVisitationTrackingSection() : PdfPTable {
 
 
 private fun drawSoSSection() : PdfPTable {
-    val table = PdfPTable(4)
+    createPDFLogData += " - drawSoSSection"
+    val table = PdfPTable(3)
     table.setWidthPercentage(100f)
-    table.addCell(addCell("Fixed Labor Rate\n$" + FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate ,1,true));
-    table.addCell(addCell("Diagnostic Rate\n$" + FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate,1,true));
-    table.addCell(addCell("Labor Rate Matrix Min\n$" + FacilityDataModel.getInstance().tblScopeofService[0].LaborMin ,1,true));
-    table.addCell(addCell("Labor Rate Matrix Min\n$" + FacilityDataModel.getInstance().tblScopeofService[0].LaborMax,1,true));
-    table.addCell(addCell("# of Bays: "+FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays,1,true));
-    table.addCell(addCell("# of Lifts: "+FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts,1,true));
+    table.addCell(addCell("Fixed Labor Rate: $" + FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate ,1,true));
+    table.addCell(addCell("Diagnostic Rate: $" + FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate,1,true));
+    table.addCell(addCell("Labor Rate Matrix Min: $" + FacilityDataModel.getInstance().tblScopeofService[0].LaborMin ,1,true));
+    table.addCell(addCell("Labor Rate Matrix Min: $" + FacilityDataModel.getInstance().tblScopeofService[0].LaborMax,1,true));
+    table.addCell(addCell("Number of Bays: "+FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays,1,true));
+    table.addCell(addCell("Number of Lifts: "+FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts,1,true));
     table.addCell(addCell("Warranty Period: "+if (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID)}.size>0) TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeID.equals(FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID)}[0].WarrantyTypeName else "",1,true));
-    table.addCell(addCell("",1,true));
     table.addCell(addCell("Discount Percentage: "+FacilityDataModel.getInstance().tblScopeofService[0].DiscountCap + "%",1,true));
     table.addCell(addCell("Max Discount Amount: "+FacilityDataModel.getInstance().tblScopeofService[0].DiscountAmount,1,true));
-    table.addCell(addCell("",2,true));
+//    table.addCell(addCell("",2,true));
     return table
 }
 
 
 
 private fun drawFacilitySection() : PdfPTable {
+    createPDFLogData += " - drawFacilitySection"
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
     table.addCell(addCell("Contract Number: " ,1,false));
@@ -1176,10 +1241,12 @@ private fun drawFacilitySection() : PdfPTable {
     table.addCell(addCell("Billing Amount: $"+ "%.3f".format(FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toFloat()),1,false));
     table.addCell(addCell("Insurance Expiration Date: "+ if (FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY(),2,false));
     table.addCell(addCell("",2,false))
+    createPDFLogData += "...Done"
     return table
 }
 
 private fun drawHoursSection() : PdfPTable {
+    createPDFLogData += " - drawHoursSection"
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
     val hoursTable = PdfPTable(4)
@@ -1228,6 +1295,7 @@ private fun drawHoursSection() : PdfPTable {
 }
 
 private fun drawPaymentSection() : PdfPTable {
+    createPDFLogData += " - drawPaymentSection"
     val table = PdfPTable(3)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Payment Methods", 2,false))
@@ -1254,13 +1322,14 @@ private fun drawPaymentSection() : PdfPTable {
 }
 
 private fun drawPhoneSection() : PdfPTable {
+    createPDFLogData += " - drawPhoneSection"
     val table = PdfPTable(2)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Phone Type", 1,false))
     table.addCell(addCellWithBorder("Phone", 1,true))
     FacilityDataModel.getInstance().tblPhone.apply {
         (0 until size).forEach {
-            if (!get(it).PhoneID.equals("-1")) {
+            if (!get(it).PhoneID.equals("-1") && !get(it).PhoneTypeID.equals("0")) {
                 try {
                     table.addCell(addCellWithBorder(TypeTablesModel.getInstance().LocationPhoneType.filter { s -> s.LocPhoneID.equals(get(it).PhoneTypeID) }[0].LocPhoneName, 1, false))
                     table.addCell(addCellWithBorder(get(it).PhoneNumber, 2, false))
@@ -1274,13 +1343,14 @@ private fun drawPhoneSection() : PdfPTable {
 }
 
 private fun drawEmailSection() : PdfPTable {
+    createPDFLogData += " - drawEmailSection"
     val table = PdfPTable(4)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Email Type", 1,false))
     table.addCell(addCellWithBorder("Email", 3,true))
     FacilityDataModel.getInstance().tblFacilityEmail.apply {
         (0 until size).forEach {
-            if (!get(it).emailID.equals("-1")) {
+            if (!get(it).emailID.equals("-1") && !get(it).emailTypeId.equals("0")) {
                 table.addCell(addCellWithBorder(TypeTablesModel.getInstance().EmailType.filter { s->s.EmailID.equals(get(it).emailTypeId)}[0].EmailName, 1, false))
                 table.addCell(addCellWithBorder(get(it).email, 3, false))
             }
@@ -1290,6 +1360,7 @@ private fun drawEmailSection() : PdfPTable {
 }
 
 private fun drawLanguageSection() : PdfPTable {
+    createPDFLogData += " - drawLanguageSection"
     val table = PdfPTable(3)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Language(s)", 2,false))
@@ -1318,6 +1389,7 @@ private fun drawLanguageSection() : PdfPTable {
 
 
 private fun drawDeficiencySectionForShop() : PdfPTable {
+    createPDFLogData += " - drawDeficiencySectionForShop"
     val table = PdfPTable(3)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Deficiency", 1,true))
@@ -1325,7 +1397,7 @@ private fun drawDeficiencySectionForShop() : PdfPTable {
     table.addCell(addCellWithBorder("Due Date", 1,true))
     FacilityDataModel.getInstance().tblDeficiency.apply {
         (0 until size).forEach {
-            if (!get(it).DefTypeID.equals("-1") && get(it).ClearedDate.isNullOrEmpty()) {
+            if (!get(it).DefTypeID.equals("-1") && get(it).ClearedDate.isNullOrEmpty() && !get(it).DefTypeID.equals("0")) {
                 table.addCell(addCellWithBorder(TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.equals(get(it).DefTypeID) }[0].DeficiencyName,1,true))
                 table.addCell(addCellWithBorder(if (get(it).VisitationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).VisitationDate.apiToAppFormatMMDDYYYY(),1,true));
                 table.addCell(addCellWithBorder("",1,true));
@@ -1394,35 +1466,37 @@ private fun drawDataChangedSectionForShop() : PdfPTable {
 }
 
 private fun drawAddressSection() : PdfPTable {
-    val table = PdfPTable(17)
+    createPDFLogData += " - drawAddressSection"
+    val columnWidths = floatArrayOf(4f, 12f,12f, 5f,3f, 3f,3f, 5f,8f, 4f,5f, 5f)
+    val table = PdfPTable(columnWidths)
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("Type", 1,true))
-    table.addCell(addCellWithBorder("Address1", 2,false))
-    table.addCell(addCellWithBorder("Address2", 1,false))
+    table.addCell(addCellWithBorder("Address1", 1,true))
+    table.addCell(addCellWithBorder("Address2", 1,true))
     table.addCell(addCellWithBorder("City", 1,true))
     table.addCell(addCellWithBorder("State", 1,true))
     table.addCell(addCellWithBorder("ZIP", 1,true))
     table.addCell(addCellWithBorder("ZIP4", 1,true))
-    table.addCell(addCellWithBorder("Country", 2,true))
-    table.addCell(addCellWithBorder("Branch Name", 2,true))
+    table.addCell(addCellWithBorder("Country", 1,true))
+    table.addCell(addCellWithBorder("Branch Name", 1,true))
     table.addCell(addCellWithBorder("Branch #", 1,true))
-    table.addCell(addCellWithBorder("LATITUDE", 2,true))
-    table.addCell(addCellWithBorder("LONGITUDE", 2,true))
+    table.addCell(addCellWithBorder("Latitude", 1,true))
+    table.addCell(addCellWithBorder("Longitude", 1,true))
     FacilityDataModel.getInstance().tblAddress.apply {
         (0 until size).forEach {
             if (!get(it).LocationTypeID.isNullOrEmpty()) {
                 table.addCell(addCellWithBorder(TypeTablesModel.getInstance().LocationType.filter { s->s.LocTypeID.equals(get(it).LocationTypeID)}[0].LocTypeName, 1,true))
-                table.addCell(addCellWithBorder(get(it).FAC_Addr1,2,false))
-                table.addCell(addCellWithBorder(get(it).FAC_Addr2,1,false))
+                table.addCell(addCellWithBorder(get(it).FAC_Addr1,1,true))
+                table.addCell(addCellWithBorder(get(it).FAC_Addr2,1,true))
                 table.addCell(addCellWithBorder(get(it).CITY,1,true))
                 table.addCell(addCellWithBorder(get(it).ST,1,true))
                 table.addCell(addCellWithBorder(get(it).ZIP,1,true))
                 table.addCell(addCellWithBorder(get(it).ZIP4,1,true))
-                table.addCell(addCellWithBorder(get(it).County,2,true))
-                table.addCell(addCellWithBorder(get(it).BranchName,2,true))
+                table.addCell(addCellWithBorder(get(it).County,1,true))
+                table.addCell(addCellWithBorder(get(it).BranchName,1,true))
                 table.addCell(addCellWithBorder(get(it).BranchNumber,1,true))
-                table.addCell(addCellWithBorder(get(it).LATITUDE,2,true))
-                table.addCell(addCellWithBorder(get(it).LONGITUDE,2,true))
+                table.addCell(addCellWithBorder(get(it).LATITUDE,1,true))
+                table.addCell(addCellWithBorder(get(it).LONGITUDE,1,true))
             }
         }
     }
@@ -1430,6 +1504,7 @@ private fun drawAddressSection() : PdfPTable {
 }
 
 private fun drawVehiclesSection(vehicleCatID : String) : PdfPTable {
+    createPDFLogData += " - drawVehiclesSection"
     val columnWidths = floatArrayOf(1f, 4f,1f, 4f,1f, 4f,1f, 4f,1f, 4f,1f, 4f,1f, 4f,1f, 4f)
     val table = PdfPTable(columnWidths)
     val vehicleTypeID=1
@@ -1437,7 +1512,7 @@ private fun drawVehiclesSection(vehicleCatID : String) : PdfPTable {
     TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleTypeID == vehicleTypeID.toInt() && s.VehicleCategoryID == vehicleCatID.toInt() }.apply {
         (0 until size).forEach { vMakeIt ->
             if (FacilityDataModel.getInstance().tblFacVehicles.filter { s -> s.VehicleID == get(vMakeIt).VehicleID }.isNotEmpty()) {
-                table.addCell(addTick(false,false))
+                table.addCell(addTick(true,false))
                 table.addCell(addCell("  " + get(vMakeIt).MakeName, 1, false))
             } else {
                 table.addCell(addCell(" ", 1, false))
@@ -1452,18 +1527,16 @@ private fun drawVehiclesSection(vehicleCatID : String) : PdfPTable {
 }
 
 private fun drawVehicleServicesSection(vehicleTypeID: String) : PdfPTable {
-    val columnWidths = floatArrayOf(1f, 4f,1f, 4f,1f, 4f)
+    createPDFLogData += " - drawVehicleServicesSection"
+    val columnWidths = floatArrayOf(3f, 30f,3f, 30f,3f, 31f)
     val table = PdfPTable(columnWidths)
     table.widthPercentage = 100f
-//    val p = Paragraph("This is a tick box character: ");
-//    p.add(Chunk("4", symbolsFont));
-//    table.addCell(p)
 
-    if (TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.VehiclesTypeID.equals(vehicleTypeID)}.isNotEmpty()) {
-        TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.VehiclesTypeID.equals(vehicleTypeID) }.apply {
+    if (TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.VehiclesTypeID.equals("1") && s.VehicleCategoryID.equals(vehicleTypeID)}.isNotEmpty()) {
+        TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.VehiclesTypeID.equals("1") && s.VehicleCategoryID.equals(vehicleTypeID) }.apply {
             (0 until size).forEach { innerIt ->
-                if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehicleTypeID.toInt() && s.ScopeServiceID == get(innerIt).ScopeServiceID.toInt() }.isNotEmpty()) {
-                    table.addCell(addTick(false,false))
+                if (FacilityDataModel.getInstance().tblVehicleServices.filter{ s -> s.VehiclesTypeID==1 && s.VehicleCategoryID.equals(vehicleTypeID) && s.ServiceID.equals(get(innerIt).ServiceID) }.isNotEmpty()) {
+                    table.addCell(addTick(true,false))
                     table.addCell(addCell("  " + get(innerIt).ScopeServiceName,1,false))
                 } else {
                     table.addCell(addCell(" ",1,false))
@@ -1479,38 +1552,68 @@ private fun drawVehicleServicesSection(vehicleTypeID: String) : PdfPTable {
     return table
 }
 
+//private fun drawVehicleServicesSection(vehicleTypeID: String) : PdfPTable {
+//    createPDFLogData += " - drawVehicleServicesSection"
+//    val columnWidths = floatArrayOf(1f, 4f,1f, 4f,1f, 4f)
+//    val table = PdfPTable(columnWidths)
+//    table.widthPercentage = 100f
+//
+//    if (TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.VehiclesTypeID.equals(vehicleTypeID)}.isNotEmpty()) {
+//        TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.VehiclesTypeID.equals(vehicleTypeID) }.apply {
+//            (0 until size).forEach { innerIt ->
+//                if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehicleTypeID.toInt() && s.ScopeServiceID == get(innerIt).ScopeServiceID.toInt() }.isNotEmpty()) {
+//                    table.addCell(addTick(false,false))
+//                    table.addCell(addCell("  " + get(innerIt).ScopeServiceName,1,false))
+//                } else {
+//                    table.addCell(addCell(" ",1,false))
+//                    table.addCell(addCell("  " + get(innerIt).ScopeServiceName,1,false))
+//                }
+//            }
+//        }
+//    }
+////    if (TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.VehiclesTypeID.equals(vehicleTypeID) }.size % 3 > 0) {
+////        table.addCell(addCell(" ", (TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.VehiclesTypeID.equals(vehicleTypeID) }.size % 3)*2, false))
+////    }
+//    table.addCell(addCell(" ",6,false))
+//    return table
+//}
+
 private fun drawPersonnelSection () : PdfPTable {
-    val table = PdfPTable(15)
+    createPDFLogData += " - drawPersonnelSection"
+    val columnWidths = floatArrayOf(5f, 5f,5f, 10f,5f, 10f,5f,5f,4f,4f,4f,4f,5f)
+    val table = PdfPTable(columnWidths)
+    table.headerRows = 1
+//    val table = PdfPTable(15)
     table.setWidthPercentage(100f)
-    table.addCell(addCellWithBorder("Personnel Type", 1,true))
-    table.addCell(addCellWithBorder("First Name", 1,true))
-    table.addCell(addCellWithBorder("Last Name", 1,true))
-    table.addCell(addCellWithBorder("Certification #", 2,true))
-    table.addCell(addCellWithBorder("RSP User ID", 1,true))
-    table.addCell(addCellWithBorder("Email Address", 2,true))
-    table.addCell(addCellWithBorder("Seniority Date", 1,true))
-    table.addCell(addCellWithBorder("Start Date", 1,true))
-    table.addCell(addCellWithBorder("End Date", 1,true))
-    table.addCell(addCellWithBorder("Contract Signer", 1,true))
-    table.addCell(addCellWithBorder("Primary Mail Recipient", 1,true))
-    table.addCell(addCellWithBorder("Report Recipient", 1,true))
-    table.addCell(addCellWithBorder("Notification Recipient", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Personnel Type", 1,true))
+    table.addCell(addCellWithBorderSmallFont("First Name", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Last Name", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Certification #", 1,true))
+    table.addCell(addCellWithBorderSmallFont("RSP User ID", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Email Address", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Start Date", 1,true))
+    table.addCell(addCellWithBorderSmallFont("End Date", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Seniority Date", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Contract Signer", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Primary Mail Recipient", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Report Recipient", 1,true))
+    table.addCell(addCellWithBorderSmallFont("Notification Recipient", 1,true))
     FacilityDataModel.getInstance().tblPersonnel.apply {
         (0 until size).forEach {
-            if (get(it).PersonnelID>-1) {
-                table.addCell(addCellWithBorder(TypeTablesModel.getInstance().PersonnelType.filter { s->s.PersonnelTypeID.equals(get(it).PersonnelTypeID.toString())}[0].PersonnelTypeName, 1,true))
-                table.addCell(addCellWithBorder(get(it).FirstName,1,true))
-                table.addCell(addCellWithBorder(get(it).LastName,1,true))
-                table.addCell(addCellWithBorder(get(it).CertificationNum,2,true))
-                table.addCell(addCellWithBorder(get(it).RSP_UserName,1,true))
-                table.addCell(addCellWithBorder(get(it).RSP_Email,2,true))
-                table.addCell(addCellWithBorder(if (get(it).SeniorityDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).SeniorityDate.apiToAppFormatMMDDYYYY(),1,true));
-                table.addCell(addCellWithBorder(if (get(it).startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startDate.apiToAppFormatMMDDYYYY(),1,true));
-                table.addCell(addCellWithBorder(if (get(it).endDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).endDate.apiToAppFormatMMDDYYYY(),1,true));
-                table.addCell(addCellWithBorder(if (get(it).ContractSigner) "X" else "",1,true))
-                table.addCell(addCellWithBorder(if (get(it).PrimaryMailRecipient) "X" else "",1,true))
-                table.addCell(addCellWithBorder(if (get(it).ReportRecipient) "X" else "",1,true))
-                table.addCell(addCellWithBorder(if (get(it).NotificationRecipient) "X" else "",1,true))
+            if (get(it).PersonnelID>-1 && get(it).PersonnelTypeID!=TypeTablesModel.getInstance().PersonnelType.filter { s->s.PersonnelTypeName.equals("PRG")}[0].PersonnelTypeID.toInt()) {
+                table.addCell(addCellWithBorderSmallFont(TypeTablesModel.getInstance().PersonnelType.filter { s->s.PersonnelTypeID.equals(get(it).PersonnelTypeID.toString())}[0].PersonnelTypeName, 1,true))
+                table.addCell(addCellWithBorderSmallFont(get(it).FirstName,1,true))
+                table.addCell(addCellWithBorderSmallFont(get(it).LastName,1,true))
+                table.addCell(addCellWithBorderSmallFont(get(it).CertificationNum,1,true))
+                table.addCell(addCellWithBorderSmallFont(get(it).RSP_UserName,1,true))
+                table.addCell(addCellWithBorderSmallFont(get(it).RSP_Email,1,true))
+                table.addCell(addCellWithBorderSmallFont(if (get(it).startDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startDate.apiToAppFormatMMDDYYYY(),1,true));
+                table.addCell(addCellWithBorderSmallFont(if (get(it).endDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).endDate.apiToAppFormatMMDDYYYY(),1,true));
+                table.addCell(addCellWithBorderSmallFont(if (get(it).SeniorityDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).SeniorityDate.apiToAppFormatMMDDYYYY(),1,true));
+                table.addCell(addCellWithBorderSmallFont(if (get(it).ContractSigner) "X" else "",1,true))
+                table.addCell(addCellWithBorderSmallFont(if (get(it).PrimaryMailRecipient) "X" else "",1,true))
+                table.addCell(addCellWithBorderSmallFont(if (get(it).ReportRecipient) "X" else "",1,true))
+                table.addCell(addCellWithBorderSmallFont(if (get(it).NotificationRecipient) "X" else "",1,true))
             }
         }
     }
@@ -1518,7 +1621,10 @@ private fun drawPersonnelSection () : PdfPTable {
 }
 
 private fun drawSignersSection () : PdfPTable {
-    val table = PdfPTable(12)
+    createPDFLogData += " - drawSignersSection"
+    val columnWidths = floatArrayOf(5f, 5f,10f, 10f,5f, 3f,3f,3f,5f,10f,5f,5f)
+    val table = PdfPTable(columnWidths)
+    table.headerRows = 1
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("First Name", 1,true))
     table.addCell(addCellWithBorder("Last Name", 1,true))
@@ -1554,7 +1660,9 @@ private fun drawSignersSection () : PdfPTable {
 }
 
 private fun drawCertificationsSection () : PdfPTable {
+    createPDFLogData += " - drawCertificationsSection"
     val table = PdfPTable(13)
+    table.headerRows = 1
     table.setWidthPercentage(100f)
     table.addCell(addCellWithBorder("First Name", 1,true))
     table.addCell(addCellWithBorder("Last Name", 1,true))
@@ -1596,6 +1704,7 @@ private fun drawCertificationsSection () : PdfPTable {
                 } else {
                     table.addCell(addCellWithBorder("", 1, true))
                 }
+
                 if (FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A3") }.isNotEmpty()) {
                     val expDate = FacilityDataModel.getInstance().tblPersonnelCertification.sortedWith(compareBy { it.CertificationTypeId }).filter { s -> s.PersonnelID == personnelWithCert[it] }.filter { s -> s.CertificationTypeId.equals("A3") }[0].ExpirationDate
                     table.addCell(addCellWithBorder(if (expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else expDate.apiToAppFormatMMDDYYYY(), 1, true));
@@ -1773,6 +1882,14 @@ fun addTableInCell(theTable : PdfPTable, colSpan : Int,alignCenter: Boolean) : P
 
 fun addCellWithBorder(strValue : String, colSpan : Int,alignCenter : Boolean ) : PdfPCell {
     val cell = PdfPCell(Paragraph(strValue, normalFont7));
+    cell.colspan=colSpan
+    cell.verticalAlignment = Element.ALIGN_MIDDLE
+    if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
+    return cell
+}
+
+fun addCellWithBorderSmallFont(strValue : String, colSpan : Int,alignCenter : Boolean ) : PdfPCell {
+    val cell = PdfPCell(Paragraph(strValue, normalFont6));
     cell.colspan=colSpan
     cell.verticalAlignment = Element.ALIGN_MIDDLE
     if (alignCenter) cell.horizontalAlignment = Element.ALIGN_CENTER
@@ -2471,6 +2588,14 @@ class HeaderFooterPageEvent : PdfPageEventHelper() {
     var ffont = Font(Font.FontFamily.HELVETICA, 8F, Font.NORMAL)
 
     override fun onStartPage(writer: PdfWriter?, document: Document?) {
+//        val canvas = writer!!.directContentUnder
+//        val rect = document!!.pageSize
+//        canvas.setColorFill(BaseColor(229, 232, 232 ))
+//        if (document!!.pageNumber==1)
+//            canvas.rectangle(rect.left, rect.height, rect.width, 100f)
+//        else
+//            canvas.rectangle(rect.left, rect.height, rect.width, 25f)
+//        canvas.fill()
 //        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_CENTER, Phrase("Date: "+Date().toAppFormatMMDDYYYY(),ffont),((document!!.right()-document.left()) / 2 + document.leftMargin()),
 //               document!!.bottom().minus(10), 0F)
 //        ColumnText.showTextAligned(writer.directContent, Element.ALIGN_CENTER, Phrase("Top Right"), 550f, 820f, 0f)
@@ -2478,9 +2603,14 @@ class HeaderFooterPageEvent : PdfPageEventHelper() {
 
     override fun onEndPage(writer: PdfWriter?, document: Document?) {
 //        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_CENTER, Phrase("http://www.xxxx-your_example.com/"), 110f, 30f, 0f)
-        ColumnText.showTextAligned(writer?.directContent, Element.ALIGN_CENTER, Phrase("Page " + document!!.pageNumber,ffont), 550f, 20f, 0f)
+        val canvas = writer!!.directContentUnder
+        val rect = document!!.pageSize
+        canvas.setColorFill(BaseColor(229, 232, 232 ))
+        canvas.rectangle(rect.left, rect.bottom, rect.width, 25f)
+        canvas.fill()
+        ColumnText.showTextAligned(writer?.directContent, Element.ALIGN_CENTER, Phrase("Page " + document!!.pageNumber,ffont), 550f, 10f, 0f)
 //        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_LEFT, Phrase("Date Printed: "+Date().toAppFormatMMDDYYYY(),ffont),35f, 20f, 0f)
-        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_LEFT, Phrase("Fac No: "+FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + " - Name: "+FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - Visitation ID:"+Constants.visitationIDForPDF,ffont),20f, 20f, 0f)
+        ColumnText.showTextAligned(writer!!.directContent, Element.ALIGN_LEFT, Phrase("Fac No: "+FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + " - Name: "+FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - Visitation ID:"+Constants.visitationIDForPDF,ffont),20f, 10f, 0f)
     }
 
 }

@@ -204,9 +204,64 @@
                 </TableRow>
             </TableLayout>
 
+            <TextView
+                android:id="@+id/deffTitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Deficiency Actions"
+                android:gravity="center"
+                android:textColor="@color/mainColor"
+                android:textSize="22sp"
+                />
 
+            <TableLayout
+                android:id="@+id/actionsTable"
+                android:layout_width="600dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:showDividers="middle|beginning|end"
+                android:stretchColumns="*">
+
+                <TableRow android:background="@color/mainColor" android:layout_height="30dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:height="30dp"
+                        android:layout_column="0"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Action"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Action Date"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Due Date"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                </TableRow>
+            </TableLayout>
 
         </LinearLayout>
+
 
     </ScrollView>
 

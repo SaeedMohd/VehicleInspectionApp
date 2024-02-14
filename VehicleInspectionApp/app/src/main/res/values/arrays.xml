@@ -144,8 +144,9 @@
         <item>Load ACE Facility Details</item>
         <item>Load PRG Visitation Details</item>
         <item>Validate Visitation ID</item>
-        <item>Review PDF Data</item>
+<!--        <item>Prepare Facility Data</item>-->
     </string-array>
+
 
     <string-array name="discount_percentage">
         <item>0%</item>

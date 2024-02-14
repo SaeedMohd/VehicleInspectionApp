@@ -42,6 +42,12 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     var EuropeanVehiclesListView: ExpandableHeightGridView? = null
     var ExoticVehiclesListView: ExpandableHeightGridView? = null
     var OtherVehiclesListView: ExpandableHeightGridView? = null
+    var CNGVehiclesListView: ExpandableHeightGridView? = null
+    var DieselVehiclesListView: ExpandableHeightGridView? = null
+    var ElectricVehiclesListView: ExpandableHeightGridView? = null
+    var GasVehiclesListView: ExpandableHeightGridView? = null
+    var HybridVehiclesListView: ExpandableHeightGridView? = null
+    var HydrogenVehiclesListView: ExpandableHeightGridView? = null
 
 
 
@@ -50,12 +56,24 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     internal var europeanAdapter: VehicleListAdapter? = null
     internal var exoticAdapter: VehicleListAdapter? = null
     internal var otherAdapter: VehicleListAdapter? = null
+    internal var cngAdapter: VehicleListAdapter? = null
+    internal var dieselAdapter: VehicleListAdapter? = null
+    internal var electricAdapter: VehicleListAdapter? = null
+    internal var gasAdapter: VehicleListAdapter? = null
+    internal var hybridAdapter: VehicleListAdapter? = null
+    internal var hydrogenAdapter: VehicleListAdapter? = null
 
     var domesticListItems=ArrayList<TypeTablesModel.vehicleMakes>()
     var asianListItems=ArrayList<TypeTablesModel.vehicleMakes>()
     var europeanListItems=ArrayList<TypeTablesModel.vehicleMakes>()
     var exoticListItems=ArrayList<TypeTablesModel.vehicleMakes>()
     var otherListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var cngListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var dieselListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var electricListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var gasListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var hybridListItems=ArrayList<TypeTablesModel.vehicleMakes>()
+    var hydrogenListItems=ArrayList<TypeTablesModel.vehicleMakes>()
 
     var selectedVehicles = ArrayList<String>()
 
@@ -78,8 +96,12 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         EuropeanVehiclesListView = view.findViewById(R.id.EuropeanVehiclesListView)
         ExoticVehiclesListView = view.findViewById(R.id.ExoticVehiclesListView)
         OtherVehiclesListView = view.findViewById(R.id.otherTypesVehiclesListView)
-
-
+        CNGVehiclesListView = view.findViewById(R.id.cngTypesVehiclesListView)
+        DieselVehiclesListView = view.findViewById(R.id.dieselTypesVehiclesListView)
+        ElectricVehiclesListView = view.findViewById(R.id.electricTypesVehiclesListView)
+        GasVehiclesListView = view.findViewById(R.id.gasolineTypesVehiclesListView)
+        HybridVehiclesListView = view.findViewById(R.id.hybridTypesVehiclesListView)
+        HydrogenVehiclesListView = view.findViewById(R.id.hydrogenTypesVehiclesListView)
 
         return view
     }
@@ -117,7 +139,6 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         }
 
         setServices()
-
 
         cancelButton.setOnClickListener {
             progressBarText.text = "Cancelling ..."
@@ -172,18 +193,22 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
         addedData += "Added Vehicle(s): "
         for (i in 0 until addedVehicles.size) {
-            var item = TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==addedVehicles[i].toInt()}[0]
-            addedData += "Type ("+ TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeID.toInt()==item.VehicleTypeID}[0].VehiclesTypeName + ")"
-            addedData += ", Category ("+ TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s->s.VehCategoryID.toInt()==item.VehicleCategoryID}[0].VehCategoryName + ")"
-            addedData += ", Make ("+ item.MakeName +") - "
+            if (TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==addedVehicles[i].toInt()}.isNotEmpty()) {
+                var item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == addedVehicles[i].toInt() }[0]
+                addedData += "Type (" + TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeID.toInt() == item.VehicleTypeID }[0].VehiclesTypeName + ")"
+                addedData += ", Category (" + TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + ")"
+                addedData += ", Make (" + item.MakeName + ") - "
+            }
         }
 
         removedData += "Removed Vehicle(s): "
         for (i in 0 until removedVehicles.size) {
-            var item = TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==removedVehicles[i].toInt()}[0]
-            removedData += "Type ("+ TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeID.toInt()==item.VehicleTypeID}[0].VehiclesTypeName + ")"
-            removedData += ", Category ("+ TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s->s.VehCategoryID.toInt()==item.VehicleCategoryID}[0].VehCategoryName + ")"
-            removedData += ", Make ("+ item.MakeName +") - "
+            if (TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==removedVehicles[i].toInt()}.isNotEmpty()) {
+                var item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == removedVehicles[i].toInt() }[0]
+                removedData += "Type (" + TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeID.toInt() == item.VehicleTypeID }[0].VehiclesTypeName + ")"
+                removedData += ", Category (" + TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + ")"
+                removedData += ", Make (" + item.MakeName + ") - "
+            }
         }
         removedData = removedData.removeSuffix(" - ")
         addedData = addedData.removeSuffix(" - ")
@@ -245,28 +270,58 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         europeanListItems.clear()
         exoticListItems.clear()
         otherListItems.clear()
+        cngListItems.clear()
+        dieselListItems.clear()
+        electricListItems.clear()
+        gasListItems.clear()
+        hybridListItems.clear()
+        hydrogenListItems.clear()
         DomesticVehiclesListView?.adapter = null
         AsianVehiclesListView?.adapter = null
         EuropeanVehiclesListView?.adapter = null
         ExoticVehiclesListView?.adapter = null
         OtherVehiclesListView?.adapter = null
+        CNGVehiclesListView?.adapter = null
+        DieselVehiclesListView?.adapter = null
+        ElectricVehiclesListView?.adapter = null
+        GasVehiclesListView?.adapter = null
+        HybridVehiclesListView?.adapter = null
+        HydrogenVehiclesListView?.adapter = null
         DomesticVehiclesListView?.isVisible = false
         AsianVehiclesListView?.isVisible = false
         EuropeanVehiclesListView?.isVisible = false
         ExoticVehiclesListView?.isVisible = false
         OtherVehiclesListView?.isVisible = false
+        CNGVehiclesListView?.isVisible = false
+        DieselVehiclesListView?.isVisible = false
+        ElectricVehiclesListView?.isVisible = false
+        GasVehiclesListView?.isVisible = false
+        HybridVehiclesListView?.isVisible = false
+        HydrogenVehiclesListView?.isVisible = false
 
         for (model in TypeTablesModel.getInstance().VehicleMakes.filter { S -> S.VehicleTypeID==TypeTablesModel.getInstance().VehiclesType.filter { S->S.VehiclesTypeName.equals(vehicleTypeSpinner.selectedItem.toString())}[0].VehiclesTypeID.toInt()}) {
-            if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Domestic")}[0].VehCategoryID.toInt()){
+            if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Domestic")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Domestic")}[0].VehCategoryID.toInt()){
                 domesticListItems.add(model)
-            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Asian")}[0].VehCategoryID.toInt()){
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Asian")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Asian")}[0].VehCategoryID.toInt()){
                 asianListItems.add(model)
-            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("European")}[0].VehCategoryID.toInt()){
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - European")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - European")}[0].VehCategoryID.toInt()){
                 europeanListItems.add(model)
-            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Exotic")}[0].VehCategoryID.toInt()){
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Exotic")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Exotic")}[0].VehCategoryID.toInt()){
                 exoticListItems.add(model)
-            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Other Types")}[0].VehCategoryID.toInt()){
-                otherListItems.add(model)
+//            } else if (model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Other Types")}[0].VehCategoryID.toInt()){
+//                otherListItems.add(model)
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("CNG/LNG")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("CNG/LNG")}[0].VehCategoryID.toInt()){
+                cngListItems.add(model)
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Diesel")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Diesel")}[0].VehCategoryID.toInt()){
+                dieselListItems.add(model)
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Electric")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Electric")}[0].VehCategoryID.toInt()){
+                electricListItems.add(model)
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Gasoline")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Gasoline")}[0].VehCategoryID.toInt()){
+                gasListItems.add(model)
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Hybrid")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Hybrid")}[0].VehCategoryID.toInt()){
+                hybridListItems.add(model)
+            } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Hydrogen")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Hydrogen")}[0].VehCategoryID.toInt()){
+                hydrogenListItems.add(model)
             }
         }
 
@@ -316,6 +371,65 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         } else {
             otherContainer.visibility = View.GONE
         }
+        if (cngListItems.count() > 0) {
+            cngAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", cngListItems)
+            CNGVehiclesListView?.adapter = cngAdapter
+            CNGVehiclesListView?.isExpanded = true
+            CNGVehiclesListView?.isVisible = true
+            CNGContainer.visibility = View.VISIBLE
+        } else {
+            CNGContainer.visibility = View.GONE
+        }
+        if (dieselListItems.count() > 0) {
+            dieselAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", dieselListItems)
+            DieselVehiclesListView?.adapter = dieselAdapter
+            DieselVehiclesListView?.isExpanded = true
+            DieselVehiclesListView?.isVisible = true
+            DieselContainer.visibility = View.VISIBLE
+        } else {
+            DieselContainer.visibility = View.GONE
+        }
+
+        if (electricListItems.count() > 0) {
+            electricAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", electricListItems)
+            ElectricVehiclesListView?.adapter = electricAdapter
+            ElectricVehiclesListView?.isExpanded = true
+            ElectricVehiclesListView?.isVisible = true
+            ElectricContainer.visibility = View.VISIBLE
+        } else {
+            ElectricContainer.visibility = View.GONE
+        }
+
+        if (gasListItems.count() > 0) {
+            gasAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", gasListItems)
+            GasVehiclesListView?.adapter = gasAdapter
+            GasVehiclesListView?.isExpanded = true
+            GasVehiclesListView?.isVisible = true
+            GasContainer.visibility = View.VISIBLE
+        } else {
+            GasContainer.visibility = View.GONE
+        }
+
+        if (hybridListItems.count() > 0) {
+            hybridAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", hybridListItems)
+            HybridVehiclesListView?.adapter = hybridAdapter
+            HybridVehiclesListView?.isExpanded = true
+            HybridVehiclesListView?.isVisible = true
+            HybridContainer.visibility = View.VISIBLE
+        } else {
+            HybridContainer.visibility = View.GONE
+        }
+
+        if (hydrogenListItems.count() > 0) {
+            hydrogenAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", hydrogenListItems)
+            HydrogenVehiclesListView?.adapter = hydrogenAdapter
+            HydrogenVehiclesListView?.isExpanded = true
+            HydrogenVehiclesListView?.isVisible = true
+            HydrogenContainer.visibility = View.VISIBLE
+        } else {
+            HydrogenContainer.visibility = View.GONE
+        }
+
         refreshButtonsState()
         expandablell.visibility = View.VISIBLE
         scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE

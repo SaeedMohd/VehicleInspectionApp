@@ -1671,6 +1671,7 @@ class FragmentARRAVLocation : Fragment() {
 //                    textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.minimumHeight=30
                     textView.text = getPhoneTypeName(get(it).PhoneTypeID)
                     tableRow.addView(textView)
@@ -1679,6 +1680,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView2.layoutParams = rowLayoutParam1
                     textView2.gravity = Gravity.CENTER_VERTICAL
                     textView2.textSize = 14f
+                    textView2.setTextColor(Color.BLACK)
                     textView2.minimumHeight=30
                     textView2.text = PhoneNumberUtils.formatNumber(get(it).PhoneNumber,"US")
                     tableRow.addView(textView2)
@@ -1810,6 +1812,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
                     textView.text = getEmailTypeName(get(it).emailTypeId)
                     tableRow.addView(textView)
@@ -1820,6 +1823,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.text = get(it).email
                     textView.minimumHeight = 30
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     tableRow.addView(textView)
 
                     textView = TextView(context)
@@ -1988,6 +1992,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.gravity = Gravity.CENTER
                     textView.minimumHeight = 30
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.text = get(it).type
                     tableRow.addView(textView)
 
@@ -1996,6 +2001,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.gravity = Gravity.CENTER
                     textView.minimumHeight = 30
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.text = if (get(it).startdate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).startdate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
@@ -2004,6 +2010,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.gravity = Gravity.CENTER
                     textView.minimumHeight = 30
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.text = if (get(it).enddate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).enddate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
@@ -2012,6 +2019,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.gravity = Gravity.CENTER
                     textView.minimumHeight = 30
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.text = get(it).comments
                     tableRow.addView(textView)
 
@@ -2186,7 +2194,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.minimumHeight=30
                 textView.text = getLocationTypeName(get(it).LocationTypeID)
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2195,7 +2204,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.minimumHeight=30
                 textView.setEms(8)
                 textView.text = get(it).FAC_Addr1
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2203,7 +2213,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.minimumHeight=30
                 textView.setEms(8)
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 textView.text = get(it).FAC_Addr2
                 tableRow.addView(textView)
 
@@ -2212,7 +2223,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.minimumHeight=30
                 textView.text = get(it).CITY
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2220,7 +2232,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).County
                 textView.minimumHeight=30
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2228,7 +2241,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ST
                 textView.minimumHeight=30
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2236,7 +2250,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).ZIP + "-" + get(it).ZIP4
                 textView.minimumHeight=30
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2248,7 +2263,8 @@ class FragmentARRAVLocation : Fragment() {
                     textView.text = get(it).LATITUDE
                 }
                 textView.minimumHeight=30
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2260,7 +2276,8 @@ class FragmentARRAVLocation : Fragment() {
                     textView.text = get(it).LONGITUDE
                 }
                 textView.minimumHeight=30
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2268,7 +2285,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).BranchNumber
                 textView.minimumHeight=30
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
                 textView = TextView(context)
@@ -2276,7 +2294,8 @@ class FragmentARRAVLocation : Fragment() {
                 textView.gravity = Gravity.CENTER_VERTICAL
                 textView.text = get(it).BranchName
                 textView.minimumHeight=30
-                textView.textSize = 10f
+                textView.textSize = 12f
+                textView.setTextColor(Color.BLACK)
                 tableRow.addView(textView)
 
 //                var editButton = TextView(context)
@@ -2750,8 +2769,28 @@ class FragmentARRAVLocation : Fragment() {
                 task.addOnSuccessListener {
                     if (it != null) {
                         Log.v("Location Captured", it.getLatitude().toString() + " " + it.getLongitude());
-                        editGeo1Long.setText(it.longitude.toString())
-                        editGeo1Lat.setText(it.latitude.toString())
+                        if (it.longitude.toString().split(".")[1].isNotEmpty()) {
+                            if (it.longitude.toString().split(".")[1].length>6) {
+                                editGeo1Long.setText(String.format("%.6f", it.longitude))
+                                editGeo2Long.setText(String.format("%.6f", it.longitude))
+                                editGeo3Long.setText(String.format("%.6f", it.longitude))
+                            } else {
+                                editGeo1Long.setText(it.longitude.toString())
+                                editGeo2Long.setText(it.longitude.toString())
+                                editGeo3Long.setText(it.longitude.toString())
+                            }
+                        }
+                        if (it.latitude.toString().split(".")[1].isNotEmpty()) {
+                            if (it.latitude.toString().split(".")[1].length>6) {
+                                editGeo1Lat.setText(String.format("%.6f", it.latitude))
+                                editGeo2Lat.setText(String.format("%.6f", it.latitude))
+                                editGeo3Lat.setText(String.format("%.6f", it.latitude))
+                            } else {
+                                editGeo1Lat.setText(it.latitude.toString())
+                                editGeo2Lat.setText(it.latitude.toString())
+                                editGeo3Lat.setText(it.latitude.toString())
+                            }
+                        }
                     } else {
                         Utility.showMessageDialog(activity,"Information","Unable to capture current location")
                     }
@@ -2778,14 +2817,52 @@ class FragmentARRAVLocation : Fragment() {
                     if (it != null) {
                         Log.v("Location Captured", it.getLatitude().toString() + " " + it.getLongitude());
                         if (btnToBeUpdated ==1) {
-                            editGeo1Long.setText(it.longitude.toString())
-                            editGeo1Lat.setText(it.latitude.toString())
+                            if (it.longitude.toString().split(".")[1].isNotEmpty()) {
+                                if (it.longitude.toString().split(".")[1].length>6) {
+                                    editGeo1Long.setText(String.format("%.6f", it.longitude))
+                                } else {
+                                    editGeo1Long.setText(it.longitude.toString())
+                                }
+                            }
+                            if (it.latitude.toString().split(".")[1].isNotEmpty()) {
+                                if (it.latitude.toString().split(".")[1].length>6) {
+                                    editGeo1Lat.setText(String.format("%.6f", it.latitude))
+                                } else {
+                                    editGeo1Lat.setText(it.latitude.toString())
+                                }
+                            }
+//                            editGeo1Long.setText(String.format("%.6f", it.longitude))
+//                            editGeo2Long.setText(String.format("%.6f", it.latitude))
                         } else if (btnToBeUpdated ==2) {
-                            editGeo2Long.setText(it.longitude.toString())
-                            editGeo2Lat.setText(it.latitude.toString())
+                            if (it.longitude.toString().split(".")[1].isNotEmpty()) {
+                                if (it.longitude.toString().split(".")[1].length>6) {
+                                    editGeo2Long.setText(String.format("%.6f", it.longitude))
+                                } else {
+                                    editGeo2Long.setText(it.longitude.toString())
+                                }
+                            }
+                            if (it.latitude.toString().split(".")[1].isNotEmpty()) {
+                                if (it.latitude.toString().split(".")[1].length>6) {
+                                    editGeo2Lat.setText(String.format("%.6f", it.latitude))
+                                } else {
+                                    editGeo2Lat.setText(it.latitude.toString())
+                                }
+                            }
                         } else {
-                            editGeo3Long.setText(it.longitude.toString())
-                            editGeo3Lat.setText(it.latitude.toString())
+                            if (it.longitude.toString().split(".")[1].isNotEmpty()) {
+                                if (it.longitude.toString().split(".")[1].length>6) {
+                                    editGeo3Long.setText(String.format("%.6f", it.longitude))
+                                } else {
+                                    editGeo3Long.setText(it.longitude.toString())
+                                }
+                            }
+                            if (it.latitude.toString().split(".")[1].isNotEmpty()) {
+                                if (it.latitude.toString().split(".")[1].length>6) {
+                                    editGeo3Lat.setText(String.format("%.6f", it.latitude))
+                                } else {
+                                    editGeo3Lat.setText(it.latitude.toString())
+                                }
+                            }
                         }
                     } else {
                         Utility.showMessageDialog(activity,"Information","Unable to capture current location")
@@ -2806,14 +2883,52 @@ class FragmentARRAVLocation : Fragment() {
                         if (it != null) {
                             Log.v("Location Captured", it.getLatitude().toString() + " " + it.getLongitude());
                             if (btnToBeUpdated ==1) {
-                                editGeo1Long.setText(it.longitude.toString())
-                                editGeo1Lat.setText(it.latitude.toString())
+                                if (it.longitude.toString().split(".")[1].isNotEmpty()) {
+                                    if (it.longitude.toString().split(".")[1].length>6) {
+                                        editGeo1Long.setText(String.format("%.6f", it.longitude))
+                                    } else {
+                                        editGeo1Long.setText(it.longitude.toString())
+                                    }
+                                }
+                                if (it.latitude.toString().split(".")[1].isNotEmpty()) {
+                                    if (it.latitude.toString().split(".")[1].length>6) {
+                                        editGeo1Lat.setText(String.format("%.6f", it.latitude))
+                                    } else {
+                                        editGeo1Lat.setText(it.latitude.toString())
+                                    }
+                                }
+//                            editGeo1Long.setText(String.format("%.6f", it.longitude))
+//                            editGeo2Long.setText(String.format("%.6f", it.latitude))
                             } else if (btnToBeUpdated ==2) {
-                                editGeo2Long.setText(it.longitude.toString())
-                                editGeo2Lat.setText(it.latitude.toString())
+                                if (it.longitude.toString().split(".")[1].isNotEmpty()) {
+                                    if (it.longitude.toString().split(".")[1].length>6) {
+                                        editGeo2Long.setText(String.format("%.6f", it.longitude))
+                                    } else {
+                                        editGeo2Long.setText(it.longitude.toString())
+                                    }
+                                }
+                                if (it.latitude.toString().split(".")[1].isNotEmpty()) {
+                                    if (it.latitude.toString().split(".")[1].length>6) {
+                                        editGeo2Lat.setText(String.format("%.6f", it.latitude))
+                                    } else {
+                                        editGeo2Lat.setText(it.latitude.toString())
+                                    }
+                                }
                             } else {
-                                editGeo3Long.setText(it.longitude.toString())
-                                editGeo3Lat.setText(it.latitude.toString())
+                                if (it.longitude.toString().split(".")[1].isNotEmpty()) {
+                                    if (it.longitude.toString().split(".")[1].length>6) {
+                                        editGeo3Long.setText(String.format("%.6f", it.longitude))
+                                    } else {
+                                        editGeo3Long.setText(it.longitude.toString())
+                                    }
+                                }
+                                if (it.latitude.toString().split(".")[1].isNotEmpty()) {
+                                    if (it.latitude.toString().split(".")[1].length>6) {
+                                        editGeo3Lat.setText(String.format("%.6f", it.latitude))
+                                    } else {
+                                        editGeo3Lat.setText(it.latitude.toString())
+                                    }
+                                }
                             }
                         } else {
                             Utility.showMessageDialog(activity,"Information","Unable to capture current location")
@@ -2824,6 +2939,15 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
+    }
+
+    fun round(value: Double, places: Int): Double {
+        var value = value
+        require(places >= 0)
+        val factor = Math.pow(10.0, places.toDouble()) as Long
+        value = value * factor
+        val tmp = Math.round(value)
+        return tmp as Double / factor
     }
 
     fun altLocationTableRow(alt_row : Int) {

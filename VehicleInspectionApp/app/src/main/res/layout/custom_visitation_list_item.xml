@@ -165,5 +165,20 @@
             android:layout_alignParentRight="true"
             />
 
+        <TextView
+            android:id="@+id/emailPDFBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/transparent"
+            android:clickable="true"
+            android:padding="5dp"
+            android:text="Load Visitation -->"
+            android:textColor="#0000ff"
+            android:layout_below="@id/loadBtn"
+            android:layout_alignParentRight="true"
+            />
+
     </RelativeLayout>
 </RelativeLayout>

@@ -1,28 +1,32 @@
 package com.inspection.fragments
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.github.barteksc.pdfviewer.PDFView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.inspection.R
@@ -35,15 +39,18 @@ import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.progre
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
-import org.jetbrains.anko.runOnUiThread
 import org.json.JSONObject
 import org.json.XML
+import java.io.BufferedInputStream
 import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
+import javax.net.ssl.HttpsURLConnection
 
 
 /**
@@ -61,6 +68,7 @@ class VisitationPlanningFragment : Fragment() {
     private var mParam2: String? = null
     var fragment: Fragment? = null
     var defaultClubCode = ""
+    lateinit var pdfView : PDFView
     private var mListener: OnFragmentInteractionListener? = null
     var facilityNames = ArrayList<String>()
     var facilitiesList = ArrayList<AAAFacilityComplete>()
@@ -98,7 +106,7 @@ class VisitationPlanningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         visitationfacilityListView.visibility = View.GONE
-
+        pdfView = view.findViewById(R.id.pdfView)
         var visitationYearFilterSpinnerEntries = mutableListOf<String>()
         var currentYear = Calendar.getInstance().get(Calendar.YEAR)
 //        visitationYearFilterSpinnerEntries.add    ("Any")
@@ -123,6 +131,7 @@ class VisitationPlanningFragment : Fragment() {
 //        }
 
 //        getTypeTables()
+        loadSpecialists()
         loadSpecialistDetails()
         loadSpecialistName()
 //        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
@@ -520,6 +529,7 @@ class VisitationPlanningFragment : Fragment() {
             recordsProgressView.visibility = View.VISIBLE
 
             var client = OkHttpClient()
+//                    .newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
             var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ...")).build()
 
             Log.v("******get visitation", Constants.getVisitations+parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ..."))
@@ -751,6 +761,7 @@ class VisitationPlanningFragment : Fragment() {
             item.VisitationID = it.visitationID
             item.VisitationType = it.VisitationTypeID.toString()
             item.VisitationStatus = "Completed"
+            item.insertBy1 = it.insertBy1
             when (item.VisitationType.toInt()) {
                 1 -> item.VisitationType = "Annual"
                 2 -> item.VisitationType = "Quarterly"
@@ -939,16 +950,57 @@ class VisitationPlanningFragment : Fragment() {
         }))
     }
 
+    fun loadSpecialists() {
+        Log.v("ADHOC ALL SPECIAL --- ",Constants.getAllSpecialists + "")
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
+                Response.Listener { response ->
+                    Log.v("****response", response)
+                    activity!!.runOnUiThread {
+                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(java.util.ArrayList())
+
+//                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
+//                                Response.Listener { response ->
+//                                    activity!!.runOnUiThread {
+//                                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+//                                        if (specialistName != null && specialistName.size > 0) {
+//                                            requiredSpecialistName = specialistName[0].specialistname
+//                                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistName[0].accspecid
+////                                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
+////                                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
+////                                            var reformattedName = firstName + " " + lastName
+////                                            adHocFacilitySpecialistButton.setText(reformattedName)
+//                                        }
+//                                        loadSpecialistName()
+////                                        loadClubCodes()
+//                                    }
+//                                }, Response.ErrorListener {
+//                            Log.v("error while loading", "error while loading facilities")
+//                            Log.v("Loading error", "" + it.message)
+//                        }))
+                    }
+                }, Response.ErrorListener {
+            Log.v("error while loading", "error while loading specialists")
+            Log.v("Loading error", "" + it.message)
+        }))
+
+    }
+
     private fun loadSpecialistName() {
 //        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
 //                Response.Listener { response ->
 //                    activity!!.runOnUiThread {
 //                        specialistArrayModel = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
                         specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
+                        var specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail.substring(0,ApplicationPrefs.getInstance(context).loggedInUserEmail.indexOf("@")).lowercase()
                         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
-                            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
-                            visitationSpecialistName.setText(requiredSpecialistName)
-                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].NTLogin
+//                            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
+                            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
+                            var positionID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].PositionID
+                            if (positionID.equals("1")) {
+                                visitationSpecialistName.setText(requiredSpecialistName)
+                            }
+//                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].NTLogin
+                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].NTLogin
                         }
                         loadClubCodes()
 //                    }
@@ -1497,6 +1549,8 @@ class VisitationPlanningFragment : Fragment() {
             }
 
             vh.loadBtn.text = "LOAD VISITATION"
+            vh.emailPDFBtn.text = "EMAIL PDF"
+            vh.emailPDFBtn.visibility = View.GONE
             if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].FACNo
@@ -1545,8 +1599,10 @@ class VisitationPlanningFragment : Fragment() {
                         vh.initialContractDateTextView.text = "Last Visitation Date:"
                         vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray.filter { s->s.FACNo==visitationPlanningModelList.pendingVisitationsArray[position].FACNo && s.ClubCode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode}[0].DatePerformed.apiToAppFormatMMDDYYYY()
                     } else {
-                        vh.initialContractDateTextView.text = "Initial Contract Date:"
-                        vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+//                        vh.initialContractDateTextView.text = "Initial Contract Date:"
+//                        vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+                        vh.initialContractDateTextView.text = "Annual Visitation Month:"
+                        vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt().monthNoToName()
                     }
 //                }
 
@@ -1558,14 +1614,17 @@ class VisitationPlanningFragment : Fragment() {
             else if (position >= visitationPlanningModelList.pendingVisitationsArray.size && position < visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
                 vh.facilityNameValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].BusinessName
                 vh.facilityNoValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FACNo
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].DatePerformed.apiToAppFormatMMDDYYYY()
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].DatePerformed.apiToAppFormatMMDDYYYY() + "  (ID: " + visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID + ")"
                 vh.visitationStatusValueTextView.text = "Completed"
                 vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
-                vh.initialContractDateTextView.text = "Visitation Date:"
+                vh.initialContractDateTextView.text = "Visitation Date & ID:"
                 vh.visitationStatusTextView.text = "Status:"
-                vh.loadBtn.text = "VIEW PDF"
+                vh.loadBtn.text = "VIEW  PDF"
+                vh.emailPDFBtn.text = "EMAIL PDF"
+                vh.emailPDFBtn.visibility = View.VISIBLE
                 visitationID = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
                 vh.loadBtn.tag = visitationID.toInt()
+                vh.emailPDFBtn.tag = visitationID.toInt()
                 vh.visitationTypeValueTextView.visibility = View.GONE
                 vh.visitationTypeTextView.visibility = View.GONE
                 if (visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].VisitationTypeID>0){
@@ -1590,6 +1649,16 @@ class VisitationPlanningFragment : Fragment() {
                 visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].FacilityAnnualInspectionMonth
                 vh.loadBtn.setOnClickListener({
                     Constants.visitationIDForPDF = vh.loadBtn.tag.toString()
+                    Constants.specialistEmailForPDF = ""
+                    Constants.facNoForPDF = ""
+                    Constants.facNameForPDF = ""
+                    Constants.typeForPDF = ""
+                    launchNextAction(true)
+                })
+                vh.emailPDFBtn.setOnClickListener({
+                    Constants.visitationIDForPDF = vh.loadBtn.tag.toString()
+                    var ntlogin = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].insertBy1
+                    Constants.specialistEmailForPDF = TypeTablesModel.getInstance().EmployeeList.filter { s->s.NTLogin==ntlogin }[0].Email
                     launchNextAction(true)
                 })
             } else if (position >= visitationPlanningModelList.pendingVisitationsArray.size + visitationPlanningModelList.completedVisitationsArray.size) {
@@ -1701,6 +1770,7 @@ class VisitationPlanningFragment : Fragment() {
             }
 
             vh.loadBtn.text = "LOAD VISITATION"
+            vh.emailPDFBtn.visibility = View.GONE
 
             vh.facilityNameValueTextView.text = visitationPlanningModelList.listArray[position].BusinessName
             vh.facilityNoValueTextView.text = visitationPlanningModelList.listArray[position].FACNo
@@ -1713,26 +1783,41 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
                 vh.visitationTypeValueTextView.text = visitationPlanningModelList.listArray[position].VisitationType
-                vh.initialContractDateTextView.text = "Initial Contract Date:"
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+//                vh.initialContractDateTextView.text = "Initial Contract Date:"
+//                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
+                vh.initialContractDateTextView.text = "Annual Visitation Month:"
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].FacilityAnnualInspectionMonth.toInt().monthNoToName()
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.listArray[position].FACNo.toInt(), visitationPlanningModelList.listArray[position].ClubCode,false,VisitationTypes.valueOf(visitationPlanningModelList.listArray[position].VisitationType))
                 })
             }
             else if (visitationPlanningModelList.listArray[position].VisitationStatus.contains("Completed")) {
-                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].CompletionDate
+                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].CompletionDate + "  (ID: " + visitationPlanningModelList.listArray[position].VisitationID + ")"
                 vh.visitationStatusValueTextView.text = "Completed"
                 vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
-                vh.initialContractDateTextView.text = "Visitation Date:"
+                vh.initialContractDateTextView.text = "Visitation Date & ID :"
                 vh.visitationStatusTextView.text = "Status:"
-                vh.loadBtn.text = "VIEW PDF"
+                vh.loadBtn.text = "VIEW  PDF"
+                vh.emailPDFBtn.text = "EMAIL PDF"
+                vh.emailPDFBtn.visibility = View.VISIBLE
                 visitationID = visitationPlanningModelList.listArray[position].VisitationID
                 vh.loadBtn.tag = visitationID.toInt()
+                vh.emailPDFBtn.tag = visitationID.toInt()
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
                 vh.visitationTypeValueTextView.text = visitationPlanningModelList.listArray[position].VisitationType
                 vh.loadBtn.setOnClickListener({
                     Constants.visitationIDForPDF = vh.loadBtn.tag.toString()
+                    Constants.specialistEmailForPDF = ""
+                    launchNextAction(true)
+                })
+                vh.emailPDFBtn.setOnClickListener({
+                    Constants.visitationIDForPDF = vh.loadBtn.tag.toString()
+                    var ntlogin = visitationPlanningModelList.listArray[position].insertBy1
+                    Constants.specialistEmailForPDF = TypeTablesModel.getInstance().EmployeeList.filter { s->s.NTLogin==ntlogin }[0].Email
+                    Constants.facNoForPDF = visitationPlanningModelList.listArray[position].FACNo
+                    Constants.facNameForPDF = visitationPlanningModelList.listArray[position].BusinessName
+                    Constants.typeForPDF = visitationPlanningModelList.listArray[position].VisitationType
                     launchNextAction(true)
                 })
             } else if (visitationPlanningModelList.listArray[position].VisitationType.contains("Deficiency")) {
@@ -1794,53 +1879,64 @@ class VisitationPlanningFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     fun launchNextAction(isCompleted : Boolean){
         if (isCompleted) {
-//            FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load PDF")
-//            progressBarText.text = "Loading PDF ..."
             recordsProgressView.visibility = View.VISIBLE
-            webView!!.webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
+            if (Constants.specialistEmailForPDF.equals("")) {
+                webView!!.clearCache(true)
+                webView!!.webViewClient = object : WebViewClient() {
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        if (view?.getTitle().equals("")) {
+                            view?.reload();
+                        }
+                    }
                 }
-            }
-            webCardView.visibility = View.VISIBLE
-            pdfName.text = "Visitation PDF For Specialist (ID: "+Constants.visitationIDForPDF+")"
-            exitPDFDialogeBtn.setOnClickListener {
-                webView.loadUrl("about:blank")
-                recordsProgressView.visibility = View.GONE
-                webCardView.visibility = View.GONE
-            }
-            webView.getSettings().setJavaScriptEnabled(true);
-//            String url = "http://docs.google.com/gview?embedded=true&url=" + myPdfUrl;
-            webView!!.loadUrl("http://docs.google.com/gview?embedded=true&url="+Constants.getPDF+Constants.visitationIDForPDF)
-//            webView!!.loadUrl("https://www.google.com")
+                webCardView.visibility = View.VISIBLE
+//                webView.visibility = View.GONE
+                pdfName.text = "Visitation PDF For Specialist (ID: " + Constants.visitationIDForPDF + ")"
+                exitPDFDialogeBtn.setOnClickListener {
+                    webView.loadUrl("about:blank")
+                    recordsProgressView.visibility = View.GONE
+                    webCardView.visibility = View.GONE
+                }
+                    Log.v("DOWNLOAD ",Constants.getPDF + Constants.visitationIDForPDF)
+//                RetrievePDFFromURL(pdfView).execute(Constants.getPDF + Constants.visitationIDForPDF)
+//                RetrievePDFFromURL(pdfView).execute("https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf")
 
-//            startActivity(new Intent (Intent.ACTION_VIEW, Uri.parse(url)));
-//            val target = Intent(Intent.ACTION_VIEW, Uri.parse(Constants.getPDF+Constants.visitationIDForPDF))
-////            target.setType("application/pdf");
-//            target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////            target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-////            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-////            val intent = Intent.createChooser(target, "Open File")
-//            try {
-//                startActivity(target)
-//            } catch (e: ActivityNotFoundException) {
-//                // Instruct the user to install a PDF reader here, or something
-//            }
-////            if ((activity as MainActivity).checkPermission()) {
-////                (activity as MainActivity).generateAndOpenPDF()
-////            } else {
-////                if (!(activity as MainActivity).checkPermission()) {
-////                    (activity as MainActivity).requestPermissionAndContinue();
-////                } else {
-////                    (activity as MainActivity).generateAndOpenPDF()
-////                }
-////            }
-//            sendCompletedPDF()
+                webView.requestFocus()
+                webView.settings.javaScriptEnabled = true
+                webView.settings.loadWithOverviewMode = true;
+                webView.settings.useWideViewPort = true;
+                webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE;
+                webView.settings.setSupportZoom(true);
+                webView.settings.builtInZoomControls = true;
+                webView.settings.allowFileAccess = true;
+                webView.settings.allowContentAccess = true;
+                webView.settings.domStorageEnabled = true;
+                webView.settings.allowFileAccessFromFileURLs = true;
+                webView.settings.allowUniversalAccessFromFileURLs = true;
+
+//              var url = URLEncoder.encode(Constants.getPDF + Constants.visitationIDForPDF, "UTF-8" );
+                webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + Constants.getPDF + Constants.visitationIDForPDF)
+//                webView.loadUrl(Constants.getPDF + Constants.visitationIDForPDF)
+//                webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url)
+                webView.webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                        view.loadUrl(url)
+                        return true
+                    }
+                }
+//                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://docs.google.com/gview?embedded=true&url=" + Constants.getPDF + Constants.visitationIDForPDF))
+//                startActivity(browserIntent)
+            } else {
+                sendCompletedPDF()
+            }
         } else {
             IndicatorsDataModel.getInstance().init()
 
             ////
+
             Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGVisitationsLog,
                     Response.Listener { response ->
                         requireActivity().runOnUiThread {
@@ -1862,6 +1958,54 @@ class VisitationPlanningFragment : Fragment() {
                         AdjustIndicatorsAndStartActivity()
             }))
             /////
+        }
+    }
+
+    class RetrievePDFFromURL(pdfView: PDFView) :
+            AsyncTask<String, Void, InputStream>() {
+
+        // on below line we are creating a variable for our pdf view.
+        val mypdfView: PDFView = pdfView
+
+        // on below line we are calling our do in background method.
+        override fun doInBackground(vararg params: String?): InputStream? {
+            // on below line we are creating a variable for our input stream.
+            var inputStream: InputStream? = null
+            try {
+                // on below line we are creating an url
+                // for our url which we are passing as a string.
+                val url = URL(params.get(0))
+
+                // on below line we are creating our http url connection.
+                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
+
+                // on below line we are checking if the response
+                // is successful with the help of response code
+                // 200 response code means response is successful
+                if (urlConnection.responseCode == 200) {
+                    // on below line we are initializing our input stream
+                    // if the response is successful.
+                    inputStream = BufferedInputStream(urlConnection.inputStream)
+                }
+            }
+            // on below line we are adding catch block to handle exception
+            catch (e: Exception) {
+                // on below line we are simply printing
+                // our exception and returning null
+                e.printStackTrace()
+                return null;
+            }
+            // on below line we are returning input stream.
+            return inputStream;
+        }
+
+        // on below line we are calling on post execute
+        // method to load the url in our pdf view.
+        override fun onPostExecute(result: InputStream?) {
+            // on below line we are loading url within our
+            // pdf view on below line using input stream.
+            mypdfView.fromStream(result).load()
+
         }
     }
 
@@ -2633,6 +2777,15 @@ class VisitationPlanningFragment : Fragment() {
             }
         }
 
+        if (jsonObj.has("Promotions")) {
+            if (jsonObj.get("Promotions").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblPromotions = Gson().fromJson<ArrayList<TblPromotions>>(jsonObj.get("Promotions").toString(), object : TypeToken<ArrayList<TblPromotions>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblPromotions = Gson().fromJson<ArrayList<TblPromotions>>(jsonObj.get("Promotions").toString(), object : TypeToken<ArrayList<TblPromotions>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblPromotions.add(Gson().fromJson<TblPromotions>(jsonObj.get("Promotions").toString(), TblPromotions::class.java))
+                FacilityDataModelOrg.getInstance().tblPromotions.add(Gson().fromJson<TblPromotions>(jsonObj.get("Promotions").toString(), TblPromotions::class.java))
+            }
+        }
 
         HasChangedModel.getInstance().init()
 //        IndicatorsDataModel.getInstance().validateAllScreensVisited()
@@ -3403,7 +3556,24 @@ class VisitationPlanningFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
         }
+        if (jsonObj.has("Promotions")) {
+            if (!jsonObj.get("Promotions").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("Promotions")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("Promotions"))
+                    jsonObj.put("Promotions", result)
+                } catch (e: Exception) {
 
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "Promotions")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "Promotions")
+        }
 //
         return jsonObj
     }
@@ -3724,34 +3894,45 @@ class VisitationPlanningFragment : Fragment() {
             var oneArray = TblFacilityType()
             oneArray.FacilityTypeName="Independent"
             jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("Promotions")) {
+            var oneArray = TblPromotions()
+            oneArray.PromoID=-1
+            jsonObj.put(key, Gson().toJson(oneArray))
         }
         return jsonObj;
     }
 
     fun sendCompletedPDF() {
-        var specialistEmail = ApplicationPrefs.getInstance(activity).loggedInUserEmail
-        var email = ApplicationPrefs.getInstance(activity).loggedInUserEmail
-        if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf && PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto.isNotEmpty()) {
-            email = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto
-        }
-
-        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.sendCompletedPDF + Constants.visitationIDForPDF + "&email=${email}&specialistEmail=${specialistEmail}",
-                Response.Listener { response ->
-//                    activity!!.runOnUiThread {
-//                        if (!response.toString().replace(" ","").equals("[]")) {
-//                            PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
-//                        } else {
-//                            var item = PRGVisitationHeader()
-//                            item.recordid=-1
-//                            PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
-//                        }
-//                        launchNextAction(isCompleted)
-//                    }
-                }, Response.ErrorListener {
-            Log.v("Loading PRG Data error", "" + it.message)
-//            launchNextAction(isCompleted)
-            it.printStackTrace()
-        }))
+//        var specialistEmail = ApplicationPrefs.getInstance(activity).loggedInUserEmail
+//        var specialistEmail = "saeed@pacificresearchgroup.com"//Constants.specialistEmailForPDF
+//        var generatePDF = false
+        var specialistEmail = Constants.specialistEmailForPDF
+        var urlString = "facNo=${Constants.facNoForPDF}&facName=${Constants.facNameForPDF}&type=${Constants.typeForPDF}"
+//        var email = ApplicationPrefs.getInstance(activity).loggedInUserEmail
+//        if (PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf && PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto.isNotEmpty()) {
+//            email = PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto
+//        }
+//        if (generatePDF) {
+//
+//        } else {
+            Log.v("SEND PDF", Constants.sendCompletedPDF + Constants.visitationIDForPDF + "&email=${specialistEmail}&specialistEmail=${specialistEmail}&" + urlString)
+            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.sendCompletedPDF + Constants.visitationIDForPDF + "&email=${specialistEmail}&specialistEmail=${specialistEmail}&" + urlString,
+                    { response ->
+                        Log.v("Send PDF Response ", "" + response)
+                        requireActivity().runOnUiThread {
+                            recordsProgressView.visibility = View.GONE
+                            Utility.showMessageDialog(activity, "Confirmation...", "PDF for Visitation Number ${Constants.visitationIDForPDF} has been sent to $specialistEmail")
+                            Constants.specialistEmailForPDF = ""
+                        }
+                    }, {
+                Log.v("Send PDF Error ", "" + it.message)
+                it.printStackTrace()
+                recordsProgressView.visibility = View.GONE
+            })).setRetryPolicy(DefaultRetryPolicy(
+                    30000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+//        }
     }
 
 
@@ -3765,6 +3946,7 @@ class VisitationPlanningFragment : Fragment() {
         val visitationStatusValueTextView: TextView
         val visitationStatusTextView:TextView
         val loadBtn: Button
+        val emailPDFBtn: Button
         val listBkg: CardView
 
         init {
@@ -3777,6 +3959,7 @@ class VisitationPlanningFragment : Fragment() {
             this.visitationStatusValueTextView = view?.findViewById(R.id.visitationStatusValueTextView) as TextView
             this.visitationStatusTextView = view?.findViewById(R.id.visitationStatusTextView ) as TextView
             this.loadBtn = view?.findViewById(R.id.loadBtn) as Button
+            this.emailPDFBtn = view?.findViewById(R.id.emailPDFBtn) as Button
             this.listBkg = view?.findViewById(R.id.listBkg) as CardView
 
         }
@@ -3791,6 +3974,7 @@ class VisitationPlanningFragment : Fragment() {
         val vrPlanned: TextView
         val vrDate: TextView
         val vrLoadBtn: TextView
+        val vrEmailPDFBtn: TextView
         val vrLL: RelativeLayout
 
         init {
@@ -3802,6 +3986,7 @@ class VisitationPlanningFragment : Fragment() {
             this.vrPlanned = view?.findViewById(R.id.visitationItemPlanned) as TextView
             this.vrLL = view?.findViewById(R.id.list_item_ll) as RelativeLayout
             this.vrLoadBtn = view?.findViewById(R.id.loadBtn) as TextView
+            this.vrEmailPDFBtn = view?.findViewById(R.id.emailPDFBtn) as TextView
         }
 
     }
@@ -3848,5 +4033,7 @@ class VisitationPlanningFragment : Fragment() {
         }
     }
 }
+
+
 
 

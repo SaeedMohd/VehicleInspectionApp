@@ -6,16 +6,26 @@ import android.content.Intent
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.Utils.Constants
 import kotlinx.android.synthetic.main.fragment_forms.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.Response
+import java.io.IOException
+import java.util.concurrent.TimeUnit
+
 
 class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
@@ -101,14 +111,30 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
         }
 
         myPerformanceButton.setOnClickListener {
+            val client = OkHttpClient()//.newBuilder().connectTimeout(50, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
+            val request = Request.Builder()
+                    .url("https://api-uat.national.aaa.com/common/oauth2/token?client_id=5d5f4i99gmj45pf5qpcnhuvr07&client_secret=1ifminse1q98jifo5qauk9207r01q2a9gvvku074bot5v560mdjb")
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+//                    .addHeader("Authorization", "Bearer eyJraWQiOiJGMld5M2tKT3BDdDlBa1o2cWdiR1JuVGtIWlM4YldpanhTRkJJWnh1elh3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1ZDVmNGk5OWdtajQ1cGY1cXBjbmh1dnIwNyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoicmVzLWF1dG9tb3RpdmUtdWF0XC9yc3AtcHJveHkiLCJhdXRoX3RpbWUiOjE2ODc4MTIzMTMsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX084dVRUSXQxaCIsImV4cCI6MTY4NzgxNTkxMywiaWF0IjoxNjg3ODEyMzEzLCJ2ZXJzaW9uIjoyLCJqdGkiOiJkNjM4NzJmMi04MDZhLTRjZjItYjRlZS04ODJmZGRhYzdkMjYiLCJjbGllbnRfaWQiOiI1ZDVmNGk5OWdtajQ1cGY1cXBjbmh1dnIwNyJ9.dKlBvu-RP-NGIPE2xljnN30A7IUA1QlSkxuGPN9BfDXin2PjKZ2TZrVP50DMa6Qr1Ze9ysQwjntaM8i8TMQaskA6Ai0347oddbYgRAfOdkJVvnTpPe72aCuCmAfkudWC-1m8sty6ZUYcYTyh1rxFE2lj5xIUcojxlnMxp3MnA557gEb7Nhg_OdhK4Mk8ySnexdbIaV2Sza0KeFlx91Be2nBYrmkxFwVoXdxjTzHmKo43V-7-uZGr0EE7hm2aYL10VnJGv3avTBxseCWtjWmLarm-cJtTmFdo6xCiNBLdoC9MXqE4UBrhQkfw0-ENjnJZImlMLGhMjwfN51l--GoIWQ")
+//                    .addHeader("Cookie", "incap_ses_188_2617556=C6hDZrXul1EMN84seumbAsD4mWQAAAAAY6lz3NR0oS55nCN9yowEGg==; nlbi_2617556_2600297=A8xdU7mGPBquGfyudOi6ugAAAABHABE40aQKY1pavAFmF4Da; nlbi_2617556_2795788=pOd8MYLDDBSKyW+ndOi6ugAAAADF94XM3G007nF3A24IYozk; visid_incap_2400341=L40Sp9/SRKWOyleCzvTfvXJFgmMAAAAAQUIPAAAAAAAO96pQC0Hi7+uSzubCW8Wl; visid_incap_2617556=SbLkk389QqSn5OD9+J8UkuE7dmQAAAAAQUIPAAAAAABn4f3tlNKK0dj6wKeEg2eG; XSRF-TOKEN=fa307f3b-24bf-4bfb-a823-2be0c6e43ea0")
+                    .build()
+            val response = client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.v("TOKEN --> ",e.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    Log.v("TOKEN --> ",response.toString())
+                }
+            })
+
             (activity as MainActivity).supportActionBar!!.title = "My Performance"
-            var fragment = PDFGenerateFragment()
-//            fragment!!.isVisitationPlanning = false
-            val fragmentManagerSC = fragmentManager
-            val ftSC = fragmentManagerSC!!.beginTransaction()
-            ftSC.replace(R.id.fragment, fragment)
-            ftSC.addToBackStack("frag")
-            ftSC.commit()
+//            var fragment = PDFGenerateFragment()
+//            val fragmentManagerSC = fragmentManager
+//            val ftSC = fragmentManagerSC!!.beginTransaction()
+//            ftSC.replace(R.id.fragment, fragment)
+//            ftSC.addToBackStack("frag")
+//            ftSC.commit()
         }
         //button added for fragments testing only > sherif yousry
 //        fragmentTester.setOnClickListener {

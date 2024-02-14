@@ -84,6 +84,9 @@ object Constants {
     val submitFacilityPhone = permanentURL + "updateFacilityPhoneData?facNum="
     //AAA APIs WebServices
     val getClubCodes = permanentURL + "getClubCodes?clubCode="
+    val checkFileExists = permanentURL + "checkFileExists?FileName="
+    val getSignature = permanentURL + "getSignature?file="
+
     val uploadFile = permanentURL + "uploadFile?email="
     val uploadPhoto = permanentURL + "uploadPhoto?fileNameToSave="
     val getFacilityData = permanentURL + "getFacilityData?facnum=%d&clubcode=%s"
@@ -104,7 +107,11 @@ object Constants {
     val getFacilityHolidays = permanentURL + "getFacilityHolidays?clubCode="
     val updateFacilityPhotos = permanentURL + "updateFacilityPhotos?facId="
     val getLoggedActions = permanentURL + "getLoggedActions?facNum="
+    val getLoggedActionsBySession = permanentURL + "getLoggedActionsBySession?facNum="
+    val logCreatePDF = permanentURL + "logCreatePDF?log="
     val getVisitationHeader = permanentURL + "getVisitationHeader?facNum="
+    val getVisitationHeaderByID = permanentURL + "getVisitationHeaderByID?facNum="
+
     val getPRGCompletedVisitations = permanentURL + "getPRGCompletedVisitations"
     val getPRGVisitationsLog = permanentURL + "getPRGVisitationsLog"
     val saveVisitedScreens = permanentURL + "saveVisitedScreens?facId="
@@ -126,7 +133,10 @@ object Constants {
     val UpdateFacilityLanguageData=permanentURL + "updateFacilityLanguageData?facNum="
     val UpdateFacilityVehicles= permanentURL + "updateVehicles?facnum="
     val UpdateVehicleServices=permanentURL + "updateVehicleServices?facnum="
+    val UpdateFacilityPromotions=permanentURL + "updateFacilityPromotions?facnum="
+
     val UpdatePersonnelCertification=permanentURL + "updatePersonnelCertification?facNum="
+    val CreatePRGUser=permanentURL + "createRSPUser?facNum="
     val UpdateFacilityPersonnelData=permanentURL + "updateFacilityPersonnelData?facNum="
     val UpdateFacilityPersonnelSignerData=permanentURL + "updateFacilityPersonnelSignerData?facNum="
     val UpdateScopeofServiceData =permanentURL + "updateScopeOfServiceData?facNum="
@@ -137,4 +147,8 @@ object Constants {
     val getSpecialistIdsForClubCode = permanentURL + "getSpecialistsForClubCode?"
 
     var visitationIDForPDF = ""
+    var specialistEmailForPDF = ""
+    var facNoForPDF = ""
+    var facNameForPDF = ""
+    var typeForPDF = ""
 }

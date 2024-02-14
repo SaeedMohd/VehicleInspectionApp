@@ -26,21 +26,24 @@ import java.util.ArrayList
  * Created by kesho on 4/14/2018.
  */
 
-class DatesListAdapter(internal var context: Context, internal var recource: Int,parentFragment : FragmentARRAVVehicleServices,gridType : String,  objects: List<TypeTablesModel.scopeofServiceTypeByVehicleType>) : ArrayAdapter<TypeTablesModel.scopeofServiceTypeByVehicleType>(context, recource, objects) {
+class FuelListAdapter(internal var context: Context, internal var recource: Int,parentFragment : FragmentARRAVVehicleServices,gridType : String,  objects: List<TypeTablesModel.scopeofServiceTypeByVehicleType>,categoryID: String) : ArrayAdapter<TypeTablesModel.scopeofServiceTypeByVehicleType>(context, recource, objects) {
     internal var namesList: List<TypeTablesModel.scopeofServiceTypeByVehicleType>
     internal var parentFragment : FragmentARRAVVehicleServices
     internal var gridType : String
+    internal var categoryID : String
+
     init {
         this.namesList = objects
         namesList = objects
         this.parentFragment = parentFragment
         this.gridType = gridType
+        this.categoryID = categoryID
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
 
-       var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(recource, parent, false)
 //        val textView3 = view.itemTextView
         val checkBoxItem = view.itemCheckBox
@@ -49,31 +52,27 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
         checkBoxItem.text = namesList.get(position).ScopeServiceName
         var vehicleIDRef = TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeName.contains(gridType)}[0].VehiclesTypeID.toInt()
         if (FacilityDataModel.getInstance().tblVehicleServices[0].VehiclesTypeID!=-1) {
-//            if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.ScopeServiceID == namesList.get(position).ScopeServiceID.toInt()}.filter { s -> s.VehiclesTypeID == vehicleIDRef}.isNotEmpty()){
             if (FacilityDataModel.getInstance().tblVehicleServices.filter { s -> s.ServiceID == namesList.get(position).ServiceID}.filter { s -> s.VehiclesTypeID == vehicleIDRef}.isNotEmpty()){
                 checkBoxItem.isChecked = true
-//                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(), 1,false,namesList.get(position).ScopeServiceName)
                 updateSelectedLists(namesList.get(position).ServiceID.toInt(), 1,false,namesList.get(position).ScopeServiceName)
             }
         }
+
 
         if (namesList.get(position).active=="true"){
 
         }
         checkBoxItem.setOnClickListener{
             if (checkBoxItem.isChecked == true) {
-//                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),1,true,namesList.get(position).ScopeServiceName)
                 updateSelectedLists(namesList.get(position).ServiceID.toInt(),1,true,namesList.get(position).ScopeServiceName)
                 val newVehicle = TblVehicleServices()
                 newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
-//                newVehicle.ScopeServiceID = namesList.get(position).ScopeServiceID.toInt()
                 newVehicle.ServiceID = namesList.get(position).ServiceID
                 newVehicle.VehiclesTypeID = vehicleIDRef
+                newVehicle.VehicleCategoryID = categoryID.toString()
                 FacilityDataModel.getInstance().tblVehicleServices.add(newVehicle)
             } else {
-//                updateSelectedLists(namesList.get(position).ScopeServiceID.toInt(),0,true,namesList.get(position).ScopeServiceName)
                 updateSelectedLists(namesList.get(position).ServiceID.toInt(),0,true,namesList.get(position).ScopeServiceName)
-//                FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ScopeServiceID==namesList.get(position).ScopeServiceID.toInt() && s.VehiclesTypeID==vehicleIDRef}
                 FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ServiceID==namesList.get(position).ServiceID && s.VehiclesTypeID==vehicleIDRef}
             }
             //FacilityDataModel.getInstance().tblLanguage = langArray
@@ -86,7 +85,7 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
     fun updateSelectedLists(value : Int, action :  Int, isChanged: Boolean, valueName: String) { //1:add,0:remove
 
         if (gridType.equals("Autom")) {
-            parentFragment.selectedVehicleServicesChanged = isChanged
+            if (isChanged) parentFragment.selectedVehicleServicesChanged = isChanged
             if (action==1) {
                 if (!parentFragment.selectedVehicleServices.contains(value.toString())) parentFragment.selectedVehicleServices.add(value.toString())
                 if (!parentFragment.selectedVehicleServicesNames.contains(valueName)) parentFragment.selectedVehicleServicesNames.add(valueName)

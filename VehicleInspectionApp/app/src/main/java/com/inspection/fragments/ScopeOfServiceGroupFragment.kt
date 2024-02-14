@@ -20,6 +20,8 @@ import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
+import kotlinx.android.synthetic.main.deficiency_group_layout.promotionsButton
+import kotlinx.android.synthetic.main.deficiency_group_layout.promotionsSelectedIndicator
 import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import kotlinx.android.synthetic.main.fragment_aarav_billing.*
 import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
@@ -158,6 +160,20 @@ class ScopeOfServiceGroupFragment : Fragment() {
             }
         }
 
+        PromotionsButton.setOnClickListener {
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = FragmentAARPromotions.newInstance("", "")
+                requireFragmentManager().beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment = fragmentsNames.SoSPromotions.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.PromotionsButton)
+            }
+        }
+
 //        promotionsButton.setOnClickListener {
 //            var fragment = PromotionsFragment.newInstance("","")
 //            fragmentManager!!.beginTransaction()
@@ -202,7 +218,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
@@ -214,7 +230,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
@@ -226,7 +242,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
@@ -238,7 +254,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.VISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
@@ -250,7 +266,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.VISIBLE
                 affiliationsSelectedIndicator.visibility = View.INVISIBLE
-//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
@@ -262,22 +278,22 @@ class ScopeOfServiceGroupFragment : Fragment() {
                 facilityServicesSelectedIndicator.visibility = View.INVISIBLE
                 vehiclesSelectedIndicator.visibility = View.INVISIBLE
                 affiliationsSelectedIndicator.visibility = View.VISIBLE
-//                promotionsSelectedIndicator.visibility = View.INVISIBLE
+                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
-//            R.id.promotionsButton->{
-//                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-//                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-//                programsSelectedIndicator.visibility = View.INVISIBLE
-//                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-//                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-//                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-//                promotionsSelectedIndicator.visibility = View.VISIBLE
+            R.id.PromotionsButton->{
+                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+                programsSelectedIndicator.visibility = View.INVISIBLE
+                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+                vehiclesSelectedIndicator.visibility = View.INVISIBLE
+                affiliationsSelectedIndicator.visibility = View.INVISIBLE
+                promotionsSelectedSoSIndicator.visibility = View.VISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
-//            }
+            }
 //
 //            R.id.awardsAndDistinctionsButton->{
 //                generalInformationSelectedIndicator.visibility = View.INVISIBLE
@@ -315,6 +331,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited) vehiclesButton.setTextColor(Color.parseColor("#26C3AA")) else vehiclesButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].PromotionsVisited) PromotionsButton.setTextColor(Color.parseColor("#26C3AA")) else PromotionsButton.setTextColor(Color.parseColor("#A42600"))
 //        promotionsButton.setTextColor(Color.parseColor("#26C3AA"))
 //        awardsAndDistinctionsButton.setTextColor(Color.parseColor("#26C3AA"))
     }

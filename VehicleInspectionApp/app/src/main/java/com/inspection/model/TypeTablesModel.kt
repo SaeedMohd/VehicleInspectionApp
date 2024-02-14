@@ -62,7 +62,7 @@ class TypeTablesModel {
     var PersonnelType = ArrayList<personnelType>()
     var PositionType = ArrayList<positionType>()
     var ProgramsType = ArrayList<programsType>()
-    var PromoType = ArrayList<promoType>()
+//    var PromoType = ArrayList<promoType>()
     var RevenueSourceType = ArrayList<revenueSourceType>()
     var ScopeofServiceType = ArrayList<scopeofServiceType>()
     var ScopeofServiceTypeByVehicleType = ArrayList<scopeofServiceTypeByVehicleType>()
@@ -87,6 +87,7 @@ class TypeTablesModel {
     var GeoCodeTypes = ArrayList<GeocodeType>()
     var DiscountAmountType = ArrayList<DiscountAmountTypeClass>()
     var DiscountCapType = ArrayList<DiscountCapTypeClass>()
+    var PromoType = ArrayList<PromoTypeClass>()
 
     class employeeList {
         var NTLogin = ""
@@ -98,6 +99,7 @@ class TypeTablesModel {
         var Email = ""
         var Phone = ""
         var EmpRoleID = ""
+        var PositionID = ""
         var officeID = 0
         var active = ""
         var insertBy = ""
@@ -596,6 +598,8 @@ class TypeTablesModel {
         var VehiclesTypeID = ""
         var ScopeServiceID = ""
         var ScopeServiceName = ""
+        var VehicleCategoryID = ""
+        var ServiceID = ""
         var active = ""
         var insertBy = ""
         var insertDate = ""
@@ -783,5 +787,10 @@ class TypeTablesModel {
     class DiscountCapTypeClass {
         var TypeID = 0
         var TypeName = ""
+    }
+
+    class PromoTypeClass {
+        var PromoTypeID = 0
+        var PromoTypeName = ""
     }
 }

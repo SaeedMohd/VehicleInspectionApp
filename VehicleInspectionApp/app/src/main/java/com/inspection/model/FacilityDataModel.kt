@@ -76,6 +76,7 @@ class FacilityDataModel {
     var tblPersonnelSigner = ArrayList<TblPersonnelSigner>()
     var tblGeocodes = ArrayList<TblGeocodes>()
     var tblAffiliateVendorFacilities = ArrayList<AffiliateVendorFacilities>()
+    var tblPromotions = ArrayList<TblPromotions>()
 //    class TblFacilities {
 //            var isInputsValid = false
 //        var FACID = 0

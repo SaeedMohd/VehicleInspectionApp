@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.text.Layout.Alignment
 import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.Gravity
@@ -26,6 +27,9 @@ import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateDeficiencyData
 import com.inspection.adapter.MultipartRequest
 import com.inspection.model.*
+import kotlinx.android.synthetic.main.fragment_aarav_personnel.PersonnelResultsTbl
+import kotlinx.android.synthetic.main.fragment_aarav_personnel.certTextViewVal
+import kotlinx.android.synthetic.main.fragment_aarav_personnel.certificationsTable
 import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 
 import java.text.SimpleDateFormat
@@ -375,6 +379,21 @@ class FragmentARRAVDeficiency : Fragment() {
         }
     }
 
+    fun altDeffActoinsTableRow(alt_row : Int) {
+        var childViewCount = actionsTable.getChildCount();
+
+        for ( i in 1..childViewCount-1) {
+            var row : TableRow= actionsTable.getChildAt(i) as TableRow;
+
+            if (i % alt_row != 0) {
+                row.background = getResources().getDrawable(
+                        R.drawable.alt_row_color);
+            } else row.background = getResources().getDrawable(
+                    R.drawable.row_color)
+
+        }
+    }
+
 
 
     private var defTypeList = ArrayList<TypeTablesModel.aarDeficiencyType>()
@@ -489,18 +508,27 @@ class FragmentARRAVDeficiency : Fragment() {
                         var tableRow = TableRow(context)
                         tableRow.layoutParams = rowLayoutParamRow
                         tableRow.minimumHeight = 30
+                        tableRow.isClickable = true
+
+                        tableRow.setOnClickListener {its: View? ->
+                            altDeffTableRow(2)
+                            tableRow.setBackgroundColor(Color.GREEN)
+                            fillDeffAccTableView(get(it).DefTypeID)
+                        }
+
 
                         var textView = TextView(context)
                         textView.layoutParams = rowLayoutParam
-                        textView.gravity = Gravity.CENTER_VERTICAL
+                        textView.gravity = Gravity.CENTER
                         textView.textSize = 14f
                         textView.minimumHeight = 30
+
                         textView.text = getDefTypeName(get(it).DefTypeID)
                         tableRow.addView(textView)
 
                         var textView1 = TextView(context)
                         textView1.layoutParams = rowLayoutParam1
-                        textView1.gravity = Gravity.CENTER_VERTICAL
+                        textView1.gravity = Gravity.CENTER
                         textView1.textSize = 14f
                         textView1.minimumHeight = 30
 
@@ -515,7 +543,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
                         var textView2 = TextView(context)
                         textView2.layoutParams = rowLayoutParam2
-                        textView2.gravity = Gravity.CENTER_VERTICAL
+                        textView2.gravity = Gravity.CENTER
                         textView2.textSize = 14f
                         textView2.minimumHeight = 30
 //                    TableRow.LayoutParams()
@@ -725,6 +753,104 @@ class FragmentARRAVDeficiency : Fragment() {
         DeffLoadingView.visibility = View.GONE
     }
 
+    fun fillDeffAccTableView(DefId: String) {
+
+        DeffLoadingView.visibility = View.VISIBLE
+
+        val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        if (actionsTable.childCount>1) {
+            for (i in actionsTable.childCount - 1 downTo 1) {
+                actionsTable.removeViewAt(i)
+            }
+
+        }
+
+        val rowLayoutParam = TableRow.LayoutParams()
+        rowLayoutParam.weight = 1F
+        rowLayoutParam.column = 0
+        rowLayoutParam.leftMargin=10
+        rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam.gravity = Gravity.CENTER
+        rowLayoutParam.width = 0
+
+        val rowLayoutParam1 = TableRow.LayoutParams()
+        rowLayoutParam1.weight = 1F
+        rowLayoutParam1.column = 1
+        rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
+
+        val rowLayoutParam2 = TableRow.LayoutParams()
+        rowLayoutParam2.weight = 1F
+        rowLayoutParam2.column = 2
+        rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
+
+        val rowLayoutParamRow = TableRow.LayoutParams()
+        rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
+
+        FacilityDataModel.getInstance().tblDeficiency.filter { s->s.DefTypeID.equals(DefId)}.apply {
+            (0 until size).forEach {
+                if (!get(it).DefTypeID.equals("-1") || !(get(it).DefActionTypeID.equals(""))) {
+//                    if ((filteredDefRadioButton.isChecked && get(it).ClearedDate.isNullOrEmpty()) || (filteredDefRadioButton.isChecked && get(it).ClearedDate.equals("1900-01-01T00:00:00-08:00")) || allDefRadioButton.isChecked) {
+                        var tableRow = TableRow(context)
+                        tableRow.layoutParams = rowLayoutParamRow
+                        tableRow.minimumHeight = 30
+
+
+                        var textView = TextView(context)
+                        textView.layoutParams = rowLayoutParam
+                        textView.gravity = Gravity.CENTER
+                        textView.textSize = 14f
+                        textView.minimumHeight = 30
+                        textView.height = 30
+                        try {
+                            textView.text = TypeTablesModel.getInstance().AARDeficiencyActionsType.filter { s -> s.DeficiencyActionTypeID.equals(get(it).DefActionTypeID) }[0].DeficiencyName
+                        } catch (e: Exception) {
+
+                        }
+                        tableRow.addView(textView)
+
+                        var textView1 = TextView(context)
+                        textView1.layoutParams = rowLayoutParam1
+                        textView1.gravity = Gravity.CENTER
+                        textView1.textSize = 14f
+//                        textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView1.minimumHeight = 30
+
+                        try {
+                            textView1.text = get(it).ActionDate.apiToAppFormatMMDDYYYY()
+                        } catch (e: Exception) {
+                            textView1.text = get(it).ActionDate
+
+                        }
+
+                        tableRow.addView(textView1)
+
+                        var textView2 = TextView(context)
+                        textView2.layoutParams = rowLayoutParam2
+                        textView2.gravity = Gravity.CENTER
+                        textView2.textSize = 14f
+//                        textView2.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        textView2.minimumHeight = 30
+//                    TableRow.LayoutParams()
+                        try {
+                            textView2.text = get(it).DueDate.apiToAppFormatMMDDYYYY()
+                        } catch (e: Exception) {
+                            textView2.text = get(it).DueDate
+
+                        }
+                        tableRow.addView(textView2)
+                        actionsTable.addView(tableRow)
+                }
+            }
+        }
+
+        altDeffActoinsTableRow(2)
+        DeffLoadingView.visibility = View.GONE
+    }
 
     fun altDefTableRow(alt_row : Int) {
         var childViewCount = DeffResultsTbl.getChildCount();

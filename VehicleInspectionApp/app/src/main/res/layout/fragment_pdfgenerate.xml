@@ -7,7 +7,7 @@
         android:background="@color/light_gray">
 
     <RelativeLayout
-        android:id="@+id/recordsProgressView"
+        android:id="@+id/recordsProgressViewPDF"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
@@ -72,7 +72,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/clubCodeEditText"
+                    android:id="@+id/clubCodeEditTextPDF"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="1"
@@ -84,7 +84,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/visitationfacilityIdTextView"
+                    android:id="@+id/visitationfacilityIdTextViewPDF"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="2"
@@ -94,7 +94,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/visitationfacilityIdVal"
+                    android:id="@+id/visitationfacilityIdValPDF"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="3"
@@ -105,7 +105,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="6"
-                    android:text="" />
+                    android:text="19259" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -117,7 +117,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/facilityNameButton"
+                    android:id="@+id/facilityNameButtonPDF"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="5"
@@ -153,10 +153,11 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:lines="1"
+                    android:text="77971"
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/searchVisitaionsButton"
+                    android:id="@+id/searchVisitaionsButtonPDF"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_column="6"
@@ -220,6 +221,31 @@
                         app:sv_steps="@array/steps_array"
                         />
                 </LinearLayout>
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/light_gray"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp">
+                <TextView
+                    android:id="@+id/statusTextView"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="100"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    />
+                </ScrollView>
+
             </LinearLayout>
         </LinearLayout>
 

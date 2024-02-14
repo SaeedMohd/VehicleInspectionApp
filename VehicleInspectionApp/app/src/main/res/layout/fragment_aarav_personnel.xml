@@ -7,406 +7,885 @@
     android:background="@color/light_gray"
     tools:context=".fragments.FragmentARRAVPersonnel">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/light_gray"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
+        android:paddingTop="5dp"
         android:paddingRight="10dp"
-        android:paddingTop="5dp">
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/mainViewLinearId"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <TextView
+                <RelativeLayout
+                    android:id="@+id/mainViewLinearId"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/personelLbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:text="Personnel"
+                        android:textColor="@color/mainColor"
+                        android:textSize="22sp" />
+
+                    <ImageButton
+                        android:id="@+id/alertPersonnelYIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_toRightOf="@id/personelLbl"
+                        android:background="@android:drawable/ic_dialog_info"
+                        android:backgroundTint="@color/dark_yellow"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/alertPersonnelRIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_toRightOf="@id/personelLbl"
+                        android:background="@android:drawable/ic_dialog_info"
+                        android:backgroundTint="@android:color/holo_red_dark"
+                        android:visibility="visible" />
+                    <Button
+                        android:id="@+id/addNewPRGRecordBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_toLeftOf="@id/addNewPersnRecordBtn"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/green_background_button"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="Add PRG USER"
+                        android:textColor="@color/white" />
+                    <Button
+                        android:id="@+id/addNewPersnRecordBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/green_background_button"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="Add New Personnel"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/primaryMailLbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/personelLbl"
+                        android:layout_marginTop="20dp"
+                        android:text="Shop has no primary mail recipient"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <!--            <ScrollView-->
+                <!--                android:id="@+id/layout"-->
+                <!--                android:layout_height="match_parent"-->
+                <!--                android:scrollbars="horizontal"-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:layout_marginTop="5dip"-->
+                <!--                android:scrollbarStyle="outsideInset"-->
+                <!--                android:fillViewport="true">-->
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/personelLbl"
-                    android:text="Personnel"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp" />
-                <ImageButton
-                    android:id="@+id/alertPersonnelYIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_toRightOf="@id/personelLbl"
-                    android:layout_marginStart="30dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="50dp"
+                    android:layout_marginTop="5dip"
+                    android:scrollbars="horizontal">
+
+                    <ScrollView
+                        android:id="@+id/scrollview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TableLayout
+                            android:id="@+id/PersonnelResultsTbl"
+                            android:layout_width="3000dp"
+                            android:layout_height="wrap_content"
+                            android:divider="@drawable/divider_table_layout"
+                            android:orientation="horizontal"
+                            android:scrollbarAlwaysDrawHorizontalTrack="true"
+                            android:paddingBottom="20dp"
+                            android:scrollbars="horizontal"
+                            >
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/mainColor"
+                                android:minHeight="30dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="0"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_weight="1.5"
+                                    android:text="Type"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_weight="1"
+                                    android:text="First Name"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_weight="1"
+                                    android:text="Last Name"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="3"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_weight="1"
+                                    android:text="RSP User ID"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="4"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_weight="1.5"
+                                    android:text="Email Address"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="5"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_weight="1"
+                                    android:text="Seniority Date"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="6"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_weight="1"
+                                    android:text="Start Date"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="7"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_weight="1"
+                                    android:text="End Date"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="8"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_weight="1"
+                                    android:text="Cert ID#"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="8"
+                                    android:layout_weight="1"
+                                    android:text="Cert ID_ASE"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="9"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:text="Contract Signer"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="10"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:text="Primary Mail Recipient"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="11"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:text="Report Recipient"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="12"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:text="Notification Recipient"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="12"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:text="Complaint Contact"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="12"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1.5"
+                                    android:text="Update By"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="12"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1.2"
+                                    android:text="Update Date"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="13"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_weight="1"
+                                    android:text="Options"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+                            </TableRow>
+                        </TableLayout>
+                    </ScrollView>
+                    <!--                </LinearLayout>-->
+                </HorizontalScrollView>
+                <!--            </ScrollView>-->
+                <!--            </androidx.core.widget.NestedScrollView>-->
+
+                <RelativeLayout
+                    android:id="@+id/detailsView"
                     android:visibility="gone"
-                    android:backgroundTint="@color/dark_yellow"
-                    android:background="@android:drawable/ic_dialog_info" />
-                <ImageButton
-                    android:id="@+id/alertPersonnelRIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/personelLbl"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="50dp"
-                    android:visibility="visible"
-                    android:backgroundTint="@android:color/holo_red_dark"
-                    android:background="@android:drawable/ic_dialog_info" />
-
-                <Button
-                    android:id="@+id/addNewPersnRecordBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/green_background_button"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="Add New Personnel"
-                    android:textColor="@color/white" />
-
-            </RelativeLayout>
-
-<!--            <ScrollView-->
-<!--                android:id="@+id/layout"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:scrollbars="horizontal"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_marginTop="5dip"-->
-<!--                android:scrollbarStyle="outsideInset"-->
-<!--                android:fillViewport="true">-->
-
-            <HorizontalScrollView
-                android:id="@+id/horizontalView"
-                android:layout_height="match_parent"
-                android:scrollbars="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="5dip">
-                <ScrollView
-                    android:id="@+id/scrollview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-                    <TableLayout
-                    android:id="@+id/PersonnelResultsTbl"
-                    android:layout_width="1200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:scrollbars="horizontal"
-                    android:scrollbarAlwaysDrawHorizontalTrack="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/detailsHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Selected Personnel Details"
+                        android:textColor="@color/mainColor"
+                        android:textSize="22sp" />
+
+
+                    <TableLayout
+                        android:id="@+id/PersonnelDetailsTbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/detailsHeader"
+                        android:divider="@drawable/divider_table_layout"
+                        android:background="@drawable/layout_border"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:scrollbars="vertical"
+                        android:stretchColumns="*">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_weight="1.2"
+                                android:text="Personnel Type"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsType"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_weight="1.8"
+                                android:textAlignment="center"
+                                android:textColor="@color/black" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_weight="1"
+                                android:text="First Name"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsFirstName"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="4"
+                                android:layout_weight="1"
+                                android:text="Last Name"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsLastName"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="5"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <CheckBox
+                                android:id="@+id/contractSignerCB"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="6"
+                                android:layout_weight="2"
+                                android:text="Contract Signer"
+                                android:textAlignment="center" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_weight="1"
+                                android:text="RSP User ID"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsRSPUser"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_weight="1"
+                                android:text="Email"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsEmail"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="4"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textAlignment="center" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="5"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <CheckBox
+                                android:id="@+id/complaintCB"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="6"
+                                android:layout_weight="2"
+                                android:text="Complaint Contact"
+                                android:textAlignment="center" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_weight="1"
+                                android:text="Start Date"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsStartDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_weight="1"
+                                android:text="End Date"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsEndDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="4"
+                                android:layout_weight="1"
+                                android:text="Seniority Date"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsSeniorityDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="5"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+
+                            <CheckBox
+                                android:id="@+id/ReportCB"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="6"
+                                android:layout_weight="2"
+                                android:text="Report Recipient"
+                                android:textAlignment="center" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_weight="1"
+                                android:text="Cert ID #"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsCertID"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_weight="1"
+                                android:text="ASE Cert ID #"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsASECertID"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="4"
+                                android:layout_weight="1"
+                                android:text="ASE URL"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsASEUrl"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="5"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+
+
+                            <CheckBox
+                                android:id="@+id/primaryMailCB"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="6"
+                                android:layout_weight="2"
+                                android:text="Primary Mail Recipient"
+                                android:textAlignment="center" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_weight="1"
+                                android:text="Updated By"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsUpdateBy"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_weight="1"
+                                android:text="Updated Date"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/dtlsUpdateDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="4"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="4"
+                                android:layout_weight="2"
+                                android:text=""
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <CheckBox
+                                android:id="@+id/notificationCB"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="6"
+                                android:layout_weight="2"
+                                android:text="Notification Recipient"
+                                android:textAlignment="center" />
+                        </TableRow>
+                    </TableLayout>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/mainViewLinearId2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/openCertificateGrid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:clickable="true"
+                        android:text="Open Certification Grid"
+                        android:textColor="@color/mainColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/certTextViewVal"
+                        android:layout_width="match_parent"
+                        android:layout_below="@id/openCertificateGrid"
+                        android:layout_height="match_parent"
+                        android:text="Personnel ID : Certification(s)"
+                        android:textColor="@color/mainColor"
+                        android:textSize="22sp" />
+
+
+                    <Button
+                        android:id="@+id/AddNewCertBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/openCertificateGrid"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/green_background_button"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="Add New Certification"
+                        android:textColor="@color/white" />
+
+
+                </RelativeLayout>
+
+
+
+                <TableLayout
+                    android:id="@+id/certificationsTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:divider="@drawable/divider_table_layout"
                     android:stretchColumns="*">
-                    <TableRow android:background="@color/mainColor" android:minHeight="30dp" android:layout_height="wrap_content" android:layout_width="match_parent">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1.4"
-                        android:text="Type"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                         />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:text="First Name"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:text="Last Name"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:text="RSP User ID"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="4"
-                        android:layout_weight="1.5"
-                        android:layout_marginStart="10dp"
-                        android:text="Email Address"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="5"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:text="Seniority Date"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
 
 
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="6"
-                        android:layout_weight="1"
-                        android:text="Start Date"
-                        android:layout_marginStart="10dp"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="7"
-                        android:layout_weight="1"
-                        android:text="End Date"
-                        android:textAlignment="center"
-                        android:layout_marginStart="10dp"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="8"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1.5"
-                        android:text="Cert ID#"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
+                    <TableRow android:background="@color/mainColor">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_column="8"
+                            android:layout_column="0"
                             android:layout_marginLeft="10dp"
-                            android:layout_weight="1.5"
-                            android:text="Cert ID_ASE"
-                            android:textAlignment="center"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="Category"
                             android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="9"
-                        android:layout_weight="1"
-                        android:text="Contract Signer"
-                        android:textAlignment="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:text="Primary Mail Recipient"
-                        android:layout_marginLeft="10dp"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_column="11"
+                            android:layout_column="1"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="Certification Type"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
                             android:layout_weight="1"
-                            android:text="Report Recipient"
-                            android:textAlignment="center"
-                            android:layout_marginLeft="10dp"
-                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:text="Certification Date"
                             android:textColor="@color/white"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_column="12"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_column="3"
                             android:layout_weight="1"
-                            android:text="Notification Recipient"
-                            android:layout_marginLeft="10dp"
-                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:text="Expiration Date"
                             android:textColor="@color/white"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_column="12"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_column="4"
                             android:layout_weight="1"
-                            android:text="Complaint Contact"
-                            android:layout_marginLeft="10dp"
-                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:text="Comments"
                             android:textColor="@color/white"
-                            android:textSize="12sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="13"
-                        android:layout_weight="0.8"
-                        android:text="Options"
-                        android:textAlignment="center"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-                </TableRow>
-            </TableLayout>
-                </ScrollView>
-<!--                </LinearLayout>-->
-            </HorizontalScrollView>
-<!--            </ScrollView>-->
-<!--            </androidx.core.widget.NestedScrollView>-->
+                            android:textSize="14sp" />
 
-            <RelativeLayout
-                android:id="@+id/mainViewLinearId2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="5"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="Options"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                    </TableRow>
+                </TableLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/certTextViewVal"
-                    android:text="Personnel ID : Certification(s)"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp" />
-
-
-                <Button
-                    android:id="@+id/AddNewCertBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/green_background_button"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="Add New Certification"
-                    android:textColor="@color/white" />
-
-
-            </RelativeLayout>
-
-            <TableLayout
-                android:id="@+id/certificationsTable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@drawable/divider_table_layout"
-                android:stretchColumns="*">
-
-
-                <TableRow android:background="@color/mainColor">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_weight="0.5"
-                        android:text="Category"
-                        android:gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_weight="2"
-                        android:text="Certification Type"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_weight="1"
-                        android:text="Certification Date"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_weight="1"
-                        android:text="Expiration Date"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="4"
-                        android:layout_weight="1"
-                        android:text="Comments"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="5"
-                        android:layout_weight="0.5"
-                        android:text="Options"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-                </TableRow>
-            </TableLayout>
-
-        </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
@@ -593,6 +1072,107 @@
             </TableLayout>
         </androidx.cardview.widget.CardView>
     </ScrollView>
+
+    <ScrollView
+        android:id="@+id/certificateGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/certificateGridTitle"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="left"
+                    android:layout_marginTop="20dp"
+                    android:text=""
+                    android:textSize="18dp" />
+
+                <ImageButton
+                    android:id="@+id/exitCertificateGridBtnId"
+                    android:layout_width="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/close" />
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:id="@+id/ASEListText"
+                    android:layout_margin="10dp"
+                    android:text="ASE: "
+                    android:padding="5dp"
+                    android:background="@drawable/border"
+                    android:lines="3"
+                    android:textSize="12dp" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@drawable/border"
+                    android:showDividers="middle"
+                    android:id="@+id/certificateGridTblLayout"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:scrollbars="vertical"
+                    android:stretchColumns="*"
+                    >
+
+                </TableLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:id="@+id/OEMListText"
+                    android:layout_margin="10dp"
+                    android:text="OEM: "
+                    android:padding="5dp"
+                    android:background="@drawable/border"
+                    android:lines="3"
+                    android:textSize="12dp" />
+                <TableLayout
+                    android:layout_width="800dp"
+                    android:layout_height="wrap_content"
+                    android:divider="@drawable/border"
+                    android:showDividers="middle"
+                    android:id="@+id/certificateGridOEMTblLayout"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:scrollbars="vertical"
+                    android:stretchColumns="*"
+                    >
+
+                </TableLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
 
     <ScrollView
         android:id="@+id/addNewPersonnelDialogue"
@@ -997,6 +1577,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:enabled="false"
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Contract Signer"
@@ -1711,6 +2292,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:enabled="false"
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Contract Signer"

@@ -438,6 +438,7 @@ class FragmentARRAVAffliations : Fragment() {
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER_VERTICAL
                     textView.textSize = 14f
+                    textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
 //                    textView.text = if (get(it).AffiliationTypeID == 0) "" else TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == get(it).AffiliationTypeID}[0].AffiliationTypeName
                     for (fac in TypeTablesModel.getInstance().AARAffiliationType) {
@@ -451,6 +452,7 @@ class FragmentARRAVAffliations : Fragment() {
                     textView1.layoutParams = rowLayoutParam1
                     textView1.gravity = Gravity.CENTER_VERTICAL
                     textView1.textSize = 14f
+                    textView1.setTextColor(Color.BLACK)
                     textView1.minimumHeight = 30
 //                textView1.text = get(it).LoggedIntoPortal
                     textView1.text = if (get(it).AffiliationTypeDetailID == 0) "" else TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == get(it).AffiliationTypeDetailID }[0].AffiliationDetailTypeName
@@ -460,6 +462,7 @@ class FragmentARRAVAffliations : Fragment() {
                     textView2.layoutParams = rowLayoutParam2
                     textView2.gravity = Gravity.CENTER_VERTICAL
                     textView2.textSize = 14f
+                    textView2.setTextColor(Color.BLACK)
                     textView2.minimumHeight = 30
                     textView2.text = if (get(it).effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).effDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView2)
@@ -468,6 +471,7 @@ class FragmentARRAVAffliations : Fragment() {
                     textView3.layoutParams = rowLayoutParam3
                     textView3.gravity = Gravity.CENTER_VERTICAL
                     textView3.textSize = 14f
+                    textView3.setTextColor(Color.BLACK)
                     textView3.minimumHeight = 30
                     textView3.text = if (get(it).expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).expDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView3)
@@ -476,6 +480,7 @@ class FragmentARRAVAffliations : Fragment() {
                     textView4.layoutParams = rowLayoutParam4
                     textView4.gravity = Gravity.CENTER_VERTICAL
                     textView4.textSize = 14f
+                    textView4.setTextColor(Color.BLACK)
                     textView4.minimumHeight = 30
                     textView4.text = get(it).comment
                     tableRow.addView(textView4)

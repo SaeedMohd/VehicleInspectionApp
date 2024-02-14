@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
@@ -18,6 +20,7 @@ import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.adapter.DatesListAdapter
+import com.inspection.adapter.FuelListAdapter
 import com.inspection.adapter.VehicleServicesArrayAdapter
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
@@ -26,6 +29,7 @@ import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
 
 import kotlinx.android.synthetic.main.*
+import kotlinx.android.synthetic.main.fragment_vehicles_fragment_in_scope_of_services_view.hydrogenTypesVehiclesListView
 import kotlin.collections.ArrayList
 
 /**
@@ -62,7 +66,15 @@ class FragmentARRAVVehicleServices : Fragment() {
     var selectedAutoGlassServicesChanged = false
     var selectedOthersServicesChanged = false
 
+    var gasll : RelativeLayout? = null
+
     var vehicleServicesListView: ExpandableHeightGridView? = null
+    var gasolineServicesListView: ExpandableHeightGridView? = null
+    var hybridServicesListView: ExpandableHeightGridView? = null
+    var dieselServicesListView: ExpandableHeightGridView? = null
+    var electricServicesListView: ExpandableHeightGridView? = null
+    var hydrogenServicesListView: ExpandableHeightGridView? = null
+    var cngServicesListView: ExpandableHeightGridView? = null
     var autoBodyServicesListView: ExpandableHeightGridView? = null
     var MarineServicesListView: ExpandableHeightGridView? = null
     var RecreationalServicesListView: ExpandableHeightGridView? = null
@@ -70,6 +82,12 @@ class FragmentARRAVVehicleServices : Fragment() {
     var OtherServicesListView: ExpandableHeightGridView? = null
 
     internal var arrayAdapter: DatesListAdapter? = null
+    internal var arrayGasAdapter: FuelListAdapter? = null
+    internal var arrayHybridAdapter: FuelListAdapter? = null
+    internal var arrayHydrogenAdapter: FuelListAdapter? = null
+    internal var arrayCNGAdapter: FuelListAdapter? = null
+    internal var arrayDieselAdapter: FuelListAdapter? = null
+    internal var arrayElectricAdapter: FuelListAdapter? = null
     internal var arrayAdapter2: DatesListAdapter? = null
     internal var arrayAdapter3: DatesListAdapter? = null
     internal var arrayAdapter4: DatesListAdapter? = null
@@ -81,6 +99,12 @@ class FragmentARRAVVehicleServices : Fragment() {
     var recreationalServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
     var autoGlassServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
     var otherServicesListItems=ArrayList<TypeTablesModel.scopeofServiceTypeByVehicleType>()
+    var gasolineVehicleType = "6"
+    var hybridVehicleType = "7"
+    var dieselVehicleType = "8"
+    var electricVehicleType = "9"
+    var hydrogenVehicleType = "10"
+    var cngVehicleType = "11"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,9 +115,17 @@ class FragmentARRAVVehicleServices : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater!!.inflate(R.layout.fragment_array_vehicle_services, container, false)
         vehicleServicesListView = view.findViewById(R.id.vehicleServicesListView)
+        gasolineServicesListView = view.findViewById(R.id.gasolineServicesListView)
+        electricServicesListView = view.findViewById(R.id.electricServicesListView)
+        cngServicesListView = view.findViewById(R.id.cngServicesListView)
+        hybridServicesListView = view.findViewById(R.id.hybridServicesListView)
+        hydrogenServicesListView = view.findViewById(R.id.hydrogenServicesListView)
+        dieselServicesListView = view.findViewById(R.id.dieselServicesListView)
+
         autoBodyServicesListView = view.findViewById(R.id.languagesGridView)
         MarineServicesListView = view.findViewById(R.id.MarineServicesListView)
         RecreationalServicesListView = view.findViewById(R.id.RecreationalServicesListView)
+        gasll = view.findViewById(R.id.gasll)
 //        AutoGlassServicesListView = view.findViewById(R.id.AutoGlassServicesListView)
 //        OtherServicesListView = view.findViewById(R.id.OtherServicesListView)
         return view
@@ -115,6 +147,8 @@ class FragmentARRAVVehicleServices : Fragment() {
                 vehicleServiceItem.FACID= FacilityDataModelOrg.getInstance().tblVehicleServices[i].FACID
                 vehicleServiceItem.ScopeServiceID = FacilityDataModelOrg.getInstance().tblVehicleServices[i].ScopeServiceID
                 vehicleServiceItem.VehiclesTypeID = FacilityDataModelOrg.getInstance().tblVehicleServices[i].VehiclesTypeID
+                vehicleServiceItem.ServiceID = FacilityDataModelOrg.getInstance().tblVehicleServices[i].ServiceID
+                vehicleServiceItem.VehicleCategoryID = FacilityDataModelOrg.getInstance().tblVehicleServices[i].VehicleCategoryID
                 vehicleServiceItem.insertBy = FacilityDataModelOrg.getInstance().tblVehicleServices[i].insertBy
                 vehicleServiceItem.insertDate = FacilityDataModelOrg.getInstance().tblVehicleServices[i].insertDate
                 FacilityDataModel.getInstance().tblVehicleServices.add(vehicleServiceItem)
@@ -141,6 +175,10 @@ class FragmentARRAVVehicleServices : Fragment() {
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited= true
         (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
+
+//        autoMobileCNGTextView.setOnClickListener({
+//
+//        })
     }
 
     fun getVehicleServices(selectedServices: String,orgServices: String) : String {
@@ -155,72 +193,78 @@ class FragmentARRAVVehicleServices : Fragment() {
         var saveMessage=""
         var orgSelectedServices = ""
         var dataChanges = ""
-        if (gridType.equals("0")) {
-            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Autom") }[0].VehiclesTypeID
-            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
-                (0 until size).forEach {
-                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+        try {
+            if (gridType.equals("0")) {
+                vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Autom") }[0].VehiclesTypeID
+                FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehiclesTypeId.toInt() }.apply {
+                    (0 until size).forEach {
+                        Log.v("LAST ONE --- ", get(it).ServiceID.toString() + " - " + get(it).VehiclesTypeID);
+                        orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID == get(it).ServiceID }.filter { s -> s.VehiclesTypeID.toInt() == get(it).VehiclesTypeID }[0].ScopeServiceName + " - "
+                    }
                 }
-            }
-            scopeServiceId = selectedVehicleServices.toString()
-            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(Automobile)"
-            dataChanges = "Automobile Vehicle Services changed from " + orgSelectedServices + " to " + selectedVehicleServicesNames
-        } else if (gridType.equals("1")) {
-            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Body") }[0].VehiclesTypeID
-            scopeServiceId = selectedAutoBodyServices.toString()
-            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
-                (0 until size).forEach {
-                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                scopeServiceId = selectedVehicleServices.toString()
+                orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+                saveMessage = "(Automobile)"
+                dataChanges = "Automobile Vehicle Services changed from " + orgSelectedServices + " to " + selectedVehicleServicesNames
+            } else if (gridType.equals("1")) {
+                vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Body") }[0].VehiclesTypeID
+                scopeServiceId = selectedAutoBodyServices.toString()
+                FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehiclesTypeId.toInt() }.apply {
+                    (0 until size).forEach {
+                        orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID == get(it).ServiceID }.filter { s -> s.VehiclesTypeID.toInt() == get(it).VehiclesTypeID }[0].ScopeServiceName + " - "
+                    }
                 }
-            }
-            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(Auto Body)"
-            dataChanges = "Auto Body Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoBodyServicesNames
-        }else if (gridType.equals("2")) {
-            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Marin") }[0].VehiclesTypeID
-            scopeServiceId = selectedMarineServices.toString()
-            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
-                (0 until size).forEach {
-                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+                saveMessage = "(Auto Body)"
+                dataChanges = "Auto Body Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoBodyServicesNames
+            } else if (gridType.equals("2")) {
+                vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Marin") }[0].VehiclesTypeID
+                scopeServiceId = selectedMarineServices.toString()
+                FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehiclesTypeId.toInt() }.apply {
+                    (0 until size).forEach {
+                        orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID == get(it).ServiceID }.filter { s -> s.VehiclesTypeID.toInt() == get(it).VehiclesTypeID }[0].ScopeServiceName + " - "
+                    }
                 }
-            }
-            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(Marine)"
-            dataChanges = "Marine Vehicle Services changed from " + orgSelectedServices + " to " + selectedMarineServicesNames
-        }else if (gridType.equals("3")) {
-            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("RV") }[0].VehiclesTypeID
-            scopeServiceId = selectedRecreationServices.toString()
-            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
-                (0 until size).forEach {
-                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+                saveMessage = "(Marine)"
+                dataChanges = "Marine Vehicle Services changed from " + orgSelectedServices + " to " + selectedMarineServicesNames
+            } else if (gridType.equals("3")) {
+                vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("RV") }[0].VehiclesTypeID
+                scopeServiceId = selectedRecreationServices.toString()
+                FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehiclesTypeId.toInt() }.apply {
+                    (0 until size).forEach {
+                        orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID == get(it).ServiceID }.filter { s -> s.VehiclesTypeID.toInt() == get(it).VehiclesTypeID }[0].ScopeServiceName + " - "
+                    }
                 }
-            }
-            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(RV)"
-            dataChanges = "Recreation Vehicle Services changed from " + orgSelectedServices + " to " + selectedRecreationServicesNames
-        }else if (gridType.equals("4")) {
-            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Auto Glass") }[0].VehiclesTypeID
-            scopeServiceId = selectedAutoGlassServices.toString()
-            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
-                (0 until size).forEach {
-                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+                saveMessage = "(RV)"
+                dataChanges = "Recreation Vehicle Services changed from " + orgSelectedServices + " to " + selectedRecreationServicesNames
+            } else if (gridType.equals("4")) {
+                vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Auto Glass") }[0].VehiclesTypeID
+                scopeServiceId = selectedAutoGlassServices.toString()
+                FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehiclesTypeId.toInt() }.apply {
+                    (0 until size).forEach {
+                        orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID == get(it).ServiceID }.filter { s -> s.VehiclesTypeID.toInt() == get(it).VehiclesTypeID }[0].ScopeServiceName + " - "
+                    }
                 }
-            }
-            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(Auto Glass)"
-            dataChanges = "Auto Glass Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoGlassServicesNames
-        }else if (gridType.equals("5")) {
-            vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Other") }[0].VehiclesTypeID
-            scopeServiceId = selectedOthersServices.toString()
-            FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s->s.VehiclesTypeID==vehiclesTypeId.toInt()}.apply {
-                (0 until size).forEach {
-                    orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s->s.ScopeServiceID.toInt()==get(it).ScopeServiceID}.filter { s->s.VehiclesTypeID.toInt()==get(it).VehiclesTypeID}[0].ScopeServiceName + " - "
+                orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+                saveMessage = "(Auto Glass)"
+                dataChanges = "Auto Glass Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoGlassServicesNames
+            } else if (gridType.equals("5")) {
+                vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Other") }[0].VehiclesTypeID
+                scopeServiceId = selectedOthersServices.toString()
+                FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehiclesTypeId.toInt() }.apply {
+                    (0 until size).forEach {
+                        orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID == get(it).ServiceID }.filter { s -> s.VehiclesTypeID.toInt() == get(it).VehiclesTypeID }[0].ScopeServiceName + " - "
+                    }
                 }
+                orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+                saveMessage = "(Other Status)"
+                dataChanges = "Other Vehicle Services changed from " + orgSelectedServices + " to " + selectedOthersServicesNames
             }
-            orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
-            saveMessage = "(Other Status)"
-            dataChanges = "Other Vehicle Services changed from " + orgSelectedServices + " to " + selectedOthersServicesNames
+        }
+        catch (e: Exception) {
+
         }
 
         scopeServiceId = scopeServiceId.replace("[","")
@@ -238,6 +282,8 @@ class FragmentARRAVVehicleServices : Fragment() {
                                 var vehicleServiceItem = TblVehicleServices()
                                 vehicleServiceItem.FACID= FacilityDataModel.getInstance().tblVehicleServices[i].FACID
                                 vehicleServiceItem.ScopeServiceID = FacilityDataModel.getInstance().tblVehicleServices[i].ScopeServiceID
+                                vehicleServiceItem.ServiceID = FacilityDataModel.getInstance().tblVehicleServices[i].ServiceID
+                                vehicleServiceItem.VehicleCategoryID = FacilityDataModel.getInstance().tblVehicleServices[i].VehicleCategoryID
                                 vehicleServiceItem.VehiclesTypeID = FacilityDataModel.getInstance().tblVehicleServices[i].VehiclesTypeID
                                 vehicleServiceItem.insertBy = FacilityDataModel.getInstance().tblVehicleServices[i].insertBy
                                 vehicleServiceItem.insertDate = FacilityDataModel.getInstance().tblVehicleServices[i].insertDate
@@ -288,6 +334,54 @@ class FragmentARRAVVehicleServices : Fragment() {
         selectedAutoBodyServicesChanged=false
         selectedVehicleServicesChanged=false
 
+        gasll?.setOnClickListener({
+            if (gasolineServicesListView?.visibility==View.GONE){
+                gasolineServicesListView?.visibility=View.VISIBLE
+            }else{
+                gasolineServicesListView?.visibility=View.GONE
+            }
+        })
+
+        hybridll?.setOnClickListener({
+            if (hybridServicesListView?.visibility==View.GONE){
+                hybridServicesListView?.visibility=View.VISIBLE
+            }else{
+                hybridServicesListView?.visibility=View.GONE
+            }
+        })
+
+        hydrogenll?.setOnClickListener({
+            if (hydrogenServicesListView?.visibility==View.GONE){
+                hydrogenServicesListView?.visibility=View.VISIBLE
+            }else{
+                hydrogenServicesListView?.visibility=View.GONE
+            }
+        })
+
+        electricll?.setOnClickListener({
+            if (electricServicesListView?.visibility==View.GONE){
+                electricServicesListView?.visibility=View.VISIBLE
+            }else{
+                electricServicesListView?.visibility=View.GONE
+            }
+        })
+
+        cngll?.setOnClickListener({
+            if (cngServicesListView?.visibility==View.GONE){
+                cngServicesListView?.visibility=View.VISIBLE
+            }else{
+                cngServicesListView?.visibility=View.GONE
+            }
+        })
+
+        dieselll?.setOnClickListener({
+            if (dieselServicesListView?.visibility==View.GONE){
+                dieselServicesListView?.visibility=View.VISIBLE
+            }else{
+                dieselServicesListView?.visibility=View.GONE
+            }
+        })
+
         for (model in TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType) {
 
             for (model2 in TypeTablesModel.getInstance().VehiclesType){
@@ -301,6 +395,7 @@ class FragmentARRAVVehicleServices : Fragment() {
                     }
                     if (model2.VehiclesTypeName.toString().contains("Body")) {
                         autoBodyServicesListItems.add(model)
+
                     }
                     if (model2.VehiclesTypeName.toString().contains("Marin")) {
 
@@ -320,7 +415,233 @@ class FragmentARRAVVehicleServices : Fragment() {
             }
 
             }
+
+        gasCheckBox.setOnClickListener({
+            if (gasCheckBox.isChecked) {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(gasolineVehicleType) }.apply {
+                    forEach {
+                        if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
+                        if (FacilityDataModel.getInstance().tblVehicleServices.filter { s->s.ServiceID==it.ServiceID }.isEmpty()) {
+                            var item = TblVehicleServices()
+                            item.ServiceID = it.ServiceID
+                            item.VehiclesTypeID = it.VehiclesTypeID.toInt()
+                            item.VehicleCategoryID = it.VehicleCategoryID
+                            item.ScopeServiceID = it.ScopeServiceID.toInt()
+                            item.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            FacilityDataModel.getInstance().tblVehicleServices.add(item)
+                        }
+                        if (!selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.add(it.ScopeServiceName)
+                    }
+                }
+            } else {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(gasolineVehicleType) }.apply {
+                    forEach {
+                        if (selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.remove(it.ServiceID)
+                        if (selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.remove(it.ScopeServiceName)
+                        FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ServiceID==it.ServiceID }
+                    }
+                }
+            }
+            selectedVehicleServicesChanged = true
+            gasolineServicesListView?.adapter = null
+            gasolineServicesListView?.adapter = arrayGasAdapter
+            (context as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        })
+        hybridCheckBox.setOnClickListener({
+            if (hybridCheckBox.isChecked) {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hybridVehicleType) }.apply {
+                    forEach {
+                        if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
+                        if (FacilityDataModel.getInstance().tblVehicleServices.filter { s->s.ServiceID==it.ServiceID }.isEmpty()) {
+                            var item = TblVehicleServices()
+                            item.ServiceID = it.ServiceID
+                            item.VehiclesTypeID = it.VehiclesTypeID.toInt()
+                            item.VehicleCategoryID = it.VehicleCategoryID
+                            item.ScopeServiceID = it.ScopeServiceID.toInt()
+                            item.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            FacilityDataModel.getInstance().tblVehicleServices.add(item)
+                        }
+                        if (!selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.add(it.ScopeServiceName)
+                    }
+                }
+            } else {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hybridVehicleType) }.apply {
+                    forEach {
+                        if (selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.remove(it.ServiceID)
+                        if (selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.remove(it.ScopeServiceName)
+                        FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ServiceID==it.ServiceID }
+                    }
+                }
+            }
+            selectedVehicleServicesChanged = true
+            hybridServicesListView?.adapter = null
+            hybridServicesListView?.adapter = arrayHybridAdapter
+            (context as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        })
+
+        dieselCheckBox.setOnClickListener({
+            if (dieselCheckBox.isChecked) {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(dieselVehicleType) }.apply {
+                    forEach {
+                        if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
+                        if (FacilityDataModel.getInstance().tblVehicleServices.filter { s->s.ServiceID==it.ServiceID }.isEmpty()) {
+                            var item = TblVehicleServices()
+                            item.ServiceID = it.ServiceID
+                            item.VehiclesTypeID = it.VehiclesTypeID.toInt()
+                            item.VehicleCategoryID = it.VehicleCategoryID
+                            item.ScopeServiceID = it.ScopeServiceID.toInt()
+                            item.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            FacilityDataModel.getInstance().tblVehicleServices.add(item)
+                        }
+                        if (!selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.add(it.ScopeServiceName)
+                    }
+                }
+            } else {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(dieselVehicleType) }.apply {
+                    forEach {
+                        if (selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.remove(it.ServiceID)
+                        if (selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.remove(it.ScopeServiceName)
+                        FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ServiceID==it.ServiceID }
+                    }
+                }
+            }
+            selectedVehicleServicesChanged = true
+            dieselServicesListView?.adapter = null
+            dieselServicesListView?.adapter = arrayDieselAdapter
+            (context as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        })
+
+        electricCheckBox.setOnClickListener({
+            if (electricCheckBox.isChecked) {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(electricVehicleType) }.apply {
+                    forEach {
+                        if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
+                        if (FacilityDataModel.getInstance().tblVehicleServices.filter { s->s.ServiceID==it.ServiceID }.isEmpty()) {
+                            var item = TblVehicleServices()
+                            item.ServiceID = it.ServiceID
+                            item.VehiclesTypeID = it.VehiclesTypeID.toInt()
+                            item.VehicleCategoryID = it.VehicleCategoryID
+                            item.ScopeServiceID = it.ScopeServiceID.toInt()
+                            item.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            FacilityDataModel.getInstance().tblVehicleServices.add(item)
+                        }
+                        if (!selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.add(it.ScopeServiceName)
+                    }
+                }
+            } else {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(electricVehicleType) }.apply {
+                    forEach {
+                        if (selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.remove(it.ServiceID)
+                        if (selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.remove(it.ScopeServiceName)
+                        FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ServiceID==it.ServiceID }
+                    }
+                }
+            }
+            selectedVehicleServicesChanged = true
+            electricServicesListView?.adapter = null
+            electricServicesListView?.adapter = arrayElectricAdapter
+            (context as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        })
+
+        hydrogenCheckBox.setOnClickListener({
+            if (hydrogenCheckBox.isChecked) {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hydrogenVehicleType) }.apply {
+                    forEach {
+                        if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
+                        if (FacilityDataModel.getInstance().tblVehicleServices.filter { s->s.ServiceID==it.ServiceID }.isEmpty()) {
+                            var item = TblVehicleServices()
+                            item.ServiceID = it.ServiceID
+                            item.VehiclesTypeID = it.VehiclesTypeID.toInt()
+                            item.VehicleCategoryID = it.VehicleCategoryID
+                            item.ScopeServiceID = it.ScopeServiceID.toInt()
+                            item.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            FacilityDataModel.getInstance().tblVehicleServices.add(item)
+                        }
+                        if (!selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.add(it.ScopeServiceName)
+                    }
+                }
+            } else {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hydrogenVehicleType) }.apply {
+                    forEach {
+                        if (selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.remove(it.ServiceID)
+                        if (selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.remove(it.ScopeServiceName)
+                        FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ServiceID==it.ServiceID }
+                    }
+                }
+            }
+            selectedVehicleServicesChanged = true
+            hydrogenServicesListView?.adapter = null
+            hydrogenServicesListView?.adapter = arrayHydrogenAdapter
+            (context as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        })
+
+        cngCheckBox.setOnClickListener({
+            if (cngCheckBox.isChecked) {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(cngVehicleType) }.apply {
+                    forEach {
+                        if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
+                        if (FacilityDataModel.getInstance().tblVehicleServices.filter { s->s.ServiceID==it.ServiceID }.isEmpty()) {
+                            var item = TblVehicleServices()
+                            item.ServiceID = it.ServiceID
+                            item.VehiclesTypeID = it.VehiclesTypeID.toInt()
+                            item.VehicleCategoryID = it.VehicleCategoryID
+                            item.ScopeServiceID = it.ScopeServiceID.toInt()
+                            item.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            FacilityDataModel.getInstance().tblVehicleServices.add(item)
+                        }
+                        if (!selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.add(it.ScopeServiceName)
+                    }
+                }
+            } else {
+                vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(cngVehicleType) }.apply {
+                    forEach {
+                        if (selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.remove(it.ServiceID)
+                        if (selectedVehicleServicesNames.contains(it.ScopeServiceName)) selectedVehicleServicesNames.remove(it.ScopeServiceName)
+                        FacilityDataModel.getInstance().tblVehicleServices.removeIf { s->s.ServiceID==it.ServiceID }
+                    }
+                }
+            }
+            selectedVehicleServicesChanged = true
+            cngServicesListView?.adapter = null
+            cngServicesListView?.adapter = arrayCNGAdapter
+            (context as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        })
+
+
         arrayAdapter = DatesListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems)
+        vehicleServicesListView?.adapter = arrayAdapter
+        vehicleServicesListView?.isExpanded=true
+
+        arrayGasAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(gasolineVehicleType) }, categoryID = gasolineVehicleType)
+        gasolineServicesListView?.adapter = arrayGasAdapter
+        gasolineServicesListView?.isExpanded=true
+
+
+        arrayHybridAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hybridVehicleType) }, categoryID = hybridVehicleType)
+        hybridServicesListView?.adapter = arrayHybridAdapter
+        hybridServicesListView?.isExpanded=true
+
+        arrayDieselAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(dieselVehicleType) }, categoryID = dieselVehicleType)
+        dieselServicesListView?.adapter = arrayDieselAdapter
+        dieselServicesListView?.isExpanded=true
+
+        arrayElectricAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(electricVehicleType) }, categoryID = electricVehicleType)
+        electricServicesListView?.adapter = arrayElectricAdapter
+        electricServicesListView?.isExpanded=true
+
+        arrayHydrogenAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hydrogenVehicleType) }, categoryID = hydrogenVehicleType)
+        hydrogenServicesListView?.adapter = arrayHydrogenAdapter
+        hydrogenServicesListView?.isExpanded=true
+
+        arrayCNGAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(cngVehicleType) }, categoryID = cngVehicleType)
+        cngServicesListView?.adapter = arrayCNGAdapter
+        cngServicesListView?.isExpanded=true
 
         vehicleServicesListView?.adapter = arrayAdapter
         vehicleServicesListView?.isExpanded=true
