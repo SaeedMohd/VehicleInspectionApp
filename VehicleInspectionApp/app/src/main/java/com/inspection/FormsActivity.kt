@@ -65,7 +65,7 @@ import java.util.ArrayList
 
 enum class fragmentsNames {
     FacilityGeneralInfo, FacilityContactInfo,FacilityRSP,FacilityPersonnel,FacilityAmedndmentsOrderTracking,
-    Visitation,
+    Visitation,VisitationTracking,
     SoSGeneralInfo,SoSVehicleServices,SoSPrograms,SoSFacilityServices,SoSVehicles,SoSAffiliations,SoSPromotions,SoSAwards,SoSOthers,
     Deficiency,
     Comments,
@@ -332,6 +332,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited = true
             IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited = true
             IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited = true
+            IndicatorsDataModel.getInstance().tblFacility[0].VisitationTrackingVisited = true
             IndicatorsDataModel.getInstance().tblComplaints[0].visited = true
             IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited = true
             IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited = true

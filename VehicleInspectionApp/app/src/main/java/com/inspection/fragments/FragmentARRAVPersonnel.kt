@@ -662,7 +662,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 var OEMEndDate = if (newOEMEndDateBtn.text.equals("SELECT DATE")) "" else newOEMEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                 var ace_url = if (newACEURLText.text.toString().isNullOrEmpty()) "" else newACEURLText.text.toString()
 //                Log.v("PERSONNEL ADD --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=" + FacilityDataModel.getInstance().clubCode + "&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&certificationNumASE=$ASECertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + "&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}&ComplaintContact=${ComplaintContact}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0, 0)),
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=" + FacilityDataModel.getInstance().clubCode + "&personnelId=&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&certificationNumASE=$ASECertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + "&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=${newPhoneText.text}&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}&ComplaintContact=${ComplaintContact}" + Utility.getLoggingParameters(activity, 0, getPersonnelChanges(0, 0)),
                         Response.Listener { response ->
                             requireActivity().runOnUiThread {
                                 if (response.toString().contains("returnCode>0<", false)) {
@@ -682,6 +682,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                         item.LastName = if (newLastNameText.text.toString().isNullOrEmpty()) "" else newLastNameText.text.toString()
                                         item.RSP_UserName = if (rspUserId.text.toString().isNullOrEmpty()) "" else rspUserId.text.toString()
                                         item.RSP_Email = if (rspEmailId.text.toString().isNullOrEmpty()) "" else rspEmailId.text.toString()
+                                        item.RSP_Phone = newPhoneText.text.toString()
                                         item.CertificationNum = if (newCertNoText.text.toString().isNullOrEmpty()) "" else newCertNoText.text.toString()
                                         item.CertificationNum_ASE = if (newASECertNoText.text.toString().isNullOrEmpty()) "" else newASECertNoText.text.toString()
                                         item.ContractSigner = newSignerCheck.isChecked
@@ -894,7 +895,9 @@ class FragmentARRAVPersonnel : Fragment() {
 
         newEmailText.isEnabled = true
         newCoStartDateBtn.isEnabled = true
-        newPhoneText.isEnabled = true
+        // SAEED MOSS ISSUE
+        //newPhoneText.isEnabled = true
+
         newZipText.isEnabled = true
         newCityText.isEnabled = true
         newAdd1Text.isEnabled = true
@@ -921,7 +924,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
         newEmailText.isEnabled = false
         newCoStartDateBtn.isEnabled = false
-        newPhoneText.isEnabled = false
+        // SAEED MOSS ISSUE
+        //newPhoneText.isEnabled = false
         newZipText.isEnabled = false
         newCityText.isEnabled = false
         newAdd1Text.isEnabled = false
@@ -948,7 +952,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
         edit_newEmailText.isEnabled = false
         edit_newCoStartDateBtn.isEnabled = false
-        edit_newPhoneText.isEnabled = false
+        // SAEED MOSS ISSUE
+        // edit_newPhoneText.isEnabled = false
         edit_newZipText.isEnabled = false
         edit_newCityText.isEnabled = false
         edit_newAdd1Text.isEnabled = false
@@ -975,7 +980,8 @@ class FragmentARRAVPersonnel : Fragment() {
 
         edit_newEmailText.isEnabled = false
         edit_newCoStartDateBtn.isEnabled = false
-        edit_newPhoneText.isEnabled = false
+        // SAEED MOSS ISSUE
+//        edit_newPhoneText.isEnabled = false
         edit_newZipText.isEnabled = false
         edit_newCityText.isEnabled = false
         edit_newAdd1Text.isEnabled = false
@@ -1531,7 +1537,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 dtlsFirstName.text = get(it).FirstName
                 dtlsLastName.text = get(it).LastName
                 dtlsRSPUser.text = get(it).RSP_UserName
-                dtlsEmail.text = if (get(it).ContractSigner) FacilityDataModel.getInstance().tblPersonnelSigner.filter { s -> s.PersonnelID == get(it).PersonnelID }[0].email else get(it).RSP_Email
+                dtlsEmail.text =  get(it).RSP_Email//if (get(it).ContractSigner) FacilityDataModel.getInstance().tblPersonnelSigner.filter { s -> s.PersonnelID == get(it).PersonnelID }[0].email else get(it).RSP_Email
                 dtlsStartDate.text = get(it).RSP_Email
                 if (!(get(it).SeniorityDate.isNullOrEmpty())) {
                     try {
@@ -2398,7 +2404,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
         FacilityDataModel.getInstance().tblPersonnel.apply {
             (0 until size).forEach {
-
+                Log.v("RSP PHONE TABLE =>",get(it).RSP_Phone)
                 if (PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}.isNotEmpty()) {
 //                    get(it).ASE_Cert_URL = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].asecerturl
                     get(it).OEMstartDate = PRGDataModel.getInstance().tblPRGPersonnelDetails.filter { s->s.personnelid.equals(get(it).PersonnelID.toString())}[0].oemstartdate
@@ -2466,7 +2472,7 @@ class FragmentARRAVPersonnel : Fragment() {
                 textView5.gravity = Gravity.CENTER_VERTICAL
                 textView5.textSize = 14f
                 textView5.setTextColor(Color.BLACK)
-                textView5.text = if (get(it).ContractSigner) FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==get(it).PersonnelID}[0].email else get(it).RSP_Email
+                textView5.text = get(it).RSP_Email//if (get(it).ContractSigner) FacilityDataModel.getInstance().tblPersonnelSigner.filter { s->s.PersonnelID==get(it).PersonnelID}[0].email else get(it).RSP_Email
                 textView5.minimumHeight = 30
                 tableRow.addView(textView5)
 
@@ -2808,9 +2814,12 @@ class FragmentARRAVPersonnel : Fragment() {
                     edit_newLastNameText.setText(textView3.text)
                     edit_newCertNoText.setText(textView7.text)
                     edit_newASECertNoText.setText(textView72.text)
+
 //                    edit_newStartDateBtn.setText(textView8.text)
                     edit_rspEmailId.setText(textView50.text)
                     edit_rspUserId.setText(textView4.text)
+                    edit_newPhoneText.setText(FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].RSP_Phone)
+                    Log.v("RSP PHONE ===> " , FacilityDataModel.getInstance().tblPersonnel[currentfacilityDataModelIndex].RSP_Phone)
                     edit_rspEmailId.isEnabled = (edit_rspUserId.text.isNullOrEmpty())
                     if (textView8.text.isNullOrEmpty() || textView8.equals("01/01/1900")) {
                         edit_newStartDateBtn.setText("SELECT DATE")
@@ -2857,7 +2866,7 @@ class FragmentARRAVPersonnel : Fragment() {
                     if (FacilityDataModel.getInstance().tblPersonnelSigner.filter { S->S.PersonnelID==textView2.tag}.count()>0){
                         var model = TblPersonnelSigner()
                         model = FacilityDataModel.getInstance().tblPersonnelSigner.filter { S->S.PersonnelID==textView2.tag}[0]
-                        edit_newPhoneText.setText(model.Phone)
+//                        edit_newPhoneText.setText(model.Phone)
                         edit_newZipText.setText(model.ZIP)
                         edit_newAdd1Text.setText(model.Addr1)
                         edit_newAdd2Text.setText(model.Addr2)
@@ -2871,7 +2880,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             edit_newCoStartDateBtn.setText(model.ContractStartDate.apiToAppFormatMMDDYYYY())
                         }
                     } else {
-                        edit_newPhoneText.setText("")
+//                        edit_newPhoneText.setText("")
                         edit_newZipText.setText("")
                         edit_newAdd1Text.setText("")
                         edit_newAdd2Text.setText("")
@@ -2936,7 +2945,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                 var OEMEndDate = if (newEditOEMEndDateBtn.text.equals("SELECT DATE")) "" else newEditOEMEndDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
                                 var ace_url = if (newEditACEURLText.text.toString().isNullOrEmpty()) "" else newEditACEURLText.text.toString()
 //                            Log.v("PERSONNEL EDIT --- ",UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}")
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=" + FacilityDataModel.getInstance().clubCode + "&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&certificationNumASE=$ASECertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + "&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}&ComplaintContact=${ComplaintContact}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1, currentfacilityDataModelIndex)),
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityPersonnelData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode=" + FacilityDataModel.getInstance().clubCode + "&personnelId=${personnelID}&personnelTypeId=$PersonnelTypeId&firstName=$FirstName&lastName=${LastName}&seniorityDate=$SeniorityDate&certificationNum=$CertificationNum&certificationNumASE=$ASECertificationNum&startDate=$startDate&contractSigner=$ContractSigner&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + "&active=1&primaryMailRecipient=$PrimaryMailRecipient&rsp_userName=$RSP_UserName&rsp_email=$RSP_Email&rsp_phone=${edit_newPhoneText.text}&endDate=${ExpirationDate}&ASE_URL=${ace_url}&OEMStartDate=${OEMStartDate}&OEMEndDate=${OEMEndDate}&ReportRecipient=${ReportRec}&NotificationRecipient=${NotificationRec}&ComplaintContact=${ComplaintContact}" + Utility.getLoggingParameters(activity, 1, getPersonnelChanges(1, currentfacilityDataModelIndex)),
                                         Response.Listener { response ->
                                             requireActivity().runOnUiThread {
                                                 if (response.toString().contains("returnCode>0<", false)) {
@@ -2955,6 +2964,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                         item.LastName = LastName
                                                         item.RSP_UserName = RSP_UserName
                                                         item.RSP_Email = RSP_Email
+                                                        item.RSP_Phone = edit_newPhoneText.text.toString()
                                                         item.CertificationNum = CertificationNum
                                                         if (!response.toString().contains("Duplicate ASE Certification ID")) {
                                                             item.CertificationNum_ASE = ASECertificationNum
@@ -2999,7 +3009,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                                                 item.ST = coST
                                                                                 item.ZIP4 = coZIP4
                                                                                 item.ZIP = coZIP
-                                                                                item.Phone = coPhone
+//                                                                                item.RSP_Phone = coPhone
                                                                                 var signerItem = TblPersonnelSigner()
                                                                                 signerItem.PersonnelID = item.PersonnelID
                                                                                 signerItem.ContractStartDate = coContractStartDate

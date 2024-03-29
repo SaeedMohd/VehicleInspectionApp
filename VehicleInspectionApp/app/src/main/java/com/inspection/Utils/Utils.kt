@@ -204,10 +204,10 @@ fun compareFacilityDataModelTable(type : String){
             if (FacilityDataModel.getInstance().tblPersonnel[i].PrimaryMailRecipient!=FacilityDataModelOrg.getInstance().tblPersonnel[i].PrimaryMailRecipient) isDifferent=true
             if (!FacilityDataModel.getInstance().tblPersonnel[i].startDate.equals(FacilityDataModelOrg.getInstance().tblPersonnel[i].startDate)) isDifferent=true
             if (FacilityDataModel.getInstance().tblPersonnel[i].email!=FacilityDataModelOrg.getInstance().tblPersonnel[i].email) isDifferent=true
-            if (FacilityDataModel.getInstance().tblPersonnel[i].Phone!=FacilityDataModelOrg.getInstance().tblPersonnel[i].Phone) isDifferent=true
+            if (FacilityDataModel.getInstance().tblPersonnel[i].RSP_Phone!=FacilityDataModelOrg.getInstance().tblPersonnel[i].RSP_Phone) isDifferent=true
             if (FacilityDataModel.getInstance().tblPersonnel[i].ZIP!=FacilityDataModelOrg.getInstance().tblPersonnel[i].ZIP) isDifferent=true
             if (FacilityDataModel.getInstance().tblPersonnel[i].CITY!=FacilityDataModelOrg.getInstance().tblPersonnel[i].CITY) isDifferent=true
-            if (FacilityDataModel.getInstance().tblPersonnel[i].Phone!=FacilityDataModelOrg.getInstance().tblPersonnel[i].Phone) isDifferent=true
+            if (FacilityDataModel.getInstance().tblPersonnel[i].RSP_Phone!=FacilityDataModelOrg.getInstance().tblPersonnel[i].RSP_Phone) isDifferent=true
             if (isDifferent) break
         }
     }

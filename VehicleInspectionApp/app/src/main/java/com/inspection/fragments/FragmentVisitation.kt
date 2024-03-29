@@ -324,8 +324,6 @@ class FragmentVisitation : Fragment() {
         dateOfVisitationButton.isClickable = false
         dataChangedNoRadioButton.isClickable = false
 //        clubCodeEditText.isClickable = false
-
-
 //        clubCodeEditText.isEnabled = false
         facilityNumberEditText.isEnabled = false
 

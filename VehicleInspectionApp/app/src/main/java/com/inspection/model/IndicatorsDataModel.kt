@@ -93,6 +93,7 @@ class IndicatorsDataModel {
         var LocationVisited = false
         var Personnel = false
         var PersonnelVisited = true
+        var VisitationTrackingVisited = true
     }
 
     class TblVisitation {
@@ -146,6 +147,7 @@ class IndicatorsDataModel {
         Facility.LocationVisited=false
         Facility.Personnel=false;
         Facility.PersonnelVisited=false
+        Facility.VisitationTrackingVisited=true
         tblFacility.add(0,Facility)
         var Billing = TblBilling()
         Billing.Billing=true;
@@ -223,6 +225,7 @@ class IndicatorsDataModel {
         tblFacility[0].RSPVisited = visitedScreens.substring(2,3)=="1"
         tblFacility[0].LocationVisited = visitedScreens.substring(3,4)=="1"
         tblFacility[0].PersonnelVisited = visitedScreens.substring(4,5)=="1"
+        tblFacility[0].VisitationTrackingVisited = true
         tblScopeOfServices[0].GeneralInfoVisited = visitedScreens.substring(5,6)=="1"
         tblScopeOfServices[0].VehicleServicesVisited = visitedScreens.substring(6,7)=="1"
         tblScopeOfServices[0].ProgramsVisited = visitedScreens.substring(7,8)=="1"

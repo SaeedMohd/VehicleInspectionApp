@@ -122,13 +122,19 @@ class FacilityGroupFragment : Fragment() {
             }
         }
 
-//        visitationTrackingButton.setOnClickListener {
-//            var fragment = FragmentARRAVVisitationTracking.newInstance("","")
-//            fragmentManager!!.beginTransaction()
-//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-//                    .commit()
-//            updateSelectedIndicator(R.id.visitationTrackingButton)
-//        }
+        visitationTrackingButton.setOnClickListener {
+            if ((activity as FormsActivity).preventNavigation()) {
+                Utility.showSaveOrCancelAlertDialog(activity)
+            } else {
+                var fragment = VisitationTrackingSubFragment.newInstance("", "")
+                fragmentManager!!.beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                        .commit()
+                (activity as FormsActivity).currentFragment=fragmentsNames.VisitationTracking.toString()
+                (activity as FormsActivity).saveRequired = false
+                updateSelectedIndicator(R.id.visitationTrackingButton)
+            }
+        }
 
 //        amendmentOrdersTrackingButton.setOnClickListener {
 //            if ((activity as FormsActivity).preventNavigation()) {
@@ -153,7 +159,7 @@ class FacilityGroupFragment : Fragment() {
                 rspSelectedIndicator.visibility = View.INVISIBLE
                 contactInfoSelectedIndicator.visibility = View.INVISIBLE
                 personnelSelectedIndicator.visibility = View.INVISIBLE
-//                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.rspButton->{
@@ -161,7 +167,7 @@ class FacilityGroupFragment : Fragment() {
                 rspSelectedIndicator.visibility = View.VISIBLE
                 contactInfoSelectedIndicator.visibility = View.INVISIBLE
                 personnelSelectedIndicator.visibility = View.INVISIBLE
-//                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
             
             R.id.contactInfoButton->{
@@ -169,7 +175,7 @@ class FacilityGroupFragment : Fragment() {
                 rspSelectedIndicator.visibility = View.INVISIBLE
                 contactInfoSelectedIndicator.visibility = View.VISIBLE
                 personnelSelectedIndicator.visibility = View.INVISIBLE
-//                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
             
             R.id.personnelButton->{
@@ -177,16 +183,18 @@ class FacilityGroupFragment : Fragment() {
                 rspSelectedIndicator.visibility = View.INVISIBLE
                 contactInfoSelectedIndicator.visibility = View.INVISIBLE
                 personnelSelectedIndicator.visibility = View.VISIBLE
-//                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
+
             
-//            R.id.visitationTrackingButton->{
-//                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-//                rspSelectedIndicator.visibility = View.INVISIBLE
-//                contactInfoSelectedIndicator.visibility = View.INVISIBLE
-//                personnelSelectedIndicator.visibility = View.INVISIBLE
-//                amendmentOrdersTrackingSelectedIndicator.visibility = View.INVISIBLE
-//            }
+            R.id.visitationTrackingButton->{
+                generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                rspSelectedIndicator.visibility = View.INVISIBLE
+                contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                personnelSelectedIndicator.visibility = View.INVISIBLE
+                visitationTrackingSelectedIndicator.visibility = View.VISIBLE
+//                amendmentOrdersTrackingButton.visibility = View.INVISIBLE
+            }
             
 //            R.id.amendmentOrdersTrackingButton->{
 //                generalInformationSelectedIndicator.visibility = View.INVISIBLE
@@ -213,6 +221,7 @@ class FacilityGroupFragment : Fragment() {
         if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) rspButton.setTextColor(Color.parseColor("#26C3AA")) else rspButton.setTextColor(Color.parseColor("#A42600"))
         if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) personnelButton.setTextColor(Color.parseColor("#26C3AA")) else personnelButton.setTextColor(Color.parseColor("#A42600"))
         if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+        visitationTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
 //        amendmentOrdersTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
     }
 

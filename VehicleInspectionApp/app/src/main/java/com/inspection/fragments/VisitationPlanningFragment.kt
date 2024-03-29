@@ -3614,6 +3614,7 @@ class VisitationPlanningFragment : Fragment() {
         } else if (key.equals("tblVisitationTracking")) {
             var oneArray = TblVisitationTracking()
             oneArray.AARSigns=""
+            oneArray.visitationID="-1"
             oneArray.CertificateOfApproval=""
             oneArray.DatePerformed=""
             oneArray.MemberBenefitPoster=""
@@ -3823,7 +3824,7 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.FirstName=""
             oneArray.LastName=""
             oneArray.PersonnelTypeID=0
-            oneArray.Phone=""
+            oneArray.RSP_Phone=""
             oneArray.PersonnelID = -1
             oneArray.PrimaryMailRecipient=false
             oneArray.RSP_Email=""

@@ -88,24 +88,24 @@
                 <!--android:layout_marginRight="5dp"-->
                 <!--android:background="@drawable/red_button_background" />-->
 
-            <!--<Button-->
-            <!--android:id="@+id/visitationTrackingButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/transparent"-->
-            <!--android:text="Visitation Tracking"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_column="4"-->
-            <!--/>-->
+            <Button
+            android:id="@+id/visitationTrackingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:text="Visitation Tracking"
+            android:layout_marginLeft="10dp"
+            android:layout_column="4"
+            />
 
-            <!--<Button-->
-                <!--android:id="@+id/amendmentOrdersTrackingButton"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_column="4"-->
-                <!--android:visibility="gone"-->
-                <!--android:background="@color/transparent"-->
-                <!--android:text="Amendment Orders Tracking" />-->
+<!--            <Button-->
+<!--                android:id="@+id/amendmentOrdersTrackingButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_column="4"-->
+<!--                android:visibility="gone"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="Amendment Orders Tracking" />-->
         </TableRow>
         <TableRow>
             <View
@@ -144,14 +144,14 @@
                 android:visibility="invisible"
                 />
 
-            <!--<View-->
-                <!--android:id="@+id/visitationTrackingSelectedIndicator"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="4dp"-->
-                <!--android:background="@color/mainColor"-->
-                <!--android:layout_column="4"-->
-                <!--android:visibility="invisible"-->
-                <!--/>-->
+            <View
+                android:id="@+id/visitationTrackingSelectedIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/mainColor"
+                android:layout_column="4"
+                android:visibility="invisible"
+                />
 
             <!--<View-->
                 <!--android:id="@+id/amendmentOrdersTrackingSelectedIndicator"-->

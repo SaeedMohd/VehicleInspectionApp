@@ -235,7 +235,7 @@ class TblPersonnel {
     var ST=""
     var ZIP=""
     var ZIP4=""
-    var Phone=""
+    var RSP_Phone=""
     var email=""
     var PrimaryMailRecipient=false
     var CertificationTypeId=""
